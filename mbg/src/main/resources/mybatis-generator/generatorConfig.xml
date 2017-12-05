@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!--引入外部属性文件-->
+    <properties resource="mybatis-generator/mbg.properties"/>
+
+    <!--驱动jar包的位置，可配置绝对路径，也可在Maven插件中配置依赖-->
+    <!--<classPathEntry location="C:\Users\Leo\.m2\repository\org\postgresql\postgresql\42.1.1\postgresql-42.1.1.jar"/>-->
+    <context id="my" targetRuntime="MyBatis3">
+
+        <!-- 指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+        <property name="javaFileEncoding" value="UTF-8" />
+
+        <!--关闭自动生成的注释，使用自定义注释方案-->
+        <commentGenerator type="com.toutiao.mbg.MyCommentGenerator">
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true:是; false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!--连接字符串-->
+        <jdbcConnection driverClass="${database.driver}"
+                        connectionURL="${database.url}" userId="${database.user}" password="${database.password}"/>
+
+        <!--javaModelGenerator指定生成pojo的包和此包在项目中的地址-->
+        <javaModelGenerator targetPackage="com.toutiao.officedict.dao.entity.officedict"
+                            targetProject="..\dao\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--sqlMapGenerator指定生成pojo的映射xml文件的所在包和此包在项目中的地址-->
+        <sqlMapGenerator targetPackage="mapper.officedict"
+                         targetProject="..\dao\src\main\resources\">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--javaClientGenerator指定生成访问映射xml文件的接口所在包和此包在项目中的地址-->
+        <javaClientGenerator targetPackage="com.toutiao.officedict.dao.mapper.officedict"
+                             targetProject="..\dao\src\main\java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+            <property name="rootInterface" value="com.toutiao.officedict.dao.BaseDao" />
+        </javaClientGenerator>
+
+        <!--<table tableName="T_FEE_AGTBILL" domainObjectName="FeeAgentBill"
+               enableCountByExample="false" enableUpdateByExample="false"
+                enableDeleteByExample="false" enableSelectByExample="false"
+                selectByExampleQueryId="false"/>-->
+
+        <!--如果想要mapper配置文件加入sql的where条件查询, 可以将enableCountByExample等设为true,
+         这样就会生成一个对应domainObjectName的Example类, enableCountByExample等设为false时,
+         就不会生成对应的Example类了. -->
+        <!--
+            schema:数据库的schema,可以使用SQL通配符匹配。如果设置了该值，生成SQL的表名会变成如schema.tableName的形式。
+            catalog:数据库的catalog，如果设置了该值，生成SQL的表名会变成如catalog.tableName的形式。
+            ignoreQualifiersAtRuntime:生成的SQL中的表名将不会包含schema和catalog前缀。
+        -->
+        <!--<table tableName="proj_image" domainObjectName="ProjImage"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            &lt;!&ndash;<columnRenamingRule searchString="^D_"
+                            replaceString=""/>&ndash;&gt;
+        </table>-->
+
+        <table tableName="proj_layout_image" domainObjectName="ProjLayoutImage"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!--<columnRenamingRule searchString="^D_"
+                            replaceString=""/>-->
+        </table>
+        <!--<table tableName="sys_menu" domainObjectName="SysMenuEntity"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            &lt;!&ndash;<columnRenamingRule searchString="^D_"
+                            replaceString=""/>&ndash;&gt;
+        </table>-->
+
+     <!--   <table tableName="sys_role_menu" domainObjectName="SysMenuEntity"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <columnRenamingRule searchString="^D_" replaceString=""/>
+        </table>
+        -->
+
+        <!--操作某个schema下的全部表-->
+        <!--<table tableName="%" schema="public" enableCountByExample="false" enableUpdateByExample="false"1
+               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <property name="ignoreQualifiersAtRuntime" value="true"></property>
+        </table>-->
+    </context>
+</generatorConfiguration>
