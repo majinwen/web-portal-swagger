@@ -48,5 +48,10 @@ public class LeaseChanceResfulImpl implements LeaseChanceService{
     }
 
 
+    public static void main(String[] args) {
+        System.out.print("111");
+    }
+
+
 
 }
