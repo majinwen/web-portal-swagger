@@ -17,6 +17,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.search.MultiMatchQuery;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,15 +95,60 @@ public class NewHouseHousingProjectRestful {
 //                parseSearchResponse(searchResponse);
 //            }
 
+            //多条件查询，分页
+//            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+//
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", "1641"));
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("address", "124"));
+//
+////            booleanQueryBuilder.
+//
+//            searchresponse = client.prepareSearch("proj")
+//                    .setTypes("proj_house")
+////                    .setQuery(QueryBuilders.termsQuery("address", "西二环菜户营桥东南侧","海港区","运河"))
+////                    .setQuery(QueryBuilders.boolQuery()
+////                            .should(QueryBuilders.matchQuery("buildcategory", "1").boost(2))
+////                            .should(QueryBuilders.matchQuery("areaId", "1641")))
+//
+//                    .setQuery(booleanQueryBuilder)
+//                    .setFrom(0)
+//                    .setSize(10)
+//                    .setExplain(true)
+//                    .execute().actionGet();
+//            SearchHits hits = searchresponse.getHits();
+//            long totalCount1 = hits.getTotalHits();
+//            SearchHit[] searchHists = hits.getHits();
+//            for (SearchHit hit : searchHists) {
+//                String name = (String) hit.getSource().get("address");
+//
+//                Integer id = (Integer) hit.getSource().get("newcode");
+////                String name = (String) JSON.toJSON(hit.getSource());
+//                System.out.println(name+": "+id);
+//            }
 
-            searchresponse = client.prepareSearch("proj")
-                    .setTypes("proj_house")
+
+
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", "1641"));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("address", "124"));
+
+//            QueryBuilder queryBuilders =  new QueryBuilder()；
+
+
+
+            QueryBuilders.boolQuery().must(QueryBuilders.termQuery("areaId", "111"));
+            QueryBuilders.boolQuery().must(QueryBuilders.termQuery("address", "50"));
+            QueryBuilders.termsQuery("employees", new int[]{1,3});
+            QueryBuilder queryBuilder = QueryBuilders.matchAllQuery();
+            searchresponse = client.prepareSearch("pro")
+                    .setTypes("pro_arry")
 //                    .setQuery(QueryBuilders.termsQuery("address", "西二环菜户营桥东南侧","海港区","运河"))
 //                    .setQuery(QueryBuilders.boolQuery()
 //                            .should(QueryBuilders.matchQuery("buildcategory", "1").boost(2))
 //                            .should(QueryBuilders.matchQuery("areaId", "1641")))
 
-                    .setQuery(QueryBuilders.constantScoreQuery(QueryBuilders.termQuery("buildcategory", "2")))
+                    .setQuery(queryBuilder)
                     .setFrom(0)
                     .setSize(10)
                     .setExplain(true)
@@ -118,8 +165,11 @@ public class NewHouseHousingProjectRestful {
             }
 
 
+
+
+
             // 关闭client
-//            client.close();
+            client.close();
 
         } catch (Exception e) {
             e.printStackTrace();
