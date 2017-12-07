@@ -24,6 +24,11 @@ public class SysUserServiceImpl implements SysUserService{
     }
 
     @Override
+    public int selectByPhone(String phone) {
+        return userMapper.selectByPhone(phone);
+    }
+
+    @Override
     public int insertSelective(SysUserEntity record) {
         return userMapper.insertSelective(record);
     }
@@ -42,5 +47,10 @@ public class SysUserServiceImpl implements SysUserService{
     public List<SysUserEntity> selectByKey(SysUserEntity record) {
         PageHelper.startPage(1,10000);
         return userMapper.selectByKey(record);
+    }
+
+    @Override
+    public int insertPhone(String phone) {
+        return userMapper.insertPhone(phone);
     }
 }
