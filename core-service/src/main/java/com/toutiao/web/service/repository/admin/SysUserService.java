@@ -9,8 +9,11 @@ import java.util.List;
  */
 public interface SysUserService {
     int deleteByPrimaryKey(Integer id);
+    int selectByPhone(String phone);
     int insertSelective(SysUserEntity record);
     SysUserEntity selectByPrimaryKey(Integer id);
     int updateByPrimaryKeySelective(SysUserEntity record);
     List<SysUserEntity> selectByKey(SysUserEntity record);
+
+    int insertPhone(String phone);
 }

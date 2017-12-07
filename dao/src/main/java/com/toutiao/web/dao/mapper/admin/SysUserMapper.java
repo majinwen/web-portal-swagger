@@ -19,4 +19,8 @@ public interface SysUserMapper extends BaseDao {
     int updateByPrimaryKey(SysUserEntity record);
 
     List<SysUserEntity> selectByKey(SysUserEntity record);
+
+    int selectByPhone(String phone);
+
+    int insertPhone(String phone);
 }
