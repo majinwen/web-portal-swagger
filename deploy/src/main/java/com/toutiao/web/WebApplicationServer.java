@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class WebApplicationServer {
 
     public static void main(String[] args) throws Exception {
-
         SpringApplication.run(WebApplicationServer.class, args);
     }
 

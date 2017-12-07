@@ -27,23 +27,23 @@
                         connectionURL="${database.url}" userId="${database.user}" password="${database.password}"/>
 
         <!--javaModelGenerator指定生成pojo的包和此包在项目中的地址-->
-        <javaModelGenerator targetPackage="com.toutiao.officedict.dao.entity.officedict"
+        <javaModelGenerator targetPackage="com.toutiao.web.dao.entity.officeweb"
                             targetProject="..\dao\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!--sqlMapGenerator指定生成pojo的映射xml文件的所在包和此包在项目中的地址-->
-        <sqlMapGenerator targetPackage="mapper.officedict"
+        <sqlMapGenerator targetPackage="mapper.officeweb"
                          targetProject="..\dao\src\main\resources\">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--javaClientGenerator指定生成访问映射xml文件的接口所在包和此包在项目中的地址-->
-        <javaClientGenerator targetPackage="com.toutiao.officedict.dao.mapper.officedict"
+        <javaClientGenerator targetPackage="com.toutiao.web.dao.mapper.officeweb"
                              targetProject="..\dao\src\main\java" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
-            <property name="rootInterface" value="com.toutiao.officedict.dao.BaseDao" />
+            <property name="rootInterface" value="com.toutiao.web.dao.BaseDao" />
         </javaClientGenerator>
 
         <!--<table tableName="T_FEE_AGTBILL" domainObjectName="FeeAgentBill"
@@ -67,28 +67,13 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="proj_layout_image" domainObjectName="ProjLayoutImage"
+        <table tableName="sys_web_user" domainObjectName="SysWebUser"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_"
                             replaceString=""/>-->
         </table>
-        <!--<table tableName="sys_menu" domainObjectName="SysMenuEntity"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            &lt;!&ndash;<columnRenamingRule searchString="^D_"
-                            replaceString=""/>&ndash;&gt;
-        </table>-->
-
-     <!--   <table tableName="sys_role_menu" domainObjectName="SysMenuEntity"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-            <columnRenamingRule searchString="^D_" replaceString=""/>
-        </table>
-        -->
 
         <!--操作某个schema下的全部表-->
         <!--<table tableName="%" schema="public" enableCountByExample="false" enableUpdateByExample="false"1
