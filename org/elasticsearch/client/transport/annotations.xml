@@ -1,0 +1,5 @@
+<!--<root>-->
+    <!--<item name='org.elasticsearch.client.transport.TransportClient'>-->
+        <!--<annotation name='java.lang.Deprecated'/>-->
+    <!--</item>-->
+<!--</root>-->
