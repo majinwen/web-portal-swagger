@@ -3,7 +3,7 @@ package com.toutiao.web.dao.entity.admin;
 import lombok.Data;
 
 @Data
-public class village {
+public class VillageEntity {
     private Integer id; //序号
     private String rc;  //小区名称/楼盘名称
     private String alias;  //别名

@@ -1,7 +1,7 @@
 package com.toutiao.web.service.repository.admin.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.dao.entity.admin.village;
+import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.service.repository.admin.SaveToESService;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class SaveToESServiceImpl implements SaveToESService {
     @Override
-    public Map save(String index, String type, village village) throws Exception {
+    public Map save(String index, String type, VillageEntity village) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         Client client = new PreBuiltTransportClient(settings)
