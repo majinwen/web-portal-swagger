@@ -42,7 +42,7 @@ public class SysVillageServiceImpl implements SysVillageService {
         GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS);
         srb.setPostFilter(location1);
         // 获取距离多少公里 这个才是获取点与点之间的距离的
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location");
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location",lat,lon);
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
         sort.point(lat,lon);
