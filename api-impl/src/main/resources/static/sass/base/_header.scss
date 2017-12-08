@@ -1,0 +1,69 @@
+$headBackgroundColor: #0a0724;
+header {
+    position: relative;
+    height: rem(117);
+    line-height: rem(63);
+    padding: rem(27) rem(30);
+    vertical-align: middle;
+    background-color: $headBackgroundColor;
+    @include box-sizing;
+    z-index: 9999;
+    
+    .header-logo {
+        float: left;
+        display: block;
+        width: rem(138);
+        
+        img {
+            width: 100%;
+        }
+    }
+    
+    .search-box {
+        float: left;
+        position: relative;
+        width: rem(466);
+        height: rem(64);
+        margin-left: rem(25);
+        background-color: $white;
+        border-radius: rem(4);
+        
+        .icon {
+            position: absolute;
+            top: rem(20);
+            left: rem(18);
+            display: block;
+            width: rem(24);
+            height: rem(25);
+            @include bg-image('../images/global/sy_search_icon');
+            -webkit-background-size: rem(24) auto;
+            background-size: rem(24) auto;
+        }
+        
+        input {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: rem(410);
+            height: 100%;
+            padding-right: rem(20);
+            @include font-dpr(26);
+            background-color: transparent;
+            @include box-sizing;
+            
+            &::-webkit-input-placeholder {
+                color: #999;
+            }
+        }
+    }
+    
+    .header-user {
+        float: right;
+        display: block;
+        width: rem(32);
+        
+        img {
+            width: 100%;
+        }
+    }
+}

@@ -1,0 +1,54 @@
+@mixin font-dpr($font-size) {
+    [data-dpr="1"] & {
+        font-size: #{$font-size / 2}px ;
+    }
+    
+    [data-dpr="2"] & {
+        font-size: #{$font-size}px;
+    }
+    
+    [data-dpr="3"] & {
+        font-size: #{$font-size * 1.5}px;
+    }
+}
+
+$baseFontSize: 75;
+$FontSize: 16;
+@mixin px2rem($name, $px1) {
+    #{$name}: ($px1 / $baseFontSize) * 1rem;
+}
+
+
+
+
+@mixin bg-image($url) {
+    background-image: url($url + "@2x.png");
+    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        background-image: url($url + "@3x.png");
+    }
+}
+
+@mixin box-sizing {
+    box-sizing: border-box;
+}
+
+@mixin text-ellipses {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+$black: #3a3a3a;
+$white: #fff;
+$baseRed: #fb3939;
+$gray: #747788;
+$baseGreen: #3bbc6c;
+
+
+@function rem($values) {
+    $list: ();
+    @each $value in $values {
+        $list: #{$value/75}rem;
+    }
+    @return $list;
+}
