@@ -4,12 +4,14 @@ import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.pinyin.Pinyin;
 import com.toutiao.web.service.pinyin.PinyinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequestMapping(value= "/pinyin")
 public class PinyinServeContoller {
 
@@ -30,4 +32,16 @@ public class PinyinServeContoller {
         return NashResult.build(pinyin);
 
     }
+
+
+    @RequestMapping("/changepinyin11")
+
+    public String getChangepinyin11(@RequestParam("name") String name, Model model){
+
+        model.addAttribute("user","asds");
+        Pinyin pinyin = pinyinService.getPinyin(name);
+        return "aa";
+
+    }
+
 }
