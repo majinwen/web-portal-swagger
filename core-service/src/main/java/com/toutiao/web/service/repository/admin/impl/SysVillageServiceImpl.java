@@ -39,10 +39,10 @@ public class SysVillageServiceImpl implements SysVillageService {
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
-        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(distance, DistanceUnit.METERS);
+        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS);
         srb.setPostFilter(location1);
         // 获取距离多少公里 这个才是获取点与点之间的距离的
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location",lat,lon);
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location");
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
         sort.point(lat,lon);
@@ -54,9 +54,13 @@ public class SysVillageServiceImpl implements SysVillageService {
         String[] house = new String[(int) hits.getTotalHits()];
         System.out.println("附近的小区(" + hits.getTotalHits() + "个)：");
         List houseList = new ArrayList();
-        Map map = new HashMap();
         for (SearchHit hit : searchHists) {
-            String rc = (String) hit.getSource().get("rc");
+            String rc = (String) hit.getSource().get("rc");//小区名称
+            String abbreviatedage = (String) hit.getSource().get("abbreviatedage");//建成年代
+            String label = (String) hit.getSource().get("label");//标签
+            String avgprice = (String) hit.getSource().get("avgprice");//
+
+
             houseList.add(rc);
             List<Double> location = (List<Double>)hit.getSource().get("location");
             // 获取距离值，并保留两位小数点
@@ -64,7 +68,9 @@ public class SysVillageServiceImpl implements SysVillageService {
             Map<String, Object> hitMap = hit.getSource();
             // 在创建MAPPING的时候，属性名的不可为geoDistance。
             hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+//            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+
         }
         return houseList;
     }
