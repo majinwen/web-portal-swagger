@@ -1,4 +1,4 @@
-package com.toutiao.web.common.util.spring;
+package com.toutiao.web.common.util;
 
 
 import javax.servlet.http.Cookie;
@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class CookieUtils {
+    //图片验证码名称
+    public static  String imageCodeName="imageCode";
     /**
      * 获取cookie中的数据
      * @param request
@@ -16,7 +18,7 @@ public class CookieUtils {
      * @param cookieName
      * @return
      */
-    public String getCookie(HttpServletRequest request,
+    public static String getCookie(HttpServletRequest request,
                             HttpServletResponse response, String cookieName) {
         Cookie[] cookies=request.getCookies();
         String cookie = null;
@@ -31,12 +33,12 @@ public class CookieUtils {
     }
 
     /**
-     * 
+     *
      * @param request
      * @param response
      * @param cookieName
      */
-    public void deleteCookie(HttpServletRequest request,
+    public static void deleteCookie(HttpServletRequest request,
                                 HttpServletResponse response, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -59,7 +61,7 @@ public class CookieUtils {
      * @param cookieValue
      * @param expiry
      */
-    public void setCookie(HttpServletRequest request,
+    public static void setCookie(HttpServletRequest request,
                                 HttpServletResponse response, String cookieName,
                                 String cookieValue, int expiry) {
         Cookie newCookie = new Cookie(cookieName, cookieValue);
