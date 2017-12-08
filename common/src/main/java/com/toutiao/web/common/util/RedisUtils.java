@@ -239,6 +239,31 @@ public class RedisUtils {
     }
 
     /**
+     * 向缓存中设置字符串内容
+     *
+     * @param key   key
+     * @param value value
+     * @return
+     * @throws Exception
+     */
+    public static boolean set2(String key, String value, int expire) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            if (jedis != null) {
+                jedis.set(key, value);
+                jedis.expire(key, expire);
+            }
+            return true;
+        } catch (Exception e) {
+            logger.error("Redis缓存设置key值 出错！", e);
+            return false;
+        } finally {
+            returnResource(jedis);
+        }
+    }
+
+    /**
      * 判断key是否存在
      */
     public static boolean exists(String key) {
