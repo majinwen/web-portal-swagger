@@ -25,7 +25,6 @@ public class SaveToESServiceImpl implements SaveToESService {
         Client client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        Map resultMap = new HashMap();
         JSONObject json = (JSONObject) JSONObject.toJSON(village);
             IndexRequestBuilder lrb = client
                     .prepareIndex(index, type)
