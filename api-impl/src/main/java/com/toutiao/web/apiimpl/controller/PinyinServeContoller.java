@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-@RequestMapping(value= "/pinyin")
+@RequestMapping(value= "pinyin")
 public class PinyinServeContoller {
 
     @Autowired
@@ -36,11 +36,11 @@ public class PinyinServeContoller {
 
     @RequestMapping("/changepinyin11")
 
-    public String getChangepinyin11(@RequestParam("name") String name, Model model){
+    public String getChangepinyin11(Model model){
 
         model.addAttribute("user","asds");
-        Pinyin pinyin = pinyinService.getPinyin(name);
-        return "aa";
+
+        return "esf-list";
 
     }
 
