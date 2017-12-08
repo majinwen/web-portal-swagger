@@ -2,7 +2,7 @@ package com.toutiao.web.service.repository.admin.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.dao.entity.admin.village;
-import com.toutiao.web.service.repository.admin.SaveToES;
+import com.toutiao.web.service.repository.admin.SaveToESService;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -16,7 +16,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SaveToESImpl implements SaveToES {
+public class SaveToESServiceImpl implements SaveToESService {
     @Override
     public Map save(String index, String type, village village) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")

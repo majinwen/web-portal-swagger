@@ -1,6 +1,6 @@
 package com.toutiao.web.service.repository.admin.impl;
 
-import com.toutiao.web.service.repository.admin.SysVillage;
+import com.toutiao.web.service.repository.admin.SysVillageService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class SysVillageImpl implements SysVillage {
+public class SysVillageServiceImpl implements SysVillageService {
     @Override
     public List GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
