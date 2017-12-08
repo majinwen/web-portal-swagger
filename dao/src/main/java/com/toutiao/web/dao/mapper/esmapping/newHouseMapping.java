@@ -37,7 +37,22 @@ public class newHouseMapping {
         XContentBuilder mapping = null;
 
         try {
-            mapping = jsonBuilder().startObject();
+            mapping = jsonBuilder().startObject()
+                    .startObject("_id").field("index","not_analyzed").field("path","newcode").endObject()
+                    .startObject("properties")
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject()
+                    .startObject("question").field("type","string").field("index","not_analyzed").endObject().endObject().endObject();
 
 
         } catch (IOException e) {
