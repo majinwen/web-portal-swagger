@@ -1,17 +1,8 @@
 package com.toutiao.web.dao.mapper.esmapping;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
-import com.toutiao.web.dao.entity.admin.SysUserEntity;
-import com.toutiao.web.dao.entity.esobject.NewHouse;
-import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.index.IndexRequestBuilder;
-import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
@@ -19,25 +10,20 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class newHouseMapping {
-
-    @Autowired
-    private ESClientTools esClientTools;
-
 
     protected static void buildIndexMapping() throws Exception {
 
@@ -45,51 +31,81 @@ public class newHouseMapping {
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
-        client.admin().indices().prepareCreate("newhouse").execute().actionGet();
-
+        client.admin().indices().prepareCreate("beijing").execute().actionGet();
+//        esClientTools.creatIndex("beijing",0,0);
 
         XContentBuilder mapping = XContentFactory.jsonBuilder()
-                .startObject().startObject("xxxx99")
+                .startObject().startObject("building")
                 .startObject("properties")
-                .startObject("districtId").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("districtName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("areaId").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("areaName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("subwayLine").field("type","integer").field("index","not_analyzed").endObject()
-                .startObject("subwayStation").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("totalPrice").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("layoutId").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("layoutType").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("areaSize").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("tagsId").field("type","integer").field("index","not_analyzed").endObject()
-                .startObject("tagsName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("buildFormId").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("buildingAge").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("purposeId").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("purposeName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("isLift").field("type","integer").field("index","not_analyzed").endObject()
-                .startObject("ownershipId").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("projName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("nickName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("averagePrice").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("imgs").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("saledate").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("livindate").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("developer").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("developer").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("categoryName").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("rightYear").field("type","text").field("index","not_analyzed").endObject()
-                .startObject("layoutList").field("type","object").endObject()
-                .endObject().endObject().endObject();
-        PutMappingRequest mappingRequest = Requests.putMappingRequest("newhouse").type("xxxx99").source(mapping);
+
+                .startObject("city_id").field("type","integer").endObject()
+                .startObject("city_name").field("type","text").field("analyzer","ik_max_word").field("search_analyzer","ik_max_word").endObject()
+                .startObject("district_id").field("type","integer").endObject()
+                .startObject("district_name").field("type","text").field("analyzer","ik_max_word").field("search_analyzer","ik_max_word").endObject()
+                .startObject("area_id").field("type","integer").endObject()
+                .startObject("area_name").field("type","text").field("analyzer","ik_max_word").field("search_analyzer","ik_max_word").endObject()
+                .startObject("subway_line_id").field("type","integer").endObject()
+                .startObject("subway_line").field("type","text").endObject()
+                .startObject("subway_station_id").field("type","integer").endObject()
+                .startObject("subway_station").field("type","text").endObject()
+                .startObject("property_type_id").field("type","integer").endObject()
+                .startObject("property_type").field("type","text").endObject()
+                .startObject("elevator_flag").field("type","integer").endObject()
+                .startObject("building_type_id").field("type","integer").endObject()
+                .startObject("building_type").field("type","keyword").endObject()
+                .startObject("sale_status_id").field("type","integer").endObject()
+                .startObject("sale_status_name").field("type","text").endObject()
+                .startObject("building_feature_id").field("type","integer").endObject()
+                .startObject("building_feature").field("type","keyword").endObject()
+                .startObject("redecorate_type_id").field("type","integer").endObject()
+                .startObject("redecorate_type").field("type","keyword").endObject()
+                .startObject("building_name_id").field("type","integer").endObject()
+                .startObject("building_name").field("type","text").field("analyzer","ik_max_word").field("search_analyzer","ik_max_word").endObject()
+                .startObject("average_price").field("type","double").endObject()
+                .startObject("building_tags_id").field("type","integer").endObject()
+                .startObject("building_tags").field("type","text").field("index","not_analyzed").endObject()
+                .startObject("activity_desc").field("type","text").endObject()
+                .startObject("building_imgs").field("type","keyword").endObject()
+
+
+                .startObject("building_nickname").field("type","text").field("analyzer","ik_max_word").field("search_analyzer","ik_max_word").endObject()
+                .startObject("building_address").field("type","keyword").endObject()
+                .startObject("traffic_condition").field("type","keyword").endObject()
+                .startObject("opened_time").field("type","date").field("format","yyyy-MM-dd").endObject()
+                .startObject("deliver_time").field("type","date").field("format","yyyy-MM-dd").endObject()
+                .startObject("developers").field("type","keyword").endObject()
+                .startObject("sell_licence").field("type","keyword").endObject()
+                .startObject("building_life").field("type","integer").endObject()
+                .startObject("park_radio").field("type","keyword").endObject()
+                .startObject("location").field("type", "geo_point").endObject()
+
+
+                .startObject("roundstation").field("type","keyword").endObject()
+                .startObject("sale_address").field("type","keyword").endObject()
+                .startObject("ground_area").field("type","double").endObject()
+                .startObject("purpose_area").field("type","double").endObject()
+                .startObject("dimension").field("type","double").endObject()
+                .startObject("virescencerate").field("type","double").endObject()
+                .startObject("totaldoor").field("type","keyword").endObject()
+                .startObject("park_space").field("type","integer").endObject()
+                .startObject("propertymanage").field("type","keyword").endObject()
+                .startObject("propertyfee").field("type","double").endObject()
+                .startObject("heating_type").field("type","keyword").endObject()
+                .startObject("heating_type_id").field("type","integer").endObject()
+                .endObject()
+                .endObject()
+                .endObject();
+
+
+        PutMappingRequest mappingRequest = Requests.putMappingRequest("beijing").type("building").source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
 
     }
 
     public static void main(String[] args) throws Exception {
 
-//        buildIndexMapping();
-//        save("newhouse","xxxx99");
+//       buildIndexMapping();
+//        save("beijing","building");
         getss();
     }
 
@@ -100,77 +116,62 @@ public class newHouseMapping {
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
 
+        Map<String,Object> json = new HashMap<>();
+        json.put("city_id",12);
+        json.put("city_name","北京");
+        json.put("district_id",1);
+        json.put("district_name","朝阳");
+        json.put("area_id",1);
+        json.put("area_name","望京");
+        json.put("subway_line_id",new int[]{15,14,6});
+        json.put("subway_line",new String[]{"15号线","14号线"});
+        json.put("subway_station_id",new int[]{15,14,6});
+        json.put("subway_station",new String[]{"望京站","望京隔壁站"});
+        json.put("property_type_id",1);
+        json.put("property_type","别墅");
+        json.put("elevator_flag",1);
+        json.put("building_type_id",1);
+        json.put("building_type","板楼");
+        json.put("sale_status_id","1");
+        json.put("sale_status_name","在售");
+        json.put("building_feature_id","1");
+        json.put("building_feature","特色就是好");
+        json.put("redecorate_type_id","1");
+        json.put("redecorate_type","毛坯");
+        json.put("building_name_id",101);
+        json.put("building_name","望京");
+        json.put("average_price",12341);
+        json.put("building_tags_id",new int[]{1,2,3});
+        json.put("building_tags",new String[]{"别墅","花园","洋房"});
+        json.put("activity_desc","优惠活动");
+        json.put("building_imgs",new String[]{"xxx.img","eee.img"});
+        json.put("building_nickname","大望京");
+        json.put("building_address","北京朝阳望京1号");
+        json.put("traffic_condition","车多");
+        json.put("opened_time","2017-09-01");
+        json.put("deliver_time","2017-09-10");
+        json.put("developers","a公司");
+        json.put("sell_licence","许可证a文件");
+        json.put("building_life",70);
+        json.put("park_radio","1:1");
+        json.put("location",new double[]{11.12,21.23});
+        json.put("roundstation","四环到五环");
+        json.put("sale_address","阿里巴巴隔壁");
+        json.put("ground_area",1111);
+        json.put("purpose_area",33333);
+        json.put("dimension",1.20);
+        json.put("virescencerate",222);
+        json.put("totaldoor","123户");
+        json.put("park_space",121);
+        json.put("propertymanage","a物业公司");
+        json.put("propertyfee",100);
+        json.put("heating_type","自采暖");
+        json.put("heating_type_id",1);
 
-        NewHouse newHouse = new NewHouse();
-        newHouse.setAreaId("1");
-        newHouse.setAreaName("朝阳");
-        newHouse.setAreaSize("500");
-        newHouse.setAveragePrice("1000w");
-        newHouse.setBuildCategory("超大");
-        newHouse.setBuildingAge("70");
-        newHouse.setBuildFormId("bf1");
-        newHouse.setCategoryName("111");
-        newHouse.setDeveloper("就是我");
-        newHouse.setDistrictId("1");
-        newHouse.setDistrictName("朝阳呢");
-//        for(int i=0;i<2;i++){
-//            newHouse.setImgs("qweqwe"+i);
-//        }
-        newHouse.setImgs(new String[]{"111","2222"});
-        newHouse.setIsLift(1);
-        newHouse.setLayoutId("111");
-        SysUserEntity sysUserEntity = new SysUserEntity();
-        sysUserEntity.setId(11);
-        sysUserEntity.setPhone("177");
-        List<SysUserEntity> ss = new ArrayList<>();
-        ss.add(sysUserEntity);
-        newHouse.setLayoutList(ss);
-        newHouse.setLayoutType("lt1");
-        newHouse.setLayoutId("111");
-        newHouse.setLivindate("2017-12-12");
-        newHouse.setNickName("就喜欢你");
-        newHouse.setProjName("真大");
-        newHouse.setOwnershipId("南");
-        newHouse.setPurposeName("南1");
-        newHouse.setRightYear("2018");
-//        for(int i=0;i<2;i++){
-//            NewHouse newHouse1 = new NewHouse();
-//            newHouse.setTagsId(i);
-//        }
-        newHouse.setTagsId(new Integer[]{111,2222});
-        newHouse.setTagsName(new String[]{"111","2222"});
+        IndexResponse indexResponse =  client.prepareIndex(index,type,"2").setSource(json, XContentType.JSON).get();
+        RestStatus status = indexResponse.status();
+        System.out.println(status.getStatus());
 
-
-
-        JSONObject aaa = (JSONObject) JSON.toJSON(newHouse);
-        List list = new ArrayList();
-        list.add(aaa);
-
-        BulkRequestBuilder bulkRequest = client.prepareBulk();
-        Map resultMap = new HashMap();
-
-
-        for (Object object : list) {
-            JSONObject json = JSONObject.parseObject(object.toString());
-            //没有指定idName 那就让Elasticsearch自动生成
-
-            IndexRequestBuilder lrb = client
-                    .prepareIndex(index, type)
-                    .setSource(json);
-            bulkRequest.add(lrb);
-
-        }
-
-        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
-        if (bulkResponse.hasFailures()) {
-            // process failures by iterating through each bulk response item
-            System.out.println(bulkResponse.getItems().toString());
-            resultMap.put("500", "保存ES失败!");
-            return resultMap;
-        }
-        bulkRequest = client.prepareBulk();
-        resultMap.put("200", "保存ES成功!");
-        System.out.print(JSON.toJSONString(resultMap));
         return null;
 
     }
@@ -182,10 +183,12 @@ public class newHouseMapping {
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         //GetResponse response = client.prepareGet("newhouse", "xxxx99", "AWA28ARm1eqBE6YlBEsZ").get();
         SearchResponse searchresponse = new SearchResponse();
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.matchQuery("layoutType","lt1"));
+        MatchAllQueryBuilder booleanQueryBuilder = QueryBuilders.matchAllQuery();
+
 //        booleanQueryBuilder.must(QueryBuilders.termsQuery("tagsId", new int[]{1110,22220,233}));
-        searchresponse = client.prepareSearch("newhouse").setTypes("xxxx99").setQuery(booleanQueryBuilder).execute().actionGet();
+        searchresponse = client.prepareSearch("beijing").setTypes("building")
+                .setQuery(booleanQueryBuilder).setFetchSource(new String[]{"area_name", "traffic_condition", "sender_mobileNo", "developers"}, null)
+                .execute().actionGet();
 
         SearchHits hits = searchresponse.getHits();
         long totalCount1 = hits.getTotalHits();
