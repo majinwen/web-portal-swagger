@@ -1,0 +1,89 @@
+{
+  "subwayLine": [
+    {
+      "lineName": "地铁1号线",
+      "subwayLineId": 13,
+      "shortName": "1号线"
+    },
+    {
+      "lineName": "地铁2号线",
+      "subwayLineId": 11,
+      "shortName": "2号线"
+    },
+    {
+      "lineName": "地铁4号线大兴线",
+      "subwayLineId": 6,
+      "shortName": "4号线大兴线"
+    },
+    {
+      "lineName": "地铁5号线",
+      "subwayLineId": 14,
+      "shortName": "5号线"
+    },
+    {
+      "lineName": "地铁6号线",
+      "subwayLineId": 10,
+      "shortName": "6号线"
+    },
+    {
+      "lineName": "地铁7号线",
+      "subwayLineId": 7,
+      "shortName": "7号线"
+    },
+    {
+      "lineName": "地铁8号线",
+      "subwayLineId": 2,
+      "shortName": "8号线"
+    },
+    {
+      "lineName": "地铁9号线",
+      "subwayLineId": 9,
+      "shortName": "9号线"
+    },
+    {
+      "lineName": "地铁10号线",
+      "subwayLineId": 16,
+      "shortName": "10号线"
+    },
+    {
+      "lineName": "地铁13号线",
+      "subwayLineId": 17,
+      "shortName": "13号线"
+    },
+    {
+      "lineName": "地铁14号线",
+      "subwayLineId": 3,
+      "shortName": "14号线"
+    },
+    {
+      "lineName": "地铁15号线",
+      "subwayLineId": 1,
+      "shortName": "15号线"
+    },
+    {
+      "lineName": "八通线",
+      "subwayLineId": 15,
+      "shortName": "八通线"
+    },
+    {
+      "lineName": "地铁昌平线",
+      "subwayLineId": 4,
+      "shortName": "昌平线"
+    },
+    {
+      "lineName": "房山线",
+      "subwayLineId": 5,
+      "shortName": "房山线"
+    },
+    {
+      "lineName": "亦庄线",
+      "subwayLineId": 8,
+      "shortName": "亦庄线"
+    },
+    {
+      "lineName": "机场线",
+      "subwayLineId": 12,
+      "shortName": "机场线"
+    }
+  ]
+}
