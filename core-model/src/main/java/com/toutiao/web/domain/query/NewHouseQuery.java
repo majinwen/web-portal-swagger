@@ -91,5 +91,13 @@ public class NewHouseQuery {
      * 排序  0--默认（按楼盘级别（广告优先））--1均价升排序--2均价降排序--3开盘时间升排序--4开盘时间降排序
      */
     private Integer sort;
+    /**
+     * 页码
+     */
+    private Integer pageNum;
+    /**
+     * 每页数量
+     */
+    private Integer pageSize;
 
 }
