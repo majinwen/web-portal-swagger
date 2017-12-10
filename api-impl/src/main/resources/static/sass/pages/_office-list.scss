@@ -1,11 +1,10 @@
-$tagBackgroundColor: #747788;
 $textGrayColor: #888;
 
 .list-item {
     display: block;
     padding: rem(42) 0;
     margin: 0 rem(30);
-    color: $black;
+    color: $baseBlack;
     border-bottom: 1px solid $borderLineColor;
     @include box-sizing;
     
@@ -64,13 +63,13 @@ $textGrayColor: #888;
         
         .cont-block-2 {
             margin-top: rem(20);
-            color: $gray;
+            color: $baseGray;
         }
         
         .cont-block-3 {
             position: relative;
-            margin-top: rem(20);
-            color: $gray;
+            margin-top: rem(16);
+            color: $baseGray;
             
             .icon {
                 position: absolute;
@@ -82,7 +81,6 @@ $textGrayColor: #888;
                 @include bg-image('../images/esf/esf_list_icon_wz');
                 -webkit-background-size: rem(21) auto;
                 background-size: rem(21) auto;
-                background-repeat: no-repeat;
             }
             
             &.distance {
@@ -92,16 +90,19 @@ $textGrayColor: #888;
         
         .cont-block-4 {
             position: absolute;
+            width: rem(430);
             bottom: 0;
+            white-space: nowrap;
+            overflow-x: scroll;
             
             span {
-                color: $white;
+                color: $baseWhite;
                 height: rem(28);
                 line-height: rem(28);
                 padding: 0 rem(11);
                 margin-left: rem(5);
                 @include font-dpr(20);
-                background-color: $tagBackgroundColor;
+                background-color: $baseGray;
                 border-radius: rem(4);
                 
                 &:first-child {
@@ -175,7 +176,7 @@ $textGrayColor: #888;
             line-height: rem(30);
             padding: 0 rem(14) 0 rem(20);
             @include font-dpr(20);
-            color: $white;
+            color: $baseWhite;
             background-color: $baseGreen;
             -webkit-border-radius: rem(20) 0 0 rem(20);
             -moz-border-radius: rem(20) 0 0 rem(20);

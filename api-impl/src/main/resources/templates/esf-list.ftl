@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/esf-list.css">
+    <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>二手房列表</title>
 </head>
 <body>
@@ -203,26 +203,6 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <script src="${staticurl}/js/zepto.min.js"></script>
-<script>
-    $('#category-nav').on('click','li',function () {
-        $(this).toggleClass('current')
-        $(this).siblings().removeClass('current')
-        var index = $(this).index()
-        $('.category-cont').children().eq(index).toggleClass('none')
-        $('.category-cont').children().eq(index).siblings().addClass('none')
-        if ($(this).hasClass('current')) {
-            $('.layout-mack').removeClass('none')
-            $('body').addClass('hidden')
-        } else {
-            $('.layout-mack').addClass('none')
-            $('body').removeClass('hidden')
-        }
-    })
-    console.log($(window).height);
-
-    /*$('.layout-mack').height(
-
-    )*/
-</script>
+<script src="${staticurl}/js/categorys.js"></script>
 </body>
 </html>
