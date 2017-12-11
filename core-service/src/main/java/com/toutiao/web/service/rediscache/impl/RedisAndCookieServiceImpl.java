@@ -1,10 +1,10 @@
-package com.toutiao.web.service.repository.admin.impl;
+package com.toutiao.web.service.rediscache.impl;
 
 import com.toutiao.web.common.util.Com35Aes;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.RedisNameUtil;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.service.RedisAndCookieService;
+import com.toutiao.web.service.rediscache.RedisAndCookieService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

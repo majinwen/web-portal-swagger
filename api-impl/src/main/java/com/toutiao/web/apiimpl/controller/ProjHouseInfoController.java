@@ -4,14 +4,14 @@ package com.toutiao.web.apiimpl.controller;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
-import com.toutiao.web.service.repository.admin.ProjHouseInfoService;
+import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 二手房管理
  */
-@RestController
+@Controller
 @RequestMapping("/")
 public class ProjHouseInfoController {
 
@@ -62,7 +62,7 @@ public class ProjHouseInfoController {
         Map<String,Object> builds =  projHouseInfoService.queryProjHouseInfo(ProjHouseInfoQuery);
         model.addAttribute("builds",builds.get("data"));
         model.addAttribute("total",builds.get("total"));
-        return "projHouse-list";
+        return "esf/esf-list";
 
     }
 }

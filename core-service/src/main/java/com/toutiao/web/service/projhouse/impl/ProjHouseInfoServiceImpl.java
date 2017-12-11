@@ -1,11 +1,11 @@
-package com.toutiao.web.service.repository.admin.impl;
+package com.toutiao.web.service.projhouse.impl;
 
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
-import com.toutiao.web.service.repository.admin.ProjHouseInfoService;
+import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,9 +30,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     @Autowired
     private ESClientTools esClientTools;
-    private String projhouseIndex="projhouseinfo";//索引名称
-    private String projhouseType="projhouse";//索引类
-
+    private String projhouseIndex = "a";//索引名称
+    private String projhouseType = "b";//索引类
 
     /**
      * 按照标签范围查找
@@ -107,148 +106,139 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         SearchResponse searchresponse = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         //参数都为null,则查询所有数据
-        if (StringTool.isEmpty(projHouseInfoRequest)) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.matchAllQuery());
-            srb.setQuery(queryBuilder);
-        }
+        /*if (StringUtils.isEmpty(projHouseInfoRequest)) {*/
+            booleanQueryBuilder.must(QueryBuilders.matchAllQuery());
+        /*}*/
         // 二手房ID
         if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
         }
         //商圈名称
         if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaName", projHouseInfoRequest.getHouseBusinessName()));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaName", projHouseInfoRequest.getHouseBusinessName()));
         }
         //商圈id
         if (projHouseInfoRequest.getHouseBusinessId() != null && projHouseInfoRequest.getHouseBusinessId() != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaId", projHouseInfoRequest.getHouseBusinessId()));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaId", projHouseInfoRequest.getHouseBusinessId()));
+
         }
         //区域
         if (projHouseInfoRequest.getAreaId() != null && projHouseInfoRequest.getAreaId() != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", projHouseInfoRequest.getAreaId()));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", projHouseInfoRequest.getAreaId()));
+
         }
         //地铁线id
         if (projHouseInfoRequest.getSubwayLineId() != null && projHouseInfoRequest.getSubwayLineId().length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("metroSubwayLineId", projHouseInfoRequest.getSubwayLineId()));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("metroSubwayLineId", projHouseInfoRequest.getSubwayLineId()));
+
         }
         //地铁站id
         if (projHouseInfoRequest.getSubwayStationId() != null && projHouseInfoRequest.getSubwayStationId().length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", projHouseInfoRequest.getSubwayStationId()));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", projHouseInfoRequest.getSubwayStationId()));
+
         }
         //范围====================
         //总价  单选
         if (projHouseInfoRequest.getBeginPrice() != null && projHouseInfoRequest.getEndPrice() != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder
+            booleanQueryBuilder
                     .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(projHouseInfoRequest.getBeginPrice()).lte(projHouseInfoRequest.getEndPrice())));
-            srb.setQuery(queryBuilder);
+
         }
         //范围=========================
         //多选=========================
-        //户型0-200,0-300
-        //面积 没有确定?????
+        //面积
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
-            BoolQueryBuilder queryBuilder =null;
-            for (int i=0;i<layoutId.length;i++){
-                String[] areRang = layoutId[i].split("-");
-                queryBuilder = booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseArea").gte(areRang[0]).lte(areRang[1])));
-                srb.setQuery(queryBuilder);
+            for (int i = 0; i < layoutId.length; i = i + 2) {
+                if (i + 1 > layoutId.length) {
+                    break;
+                }
+                boolQueryBuilder.should(QueryBuilders.rangeQuery("houseArea").gt(layoutId[i]).lte(layoutId[i + 1]));
+                booleanQueryBuilder.must(boolQueryBuilder);
+
             }
         }
         //楼龄
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
-            BoolQueryBuilder queryBuilder =null;
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
-            if (projHouseInfoRequest.getHouseAreaId()=="5") {
-                queryBuilder = booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseYear").gte(projHouseInfoRequest.getHouseAreaId())));
+            for (int i = 0; i < layoutId.length; i = i + 2) {
+                if (i + 1 > layoutId.length) {
+                    break;
+                }
+                boolQueryBuilder.should(QueryBuilders.rangeQuery("houseYear").gt(layoutId[i]).lte(layoutId[i + 1]));
+                booleanQueryBuilder.must(boolQueryBuilder);
+
             }
-            if (projHouseInfoRequest.getHouseAreaId()=="10") {
-                queryBuilder = booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseYear").gte(projHouseInfoRequest.getHouseAreaId())));
-            }
-            if (projHouseInfoRequest.getHouseAreaId()=="15") {
-                queryBuilder = booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseYear").gte(projHouseInfoRequest.getHouseAreaId())));
-            }
-            if (projHouseInfoRequest.getHouseAreaId()=="20") {
-                queryBuilder = booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseYear").gte(projHouseInfoRequest.getHouseAreaId())));
-            }
-            if (projHouseInfoRequest.getHouseAreaId()=="21") {
-                queryBuilder = booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseYear").lte(projHouseInfoRequest.getHouseAreaId())));
-            }
-            srb.setQuery(queryBuilder);
         }
         //户型
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseTypeId())) {
             String[] layoutId = projHouseInfoRequest.getHouseTypeId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseTypeId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseTypeId", layoutId));
+
 
         }
         //物业类型
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
             String[] layoutId = projHouseInfoRequest.getHouseManagementTypeId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseManagementTypeId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseManagementTypeId", layoutId));
+
 
         }
         //电梯
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLiftId())) {
             String[] layoutId = projHouseInfoRequest.getHouseLiftId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLiftId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLiftId", layoutId));
+
 
         }
         //建筑类型
         if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingTypeId())) {
             String[] layoutId = projHouseInfoRequest.getBuildingTypeId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("buildingTypeId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("buildingTypeId", layoutId));
+
 
         }
         //朝向houseOrientationId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseOrientationId())) {
             String[] layoutId = projHouseInfoRequest.getHouseOrientationId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOrientationId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOrientationId", layoutId));
+
 
         }
         //标签(满二，满三，满五)houseLabelId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLabelId())) {
             String[] layoutId = projHouseInfoRequest.getHouseLabelId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLabelId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLabelId", layoutId));
+
 
         }
         //楼层houseFloorId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseFloorId())) {
             String[] layoutId = projHouseInfoRequest.getHouseFloorId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseFloorId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseFloorId", layoutId));
+
         }
         //用途housePurposeId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHousePurposeId())) {
             String[] layoutId = projHouseInfoRequest.getHousePurposeId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("housePurposeId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("housePurposeId", layoutId));
+
         }
 
         //供暖houseHeatingId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseHeatingId())) {
             String[] layoutId = projHouseInfoRequest.getHouseHeatingId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("housePurposeId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("housePurposeId", layoutId));
+
         }
 
         //权属houseOwnershipId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseOwnershipId())) {
             String[] layoutId = projHouseInfoRequest.getHouseOwnershipId().split(",");
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOwnershipId", layoutId));
-            srb.setQuery(queryBuilder);
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOwnershipId", layoutId));
+
         }
         /**
          * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
@@ -275,19 +265,13 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     .execute().actionGet();
         } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
             searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)/*.setFetchSource(
-                            new String[]{"building_name_id", "building_name", "average_price", "building_tags", "activity_desc", "city_id",
-                                    "district_id", "district_name", "area_id", "area_name", "building_imgs"},
-                            null)*/
+                    .setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
         } else {
             searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("houseRank", SortOrder.DESC)/*.setFetchSource(
-                            new String[]{"building_name_id", "building_name", "average_price", "building_tags", "activity_desc", "city_id",
-                                    "district_id", "district_name", "area_id", "area_name", "building_imgs"},
-                            null)*/
+                    .setQuery(booleanQueryBuilder).addSort("houseId", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();

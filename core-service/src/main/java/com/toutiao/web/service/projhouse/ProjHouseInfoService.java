@@ -1,4 +1,4 @@
-package com.toutiao.web.service.repository.admin;
+package com.toutiao.web.service.projhouse;
 
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
