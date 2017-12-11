@@ -15,6 +15,7 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -28,11 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
-
 @Service
-public class SysVillageServiceImpl implements SysVillageService {
-
+public class SysVillageServiceImpl implements SysVillageService{
     @Override
     public List GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
@@ -60,8 +58,8 @@ public class SysVillageServiceImpl implements SysVillageService {
             Map source = hit.getSource();
             Class<VillageEntity> entityClass = VillageEntity.class;
             VillageEntity instance = entityClass.newInstance();
-            BeanUtils.populate(instance, source);
             System.out.println(instance);
+            BeanUtils.populate(instance, source);
             houseList.add(instance);
 //            List<Double> location = (List<Double>) hit.getSource().get("location");
             // 获取距离值，并保留两位小数点
@@ -83,50 +81,45 @@ public class SysVillageServiceImpl implements SysVillageService {
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
 
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
-        //声明符合查询方法
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-
-        //接受参数都没null,则查询所有数据
         //小区ID
-        if(villageRequest.getId()!=null && villageRequest.getId()!=0){
-//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("id",villageRequest.getId()));
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("id", villageRequest.getId()));
-            srb.setQuery(queryBuilder);
+        if (villageRequest.getId()!=null){
+            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("id", villageRequest.getId());
+            srb.setQuery(termQueryBuilder);
         }
         //区域编号
-        if(villageRequest.getAreaId()!=null&& StringUtils.isNotBlank(villageRequest.getAreaId())){
-//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
-//            srb.setQuery(queryBuilder);
+        if(villageRequest.getAreaId()!=null){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
+            srb.setQuery(queryBuilder);
         }
         //区域地名编号
-        if(villageRequest.getAreaNameId()!=null&& StringUtils.isNotBlank(villageRequest.getAreaNameId())){
-//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
-//            srb.setQuery(queryBuilder);
+        if(StringUtils.isNotBlank(villageRequest.getAreaNameId())){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
+            srb.setQuery(queryBuilder);
         }
         //商圈编号
-        if(villageRequest.getTradingAreaId()!=null&& StringUtils.isNotBlank(villageRequest.getTradingAreaId())){
-//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("tradingAreaId", villageRequest.getTradingAreaId()));
-//            srb.setQuery(queryBuilder);
+        if(StringUtils.isNotBlank(villageRequest.getTradingAreaId())){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", villageRequest.getTradingAreaId()));
+            srb.setQuery(queryBuilder);
         }
         //地铁线路编号
         String[] subwayLineId = villageRequest.getSubwayLineId();
         if(subwayLineId!=null&&subwayLineId.length!=0){
-//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("subwayLineId", subwayLineId));
-//            srb.setQuery(queryBuilder);
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", subwayLineId));
+            srb.setQuery(queryBuilder);
         }
         //地铁站编号
         String[] metroStationId = villageRequest.getMetroStationId();
         if(metroStationId!=null&&metroStationId.length!=0){
-//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("metroStationId", metroStationId));
-//            srb.setQuery(queryBuilder);
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", metroStationId));
+            srb.setQuery(queryBuilder);
         }
-
         //排序
         //均价
-        srb.addSort("avgPrice", SortOrder.ASC);
         srb.addSort("Level",SortOrder.ASC);
+        srb.addSort("avgPrice", SortOrder.ASC);
         //分页
-            villageRequest.setSize(10);
+        villageRequest.setSize(10);
         if (villageRequest.getPage()==null){
             villageRequest.setPage(1);
         }
