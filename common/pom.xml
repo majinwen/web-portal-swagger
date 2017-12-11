@@ -154,6 +154,16 @@
         <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
         <version>1.0.0</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.github.bingoohuang/patchca -->
+    <dependency>
+        <groupId>com.github.bingoohuang</groupId>
+        <artifactId>patchca</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+    </dependency>
     <dependency>
         <groupId>org.elasticsearch</groupId>
         <artifactId>elasticsearch</artifactId>
@@ -163,22 +173,6 @@
         <artifactId>transport</artifactId>
         <version>6.0.0</version>
     </dependency>
-    <dependency>
-        <groupId>org.elasticsearch.client</groupId>
-        <artifactId>transport</artifactId>
-        <version>6.0.0</version>
-    </dependency>
-    <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-core</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.github.bingoohuang</groupId>
-        <artifactId>patchca</artifactId>
-        <version>0.0.1</version>
-    </dependency>
-
-
 </dependencies>
 
 </project>

@@ -39,7 +39,6 @@ public class ESClientTools {
     public synchronized void init() {
         if (!inited) {
             try {
-
                 Settings settings = Settings.builder().put("cluster.name", esClusterName).build();
                 TransportClient client = new PreBuiltTransportClient(settings);
                 String[] addresses = esServerIps.split(",");

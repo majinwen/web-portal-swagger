@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class CookieUtils {
-    //图片验证码名称
-    public static  String imageCodeName="imageCode";
+
+    /** 平台用户登录CookieName */
+    public final static String COOKIE_NAME_User_LOGIN = "user_phone";
     /**
      * 获取cookie中的数据
      * @param request
@@ -59,14 +60,17 @@ public class CookieUtils {
      * @param response
      * @param cookieName
      * @param cookieValue
-     * @param expiry
      */
     public static void setCookie(HttpServletRequest request,
                                 HttpServletResponse response, String cookieName,
-                                String cookieValue, int expiry) {
+                                String cookieValue) {
         Cookie newCookie = new Cookie(cookieName, cookieValue);
-        newCookie.setMaxAge(expiry);
+        newCookie.setMaxAge(RedisObjectType.USER_IMAGE_VALIDATECODE.getExpiredTime());
         newCookie.setPath("/");
         response.addCookie(newCookie);
     }
+
+
+
+
 }

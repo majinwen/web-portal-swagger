@@ -5,6 +5,7 @@ import com.github.bingoohuang.patchca.utils.encoder.EncoderHelper;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.PatchcaImageUtils;
+import com.toutiao.web.common.util.RedisObjectType;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,7 +50,7 @@ public class imageCodeController {
             e.printStackTrace();
         }
         //将验证码放置到cookie中
-        CookieUtils.setCookie(request,response,"imageCode",patchca,-1);
+        CookieUtils.setCookie(request,response, RedisObjectType.USER_IMAGE_VALIDATECODE.getPrefix(),patchca);
         return NashResult.build(patchca);
     }
 }

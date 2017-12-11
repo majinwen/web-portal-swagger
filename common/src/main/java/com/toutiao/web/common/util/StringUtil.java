@@ -237,7 +237,7 @@ public class StringUtil {
 			return false;
 		}
 		if(isInt(cellphone)){
-			return cellphone.matches("^1[3|4|5|8][0-9]\\d{8}$");
+			return cellphone.matches("^1[3|4|5|7|8][0-9]{9}$");
 		}
 		return false;
 	}

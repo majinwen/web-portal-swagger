@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.toutiao.web.dao.entity.admin.SysUserEntity;
 import com.toutiao.web.dao.mapper.admin.SysUserMapper;
 import com.toutiao.web.service.repository.admin.SysUserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class SysUserServiceImpl implements SysUserService{
     }
 
     @Override
-    public int selectByPhone(String phone) {
+    public SysUserEntity  selectByPhone(String phone) {
         return userMapper.selectByPhone(phone);
     }
 

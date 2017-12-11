@@ -1,7 +1,8 @@
+/*
 package com.toutiao.web.dao.mapper.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.dao.entity.admin.ProjIndfo;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -27,18 +28,18 @@ public class houseTest {
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
-        client.admin().indices().prepareCreate("es_01").execute().actionGet();  //创建一个空索引，如没有索引，创建mapping时会报错
+        client.admin().indices().prepareCreate("tes001").execute().actionGet();  //创建一个空索引，如没有索引，创建mapping时会报错
         XContentBuilder mapping = XContentFactory.jsonBuilder()
-                .startObject().startObject("house").startObject("properties")
+                .startObject().startObject("proj_house").startObject("properties")
                 .startObject("houseId").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("houseTitle").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("houseArea").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("houseCategory").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("plotId").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("houseBudget").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("tagsId").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("tagsName").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("houseTotalPrice").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("tagsId").field("type","string").field("index", "not_analyzed").endObject()
+                .startObject("tagsName").field("type","string").field("index", "not_analyzed").endObject()
+                .startObject("houseTotalPrice").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("housePrice").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("createTime").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("trafficInfor").field("type", "string").field("index", "not_analyzed").endObject()
@@ -50,13 +51,13 @@ public class houseTest {
                 .startObject("houseRank").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("areaId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("areaName").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("metroStationId").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("metroStation").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("metroSubwayLineId").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("metroSubwayLine").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("houseImage").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("metroStationId").field("type","string").field("index", "not_analyzed").endObject()
+                .startObject("metroStation").field("type","string").field("index", "not_analyzed").endObject()
+                .startObject("metroSubwayLineId").field("type","string").field("index", "not_analyzed").endObject()
+                .startObject("metroSubwayLine").field("type","string").field("index", "not_analyzed").endObject()
+                .startObject("houseImage").field("type","string").field("index", "not_analyzed").endObject()
                 .endObject().endObject().endObject();
-        PutMappingRequest mappingRequest = Requests.putMappingRequest("test01").type("test01").source(mapping);
+        PutMappingRequest mappingRequest = Requests.putMappingRequest("tes001").type("proj_house").source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
     }
 
@@ -64,7 +65,7 @@ public class houseTest {
     public static void main(String[] args) throws Exception {
         //创建mapping
        buildIndexMapping();
-      //save("ProjIndfo","tt");
+      //save("tes001","proj_house");
 
     }
 
@@ -76,7 +77,7 @@ public class houseTest {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
         Map resultMap = new HashMap();
         //创建对象
-        ProjIndfo house = new ProjIndfo();
+        ProjHouseInfo house = new ProjHouseInfo();
         house.setHouseId(1);
         house.setHouseTitle("aa");
         house.setHouseArea("1000");
@@ -87,7 +88,7 @@ public class houseTest {
         house.setTagsId(aId);
         String[] name = {"a", "b", "c"};
         house.setTagsName(name);
-        house.setHouseTotalPrice("920万");
+        house.setHouseTotalPrice(910);
         house.setHousePrice("52365元/㎡");
         house.setCreateTime("2017-09-01");
         house.setTrafficInfor("离什么地方最近");
@@ -102,6 +103,8 @@ public class houseTest {
         house.setAreaName("ssdd");
         String[] metroId = {"1", "2", "3", "4"};
         house.setMetroStationId(metroId);
+        String[] metroId1 = {"1", "2", "3", "4"};
+        house.setMetroStation(metroId1);
         String[] metroName = {"四惠", "海淀", "房山"};
         String[] lineId = {"1", "2", "3"};
         String[] lineName = {"a", "b", "c"};
@@ -126,3 +129,4 @@ public class houseTest {
         return null;
     }
 }
+*/
