@@ -35,7 +35,7 @@ public class SysVillageConterller {
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("003");
 //        villageRequest1.setAreaNameId("002");
-          String[] mto = {"001","002"};
+          String[] mto = {"001","005"};
           villageRequest1.setMetroStationId(mto);
 //          String[] lin = {"005","003"};
 //          villageRequest1.setSubwayLineId(lin);
@@ -46,7 +46,7 @@ public class SysVillageConterller {
 //        villageRequest1.setSearchAge(ag);
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("001");
-        List villageList = null;
+        List villageList;
         try {
             villageList = sysVillageService.findVillageByConditions(index, type, villageRequest1);
         } catch (Exception e) {
