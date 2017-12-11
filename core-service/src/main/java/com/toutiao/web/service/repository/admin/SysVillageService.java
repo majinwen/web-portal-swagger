@@ -9,5 +9,5 @@ import java.util.List;
 public interface SysVillageService {
     List GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance) throws Exception;
 
-    List findVillageByConditions(String index, String type, VillageRequest villageRequest);
+    List findVillageByConditions(String index, String type, VillageRequest villageRequest) throws Exception;
 }
