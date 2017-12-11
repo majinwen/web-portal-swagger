@@ -13,4 +13,11 @@ public interface NewHouseService {
      * @return
      */
     Map<String,Object> getNewHouse(NewHouseQuery newHouseQuery);
+
+    /**
+     * 获取楼盘详情信息
+     * @param buildingId
+     * @return
+     */
+    Map<String,Object> getNewHouseDetails(Integer buildingId);
 }
