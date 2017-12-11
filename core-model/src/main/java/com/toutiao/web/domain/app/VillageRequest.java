@@ -57,6 +57,8 @@ public class VillageRequest {
     private Integer Level;  //楼盘级别
     private Integer page;  //起始条数
     private Integer size;  //每页显示条数
+    private String villageCharacteristics;  //楼盘特色
+    private String[] SearchVillageCharacteristics;  //楼盘特色查询
 //    private Double pm;  //pm2.5
 //    private Double noiseIndex;  //噪声指数
 //    private String[] mainPushHouse;  //主推房源
