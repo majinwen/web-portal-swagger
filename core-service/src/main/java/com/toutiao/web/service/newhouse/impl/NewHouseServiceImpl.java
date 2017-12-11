@@ -184,7 +184,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
-            Map<String,Object> buildings = hit.getSourceAsMap();
+            Map<String,Object> buildings = hit.getSource();
             buildinglist.add(buildings);
         }
         Map<String,Object> result = new HashMap<>();
