@@ -1,5 +1,7 @@
 package com.toutiao.web.service.repository.admin.impl;
 
+
+
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.app.VillageRequest;
 import com.toutiao.web.domain.app.VillageResponse;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SysVillageServiceImpl implements SysVillageService{
+public class SysVillageServiceImpl implements SysVillageService {
     @Override
     public List GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
@@ -114,10 +116,75 @@ public class SysVillageServiceImpl implements SysVillageService{
             BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", metroStationId));
             srb.setQuery(queryBuilder);
         }
+        //标签
+        String[] labelId = villageRequest.getLabelId();
+        if(labelId!=null&&labelId.length!=0){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("labelId", labelId));
+            srb.setQuery(queryBuilder);
+        }
+
+        //均价
+        Integer[] searchAvgPrice = villageRequest.getSearchAvgPrice();
+        if(searchAvgPrice!=null&&searchAvgPrice.length!=0){
+           for (int i=0; i<searchAvgPrice.length; i=i+2){
+               if(i+1>searchAvgPrice.length){
+                   break;
+               }
+               BoolQueryBuilder avgPrice = booleanQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(searchAvgPrice[i]).lte(searchAvgPrice[i + 1]));
+               srb.setQuery(avgPrice);
+           }
+        }
+        //面积
+        String[] areaSizeRange = villageRequest.getAreaSizeRange();
+        if(areaSizeRange!=null&&areaSizeRange.length!=0){
+            for (int i=0; i<areaSizeRange.length; i=i+2){
+                if(i+1>areaSizeRange.length){
+                    break;
+                }
+                BoolQueryBuilder areaSize = booleanQueryBuilder.must(QueryBuilders.rangeQuery("areaSize").gt(areaSizeRange[i]).lte(areaSizeRange[i + 1]));
+                srb.setQuery(areaSize);
+            }
+        }
+        //楼龄
+        Integer[] searchAge = villageRequest.getSearchAge();
+        if(searchAge!=null&&searchAge.length!=0){
+            for (int i=0; i<searchAge.length; i=i+2){
+                if(i+1>searchAge.length){
+                    break;
+                }
+                BoolQueryBuilder age = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age").gt(searchAge[i]).lte(searchAge[i + 1]));
+                srb.setQuery(age);
+            }
+        }
+        //物业类型
+        String[] searchPropertyType = villageRequest.getSearchPropertyType();
+        if(searchPropertyType!=null&&searchPropertyType.length!=0){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyType", searchPropertyType));
+            srb.setQuery(queryBuilder);
+        }
+        //电梯
+        String[] searchElevator = villageRequest.getSearchElevator();
+        if(searchElevator!=null&&searchElevator.length!=0){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("elevator", searchElevator));
+            srb.setQuery(queryBuilder);
+        }
+        //建筑类型
+        String[] itecturalTypeId = villageRequest.getItecturalTypeId();
+        if(itecturalTypeId!=null&&itecturalTypeId.length!=0){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("itecturalTypeId", itecturalTypeId));
+            srb.setQuery(queryBuilder);
+        }
+        //楼盘特色
+        String[] searchVillageCharacteristics = villageRequest.getSearchVillageCharacteristics();
+        if(searchVillageCharacteristics!=null&&searchVillageCharacteristics.length!=0){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", searchVillageCharacteristics));
+            srb.setQuery(queryBuilder);
+        }
+
         //排序
         //均价
         srb.addSort("Level",SortOrder.ASC);
-        srb.addSort("avgPrice", SortOrder.ASC);
+//        srb.addSort("avgPrice", SortOrder.ASC);
         //分页
         villageRequest.setSize(10);
         if (villageRequest.getPage()==null){

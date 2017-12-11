@@ -42,8 +42,8 @@ public class VillageEntity {
     private String propertyFee;  //物业费
     private String propertyType;  //物业类型
     private String yopr;  //产权年限
-    private String[] architecturalTypeId;  //建筑类型编号
-    private String[] architecturalType;  //建筑类型
+    private String[] searchItecturalTypeId;  //建筑类型编号
+    private String[] searchItecturalType;  //建筑类型
     private String buildingStructure;  //建筑结构
     private String too;  //业态
     private String residentialType;  //住宅类型
