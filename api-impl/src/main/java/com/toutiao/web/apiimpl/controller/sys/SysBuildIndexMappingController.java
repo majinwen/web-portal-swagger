@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class SysBuildIndexMappingController {
+
     @Autowired
     private SysBuildIndexMappingService sysBuildIndexMappingService;
 
     @RequestMapping("/BuildIndexMapping")
-    public void BuildIndexMapping(){
+    public void BuildIndexMapping(String index,String type){
         try {
-            sysBuildIndexMappingService.buildIndexMapping();
+            sysBuildIndexMappingService.buildIndexMapping(index,type);
         } catch (Exception e) {
             e.printStackTrace();
         }
