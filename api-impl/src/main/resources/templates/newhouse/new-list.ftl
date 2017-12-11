@@ -96,8 +96,43 @@
     </div>
 </section>
 <section>
-    <ul>
-        <li><a class="list-item new" href="">
+    <ul>　
+    <#if builds?exists>
+        <#list builds as map>
+            <li><a class="list-item new" href="">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="${map['building_name']}">
+                    </div>
+                    <div class="list-item-cont">
+                        <h3 class="cont-block-1">${map['building_name']} <em>别墅</em></h3>
+                        <p class="cont-block-2">${map['average_price']}元/㎡</p>
+                        <p class="cont-block-3">${map['district_name']}/100㎡—588㎡</p>
+                        <div class="cont-block-4">
+
+                            <#assign item =  map['building_tags']>
+                                <#list item as itemValue>
+
+                                    <span>   ${itemValue}</span>
+                                </#list>
+                           <#-- <span>复式</span>
+                            <span>五证齐全</span>
+                            <span>花园洋房</span>-->
+                        </div>
+                        <div class="cont-block-sale">
+                            <em>在售</em>
+                        </div>
+                    </div>
+                </div>
+                <div class="new-active">
+                    <i class="icon"></i><em>活动：</em>
+                    <span>${map['activity_desc']}</span>
+                </div>
+            </a></li>
+        </#list>
+    </#if>
+
+     <#--   <li><a class="list-item new" href="">
             <div class="clear">
                 <div class="list-item-img-box">
                     <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
@@ -192,31 +227,7 @@
                 <i class="icon"></i><em>活动：</em>
                 <span>梦马温泉项目位于门头沟双屿岛梦马温泉项目位于门</span>
             </div>
-        </a></li>
-        <li><a class="list-item new" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟 <em>别墅</em></h3>
-                    <p class="cont-block-2">68000元/㎡</p>
-                    <p class="cont-block-3">朝阳/100㎡—588㎡</p>
-                    <div class="cont-block-4">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛梦马温泉项目位于门</span>
-            </div>
-        </a></li>
+        </a></li>-->
     </ul>
 </section>
 

@@ -3,14 +3,23 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/mbg/mbg.iml" filepath="$PROJECT_DIR$/mbg/mbg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mbg/mbg.iml" filepath="$PROJECT_DIR$/mbg/mbg.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/web-portal.iml" filepath="$PROJECT_DIR$/.idea/web-portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/web.api.iml" filepath="$PROJECT_DIR$/api/web.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/web.api.iml" filepath="$PROJECT_DIR$/api/web.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api-impl/web.api-impl.iml" filepath="$PROJECT_DIR$/api-impl/web.api-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-impl/web.api-impl.iml" filepath="$PROJECT_DIR$/api-impl/web.api-impl.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/web.common.iml" filepath="$PROJECT_DIR$/common/web.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/web.common.iml" filepath="$PROJECT_DIR$/common/web.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-model/web.core-model.iml" filepath="$PROJECT_DIR$/core-model/web.core-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-model/web.core-model.iml" filepath="$PROJECT_DIR$/core-model/web.core-model.iml" />
       <module fileurl="file://$PROJECT_DIR$/core-service/web.core-service.iml" filepath="$PROJECT_DIR$/core-service/web.core-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core-service/web.core-service.iml" filepath="$PROJECT_DIR$/core-service/web.core-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dao/web.dao.iml" filepath="$PROJECT_DIR$/dao/web.dao.iml" />
       <module fileurl="file://$PROJECT_DIR$/dao/web.dao.iml" filepath="$PROJECT_DIR$/dao/web.dao.iml" />
       <module fileurl="file://$PROJECT_DIR$/deploy/web.deploy.iml" filepath="$PROJECT_DIR$/deploy/web.deploy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deploy/web.deploy.iml" filepath="$PROJECT_DIR$/deploy/web.deploy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deploy-config/web.deploy-config.iml" filepath="$PROJECT_DIR$/deploy-config/web.deploy-config.iml" />
       <module fileurl="file://$PROJECT_DIR$/deploy-config/web.deploy-config.iml" filepath="$PROJECT_DIR$/deploy-config/web.deploy-config.iml" />
     </modules>
   </component>

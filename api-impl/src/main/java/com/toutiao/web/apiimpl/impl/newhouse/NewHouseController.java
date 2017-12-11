@@ -28,7 +28,7 @@ public class NewHouseController {
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
         model.addAttribute("builds",builds.get("data"));
         model.addAttribute("total",builds.get("total"));
-        return "new-list";
+        return "newhouse/new-list";
 
     }
 
