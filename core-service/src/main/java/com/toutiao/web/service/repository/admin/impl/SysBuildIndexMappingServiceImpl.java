@@ -10,30 +10,32 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
-
+@Service
 public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingService {
 
     @Override
-    public void buildIndexMapping() throws Exception {
+    public void buildIndexMapping(String index,String type) throws Exception {
 
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         //创建一个空索引，如没有索引，创建mapping时会报错
-        client.admin().indices().prepareCreate("residential_area").execute().actionGet();
+        client.admin().indices().prepareCreate(index).execute().actionGet();
         //创建mapping
         XContentBuilder mapping = XContentFactory.jsonBuilder()
-                .startObject().startObject("proj_house").startObject("properties")
+                .startObject().startObject(type).startObject("properties")
                 .startObject("id").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("rc").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("alias").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("photo").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("alias").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("areaId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("area").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("areaNameId").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("areaName").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("tradingAreaId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("tradingArea").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("address").field("type", "string").field("index", "not_analyzed").endObject()
@@ -46,12 +48,12 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .startObject("labelId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("label").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("saleHouse").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("avgPrice").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("abbreviateAge").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("age").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("avgPrice").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("abbreviatedAge").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("age").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("areaSize").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("sumBuilding").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("sumHouseHold").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("sumHousehold").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("avgGreeningRate").field("type", "double").field("index", "not_analyzed").endObject()
                 .startObject("avgElevator").field("type", "double").field("index", "not_analyzed").endObject()
                 .startObject("elevator").field("type", "string").field("index", "not_analyzed").endObject()
@@ -61,17 +63,19 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .startObject("characteristic").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("developers").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("property").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("propertyee").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("propertyFee").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("propertyType").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("yopr").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("architecturalTypeId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("architecturalType").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("buildingstructure").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("buildingStructure").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("too").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("residentialType").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("heatingMode").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("sdr").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("Level").field("type", "integer").field("index", "not_analyzed").endObject()
                 .endObject().endObject().endObject();
-        PutMappingRequest mappingRequest = Requests.putMappingRequest("residential_area").type("proj_house").source(mapping);
+        PutMappingRequest mappingRequest = Requests.putMappingRequest(index).type(type).source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
     }
 }
