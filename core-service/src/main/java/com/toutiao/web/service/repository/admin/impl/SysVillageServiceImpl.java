@@ -1,18 +1,20 @@
 package com.toutiao.web.service.repository.admin.impl;
 
 import com.toutiao.web.dao.entity.admin.VillageEntity;
+import com.toutiao.web.domain.app.VillageRequest;
+import com.toutiao.web.domain.app.VillageResponse;
 import com.toutiao.web.service.repository.admin.SysVillageService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -21,13 +23,13 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+
 @Service
 public class SysVillageServiceImpl implements SysVillageService {
 
@@ -39,13 +41,13 @@ public class SysVillageServiceImpl implements SysVillageService {
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
-        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS);
+        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(Double.parseDouble(distance), DistanceUnit.METERS);
         srb.setPostFilter(location1);
         // 获取距离多少公里 这个才是获取点与点之间的距离的
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location",lat,lon);
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
-        sort.point(lat,lon);
+        sort.point(lat, lon);
         srb.addSort(sort);
 
         SearchResponse searchResponse = srb.execute().actionGet();
@@ -55,46 +57,94 @@ public class SysVillageServiceImpl implements SysVillageService {
         System.out.println("附近的小区(" + hits.getTotalHits() + "个)：");
         List houseList = new ArrayList();
         for (SearchHit hit : searchHists) {
-            String rc = (String) hit.getSource().get("rc");//小区名称
-            String abbreviatedage = (String) hit.getSource().get("abbreviatedage");//建成年代
-            String label = (String) hit.getSource().get("label");//标签
-            String avgprice = (String) hit.getSource().get("avgprice");//
-
-
-            houseList.add(rc);
-            List<Double> location = (List<Double>)hit.getSource().get("location");
+            Map source = hit.getSource();
+            Class<VillageEntity> entityClass = VillageEntity.class;
+            VillageEntity instance = entityClass.newInstance();
+            BeanUtils.populate(instance, source);
+            System.out.println(instance);
+            houseList.add(instance);
+//            List<Double> location = (List<Double>) hit.getSource().get("location");
             // 获取距离值，并保留两位小数点
-            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-            Map<String, Object> hitMap = hit.getSource();
-            // 在创建MAPPING的时候，属性名的不可为geoDistance。
-            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
-//            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
-
+//            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+//            Map<String, Object> hitMap = hit.getSource();
+//            // 在创建MAPPING的时候，属性名的不可为geoDistance。
+//            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
+//            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
         }
         return houseList;
     }
 
     @Override
-    public VillageEntity findVillageById(String index, String type,Integer id) throws UnknownHostException {
+    public List findVillageByConditions(String index, String type, VillageRequest villageRequest) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
-        TermQueryBuilder queryBuilder = QueryBuilders.termQuery("id", id);
-        SearchResponse response = client.prepareSearch(index)
-                .setTypes(type)
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(queryBuilder)
-                .execute()
-                .actionGet();
+        //声明符合查询方法
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+
+        //接受参数都没null,则查询所有数据
+        //小区ID
+        if(villageRequest.getId()!=null && villageRequest.getId()!=0){
+//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("id",villageRequest.getId()));
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("id", villageRequest.getId()));
+            srb.setQuery(queryBuilder);
+        }
+        //区域编号
+        if(villageRequest.getAreaId()!=null&& StringUtils.isNotBlank(villageRequest.getAreaId())){
+//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
+//            srb.setQuery(queryBuilder);
+        }
+        //区域地名编号
+        if(villageRequest.getAreaNameId()!=null&& StringUtils.isNotBlank(villageRequest.getAreaNameId())){
+//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
+//            srb.setQuery(queryBuilder);
+        }
+        //商圈编号
+        if(villageRequest.getTradingAreaId()!=null&& StringUtils.isNotBlank(villageRequest.getTradingAreaId())){
+//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("tradingAreaId", villageRequest.getTradingAreaId()));
+//            srb.setQuery(queryBuilder);
+        }
+        //地铁线路编号
+        String[] subwayLineId = villageRequest.getSubwayLineId();
+        if(subwayLineId!=null&&subwayLineId.length!=0){
+//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("subwayLineId", subwayLineId));
+//            srb.setQuery(queryBuilder);
+        }
+        //地铁站编号
+        String[] metroStationId = villageRequest.getMetroStationId();
+        if(metroStationId!=null&&metroStationId.length!=0){
+//            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(termsQuery("metroStationId", metroStationId));
+//            srb.setQuery(queryBuilder);
+        }
+
+        //排序
+        //均价
+        srb.addSort("avgPrice", SortOrder.ASC);
+        srb.addSort("Level",SortOrder.ASC);
+        //分页
+            villageRequest.setSize(10);
+        if (villageRequest.getPage()==null){
+            villageRequest.setPage(1);
+        }
+        int rows = (villageRequest.getPage() - 1)*villageRequest.getSize();
+        Integer size = villageRequest.getSize();
+        srb.setFrom(rows).setSize(size);
+        SearchResponse response = srb.execute().actionGet();
         SearchHits hits = response.getHits();
-        //获取查询总数
-        long total = hits.getTotalHits();
-        System.out.println(total);
-        //获取响应字符串
-        System.out.println(response.toString());
-        return null;
+        SearchHit[] searchHists = hits.getHits();
+        List houseList = new ArrayList();
+        for (SearchHit hit : searchHists) {
+            Map source = hit.getSource();
+            Class<VillageResponse> entityClass = VillageResponse.class;
+            VillageResponse instance = entityClass.newInstance();
+            BeanUtils.populate(instance, source);
+            System.out.println(instance);
+            houseList.add(instance);
+        }
+        return houseList;
     }
 }
