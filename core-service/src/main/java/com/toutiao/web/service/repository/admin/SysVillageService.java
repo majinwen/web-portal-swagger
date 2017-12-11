@@ -1,9 +1,7 @@
 package com.toutiao.web.service.repository.admin;
 
-import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.app.VillageRequest;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 public interface SysVillageService {
