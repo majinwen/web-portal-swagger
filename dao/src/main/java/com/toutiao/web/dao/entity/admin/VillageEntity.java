@@ -50,6 +50,7 @@ public class VillageEntity {
     private String heatingMode;  //供暖方式
     private String sdr;  //供需关系
     private Integer Level;  //楼盘级别
+    private String villageCharacteristics;  //楼盘特色
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源
