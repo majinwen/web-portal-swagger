@@ -1,0 +1,14 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../base/header";
+@import "../base/categorys";
+@import "../pages/office-list";
+
+.tip-box {
+    text-align: center;
+    color: #999;
+    height: rem(78);
+    line-height: rem(78);
+    @include font-dpr(24);
+    background-color: #f2f2f2;
+}
