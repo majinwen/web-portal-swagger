@@ -34,6 +34,7 @@ public class SaveToESServiceImpl implements SaveToESService {
         if(bulkResponse.hasFailures()){
             flag = false;
         }
+        client.close();
         return flag;
     }
 }
