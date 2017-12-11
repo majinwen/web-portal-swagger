@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/esf-list.css">
+    <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>小区列表</title>
 </head>
 <body>
@@ -18,84 +18,82 @@
 </header>
 <section class="category-box">
     <ul id="category-nav">
-        <li><span>位置</span></li>
-        <li><span>均价</span></li>
-        <li><span>楼龄</span></li>
-        <li><span>更多</span></li>
+        <li><span><em>位置</em><i></i></span></li>
+        <li><span><em>均价</em><i></i></span></li>
+        <li><span><em>楼龄</em><i></i></span></li>
+        <li><span><em>更多</em><i></i></span></li>
     </ul>
-    <section class="category-cont">
-        <div class="none">
-            <ul>
-                <li class="current">区域</li>
-                <li>地铁</li>
-                <li>附近</li>
-            </ul>
-            <ul class="content-right">
-                <li class="current">不限</li>
-                <li>朝阳</li>
-                <li>海淀</li>
-                <li>东城</li>
-                <li>西城</li>
-                <li>丰台</li>
-            </ul>
-        </div>
-        <div class="none">
-            <ul>
-                <li class="current">不限</li>
-                <li>5年内</li>
-                <li>10年内</li>
-                <li>15年内</li>
-                <li>20年内</li>
-                <li>20年以上</li>
-            </ul>
-        </div>
-        <div class="none">
-            <ul>
-                <li class="current">不限</li>
-                <li>一居</li>
-                <li>二居</li>
-                <li>三居</li>
-                <li>四居</li>
-                <li>五居及五居以上</li>
-            </ul>
-        </div>
-        <div class="none">
-            <ul class="more">
-                <li>
-                    <h4>朝向</h4>
-                    <div class="more-options">
-                        <span>朝东</span>
-                        <span>朝西</span>
-                        <span>朝南</span>
-                        <span>朝北</span>
-                        <span>南北通透</span>
-                    </div>
-                </li>
-                <li>
-                    <h4>面积</h4>
-                    <div class="more-options">
-                        <span>60以下</span>
-                        <span>60-90</span>
-                        <span>90-120</span>
-                        <span>120以上</span>
-                    </div>
-                </li>
-                <li>
-                    <h4>标签</h4>
-                    <div class="more-options">
-                        <span>满两年</span>
-                        <span>满五年</span>
-                        <span>近地铁</span>
-                    </div>
-                </li>
-            </ul>
-            <div class="button-group">
-                <button type="button">重置</button>
-                <button type="button">确定</button>
+    <div class="global-mark none">
+        <div class="category-cont">
+            <div class="none">
+                <ul class="category-parent">
+                    <li>区域</li>
+                    <li>地铁</li>
+                </ul>
+                <ul class="category-child"></ul>
+                <ul class="category-children"></ul>
+            </div>
+            <div class="none">
+                <ul class="category-parent">
+                    <li>不限</li>
+                    <li>200万以下</li>
+                    <li>200-250万</li>
+                    <li>200-250万</li>
+                    <li>250-300万</li>
+                    <li>350-400万</li>
+                </ul>
+            </div>
+            <div class="none">
+                <ul class="category-parent">
+                    <li>不限</li>
+                    <li>5年内</li>
+                    <li>10年内</li>
+                    <li>15年内</li>
+                    <li>20年内</li>
+                    <li>20年以上</li>
+                </ul>
+                <div class="button-group">
+                    <button type="button" class="reset reset-year">重置</button>
+                    <button type="button" class="confrim confrim-year">确定</button>
+                </div>
+            </div>
+            <div class="none">
+                <ul class="category-parent">
+                    <li>
+                        <h4>朝向</h4>
+                        <div class="more-options">
+                            <span>朝东</span>
+                            <span>朝西</span>
+                            <span>朝南</span>
+                            <span>朝北</span>
+                            <span>南北通透</span>
+                        </div>
+                    </li>
+                    <li>
+                        <h4>面积</h4>
+                        <div class="more-options">
+                            <span>60以下</span>
+                            <span>60-90</span>
+                            <span>90-120</span>
+                            <span>120以上</span>
+                        </div>
+                    </li>
+                    <li>
+                        <h4>标签</h4>
+                        <div class="more-options">
+                            <span>满两年</span>
+                            <span>满五年</span>
+                            <span>近地铁</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="button-group">
+                    <button type="button" class="reset reset-more">重置</button>
+                    <button type="button" class="confrim confrim-more">确定</button>
+                </div>
             </div>
         </div>
-    </section>
-    <div class="layout-mack none"></div>
+    </div>
 </section>
 <section>
     <ul>
@@ -109,8 +107,10 @@
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4">
-                        <span>满5</span>
+                        <span>复式</span>
                         <span>近地铁</span>
+                        <span>优质物业</span>
+                        <span>车位充足</span>
                     </div>
                     <div class="cont-block-price plot">
                         <em>498000元/㎡</em>
@@ -128,8 +128,9 @@
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4">
-                        <span>满5</span>
                         <span>近地铁</span>
+                        <span>优质物业</span>
+                        <span>车位充足</span>
                     </div>
                     <div class="cont-block-price plot">
                         <em>498000元/㎡</em>
@@ -147,8 +148,9 @@
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4">
-                        <span>满5</span>
                         <span>近地铁</span>
+                        <span>优质物业</span>
+                        <span>车位充足</span>
                     </div>
                     <div class="cont-block-price plot">
                         <em>498000元/㎡</em>
@@ -166,8 +168,9 @@
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4">
-                        <span>满5</span>
                         <span>近地铁</span>
+                        <span>优质物业</span>
+                        <span>车位充足</span>
                     </div>
                     <div class="cont-block-price plot">
                         <em>498000元/㎡</em>
@@ -185,8 +188,9 @@
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4">
-                        <span>满5</span>
                         <span>近地铁</span>
+                        <span>优质物业</span>
+                        <span>车位充足</span>
                     </div>
                     <div class="cont-block-price plot">
                         <em>498000元/㎡</em>
@@ -198,21 +202,6 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <script src="${staticurl}/js/zepto.min.js"></script>
-<script>
-    $('#category-nav').on('click','li',function () {
-        $(this).toggleClass('current')
-        $(this).siblings().removeClass('current')
-        var index = $(this).index()
-        $('.category-cont').children().eq(index).toggleClass('none')
-        $('.category-cont').children().eq(index).siblings().addClass('none')
-        if ($(this).hasClass('current')) {
-            $('.layout-mack').removeClass('none')
-            $('body').addClass('hidden')
-        } else {
-            $('.layout-mack').addClass('none')
-            $('body').removeClass('hidden')
-        }
-    })
-</script>
+<script src="${staticurl}/js/categorys.js"></script>
 </body>
 </html>
