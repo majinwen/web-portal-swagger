@@ -3,7 +3,6 @@ package com.toutiao.web.apiimpl.conf;
 import cn.org.rapid_framework.freemarker.directive.BlockDirective;
 import cn.org.rapid_framework.freemarker.directive.ExtendsDirective;
 import cn.org.rapid_framework.freemarker.directive.OverrideDirective;
-import com.toutiao.web.apiimpl.conf.freemarkerExt.Pjax;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ public class FreeMarkerConfig {
         configuration.setSharedVariable("block", new BlockDirective());
         configuration.setSharedVariable("override", new OverrideDirective());
         configuration.setSharedVariable("extends", new ExtendsDirective());
-        configuration.setSharedVariable("pjax",new Pjax());
         try {
             configuration.setSharedVariable("staticurl", staticUrl);
             configuration.setSharedVariable("staticversion", staticVersion);
