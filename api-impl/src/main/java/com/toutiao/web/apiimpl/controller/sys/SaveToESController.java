@@ -16,19 +16,14 @@ public class SaveToESController {
     @Autowired
     private SaveToESService saveToESService;
 
-    @Autowired
-    private SysVillageService sysVillageService;
-
     @RequestMapping("/saveToES")
     public void setSaveToESService(String index, String type, VillageEntity village, Model model){
+        Boolean flag = null;
         try {
-            saveToESService.save(index, type, village);
-            List villageEntity = sysVillageService.findVillageById(index, type, village.getId());
-            if(villageEntity.equals(null)){
-                model.addAttribute("message","插入失败");
-            }
+            flag = saveToESService.save(index, type, village);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        model.addAttribute("flag",flag);
     }
 }
