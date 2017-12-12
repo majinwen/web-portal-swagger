@@ -20,7 +20,14 @@ public interface NewHouseService {
      * @param buildingId
      * @return
      */
-    Map<String,Object>getNewHouseDetails(Integer buildingId);
+    Map<String,Object> getNewHouseDetails(Integer buildingId);
+
+    /**
+     * 获取楼盘参数详情
+     * @param buildingId
+     * @return
+     */
+    Map<String,Object> getNewHouseParameterDetails(Integer buildingId);
 
 
     /**
