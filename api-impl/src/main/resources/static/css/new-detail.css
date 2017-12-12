@@ -1173,74 +1173,79 @@ a.pswp__share--download:hover {
   .detail-contact-box.bottom {
     position: relative; }
 
-.describe-box {
-  padding: 0.5333333333rem 0.4rem; }
-  .describe-box .describe-header {
-    margin-bottom: 0.3733333333rem; }
-    .describe-box .describe-header .source-icon {
+.active-module-box {
+  padding: 0.4rem;
+  background-color: #fff;
+  box-sizing: border-box; }
+  .active-module-box .active-module-content {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+    height: 1.3333333333rem;
+    line-height: 0.8rem;
+    padding: 0.2666666667rem 0.4rem;
+    color: #fb3939;
+    background-image: url("../images/newhouse/active_module_bg.png");
+    background-repeat: no-repeat;
+    background-repeat: repeat-y;
+    -webkit-background-size: contain;
+    background-size: contain;
+    box-sizing: border-box;
+    justify-content: space-between; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      .active-module-box .active-module-content {
+        background-image: url("../images/newhouse/active_module_bg@2x.png"); } }
+    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+      .active-module-box .active-module-content {
+        background-image: url("../images/newhouse/active_module_bg@3x.png"); } }
+    [data-dpr="1"] .active-module-box .active-module-content .active-text {
+      font-size: 12px; }
+    [data-dpr="2"] .active-module-box .active-module-content .active-text {
+      font-size: 24px; }
+    [data-dpr="3"] .active-module-box .active-module-content .active-text {
+      font-size: 36px; }
+    .active-module-box .active-module-content .active-text .active-icon {
       display: inline-block;
-      width: 1.0666666667rem;
-      height: 1.0666666667rem;
-      vertical-align: top; }
-    .describe-box .describe-header p {
-      position: relative;
-      display: inline-block;
-      height: 1.0666666667rem;
-      margin-left: 0.2666666667rem;
-      white-space: nowrap; }
-      .describe-box .describe-header p em {
-        position: absolute;
-        display: block;
-        bottom: 0;
-        color: #999; }
-        [data-dpr="1"] .describe-box .describe-header p em {
-          font-size: 11px; }
-        [data-dpr="2"] .describe-box .describe-header p em {
-          font-size: 22px; }
-        [data-dpr="3"] .describe-box .describe-header p em {
-          font-size: 33px; }
-      .describe-box .describe-header p span {
-        display: block;
-        position: absolute;
-        left: -0.1333333333rem; }
-        [data-dpr="1"] .describe-box .describe-header p span {
-          font-size: 16px; }
-        [data-dpr="2"] .describe-box .describe-header p span {
-          font-size: 32px; }
-        [data-dpr="3"] .describe-box .describe-header p span {
-          font-size: 48px; }
-    .describe-box .describe-header .issuer-tel-icon {
-      display: block;
-      float: right;
-      width: 0.8rem;
-      height: 1.0666666667rem;
-      background-image: url("../images/global/red_icon_phone.png");
-      background-repeat: no-repeat;
-      -webkit-background-size: contain;
-      background-size: contain;
-      background-position: center; }
+      width: 0.3333333333rem;
+      height: 0.4rem;
+      margin-right: 0.2666666667rem;
+      vertical-align: middle;
+      background-image: url("../images/newhouse/xf_list_icon_hd.png");
+      background-repeat: no-repeat; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-        .describe-box .describe-header .issuer-tel-icon {
+        .active-module-box .active-module-content .active-text .active-icon {
+          background-image: url("../images/newhouse/xf_list_icon_hd@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .active-module-box .active-module-content .active-text .active-icon {
+          background-image: url("../images/newhouse/xf_list_icon_hd@3x.png"); } }
+    .active-module-box .active-module-content .consule-message p {
+      display: inline-block;
+      color: #999; }
+      [data-dpr="1"] .active-module-box .active-module-content .consule-message p {
+        font-size: 11px; }
+      [data-dpr="2"] .active-module-box .active-module-content .consule-message p {
+        font-size: 22px; }
+      [data-dpr="3"] .active-module-box .active-module-content .consule-message p {
+        font-size: 33px; }
+      .active-module-box .active-module-content .consule-message p span {
+        display: block;
+        margin-bottom: 0.1866666667rem;
+        line-height: 1; }
+        .active-module-box .active-module-content .consule-message p span:last-child {
+          margin-bottom: 0; }
+    .active-module-box .active-module-content .consule-message i {
+      display: inline-block;
+      width: 0.8rem;
+      height: 0.8rem;
+      margin-left: 0.2666666667rem;
+      vertical-align: text-bottom;
+      background-image: url("../images/global/red_icon_phone.png");
+      background-repeat: no-repeat; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .active-module-box .active-module-content .consule-message i {
           background-image: url("../images/global/red_icon_phone@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-        .describe-box .describe-header .issuer-tel-icon {
+        .active-module-box .active-module-content .consule-message i {
           background-image: url("../images/global/red_icon_phone@3x.png"); } }
-  .describe-box .describe-cont {
-    position: relative;
-    line-height: 0.5333333333rem;
-    text-align: justify; }
-    [data-dpr="1"] .describe-box .describe-cont {
-      font-size: 13px; }
-    [data-dpr="2"] .describe-box .describe-cont {
-      font-size: 26px; }
-    [data-dpr="3"] .describe-box .describe-cont {
-      font-size: 39px; }
-    .describe-box .describe-cont .describe-show-btn {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      color: #999;
-      margin-left: 0.2666666667rem;
-      white-space: nowrap; }
 
-/*# sourceMappingURL=esf-detail.css.map */
+/*# sourceMappingURL=new-detail.css.map */

@@ -35,13 +35,28 @@ public class PinyinServeContoller {
 
 
     @RequestMapping("/changepinyin11")
-
     public String getChangepinyin11(Model model){
+
+        model.addAttribute("user","asds");
+
+        return "/newhouse/new-detail";
+
+    }
+
+    @RequestMapping("/changepinyin22")
+    public String getChangepinyin22(Model model){
 
         model.addAttribute("user","asds");
 
         return "/esf/esf-detail";
 
     }
+    @RequestMapping("/changepinyin33")
+    public String getChangepinyin33(Model model){
 
+        model.addAttribute("user","asds");
+
+        return "/newhouse/new-parameter";
+
+    }
 }

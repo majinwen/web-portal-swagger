@@ -5,6 +5,10 @@ $baseGreen: #3bbc6c;
 $baseGray: #747788;
 $baseModuleFillColor: #f2f2f2;
 
+.high-light-red {
+    color: $baseRed !important;
+}
+
 @mixin font-dpr($font-size) {
     [data-dpr="1"] & {
         font-size: #{$font-size / 2}px ;

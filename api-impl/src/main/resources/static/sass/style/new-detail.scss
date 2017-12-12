@@ -1,0 +1,67 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../pages/detail-header-banner";
+@import "../pages/detail-primary";
+@import "../pages/tilelist-piece";
+@import "../base/detail-contact";
+
+.active-module-box {
+    padding: rem(30);
+    background-color: #fff;
+    @include box-sizing;
+
+    .active-module-content {
+        display: -webkit-flex;
+        display: flex;
+        width: 100%;
+        height: rem(100);
+        line-height: rem(60);
+        padding: rem(20) rem(30);
+        color: $baseRed;
+        @include bg-image('../images/newhouse/active_module_bg');
+        background-repeat: repeat-y;
+        -webkit-background-size: contain;
+        background-size: contain;
+        @include box-sizing;
+        justify-content: space-between;
+
+        .active-text {
+            @include font-dpr(24);
+
+            .active-icon {
+                display: inline-block;
+                width: rem(25);
+                height: rem(30);
+                margin-right: rem(20);
+                vertical-align: middle;
+                @include bg-image('../images/newhouse/xf_list_icon_hd');
+            }
+        }
+
+        .consule-message {
+            p {
+                display: inline-block;
+                color: #999;
+                @include font-dpr(22);
+
+                span {
+                    display: block;
+                    margin-bottom: rem(14);
+                    line-height: 1;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+            i {
+                display: inline-block;
+                width: rem(60);
+                height: rem(60);
+                margin-left: rem(20);
+                vertical-align: text-bottom;
+                @include bg-image('../images/global/red_icon_phone');
+            }
+        }
+    }
+}

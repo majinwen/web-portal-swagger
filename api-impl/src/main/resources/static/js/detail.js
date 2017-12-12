@@ -10,7 +10,7 @@ Zepto(function () {
 });
 
 function describeAllShow() {
-    if ($('#describeAllShow').length) {
+    if ($('.describe-cont').length) {
         var describeAllContent = $('.describe-cont p').text();
         $('.describe-cont p').text(describeAllContent.substr(0,59));
         $('.describe-show-btn').click(function () {
@@ -39,12 +39,14 @@ function detailContactState() {
 }
 
 function carouselSwiper() {
-    var bannerSwiper = new Swiper('.carousel-swiper', {
-        autoplay: 2000,//可选选项，自动滑动
-        loop: true,
-        pagination : '.swiper-pagination',
-        paginationType : 'fraction'
-    });
+    if ($('.swiper-container').length){
+        var bannerSwiper = new Swiper('.carousel-swiper', {
+            autoplay: 2000,//可选选项，自动滑动
+            loop: true,
+            pagination : '.swiper-pagination',
+            paginationType : 'fraction'
+        });
+    }
 }
 
 function initphoto(a,i) {

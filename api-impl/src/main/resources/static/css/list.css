@@ -72,6 +72,9 @@ hr {
   border-style: solid;
   border-width: 1px 0 0 0; }
 
+.high-light-red {
+  color: #fb3939 !important; }
+
 .module-bottom-fill {
   padding-bottom: 0.2133333333rem;
   background-color: #f2f2f2; }
