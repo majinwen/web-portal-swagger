@@ -1071,15 +1071,80 @@ a.pswp__share--download:hover {
       margin-left: 0.2666666667rem;
       white-space: nowrap; }
 
-.map-content {
+.detail-contact-box {
+  position: fixed;
+  bottom: 0;
   width: 100%;
-  padding: 0.5333333333rem 0; }
-  .map-content #map {
-    height: 100%;
+  z-index: 999; }
+  .detail-contact-box .detail-contact-content {
+    display: -webkit-flex;
+    display: flex;
     width: 100%;
-    overflow: hidden; }
-    .map-content #map img {
-      width: 100%;
-      vertical-align: middle; }
+    height: 1.3066666667rem;
+    padding: 0.2rem 0.4rem;
+    background-color: #060622;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center; }
+    .detail-contact-box .detail-contact-content a {
+      display: block;
+      color: #fff;
+      line-height: 0.5333333333rem; }
+      [data-dpr="1"] .detail-contact-box .detail-contact-content a {
+        font-size: 11px; }
+      [data-dpr="2"] .detail-contact-box .detail-contact-content a {
+        font-size: 22px; }
+      [data-dpr="3"] .detail-contact-box .detail-contact-content a {
+        font-size: 33px; }
+      .detail-contact-box .detail-contact-content a i {
+        display: inline-block;
+        width: 0.6rem;
+        height: 0.5333333333rem;
+        margin-right: 0.1333333333rem;
+        vertical-align: bottom; }
+      .detail-contact-box .detail-contact-content a.contact-share {
+        background-image: url("../images/global/contact_icon_share.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .detail-contact-box .detail-contact-content a.contact-share {
+            background-image: url("../images/global/contact_icon_share@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .detail-contact-box .detail-contact-content a.contact-share {
+            background-image: url("../images/global/contact_icon_share@3x.png"); } }
+      .detail-contact-box .detail-contact-content a.contact-collect {
+        background-image: url("../images/global/contact_icon_sc.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .detail-contact-box .detail-contact-content a.contact-collect {
+            background-image: url("../images/global/contact_icon_sc@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .detail-contact-box .detail-contact-content a.contact-collect {
+            background-image: url("../images/global/contact_icon_sc@3x.png"); } }
+        .detail-contact-box .detail-contact-content a.contact-collect.current {
+          background-image: url("../images/global/contact_icon_sc_red.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .detail-contact-box .detail-contact-content a.contact-collect.current {
+              background-image: url("../images/global/contact_icon_sc_red@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .detail-contact-box .detail-contact-content a.contact-collect.current {
+              background-image: url("../images/global/contact_icon_sc_red@3x.png"); } }
+      .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
+        width: 5.3333333333rem;
+        height: 0.9066666667rem;
+        line-height: 0.9066666667rem;
+        text-align: center;
+        background-color: #fb3939;
+        -webkit-border-radius: 0.1333333333rem;
+        -moz-border-radius: 0.1333333333rem;
+        border-radius: 0.1333333333rem; }
+        [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
+          font-size: 15px; }
+        [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
+          font-size: 30px; }
+        [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
+          font-size: 45px; }
+  .detail-contact-box.bottom {
+    position: relative; }
 
 /*# sourceMappingURL=esf-detail.css.map */
