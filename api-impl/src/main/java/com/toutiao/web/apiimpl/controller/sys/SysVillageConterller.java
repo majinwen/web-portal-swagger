@@ -32,7 +32,9 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(String index, String type, VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-        villageRequest1.setId(1);
+        Integer[] ap ={1,60000,60000,70000};
+        villageRequest1.setSearchAvgPrice(ap);
+//        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("003");
 //        villageRequest1.setAreaNameId("002");
 //          String[] mto = {"001","005"};

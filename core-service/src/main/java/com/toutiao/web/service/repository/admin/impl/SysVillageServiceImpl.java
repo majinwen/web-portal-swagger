@@ -130,7 +130,7 @@ public class SysVillageServiceImpl implements SysVillageService {
                if(i+1>searchAvgPrice.length){
                    break;
                }
-               BoolQueryBuilder avgPrice = booleanQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(searchAvgPrice[i]).lte(searchAvgPrice[i + 1]));
+               BoolQueryBuilder avgPrice = booleanQueryBuilder.should(QueryBuilders.rangeQuery("avgPrice").from(searchAvgPrice[i]).to(searchAvgPrice[i + 1]));
                srb.setQuery(avgPrice);
            }
         }
@@ -141,7 +141,7 @@ public class SysVillageServiceImpl implements SysVillageService {
                 if(i+1>areaSizeRange.length){
                     break;
                 }
-                BoolQueryBuilder areaSize = booleanQueryBuilder.must(QueryBuilders.rangeQuery("areaSize").gt(areaSizeRange[i]).lte(areaSizeRange[i + 1]));
+                BoolQueryBuilder areaSize = booleanQueryBuilder.should(QueryBuilders.rangeQuery("areaSize").gt(areaSizeRange[i]).lte(areaSizeRange[i + 1]));
                 srb.setQuery(areaSize);
             }
         }
@@ -152,7 +152,7 @@ public class SysVillageServiceImpl implements SysVillageService {
                 if(i+1>searchAge.length){
                     break;
                 }
-                BoolQueryBuilder age = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age").gt(searchAge[i]).lte(searchAge[i + 1]));
+                BoolQueryBuilder age = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(searchAge[i]).lte(searchAge[i + 1]));
                 srb.setQuery(age);
             }
         }
@@ -183,7 +183,7 @@ public class SysVillageServiceImpl implements SysVillageService {
 
         //排序
         //均价
-        srb.addSort("Level",SortOrder.DESC);
+        srb.addSort("level",SortOrder.DESC);
 //        srb.addSort("avgPrice", SortOrder.ASC);
         //分页
         villageRequest.setSize(10);
