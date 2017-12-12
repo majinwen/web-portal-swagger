@@ -12,20 +12,23 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
+            <#assign imglist = build['building_imgs']>
+         <#list imglist as item>
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="1">
+                <img src="${staticurl}/${item}" data-src="${staticurl}/${item}" alt="${build['building_name']}">
             </li>
-            <li onclick="initphoto(this,1)" class="swiper-slide">
+         </#list>
+         <#--   <li onclick="initphoto(this,1)" class="swiper-slide">
                 <img src="${staticurl}/images/esf/esxq_banner2.jpg" data-src="${staticurl}/images/esf/esxq_banner2.jpg" alt="2">
             </li>
             <li onclick="initphoto(this,2)" class="swiper-slide">
                 <img src="${staticurl}/images/esf/esxq_banner3.jpg" data-src="${staticurl}/images/esf/esxq_banner3.jpg" alt="3">
-            </li>
+            </li>-->
         </ul>
-        <div class="banner-title">
-            <div class="banner-house-number">房源编号：HJ8520</div>
+     <#--   <div class="banner-title">
+            <div class="banner-house-number">房源编号：${build['building_name']}</div>
             <div class="swiper-pagination pictrue-index"></div>
-        </div>
+        </div>-->
     </div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
@@ -63,32 +66,33 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>一渡龙湾<em class="sale-state">在售</em></h2>
-            <p>别名：一渡龙湾</p>
+            <h2>${build['building_name']}<em class="sale-state">${build['sale_status_name']}</em></h2>
+            <p>别名：${build['building_nickname']}</p>
             <div class="primary-header-tag">
-                <span>满二</span>
-                <span>满五</span>
-                <span>随时看房</span>
+            <#assign tags = build['building_tags']>
+            <#list tags as item>
+                <span>item</span>
+            </#list>
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red">34220元</em>/㎡</p>
+                <p>均价：<em class="high-light-red">${build['average_price']}</em>/㎡</p>
             </li>
             <li>
                 <p>
-                    地址：[丰台]王佐镇长青路南侧
+                    地址：[${build['district_name']}]${build['building_address']}
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：距离地铁国贸站[1号线] 1.0km<em class="primary-distance">0.6km</em>
+                    交通信息：${build['roundstation']} <#--1.0km<em class="primary-distance">0.6km</em>-->
                 </p>
             </li>
             <li>
-                <p>最新开盘：2017-09-09</p>
-                <p>交房时间：2019-12-10</p>
-                <p>售楼许可证：京房售证字（2017）149号</p>
+                <p>最新开盘：${build['opened_time']}</p>
+                <p>交房时间：${build['deliver_time']}</p>
+                <p>售楼许可证：${build['sell_licence']}</p>
             </li>
         </ul>
     </section>
@@ -96,7 +100,7 @@
 <div class="module-bottom-fill">
     <div class="active-module-box">
         <a href="tel:1234567" class="active-module-content">
-            <p class="active-text"><i class="active-icon"></i><span>最新活动：立减五万</span></p>
+            <p class="active-text"><i class="active-icon"></i><span>最新活动：${build['activity_desc']}</span></p>
             <div class="consule-message">
                 <p>
                     <span>更多优惠信息</span>
@@ -114,11 +118,11 @@
             <a href="#" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
-            <dt>开发商：北京科技园置地有限公司</dt>
-            <dd class="odd-item">物业类型：<span>别墅</span></dd>
-            <dd class="even-item">建筑类型：<em>板楼</em></dd>
-            <dd class="odd-item">产权年限：<em>70年</em></dd>
-            <dd class="even-item">车位配比：<em>1:1</em></dd>
+            <dt>开发商：${build['developers']}</dt>
+            <dd class="odd-item">物业类型：<span>${build['property_type']}</span></dd>
+            <dd class="even-item">建筑类型：<em>${build['building_type']}</em></dd>
+            <dd class="odd-item">产权年限：<em>${build['building_life']}年</em></dd>
+            <dd class="even-item">车位配比：<em>${build['park_radio']}</em></dd>
         </dl>
     </section>
 </div>
@@ -146,7 +150,7 @@
                     </div>
                 </a>
             </li>
-            <li>
+       <#--     <li>
                 <a href="#">
                     <div class="picture-box">
                         <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
@@ -213,7 +217,7 @@
                         </div>
                     </div>
                 </a>
-            </li>
+            </li>-->
         </ul>
     </section>
 </div>

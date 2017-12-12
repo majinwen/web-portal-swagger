@@ -138,7 +138,7 @@
     <ul>　
     <#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="">
+            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item = map['building_imgs']>

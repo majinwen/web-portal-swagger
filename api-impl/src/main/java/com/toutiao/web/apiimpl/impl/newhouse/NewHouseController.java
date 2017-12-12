@@ -2,7 +2,6 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.toutiao.web.domain.query.NewHouseQuery;
@@ -47,13 +46,18 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseDetails")
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
-        JSONArray build=JSON.parseArray((String) details.get("build"));
-        JSONArray layout=JSON.parseArray((String) details.get("layout"));
-        JSONArray nearby=JSON.parseArray((String) details.get("nearbybuild"));
+
+        String detailBuild = (String) details.get("build");
+       /* String listLayout = (String) details.get("layout");
+        String nearbybuild = (String) details.get("nearbybuild");*/
+        JSONObject build=JSON.parseObject(detailBuild);
+       /* JSONObject layout=JSON.parseObject(listLayout);
+        JSONObject nearbuild=JSON.parseObject(nearbybuild);*/
+
         model.addAttribute("build",build);
-        model.addAttribute("layout",layout);
-        model.addAttribute("nearby",nearby);
-        return "";
+        model.addAttribute("layout", details.get("layout"));
+        model.addAttribute("nearbybuild",details.get("nearbybuild"));
+        return "newhouse/new-detail";
 
     }
 
