@@ -19,5 +19,13 @@ public interface NewHouseService {
      * @param buildingId
      * @return
      */
-    Map<String,Object> getNewHouseDetails(Integer buildingId);
+    Map<String,Object>getNewHouseDetails(Integer buildingId);
+
+    /**
+     * 获取附近楼盘
+     * @return
+     */
+     Map<String,Object>getNearHouse(int buildingNameId,String index, String type, double lat, double lon, String distance) throws Exception;
+
+
 }

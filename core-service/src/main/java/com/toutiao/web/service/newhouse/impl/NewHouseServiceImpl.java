@@ -2,40 +2,54 @@ package com.toutiao.web.service.newhouse.impl;
 
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
+import com.toutiao.web.service.repository.admin.SysVillageService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.join.query.HasChildQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.min.MinAggregationBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.apache.xmlbeans.impl.store.Public2.test;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
 @Transactional
 public class NewHouseServiceImpl implements NewHouseService{
+
+    @Autowired
+    private SysVillageService sysVillageService;
+
 
     @Autowired
     private ESClientTools esClientTools;
@@ -211,10 +225,10 @@ public class NewHouseServiceImpl implements NewHouseService{
     }
 
     @Override
-    public Map<String, Object> getNewHouseDetails(Integer buildingId) {
+    public Map<String, Object>getNewHouseDetails(Integer buildingId) {
 
         //建立连接
-
+         Map houselist=null;
         TransportClient client = esClientTools.init();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", buildingId));
@@ -228,7 +242,64 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchHits hits = searchresponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         System.out.println(searchHists);
-        return null;
+
+        /*try {
+            houselist.put("nearHouse",getNearHouse(121,"beijing1","building1",11.12,21.23,"30000000"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        return houselist;
+    }
+
+    @Override
+    public Map<String, Object> getNearHouse(int buildingNameId,String index, String type, double lat, double lon, String distance) throws Exception {
+            Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
+                    .build();
+            TransportClient client = new PreBuiltTransportClient(settings)
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        //从该坐标查询距离为distance
+        BoolQueryBuilder boolQueryBuilder =boolQuery();
+      //  System.out.println(location1);
+        boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
+        boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
+        srb.setQuery(boolQueryBuilder);
+        // 获取距离多少公里 这个才是获取点与点之间的距离的
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+        sort.unit(DistanceUnit.METERS);
+        sort.order(SortOrder.ASC);
+        sort.point(lat, lon);
+        srb.addSort(sort);
+
+        SearchResponse searchResponse = srb.execute().actionGet();
+       /* SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        String[] house = new String[(int) hits.getTotalHits()];*/
+
+        SearchHits hits = searchResponse.getHits();
+//        List<String> buildinglist = new ArrayList<>();
+        ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            Map buildings = hit.getSourceAsMap();
+            buildinglist.add(buildings);
+           // System.out.println(buildings.get("area_name"));
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("data",buildinglist);
+        result.put("total", hits.getTotalHits());
+       /* System.out.println("附近的(" + hits.getTotalHits() + "个)：");
+        List houseList = new ArrayList();
+        for (SearchHit hit : searchHists) {
+            Map source = hit.getSource();
+            Class<VillageEntity> entityClass = VillageEntity.class;
+            VillageEntity instance = entityClass.newInstance();
+            System.out.println(instance);
+            BeanUtils.populate(instance, source);
+            houseList.add(instance);
+        }*/
+        return result;
     }
 
 

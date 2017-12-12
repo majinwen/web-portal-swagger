@@ -46,9 +46,33 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseDetails")
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
 
+     //   Map<String, Object>houseinfo=newHouseService.getNewHouseDetails(121);
+        Map <String,Object>nearHouseList=null;
+        try {
+            nearHouseList=newHouseService.getNearHouse(121,"beijing1","building1",11.12,21.23,"30000000");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            model.addAttribute("nearHouseList",nearHouseList);
+       // model.addAttribute ("houseinfo",houseinfo);
         return "";
 
     }
 
+/*    *//**
+     * 附近楼盘
+     * @return
+     *//*
+
+    @RequestMapping("/getNearHouse")
+    public String getNearHouse(String index, String type, double lat, double lon, String distance){
+        try {
+            Map<String,Object> builds =  newHouseService.getNearHouse(index,type,lat,lon,distance);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+
+    }*/
 
 }
