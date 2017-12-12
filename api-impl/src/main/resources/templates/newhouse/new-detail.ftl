@@ -65,7 +65,7 @@
         <div class="primary-header">
             <h2>一渡龙湾<em class="sale-state">在售</em></h2>
             <p>别名：一渡龙湾</p>
-            <div class="primary-header-tag">
+            <div class="primary-header-tag house-labelling gray">
                 <span>满二</span>
                 <span>满五</span>
                 <span>随时看房</span>
@@ -138,7 +138,7 @@
                     <div class="tilelist-content">
                         <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
                         <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
+                        <div class="house-labelling normal small tilelist-tag">
                             <span>阳台</span>
                             <span>朝南</span>
                             <span>主卧带卫</span>
@@ -155,7 +155,7 @@
                     <div class="tilelist-content">
                         <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
                         <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
+                        <div class="house-labelling normal small tilelist-tag">
                             <span>阳台</span>
                             <span>朝南</span>
                             <span>主卧带卫</span>
@@ -172,7 +172,7 @@
                     <div class="tilelist-content">
                         <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
                         <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
+                        <div class="house-labelling normal small tilelist-tag">
                             <span>阳台</span>
                             <span>朝南</span>
                             <span>主卧带卫</span>
@@ -189,7 +189,7 @@
                     <div class="tilelist-content">
                         <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
                         <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
+                        <div class="house-labelling normal small tilelist-tag">
                             <span>阳台</span>
                             <span>朝南</span>
                             <span>主卧带卫</span>
@@ -206,7 +206,7 @@
                     <div class="tilelist-content">
                         <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
                         <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
+                        <div class="house-labelling normal small tilelist-tag">
                             <span>阳台</span>
                             <span>朝南</span>
                             <span>主卧带卫</span>

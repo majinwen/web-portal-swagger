@@ -72,4 +72,14 @@ public class PinyinServeContoller {
         return "/plot/plot-parameter";
 
     }
+
+    // 新房户型详情页
+    @RequestMapping("/changepinyin55")
+    public String getChangepinyin55(Model model){
+
+        model.addAttribute("user","asds");
+
+        return "/newhouse/new-house-type";
+
+    }
 }

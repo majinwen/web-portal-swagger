@@ -35,20 +35,6 @@ $detailBorderColor: #e1e1e1;
         
         .primary-header-tag {
             margin-top: rem(20);
-            
-            span {
-                display: inline-block;
-                height: rem(34);
-                line-height: rem(34);
-                padding: 0 rem(17);
-                margin: 0 rem(4);
-                color: $baseWhite;
-                background-color: $baseGray;
-                -webkit-border-radius: rem(6);
-                -moz-border-radius: rem(6);
-                border-radius: rem(6);
-    
-            }
         }
         
         &.text-center {

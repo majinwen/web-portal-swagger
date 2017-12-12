@@ -7,6 +7,9 @@ Zepto(function () {
 
     // 顶部swiper轮播点击弹层photoswipe轮播
     carouselSwiper();
+
+    // 户型类型切换
+    houseTypeState();
 });
 
 function describeAllShow() {
@@ -69,4 +72,12 @@ function initphoto(a,i) {
             return !0
         }
     })).init()
+}
+
+function houseTypeState() {
+    if ($('.house-type-state').length){
+        $('.house-type-state').on('click','span',function () {
+            $(this).addClass('current').siblings().removeClass('current');
+        });
+    }
 }

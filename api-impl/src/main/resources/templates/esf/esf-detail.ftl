@@ -64,7 +64,7 @@
     <section class="primary-message">
         <div class="primary-header text-center">
             <h2>东贸国际 南北通透无遮挡 好视野</h2>
-            <div class="primary-header-tag">
+            <div class="primary-header-tag house-labelling gray">
                 <span>满二</span>
                 <span>满五</span>
                 <span>随时看房</span>

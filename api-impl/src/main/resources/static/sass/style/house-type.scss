@@ -1,0 +1,133 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../base/detail-contact";
+$borderLineColor: #e1e1e1;
+$baseBlack0: #060622;
+
+.house-type-state {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: rem(31) rem(30);
+    background-color: $baseWhite;
+
+    span {
+        display: inline-block;
+        height: rem(55);
+        line-height: rem(55);
+        padding-left: rem(20);
+        padding-right: rem(5);
+        margin-right: rem(15);
+        @include font-dpr(24);
+        border: 1px solid $baseBlack0;
+        -webkit-border-radius: rem(6);
+        -moz-border-radius: rem(6);
+        border-radius: rem(6);
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &.current {
+            color: $baseWhite;
+            background-color: $baseBlack0;
+        }
+    }
+}
+
+.house-type-header, .house-type-image {
+    padding-left: rem(30);
+    padding-right: rem(30);
+    border-top: 1px solid $borderLineColor;
+}
+
+.house-type-header {
+    padding-top: rem(30);
+    padding-bottom: rem(30);
+
+    p {
+        padding-left: rem(20);
+        height: rem(40);
+        line-height: rem(40);
+        @include font-dpr(30);
+        border-left: rem(10) solid $baseRed;
+    }
+}
+
+.house-type-tag {
+    padding: rem(30) rem(30) rem(24);
+    border-top: 1px solid $borderLineColor;
+
+    p {
+        margin-bottom: rem(20);
+        @include font-dpr(26);
+
+        em {
+            @include font-dpr(30);
+        }
+    }
+}
+
+.house-type-image {
+    div {
+        position: relative;
+
+        img {
+            width: 100%;
+        }
+
+        .sale-state {
+            display: inline-block;
+            position: absolute;
+            right: 0;
+            top: rem(12);
+            height: rem(42);
+            line-height: rem(42);
+            padding-left: rem(27);
+            padding-right: rem(23);
+            color: $baseWhite;
+            @include font-dpr(24);
+            background-color: $baseRed;
+            -webkit-border-radius: rem(27) 0 0 rem(27);
+            -moz-border-radius: rem(27) 0 0 rem(27);
+            border-radius: rem(27) 0 0 rem(27);
+        }
+    }
+}
+
+.describe-box {
+    border-top: 1px solid $borderLineColor;
+
+    .describe-header {
+        height: rem(90);
+        line-height: rem(90);
+        padding: 0 rem(30);
+        @include font-dpr(30);
+        border-bottom: 1px solid $borderLineColor;
+    }
+
+    .describe-cont {
+        position: relative;
+        @include font-dpr(26);
+        line-height: rem(40);
+        padding: rem(30) rem(30) rem(35);
+        text-align: justify;
+
+        .describe-show-btn {
+            position: absolute;
+            right: rem(30);
+            bottom: rem(35);
+            color: #999;
+            margin-left: rem(20);
+            white-space: nowrap;
+        }
+    }
+}
+
+.bottom-tips {
+    height: rem(80);
+    line-height: rem(80);
+    @include font-dpr(22);
+    color: $baseGray9;
+    text-align: center;
+    background-color: $baseModuleFillColor;
+}
