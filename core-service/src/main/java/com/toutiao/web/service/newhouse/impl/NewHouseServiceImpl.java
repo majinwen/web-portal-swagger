@@ -220,15 +220,34 @@ public class NewHouseServiceImpl implements NewHouseService{
         booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", buildingId));
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                 .setQuery(booleanQueryBuilder)
-//                .setFetchSource(
-//                        new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-//                                "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
-//                        null)
                 .execute().actionGet();
+        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
+        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes("layout")
+                .setQuery(booleanQueryBuilder1)
+                .execute().actionGet();
+
+        SearchHits layouthits = searchresponse1.getHits();
+        String layouts = null;
+        SearchHit[] searchLayoutHists = layouthits.getHits();
+        for (SearchHit hit : searchLayoutHists) {
+            layouts = hit.getSourceAsString();
+        }
+
+
+
         SearchHits hits = searchresponse.getHits();
+
         SearchHit[] searchHists = hits.getHits();
-        System.out.println(searchHists);
-        return null;
+        String buildings = null;
+
+        for (SearchHit hit : searchHists) {
+            buildings = hit.getSourceAsString();
+        }
+        Map<String, Object> maprep = new HashMap<>();
+        maprep.put("build",buildings);
+        maprep.put("layout",layouts);
+        return maprep;
     }
 
 
