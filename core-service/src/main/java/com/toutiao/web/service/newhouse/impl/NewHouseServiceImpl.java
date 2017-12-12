@@ -5,8 +5,10 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -17,6 +19,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.min.MinAggregationBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.xmlbeans.impl.store.Public2.test;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
@@ -44,7 +49,7 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Value("${tt.newhouse.type}")
     private String newhouseType;//索引类型
 
-    private String layoutType;//索引类型
+    private String layoutType="layout";//子类索引类型
 
     /**
      * 根绝新房筛选新房
@@ -60,7 +65,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         //
         SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
 
         //城市
         if(newHouseQuery.getCityId()!=null && newHouseQuery.getCityId()!=0){
@@ -85,7 +90,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         ///==============================
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
-            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
         }
 
         //户型
@@ -101,7 +106,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
                 //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            BoolQueryBuilder boolQueryBuilder = boolQuery();
 
 
             String[] layoutId = newHouseQuery.getHouseAreaSize().split(",");
@@ -155,7 +160,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                     .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location","house_min_area","house_max_area"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -164,7 +169,8 @@ public class NewHouseServiceImpl implements NewHouseService{
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
              .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).setFetchSource(
                     new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                            "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
+                            "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                            "location","house_min_area","house_max_area"},
                     null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -173,7 +179,8 @@ public class NewHouseServiceImpl implements NewHouseService{
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                     .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                                    "location","house_min_area","house_max_area"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -182,7 +189,8 @@ public class NewHouseServiceImpl implements NewHouseService{
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                     .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                                    "location","house_min_area","house_max_area"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -191,23 +199,20 @@ public class NewHouseServiceImpl implements NewHouseService{
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                     .setQuery(booleanQueryBuilder).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                                    "location","house_min_area","house_max_area"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
         }
-
-
-
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("","");
-
         SearchHits hits = searchresponse.getHits();
-        List<String> buildinglist = new ArrayList<>();
-
+//        List<String> buildinglist = new ArrayList<>();
+        ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
-            String buildings = hit.getSourceAsString();
+
+            Map<String,Object> buildings = hit.getSourceAsMap();
             buildinglist.add(buildings);
         }
         Map<String,Object> result = new HashMap<>();
@@ -219,22 +224,98 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Override
     public Map<String, Object> getNewHouseDetails(Integer buildingId) {
 
-        //建立连接
 
         TransportClient client = esClientTools.init();
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", buildingId));
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                 .setQuery(booleanQueryBuilder)
-//                .setFetchSource(
-//                        new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-//                                "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location"},
-//                        null)
                 .execute().actionGet();
+        BoolQueryBuilder booleanQueryBuilder1 = boolQuery();
+        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
+                .setQuery(booleanQueryBuilder1)
+                .execute().actionGet();
+        SearchHits layouthits = searchresponse1.getHits();
+        List<Map<String,Object>> layouts =new ArrayList<>();
+        SearchHit[] searchLayoutHists = layouthits.getHits();
+        for (SearchHit hit : searchLayoutHists) {
+            Map<String,Object> item=hit.getSourceAsMap();
+               layouts.add(item);
+        }
+
         SearchHits hits = searchresponse.getHits();
 
+        SearchHit[] searchHists = hits.getHits();
+        String buildings = null;
+        List<Double> locations = new ArrayList<>();
+        for (SearchHit hit : searchHists) {
+            buildings = hit.getSourceAsString();
+            locations = (List<Double>) hit.getSource().get("location");
+            System.out.println(locations);
+        }
+        Map<String, Object> maprep = new HashMap<>();
+        maprep.put("build",buildings);
+        maprep.put("layout",layouts);
+        try {
+            if(locations.size() ==2){
+                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
+                maprep.put("nearbybuild",nearBy);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maprep;
+    }
+
+    @Override
+    public Map<String, Object> getNewHouseParameterDetails(Integer buildingId) {
         return null;
     }
+
+    /**
+     * 地理位置找房
+     * @param buildingNameId
+     * @param index
+     * @param type
+     * @param lat
+     * @param lon
+     * @param distance
+     * @param client
+     * @return
+     * @throws Exception
+     */
+    public List<Map<String,Object>> getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, String distance,TransportClient client) throws Exception {
+
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        //从该坐标查询距离为distance
+        BoolQueryBuilder boolQueryBuilder =boolQuery();
+        //  System.out.println(location1);
+        boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
+        boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
+        srb.setQuery(boolQueryBuilder);
+        // 获取距离多少公里 这个才是获取点与点之间的距离的
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+        sort.unit(DistanceUnit.METERS);
+        sort.order(SortOrder.ASC);
+        sort.point(lat, lon);
+        srb.addSort(sort).setFetchSource(
+                new String[]{"building_name_id","building_name","average_price","city_id",
+                        "district_id","district_name","area_id","area_name","building_imgs"},
+                null);
+
+        SearchResponse searchResponse = srb.execute().actionGet();
+        SearchHits hits = searchResponse.getHits();
+        List<Map<String,Object>> nearBy = new ArrayList<>();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            Map<String,Object> mapitem=new HashMap() ;
+            mapitem = hit.getSourceAsMap();
+            nearBy.add(mapitem);
+        }
+        return nearBy;
+    }
+
 
 
 }
