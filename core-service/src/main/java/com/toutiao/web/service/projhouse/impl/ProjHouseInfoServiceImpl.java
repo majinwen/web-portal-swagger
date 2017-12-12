@@ -34,16 +34,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     /**
      * 通过小区的经度纬度查找房源信息
+     *
      * @param lat
      * @param lon
      * @return
      */
     @Override
     public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
-        esClientTools.init();
-        TransportClient client = esClientTools.getClient();
+        TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //srb.setSearchType(SearchType.DFS_QUERY_AND_FETCH);
         SearchResponse searchresponse = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         //从该坐标查询距离为distance
@@ -77,12 +76,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      */
     @Override
     public Map<String, Object> queryProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
-        esClientTools.init();
-        TransportClient client = esClientTools.getClient();
+        TransportClient client = esClientTools.init();
 
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //srb.setSearchType(SearchType.DFS_QUERY_AND_FETCH);
-        SearchResponse searchresponse = new SearchResponse();
+        SearchResponse searchresponse = null;
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         /*//参数都为null,则查询所有数据
         if (projHouseInfoRequest==null) {
@@ -127,26 +124,24 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         //多选=========================
         //面积
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
             for (int i = 0; i < layoutId.length; i = i + 2) {
                 if (i + 1 > layoutId.length) {
                     break;
                 }
-                boolQueryBuilder.should(QueryBuilders.rangeQuery("houseArea").gt(layoutId[i]).lte(layoutId[i + 1]));
-                booleanQueryBuilder.must(boolQueryBuilder);
+                booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseArea").gt(layoutId[i]).lte(layoutId[i + 1]));
+                booleanQueryBuilder.must(booleanQueryBuilder);
             }
         }
         //楼龄
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
             for (int i = 0; i < layoutId.length; i = i + 2) {
                 if (i + 1 > layoutId.length) {
                     break;
                 }
-                boolQueryBuilder.should(QueryBuilders.rangeQuery("houseYear").gt(layoutId[i]).lte(layoutId[i + 1]));
-                booleanQueryBuilder.must(boolQueryBuilder);
+                booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseYear").gt(layoutId[i]).lte(layoutId[i + 1]));
+                booleanQueryBuilder.must(booleanQueryBuilder);
 
             }
         }
@@ -227,8 +222,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         System.out.println(booleanQueryBuilder);
 
         if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
-            searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
+            srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
                     /**
                      * 设置需要返回的参数传递到页面
                      * setFetchSource(
@@ -240,14 +234,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     .setSize(pageSize)
                     .execute().actionGet();
         } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
-            searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
+            srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
         } else {
-            searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("houseId", SortOrder.DESC)
+            srb.setQuery(booleanQueryBuilder).addSort("houseId", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
@@ -269,36 +261,25 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     /**
      * 通过二手房id查找房源信息
+     *
      * @param houseId
      * @return
      */
     @Override
     public Map<String, Object> queryByHouseId(Integer houseId) {
-        esClientTools.init();
-        TransportClient client = esClientTools.getClient();
+        TransportClient client = esClientTools.init();
+        //声明符合查询方法
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //srb.setSearchType(SearchType.DFS_QUERY_AND_FETCH);
-        SearchResponse searchresponse = new SearchResponse();
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
-        if (StringTool.isNotEmpty(houseId)) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
-        }
-        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+        booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+        SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder)
                 .execute().actionGet();
         SearchHits hits = searchresponse.getHits();
-        ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
-
         SearchHit[] searchHists = hits.getHits();
-        for (SearchHit hit : searchHists) {
-            Map<String, Object> buildings = hit.getSource();
-            buildinglist.add(buildings);
-        }
         Map<String, Object> result = new HashMap<>();
-        result.put("data_house", buildinglist);
+        result.put("data_house", searchHists);
         result.put("total_house", hits.getTotalHits());
-
         return result;
     }
 
