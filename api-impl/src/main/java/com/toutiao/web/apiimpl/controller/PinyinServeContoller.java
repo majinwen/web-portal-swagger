@@ -40,7 +40,7 @@ public class PinyinServeContoller {
 
         model.addAttribute("user","asds");
 
-        return "esf-list";
+        return "/esf/esf-detail";
 
     }
 
