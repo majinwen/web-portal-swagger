@@ -233,10 +233,11 @@ public class NewHouseServiceImpl implements NewHouseService{
                 .setQuery(booleanQueryBuilder1)
                 .execute().actionGet();
         SearchHits layouthits = searchresponse1.getHits();
-        String layouts = null;
+        List<Map<String,Object>> layouts =new ArrayList<>();
         SearchHit[] searchLayoutHists = layouthits.getHits();
         for (SearchHit hit : searchLayoutHists) {
-            layouts = hit.getSourceAsString();
+            Map<String,Object> item=hit.getSourceAsMap();
+               layouts.add(item);
         }
 
         SearchHits hits = searchresponse.getHits();
@@ -254,7 +255,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         maprep.put("layout",layouts);
         try {
             if(locations.size() ==2){
-                String nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
+                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
                 maprep.put("nearbybuild",nearBy);
             }
         } catch (Exception e) {
@@ -275,7 +276,7 @@ public class NewHouseServiceImpl implements NewHouseService{
      * @return
      * @throws Exception
      */
-    public String getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, String distance,TransportClient client) throws Exception {
+    public List<Map<String,Object>> getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, String distance,TransportClient client) throws Exception {
 
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
@@ -296,10 +297,12 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         SearchResponse searchResponse = srb.execute().actionGet();
         SearchHits hits = searchResponse.getHits();
-        String nearBy = null;
+        List<Map<String,Object>> nearBy = new ArrayList<>();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
-            nearBy = hit.getSourceAsString();
+            Map<String,Object> mapitem=new HashMap() ;
+            mapitem = hit.getSourceAsMap();
+            nearBy.add(mapitem);
         }
         return nearBy;
     }

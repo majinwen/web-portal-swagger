@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @Controller
@@ -48,14 +49,16 @@ public class NewHouseController {
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
 
         String detailBuild = (String) details.get("build");
-        String listLayout = (String) details.get("layout");
-        String nearbybuild = (String) details.get("nearbybuild");
+       /* String listLayout = (String) details.get("layout");
+        String nearbybuild = (String) details.get("nearbybuild");*/
         JSONObject build=JSON.parseObject(detailBuild);
-        JSONObject layout=JSON.parseObject(listLayout);
+       /* JSONObject layout=JSON.parseObject(listLayout);
+        JSONObject nearbuild=JSON.parseObject(nearbybuild);*/
+
         model.addAttribute("build",build);
-        model.addAttribute("layout",layout);
-        model.addAttribute("nearby",nearbybuild);
-        return "";
+        model.addAttribute("layout", details.get("layout"));
+        model.addAttribute("nearbybuild",details.get("nearbybuild"));
+        return "newhouse/new-detail";
 
     }
 
