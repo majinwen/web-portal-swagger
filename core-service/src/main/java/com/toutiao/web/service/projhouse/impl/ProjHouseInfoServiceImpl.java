@@ -154,8 +154,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseTypeId())) {
             String[] layoutId = projHouseInfoRequest.getHouseTypeId().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("houseTypeId", layoutId));
-
-
         }
         //物业类型
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
