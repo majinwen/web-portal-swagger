@@ -118,6 +118,7 @@
                 </div>
             </div>
         </a></li>
+
         <li><a class="list-item" href="">
             <div class="clear">
                 <div class="list-item-img-box">
@@ -198,6 +199,7 @@
                 </div>
             </div>
         </a></li>
+
     </ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
