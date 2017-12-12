@@ -86,11 +86,11 @@ public class ProjHouseInfoQuery {
 	/**
 	 * 经度
 	 */
-	private Integer lat;
+	private double lat;
 	/**
 	 * 维度
 	 */
-	private Integer lon;
+	private double lon;
 
 
 }

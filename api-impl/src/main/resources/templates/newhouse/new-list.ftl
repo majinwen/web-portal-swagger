@@ -130,6 +130,7 @@
     </#if>
     </ul>
 </section>
+
 <script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 </body>

@@ -2,6 +2,8 @@ package com.toutiao.web.dao.entity.admin;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class ProjHouseInfo {
     /**
@@ -35,11 +37,10 @@ public class ProjHouseInfo {
     private String houseUnitCost;
 
     // 房源标签(满二)
-    private String houseLabel;
+    private String[] houseLabel;
 
     // 房源标签(满二)
-    private String houseLabelId;
-
+    private String[] houseLabelId;
 
     // 房源楼层
     private String houseFloorId;
@@ -161,6 +162,9 @@ public class ProjHouseInfo {
 
     // 地铁站名称
     private String[] subwayStationName;
+
+    //距离您多少公里
+    private Map<String,String> houseToSubwayDistance;
 
 
 }

@@ -29,8 +29,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     @Autowired
     private ESClientTools esClientTools;
-    private String projhouseIndex = "a";//索引名称
-    private String projhouseType = "b";//索引类
+    /*@Value("${tt.projhouse.index}")
+    private String projhouseIndex;//索引名称
+    @Value("${tt.projhouse.type}")
+    private String projhouseType;//索引类*/
+    private String projhouseIndex="a";//索引名称
+    private String projhouseType="b";//索引类
 
     /**
      * 通过小区的经度纬度查找房源信息
@@ -79,7 +83,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         TransportClient client = esClientTools.init();
 
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchresponse = null;
+        SearchResponse searchresponse  = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         /*//参数都为null,则查询所有数据
         if (projHouseInfoRequest==null) {
@@ -182,8 +186,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLabelId())) {
             String[] layoutId = projHouseInfoRequest.getHouseLabelId().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLabelId", layoutId));
-
-
         }
         //楼层houseFloorId
         if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseFloorId())) {
@@ -222,7 +224,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         System.out.println(booleanQueryBuilder);
 
         if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
-            srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
+            searchresponse= srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
                     /**
                      * 设置需要返回的参数传递到页面
                      * setFetchSource(
@@ -234,12 +236,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     .setSize(pageSize)
                     .execute().actionGet();
         } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
-            srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
+            searchresponse=srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
         } else {
-            srb.setQuery(booleanQueryBuilder).addSort("houseId", SortOrder.DESC)
+            searchresponse=srb.setQuery(booleanQueryBuilder).addSort("houseId", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
