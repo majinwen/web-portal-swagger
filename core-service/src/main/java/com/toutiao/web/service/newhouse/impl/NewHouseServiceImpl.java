@@ -267,6 +267,11 @@ public class NewHouseServiceImpl implements NewHouseService{
         return maprep;
     }
 
+    @Override
+    public Map<String, Object> getNewHouseParameterDetails(Integer buildingId) {
+        return null;
+    }
+
     /**
      * 地理位置找房
      * @param buildingNameId
