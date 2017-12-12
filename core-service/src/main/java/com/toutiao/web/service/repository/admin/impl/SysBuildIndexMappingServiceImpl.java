@@ -49,6 +49,7 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .startObject("label").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("saleHouse").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("avgPrice").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("sumPrice").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("abbreviatedAge").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("age").field("type", "integer").field("index", "not_analyzed").endObject()
                 .startObject("areaSize").field("type", "string").field("index", "not_analyzed").endObject()
@@ -66,14 +67,15 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .startObject("propertyFee").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("propertyType").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("yopr").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("architecturalTypeId").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("architecturalType").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("architectureTypeId").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("architectureType").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("buildingStructure").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("too").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("residentialType").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("heatingMode").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("sdr").field("type", "string").field("index", "not_analyzed").endObject()
-                .startObject("Level").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("level").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("villageCharacteristics").field("type", "string").field("index", "not_analyzed").endObject()
                 .endObject().endObject().endObject();
         PutMappingRequest mappingRequest = Requests.putMappingRequest(index).type(type).source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
