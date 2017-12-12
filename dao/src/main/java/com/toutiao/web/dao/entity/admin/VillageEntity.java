@@ -2,6 +2,8 @@ package com.toutiao.web.dao.entity.admin;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class VillageEntity {
     private Integer id; //序号
@@ -18,6 +20,7 @@ public class VillageEntity {
     private Double[] location; //坐标
     private String[] metroStationId;  //地铁站编号
     private String[] metroStation;  //地铁站
+    private Map<String,String> metroStationDistance;  //地铁站与小区的距离
     private String[] subwayLineId;  //地铁线路编号
     private String[] subwayLine;  //地铁线路
     private String TrafficInformation;  //交通信息

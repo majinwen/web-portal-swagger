@@ -16,7 +16,7 @@ public class SysVillageConterller {
 
     //小区列表首页展示(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
-    public String GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance, Model model) {
+    public String GetNearByhHouseAndDistance(String index, String type, double lat, double lon, Double distance, Model model) {
         List villageList = null;
         try {
             villageList = sysVillageService.GetNearByhHouseAndDistance(index, type, lat, lon, distance);
@@ -32,15 +32,15 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(String index, String type, VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-        Integer[] ap ={1,60000,60000,70000};
-        villageRequest1.setSearchAvgPrice(ap);
+//        villageRequest1.setSearchSubwayLineId("001");
+//        villageRequest1.setSearchMetroStationId("001");
+//        String[] a = {"0","60","80","90"};
+//        villageRequest1.setSearchAreaSize(a);
+//        Integer[] ap ={1,60000,60000,70000};
+//        villageRequest1.setSearchAvgPrice(ap);
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("003");
 //        villageRequest1.setAreaNameId("002");
-//          String[] mto = {"001","005"};
-//          villageRequest1.setMetroStationId(mto);
-//          String[] lin = {"005","003"};
-//          villageRequest1.setSubwayLineId(lin);
 //        villageRequest1.setId(3);
 //        Integer[] pr = {50000,80000};
 //        villageRequest1.setSearchAvgPrice(pr);

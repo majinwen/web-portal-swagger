@@ -112,7 +112,6 @@ public class NewHouseServiceImpl implements NewHouseService{
             }
         }
 
-
         ///================================
         //物业类型
         if(StringUtil.isNotNullString(newHouseQuery.getPropertyTypeId())){
