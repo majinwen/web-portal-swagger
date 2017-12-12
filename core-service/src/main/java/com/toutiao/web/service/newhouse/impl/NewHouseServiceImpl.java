@@ -44,8 +44,6 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Value("${tt.newhouse.type}")
     private String newhouseType;//索引类型
 
-    private String layoutType;//索引类型
-
     /**
      * 根绝新房筛选新房
      * @param newHouseQuery
@@ -197,16 +195,12 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setSize(pageSize)
                     .execute().actionGet();
         }
-
-
-
-        MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("","");
-
         SearchHits hits = searchresponse.getHits();
         List<String> buildinglist = new ArrayList<>();
 
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
+
             String buildings = hit.getSourceAsString();
             buildinglist.add(buildings);
         }
@@ -232,7 +226,8 @@ public class NewHouseServiceImpl implements NewHouseService{
 //                        null)
                 .execute().actionGet();
         SearchHits hits = searchresponse.getHits();
-
+        SearchHit[] searchHists = hits.getHits();
+        System.out.println(searchHists);
         return null;
     }
 
