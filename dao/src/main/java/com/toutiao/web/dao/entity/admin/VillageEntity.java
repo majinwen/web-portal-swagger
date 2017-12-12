@@ -25,6 +25,7 @@ public class VillageEntity {
     private String[] label;  //标签
     private String[] saleHouse;  //待售房源
     private Integer avgPrice;  //均价
+    private Integer sumPrice;  //总价
     private String abbreviatedAge;  //建成年代
     private Integer age;  //楼龄
     private String areaSize;  //面积
@@ -42,14 +43,14 @@ public class VillageEntity {
     private String propertyFee;  //物业费
     private String propertyType;  //物业类型
     private String yopr;  //产权年限
-    private String[] searchItecturalTypeId;  //建筑类型编号
-    private String[] searchItecturalType;  //建筑类型
+    private String[] architectureTypeId;  //建筑类型编号
+    private String[] architectureType;  //建筑类型
     private String buildingStructure;  //建筑结构
     private String too;  //业态
     private String residentialType;  //住宅类型
     private String heatingMode;  //供暖方式
     private String sdr;  //供需关系
-    private Integer Level;  //楼盘级别
+    private Integer level;  //楼盘级别
     private String villageCharacteristics;  //楼盘特色
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数

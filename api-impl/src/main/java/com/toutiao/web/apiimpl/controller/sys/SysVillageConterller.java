@@ -1,6 +1,6 @@
 package com.toutiao.web.apiimpl.controller.sys;
 
-import com.toutiao.web.domain.app.VillageRequest;
+import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.repository.admin.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(String index, String type, VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-//        villageRequest1.setId(1);
+        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("003");
 //        villageRequest1.setAreaNameId("002");
 //          String[] mto = {"001","005"};

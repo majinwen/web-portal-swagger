@@ -19,26 +19,26 @@ public class SaveToESController {
     @RequestMapping("/saveToES")
     public void setSaveToESService(String index, String type, VillageEntity village, Model model){
         VillageEntity village1 = new VillageEntity();
-        village1.setId(003);
-        village1.setAreaId("003");
-        village1.setArea("丰台");
-        village1.setAreaNameId("003");
-        village1.setAreaName("丰台门");
-        String[] mt = {"005","006"};
+        village1.setId(001);
+        village1.setAreaId("002");
+        village1.setArea("朝阳");
+        village1.setAreaNameId("001");
+        village1.setAreaName("朝阳门");
+        String[] mt = {"001","002"};
         village1.setMetroStationId(mt);
-        String[] mtStation ={"丰台东","丰台"};
-        String[] li ={"005","006"};
-        String[] liName ={"5号线","6号线"};
+        String[] mtStation ={"朝阳东","朝阳"};
+        String[] li ={"001","002"};
+        String[] liName ={"1号线","2号线"};
         village1.setSubwayLineId(li);
-        String[] la = {"005","006"};
+        String[] la = {"001","002"};
         village1.setLabelId(la);
-        String[] laName = {"标签5","标签6"};
-        village1.setAvgPrice(79999);
-        village1.setAge(18);
+        String[] laName = {"标签1","标签2"};
+        village1.setAvgPrice(59999);
+        village1.setAge(16);
         village1.setElevator("有");
-        Double[] loca = {30.0,30.0};
+        Double[] loca = {10.0,10.0};
         village1.setLocation(loca);
-        village1.setLevel(2);
+        village1.setLevel(1);
 
         Boolean flag = null;
         try {

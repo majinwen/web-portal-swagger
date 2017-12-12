@@ -1,6 +1,6 @@
 package com.toutiao.web.service.repository.admin;
 
-import com.toutiao.web.domain.app.VillageRequest;
+import com.toutiao.web.domain.query.VillageRequest;
 
 import java.util.List;
 

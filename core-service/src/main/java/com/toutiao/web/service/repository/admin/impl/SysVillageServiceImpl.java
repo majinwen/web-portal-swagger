@@ -3,8 +3,8 @@ package com.toutiao.web.service.repository.admin.impl;
 
 
 import com.toutiao.web.dao.entity.admin.VillageEntity;
-import com.toutiao.web.domain.app.VillageRequest;
-import com.toutiao.web.domain.app.VillageResponse;
+import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.repository.admin.SysVillageService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -135,7 +135,7 @@ public class SysVillageServiceImpl implements SysVillageService {
            }
         }
         //面积
-        String[] areaSizeRange = villageRequest.getAreaSizeRange();
+        String[] areaSizeRange = villageRequest.getSearchAreaSize();
         if(areaSizeRange!=null&&areaSizeRange.length!=0){
             for (int i=0; i<areaSizeRange.length; i=i+2){
                 if(i+1>areaSizeRange.length){
@@ -169,9 +169,9 @@ public class SysVillageServiceImpl implements SysVillageService {
             srb.setQuery(queryBuilder);
         }
         //建筑类型
-        String[] itecturalTypeId = villageRequest.getItecturalTypeId();
-        if(itecturalTypeId!=null&&itecturalTypeId.length!=0){
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("itecturalTypeId", itecturalTypeId));
+        String[] architectureTypeId = villageRequest.getArchitectureTypeId();
+        if(architectureTypeId!=null&&architectureTypeId.length!=0){
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", architectureTypeId));
             srb.setQuery(queryBuilder);
         }
         //楼盘特色
