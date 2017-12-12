@@ -18,8 +18,7 @@ public class ProjHouseInfoQuery {
 	
 	//房源朝向id（1，2，3，4）
 	private String houseOrientationId;
-	
-	
+
 	//房源总价 起始价
 	private Double beginPrice;
 	//房源总价 结束价
@@ -65,13 +64,7 @@ public class ProjHouseInfoQuery {
 
 	//商圈id
 	private Integer houseBusinessId;
-	/**
-	 * id=23008613&name=朝阳
-	 * id=611100323&name=奥林匹克公园
-	 * id=648&name=2号线
-	 * id=20556&name=古城
-	 * 
-	 */
+
 	//区域id
 	private Integer areaId;
 	//区域
@@ -90,6 +83,14 @@ public class ProjHouseInfoQuery {
 	 * 每页数量
 	 */
 	private Integer pageSize;
+	/**
+	 * 经度
+	 */
+	private Integer lat;
+	/**
+	 * 维度
+	 */
+	private Integer lon;
 
 
 }

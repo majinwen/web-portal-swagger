@@ -3,26 +3,25 @@ package com.toutiao.web.service.projhouse.impl;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,58 +33,41 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String projhouseType = "b";//索引类
 
     /**
-     * 按照标签范围查找
-     *
-     * @param index
-     * @param type
-     * @param term  字段
-     * @param first 开始
-     * @param last  结束
+     * 通过小区的经度纬度查找房源信息
+     * @param lat
+     * @param lon
      * @return
      */
     @Override
-    public List<ProjHouseInfo> queryProjHouseInfoByRang(String index, String type, String term, int first, int last) {
-        TransportClient client = null;
-        SearchResponse res = null;
-        List<ProjHouseInfo> list = new ArrayList<ProjHouseInfo>();
-        try {
-            esClientTools.init();
-            client = esClientTools.getClient();
-//            QueryBuilder qb = QueryBuilders
-//                    .rangeQuery(term)
-//                    .gt(first)
-//                    .lt(last);
-//            BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-//            bqb.must(QueryBuilders.rangeQuery(term).gt(first).lt(last));
-            //RangeQueryBuilder  ddd = QueryBuilders.rangeQuery(term).gt(first).lt(last);
-            QueryBuilder qb = QueryBuilders
-                    .rangeQuery(term)
-                    .from(first)
-                    .to(last)
-                    .includeLower(true)
-                    .includeUpper(true);
-            res = client.prepareSearch(index)
-                    .setTypes(type)
-                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                    .setQuery(qb)
-                    .setFrom(0)
-                    .setSize(10)
-                    .execute().actionGet();
-            for (SearchHit hit : res.getHits().getHits()) {
-
-                Map map = hit.getSource();
-                Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
-                ProjHouseInfo instance = entityClass.newInstance();
-                BeanUtils.populate(instance, map);
-                list.add(instance);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            client.close();
+    public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
+        esClientTools.init();
+        TransportClient client = esClientTools.getClient();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        //srb.setSearchType(SearchType.DFS_QUERY_AND_FETCH);
+        SearchResponse searchresponse = new SearchResponse();
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
+        //从该坐标查询距离为distance
+        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000", DistanceUnit.METERS);
+        srb.setPostFilter(location1);
+        // 获取距离多少公里 这个才是获取点与点之间的距离的
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("30000", lat, lon);
+        sort.unit(DistanceUnit.METERS);
+        sort.order(SortOrder.ASC);
+        sort.point(lat, lon);
+        srb.addSort(sort).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName"}, null).execute().actionGet();
+        SearchHits hits = searchresponse.getHits();
+        String[] house = new String[(int) hits.getTotalHits()];
+        System.out.println("附近的房源(" + hits.getTotalHits() + "个)：");
+        ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            Map<String, Object> buildings = hit.getSource();
+            buildinglist.add(buildings);
         }
-        return list;
+        Map<String, Object> result = new HashMap<>();
+        result.put("data_plot", buildinglist);
+        result.put("total_plot", hits.getTotalHits());
+        return result;
     }
 
     /**
@@ -95,24 +77,21 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      */
     @Override
     public Map<String, Object> queryProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
-        List<ProjHouseInfo> list = null;
-
         esClientTools.init();
         TransportClient client = esClientTools.getClient();
 
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         //srb.setSearchType(SearchType.DFS_QUERY_AND_FETCH);
-        list = new ArrayList<ProjHouseInfo>();
         SearchResponse searchresponse = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
-        //参数都为null,则查询所有数据
-        /*if (StringUtils.isEmpty(projHouseInfoRequest)) {*/
+        /*//参数都为null,则查询所有数据
+        if (projHouseInfoRequest==null) {
             booleanQueryBuilder.must(QueryBuilders.matchAllQuery());
-        /*}*/
+        }*/
         // 二手房ID
-        if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
+        /*if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
-        }
+        }*/
         //商圈名称
         if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaName", projHouseInfoRequest.getHouseBusinessName()));
@@ -156,7 +135,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 }
                 boolQueryBuilder.should(QueryBuilders.rangeQuery("houseArea").gt(layoutId[i]).lte(layoutId[i + 1]));
                 booleanQueryBuilder.must(boolQueryBuilder);
-
             }
         }
         //楼龄
@@ -287,6 +265,41 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         Map<String, Object> result = new HashMap<>();
         result.put("data", buildinglist);
         result.put("total", hits.getTotalHits());
+
+        return result;
+    }
+
+    /**
+     * 通过二手房id查找房源信息
+     * @param houseId
+     * @return
+     */
+    @Override
+    public Map<String, Object> queryByHouseId(Integer houseId) {
+        esClientTools.init();
+        TransportClient client = esClientTools.getClient();
+
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        //srb.setSearchType(SearchType.DFS_QUERY_AND_FETCH);
+        SearchResponse searchresponse = new SearchResponse();
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
+        if (StringTool.isNotEmpty(houseId)) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+        }
+        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder)
+                .execute().actionGet();
+        SearchHits hits = searchresponse.getHits();
+        ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
+
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            Map<String, Object> buildings = hit.getSource();
+            buildinglist.add(buildings);
+        }
+        Map<String, Object> result = new HashMap<>();
+        result.put("data_house", buildinglist);
+        result.put("total_house", hits.getTotalHits());
 
         return result;
     }
