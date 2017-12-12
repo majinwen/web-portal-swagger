@@ -5,7 +5,7 @@
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
-    <title>新房参数</title>
+    <title>小区参数</title>
 </head>
 <body>
 <div class="module-bottom-fill"></div>
@@ -19,13 +19,14 @@
                 <span>满五</span>
                 <span>随时看房</span>
             </div>
+            <div class="isopsophic-air-index">
+                <p>空气指数：</p>
+                <p>噪音指数：</p>
+            </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>销售状态：待售</p>
-                <p>最新开盘：2017-09-09</p>
-                <p>交房时间：2019-12-10</p>
-                <p>参考均价：12345元/㎡ </p>
+                <p>参考均价：<em class="high-light-red">12345元</em>/㎡ </p>
             </li>
         </ul>
     </section>
@@ -39,8 +40,7 @@
             <li>
                 <p>环线位置：二环到三环</p>
                 <p>区域位置：丰台</p>
-                <p>楼盘地址：</p>
-                <p>售楼处地址：</p>
+                <p>小区地址：</p>
             </li>
         </ul>
     </section>
@@ -52,8 +52,8 @@
         </div>
         <ul class="primary-item">
             <li>
+                <p>建成年代：2016年</p>
                 <p>建筑类型：板楼</p>
-                <p>装修类型：精装修</p>
                 <p>产权年限：70年</p>
                 <p>占地面积：420000㎡</p>
                 <p>建筑面积：340000㎡</p>
@@ -66,50 +66,21 @@
         </ul>
     </section>
 </div>
-<div class="module-bottom-fill">
-    <section class="primary-message">
-        <div class="module-header-message">
-            <h3>物业信息</h3>
-        </div>
-        <ul class="primary-item">
-            <li>
-                <p>物业类型：住宅</p>
-                <p>物业公司：XXXXXX</p>
-                <p>物业费：XXXXXXXXXX</p>
-                <p>供暖：自采暖</p>
-                <p>供水：暂无</p>
-                <p>供电：暂无</p>
-                <p>燃气：暂无</p>
-            </li>
-        </ul>
-    </section>
-</div>
 <section class="primary-message">
     <div class="module-header-message">
-        <h3>许可证信息</h3>
+        <h3>物业信息</h3>
     </div>
-    <table class="primary-table">
-        <tr>
-            <th>许可证</th>
-            <th>发证时间</th>
-            <th>绑定楼栋</th>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-    </table>
+    <ul class="primary-item">
+        <li>
+            <p>物业类型：住宅</p>
+            <p>物业公司：XXXXXX</p>
+            <p>物业费：XXXXXXXXXX</p>
+            <p>供暖：自采暖</p>
+            <p>供水：暂无</p>
+            <p>供电：暂无</p>
+            <p>燃气：暂无</p>
+        </li>
+    </ul>
 </section>
 <section class="detail-contact-box" id="detailContactState">
     <div class="detail-contact-content">

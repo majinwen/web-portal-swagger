@@ -2,6 +2,7 @@ $detailBorderColor: #e1e1e1;
 
 .primary-message {
     .primary-header {
+        position: relative;
         padding: rem(40) rem(30);
         border-bottom: 1px solid $detailBorderColor;
         
@@ -60,6 +61,13 @@ $detailBorderColor: #e1e1e1;
             .primary-header-tag {
                 margin-top: rem(24);
             }
+        }
+
+        .isopsophic-air-index {
+            position: absolute;
+            right: rem(30);
+            top: rem(44);
+
         }
     }
 
