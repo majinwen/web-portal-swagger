@@ -6,6 +6,7 @@ import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -27,17 +28,19 @@ public class ProjHouseInfoController {
      *
      * @return
      */
-    @RequestMapping(value = "/queryByHouseIdandLocation")
-    public String queryProjHouseByhouseIdandLocation(Model model,ProjHouseInfoQuery projHouseInfoQuery) {
-        //小区信息
-        Map<String, Object> builds = projHouseInfoService.
-                queryProjHouseByhouseIdandLocation(projHouseInfoQuery.getLat(), projHouseInfoQuery.getLon());
+    @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}/{lat}/{lon}")
+    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId
+            ,@PathVariable("lat") String lat,@PathVariable("lon") String lon ) {
         //房源详情
-        Map<String, Object>  houseDetails=projHouseInfoService.queryByHouseId(projHouseInfoQuery.getHouseId());
-        model.addAttribute("houseDetail", builds.get("data_house"));
-        model.addAttribute("houseData", builds.get("total_house"));
-        model.addAttribute("plot", builds.get("data_plot"));
-        model.addAttribute("plotTotal", builds.get("total_plot"));
+        Map<String, Object>  houseDetails=projHouseInfoService.queryByHouseId( Integer.valueOf(houseId));
+        //小区信息
+        /*Map<String, Object> builds = projHouseInfoService.
+                queryProjHouseByhouseIdandLocation(Double.valueOf(lat)  ,Double.valueOf(lon));*/
+        model.addAttribute("houseDetail", houseDetails.get("data_house"));
+        ArrayList<Object> list= (ArrayList<Object>) houseDetails.get("data_house");
+        model.addAttribute("houseData", houseDetails.get("total_house"));
+        /*model.addAttribute("plot", builds.get("data_plot"));
+        model.addAttribute("plotTotal", builds.get("total_plot"));*/
         return "esf/esf-detail";
     }
 

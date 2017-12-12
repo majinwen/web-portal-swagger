@@ -101,7 +101,11 @@
         <#list builds as map>
             <li>
                 <#assign itemLocation=map['housePlotLocation']>
-                <a class="list-item" href="/queryByHouseIdandLocation?houseId=+${map.houseId}+'&lat='+${itemLocation[0]}+'&lon='+${itemLocation[1]}">
+                <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${itemLocation[0]}/${itemLocation[1]}">
+                <input type="hidden" name="houseId" value="${map.houseId}"/>
+
+                <input type="hidden" name="lat" value="${itemLocation[0]}"/>
+                <input type="hidden" name="lon" value="${itemLocation[1]}"/>
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>

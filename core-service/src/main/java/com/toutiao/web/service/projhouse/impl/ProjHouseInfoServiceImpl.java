@@ -49,7 +49,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         SearchResponse searchresponse = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
-        //从该坐标查询距离为distance
+        //从该坐标查询距离为distance      housePlotLocation
         GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000", DistanceUnit.METERS);
         srb.setPostFilter(location1);
         // 获取距离多少公里 这个才是获取点与点之间的距离的
@@ -279,8 +279,13 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 .execute().actionGet();
         SearchHits hits = searchresponse.getHits();
         SearchHit[] searchHists = hits.getHits();
+        ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
+        for (SearchHit hit : searchHists) {
+            Map<String, Object> buildings = hit.getSource();
+            buildinglist.add(buildings);
+        }
         Map<String, Object> result = new HashMap<>();
-        result.put("data_house", searchHists);
+        result.put("data_house", buildinglist);
         result.put("total_house", hits.getTotalHits());
         return result;
     }
