@@ -12,11 +12,29 @@
         margin-right: rem(30);
         
         .picture-box {
+            position: relative;
             width: rem(221);
             height: rem(166);
             
             img {
                 height: 100%;
+            }
+
+            .sale-state {
+                display: inline-block;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: rem(32);
+                line-height: rem(32);
+                padding-left: rem(20);
+                padding-right: rem(17);
+                color: $baseWhite;
+                @include font-dpr(20);
+                background-color: $baseRed;
+                -webkit-border-radius: 0 rem(17) rem(17) 0;
+                -moz-border-radius: 0 rem(17) rem(17) 0;
+                border-radius: 0 rem(17) rem(17) 0;
             }
         }
         .tilelist-content {
@@ -30,6 +48,27 @@
             
             .cont-first {
                 margin-top: rem(25);
+
+                span {
+
+                    &:nth-child(2) {
+                        float: right;
+                    }
+                }
+            }
+
+            .cont-center {
+                margin: rem(15) 0 rem(-5);
+                @include font-dpr(20);
+                color: #999;
+
+                span {
+                    margin-left: rem(10);
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
             }
             
             .cont-last {
@@ -38,6 +77,23 @@
             
             em {
                 color: $baseRed;
+            }
+
+            .tilelist-tag {
+                margin-top: rem(20);
+                @include text-ellipses;
+
+                span {
+                    display: inline-block;
+                    margin-right: rem(2);
+                    padding: rem(1) rem(10);
+                    @include font-dpr(18);
+                    color: #999;
+                    border: 1px solid #999;
+                    -webkit-border-radius: rem(6);
+                    -moz-border-radius: rem(6);
+                    border-radius: rem(6);
+                }
             }
         }
     }

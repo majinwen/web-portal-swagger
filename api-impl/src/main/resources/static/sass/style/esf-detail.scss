@@ -1,8 +1,9 @@
 @import "../base/normalize";
 @import "../base/mixin";
+@import "../pages/detail-header-banner";
 @import "../pages/detail-primary";
 @import "../pages/tilelist-piece";
-@import "../pages/detail-header-banner";
+@import "../base/detail-contact";
 
 .describe-box {
     padding: rem(40) rem(30);
@@ -69,18 +70,3 @@
     }
 }
 
-.map-content {
-    width: 100%;
-    padding: rem(40) 0;
-    
-    #map {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        
-        img {
-            width: 100%;
-            vertical-align: middle;
-        }
-    }
-}

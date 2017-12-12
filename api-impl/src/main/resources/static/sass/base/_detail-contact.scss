@@ -1,0 +1,60 @@
+.detail-contact-box {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 999;
+
+    .detail-contact-content {
+        display: -webkit-flex;
+        display: flex;
+        width: 100%;
+        height: rem(98);
+        padding: rem(15) rem(30);
+        background-color: #060622;
+        @include box-sizing;
+        justify-content: space-between;
+        align-items: center;
+
+        a {
+            display: block;
+            color: $baseWhite;
+            line-height: rem(40);
+            @include font-dpr(22);
+
+            i {
+                display: inline-block;
+                width: rem(45);
+                height: rem(40);
+                margin-right: rem(10);
+                vertical-align: bottom;
+            }
+
+            &.contact-share {
+                @include bg-image('../images/global/contact_icon_share');
+            }
+            &.contact-collect {
+                @include bg-image('../images/global/contact_icon_sc');
+
+                &.current {
+                    @include bg-image('../images/global/contact_icon_sc_red');
+                }
+            }
+
+            &.contact-telephone-counseling {
+                width: rem(400);
+                height: rem(68);
+                line-height: rem(68);
+                text-align: center;
+                @include font-dpr(30);
+                background-color: $baseRed;
+                -webkit-border-radius: rem(10);
+                -moz-border-radius: rem(10);
+                border-radius: rem(10);
+            }
+        }
+    }
+
+    &.bottom {
+        position: relative;
+    }
+}
