@@ -29,7 +29,6 @@ public class NewHouseController {
     @RequestMapping("/searchNewHouse")
     public String searchNewHouse(NewHouseQuery newHouseQuery, Model model){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
-        System.out.println(JSON.parseArray(builds.get("data").toString()));
         model.addAttribute("builds",builds.get("data"));
         model.addAttribute("total",builds.get("total"));
         return "newhouse/new-list";

@@ -196,12 +196,12 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }
         SearchHits hits = searchresponse.getHits();
-        List<String> buildinglist = new ArrayList<>();
-
+//        List<String> buildinglist = new ArrayList<>();
+        ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
 
-            String buildings = hit.getSourceAsString();
+            Map<String,Object> buildings = hit.getSourceAsMap();
             buildinglist.add(buildings);
         }
         Map<String,Object> result = new HashMap<>();
