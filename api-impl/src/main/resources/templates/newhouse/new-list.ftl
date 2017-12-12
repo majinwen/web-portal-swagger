@@ -18,7 +18,7 @@
 </header>
 <section class="category-box">
     <ul id="category-nav">
-        <li><span><em>位置</em><i></i></span></li>
+        <li><span><em>区域</em><i></i></span></li>
         <li><span><em>总价</em><i></i></span></li>
         <li><span><em>户型</em><i></i></span></li>
         <li><span><em>更多</em><i></i></span></li>
@@ -28,7 +28,6 @@
             <div class="none">
                 <ul class="category-parent">
                     <li>区域</li>
-                    <li>地铁</li>
                 </ul>
                 <ul class="category-child"></ul>
                 <ul class="category-children"></ul>
@@ -60,13 +59,13 @@
             <div class="none">
                 <ul class="category-parent">
                     <li>
-                        <h4>朝向</h4>
+                        <h4>物业类型</h4>
                         <div class="more-options">
-                            <span>朝东</span>
-                            <span>朝西</span>
-                            <span>朝南</span>
-                            <span>朝北</span>
-                            <span>南北通透</span>
+                            <span>住宅</span>
+                            <span>别墅</span>
+                            <span>写字楼</span>
+                            <span>商铺</span>
+                            <span>底商</span>
                         </div>
                     </li>
                     <li>
@@ -79,12 +78,52 @@
                         </div>
                     </li>
                     <li>
-                        <h4>标签</h4>
+                        <h4>电梯</h4>
                         <div class="more-options">
-                            <span>满两年</span>
-                            <span>满五年</span>
-                            <span>近地铁</span>
+                            <span>有电梯</span>
+                            <span>无电梯</span>
                         </div>
+                    </li>
+                    <li>
+                        <h4>建筑类型</h4>
+                            <div class="more-options">
+                                <span>板楼</span>
+                                <span>塔楼</span>
+                                <span>板塔结合</span>
+                                <span砖楼</span>
+                            </div>
+                    </li>
+                    <li>
+                        <h4>销售状态</h4>
+                            <div class="more-options">
+                                <span>售完</span>
+                                <span>在售</span>
+                                <span>不在售</span>
+                                <span>出租</span>
+                                <span>租售</span>
+                                <span>待售</span>
+                            </div>
+                    </li>
+                    <li>
+                        <h4>楼盘特色</h4>
+                            <div class="more-options">
+                                <span>别墅</span>
+                                <span>花园洋房</span>
+                                <span>近地铁</span>
+                                <span>车位充足</span>
+                                <span>低密度</span>
+                                <span>高绿化</span>
+                            </div>
+                    </li>
+                    <li>
+                        <h4>装修</h4>
+                            <div class="more-options">
+                                <span>毛坯</span>
+                                <span>普通装修</span>
+                                <span>精装修</span>
+                                <span>豪华装修</span>
+                                <span>其他</span>
+                            </div>
                     </li>
                 </ul>
                 <div class="button-group">

@@ -248,6 +248,65 @@ public class NewHouseServiceImpl implements NewHouseService{
         maprep.put("build",buildings);
         maprep.put("layout",layouts);
         return maprep;
+        System.out.println(searchHists);
+
+        /*try {
+            houselist.put("nearHouse",getNearHouse(121,"beijing1","building1",11.12,21.23,"30000000"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        return houselist;
+    }
+
+    @Override
+    public Map<String, Object> getNearHouse(int buildingNameId,String index, String type, double lat, double lon, String distance) throws Exception {
+            Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
+                    .build();
+            TransportClient client = new PreBuiltTransportClient(settings)
+                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        //从该坐标查询距离为distance
+        BoolQueryBuilder boolQueryBuilder =boolQuery();
+      //  System.out.println(location1);
+        boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
+        boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
+        srb.setQuery(boolQueryBuilder);
+        // 获取距离多少公里 这个才是获取点与点之间的距离的
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+        sort.unit(DistanceUnit.METERS);
+        sort.order(SortOrder.ASC);
+        sort.point(lat, lon);
+        srb.addSort(sort);
+
+        SearchResponse searchResponse = srb.execute().actionGet();
+       /* SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        String[] house = new String[(int) hits.getTotalHits()];*/
+
+        SearchHits hits = searchResponse.getHits();
+//        List<String> buildinglist = new ArrayList<>();
+        ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            Map buildings = hit.getSourceAsMap();
+            buildinglist.add(buildings);
+           // System.out.println(buildings.get("area_name"));
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("data",buildinglist);
+        result.put("total", hits.getTotalHits());
+       /* System.out.println("附近的(" + hits.getTotalHits() + "个)：");
+        List houseList = new ArrayList();
+        for (SearchHit hit : searchHists) {
+            Map source = hit.getSource();
+            Class<VillageEntity> entityClass = VillageEntity.class;
+            VillageEntity instance = entityClass.newInstance();
+            System.out.println(instance);
+            BeanUtils.populate(instance, source);
+            houseList.add(instance);
+        }*/
+        return result;
     }
 
 

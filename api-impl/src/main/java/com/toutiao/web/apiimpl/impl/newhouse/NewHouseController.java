@@ -2,7 +2,6 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
