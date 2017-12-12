@@ -26,6 +26,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
+
     @RequestMapping("/searchNewHouse")
     public String searchNewHouse(NewHouseQuery newHouseQuery, Model model){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
