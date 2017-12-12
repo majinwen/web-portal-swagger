@@ -48,12 +48,7 @@ public class NewHouseController {
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
 
         String detailBuild = (String) details.get("build");
-       /* String listLayout = (String) details.get("layout");
-        String nearbybuild = (String) details.get("nearbybuild");*/
         JSONObject build=JSON.parseObject(detailBuild);
-       /* JSONObject layout=JSON.parseObject(listLayout);
-        JSONObject nearbuild=JSON.parseObject(nearbybuild);*/
-
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
