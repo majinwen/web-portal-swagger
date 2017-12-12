@@ -5,8 +5,10 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -17,6 +19,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.metrics.min.MinAggregationBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.apache.xmlbeans.impl.store.Public2.test;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
@@ -43,6 +48,8 @@ public class NewHouseServiceImpl implements NewHouseService{
     private String newhouseIndex;//索引名称
     @Value("${tt.newhouse.type}")
     private String newhouseType;//索引类型
+
+    private String layoutType="layout";//子类索引类型
 
     /**
      * 根绝新房筛选新房
@@ -58,7 +65,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         //
         SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
 
         //城市
         if(newHouseQuery.getCityId()!=null && newHouseQuery.getCityId()!=0){
@@ -83,7 +90,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         ///==============================
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
-            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
         }
 
         //户型
@@ -99,7 +106,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
                 //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            BoolQueryBuilder boolQueryBuilder = boolQuery();
 
 
             String[] layoutId = newHouseQuery.getHouseAreaSize().split(",");
@@ -213,20 +220,18 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Override
     public Map<String, Object> getNewHouseDetails(Integer buildingId) {
 
-        //建立连接
 
         TransportClient client = esClientTools.init();
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", buildingId));
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                 .setQuery(booleanQueryBuilder)
                 .execute().actionGet();
-        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
+        BoolQueryBuilder booleanQueryBuilder1 = boolQuery();
         booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
-        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes("layout")
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
                 .setQuery(booleanQueryBuilder1)
                 .execute().actionGet();
-
         SearchHits layouthits = searchresponse1.getHits();
         String layouts = null;
         SearchHit[] searchLayoutHists = layouthits.getHits();
@@ -234,41 +239,48 @@ public class NewHouseServiceImpl implements NewHouseService{
             layouts = hit.getSourceAsString();
         }
 
-
-
         SearchHits hits = searchresponse.getHits();
 
         SearchHit[] searchHists = hits.getHits();
         String buildings = null;
-
+        List<Double> locations = new ArrayList<>();
         for (SearchHit hit : searchHists) {
             buildings = hit.getSourceAsString();
+            locations = (List<Double>) hit.getSource().get("location");
+            System.out.println(locations);
         }
         Map<String, Object> maprep = new HashMap<>();
         maprep.put("build",buildings);
         maprep.put("layout",layouts);
-        return maprep;
-        System.out.println(searchHists);
-
-        /*try {
-            houselist.put("nearHouse",getNearHouse(121,"beijing1","building1",11.12,21.23,"30000000"));
+        try {
+            if(locations.size() ==2){
+                String nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
+                maprep.put("nearbybuild",nearBy);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
-
-        return houselist;
+        }
+        return maprep;
     }
 
-    @Override
-    public Map<String, Object> getNearHouse(int buildingNameId,String index, String type, double lat, double lon, String distance) throws Exception {
-            Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                    .build();
-            TransportClient client = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+    /**
+     * 地理位置找房
+     * @param buildingNameId
+     * @param index
+     * @param type
+     * @param lat
+     * @param lon
+     * @param distance
+     * @param client
+     * @return
+     * @throws Exception
+     */
+    public String getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, String distance,TransportClient client) throws Exception {
+
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
         BoolQueryBuilder boolQueryBuilder =boolQuery();
-      //  System.out.println(location1);
+        //  System.out.println(location1);
         boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
         boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
         srb.setQuery(boolQueryBuilder);
@@ -277,37 +289,21 @@ public class NewHouseServiceImpl implements NewHouseService{
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
         sort.point(lat, lon);
-        srb.addSort(sort);
+        srb.addSort(sort).setFetchSource(
+                new String[]{"building_name_id","building_name","average_price","city_id",
+                        "district_id","district_name","area_id","area_name","building_imgs"},
+                null);
 
         SearchResponse searchResponse = srb.execute().actionGet();
-       /* SearchHits hits = searchResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        String[] house = new String[(int) hits.getTotalHits()];*/
-
         SearchHits hits = searchResponse.getHits();
-//        List<String> buildinglist = new ArrayList<>();
-        ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
+        String nearBy = null;
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
-            Map buildings = hit.getSourceAsMap();
-            buildinglist.add(buildings);
-           // System.out.println(buildings.get("area_name"));
+            nearBy = hit.getSourceAsString();
         }
-        Map<String,Object> result = new HashMap<>();
-        result.put("data",buildinglist);
-        result.put("total", hits.getTotalHits());
-       /* System.out.println("附近的(" + hits.getTotalHits() + "个)：");
-        List houseList = new ArrayList();
-        for (SearchHit hit : searchHists) {
-            Map source = hit.getSource();
-            Class<VillageEntity> entityClass = VillageEntity.class;
-            VillageEntity instance = entityClass.newInstance();
-            System.out.println(instance);
-            BeanUtils.populate(instance, source);
-            houseList.add(instance);
-        }*/
-        return result;
+        return nearBy;
     }
+
 
 
 }

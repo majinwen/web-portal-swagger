@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
@@ -48,12 +49,12 @@ public class NewHouseController {
 
         String detailBuild = (String) details.get("build");
         String listLayout = (String) details.get("layout");
+        String nearbybuild = (String) details.get("nearbybuild");
         JSONObject build=JSON.parseObject(detailBuild);
         JSONObject layout=JSON.parseObject(listLayout);
         model.addAttribute("build",build);
         model.addAttribute("layout",layout);
-//        System.out.println(build);
-//        System.out.println(layout);
+        model.addAttribute("nearby",nearbybuild);
         return "";
 
     }
