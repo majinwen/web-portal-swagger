@@ -183,7 +183,7 @@ public class SysVillageServiceImpl implements SysVillageService {
 
         //排序
         //均价
-        srb.addSort("Level",SortOrder.ASC);
+        srb.addSort("Level",SortOrder.DESC);
 //        srb.addSort("avgPrice", SortOrder.ASC);
         //分页
         villageRequest.setSize(10);
