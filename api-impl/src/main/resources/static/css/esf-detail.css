@@ -96,6 +96,11 @@ hr {
       font-size: 20px; }
     [data-dpr="3"] .house-labelling.normal span, [data-dpr="3"] .house-labelling.gray span {
       font-size: 30px; }
+  .house-labelling.middle span {
+    height: 0.4rem;
+    line-height: 0.4rem;
+    padding-left: 0.16rem;
+    padding-right: 0.16rem; }
   .house-labelling.gray span {
     color: #fff;
     background-color: #747788; }
@@ -961,7 +966,6 @@ a.pswp__share--download:hover {
   .module-header-message .more-arrows {
     position: absolute;
     top: 0;
-    line-height: 1.52rem;
     right: 0.4rem;
     color: #999; }
     [data-dpr="1"] .module-header-message .more-arrows {

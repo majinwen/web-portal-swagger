@@ -5,6 +5,8 @@ $baseGreen: #3bbc6c;
 $baseGray: #747788;
 $baseModuleFillColor: #f2f2f2;
 $baseGray9: #999;
+$borderRadiusColor: #999;
+$borderLineColor: #ccc;
 
 .high-light-red {
     color: $baseRed !important;
@@ -81,6 +83,15 @@ $FontSize: 16;
             padding-left: rem(20);
             padding-right: rem(20);
             margin-right: rem(6);
+        }
+    }
+
+    &.middle {
+        span {
+            height: rem(30);
+            line-height: rem(30);
+            padding-left: rem(12);
+            padding-right: rem(12);
         }
     }
 

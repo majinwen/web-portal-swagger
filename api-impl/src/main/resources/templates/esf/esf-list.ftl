@@ -106,7 +106,7 @@
                     <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
                     <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
+                    <div class="cont-block-4 house-labelling gray middle">
                         <span>满5</span>
                         <span>近地铁</span>
                     </div>
@@ -126,7 +126,7 @@
                     <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
                     <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
+                    <div class="cont-block-4 house-labelling gray middle">
                         <span>满5</span>
                         <span>近地铁</span>
                     </div>
@@ -146,7 +146,7 @@
                     <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
                     <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
+                    <div class="cont-block-4 house-labelling gray middle">
                         <span>满5</span>
                         <span>近地铁</span>
                     </div>
@@ -166,7 +166,7 @@
                     <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
                     <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
+                    <div class="cont-block-4 house-labelling gray middle">
                         <span>满5</span>
                         <span>近地铁</span>
                     </div>
@@ -186,7 +186,7 @@
                     <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
                     <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
+                    <div class="cont-block-4 house-labelling gray middle">
                         <span>满5</span>
                         <span>近地铁</span>
                     </div>

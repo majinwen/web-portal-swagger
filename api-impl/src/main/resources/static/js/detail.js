@@ -10,6 +10,9 @@ Zepto(function () {
 
     // 户型类型切换
     houseTypeState();
+
+    // 首页头条公告滚动
+    textSlider();
 });
 
 function describeAllShow() {
@@ -43,12 +46,21 @@ function detailContactState() {
 
 function carouselSwiper() {
     if ($('.swiper-container').length){
+
+        // 详情页
         var bannerSwiper = new Swiper('.carousel-swiper', {
             autoplay: 2000,//可选选项，自动滑动
             loop: true,
             pagination : '.swiper-pagination',
             paginationType : 'fraction'
         });
+
+        // 新房首页
+        var newIndexSwiper = new Swiper('.carousel-swiper', {
+            autoplay: 2000,//可选选项，自动滑动
+            loop: true,
+            pagination : '.swiper-pagination'
+        })
     }
 }
 
@@ -81,3 +93,61 @@ function houseTypeState() {
         });
     }
 }
+
+function textSlider() {
+    var scrollDom = $('.text-scroll'),
+        $ul = scrollDom.find('ul'),
+        $li = scrollDom.find('li'),
+        $length = $li.length,
+        $lilength = $li.height(),
+        num = 0;
+
+    if (scrollDom.length === 0) {
+        return;
+    }
+
+    if ($length > 1) {
+        $ul.append($li.eq(0).clone());
+        setInterval(function () {
+            num++;
+            $ul.addClass('animate').css('-webkit-transform','translateY(-' + $lilength*(num) + 'px)');
+            setTimeout(function () {
+                if (num == $length) {
+                    $ul.removeClass('animate').css('-webkit-transform','translateY(0)');
+                    num = 0;
+                }
+            },300)
+        },3000);
+
+    }
+}
+
+/*
+$(function(){
+    var scrollDiv = $(".scroll"),
+        $ul = scrollDiv.find("ul"),
+        $li = scrollDiv.find("li"),
+        $length = $li.length,
+        $liHeight = $li.height(),
+        num = 0;
+
+    if(scrollDiv.length == 0){
+        return;
+    }
+
+    if($length > 1){
+        $ul.append($li.eq(0).clone());
+        setInterval(
+            function(){
+                num++;
+                $ul.addClass("animate").css("-webkit-transform","translateY(-"+ $liHeight*(num) +"px)");
+                setTimeout(
+                    function(){
+                        if(num == $length){
+                            $ul.removeClass("animate").css("-webkit-transform","translateY(0)");
+                            num = 0;
+                        }
+                    },300);
+            },3000);
+    }
+});*/

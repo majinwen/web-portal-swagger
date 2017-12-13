@@ -77,5 +77,16 @@ public class NewHouseController {
         return "newhouse/new-parameter";
     }
 
+    /**
+     * 新房首页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/index")
+    public String index(Model model){
+
+        model.addAttribute("user","asds");
+        return "newhouse/new-index";
+    }
 
 }

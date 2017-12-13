@@ -13,22 +13,16 @@
     <div class="swiper-container carousel-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
             <#assign imglist = build['building_imgs']>
-         <#list imglist as item>
+            <#list imglist as item>
             <li onclick="initphoto(this,0)" class="swiper-slide">
                 <img src="${staticurl}/${item}" data-src="${staticurl}/${item}" alt="${build['building_name']}">
             </li>
-         </#list>
-         <#--   <li onclick="initphoto(this,1)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner2.jpg" data-src="${staticurl}/images/esf/esxq_banner2.jpg" alt="2">
-            </li>
-            <li onclick="initphoto(this,2)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner3.jpg" data-src="${staticurl}/images/esf/esxq_banner3.jpg" alt="3">
-            </li>-->
+            </#list>
         </ul>
-     <#--   <div class="banner-title">
-            <div class="banner-house-number">房源编号：${build['building_name']}</div>
+        <div class="banner-title">
+            <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
             <div class="swiper-pagination pictrue-index"></div>
-        </div>-->
+        </div>
     </div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
@@ -84,9 +78,7 @@
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
-                <p>
-                    交通信息：距离地铁国贸站[1号线] 1.0km<em class="primary-distance">0.6km</em>
-                </p>
+                <p>交通信息：距离地铁国贸站[1号线] 1.0km<em class="primary-distance">0.6km</em></p>
             </li>
             <li>
                 <p>最新开盘：2017-09-09</p>
@@ -132,97 +124,28 @@
             <a href="#" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
-     <#if layout?exists>
-    <#list layout as item>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                    <span class="sale-state">在售</span>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
-                    <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
-                    <div class="house-labelling normal small tilelist-tag">
-        <#assign layouttagitem = item['layout_tag']>
-        <#list layouttagitem as tagatem>
-            <span>${tagatem}</span>
+        <#if layout?exists>
+        <#list layout as item>
+            <li>
+                <a href="#">
+                    <div class="picture-box">
+                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                        <span class="sale-state">在售</span>
+                    </div>
+                    <div class="tilelist-content">
+                        <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
+                        <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
+                        <div class="house-labelling normal small tilelist-tag">
+                            <#assign layouttagitem = item['layout_tag']>
+                            <#list layouttagitem as tagatem>
+                            <span>${tagatem}</span>
+                            </#list>
+                        </div>
+                    </div>
+                </a>
+            </li>
         </#list>
-                    </div>
-                </div>
-            </a>
-        </li>
-    </#list>
-    </#if>
-
-       <#--     <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>-->
+        </#if>
         </ul>
     </section>
 </div>
@@ -262,54 +185,6 @@
         </li>
     </#list>
     </#if>
-        <#--<li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850元</em>/㎡</h4>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850元</em>/㎡</h4>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850元</em>/㎡</h4>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850元</em>/㎡</h4>
-                </div>
-            </a>
-        </li>-->
     </ul>
 </section>
 <section class="detail-contact-box" id="detailContactState">

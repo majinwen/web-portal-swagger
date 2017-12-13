@@ -96,6 +96,11 @@ hr {
       font-size: 20px; }
     [data-dpr="3"] .house-labelling.normal span, [data-dpr="3"] .house-labelling.gray span {
       font-size: 30px; }
+  .house-labelling.middle span {
+    height: 0.4rem;
+    line-height: 0.4rem;
+    padding-left: 0.16rem;
+    padding-right: 0.16rem; }
   .house-labelling.gray span {
     color: #fff;
     background-color: #747788; }
