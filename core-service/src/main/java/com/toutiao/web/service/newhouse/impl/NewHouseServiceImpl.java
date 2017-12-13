@@ -351,16 +351,18 @@ public class NewHouseServiceImpl implements NewHouseService{
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
         Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
         List<Map<String, Object>> roomCount = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>();
+//        Map<String, Object> map = new HashMap<>();
         while(roomBucketIt.hasNext())
         {
+            Map<String, Object> map = new HashMap<>();
             Bucket roomBucket = (Bucket) roomBucketIt.next();
-            System.out.println(roomBucket.getKey() + "居有" + roomBucket.getDocCount() +"个。");
+
            // list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
             map.put("room",roomBucket.getKey());
             map.put("count",roomBucket.getDocCount());
+            roomCount.add(map);
         }
-        roomCount.add(map);
+
         return roomCount;
     }
 
