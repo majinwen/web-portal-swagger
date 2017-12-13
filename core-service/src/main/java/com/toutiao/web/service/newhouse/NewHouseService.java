@@ -29,5 +29,19 @@ public interface NewHouseService {
     Map<String,Object> getNewHouseParameterDetails(Integer buildingId);
 
 
+    /**
+     * 获取楼盘户型详情
+     * @param buildingId
+     * @return
+     */
+    Map<String,Object> getNewHouseLayoutDetails(Integer buildingId, Integer tags);
+
+
+    /**
+     * 获取楼盘户型居室数量
+     * @param buildingId
+     * @return
+     */
+    Map<String,Object> getNewHouseLayoutCountByRoom(Integer buildingId);
 
 }

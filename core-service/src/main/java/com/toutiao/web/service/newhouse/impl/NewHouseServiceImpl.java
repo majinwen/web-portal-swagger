@@ -10,15 +10,13 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.join.query.HasChildQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.metrics.min.MinAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -28,12 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import static org.apache.xmlbeans.impl.store.Public2.test;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
@@ -271,6 +265,61 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Override
     public Map<String, Object> getNewHouseParameterDetails(Integer buildingId) {
         return null;
+    }
+
+    @Override
+    public Map<String, Object> getNewHouseLayoutDetails(Integer buildingId, Integer tags) {
+        TransportClient client = esClientTools.init();
+        BoolQueryBuilder detailsBuilder = boolQuery();
+//        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        if(tags > 0){
+            detailsBuilder.must(QueryBuilders.termQuery("room",tags));
+        }
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
+                .setQuery(detailsBuilder)
+                .execute().actionGet();
+        SearchHits layouthits = searchresponse1.getHits();
+        List<Map<String,Object>> layouts =new ArrayList<>();
+        SearchHit[] searchLayoutHists = layouthits.getHits();
+        for (SearchHit hit : searchLayoutHists) {
+            Map<String,Object> item=hit.getSourceAsMap();
+            layouts.add(item);
+        }
+
+
+
+
+        Map<String, Object> maprep = new HashMap<>();
+
+        maprep.put("layouts",layouts);
+        return maprep;
+    }
+
+    @Override
+    public Map<String, Object> getNewHouseLayoutCountByRoom(Integer buildingId) {
+
+        TransportClient client = esClientTools.init();
+        BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+
+        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType).setQuery(sizeBuilder)
+                .addAggregation(AggregationBuilders.terms("roomCount").field("room"))
+                .execute().actionGet();
+
+        Map aggMap =searchresponse.getAggregations().asMap();
+        LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
+        Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+        Map<String, Object> roomCount = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        while(roomBucketIt.hasNext())
+        {
+            Bucket roomBucket = (Bucket) roomBucketIt.next();
+            System.out.println(roomBucket.getKey() + "居有" + roomBucket.getDocCount() +"个。");
+            list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
+        }
+        roomCount.put("rooms",list);
+        return roomCount;
     }
 
     /**

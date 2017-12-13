@@ -3,7 +3,6 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,35 @@ public class NewHouseController {
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
         return "newhouse/new-detail";
+
+    }
+
+    /**
+     * 楼盘户型详情
+     * @param buildingId
+     * @param tags
+     * @param model
+     * @return
+     */
+    @RequestMapping("/getNewHouseLayoutDetails")
+    public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
+        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+        model.addAttribute("layoutDetails", details.get("layouts"));
+        return "";
+
+    }
+
+    /**
+     * 根据楼盘计算不同户型数量
+     * @param buildingId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/getNewHouseLayoutCountByRoom")
+    public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId, Model model){
+        Map<String,Object> details = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
+        model.addAttribute("rooms", details.get("rooms"));
+        return "";
 
     }
 
