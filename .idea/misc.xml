@@ -3,10 +3,16 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
+        <option value="$PROJECT_DIR$/deploy-config/pom.xml" />
+        <option value="$PROJECT_DIR$/deploy/pom.xml" />
+        <option value="$PROJECT_DIR$/dao/pom.xml" />
+        <option value="$PROJECT_DIR$/core-model/pom.xml" />
+        <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/api-impl/pom.xml" />
+        <option value="$PROJECT_DIR$/api/pom.xml" />
+        <option value="$PROJECT_DIR$/core-service/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="D:/work/mq-demo-master/spring/java-spring-demo/pom.xml" />
-        <option value="D:/work/mq-demo-master/http/java-http-demo/pom.xml" />
-        <option value="D:/work/mq-demo-master/tcp/java-tcp-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/mbg/pom.xml" />
       </list>
     </option>
   </component>

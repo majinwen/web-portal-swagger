@@ -6,9 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="java-spring-demo" />
-        <module name="mq-demo" />
-        <module name="mq-java-http-demo" />
+        <module name="mbg" />
         <module name="web.api" />
         <module name="web.api-impl" />
         <module name="web.common" />
@@ -20,10 +18,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="java-spring-demo" target="1.6" />
       <module name="mbg" target="1.8" />
-      <module name="mq-demo" target="1.6" />
-      <module name="mq-java-http-demo" target="1.6" />
       <module name="web-portal" target="1.8" />
       <module name="web.api" target="1.8" />
       <module name="web.api-impl" target="1.8" />
