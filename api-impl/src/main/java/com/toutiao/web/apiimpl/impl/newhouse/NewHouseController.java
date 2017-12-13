@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,8 @@ public class NewHouseController {
     @RequestMapping("/searchNewHouse")
     public String searchNewHouse(NewHouseQuery newHouseQuery, Model model){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
-        model.addAttribute("builds",builds.get("data"));
+       ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
+        model.addAttribute("builds",build);
         model.addAttribute("total",builds.get("total"));
         return "newhouse/new-list";
 
@@ -64,6 +66,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
+/*
     @RequestMapping("/getNewHouseLayoutDetails")
     public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -71,6 +74,7 @@ public class NewHouseController {
         return "";
 
     }
+*/
 
     /**
      * 根据楼盘计算不同户型数量
@@ -79,10 +83,14 @@ public class NewHouseController {
      * @return
      */
     @RequestMapping("/getNewHouseLayoutCountByRoom")
-    public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId, Model model){
-        Map<String,Object> details = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
-        model.addAttribute("rooms", details.get("rooms"));
-        return "";
+    public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
+        List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
+        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+        model.addAttribute("layoutDetails", details.get("layouts"));
+        model.addAttribute("room",room);
+        model.addAttribute("bid",buildingId);
+        model.addAttribute("tags",tags);
+        return "newhouse/new-house-type";
 
     }
 
