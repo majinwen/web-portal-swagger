@@ -8,24 +8,26 @@
     <title>新房参数</title>
 </head>
 <body>
+       <#assign discript = discript[0]>
 <div class="module-bottom-fill"></div>
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>一渡龙湾</h2>
-            <p>别名：一渡龙湾</p>
+            <h2>${discript['building_name']}</h2>
+            <p>别名：${discript['building_nickname']}</p>
             <div class="primary-header-tag">
-                <span>满二</span>
-                <span>满五</span>
-                <span>随时看房</span>
+            <#assign tags = discript['building_tags']>
+            <#list tags as item>
+                <span>${item}</span>
+            </#list>
             </div>
         </div>
         <ul class="primary-item">
             <li>
                 <p>销售状态：待售</p>
-                <p>最新开盘：2017-09-09</p>
-                <p>交房时间：2019-12-10</p>
-                <p>参考均价：12345元/㎡ </p>
+                <p>最新开盘：${discript['opened_time']}</p>
+                <p>交房时间：${discript['deliver_time']}</p>
+                <p>参考均价：${discript['average_price']}元/㎡ </p>
             </li>
         </ul>
     </section>
@@ -37,10 +39,10 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置：二环到三环</p>
-                <p>区域位置：丰台</p>
-                <p>楼盘地址：</p>
-                <p>售楼处地址：</p>
+                <p>环线位置：${discript['roundstation']}</p>
+                <p>区域位置：${discript['district_name']}</p>
+                <p>楼盘地址：${discript['building_address']}</p>
+                <p>售楼处地址：${discript['sale_address']}</p>
             </li>
         </ul>
     </section>
@@ -52,16 +54,16 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>建筑类型：板楼</p>
-                <p>装修类型：精装修</p>
-                <p>产权年限：70年</p>
-                <p>占地面积：420000㎡</p>
-                <p>建筑面积：340000㎡</p>
-                <p>容积率：1.20</p>
-                <p>绿化率：34%</p>
-                <p>规划户数：11栋/123户</p>
-                <p>规划车位：EEEEEEEE</p>
-                <p>车位配比：户数/车位数</p>
+                <p>建筑类型：${discript['building_type']}</p>
+                <p>装修类型：${discript['redecorate_type']}</p>
+                <p>产权年限：${discript['building_life']}</p>
+                <p>占地面积：${discript['ground_area']}㎡</p>
+                <p>建筑面积：${discript['purpose_area']}㎡</p>
+                <p>容积率：${discript['dimension']}</p>
+                <p>绿化率：${discript['virescencerate']}%</p>
+                <p>规划户数：${discript['totaldoor']}</p>
+                <p>规划车位：${discript['park_space']}</p>
+                <p>车位配比：${discript['park_radio']}</p>
             </li>
         </ul>
     </section>
@@ -73,10 +75,10 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>物业类型：住宅</p>
-                <p>物业公司：XXXXXX</p>
-                <p>物业费：XXXXXXXXXX</p>
-                <p>供暖：自采暖</p>
+                <p>物业类型：${discript['property_type']}</p>
+                <p>物业公司：${discript['propertymanage']}</p>
+                <p>物业费：${discript['propertyfee']}</p>
+                <p>供暖：${discript['heating_type']}</p>
                 <p>供水：暂无</p>
                 <p>供电：暂无</p>
                 <p>燃气：暂无</p>
