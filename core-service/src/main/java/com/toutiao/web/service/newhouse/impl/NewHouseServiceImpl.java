@@ -302,6 +302,9 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(tags > 0){
             detailsBuilder.must(QueryBuilders.termQuery("room",tags));
         }
+
+
+
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
                 .setQuery(detailsBuilder)
                 .execute().actionGet();
