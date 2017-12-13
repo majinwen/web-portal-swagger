@@ -114,7 +114,14 @@
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${map.houseTitle}</h3>
                         <p class="cont-block-2">${map.houseArea}㎡/${map.houseType}/${map.houseOrientation}/${map.housePlotName}</p>
-                        <p class="cont-block-3 distance"><i class="icon"></i>${map.areaName}[${map.houseBusinessName}]</p>
+                        <#assign item=map['houseToSubwayDistance']>
+                        <#if map['key']?exists>
+                            <#if item[map['key']]?exists>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${item[map['key']]}</p>
+                            </#if >
+                            <#else >
+                                <p class="cont-block-3 distance"><i class="icon"></i>${map.areaName}[${map.houseBusinessName}]</p>
+                        </#if>
                         <div class="cont-block-4">
                             <#assign item =  map['houseLabel']>
                             <#list item as itemValue>

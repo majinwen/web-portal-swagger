@@ -96,10 +96,8 @@ public class ProjHouseInfo {
     // 建筑类别
     private String houseBuildingType;
 
-
     // 房源级别(排序)
     private String houseRank;
-
     /**
      * 房源描述
      */
@@ -120,11 +118,14 @@ public class ProjHouseInfo {
     // 房源小区id
     private Integer housePlotId;
 
-    // 房源小区地理
+    // 房源小区地理坐标
     private Double[] housePlotLocation;
 
     // 房源小区名称
     private String housePlotName;
+
+    //房源小区照片
+    private String[] housePlotPhoto;
 
     // 房源小区信息
     private String housePlotInfo;
@@ -166,5 +167,6 @@ public class ProjHouseInfo {
     //距离您多少公里
     private Map<String,String> houseToSubwayDistance;
 
+    private String key;
 
 }
