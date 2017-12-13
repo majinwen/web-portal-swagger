@@ -152,8 +152,8 @@
                             <#if map['nearsubway']??>
                                    ${map['nearsubway']}
                             <#else>${map['district_name']}
-                            </#if>
-                            /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                            </#if>/
+                        ${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
                         <div class="cont-block-4">
                             <#assign item =  map['building_tags']>
                             <#list item as itemValue>
