@@ -248,7 +248,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         for (SearchHit hit : searchHists) {
             buildings = hit.getSourceAsString();
             locations = (List<Double>) hit.getSource().get("location");
-            System.out.println(locations);
+
         }
         Map<String, Object> maprep = new HashMap<>();
         maprep.put("build",buildings);
@@ -343,7 +343,6 @@ public class NewHouseServiceImpl implements NewHouseService{
         while(roomBucketIt.hasNext())
         {
             Bucket roomBucket = (Bucket) roomBucketIt.next();
-            System.out.println(roomBucket.getKey() + "居有" + roomBucket.getDocCount() +"个。");
             list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
         }
         roomCount.put("rooms",list);
@@ -367,7 +366,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
         BoolQueryBuilder boolQueryBuilder =boolQuery();
-        //  System.out.println(location1);
+
         boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
         boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
         srb.setQuery(boolQueryBuilder);
