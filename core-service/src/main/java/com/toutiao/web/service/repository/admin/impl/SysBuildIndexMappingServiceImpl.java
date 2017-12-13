@@ -42,6 +42,7 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .startObject("location").field("type", "geo_point").field("index", "not_analyzed").endObject()
                 .startObject("metroStationId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("metroStation").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("metroWithPlotsDistance").field("type", "object").field("index", "not_analyzed").endObject()
                 .startObject("subwayLineId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("subwayLine").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("TrafficInformation").field("type", "string").field("index", "not_analyzed").endObject()
