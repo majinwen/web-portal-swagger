@@ -71,7 +71,6 @@ public class NewHouseController {
      * @param model
      * @return
      */
-/*
     @RequestMapping("/getNewHouseLayoutDetails")
     public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -79,7 +78,6 @@ public class NewHouseController {
         return "";
 
     }
-*/
 
     /**
      * 根据楼盘计算不同户型数量

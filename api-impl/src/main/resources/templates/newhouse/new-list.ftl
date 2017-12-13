@@ -28,6 +28,7 @@
             <div class="none">
                 <ul class="category-parent">
                     <li>区域</li>
+                    <li>地铁</li>
                 </ul>
                 <ul class="category-child"></ul>
                 <ul class="category-children"></ul>
@@ -155,7 +156,7 @@
                             </#if>
                             /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
                         <div class="cont-block-4 house-labelling gray middle">
-                            <#assign item = map['building_tags']>
+                            <#assign item =  map['building_tags']>
                             <#list item as itemValue>
                                 <span>${itemValue}</span>
                             </#list>
@@ -174,7 +175,6 @@
     </#if>
     </ul>
 </section>
-
 <script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 </body>
