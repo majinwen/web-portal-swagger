@@ -1,0 +1,1203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.admin.ProjInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.admin.ProjInfo" >
+    <id column="newcode" property="newcode" jdbcType="INTEGER" />
+    <result column="n_or_e" property="nOrE" jdbcType="SMALLINT" />
+    <result column="projname" property="projname" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="operastion" property="operastion" jdbcType="SMALLINT" />
+    <result column="installment" property="installment" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="address_info" property="addressInfo" jdbcType="VARCHAR" />
+    <result column="proj_type" property="projType" jdbcType="VARCHAR" />
+    <result column="housefeature" property="housefeature" jdbcType="VARCHAR" />
+    <result column="buildcategory" property="buildcategory" jdbcType="VARCHAR" />
+    <result column="buildingform" property="buildingform" jdbcType="VARCHAR" />
+    <result column="proj_feature" property="projFeature" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="VARCHAR" />
+    <result column="district_id" property="districtId" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="round" property="round" jdbcType="INTEGER" />
+    <result column="roundstation" property="roundstation" jdbcType="VARCHAR" />
+    <result column="rounddirection" property="rounddirection" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="projdesc" property="projdesc" jdbcType="VARCHAR" />
+    <result column="right_year" property="rightYear" jdbcType="SMALLINT" />
+    <result column="groundarea" property="groundarea" jdbcType="NUMERIC" />
+    <result column="purposearea" property="purposearea" jdbcType="NUMERIC" />
+    <result column="dimension" property="dimension" jdbcType="NUMERIC" />
+    <result column="virescencerate" property="virescencerate" jdbcType="NUMERIC" />
+    <result column="buildingdes" property="buildingdes" jdbcType="VARCHAR" />
+    <result column="totaldoor" property="totaldoor" jdbcType="BIGINT" />
+    <result column="parkdesc" property="parkdesc" jdbcType="VARCHAR" />
+    <result column="parkspace" property="parkspace" jdbcType="INTEGER" />
+    <result column="carrentprice" property="carrentprice" jdbcType="DOUBLE" />
+    <result column="carrentpricetype" property="carrentpricetype" jdbcType="DOUBLE" />
+    <result column="propertyfee" property="propertyfee" jdbcType="DOUBLE" />
+    <result column="propfeetype" property="propfeetype" jdbcType="VARCHAR" />
+    <result column="propertyaddition" property="propertyaddition" jdbcType="VARCHAR" />
+    <result column="fixstatus" property="fixstatus" jdbcType="VARCHAR" />
+    <result column="equipment" property="equipment" jdbcType="VARCHAR" />
+    <result column="layout" property="layout" jdbcType="VARCHAR" />
+    <result column="work_schedule" property="workSchedule" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="finishdate" property="finishdate" jdbcType="TIMESTAMP" />
+    <result column="saledate" property="saledate" jdbcType="TIMESTAMP" />
+    <result column="saledate_s" property="saledateS" jdbcType="VARCHAR" />
+    <result column="livindate" property="livindate" jdbcType="TIMESTAMP" />
+    <result column="livindate_s" property="livindateS" jdbcType="VARCHAR" />
+    <result column="saletelphone" property="saletelphone" jdbcType="VARCHAR" />
+    <result column="saleaddress" property="saleaddress" jdbcType="VARCHAR" />
+    <result column="salecard" property="salecard" jdbcType="VARCHAR" />
+    <result column="mortgage_bank" property="mortgageBank" jdbcType="VARCHAR" />
+    <result column="saling" property="saling" jdbcType="SMALLINT" />
+    <result column="sail_schedule" property="sailSchedule" jdbcType="SMALLINT" />
+    <result column="developer" property="developer" jdbcType="VARCHAR" />
+    <result column="investor" property="investor" jdbcType="VARCHAR" />
+    <result column="propertymanage" property="propertymanage" jdbcType="VARCHAR" />
+    <result column="propertyadviser" property="propertyadviser" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="VARCHAR" />
+    <result column="construct" property="construct" jdbcType="VARCHAR" />
+    <result column="agent" property="agent" jdbcType="VARCHAR" />
+    <result column="sightdesign" property="sightdesign" jdbcType="VARCHAR" />
+    <result column="conextend" property="conextend" jdbcType="VARCHAR" />
+    <result column="media" property="media" jdbcType="VARCHAR" />
+    <result column="is_approve" property="isApprove" jdbcType="SMALLINT" />
+    <result column="webaddress" property="webaddress" jdbcType="VARCHAR" />
+    <result column="websaleaddress" property="websaleaddress" jdbcType="VARCHAR" />
+    <result column="complete_fraction" property="completeFraction" jdbcType="VARCHAR" />
+    <result column="coord_x" property="coordX" jdbcType="NUMERIC" />
+    <result column="coord_y" property="coordY" jdbcType="NUMERIC" />
+    <result column="saling_optime" property="salingOptime" jdbcType="TIMESTAMP" />
+    <result column="adminstauts_time" property="adminstautsTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="SMALLINT" />
+    <result column="deldate" property="deldate" jdbcType="TIMESTAMP" />
+    <result column="delreason" property="delreason" jdbcType="VARCHAR" />
+    <result column="tel400" property="tel400" jdbcType="VARCHAR" />
+    <result column="pricerate" property="pricerate" jdbcType="NUMERIC" />
+    <result column="pricemax" property="pricemax" jdbcType="NUMERIC" />
+    <result column="pricemin" property="pricemin" jdbcType="NUMERIC" />
+    <result column="esf_district" property="esfDistrict" jdbcType="VARCHAR" />
+    <result column="esf_comarea" property="esfComarea" jdbcType="VARCHAR" />
+    <result column="pinyin_name" property="pinyinName" jdbcType="VARCHAR" />
+    <result column="pinyin_initials" property="pinyinInitials" jdbcType="CHAR" />
+    <result column="esf_address" property="esfAddress" jdbcType="VARCHAR" />
+    <result column="esf_operastion" property="esfOperastion" jdbcType="VARCHAR" />
+    <result column="esf_show" property="esfShow" jdbcType="SMALLINT" />
+    <result column="esf_is_approve" property="esfIsApprove" jdbcType="CHAR" />
+    <result column="update_saledate_time" property="updateSaledateTime" jdbcType="TIMESTAMP" />
+    <result column="update_livindate_time" property="updateLivindateTime" jdbcType="TIMESTAMP" />
+    <result column="right_desc" property="rightDesc" jdbcType="VARCHAR" />
+    <result column="zip_code" property="zipCode" jdbcType="VARCHAR" />
+    <result column="property_tele" property="propertyTele" jdbcType="VARCHAR" />
+    <result column="property_address" property="propertyAddress" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="updater_id" property="updaterId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    newcode, n_or_e, projname, nickname, operastion, installment, address, address_info,
+    proj_type, housefeature, buildcategory, buildingform, proj_feature, province, city_id, 
+    district_id, area_id, round, roundstation, rounddirection, community_id, projdesc, 
+    right_year, groundarea, purposearea, dimension, virescencerate, buildingdes, totaldoor, 
+    parkdesc, parkspace, carrentprice, carrentpricetype, propertyfee, propfeetype, propertyaddition, 
+    fixstatus, equipment, layout, work_schedule, startdate, finishdate, saledate, saledate_s, 
+    livindate, livindate_s, saletelphone, saleaddress, salecard, mortgage_bank, saling, 
+    sail_schedule, developer, investor, propertymanage, propertyadviser, landscape, construct, 
+    agent, sightdesign, conextend, media, is_approve, webaddress, websaleaddress, complete_fraction, 
+    coord_x, coord_y, saling_optime, adminstauts_time, create_time, update_time, is_del, deldate,
+    delreason, tel400, pricerate, pricemax, pricemin, esf_district, esf_comarea, pinyin_name, 
+    pinyin_initials, esf_address, esf_operastion, esf_show, esf_is_approve, update_saledate_time, 
+    update_livindate_time, right_desc, zip_code, property_tele, property_address, creator_id, 
+    updater_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from proj_info
+    where newcode = #{newcode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from proj_info
+    where newcode = #{newcode,jdbcType=INTEGER}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.toutiao.web.dao.entity.admin.ProjInfo" >
+    insert into proj_info (n_or_e,
+    projname, nickname, operastion,
+    installment, address, address_info,
+    proj_type, housefeature, buildcategory,
+    buildingform, proj_feature, province,
+    city_id, district_id, area_id,
+    round, roundstation, rounddirection,
+    community_id, projdesc, right_year,
+    groundarea, purposearea, dimension,
+    virescencerate, buildingdes, totaldoor,
+    parkdesc, parkspace, carrentprice,
+    carrentpricetype, propertyfee, propfeetype,
+    propertyaddition, fixstatus, equipment,
+    layout, work_schedule, startdate,
+    finishdate, saledate, saledate_s,
+    livindate, livindate_s, saletelphone,
+    saleaddress, salecard, mortgage_bank,
+    saling, sail_schedule, developer,
+    investor, propertymanage, propertyadviser,
+    landscape, construct, agent,
+    sightdesign, conextend, media,
+    is_approve, webaddress, websaleaddress,
+    complete_fraction, coord_x, coord_y,
+    saling_optime, adminstauts_time, create_time,
+    update_time, deldate, delreason,
+    tel400, pricerate, pricemax,
+    pricemin, esf_district, esf_comarea,
+    pinyin_name, pinyin_initials, esf_address,
+    esf_operastion, esf_show, esf_is_approve,
+    update_saledate_time, update_livindate_time,
+    right_desc, zip_code, property_tele,
+    property_address, creator_id, updater_id
+    )
+    values (#{nOrE,jdbcType=SMALLINT},
+    #{projname,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{operastion,jdbcType=SMALLINT},
+    #{installment,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{addressInfo,jdbcType=VARCHAR},
+    #{projType,jdbcType=VARCHAR}, #{housefeature,jdbcType=VARCHAR}, #{buildcategory,jdbcType=VARCHAR},
+    #{buildingform,jdbcType=VARCHAR}, #{projFeature,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+    #{cityId,jdbcType=VARCHAR}, #{districtId,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},
+    #{round,jdbcType=VARCHAR}, #{roundstation,jdbcType=VARCHAR}, #{rounddirection,jdbcType=VARCHAR},
+    #{communityId,jdbcType=INTEGER}, #{projdesc,jdbcType=VARCHAR}, #{rightYear,jdbcType=SMALLINT},
+    #{groundarea,jdbcType=NUMERIC}, #{purposearea,jdbcType=NUMERIC}, #{dimension,jdbcType=NUMERIC},
+    #{virescencerate,jdbcType=NUMERIC}, #{buildingdes,jdbcType=VARCHAR}, #{totaldoor,jdbcType=BIGINT},
+    #{parkdesc,jdbcType=VARCHAR}, #{parkspace,jdbcType=INTEGER}, #{carrentprice,jdbcType=DOUBLE},
+    #{carrentpricetype,jdbcType=DOUBLE}, #{propertyfee,jdbcType=DOUBLE}, #{propfeetype,jdbcType=VARCHAR},
+    #{propertyaddition,jdbcType=VARCHAR}, #{fixstatus,jdbcType=VARCHAR}, #{equipment,jdbcType=VARCHAR},
+    #{layout,jdbcType=VARCHAR}, #{workSchedule,jdbcType=VARCHAR}, #{startdate,jdbcType=TIMESTAMP},
+    #{finishdate,jdbcType=TIMESTAMP}, #{saledate,jdbcType=TIMESTAMP}, #{saledateS,jdbcType=VARCHAR},
+    #{livindate,jdbcType=TIMESTAMP}, #{livindateS,jdbcType=VARCHAR}, #{saletelphone,jdbcType=VARCHAR},
+    #{saleaddress,jdbcType=VARCHAR}, #{salecard,jdbcType=VARCHAR}, #{mortgageBank,jdbcType=VARCHAR},
+    #{saling,jdbcType=SMALLINT}, #{sailSchedule,jdbcType=SMALLINT}, #{developer,jdbcType=VARCHAR},
+    #{investor,jdbcType=VARCHAR}, #{propertymanage,jdbcType=VARCHAR}, #{propertyadviser,jdbcType=VARCHAR},
+    #{landscape,jdbcType=VARCHAR}, #{construct,jdbcType=VARCHAR}, #{agent,jdbcType=VARCHAR},
+    #{sightdesign,jdbcType=VARCHAR}, #{conextend,jdbcType=VARCHAR}, #{media,jdbcType=VARCHAR},
+    #{isApprove,jdbcType=SMALLINT}, #{webaddress,jdbcType=VARCHAR}, #{websaleaddress,jdbcType=VARCHAR},
+    #{completeFraction,jdbcType=VARCHAR}, #{coordX,jdbcType=NUMERIC}, #{coordY,jdbcType=NUMERIC},
+    #{salingOptime,jdbcType=TIMESTAMP}, #{adminstautsTime,jdbcType=TIMESTAMP}, now(),
+    #{updateTime,jdbcType=TIMESTAMP}, #{deldate,jdbcType=TIMESTAMP}, #{delreason,jdbcType=VARCHAR},
+    #{tel400,jdbcType=VARCHAR}, #{pricerate,jdbcType=NUMERIC}, #{pricemax,jdbcType=NUMERIC},
+    #{pricemin,jdbcType=NUMERIC}, #{esfDistrict,jdbcType=VARCHAR}, #{esfComarea,jdbcType=VARCHAR},
+    #{pinyinName,jdbcType=VARCHAR}, #{pinyinInitials,jdbcType=CHAR}, #{esfAddress,jdbcType=VARCHAR},
+    #{esfOperastion,jdbcType=VARCHAR}, #{esfShow,jdbcType=SMALLINT}, #{esfIsApprove,jdbcType=CHAR},
+    #{updateSaledateTime,jdbcType=TIMESTAMP}, #{updateLivindateTime,jdbcType=TIMESTAMP},
+    #{rightDesc,jdbcType=VARCHAR}, #{zipCode,jdbcType=VARCHAR}, #{propertyTele,jdbcType=VARCHAR},
+    #{propertyAddress,jdbcType=VARCHAR}, #{creatorId,jdbcType=INTEGER}, #{updaterId,jdbcType=INTEGER}
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.admin.ProjInfo" >
+    insert into proj_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="nOrE != null" >
+        n_or_e,
+      </if>
+      <if test="projname != null" >
+        projname,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="operastion != null" >
+        operastion,
+      </if>
+      <if test="installment != null" >
+        installment,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="addressInfo != null" >
+        address_info,
+      </if>
+      <if test="projType != null" >
+        proj_type,
+      </if>
+      <if test="housefeature != null" >
+        housefeature,
+      </if>
+      <if test="buildcategory != null" >
+        buildcategory,
+      </if>
+      <if test="buildingform != null" >
+        buildingform,
+      </if>
+      <if test="projFeature != null" >
+        proj_feature,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="districtId != null" >
+        district_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="round != null" >
+        round,
+      </if>
+      <if test="roundstation != null" >
+        roundstation,
+      </if>
+      <if test="rounddirection != null" >
+        rounddirection,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="projdesc != null" >
+        projdesc,
+      </if>
+      <if test="rightYear != null" >
+        right_year,
+      </if>
+      <if test="groundarea != null" >
+        groundarea,
+      </if>
+      <if test="purposearea != null" >
+        purposearea,
+      </if>
+      <if test="dimension != null" >
+        dimension,
+      </if>
+      <if test="virescencerate != null" >
+        virescencerate,
+      </if>
+      <if test="buildingdes != null" >
+        buildingdes,
+      </if>
+      <if test="totaldoor != null" >
+        totaldoor,
+      </if>
+      <if test="parkdesc != null" >
+        parkdesc,
+      </if>
+      <if test="parkspace != null" >
+        parkspace,
+      </if>
+      <if test="carrentprice != null" >
+        carrentprice,
+      </if>
+      <if test="carrentpricetype != null" >
+        carrentpricetype,
+      </if>
+      <if test="propertyfee != null" >
+        propertyfee,
+      </if>
+      <if test="propfeetype != null" >
+        propfeetype,
+      </if>
+      <if test="propertyaddition != null" >
+        propertyaddition,
+      </if>
+      <if test="fixstatus != null" >
+        fixstatus,
+      </if>
+      <if test="equipment != null" >
+        equipment,
+      </if>
+      <if test="layout != null" >
+        layout,
+      </if>
+      <if test="workSchedule != null" >
+        work_schedule,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="finishdate != null" >
+        finishdate,
+      </if>
+      <if test="saledate != null" >
+        saledate,
+      </if>
+      <if test="saledateS != null" >
+        saledate_s,
+      </if>
+      <if test="livindate != null" >
+        livindate,
+      </if>
+      <if test="livindateS != null" >
+        livindate_s,
+      </if>
+      <if test="saletelphone != null" >
+        saletelphone,
+      </if>
+      <if test="saleaddress != null" >
+        saleaddress,
+      </if>
+      <if test="salecard != null" >
+        salecard,
+      </if>
+      <if test="mortgageBank != null" >
+        mortgage_bank,
+      </if>
+      <if test="saling != null" >
+        saling,
+      </if>
+      <if test="sailSchedule != null" >
+        sail_schedule,
+      </if>
+      <if test="developer != null" >
+        developer,
+      </if>
+      <if test="investor != null" >
+        investor,
+      </if>
+      <if test="propertymanage != null" >
+        propertymanage,
+      </if>
+      <if test="propertyadviser != null" >
+        propertyadviser,
+      </if>
+      <if test="landscape != null" >
+        landscape,
+      </if>
+      <if test="construct != null" >
+        construct,
+      </if>
+      <if test="agent != null" >
+        agent,
+      </if>
+      <if test="sightdesign != null" >
+        sightdesign,
+      </if>
+      <if test="conextend != null" >
+        conextend,
+      </if>
+      <if test="media != null" >
+        media,
+      </if>
+      <if test="isApprove != null" >
+        is_approve,
+      </if>
+      <if test="webaddress != null" >
+        webaddress,
+      </if>
+      <if test="websaleaddress != null" >
+        websaleaddress,
+      </if>
+      <if test="completeFraction != null" >
+        complete_fraction,
+      </if>
+      <if test="coordX != null" >
+        coord_x,
+      </if>
+      <if test="coordY != null" >
+        coord_y,
+      </if>
+      <if test="salingOptime != null" >
+        saling_optime,
+      </if>
+      <if test="adminstautsTime != null" >
+        adminstauts_time,
+      </if>
+
+        create_time,
+        update_time,
+
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="deldate != null" >
+        deldate,
+      </if>
+      <if test="delreason != null" >
+        delreason,
+      </if>
+      <if test="tel400 != null" >
+        tel400,
+      </if>
+      <if test="pricerate != null" >
+        pricerate,
+      </if>
+      <if test="pricemax != null" >
+        pricemax,
+      </if>
+      <if test="pricemin != null" >
+        pricemin,
+      </if>
+      <if test="esfDistrict != null" >
+        esf_district,
+      </if>
+      <if test="esfComarea != null" >
+        esf_comarea,
+      </if>
+      <if test="pinyinName != null" >
+        pinyin_name,
+      </if>
+      <if test="pinyinInitials != null" >
+        pinyin_initials,
+      </if>
+      <if test="esfAddress != null" >
+        esf_address,
+      </if>
+      <if test="esfOperastion != null" >
+        esf_operastion,
+      </if>
+      <if test="esfShow != null" >
+        esf_show,
+      </if>
+      <if test="esfIsApprove != null" >
+        esf_is_approve,
+      </if>
+      <if test="updateSaledateTime != null" >
+        update_saledate_time,
+      </if>
+      <if test="updateLivindateTime != null" >
+        update_livindate_time,
+      </if>
+      <if test="rightDesc != null" >
+        right_desc,
+      </if>
+      <if test="zipCode != null" >
+        zip_code,
+      </if>
+      <if test="propertyTele != null" >
+        property_tele,
+      </if>
+      <if test="propertyAddress != null" >
+        property_address,
+      </if>
+      <if test="creatorId != null" >
+        creator_id,
+      </if>
+      <if test="updaterId != null" >
+        updater_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+      <if test="nOrE != null" >
+        #{nOrE,jdbcType=SMALLINT},
+      </if>
+      <if test="projname != null" >
+        #{projname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="operastion != null" >
+        #{operastion,jdbcType=SMALLINT},
+      </if>
+      <if test="installment != null" >
+        #{installment,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addressInfo != null" >
+        #{addressInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="projType != null" >
+        #{projType,jdbcType=VARCHAR},
+      </if>
+      <if test="housefeature != null" >
+        #{housefeature,jdbcType=VARCHAR},
+      </if>
+      <if test="buildcategory != null" >
+        #{buildcategory,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingform != null" >
+        #{buildingform,jdbcType=VARCHAR},
+      </if>
+      <if test="projFeature != null" >
+        #{projFeature,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null" >
+        #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="roundstation != null" >
+        #{roundstation,jdbcType=VARCHAR},
+      </if>
+      <if test="rounddirection != null" >
+        #{rounddirection,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="projdesc != null" >
+        #{projdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="rightYear != null" >
+        #{rightYear,jdbcType=SMALLINT},
+      </if>
+      <if test="groundarea != null" >
+        #{groundarea,jdbcType=NUMERIC},
+      </if>
+      <if test="purposearea != null" >
+        #{purposearea,jdbcType=NUMERIC},
+      </if>
+      <if test="dimension != null" >
+        #{dimension,jdbcType=NUMERIC},
+      </if>
+      <if test="virescencerate != null" >
+        #{virescencerate,jdbcType=NUMERIC},
+      </if>
+      <if test="buildingdes != null" >
+        #{buildingdes,jdbcType=VARCHAR},
+      </if>
+      <if test="totaldoor != null" >
+        #{totaldoor,jdbcType=BIGINT},
+      </if>
+      <if test="parkdesc != null" >
+        #{parkdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="parkspace != null" >
+        #{parkspace,jdbcType=INTEGER},
+      </if>
+      <if test="carrentprice != null" >
+        #{carrentprice,jdbcType=DOUBLE},
+      </if>
+      <if test="carrentpricetype != null" >
+        #{carrentpricetype,jdbcType=DOUBLE},
+      </if>
+      <if test="propertyfee != null" >
+        #{propertyfee,jdbcType=DOUBLE},
+      </if>
+      <if test="propfeetype != null" >
+        #{propfeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyaddition != null" >
+        #{propertyaddition,jdbcType=VARCHAR},
+      </if>
+      <if test="fixstatus != null" >
+        #{fixstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="equipment != null" >
+        #{equipment,jdbcType=VARCHAR},
+      </if>
+      <if test="layout != null" >
+        #{layout,jdbcType=VARCHAR},
+      </if>
+      <if test="workSchedule != null" >
+        #{workSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishdate != null" >
+        #{finishdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saledate != null" >
+        #{saledate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saledateS != null" >
+        #{saledateS,jdbcType=VARCHAR},
+      </if>
+      <if test="livindate != null" >
+        #{livindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="livindateS != null" >
+        #{livindateS,jdbcType=VARCHAR},
+      </if>
+      <if test="saletelphone != null" >
+        #{saletelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="saleaddress != null" >
+        #{saleaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="salecard != null" >
+        #{salecard,jdbcType=VARCHAR},
+      </if>
+      <if test="mortgageBank != null" >
+        #{mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="saling != null" >
+        #{saling,jdbcType=SMALLINT},
+      </if>
+      <if test="sailSchedule != null" >
+        #{sailSchedule,jdbcType=SMALLINT},
+      </if>
+      <if test="developer != null" >
+        #{developer,jdbcType=VARCHAR},
+      </if>
+      <if test="investor != null" >
+        #{investor,jdbcType=VARCHAR},
+      </if>
+      <if test="propertymanage != null" >
+        #{propertymanage,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyadviser != null" >
+        #{propertyadviser,jdbcType=VARCHAR},
+      </if>
+      <if test="landscape != null" >
+        #{landscape,jdbcType=VARCHAR},
+      </if>
+      <if test="construct != null" >
+        #{construct,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null" >
+        #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="sightdesign != null" >
+        #{sightdesign,jdbcType=VARCHAR},
+      </if>
+      <if test="conextend != null" >
+        #{conextend,jdbcType=VARCHAR},
+      </if>
+      <if test="media != null" >
+        #{media,jdbcType=VARCHAR},
+      </if>
+      <if test="isApprove != null" >
+        #{isApprove,jdbcType=SMALLINT},
+      </if>
+      <if test="webaddress != null" >
+        #{webaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="websaleaddress != null" >
+        #{websaleaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="completeFraction != null" >
+        #{completeFraction,jdbcType=VARCHAR},
+      </if>
+      <if test="coordX != null" >
+        #{coordX,jdbcType=NUMERIC},
+      </if>
+      <if test="coordY != null" >
+        #{coordY,jdbcType=NUMERIC},
+      </if>
+      <if test="salingOptime != null" >
+        #{salingOptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminstautsTime != null" >
+        #{adminstautsTime,jdbcType=TIMESTAMP},
+      </if>
+
+      now(),
+      now(),
+
+      <if test="isDel != null" >
+        #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="deldate != null" >
+        #{deldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delreason != null" >
+        #{delreason,jdbcType=VARCHAR},
+      </if>
+      <if test="tel400 != null" >
+        #{tel400,jdbcType=VARCHAR},
+      </if>
+      <if test="pricerate != null" >
+        #{pricerate,jdbcType=NUMERIC},
+      </if>
+      <if test="pricemax != null" >
+        #{pricemax,jdbcType=NUMERIC},
+      </if>
+      <if test="pricemin != null" >
+        #{pricemin,jdbcType=NUMERIC},
+      </if>
+      <if test="esfDistrict != null" >
+        #{esfDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="esfComarea != null" >
+        #{esfComarea,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinName != null" >
+        #{pinyinName,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinInitials != null" >
+        #{pinyinInitials,jdbcType=CHAR},
+      </if>
+      <if test="esfAddress != null" >
+        #{esfAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="esfOperastion != null" >
+        #{esfOperastion,jdbcType=VARCHAR},
+      </if>
+      <if test="esfShow != null" >
+        #{esfShow,jdbcType=SMALLINT},
+      </if>
+      <if test="esfIsApprove != null" >
+        #{esfIsApprove,jdbcType=CHAR},
+      </if>
+      <if test="updateSaledateTime != null" >
+        #{updateSaledateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateLivindateTime != null" >
+        #{updateLivindateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rightDesc != null" >
+        #{rightDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyTele != null" >
+        #{propertyTele,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyAddress != null" >
+        #{propertyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updaterId != null" >
+        #{updaterId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.admin.ProjInfo" >
+    update proj_info
+    <set >
+      <if test="nOrE != null" >
+        n_or_e = #{nOrE,jdbcType=SMALLINT},
+      </if>
+      <if test="projname != null" >
+        projname = #{projname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="operastion != null" >
+        operastion = #{operastion,jdbcType=SMALLINT},
+      </if>
+      <if test="installment != null" >
+        installment = #{installment,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addressInfo != null" >
+        address_info = #{addressInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="projType != null" >
+        proj_type = #{projType,jdbcType=VARCHAR},
+      </if>
+      <if test="housefeature != null" >
+        housefeature = #{housefeature,jdbcType=VARCHAR},
+      </if>
+      <if test="buildcategory != null" >
+        buildcategory = #{buildcategory,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingform != null" >
+        buildingform = #{buildingform,jdbcType=VARCHAR},
+      </if>
+      <if test="projFeature != null" >
+        proj_feature = #{projFeature,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="districtId != null" >
+        district_id = #{districtId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="round != null" >
+        round = #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="roundstation != null" >
+        roundstation = #{roundstation,jdbcType=VARCHAR},
+      </if>
+      <if test="rounddirection != null" >
+        rounddirection = #{rounddirection,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="projdesc != null" >
+        projdesc = #{projdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="rightYear != null" >
+        right_year = #{rightYear,jdbcType=SMALLINT},
+      </if>
+      <if test="groundarea != null" >
+        groundarea = #{groundarea,jdbcType=NUMERIC},
+      </if>
+      <if test="purposearea != null" >
+        purposearea = #{purposearea,jdbcType=NUMERIC},
+      </if>
+      <if test="dimension != null" >
+        dimension = #{dimension,jdbcType=NUMERIC},
+      </if>
+      <if test="virescencerate != null" >
+        virescencerate = #{virescencerate,jdbcType=NUMERIC},
+      </if>
+      <if test="buildingdes != null" >
+        buildingdes = #{buildingdes,jdbcType=VARCHAR},
+      </if>
+      <if test="totaldoor != null" >
+        totaldoor = #{totaldoor,jdbcType=BIGINT},
+      </if>
+      <if test="parkdesc != null" >
+        parkdesc = #{parkdesc,jdbcType=VARCHAR},
+      </if>
+      <if test="parkspace != null" >
+        parkspace = #{parkspace,jdbcType=INTEGER},
+      </if>
+      <if test="carrentprice != null" >
+        carrentprice = #{carrentprice,jdbcType=DOUBLE},
+      </if>
+      <if test="carrentpricetype != null" >
+        carrentpricetype = #{carrentpricetype,jdbcType=DOUBLE},
+      </if>
+      <if test="propertyfee != null" >
+        propertyfee = #{propertyfee,jdbcType=DOUBLE},
+      </if>
+      <if test="propfeetype != null" >
+        propfeetype = #{propfeetype,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyaddition != null" >
+        propertyaddition = #{propertyaddition,jdbcType=VARCHAR},
+      </if>
+      <if test="fixstatus != null" >
+        fixstatus = #{fixstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="equipment != null" >
+        equipment = #{equipment,jdbcType=VARCHAR},
+      </if>
+      <if test="layout != null" >
+        layout = #{layout,jdbcType=VARCHAR},
+      </if>
+      <if test="workSchedule != null" >
+        work_schedule = #{workSchedule,jdbcType=VARCHAR},
+      </if>
+      <if test="startdate != null" >
+        startdate = #{startdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishdate != null" >
+        finishdate = #{finishdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saledate != null" >
+        saledate = #{saledate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saledateS != null" >
+        saledate_s = #{saledateS,jdbcType=VARCHAR},
+      </if>
+      <if test="livindate != null" >
+        livindate = #{livindate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="livindateS != null" >
+        livindate_s = #{livindateS,jdbcType=VARCHAR},
+      </if>
+      <if test="saletelphone != null" >
+        saletelphone = #{saletelphone,jdbcType=VARCHAR},
+      </if>
+      <if test="saleaddress != null" >
+        saleaddress = #{saleaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="salecard != null" >
+        salecard = #{salecard,jdbcType=VARCHAR},
+      </if>
+      <if test="mortgageBank != null" >
+        mortgage_bank = #{mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="saling != null" >
+        saling = #{saling,jdbcType=SMALLINT},
+      </if>
+      <if test="sailSchedule != null" >
+        sail_schedule = #{sailSchedule,jdbcType=SMALLINT},
+      </if>
+      <if test="developer != null" >
+        developer = #{developer,jdbcType=VARCHAR},
+      </if>
+      <if test="investor != null" >
+        investor = #{investor,jdbcType=VARCHAR},
+      </if>
+      <if test="propertymanage != null" >
+        propertymanage = #{propertymanage,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyadviser != null" >
+        propertyadviser = #{propertyadviser,jdbcType=VARCHAR},
+      </if>
+      <if test="landscape != null" >
+        landscape = #{landscape,jdbcType=VARCHAR},
+      </if>
+      <if test="construct != null" >
+        construct = #{construct,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null" >
+        agent = #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="sightdesign != null" >
+        sightdesign = #{sightdesign,jdbcType=VARCHAR},
+      </if>
+      <if test="conextend != null" >
+        conextend = #{conextend,jdbcType=VARCHAR},
+      </if>
+      <if test="media != null" >
+        media = #{media,jdbcType=VARCHAR},
+      </if>
+      <if test="isApprove != null" >
+        is_approve = #{isApprove,jdbcType=SMALLINT},
+      </if>
+      <if test="webaddress != null" >
+        webaddress = #{webaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="websaleaddress != null" >
+        websaleaddress = #{websaleaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="completeFraction != null" >
+        complete_fraction = #{completeFraction,jdbcType=VARCHAR},
+      </if>
+      <if test="coordX != null" >
+        coord_x = #{coordX,jdbcType=NUMERIC},
+      </if>
+      <if test="coordY != null" >
+        coord_y = #{coordY,jdbcType=NUMERIC},
+      </if>
+      <if test="salingOptime != null" >
+        saling_optime = #{salingOptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="adminstautsTime != null" >
+        adminstauts_time = #{adminstautsTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+
+        update_time = now(),
+
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="deldate != null" >
+        deldate = #{deldate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delreason != null" >
+        delreason = #{delreason,jdbcType=VARCHAR},
+      </if>
+      <if test="tel400 != null" >
+        tel400 = #{tel400,jdbcType=VARCHAR},
+      </if>
+      <if test="pricerate != null" >
+        pricerate = #{pricerate,jdbcType=NUMERIC},
+      </if>
+      <if test="pricemax != null" >
+        pricemax = #{pricemax,jdbcType=NUMERIC},
+      </if>
+      <if test="pricemin != null" >
+        pricemin = #{pricemin,jdbcType=NUMERIC},
+      </if>
+      <if test="esfDistrict != null" >
+        esf_district = #{esfDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="esfComarea != null" >
+        esf_comarea = #{esfComarea,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinName != null" >
+        pinyin_name = #{pinyinName,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyinInitials != null" >
+        pinyin_initials = #{pinyinInitials,jdbcType=CHAR},
+      </if>
+      <if test="esfAddress != null" >
+        esf_address = #{esfAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="esfOperastion != null" >
+        esf_operastion = #{esfOperastion,jdbcType=VARCHAR},
+      </if>
+      <if test="esfShow != null" >
+        esf_show = #{esfShow,jdbcType=SMALLINT},
+      </if>
+      <if test="esfIsApprove != null" >
+        esf_is_approve = #{esfIsApprove,jdbcType=CHAR},
+      </if>
+      <if test="updateSaledateTime != null" >
+        update_saledate_time = #{updateSaledateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateLivindateTime != null" >
+        update_livindate_time = #{updateLivindateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rightDesc != null" >
+        right_desc = #{rightDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        zip_code = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyTele != null" >
+        property_tele = #{propertyTele,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyAddress != null" >
+        property_address = #{propertyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null" >
+        creator_id = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="updaterId != null" >
+        updater_id = #{updaterId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where newcode = #{newcode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.web.dao.entity.admin.ProjInfo" >
+    update proj_info
+    set n_or_e = #{nOrE,jdbcType=SMALLINT},
+      projname = #{projname,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      operastion = #{operastion,jdbcType=SMALLINT},
+      installment = #{installment,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      address_info = #{addressInfo,jdbcType=VARCHAR},
+      proj_type = #{projType,jdbcType=VARCHAR},
+      housefeature = #{housefeature,jdbcType=VARCHAR},
+      buildcategory = #{buildcategory,jdbcType=VARCHAR},
+      buildingform = #{buildingform,jdbcType=VARCHAR},
+      proj_feature = #{projFeature,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=INTEGER},
+      district_id = #{districtId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      round = #{round,jdbcType=VARCHAR},
+      roundstation = #{roundstation,jdbcType=VARCHAR},
+      rounddirection = #{rounddirection,jdbcType=VARCHAR},
+      community_id = #{communityId,jdbcType=INTEGER},
+      projdesc = #{projdesc,jdbcType=VARCHAR},
+      right_year = #{rightYear,jdbcType=SMALLINT},
+      groundarea = #{groundarea,jdbcType=NUMERIC},
+      purposearea = #{purposearea,jdbcType=NUMERIC},
+      dimension = #{dimension,jdbcType=NUMERIC},
+      virescencerate = #{virescencerate,jdbcType=NUMERIC},
+      buildingdes = #{buildingdes,jdbcType=VARCHAR},
+      totaldoor = #{totaldoor,jdbcType=BIGINT},
+      parkdesc = #{parkdesc,jdbcType=VARCHAR},
+      parkspace = #{parkspace,jdbcType=INTEGER},
+      carrentprice = #{carrentprice,jdbcType=DOUBLE},
+      carrentpricetype = #{carrentpricetype,jdbcType=DOUBLE},
+      propertyfee = #{propertyfee,jdbcType=DOUBLE},
+      propfeetype = #{propfeetype,jdbcType=VARCHAR},
+      propertyaddition = #{propertyaddition,jdbcType=VARCHAR},
+      fixstatus = #{fixstatus,jdbcType=VARCHAR},
+      equipment = #{equipment,jdbcType=VARCHAR},
+      layout = #{layout,jdbcType=VARCHAR},
+      work_schedule = #{workSchedule,jdbcType=VARCHAR},
+      startdate = #{startdate,jdbcType=TIMESTAMP},
+      finishdate = #{finishdate,jdbcType=TIMESTAMP},
+      saledate = #{saledate,jdbcType=TIMESTAMP},
+      saledate_s = #{saledateS,jdbcType=VARCHAR},
+      livindate = #{livindate,jdbcType=TIMESTAMP},
+      livindate_s = #{livindateS,jdbcType=VARCHAR},
+      saletelphone = #{saletelphone,jdbcType=VARCHAR},
+      saleaddress = #{saleaddress,jdbcType=VARCHAR},
+      salecard = #{salecard,jdbcType=VARCHAR},
+      mortgage_bank = #{mortgageBank,jdbcType=VARCHAR},
+      saling = #{saling,jdbcType=SMALLINT},
+      sail_schedule = #{sailSchedule,jdbcType=SMALLINT},
+      developer = #{developer,jdbcType=VARCHAR},
+      investor = #{investor,jdbcType=VARCHAR},
+      propertymanage = #{propertymanage,jdbcType=VARCHAR},
+      propertyadviser = #{propertyadviser,jdbcType=VARCHAR},
+      landscape = #{landscape,jdbcType=VARCHAR},
+      construct = #{construct,jdbcType=VARCHAR},
+      agent = #{agent,jdbcType=VARCHAR},
+      sightdesign = #{sightdesign,jdbcType=VARCHAR},
+      conextend = #{conextend,jdbcType=VARCHAR},
+      media = #{media,jdbcType=VARCHAR},
+      is_approve = #{isApprove,jdbcType=SMALLINT},
+      webaddress = #{webaddress,jdbcType=VARCHAR},
+      websaleaddress = #{websaleaddress,jdbcType=VARCHAR},
+      complete_fraction = #{completeFraction,jdbcType=VARCHAR},
+      coord_x = #{coordX,jdbcType=NUMERIC},
+      coord_y = #{coordY,jdbcType=NUMERIC},
+      saling_optime = #{salingOptime,jdbcType=TIMESTAMP},
+      adminstauts_time = #{adminstautsTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=SMALLINT},
+      deldate = #{deldate,jdbcType=TIMESTAMP},
+      delreason = #{delreason,jdbcType=VARCHAR},
+      tel400 = #{tel400,jdbcType=VARCHAR},
+      pricerate = #{pricerate,jdbcType=NUMERIC},
+      pricemax = #{pricemax,jdbcType=NUMERIC},
+      pricemin = #{pricemin,jdbcType=NUMERIC},
+      esf_district = #{esfDistrict,jdbcType=VARCHAR},
+      esf_comarea = #{esfComarea,jdbcType=VARCHAR},
+      pinyin_name = #{pinyinName,jdbcType=VARCHAR},
+      pinyin_initials = #{pinyinInitials,jdbcType=CHAR},
+      esf_address = #{esfAddress,jdbcType=VARCHAR},
+      esf_operastion = #{esfOperastion,jdbcType=VARCHAR},
+      esf_show = #{esfShow,jdbcType=SMALLINT},
+      esf_is_approve = #{esfIsApprove,jdbcType=CHAR},
+      update_saledate_time = #{updateSaledateTime,jdbcType=TIMESTAMP},
+      update_livindate_time = #{updateLivindateTime,jdbcType=TIMESTAMP},
+      right_desc = #{rightDesc,jdbcType=VARCHAR},
+      zip_code = #{zipCode,jdbcType=VARCHAR},
+      property_tele = #{propertyTele,jdbcType=VARCHAR},
+      property_address = #{propertyAddress,jdbcType=VARCHAR},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      updater_id = #{updaterId,jdbcType=INTEGER}
+    where nid = #{nid,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectProjInfoList" resultMap="BaseResultMap" parameterType="com.toutiao.web.domain.query.HousingProjectQuery">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM proj_info
+    WHERE 1=1
+    <if test="projFlag != null">
+      AND n_or_e = #{projFlag}
+    </if>
+    <if test="cityId != null">
+      AND city_id = #{cityId}
+    </if>
+    <if test="districtId != null">
+      AND district_id = #{districtId}
+    </if>
+    <if test="areaId != null">
+      AND area_id = #{areaId}
+    </if>
+    <if test="keyword != null">
+      AND  projname LIKE CONCAT('%', #{keyword}, '%')
+    </if>
+    <if test="projName != null">
+      AND  projname LIKE CONCAT('%', #{projName}, '%')
+    </if>
+    <if test="isApprove != null">
+      AND  is_approve = #{isApprove}
+    </if>
+
+    ORDER BY update_time DESC
+  </select>
+  
+  <update id="updateProjInfoDelStatus">
+    UPDATE proj_info
+    SET
+    is_del = 1
+    WHERE newcode = #{newcode,jdbcType=INTEGER}
+  </update>
+
+  <update id="logicDelProj" parameterType="com.toutiao.web.dao.entity.admin.ProjInfo">
+    UPDATE proj_info
+    <set>
+      is_del = 1,
+      deldate = now(),
+      <if test="delreason != null" >
+        delreason = #{delreason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE newcode = #{newcode,jdbcType=INTEGER}
+  </update>
+
+</mapper>
