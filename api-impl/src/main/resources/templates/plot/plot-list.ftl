@@ -105,7 +105,7 @@
                         <div class="list-item-img-box">
                             <#assign photo = plot['photo']>
                             <#if photo?exists>
-                            <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                                <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
                             </#if>
                         </div>
                     </#if>
@@ -114,8 +114,14 @@
                         <p class="cont-block-2">${plot['abbreviatedAge']}</p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
-                            <#if map[plot['key']]?exists>
-                            <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
+                            <#if plot['key']?exists>
+                                <#if map[plot['key']]?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
+                                <#else>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                </#if>
+                            <#else>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
                         <#else>
                             <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>

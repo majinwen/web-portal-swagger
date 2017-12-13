@@ -195,7 +195,12 @@ public class SysVillageServiceImpl implements SysVillageService {
             BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", searchVillageCharacteristics));
             srb.setQuery(queryBuilder);
         }
-
+        //供暖方式
+        String[] searchHeatingMode = villageRequest.getSearchHeatingMode();
+        if (searchHeatingMode != null && searchHeatingMode.length != 0) {
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", searchHeatingMode));
+            srb.setQuery(queryBuilder);
+        }
         //排序
         //均价
 //        srb.addSort("level",SortOrder.DESC);

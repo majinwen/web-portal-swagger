@@ -14,7 +14,7 @@ public class SysVillageConterller {
     @Autowired
     private SysVillageService sysVillageService;
 
-    //小区列表首页展示(查询附近小区和(距离))
+    //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
     public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
         List villageList = null;
@@ -31,13 +31,13 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-        villageRequest1.setId(001);
-        villageRequest1.setSearchSubwayLineId("001");
-        villageRequest1.setSearchMetroStationId("001");
+//        villageRequest1.setId(001);
+//        villageRequest1.setSearchSubwayLineId("001");
+//        villageRequest1.setSearchMetroStationId("001");
 //        String[] a = {"0","80"};
 //        villageRequest1.setSearchAreaSize(a);
-        Integer[] ap ={0,70000,70000,80000};
-        villageRequest1.setSearchAvgPrice(ap);
+//        Integer[] ap ={0,70000,70000,80000};
+//        villageRequest1.setSearchAvgPrice(ap);
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("003");
 //        villageRequest1.setAreaNameId("002");
@@ -50,7 +50,7 @@ public class SysVillageConterller {
 //        villageRequest1.setAreaId("001");
         List villageList = null;
         try {
-            villageList = sysVillageService.findVillageByConditions(villageRequest);
+            villageList = sysVillageService.findVillageByConditions(villageRequest1);
         } catch (Exception e) {
             e.printStackTrace();
         }

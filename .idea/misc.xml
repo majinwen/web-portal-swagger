@@ -4,6 +4,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="D:/work/mq-demo-master/spring/java-spring-demo/pom.xml" />
+        <option value="D:/work/mq-demo-master/http/java-http-demo/pom.xml" />
+        <option value="D:/work/mq-demo-master/tcp/java-tcp-demo/pom.xml" />
       </list>
     </option>
   </component>
