@@ -146,9 +146,14 @@
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden" >${map['building_name_id']}</span>
-                        <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']}</em></h3>
+                        <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
                         <p class="cont-block-2">${map['average_price']}元/㎡</p>
-                        <p class="cont-block-3">${map['district_name']}/${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                        <p class="cont-block-3">
+                            <#if map['nearsubway']??>
+                                   ${map['nearsubway']}
+                            <#else>${map['district_name']}
+                            </#if>
+                            /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#assign item = map['building_tags']>
                             <#list item as itemValue>

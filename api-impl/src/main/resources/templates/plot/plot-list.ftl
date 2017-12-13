@@ -97,109 +97,49 @@
 </section>
 <section>
     <ul>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>复式</span>
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
+    <#if villageList?exists>
+        <#list villageList as plot>
+            <li><a class="list-item" href="">
+                <div class="clear">
+                    <#if plot['photo']?exists>
+                        <div class="list-item-img-box">
+                            <#assign photo = plot['photo']>
+                            <#if photo?exists>
+                                <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                            </#if>
+                        </div>
+                    </#if>
+                    <div class="list-item-cont">
+                        <h3 class="cont-block-1">${plot['rc']}</h3>
+                        <p class="cont-block-2">${plot['abbreviatedAge']}</p>
+                        <#if plot['metroWithPlotsDistance']?exists>
+                            <#assign map = plot['metroWithPlotsDistance']>
+                            <#if plot['key']?exists>
+                                <#if map[plot['key']]?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
+                                <#else>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                </#if>
+                            <#else>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                            </#if>
+                        <#else>
+                            <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                        </#if>
+                        <div class="cont-block-4">
+                            <#assign item =  plot['label']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                        </div>
+                        <div class="cont-block-price plot">
+                            <em>${plot['avgPrice']}</em>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-
+            </a></li>
+        </#list>
+    </#if>
     </ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>

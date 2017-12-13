@@ -1,7 +1,8 @@
 package com.toutiao.web.domain.query;
 
 import lombok.Data;
-
+//小区
+//(查找范围的数组字段，按照顺序赋值就可以)
 @Data
 public class VillageRequest {
     private Integer id; //序号
@@ -18,8 +19,10 @@ public class VillageRequest {
     private Double[] location; //坐标
     private String[] metroStationId;  //地铁站编号
     private String[] metroStation;  //地铁站
+    private String searchMetroStationId;  //搜索地铁站编号
     private String[] subwayLineId;  //地铁线路编号
     private String[] subwayLine;  //地铁线路
+    private String searchSubwayLineId;  //搜索地铁线编号
     private String TrafficInformation;  //交通信息
     private String[] labelId;  //标签编号
     private String[] label;  //标签

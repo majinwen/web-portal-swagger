@@ -2,6 +2,8 @@ package com.toutiao.web.domain.query;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class VillageResponse {
     private Integer id; //序号
@@ -18,6 +20,7 @@ public class VillageResponse {
     private Double[] location; //坐标
     private String[] metroStationId;  //地铁站编号
     private String[] metroStation;  //地铁站
+    private Map metroWithPlotsDistance;  //地铁站与小区的距离
     private String[] subwayLineId;  //地铁线路编号
     private String[] subwayLine;  //地铁线路
     private String TrafficInformation;  //交通信息
@@ -52,6 +55,7 @@ public class VillageResponse {
     private String sdr;  //供需关系
     private Integer level;  //楼盘级别
     private String villageCharacteristics;  //楼盘特色
+    private String key;  //列表页展示商圈或者与地铁站的距离
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源

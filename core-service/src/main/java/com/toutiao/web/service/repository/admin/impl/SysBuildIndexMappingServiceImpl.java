@@ -17,8 +17,7 @@ import java.net.InetAddress;
 public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingService {
 
     @Override
-    public void buildIndexMapping(String index,String type) throws Exception {
-
+    public void buildPoltMapping(String index, String type) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
@@ -42,6 +41,7 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .startObject("location").field("type", "geo_point").field("index", "not_analyzed").endObject()
                 .startObject("metroStationId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("metroStation").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("metroWithPlotsDistance").field("type", "object").field("index", "not_analyzed").endObject()
                 .startObject("subwayLineId").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("subwayLine").field("type", "string").field("index", "not_analyzed").endObject()
                 .startObject("TrafficInformation").field("type", "string").field("index", "not_analyzed").endObject()
@@ -79,5 +79,10 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                 .endObject().endObject().endObject();
         PutMappingRequest mappingRequest = Requests.putMappingRequest(index).type(type).source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
+    }
+
+    @Override
+    public void buildHouseMapping(String index, String type) throws Exception {
+
     }
 }

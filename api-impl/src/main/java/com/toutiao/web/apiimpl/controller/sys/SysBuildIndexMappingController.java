@@ -11,10 +11,18 @@ public class SysBuildIndexMappingController {
     @Autowired
     private SysBuildIndexMappingService sysBuildIndexMappingService;
 
-    @RequestMapping("/BuildIndexMapping")
+    @RequestMapping("/buildPoltMapping")
     public void BuildIndexMapping(String index,String type){
         try {
-            sysBuildIndexMappingService.buildIndexMapping(index,type);
+            sysBuildIndexMappingService.buildPoltMapping(index,type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @RequestMapping("/buildHouseMapping")
+    public void BuildHouseMapping(String index,String type){
+        try {
+            sysBuildIndexMappingService.buildHouseMapping(index,type);
         } catch (Exception e) {
             e.printStackTrace();
         }

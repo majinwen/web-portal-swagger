@@ -14,15 +14,14 @@ public class SysVillageConterller {
     @Autowired
     private SysVillageService sysVillageService;
 
-    //小区列表首页展示(查询附近小区和(距离))
+    //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
-    public String GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance, Model model) {
+    public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
         List villageList = null;
         try {
-            villageList = sysVillageService.GetNearByhHouseAndDistance(index, type, lat, lon, distance);
+            villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
         } catch (Exception e) {
             e.printStackTrace();
-            return "error";
         }
         model.addAttribute("villageList", villageList);
         return "plot-list";
@@ -30,17 +29,18 @@ public class SysVillageConterller {
 
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
-    public String findVillageByConditions(String index, String type, VillageRequest villageRequest, Model model) {
+    public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-        Integer[] ap ={1,60000,60000,70000};
-        villageRequest1.setSearchAvgPrice(ap);
+//        villageRequest1.setId(001);
+//        villageRequest1.setSearchSubwayLineId("001");
+//        villageRequest1.setSearchMetroStationId("001");
+//        String[] a = {"0","80"};
+//        villageRequest1.setSearchAreaSize(a);
+//        Integer[] ap ={0,70000,70000,80000};
+//        villageRequest1.setSearchAvgPrice(ap);
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("003");
 //        villageRequest1.setAreaNameId("002");
-//          String[] mto = {"001","005"};
-//          villageRequest1.setMetroStationId(mto);
-//          String[] lin = {"005","003"};
-//          villageRequest1.setSubwayLineId(lin);
 //        villageRequest1.setId(3);
 //        Integer[] pr = {50000,80000};
 //        villageRequest1.setSearchAvgPrice(pr);
@@ -50,7 +50,7 @@ public class SysVillageConterller {
 //        villageRequest1.setAreaId("001");
         List villageList = null;
         try {
-            villageList = sysVillageService.findVillageByConditions(index, type, villageRequest1);
+            villageList = sysVillageService.findVillageByConditions(villageRequest1);
         } catch (Exception e) {
             e.printStackTrace();
         }

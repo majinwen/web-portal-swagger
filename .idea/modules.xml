@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/mbg/mbg.iml" filepath="$PROJECT_DIR$/mbg/mbg.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/web-portal.iml" filepath="$PROJECT_DIR$/.idea/web-portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/web.api.iml" filepath="$PROJECT_DIR$/api/web.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-impl/web.api-impl.iml" filepath="$PROJECT_DIR$/api-impl/web.api-impl.iml" />

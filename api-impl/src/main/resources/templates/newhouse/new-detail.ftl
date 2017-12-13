@@ -60,30 +60,33 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>一渡龙湾<em class="sale-state">在售</em></h2>
-            <p>别名：一渡龙湾</p>
-            <div class="primary-header-tag house-labelling gray">
-                <span>满二</span>
-                <span>满五</span>
-                <span>随时看房</span>
+            <h2>${build['building_name']}<em class="sale-state">${build['sale_status_name']}</em></h2>
+            <p>别名：${build['building_nickname']}</p>
+            <div class="primary-header-tag">
+            <#assign tags = build['building_tags']>
+            <#list tags as item>
+                <span>${item}</span>
+            </#list>
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red">34220元</em>/㎡</p>
+                <p>均价：<em class="high-light-red">${build['average_price']}</em>/㎡</p>
             </li>
             <li>
                 <p>
-                    地址：[丰台]王佐镇长青路南侧
+                    地址：[${build['district_name']}]${build['building_address']}
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
-                <p>交通信息：距离地铁国贸站[1号线] 1.0km<em class="primary-distance">0.6km</em></p>
+                <p>
+                    交通信息：${build['roundstation']} <#--1.0km<em class="primary-distance">0.6km</em>-->
+                </p>
             </li>
             <li>
-                <p>最新开盘：2017-09-09</p>
-                <p>交房时间：2019-12-10</p>
-                <p>售楼许可证：京房售证字（2017）149号</p>
+                <p>最新开盘：${build['opened_time']}</p>
+                <p>交房时间：${build['deliver_time']}</p>
+                <p>售楼许可证：${build['sell_licence']}</p>
             </li>
         </ul>
     </section>
@@ -91,7 +94,7 @@
 <div class="module-bottom-fill">
     <div class="active-module-box">
         <a href="tel:1234567" class="active-module-content">
-            <p class="active-text"><i class="active-icon"></i><span>最新活动：立减五万</span></p>
+            <p class="active-text"><i class="active-icon"></i><span>最新活动：${build['activity_desc']}</span></p>
             <div class="consule-message">
                 <p>
                     <span>更多优惠信息</span>
@@ -109,11 +112,11 @@
             <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
-            <dt>开发商：北京科技园置地有限公司</dt>
-            <dd class="odd-item">物业类型：<span>别墅</span></dd>
-            <dd class="even-item">建筑类型：<em>板楼</em></dd>
-            <dd class="odd-item">产权年限：<em>70年</em></dd>
-            <dd class="even-item">车位配比：<em>1:1</em></dd>
+            <dt>开发商：${build['developers']}</dt>
+            <dd class="odd-item">物业类型：<span>${build['property_type']}</span></dd>
+            <dd class="even-item">建筑类型：<em>${build['building_type']}</em></dd>
+            <dd class="odd-item">产权年限：<em>${build['building_life']}年</em></dd>
+            <dd class="even-item">车位配比：<em>${build['park_radio']}</em></dd>
         </dl>
     </section>
 </div>
@@ -121,31 +124,31 @@
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
-            <a href="#" class="more-arrows">全部户型<i class="arrows-right"></i></a>
+            <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
-        <#if layout?exists>
-        <#list layout as item>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
-                        <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
-                        <div class="house-labelling normal small tilelist-tag">
-                            <#assign layouttagitem = item['layout_tag']>
-                            <#list layouttagitem as tagatem>
-                            <span>${tagatem}</span>
-                            </#list>
-                        </div>
-                    </div>
-                </a>
-            </li>
+     <#if layout?exists>
+    <#list layout as item>
+        <li>
+            <a href="#">
+                <div class="picture-box">
+                    <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                    <span class="sale-state">在售</span>
+                </div>
+                <div class="tilelist-content">
+                    <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
+                    <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
+                    <div class="house-labelling normal small tilelist-tag">
+        <#assign layouttagitem = item['layout_tag']>
+        <#list layouttagitem as tagatem>
+            <span>${tagatem}</span>
         </#list>
-        </#if>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </#list>
+    </#if>
         </ul>
     </section>
 </div>

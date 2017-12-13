@@ -2,13 +2,12 @@ package com.toutiao.web.apiimpl.controller.sys;
 
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.service.repository.admin.SaveToESService;
-import com.toutiao.web.service.repository.admin.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -27,12 +26,19 @@ public class SaveToESController {
         String[] mt = {"001","002"};
         village1.setMetroStationId(mt);
         String[] mtStation ={"朝阳东","朝阳"};
+        village1.setMetroStation(mtStation);
         String[] li ={"001","002"};
-        String[] liName ={"1号线","2号线"};
         village1.setSubwayLineId(li);
+        String[] liName ={"1号线","2号线"};
+        village1.setSubwayLine(liName);
+        Map<String,String> map = new HashMap<String,String>();
+        map.put(village1.getSubwayLineId()[0]+"_"+village1.getMetroStationId()[0],"10");
+        map.put(village1.getSubwayLineId()[1]+"_"+village1.getMetroStationId()[1],"20");
+        village1.setMetroWithPlotsDistance(map);
         String[] la = {"001","002"};
         village1.setLabelId(la);
         String[] laName = {"标签1","标签2"};
+        village1.setLabel(laName);
         village1.setAvgPrice(59999);
         village1.setAge(16);
         village1.setElevator("有");

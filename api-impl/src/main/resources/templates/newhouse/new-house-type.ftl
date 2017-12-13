@@ -10,66 +10,52 @@
 <body>
 <div class="module-bottom-fill">
     <div class="house-type-state">
-        <span class="current">全部（7）</span>
-        <span>二居（2）</span>
-        <span>三居（2）</span>
-        <span>四居（3）</span>
+        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（0）</span>
+    <#if room?exists>
+    <#list room as roomnode>
+       <#assign roomid=roomnode['room']>
+        <span data-bid="${bid}" <#if tags==roomid>class="current"</#if> data-id="${roomid}">${roomid}居（${roomnode['count']}）</span>
+    </#list>
+    </#if>
     </div>
 </div>
 <div class="module-bottom-fill">
-    <section>
+       <#if layoutDetails?exists>
+           <#list layoutDetails as datail>
+             <section>
         <div class="house-type-header">
-            <p>2室1厅1卫/155㎡</p>
+            <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['living_area']}㎡</p>
         </div>
         <div class="house-type-tag">
-            <p>均价：<em class="high-light-red">750万</em>/套</p>
+            <p>均价：<em class="high-light-red">${datail['reference_total_price']}万</em>/套</p>
             <div class="house-labelling normal">
-                <span>阳台</span>
-                <span>朝南</span>
-                <span>主卧带卫</span>
+               <#if datail['layout_tag']?exists>
+                   <#list datail['layout_tag'] as tag>
+                       <span>${tag}</span>
+                   </#list></#if>
             </div>
         </div>
         <div class="house-type-image">
             <div>
                 <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
-                <span class="sale-state">在售</span>
+                <span class="sale-state">
+                    <#if datail['is_sale']==1>在售
+                     <#else>不在售
+                    </#if>
+                </span>
             </div>
         </div>
         <div class="describe-box">
             <div class="describe-header">户型描述</div>
             <div class="describe-cont">
-                <p>房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向 </p>
+                <p>${datail['layout_desc']}</p>
                 <span class="describe-show-btn">>>展开</span>
             </div>
         </div>
     </section>
+           </#list>
+       </#if>
 </div>
-<section>
-    <div class="house-type-header">
-        <p>2室1厅1卫/155㎡</p>
-    </div>
-    <div class="house-type-tag">
-        <p>均价：<em class="high-light-red">750万</em>/套</p>
-        <div class="house-labelling normal">
-            <span>阳台</span>
-            <span>朝南</span>
-            <span>主卧带卫</span>
-        </div>
-    </div>
-    <div class="house-type-image">
-        <div>
-            <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
-            <span class="sale-state">在售</span>
-        </div>
-    </div>
-    <div class="describe-box">
-        <div class="describe-header">户型描述</div>
-        <div class="describe-cont">
-            <p>房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向 </p>
-            <span class="describe-show-btn">>>展开</span>
-        </div>
-    </div>
-</section>
 <p class="bottom-tips">以上是全部户型</p>
 <section class="detail-contact-box" id="detailContactState">
     <div class="detail-contact-content">
