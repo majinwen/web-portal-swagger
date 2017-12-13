@@ -111,7 +111,7 @@
                         <h3 class="cont-block-1">${plot['rc']}</h3>
                         <p class="cont-block-2">${plot['abbreviatedAge']}</p>
                         <#if plot['key']?exists>
-                            <#assign map = plot['metroStationDistance']>
+                            <#assign map = plot['metroWithPlotsDistance']>
                             <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
                         <#else>
                             <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>

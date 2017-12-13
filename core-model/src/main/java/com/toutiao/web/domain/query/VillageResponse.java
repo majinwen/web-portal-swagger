@@ -20,7 +20,7 @@ public class VillageResponse {
     private Double[] location; //坐标
     private String[] metroStationId;  //地铁站编号
     private String[] metroStation;  //地铁站
-    private Map metroStationDistance;  //地铁站与小区的距离
+    private Map metroWithPlotsDistance;  //地铁站与小区的距离
     private String[] subwayLineId;  //地铁线路编号
     private String[] subwayLine;  //地铁线路
     private String TrafficInformation;  //交通信息

@@ -34,7 +34,7 @@ public class SaveToESController {
         Map<String,String> map = new HashMap<String,String>();
         map.put(village1.getSubwayLineId()[0]+"_"+village1.getMetroStationId()[0],"10");
         map.put(village1.getSubwayLineId()[1]+"_"+village1.getMetroStationId()[1],"20");
-        village1.setMetroStationDistance(map);
+        village1.setMetroWithPlotsDistance(map);
         String[] la = {"001","002"};
         village1.setLabelId(la);
         String[] laName = {"标签1","标签2"};
