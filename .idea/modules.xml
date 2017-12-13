@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://D:/work/mq-demo-master/spring/java-spring-demo/java-spring-demo.iml" filepath="D:/work/mq-demo-master/spring/java-spring-demo/java-spring-demo.iml" />
+      <module fileurl="file://D:/work/mq-demo-master/tcp/java-tcp-demo/mq-demo.iml" filepath="D:/work/mq-demo-master/tcp/java-tcp-demo/mq-demo.iml" />
+      <module fileurl="file://D:/work/mq-demo-master/http/java-http-demo/mq-java-http-demo.iml" filepath="D:/work/mq-demo-master/http/java-http-demo/mq-java-http-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/web-portal.iml" filepath="$PROJECT_DIR$/.idea/web-portal.iml" />
       <module fileurl="file://$PROJECT_DIR$/api/web.api.iml" filepath="$PROJECT_DIR$/api/web.api.iml" />
       <module fileurl="file://$PROJECT_DIR$/api-impl/web.api-impl.iml" filepath="$PROJECT_DIR$/api-impl/web.api-impl.iml" />

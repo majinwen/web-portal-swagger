@@ -5,5 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface SysBuildIndexMappingService {
-     void buildIndexMapping(String index,String type) throws Exception;
+     void buildPoltMapping(String index,String type) throws Exception;
+     void buildHouseMapping(String index,String type) throws Exception;
 }
