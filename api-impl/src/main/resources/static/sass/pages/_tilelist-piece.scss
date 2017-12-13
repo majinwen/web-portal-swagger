@@ -82,18 +82,6 @@
             .tilelist-tag {
                 margin-top: rem(20);
                 @include text-ellipses;
-
-                span {
-                    display: inline-block;
-                    margin-right: rem(2);
-                    padding: rem(1) rem(10);
-                    @include font-dpr(18);
-                    color: #999;
-                    border: 1px solid #999;
-                    -webkit-border-radius: rem(6);
-                    -moz-border-radius: rem(6);
-                    border-radius: rem(6);
-                }
             }
         }
     }
