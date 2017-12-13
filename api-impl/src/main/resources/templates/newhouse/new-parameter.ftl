@@ -8,163 +8,111 @@
     <title>新房参数</title>
 </head>
 <body>
+       <#assign discript = discript[0]>
+<div class="module-bottom-fill"></div>
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>一渡龙湾<em class="sale-state">在售</em></h2>
-            <p>别名：一渡龙湾</p>
+            <h2>${discript['building_name']}</h2>
+            <p>别名：${discript['building_nickname']}</p>
             <div class="primary-header-tag">
-                <span>满二</span>
-                <span>满五</span>
-                <span>随时看房</span>
+            <#assign tags = discript['building_tags']>
+            <#list tags as item>
+                <span>${item}</span>
+            </#list>
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red">34220元</em>/㎡</p>
-            </li>
-            <li>
-                <p>
-                    地址：[丰台]王佐镇长青路南侧
-                    <a href="#" class="primary-map-icon"></a>
-                    <a href="#" class="arrows-right"></a>
-                </p>
-                <p>
-                    交通信息：距离地铁国贸站[1号线] 1.0km<em class="primary-distance">0.6km</em>
-                </p>
-            </li>
-            <li>
-                <p>最新开盘：2017-09-09</p>
-                <p>交房时间：2019-12-10</p>
-                <p>售楼许可证：京房售证字（2017）149号</p>
+                <p>销售状态：待售</p>
+                <p>最新开盘：${discript['opened_time']}</p>
+                <p>交房时间：${discript['deliver_time']}</p>
+                <p>参考均价：${discript['average_price']}元/㎡ </p>
             </li>
         </ul>
     </section>
 </div>
 <div class="module-bottom-fill">
-    <div class="active-module-box">
-        <a href="tel:1234567" class="active-module-content">
-            <p class="active-text"><i class="active-icon"></i><span>最新活动：立减五万</span></p>
-            <div class="consule-message">
-                <p>
-                    <span>更多优惠信息</span>
-                    <span>请咨询售楼处</span>
-                </p>
-                <i></i>
-            </div>
-        </a>
+    <section class="primary-message">
+        <div class="module-header-message">
+            <h3>地址信息</h3>
+        </div>
+        <ul class="primary-item">
+            <li>
+                <p>环线位置：${discript['roundstation']}</p>
+                <p>区域位置：${discript['district_name']}</p>
+                <p>楼盘地址：${discript['building_address']}</p>
+                <p>售楼处地址：${discript['sale_address']}</p>
+            </li>
+        </ul>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <div class="module-header-message">
+            <h3>参数信息</h3>
+        </div>
+        <ul class="primary-item">
+            <li>
+                <p>建筑类型：${discript['building_type']}</p>
+                <p>装修类型：${discript['redecorate_type']}</p>
+                <p>产权年限：${discript['building_life']}</p>
+                <p>占地面积：${discript['ground_area']}㎡</p>
+                <p>建筑面积：${discript['purpose_area']}㎡</p>
+                <p>容积率：${discript['dimension']}</p>
+                <p>绿化率：${discript['virescencerate']}%</p>
+                <p>规划户数：${discript['totaldoor']}</p>
+                <p>规划车位：${discript['park_space']}</p>
+                <p>车位配比：${discript['park_radio']}</p>
+            </li>
+        </ul>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <div class="module-header-message">
+            <h3>物业信息</h3>
+        </div>
+        <ul class="primary-item">
+            <li>
+                <p>物业类型：${discript['property_type']}</p>
+                <p>物业公司：${discript['propertymanage']}</p>
+                <p>物业费：${discript['propertyfee']}</p>
+                <p>供暖：${discript['heating_type']}</p>
+                <p>供水：暂无</p>
+                <p>供电：暂无</p>
+                <p>燃气：暂无</p>
+            </li>
+        </ul>
+    </section>
+</div>
+<section class="primary-message">
+    <div class="module-header-message">
+        <h3>许可证信息</h3>
     </div>
-</div>
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>楼盘描述</h3>
-            <a href="#" class="more-arrows">查看全部<i class="arrows-right"></i></a>
-        </div>
-        <dl class="module-table-item">
-            <dt>开发商：北京科技园置地有限公司</dt>
-            <dd class="odd-item">物业类型：<span>别墅</span></dd>
-            <dd class="even-item">建筑类型：<em>板楼</em></dd>
-            <dd class="odd-item">产权年限：<em>70年</em></dd>
-            <dd class="even-item">车位配比：<em>1:1</em></dd>
-        </dl>
-    </section>
-</div>
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>户型信息</h3>
-            <a href="#" class="more-arrows">全部户型<i class="arrows-right"></i></a>
-        </div>
-        <ul class="tilelist">
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                        <span class="sale-state">在售</span>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><span>3室2厅1卫</span><span>168.9㎡</span></p>
-                        <h4 class="cont-last">均价：59850元/㎡</h4>
-                        <div class="tilelist-tag">
-                            <span>阳台</span>
-                            <span>朝南</span>
-                            <span>主卧带卫</span>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </section>
-</div>
+    <table class="primary-table">
+        <tr>
+            <th>许可证</th>
+            <th>发证时间</th>
+            <th>绑定楼栋</th>
+        </tr>
+        <tr>
+            <td>X京(2017)不动产第34号</td>
+            <td>20170909</td>
+            <td>8号楼</td>
+        </tr>
+        <tr>
+            <td>X京(2017)不动产第34号</td>
+            <td>20170909</td>
+            <td>8号楼</td>
+        </tr>
+        <tr>
+            <td>X京(2017)不动产第34号</td>
+            <td>20170909</td>
+            <td>8号楼</td>
+        </tr>
+    </table>
+</section>
 <section class="detail-contact-box" id="detailContactState">
     <div class="detail-contact-content">
         <a href="#" class="contact-share"><i></i>分享</a>

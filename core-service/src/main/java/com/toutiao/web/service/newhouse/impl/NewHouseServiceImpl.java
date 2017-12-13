@@ -220,16 +220,19 @@ public class NewHouseServiceImpl implements NewHouseService{
 
 
         TransportClient client = esClientTools.init();
+
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", buildingId));
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                 .setQuery(booleanQueryBuilder)
                 .execute().actionGet();
+
         BoolQueryBuilder booleanQueryBuilder1 = boolQuery();
         booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
                 .setQuery(booleanQueryBuilder1)
                 .execute().actionGet();
+
         SearchHits layouthits = searchresponse1.getHits();
         List<Map<String,Object>> layouts =new ArrayList<>();
         SearchHit[] searchLayoutHists = layouthits.getHits();
@@ -260,6 +263,33 @@ public class NewHouseServiceImpl implements NewHouseService{
             e.printStackTrace();
         }
         return maprep;
+    }
+    /**
+     * 获取新房全部描述
+     * */
+    @Override
+    public List<Map<String,Object>> getNewHouseDiscript(Integer id) {
+
+        //建立连接
+
+        TransportClient client = esClientTools.init();
+
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", id));
+
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+                .setQuery(booleanQueryBuilder)
+                .execute().actionGet();
+
+        SearchHits layouthits = searchresponse1.getHits();
+        SearchHit[] searchHists = layouthits.getHits();
+        List<Map<String,Object>> discripts =new ArrayList<>();
+        for (SearchHit hit : searchHists) {
+            Map<String,Object> item=hit.getSourceAsMap();
+            discripts.add(item);
+        }
+
+        return discripts;
     }
 
     @Override

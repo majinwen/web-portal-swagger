@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -82,6 +84,20 @@ public class NewHouseController {
         model.addAttribute("rooms", details.get("rooms"));
         return "";
 
+    }
+
+
+    /**
+     * 楼盘全部描述
+     * @param buildingId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/getNewHouseDiscript")
+    public String getNewHouseDiscript(@RequestParam("id") Integer buildingId, Model model){
+        List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
+        model.addAttribute("discript",discripts);
+        return "newhouse/new-parameter";
     }
 
 

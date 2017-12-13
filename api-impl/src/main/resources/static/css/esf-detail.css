@@ -753,6 +753,7 @@ a.pswp__share--download:hover {
     width: 100%; }
 
 .primary-message .primary-header {
+  position: relative;
   padding: 0.5333333333rem 0.4rem;
   border-bottom: 1px solid #e1e1e1; }
   [data-dpr="1"] .primary-message .primary-header h2 {
@@ -813,6 +814,10 @@ a.pswp__share--download:hover {
       font-size: 51px; }
     .primary-message .primary-header.text-center .primary-header-tag {
       margin-top: 0.32rem; }
+  .primary-message .primary-header .isopsophic-air-index {
+    position: absolute;
+    right: 0.4rem;
+    top: 0.5866666667rem; }
 .primary-message ul.primary-item > li {
   padding: 0.2666666667rem 0.4rem;
   line-height: 0.6266666667rem;
