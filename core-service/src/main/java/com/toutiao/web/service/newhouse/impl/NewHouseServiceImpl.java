@@ -74,13 +74,25 @@ public class NewHouseServiceImpl implements NewHouseService{
             booleanQueryBuilder.must(termQuery("area_id", newHouseQuery.getAreaId()));
         }
         //地铁线id
+        String keys = "";
         if(newHouseQuery.getSubwayLineId() !=null && newHouseQuery.getSubwayLineId()!=0){
             booleanQueryBuilder.must(termsQuery("subway_line_id", new int[]{newHouseQuery.getSubwayLineId()}));
+            keys = newHouseQuery.getSubwayLineId().toString();
         }
         //地铁站id
         if(newHouseQuery.getSubwayLineId()!=null && newHouseQuery.getSubwayStationId()!=0){
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseQuery.getSubwayStationId()}));
+            keys = keys+","+newHouseQuery.getSubwayStationId().toString();
         }
+
+//        //地铁
+//        String keys = "";
+//        if (newHouseQuery.getNearbysubway()!=null&&newHouseQuery.getNearbysubway()!=""){
+//
+//
+//            keys = newHouseQuery.getNearbysubway();
+//        }
+
         ///==============================
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
@@ -154,7 +166,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                     .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location","house_min_area","house_max_area"},
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location","house_min_area","house_max_area","nearbysubway"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -164,7 +176,7 @@ public class NewHouseServiceImpl implements NewHouseService{
              .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).setFetchSource(
                     new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                             "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                            "location","house_min_area","house_max_area"},
+                            "location","house_min_area","house_max_area","nearbysubway"},
                     null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -174,7 +186,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                                    "location","house_min_area","house_max_area"},
+                                    "location","house_min_area","house_max_area","nearbysubway"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -184,7 +196,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                                    "location","house_min_area","house_max_area"},
+                                    "location","house_min_area","house_max_area","nearbysubway"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -194,7 +206,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setQuery(booleanQueryBuilder).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                                    "location","house_min_area","house_max_area"},
+                                    "location","house_min_area","house_max_area","nearbysubway"},
                             null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
@@ -205,8 +217,10 @@ public class NewHouseServiceImpl implements NewHouseService{
         ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
-
+            Map<String,String> fff = (Map<String, String>) hit.getSource().get("nearbysubway");
+            String ddd = fff.get(keys);
             Map<String,Object> buildings = hit.getSourceAsMap();
+            buildings.put("nearsubway",ddd);
             buildinglist.add(buildings);
         }
         Map<String,Object> result = new HashMap<>();
@@ -323,7 +337,7 @@ public class NewHouseServiceImpl implements NewHouseService{
     }
 
     @Override
-    public Map<String, Object> getNewHouseLayoutCountByRoom(Integer buildingId) {
+    public List<Map<String,Object>> getNewHouseLayoutCountByRoom(Integer buildingId) {
 
         TransportClient client = esClientTools.init();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
@@ -336,15 +350,17 @@ public class NewHouseServiceImpl implements NewHouseService{
         Map aggMap =searchresponse.getAggregations().asMap();
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
         Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
-        Map<String, Object> roomCount = new HashMap<>();
-        List<String> list = new ArrayList<>();
+        List<Map<String, Object>> roomCount = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
         while(roomBucketIt.hasNext())
         {
             Bucket roomBucket = (Bucket) roomBucketIt.next();
             System.out.println(roomBucket.getKey() + "居有" + roomBucket.getDocCount() +"个。");
-            list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
+           // list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
+            map.put("room",roomBucket.getKey());
+            map.put("count",roomBucket.getDocCount());
         }
-        roomCount.put("rooms",list);
+        roomCount.add(map);
         return roomCount;
     }
 

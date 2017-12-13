@@ -36,7 +36,7 @@ public interface NewHouseService {
      * @param buildingId
      * @return
      */
-    Map<String,Object> getNewHouseLayoutCountByRoom(Integer buildingId);
+    List<Map<String, Object>> getNewHouseLayoutCountByRoom(Integer buildingId);
 
     /**
      * 获取楼盘参数详情
