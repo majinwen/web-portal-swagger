@@ -28,7 +28,6 @@ public class MessageSendController {
     public NashResult send(HttpServletRequest request, @RequestParam(value = "phone", required = true) String phone) {
         try {
             //判断前台页面传递过来的手机号码是否存在
-
             //判断页面传递过来的电话号码与短信验证码是否为空
             if (StringTool.isBlank(phone)) {
                 return NashResult.Fail("fail", "请填写手机号码！");
@@ -43,22 +42,21 @@ public class MessageSendController {
             if (sendSmsResponse.getCode() != null
                     && sendSmsResponse.getCode().equals("OK")) {
                 // 请求成功,将用户的手机号码与短信验证码存入redis缓存中
-                RedisUtils.set(phone, code);
-                //设置过期时间是两分钟
-                RedisUtils.setExpire(phone, 120);
+                RedisUtils.set2(phone, MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix()
+                                + code)),
+                        RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
                 //记录每次发送一次验证码，缓存中相应的手机号码个数自增长
-                RedisUtils.incr(phone + "@@@@user");
-                NashResult.build("发送成功！");
+                RedisUtils.incr(phone + RedisNameUtil.separativeSignCount);
             } else if (sendSmsResponse.getCode().equals("isv.BUSINESS_LIMIT_CONTROL")) {
                 return NashResult.Fail("fail", "此号码频繁发送验证码，暂时不能获取！");
             }
         } catch (ServerException e) {
             e.printStackTrace();
-            return NashResult.Fail("fail", "短信验证码发送失败，请稍后重试！");
         } catch (ClientException e) {
             e.printStackTrace();
-            return NashResult.Fail("fail", "短信验证码发送失败，请稍后重试！");
         }
-        return NashResult.build(0);
+        //获取缓存中同一个电话号码发送次数传递到页面
+        String phoneCount = RedisUtils.getValue(phone + RedisNameUtil.separativeSignCount);
+        return NashResult.build(phoneCount);
     }
 }

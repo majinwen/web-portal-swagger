@@ -1,35 +1,22 @@
 package com.toutiao.web.apiimpl.controller.auth;
 
 
-import com.github.bingoohuang.patchca.color.SingleColorFactory;
-import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
-import com.github.bingoohuang.patchca.filter.predefined.CurvesRippleFilterFactory;
-import com.github.bingoohuang.patchca.font.RandomFontFactory;
-import com.github.bingoohuang.patchca.utils.encoder.EncoderHelper;
-import com.github.bingoohuang.patchca.word.RandomWordFactory;
 import com.toutiao.web.apiimpl.authentication.IgnoreLogin;
 import com.toutiao.web.apiimpl.authentication.Permission;
 import com.toutiao.web.apiimpl.conf.interceptor.LoginAndPermissionConfig;
-import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.MD5Util;
-import com.toutiao.web.common.util.RedisUtils;
-import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.*;
+import com.toutiao.web.dao.entity.admin.SysUserEntity;
+import com.toutiao.web.service.RedisAndCookieService;
 import com.toutiao.web.service.repository.admin.SysMenuService;
 import com.toutiao.web.service.repository.admin.SysRoleService;
 import com.toutiao.web.service.repository.admin.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -45,65 +32,77 @@ public class Login {
     private SysMenuService sysMenuService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private RedisAndCookieService redisAndCookieService;
+    private CookieUtils cookieUtils;
 
     @RequestMapping(value = {"/login"}, method = {RequestMethod.POST})
     @ResponseBody
     @IgnoreLogin
     @Permission(ignore = true)
-    public NashResult login(@RequestParam(value = "phone") String phone,
-                            @RequestParam(value = "code") String code,
-                            HttpServletResponse response, HttpServletRequest request,
-                            @RequestParam(value = "imageCode", required = false) String imageCode) {
-        //判断页面传递过来的电话号码与短信验证码是否为空
-        if (StringTool.isBlank(phone) || StringTool.isBlank(code)) {
-            return NashResult.Fail("fail", "手机号/验证码错误！");
-        }
-        //判断传输过来的电话号码是否全是数字并且是否是手机号码
-        if (!StringUtil.isInt(phone) || StringUtil.isCellphoneNo(phone)) {
-            return NashResult.Fail("fail", "手机号输入有误,请重新输入手机号码！");
-        }
-        //获取当前用户电话号码在缓存中的次数
-        int count = Integer.parseInt(RedisUtils.getValue(phone + "@@@@count"));
-        //获取缓存中的手机号码判断是否有效
-        if (RedisUtils.exists(phone)) {
-            //判断相关信息数据是否一致
-            if (RedisUtils.getValue(phone).equalsIgnoreCase(MD5Util.computeUTF(MD5Util.computeUTF(code)))) {
-                //从cookie中获取图片验证码与页面传递过来的验证码进行对比
-                if (count > 3) {
+    public String login(@RequestParam(value = "phone") String phone,
+                        @RequestParam(value = "code") String code,
+                        HttpServletResponse response, HttpServletRequest request,
+                        @RequestParam(value = "imageCode", required = false) String imageCode, ModelMap modelMap) {
 
-                    if (StringTool.isBlank(imageCode)) {
-                        return NashResult.Fail("fail", "请输入图片验证码", count);
-                    }
-                    Cookie[] cookie = request.getCookies();
-
-                    for (int i = 0; i < cookie.length; i++) {
-
-                        Cookie cook = cookie[i];
-
-                        if (cook.getName().equalsIgnoreCase("imageCode")) {
-
-                            if (!cook.getValue().equalsIgnoreCase(code)) {
-                                return NashResult.Fail("fail", "图片验证码有误！", count);
-                            }
-
-                        }
-                    }
-                }
-                //查询该电话号是否存在
-                int i = sysUserService.selectByPhone(phone);
-                if (i == 0) {
-                    //首次登陆
-                    //登陆成功后需要将用户手机号插入的数据库
-                    sysUserService.insertPhone(phone);
-                    return NashResult.build(phone);
-                }
-                return NashResult.build(phone);
+        try {
+            //获取当前用户电话号码在缓存中的次数
+            int count = StringTool.getInteger(RedisUtils.getValue(phone + RedisNameUtil.separativeSignCount));
+            //判断页面传递过来的电话号码与短信验证码是否为空
+            if (StringTool.isBlank(phone) || StringTool.isBlank(code)) {
+                modelMap.addAttribute("count", count);
+                modelMap.addAttribute("phone", phone);
+                modelMap.addAttribute("message", "短信验证码输入有误！");
+                return "login";
             }
+            //判断传输过来的电话号码是否全是数字并且是否是手机号码
+            if (!StringUtil.isCellphoneNo(phone)) {
+                modelMap.addAttribute("count", count);
+                modelMap.addAttribute("phone", phone);
+                modelMap.addAttribute("message", "手机号输入有误！");
+                return "login";
+            }
+            //获取缓存中的手机号码判断是否有效
+            boolean flag = RedisUtils.exists(phone);
+            if (!flag) {
+                modelMap.addAttribute("phone", phone);
+                modelMap.addAttribute("count", count);
+                modelMap.addAttribute("message", "验证码失效！");
+                return "login";
+            }
+            if (!RedisUtils.getValue(phone).equalsIgnoreCase(MD5Util.computeUTF(MD5Util.computeUTF(code)))) {
+                modelMap.addAttribute("phone", phone);
+                modelMap.addAttribute("count", count);
+                modelMap.addAttribute("message", "验证码输入有误！");
+                return "login";
+            }
+            //从cookie中获取图片验证码与页面传递过来的验证码进行对比
+            if (count > Constant.LOGIN_ERROR_TIMES) {
+                if (StringUtils.isEmpty(imageCode) || StringTool.isEmpty(CookieUtils.getCookie(request, response,
+                        RedisObjectType.USER_IMAGE_VALIDATECODE.getPrefix())) || CookieUtils.getCookie(request, response,
+                        RedisObjectType.USER_IMAGE_VALIDATECODE.getPrefix()).equalsIgnoreCase(imageCode)) {
+                    modelMap.addAttribute("count", count);
+                    modelMap.addAttribute("phone", phone);
+                    modelMap.addAttribute("message", "图片验证码有误！");
+                    return "login";
+                }
+            }
+            //查询该电话号是否存在
+            SysUserEntity sysUser = sysUserService.selectByPhone(phone);
+            if (StringTool.isBlank(sysUser)) {
+                //首次登陆
+                //登陆成功后需要将用户手机号插入的数据库
+                sysUserService.insertPhone(phone);
+            }
+            //将用户登录信息放置到cookie中判断用户登录状态
+            setCookieAndCache(phone, request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return NashResult.Fail("fail", "填写的信息有误，请重新填写！", count);
+        //去下一页
+        return "redirect:/";
+
     }
-
-
     /**
      * 用户退出功能
      *
@@ -111,83 +110,55 @@ public class Login {
      * @throws Exception
      */
     @RequestMapping(value = {"/logout"}, method = {RequestMethod.GET, RequestMethod.POST})
-    @ResponseBody
     @Permission(ignore = true)
-    public NashResult logout(HttpServletResponse response,
-                             @RequestParam(value="phone",required = true) String phone) throws Exception {
-        response.setContentType("application/json;charset=utf-8");
-        //清空cookie中的数据
-        Cookie cookie = new Cookie("imageCode", null);
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        //清空redis中的数据
-        RedisUtils.delKey(phone);
-        RedisUtils.delKey(phone+"@@@@count");
-        return NashResult.build(0);
+    public String logout(HttpServletResponse response, HttpServletRequest request,
+                         @RequestParam(value = "phone", required = true) String phone) throws Exception {
+        clearCookieAndCache(request, response);
+        return "redirect:/login";
     }
 
     /**
-     * 生成登陆验证码
+     * 保存用户信息到cookie中
      *
-     * @return
-     * @author
+     * @param request
+     * @param response
+     * @throws Exception
      */
-    @RequestMapping(value = "/imageCode", method = RequestMethod.GET)
-    @ResponseBody
-    public NashResult buidloginValifyCodeImage(ModelMap map, HttpServletRequest request,
-                                               HttpServletResponse response) {
-        // 设置页面不缓存
-        response.setHeader("Pragma", "No-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-        // 输出图象到页面
-        String patchca = "";
-        ConfigurableCaptchaService cs = this.getCs();
-        try {
-            OutputStream os = response.getOutputStream();
-            patchca = EncoderHelper.getChallangeAndWriteImage(cs, "png", os);
-            os.flush();
-            os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void setCookieAndCache(String phone,
+                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //清空redis中该手机号的失败次数
+        RedisUtils.delKey(phone + RedisNameUtil.separativeSignCount);
+        // 设置登录会员的cookie信息
+        StringBuilder sb = new StringBuilder();
+        sb.append(phone)
+                .append(RedisNameUtil.separativeSign);
+        //用户信息加密
+        String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
+        cookieUtils.setCookie(request, response,
+                CookieUtils.COOKIE_NAME_User_LOGIN, str);
+        // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
+        RedisUtils.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
+                        + phone,
+                phone,RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
+    }
+
+    /**
+     * 清除缓存数据
+     *
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    private void clearCookieAndCache(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String cookie[] =redisAndCookieService
+                .getAdminCookie(request,response);
+        if (cookie != null && cookie.length > 1) {
+            String phone = cookie[0];
+            RedisUtils.delKey(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
+                    + phone);
+            redisAndCookieService.deleteAdminStatus(request, response);
         }
-        //将验证码放置到cookie缓存中
-        Cookie cookie = new Cookie("imageCode", patchca);
-        cookie.setMaxAge(-1);
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        return NashResult.build(patchca);
-    }
-
-    /**
-     * 验证码
-     *
-     * @return
-     */
-    private ConfigurableCaptchaService getCs() {
-        ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
-        cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
-        RandomFontFactory r = new RandomFontFactory();
-        r.setMaxSize(16);
-        r.setMaxSize(12);
-        r.setRandomStyle(true);
-        List<String> list = new ArrayList<String>();
-        list.add("Cursive");
-        r.setFamilies(list);
-        cs.setFontFactory(r);
-        cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
-        cs.setWidth(120);
-        cs.setHeight(60);
-        cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
-        // AdaptiveRandomWordFactory t = new AdaptiveRandomWordFactory();
-        RandomWordFactory t = new RandomWordFactory();
-        //0123456789abcdefghijklmnopqrstuvwsyz
-        t.setCharacters("ABCDEFGHJKLMNOPQRSTUVWSYZ123456789");
-        t.setMaxLength(4);
-        t.setMinLength(4);
-        cs.setWordFactory(t);
-        return cs;
     }
 
 }

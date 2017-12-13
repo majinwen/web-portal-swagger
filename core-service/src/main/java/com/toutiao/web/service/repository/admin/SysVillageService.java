@@ -5,7 +5,7 @@ import com.toutiao.web.domain.query.VillageRequest;
 import java.util.List;
 
 public interface SysVillageService {
-    List GetNearByhHouseAndDistance(String index, String type, double lat, double lon, String distance) throws Exception;
+    List GetNearByhHouseAndDistance(double lat, double lon) throws Exception;
 
-    List findVillageByConditions(String index, String type, VillageRequest villageRequest) throws Exception;
+    List findVillageByConditions(VillageRequest villageRequest) throws Exception;
 }
