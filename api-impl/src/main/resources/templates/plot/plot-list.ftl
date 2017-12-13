@@ -103,16 +103,20 @@
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
-                            <#assign item = plot['photo']>
-                            <img src="${staticurl}/images/esf/${item[0]}" alt="${plot['rc']}">
+                            <#assign photo = plot['photo']>
+                            <#if photo?exists>
+                            <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                            </#if>
                         </div>
                     </#if>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${plot['rc']}</h3>
                         <p class="cont-block-2">${plot['abbreviatedAge']}</p>
-                        <#if plot['key']?exists>
+                        <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
+                            <#if map[plot['key']]?exists>
                             <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
+                            </#if>
                         <#else>
                             <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                         </#if>

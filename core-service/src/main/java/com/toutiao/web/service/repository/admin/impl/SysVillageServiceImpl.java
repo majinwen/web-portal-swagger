@@ -34,8 +34,13 @@ import java.util.Map;
 
 @Service
 public class SysVillageServiceImpl implements SysVillageService {
+    private String index = "village";
+    private String type = "polt";
+    private String childType = "house";
+    private Double distance = 3000.0;
+
     @Override
-    public List GetNearByhHouseAndDistance(String index, String type, double lat, double lon, Double distance) throws Exception {
+    public List GetNearByhHouseAndDistance( double lat, double lon) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
@@ -77,110 +82,117 @@ public class SysVillageServiceImpl implements SysVillageService {
     }
 
     @Override
-    public List findVillageByConditions(String index, String type, VillageRequest villageRequest) throws Exception {
+    public List findVillageByConditions(VillageRequest villageRequest) throws Exception {
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         String key = null;
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //小区ID
         if (villageRequest.getId() != null) {
-            TermQueryBuilder termQueryBuilder = QueryBuilders.termQuery("id", villageRequest.getId());
-            srb.setQuery(termQueryBuilder);
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
+            srb.setQuery(queryBuilder);
         }
         //区域编号
         if (villageRequest.getAreaId() != null) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
             srb.setQuery(queryBuilder);
         }
         //区域地名编号
         if (StringUtils.isNotBlank(villageRequest.getAreaNameId())) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
             srb.setQuery(queryBuilder);
         }
         //商圈编号
         if (StringUtils.isNotBlank(villageRequest.getTradingAreaId())) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", villageRequest.getTradingAreaId()));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", villageRequest.getTradingAreaId()));
             srb.setQuery(queryBuilder);
         }
         //地铁线路编号
         if (StringUtils.isNotBlank(villageRequest.getSearchSubwayLineId())) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", villageRequest.getSearchSubwayLineId()));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", villageRequest.getSearchSubwayLineId()));
             srb.setQuery(queryBuilder);
-            key=villageRequest.getSearchSubwayLineId();
+            key = villageRequest.getSearchSubwayLineId();
         }
         //地铁站编号
-        if (StringUtils.isNotBlank(villageRequest.getSearchMetroStationId())&&StringUtils.isNotBlank(villageRequest.getSearchSubwayLineId())) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", villageRequest.getSearchMetroStationId()));
+        if (StringUtils.isNotBlank(villageRequest.getSearchMetroStationId()) && StringUtils.isNotBlank(villageRequest.getSearchSubwayLineId())) {
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.should(QueryBuilders.termsQuery("metroStationId", villageRequest.getSearchMetroStationId()));
             srb.setQuery(queryBuilder);
-            key=villageRequest.getSearchSubwayLineId()+"_"+villageRequest.getSearchMetroStationId();
+            key = villageRequest.getSearchSubwayLineId() + "_" + villageRequest.getSearchMetroStationId();
         }
         //标签
         String[] labelId = villageRequest.getLabelId();
         if (labelId != null && labelId.length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("labelId", labelId));
-            srb.setQuery(queryBuilder);
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+            BoolQueryBuilder queryBuilder = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", labelId));
+            BoolQueryBuilder must = boolQueryBuilder.must(queryBuilder);
+            srb.setQuery(must);
         }
 
         //均价
         Integer[] searchAvgPrice = villageRequest.getSearchAvgPrice();
         if (searchAvgPrice != null && searchAvgPrice.length != 0) {
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
             for (int i = 0; i < searchAvgPrice.length; i = i + 2) {
                 if (i + 1 > searchAvgPrice.length) {
                     break;
                 }
-                BoolQueryBuilder avgPrice = booleanQueryBuilder.should(QueryBuilders.rangeQuery("avgPrice").from(searchAvgPrice[i]).to(searchAvgPrice[i + 1]));
-                srb.setQuery(avgPrice);
+                BoolQueryBuilder avgPrice = booleanQueryBuilder.should(QueryBuilders.rangeQuery("avgPrice").gt(searchAvgPrice[i]).lte(searchAvgPrice[i + 1]));
+                BoolQueryBuilder must = boolQueryBuilder.must(avgPrice);
+                srb.setQuery(must);
             }
         }
         //面积
         String[] areaSize = villageRequest.getSearchAreaSize();
         if (areaSize != null && areaSize.length != 0) {
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
             for (int i = 0; i < areaSize.length; i = i + 2) {
                 if (i + 1 > areaSize.length) {
                     break;
                 }
-//                BoolQueryBuilder areaSize = booleanQueryBuilder.should(QueryBuilders.rangeQuery("areaSize").gt(areaSizeRange[i]).lte(areaSizeRange[i + 1]));
                 BoolQueryBuilder areaSize1 = booleanQueryBuilder.should(JoinQueryBuilders
-                        .hasChildQuery("house", QueryBuilders.rangeQuery("areaSize").gt(areaSize[i]).lte(areaSize[i + 1]), ScoreMode.None));
-                srb.setQuery(areaSize1);
+                        .hasChildQuery(childType, QueryBuilders.rangeQuery("areaSize").gt(areaSize[i]).lte(areaSize[i + 1]), ScoreMode.None));
+                BoolQueryBuilder must = boolQueryBuilder.must(areaSize1);
+                srb.setQuery(must);
             }
         }
         //楼龄
         Integer[] searchAge = villageRequest.getSearchAge();
         if (searchAge != null && searchAge.length != 0) {
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
             for (int i = 0; i < searchAge.length; i = i + 2) {
                 if (i + 1 > searchAge.length) {
                     break;
                 }
                 BoolQueryBuilder age = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(searchAge[i]).lte(searchAge[i + 1]));
-                srb.setQuery(age);
+                BoolQueryBuilder must = boolQueryBuilder.must(age);
+                srb.setQuery(must);
             }
         }
         //物业类型
         String[] searchPropertyType = villageRequest.getSearchPropertyType();
         if (searchPropertyType != null && searchPropertyType.length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyType", searchPropertyType));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", searchPropertyType));
             srb.setQuery(queryBuilder);
         }
         //电梯
         String[] searchElevator = villageRequest.getSearchElevator();
         if (searchElevator != null && searchElevator.length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("elevator", searchElevator));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", searchElevator));
             srb.setQuery(queryBuilder);
         }
         //建筑类型
         String[] architectureTypeId = villageRequest.getArchitectureTypeId();
         if (architectureTypeId != null && architectureTypeId.length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", architectureTypeId));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", architectureTypeId));
             srb.setQuery(queryBuilder);
         }
         //楼盘特色
         String[] searchVillageCharacteristics = villageRequest.getSearchVillageCharacteristics();
         if (searchVillageCharacteristics != null && searchVillageCharacteristics.length != 0) {
-            BoolQueryBuilder queryBuilder = booleanQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", searchVillageCharacteristics));
+            BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", searchVillageCharacteristics));
             srb.setQuery(queryBuilder);
         }
 
@@ -206,8 +218,8 @@ public class SysVillageServiceImpl implements SysVillageService {
             VillageResponse instance = entityClass.newInstance();
             BeanUtils.populate(instance, source);
             instance.setKey(key);
-            System.out.println(instance);
             houseList.add(instance);
+//            System.out.println(instance);
         }
         return houseList;
     }
