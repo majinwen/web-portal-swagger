@@ -292,10 +292,6 @@ public class NewHouseServiceImpl implements NewHouseService{
         return discripts;
     }
 
-    @Override
-    public Map<String, Object> getNewHouseParameterDetails(Integer buildingId) {
-        return null;
-    }
 
     @Override
     public Map<String, Object> getNewHouseLayoutDetails(Integer buildingId, Integer tags) {

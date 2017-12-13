@@ -2,6 +2,7 @@ package com.toutiao.web.service.newhouse;
 
 import com.toutiao.web.domain.query.NewHouseQuery;
 
+import java.util.List;
 import java.util.Map;
 
 public interface NewHouseService {
@@ -21,13 +22,6 @@ public interface NewHouseService {
      */
     Map<String,Object> getNewHouseDetails(Integer buildingId);
 
-    /**
-     * 获取楼盘参数详情
-     * @param buildingId
-     * @return
-     */
-    Map<String,Object> getNewHouseParameterDetails(Integer buildingId);
-
 
     /**
      * 获取楼盘户型详情
@@ -43,10 +37,11 @@ public interface NewHouseService {
      * @return
      */
     Map<String,Object> getNewHouseLayoutCountByRoom(Integer buildingId);
+
     /**
-     * 获取楼盘全部描述
+     * 获取楼盘参数详情
      * @return
      */
-    List<Map<String,Object>>getNewHouseDiscript(Integer id);
+    List<Map<String,Object>> getNewHouseDiscript(Integer id);
 
 }
