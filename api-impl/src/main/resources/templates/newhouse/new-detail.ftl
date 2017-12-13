@@ -121,7 +121,7 @@
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
-            <a href="#" class="more-arrows">全部户型<i class="arrows-right"></i></a>
+            <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
      <#if layout?exists>
