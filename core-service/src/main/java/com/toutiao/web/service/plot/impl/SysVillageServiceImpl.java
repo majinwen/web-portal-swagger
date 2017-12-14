@@ -26,20 +26,22 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class SysVillageServiceImpl implements SysVillageService {
-    private String index = "village";
-    private String type = "polt";
-    private String childType = "house";
+    @Value("${plot.index}")
+    private String index;
+    @Value("${plot.parent.type}")
+    private String type;
+    @Value("${plot.child.type}")
+    private String childType;
+//    @Value("${distance}")
     private Double distance = 300000000.0;
 
     @Autowired
