@@ -1,10 +1,10 @@
-package com.toutiao.web.service.repository.admin.impl;
+package com.toutiao.web.service.plot.impl;
 
 
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
-import com.toutiao.web.service.repository.admin.SysVillageService;
+import com.toutiao.web.service.plot.SysVillageService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -17,7 +17,6 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;

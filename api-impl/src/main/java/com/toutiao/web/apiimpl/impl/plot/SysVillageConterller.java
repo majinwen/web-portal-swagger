@@ -1,7 +1,7 @@
-package com.toutiao.web.apiimpl.controller.sys;
+package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.domain.query.VillageRequest;
-import com.toutiao.web.service.repository.admin.SysVillageService;
+import com.toutiao.web.service.plot.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

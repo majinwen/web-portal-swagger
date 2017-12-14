@@ -1,4 +1,4 @@
-package com.toutiao.web.service.repository.admin;
+package com.toutiao.web.service.plot;
 
 import com.toutiao.web.domain.query.VillageRequest;
 
