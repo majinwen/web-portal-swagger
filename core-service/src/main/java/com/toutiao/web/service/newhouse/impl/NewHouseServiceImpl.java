@@ -263,7 +263,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         for (SearchHit hit : searchHists) {
             buildings = hit.getSourceAsString();
             locations = (List<Double>) hit.getSource().get("location");
-
+            System.out.println(locations);
         }
         Map<String, Object> maprep = new HashMap<>();
         maprep.put("build",buildings);
@@ -351,18 +351,16 @@ public class NewHouseServiceImpl implements NewHouseService{
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
         Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
         List<Map<String, Object>> roomCount = new ArrayList<>();
-//        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         while(roomBucketIt.hasNext())
         {
-            Map<String, Object> map = new HashMap<>();
             Bucket roomBucket = (Bucket) roomBucketIt.next();
-
+            System.out.println(roomBucket.getKey() + "居有" + roomBucket.getDocCount() +"个。");
            // list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
             map.put("room",roomBucket.getKey());
             map.put("count",roomBucket.getDocCount());
-            roomCount.add(map);
         }
-
+        roomCount.add(map);
         return roomCount;
     }
 
@@ -383,7 +381,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
         BoolQueryBuilder boolQueryBuilder =boolQuery();
-
+        //  System.out.println(location1);
         boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
         boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
         srb.setQuery(boolQueryBuilder);

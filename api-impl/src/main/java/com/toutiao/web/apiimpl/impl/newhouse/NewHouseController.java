@@ -49,6 +49,12 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseDetails")
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
+        List<Integer> zuobiao=new ArrayList();
+        zuobiao.add(2);
+        zuobiao.add(15);
+        zuobiao.add(22);
+        zuobiao.add(10);
+        model.addAttribute("zz",zuobiao);
 
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);
