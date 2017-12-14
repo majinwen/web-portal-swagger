@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.controller;
 
 
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import com.toutiao.web.service.repository.admin.SysVillageService;
@@ -33,23 +34,24 @@ public class ProjHouseInfoController {
      */
     @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}/{lat}/{lon}")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId
-            ,@PathVariable("lat") String lat,@PathVariable("lon") String lon ) {
+            , @PathVariable("lat") String lat, @PathVariable("lon") String lon) {
         //房源详情
-        Map<String, Object>  houseDetails= null;
+        Map<String, Object> houseDetails = null;
         Map<String, Object> builds = null;
-        try {
-            houseDetails = projHouseInfoService.queryByHouseId( Integer.valueOf(houseId));
-            //附近好房
-            builds = projHouseInfoService.
-                    queryProjHouseByhouseIdandLocation(Double.valueOf(lat)  ,Double.valueOf(lon));
-            //附近小区缺少接口
-            List plotList= sysVillageService.GetNearByhHouseAndDistance(Double.valueOf(lat)  ,Double.valueOf(lon));
-            model.addAttribute("houseDetail", houseDetails.get("data_house"));
-            model.addAttribute("plot", builds.get("data_plot"));
-            model.addAttribute("plotTotal", builds.get("total_plot"));
+        houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
+        //附近好房
+        builds = projHouseInfoService.
+                queryProjHouseByhouseIdandLocation(Double.valueOf(lat), Double.valueOf(lon));
+        //附近小区缺少接口
+        List plotList = sysVillageService.GetNearByhHouseAndDistance(Double.valueOf(lat), Double.valueOf(lon));
+        if (StringTool.isNotEmpty(plotList)) {
             model.addAttribute("plotList", plotList);
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        if (StringTool.isNotEmpty(houseDetails)) {
+            model.addAttribute("houseDetail", houseDetails.get("data_house"));
+        }
+        if (StringTool.isNotEmpty(builds)) {
+            model.addAttribute("plot", builds.get("data_plot"));
         }
         return "esf/esf-detail";
     }
@@ -66,14 +68,16 @@ public class ProjHouseInfoController {
 //        model.addAttribute("builds",builds.get("data"));
 //        model.addAttribute("total",builds.get("total"));
         //projHouseInfoQuery.setSubwayLineId("001");
-       // projHouseInfoQuery.setSubwayStationId("001");
+        // projHouseInfoQuery.setSubwayStationId("001");
         //projHouseInfoQuery.setHouseBusinessName("朝阳");
         //projHouseInfoQuery.setAreaId("12");
         //projHouseInfoQuery.setPrice("0,100");
         //projHouseInfoQuery.setHouseTypeId("1,2");
         //projHouseInfoQuery.setHouseAreaId("0,60,60,200");
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-        model.addAttribute("builds", builds);
+        if(StringTool.isNotEmpty(builds)){
+            model.addAttribute("builds", builds);
+        }
         return "esf/esf-list";
 
     }

@@ -1,6 +1,7 @@
 package com.toutiao.web.service.repository.admin.impl;
 
 
+import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
@@ -24,6 +25,7 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
@@ -33,51 +35,56 @@ import java.util.Map;
 
 @Service
 public class SysVillageServiceImpl implements SysVillageService {
+    @Autowired
+    private ESClientTools esClientTools;
     private String index = "village";
     private String type = "polt";
     private String childType = "house";
     private Double distance = 3000.0;
 
     @Override
-    public List GetNearByhHouseAndDistance( double lat, double lon) throws Exception {
-        Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                .build();
-        TransportClient client = new PreBuiltTransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
-        //从该坐标查询距离为distance
-        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
-        srb.setPostFilter(location1);
-        // 获取距离多少公里 这个才是获取点与点之间的距离的
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
-        sort.unit(DistanceUnit.METERS);
-        sort.order(SortOrder.ASC);
-        sort.point(lat, lon);
-        srb.addSort(sort);
+    public List GetNearByhHouseAndDistance(double lat, double lon) {
+        List houseList = null;
+        try {
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+            //从该坐标查询距离为distance
+            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
+            srb.setPostFilter(location1);
+            // 获取距离多少公里 这个才是获取点与点之间的距离的
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+            sort.unit(DistanceUnit.METERS);
+            sort.order(SortOrder.ASC);
+            sort.point(lat, lon);
+            srb.addSort(sort);
 
-        SearchResponse searchResponse = srb.execute().actionGet();
-        SearchHits hits = searchResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        String[] house = new String[(int) hits.getTotalHits()];
-        System.out.println("附近的小区(" + hits.getTotalHits() + "个)：");
-        List houseList = new ArrayList();
-        for (SearchHit hit : searchHists) {
-            Map source = hit.getSource();
-            Class<VillageEntity> entityClass = VillageEntity.class;
-            VillageEntity instance = entityClass.newInstance();
-            System.out.println(instance);
-            BeanUtils.populate(instance, source);
-            houseList.add(instance);
-//            List<Double> location = (List<Double>) hit.getSource().get("location");
-            // 获取距离值，并保留两位小数点
-//            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-//            Map<String, Object> hitMap = hit.getSource();
-//            // 在创建MAPPING的时候，属性名的不可为geoDistance。
-//            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-//            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
-////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+            SearchResponse searchResponse = srb.execute().actionGet();
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            String[] house = new String[(int) hits.getTotalHits()];
+            System.out.println("附近的小区(" + hits.getTotalHits() + "个)：");
+            houseList = new ArrayList();
+            for (SearchHit hit : searchHists) {
+                Map source = hit.getSource();
+                Class<VillageEntity> entityClass = VillageEntity.class;
+                VillageEntity instance = entityClass.newInstance();
+                System.out.println(instance);
+                BeanUtils.populate(instance, source);
+                houseList.add(instance);
+                //            List<Double> location = (List<Double>) hit.getSource().get("location");
+                // 获取距离值，并保留两位小数点
+                //            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                //            Map<String, Object> hitMap = hit.getSource();
+                //            // 在创建MAPPING的时候，属性名的不可为geoDistance。
+                //            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
+                //            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+                ////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+            }
+            return houseList;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return houseList;
+        return null;
     }
 
     @Override

@@ -46,34 +46,40 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      */
     @Override
     public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //从该坐标查询距离为distance      housePlotLocation
+        Map<String, Object> result = null;
+        try {
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            //从该坐标查询距离为distance      housePlotLocation
 //        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000000000000", DistanceUnit.METERS);
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance("30000000000000", DistanceUnit.METERS));
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance("3000", DistanceUnit.METERS));
 //        srb.setPostFilter(location1);
-        // 获取距离多少公里 这个才是获取点与点之间的距离的
+            // 获取距离多少公里 这个才是获取点与点之间的距离的
 //        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
 //        sort.unit(DistanceUnit.METERS);
 //        sort.order(SortOrder.ASC);
 //        sort.point(lat, lon);
-        srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName"}, null).execute().actionGet();
-        SearchResponse searchResponse = srb.execute().actionGet();
+            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName"}, null).execute().actionGet();
+            SearchResponse searchResponse = srb.execute().actionGet();
 
-        SearchHits hits = searchResponse.getHits();
-        String[] house = new String[(int) hits.getTotalHits()];
-        System.out.println("附近的房源(" + hits.getTotalHits() + "个)：");
-        ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit hit : searchHists) {
-            Map<String, Object> buildings = hit.getSource();
-            buildinglist.add(buildings);
+            SearchHits hits = searchResponse.getHits();
+            String[] house = new String[(int) hits.getTotalHits()];
+            System.out.println("附近的房源(" + hits.getTotalHits() + "个)：");
+            ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit hit : searchHists) {
+                Map<String, Object> buildings = hit.getSource();
+                buildinglist.add(buildings);
+            }
+            result = new HashMap<>();
+            result.put("data_plot", buildinglist);
+            result.put("total_plot", hits.getTotalHits());
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        Map<String, Object> result = new HashMap<>();
-        result.put("data_plot", buildinglist);
-        result.put("total_plot", hits.getTotalHits());
-        return result;
+        return null;
     }
 
     /**
@@ -317,6 +323,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             result = new HashMap<>();
             result.put("data_house", houseList.get(0));
             result.put("total_house", hits.getTotalHits());
+            return result;
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -324,7 +331,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        return result;
+        return null;
     }
 
 

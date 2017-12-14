@@ -161,7 +161,7 @@
         <ul class="tilelist row">
             <li>
                 <div class="picture-box">
-                     <#assign item=houseDetail['housePlotPhoto']>
+                <#assign item=houseDetail['housePlotPhoto']>
                     <img src="${staticurl}/images/esf/${item[0]}" alt="${houseDetail.housePlotName}">
                 </div>
                 <div class="tilelist-content">
@@ -195,18 +195,18 @@
         <ul class="tilelist">
         <#if plot?exists>
             <#list plot as map>
-                    <li>
-                        <a href="#">
-                            <div class="picture-box">
-                                <#assign item=map['housePhoto']>
-                                <img src="${staticurl}/images/esf/${item[0]}" alt="${map.housePlotName}">
-                            </div>
-                            <div class="tilelist-content">
-                                <p class="cont-first"><em>${map.houseTotalPrices}万</em>/${map.houseArea}㎡/${map.houseType}</p>
-                                <h4 class="cont-last">${map.housePlotName}</h4>
-                            </div>
-                        </a>
-                    </li>
+                <li>
+                    <a href="#">
+                        <div class="picture-box">
+                            <#assign item=map['housePhoto']>
+                            <img src="${staticurl}/images/esf/${item[0]}" alt="${map.housePlotName}">
+                        </div>
+                        <div class="tilelist-content">
+                            <p class="cont-first"><em>${map.houseTotalPrices}万</em>/${map.houseArea}㎡/${map.houseType}</p>
+                            <h4 class="cont-last">${map.housePlotName}</h4>
+                        </div>
+                    </a>
+                </li>
             </#list>
         </#if>
         </ul>
@@ -216,24 +216,24 @@
     <div class="module-header-message">
         <h3>附近小区</h3>
     </div>
-    <#--<ul class="tilelist">
-        <#if plotList?exists>
-            <#list plotList as plotInfo>
-                <li>
-                    <a href="#">
-                        <div class="picture-box">
-                            <#assign plotImage=plotInfo[''] >
-                            <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotImage[0]}">
-                        </div>
-                        <div class="tilelist-content">
-                            <h4 class="cont-first">后现代城</h4>
-                            <p class="cont-last"><em>68960元</em>/㎡</p>
-                        </div>
-                    </a>
-                </li>
-            </#list>
-        </#if>
-    </ul>-->
+        <ul class="tilelist">
+            <#if plotList?exists>
+                <#list plotList as plotInfo>
+                    <li>
+                        <a href="#">
+                            <div class="picture-box">
+                                <#assign plotImage=plotInfo['photo'] >
+                                <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
+                            </div>
+                            <div class="tilelist-content">
+                                <h4 class="cont-first">${plotInfo.desc}</h4>
+                                <p class="cont-last"><em>${plotInfo.sumPrice}元</em>/㎡</p>
+                            </div>
+                        </a>
+                    </li>
+                </#list>
+            </#if>
+        </ul>
 </section>
 <script src="${staticurl}/js/zepto.min.js"></script>
 <!-------- photoswipe -------->
