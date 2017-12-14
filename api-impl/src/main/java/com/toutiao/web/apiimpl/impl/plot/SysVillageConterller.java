@@ -20,11 +20,7 @@ public class SysVillageConterller {
     @ResponseBody
     public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
         List villageList = null;
-        try {
-            villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
         model.addAttribute("villageList", villageList);
         return "plot-list";
     }
@@ -51,11 +47,7 @@ public class SysVillageConterller {
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("001");
         List villageList = null;
-        try {
-            villageList = sysVillageService.findVillageByConditions(villageRequest1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        villageList = sysVillageService.findVillageByConditions(villageRequest1);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
