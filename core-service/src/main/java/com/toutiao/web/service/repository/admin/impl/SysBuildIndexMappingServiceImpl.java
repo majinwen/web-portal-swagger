@@ -1,6 +1,7 @@
 package com.toutiao.web.service.repository.admin.impl;
 
 
+import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.service.repository.admin.SysBuildIndexMappingService;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.client.Requests;
@@ -10,18 +11,18 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
 @Service
 public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingService {
+    @Autowired
+    private ESClientTools esClientTools;
 
     @Override
     public void buildPoltMapping(String index, String type){
-        Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                .build();
-        TransportClient client = new PreBuiltTransportClient(settings)
-                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+        TransportClient client = esClientTools.init();
         //创建一个空索引，如没有索引，创建mapping时会报错
         client.admin().indices().prepareCreate(index).execute().actionGet();
         //创建mapping
