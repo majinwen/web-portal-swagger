@@ -29,31 +29,27 @@ public class SaveToESController {
         village1.setMetroStationId(mt);
         String[] mtStation ={"朝阳东","朝阳"};
         village1.setMetroStation(mtStation);
-        String[] li ={"001","002"};
-        village1.setSubwayLineId(li);
-        String[] liName ={"1号线","2号线"};
-        village1.setSubwayLine(liName);
-        Map<String,String> map = new HashMap<String,String>();
-        map.put(village1.getSubwayLineId()[0]+"_"+village1.getMetroStationId()[0],"10");
-        map.put(village1.getSubwayLineId()[1]+"_"+village1.getMetroStationId()[1],"20");
-        village1.setMetroWithPlotsDistance(map);
-        String[] la = {"001","002"};
-        village1.setLabelId(la);
-        String[] laName = {"标签1","标签2"};
-        village1.setLabel(laName);
-        village1.setAvgPrice(59999);
-        village1.setAge(16);
-        village1.setElevator("有");
-        Double[] loca = {10.0,10.0};
-        village1.setLocation(loca);
-        village1.setLevel(1);
-
-        Boolean flag = null;
-        try {
-            flag = saveToESService.save(index, type, village1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String[] li ={"001","002"};
+//        village1.setSubwayLineId(li);
+//        String[] liName ={"1号线","2号线"};
+//        village1.setSubwayLine(liName);
+//        Map<String,String> map = new HashMap<String,String>();
+//        map.put(village1.getSubwayLineId()[0]+"_"+village1.getMetroStationId()[0],"100000");
+//        map.put(village1.getSubwayLineId()[1]+"_"+village1.getMetroStationId()[1],"200000");
+//        village1.setMetroWithPlotsDistance(map);
+//        String[] la = {"001","002"};
+//        village1.setLabelId(la);
+//        String[] laName = {"标签1","标签2"};
+//        village1.setLabel(laName);
+//        village1.setAvgPrice(333333);
+//        village1.setAge(16);
+//        village1.setElevator("有");
+//        Double[] loca = {10.0,10.0};
+//        village1.setLocation(loca);
+//        village1.setLevel(1);
+//          village1.setAvgPrice(5555555);
+//          village1.setYopr("5555555555");
+        Boolean flag = saveToESService.save(index, type, village1);
         model.addAttribute("flag",flag);
     }
 }

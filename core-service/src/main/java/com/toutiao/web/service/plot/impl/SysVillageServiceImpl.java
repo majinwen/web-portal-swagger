@@ -1,6 +1,7 @@
 package com.toutiao.web.service.plot.impl;
 
 
+import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
@@ -24,6 +25,7 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,15 +42,15 @@ public class SysVillageServiceImpl implements SysVillageService {
     private String childType = "house";
     private Double distance = 3000.0;
 
+    @Autowired
+    private ESClientTools esClientTools;
+
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
         List houseList = new ArrayList();
         try {
-            Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                    .build();
-            TransportClient client = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+            TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
@@ -82,22 +84,19 @@ public class SysVillageServiceImpl implements SysVillageService {
 //            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
 ////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
+            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return houseList;
+        return null;
     }
 
 
     @Override
     public List findVillageByConditions(VillageRequest villageRequest) {
         List houseList = new ArrayList();
-        Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                .build();
-        TransportClient client = null;
         try {
-            client = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+            TransportClient client = esClientTools.init();
 
             String key = null;
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
@@ -238,9 +237,10 @@ public class SysVillageServiceImpl implements SysVillageService {
                 houseList.add(instance);
 //            System.out.println(instance);
             }
+            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return houseList;
+        return null;
     }
 }
