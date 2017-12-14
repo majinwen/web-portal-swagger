@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.controller;
 
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
+import com.toutiao.web.service.repository.admin.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ public class ProjHouseInfoController {
 
     @Autowired
     private ProjHouseInfoService projHouseInfoService;
+    @Autowired
+    private SysVillageService sysVillageService;
 
 
     /**
@@ -32,15 +35,22 @@ public class ProjHouseInfoController {
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId
             ,@PathVariable("lat") String lat,@PathVariable("lon") String lon ) {
         //房源详情
-        Map<String, Object>  houseDetails=projHouseInfoService.queryByHouseId( Integer.valueOf(houseId));
-        //附近好房
-        Map<String, Object> builds = projHouseInfoService.
-                queryProjHouseByhouseIdandLocation(Double.valueOf(lat)  ,Double.valueOf(lon));
-        //附近小区缺少接口
-
-        model.addAttribute("houseDetail", houseDetails.get("data_house"));
-        model.addAttribute("plot", builds.get("data_plot"));
-        model.addAttribute("plotTotal", builds.get("total_plot"));
+        Map<String, Object>  houseDetails= null;
+        Map<String, Object> builds = null;
+        try {
+            houseDetails = projHouseInfoService.queryByHouseId( Integer.valueOf(houseId));
+            //附近好房
+            builds = projHouseInfoService.
+                    queryProjHouseByhouseIdandLocation(Double.valueOf(lat)  ,Double.valueOf(lon));
+            //附近小区缺少接口
+            List plotList= sysVillageService.GetNearByhHouseAndDistance(Double.valueOf(lat)  ,Double.valueOf(lon));
+            model.addAttribute("houseDetail", houseDetails.get("data_house"));
+            model.addAttribute("plot", builds.get("data_plot"));
+            model.addAttribute("plotTotal", builds.get("total_plot"));
+            model.addAttribute("plotList", plotList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "esf/esf-detail";
     }
 

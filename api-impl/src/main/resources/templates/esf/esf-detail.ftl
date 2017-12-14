@@ -216,63 +216,24 @@
     <div class="module-header-message">
         <h3>附近小区</h3>
     </div>
-    <ul class="tilelist">
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-    </ul>
+    <#--<ul class="tilelist">
+        <#if plotList?exists>
+            <#list plotList as plotInfo>
+                <li>
+                    <a href="#">
+                        <div class="picture-box">
+                            <#assign plotImage=plotInfo[''] >
+                            <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotImage[0]}">
+                        </div>
+                        <div class="tilelist-content">
+                            <h4 class="cont-first">后现代城</h4>
+                            <p class="cont-last"><em>68960元</em>/㎡</p>
+                        </div>
+                    </a>
+                </li>
+            </#list>
+        </#if>
+    </ul>-->
 </section>
 <script src="${staticurl}/js/zepto.min.js"></script>
 <!-------- photoswipe -------->

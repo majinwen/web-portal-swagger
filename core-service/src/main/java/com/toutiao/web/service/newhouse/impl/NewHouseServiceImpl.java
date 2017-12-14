@@ -225,5 +225,20 @@ public class NewHouseServiceImpl implements NewHouseService{
         return null;
     }
 
+    @Override
+    public Map<String, Object> getNewHouseLayoutDetails(Integer buildingId, Integer tags) {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getNewHouseLayoutCountByRoom(Integer buildingId) {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getNewHouseDiscript(Integer id) {
+        return null;
+    }
+
 
 }
