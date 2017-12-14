@@ -17,6 +17,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,12 +31,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     @Autowired
     private ESClientTools esClientTools;
-    /*@Value("${tt.projhouse.index}")
+    @Value("${tt.projhouse.index}")
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
-    private String projhouseType;//索引类*/
-    private String projhouseIndex = "a";//索引名称
-    private String projhouseType = "b";//索引类
+    private String projhouseType;//索引类
+    /*private String projhouseIndex = "a";//索引名称
+    private String projhouseType = "b";//索引类*/
 
     /**
      * 通过小区的经度纬度查找房源信息
