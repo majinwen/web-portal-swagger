@@ -40,7 +40,7 @@ public class SysVillageServiceImpl implements SysVillageService {
     private String index = "village";
     private String type = "polt";
     private String childType = "house";
-    private Double distance = 3000.0;
+    private Double distance = 300000000.0;
 
     @Autowired
     private ESClientTools esClientTools;
@@ -72,8 +72,8 @@ public class SysVillageServiceImpl implements SysVillageService {
                 Map source = hit.getSource();
                 Class<VillageEntity> entityClass = VillageEntity.class;
                 VillageEntity instance = entityClass.newInstance();
-                System.out.println(instance);
                 BeanUtils.populate(instance, source);
+                System.out.println(instance);
                 houseList.add(instance);
 //            List<Double> location = (List<Double>) hit.getSource().get("location");
                 // 获取距离值，并保留两位小数点
