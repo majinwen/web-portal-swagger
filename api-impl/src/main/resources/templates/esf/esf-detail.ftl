@@ -221,13 +221,21 @@
                 <#list plotList as plotInfo>
                     <li>
                         <a href="#">
-                            <div class="picture-box">
-                                <#assign plotImage=plotInfo['photo'] >
-                                <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
+                           <div class="picture-box">
+                                <#if plotInfo['photo']?exists>
+                                    <#assign plotImage=plotInfo['photo'] >
+                                    <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
+                                    <#else >
+                                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
+                                </#if>
                             </div>
                             <div class="tilelist-content">
-                                <h4 class="cont-first">${plotInfo.desc}</h4>
-                                <p class="cont-last"><em>${plotInfo.sumPrice}元</em>/㎡</p>
+                                <#if plotInfo['desc']?exists>
+                                    <h4 class="cont-first">${plotInfo.desc}</h4>
+                                </#if>
+                                <#if plotInfo['avgPrice']?exists>
+                                    <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                                </#if>
                             </div>
                         </a>
                     </li>

@@ -40,7 +40,7 @@ public class SysVillageServiceImpl implements SysVillageService {
     private String index = "village";
     private String type = "polt";
     private String childType = "house";
-    private Double distance = 3000.0;
+    private Double distance = 300000000.0;
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
