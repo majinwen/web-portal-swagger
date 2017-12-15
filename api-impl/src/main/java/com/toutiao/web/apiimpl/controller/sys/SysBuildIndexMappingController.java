@@ -14,7 +14,8 @@ public class SysBuildIndexMappingController {
 
     @RequestMapping("/buildPoltMapping")
     @ResponseBody
-    public void BuildIndexMapping(String index, String type) {
-        sysBuildIndexMappingService.buildPoltMapping(index, type);
+    public void BuildParentIndexMapping() {
+        sysBuildIndexMappingService.buildPoltMapping();
     }
+
 }

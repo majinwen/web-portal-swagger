@@ -1,5 +1,6 @@
 package com.toutiao.web.apiimpl.controller.sys;
 
+import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.service.repository.admin.SaveToESService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +19,15 @@ public class SaveToESController {
     @ResponseBody
     public void saveParentToES(VillageEntity village, Model model){
         VillageEntity village1 = new VillageEntity();
-        village1.setId(001);
-        village1.setAreaId("002");
-        village1.setArea("朝阳");
-        village1.setAreaNameId("001");
-        village1.setAreaName("朝阳门");
-        String[] mt = {"001","002"};
-        village1.setMetroStationId(mt);
-        String[] mtStation ={"朝阳东","朝阳"};
-        village1.setMetroStation(mtStation);
+        village1.setId(1);
+//        village1.setAreaId("002");
+//        village1.setArea("丰台11111111");
+//        village1.setAreaNameId("001");
+//        village1.setAreaName("朝阳门");
+//        String[] mt = {"001","002"};
+//        village1.setMetroStationId(mt);
+//        String[] mtStation ={"朝阳东","朝阳"};
+//        village1.setMetroStation(mtStation);
 //        String[] li ={"001","002"};
 //        village1.setSubwayLineId(li);
 //        String[] liName ={"1号线","2号线"};
@@ -42,14 +43,23 @@ public class SaveToESController {
 //        village1.setAvgPrice(333333);
 //        village1.setAge(16);
 //        village1.setElevator("有");
-//        Double[] loca = {10.0,10.0};
-//        village1.setLocation(loca);
-//        village1.setLevel(1);
-//          village1.setAvgPrice(5555555);
-//          village1.setYopr("5555555555");
+        Double[] loca = {10.0,10.0};
+        village1.setLocation(loca);
+        village1.setLevel(1);
+          village1.setAvgPrice(5555555);
+          village1.setYopr("5555555555");
         Boolean flag = saveToESService.saveParent(village1);
         model.addAttribute("flag",flag);
     }
 
+    @RequestMapping("/saveChildToES")
+    @ResponseBody
+    public void saveChildToES(ProjHouseInfo projHouseInfo,Model model){
+        ProjHouseInfo projHouseInfo1 = new ProjHouseInfo();
+        projHouseInfo1.setHouseId(1);
+        projHouseInfo1.setHouseArea("66666");
+//        projHouseInfo1.setHousePlotId(1);
+        Boolean flag = saveToESService.saveChild(projHouseInfo1);
+    }
 
 }
