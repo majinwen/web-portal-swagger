@@ -3,8 +3,9 @@ package com.toutiao.web.apiimpl.controller;
 
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
+import com.toutiao.web.service.plot.SysVillageService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
-import com.toutiao.web.service.repository.admin.SysVillageService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

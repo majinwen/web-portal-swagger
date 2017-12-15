@@ -110,7 +110,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         }
 
-                //面积
+        //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
             BoolQueryBuilder boolQueryBuilder = boolQuery();
 
@@ -173,11 +173,11 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==2){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-             .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).setFetchSource(
-                    new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                            "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                            "location","house_min_area","house_max_area","nearbysubway"},
-                    null)
+                    .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).setFetchSource(
+                            new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                                    "location","house_min_area","house_max_area","nearbysubway"},
+                            null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
@@ -252,15 +252,163 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchHit[] searchLayoutHists = layouthits.getHits();
         for (SearchHit hit : searchLayoutHists) {
             Map<String,Object> item=hit.getSourceAsMap();
-               layouts.add(item);
+            layouts.add(item);
         }
 
         SearchHits hits = searchresponse.getHits();
 
         SearchHit[] searchHists = hits.getHits();
-        System.out.println(searchHists);
-        return null;
+        String buildings = null;
+        List<Double> locations = new ArrayList<>();
+        for (SearchHit hit : searchHists) {
+            buildings = hit.getSourceAsString();
+            locations = (List<Double>) hit.getSource().get("location");
+
+        }
+        Map<String, Object> maprep = new HashMap<>();
+        maprep.put("build",buildings);
+        maprep.put("layout",layouts);
+        try {
+            if(locations.size() ==2){
+                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
+                maprep.put("nearbybuild",nearBy);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maprep;
     }
+    /**
+     * 获取新房全部描述
+     * */
+    @Override
+    public List<Map<String,Object>> getNewHouseDiscript(Integer id) {
+
+        //建立连接
+
+        TransportClient client = esClientTools.init();
+
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", id));
+
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+                .setQuery(booleanQueryBuilder)
+                .execute().actionGet();
+
+        SearchHits layouthits = searchresponse1.getHits();
+        SearchHit[] searchHists = layouthits.getHits();
+        List<Map<String,Object>> discripts =new ArrayList<>();
+        for (SearchHit hit : searchHists) {
+            Map<String,Object> item=hit.getSourceAsMap();
+            discripts.add(item);
+        }
+
+        return discripts;
+    }
+
+
+    @Override
+    public Map<String, Object> getNewHouseLayoutDetails(Integer buildingId, Integer tags) {
+        TransportClient client = esClientTools.init();
+        BoolQueryBuilder detailsBuilder = boolQuery();
+//        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        if(tags > 0){
+            detailsBuilder.must(QueryBuilders.termQuery("room",tags));
+        }
+        SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
+                .setQuery(detailsBuilder)
+                .execute().actionGet();
+        SearchHits layouthits = searchresponse1.getHits();
+        List<Map<String,Object>> layouts =new ArrayList<>();
+        SearchHit[] searchLayoutHists = layouthits.getHits();
+        for (SearchHit hit : searchLayoutHists) {
+            Map<String,Object> item=hit.getSourceAsMap();
+            layouts.add(item);
+        }
+
+
+
+
+        Map<String, Object> maprep = new HashMap<>();
+
+        maprep.put("layouts",layouts);
+        return maprep;
+    }
+
+    @Override
+    public List<Map<String,Object>> getNewHouseLayoutCountByRoom(Integer buildingId) {
+
+        TransportClient client = esClientTools.init();
+        BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+
+        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType).setQuery(sizeBuilder)
+                .addAggregation(AggregationBuilders.terms("roomCount").field("room"))
+                .execute().actionGet();
+
+        Map aggMap =searchresponse.getAggregations().asMap();
+        LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
+        Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+        List<Map<String, Object>> roomCount = new ArrayList<>();
+//        Map<String, Object> map = new HashMap<>();
+        while(roomBucketIt.hasNext())
+        {
+            Map<String, Object> map = new HashMap<>();
+            Bucket roomBucket = (Bucket) roomBucketIt.next();
+
+            // list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
+            map.put("room",roomBucket.getKey());
+            map.put("count",roomBucket.getDocCount());
+            roomCount.add(map);
+        }
+
+        return roomCount;
+    }
+
+    /**
+     * 地理位置找房
+     * @param buildingNameId
+     * @param index
+     * @param type
+     * @param lat
+     * @param lon
+     * @param distance
+     * @param client
+     * @return
+     * @throws Exception
+     */
+    public List<Map<String,Object>> getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, String distance,TransportClient client) throws Exception {
+
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        //从该坐标查询距离为distance
+        BoolQueryBuilder boolQueryBuilder =boolQuery();
+
+        boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
+        boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
+        srb.setQuery(boolQueryBuilder);
+        // 获取距离多少公里 这个才是获取点与点之间的距离的
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+        sort.unit(DistanceUnit.METERS);
+        sort.order(SortOrder.ASC);
+        sort.point(lat, lon);
+        srb.addSort(sort).setFetchSource(
+                new String[]{"building_name_id","building_name","average_price","city_id",
+                        "district_id","district_name","area_id","area_name","building_imgs"},
+                null);
+
+        SearchResponse searchResponse = srb.execute().actionGet();
+        SearchHits hits = searchResponse.getHits();
+        List<Map<String,Object>> nearBy = new ArrayList<>();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            Map<String,Object> mapitem=new HashMap() ;
+            mapitem = hit.getSourceAsMap();
+            nearBy.add(mapitem);
+        }
+        return nearBy;
+    }
+
 
 
 }
