@@ -41,23 +41,24 @@ $textGrayColor: #888;
         padding-left: rem(30);
         
         .cont-block-1 {
-            height: rem(33);
-            line-height: 1.2;
+            height: rem(28);
+            line-height: rem(28);
             @include font-dpr(28);
             @include text-ellipses;
             
             em {
-                position: relative;
-                top: rem(-2);
                 display: inline-block;
                 height: rem(28);
-                line-height: rem(28);
-                @include font-dpr(20);
+                line-height: rem(26);
                 padding: 0 rem(12);
+                @include font-dpr(20);
+                margin-left: rem(20);
                 border: 1px solid $borderRadiusColor;
-                -webkit-border-radius: rem(4);
-                -moz-border-radius: rem(4);
-                border-radius: rem(4);
+                -webkit-border-radius: rem(6);
+                -moz-border-radius: rem(6);
+                border-radius: rem(6);
+                @include box-sizing;
+                vertical-align: bottom;
             }
         }
         
@@ -92,23 +93,6 @@ $textGrayColor: #888;
             position: absolute;
             width: rem(430);
             bottom: 0;
-            white-space: nowrap;
-            overflow-x: scroll;
-            
-            span {
-                color: $baseWhite;
-                height: rem(28);
-                line-height: rem(28);
-                padding: 0 rem(11);
-                margin-left: rem(5);
-                @include font-dpr(20);
-                background-color: $baseGray;
-                border-radius: rem(4);
-                
-                &:first-child {
-                    margin-left: 0;
-                }
-            }
         }
         
         .cont-block-price {
@@ -172,15 +156,15 @@ $textGrayColor: #888;
             position: absolute;
             right: 0;
             top: 0;
-            height: rem(30);
-            line-height: rem(30);
-            padding: 0 rem(14) 0 rem(20);
+            height: rem(32);
+            line-height: rem(32);
+            padding: 0 rem(17) 0 rem(22);
             @include font-dpr(20);
             color: $baseWhite;
             background-color: $baseGreen;
-            -webkit-border-radius: rem(20) 0 0 rem(20);
-            -moz-border-radius: rem(20) 0 0 rem(20);
-            border-radius: rem(20) 0 0 rem(20);
+            -webkit-border-radius: rem(22) 0 0 rem(22);
+            -moz-border-radius: rem(22) 0 0 rem(22);
+            border-radius: rem(22) 0 0 rem(22);
         }
     }
 }
