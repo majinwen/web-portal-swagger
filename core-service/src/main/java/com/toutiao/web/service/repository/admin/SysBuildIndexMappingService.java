@@ -3,5 +3,5 @@ package com.toutiao.web.service.repository.admin;
 
 
 public interface SysBuildIndexMappingService {
-     void buildPoltMapping(String index,String type);
+     void buildPoltMapping();
 }
