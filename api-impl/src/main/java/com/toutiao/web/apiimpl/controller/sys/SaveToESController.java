@@ -16,9 +16,9 @@ public class SaveToESController {
     @Autowired
     private SaveToESService saveToESService;
 
-    @RequestMapping("/saveToES")
+    @RequestMapping("/saveParentToES")
     @ResponseBody
-    public void setSaveToESService(String index, String type, VillageEntity village, Model model){
+    public void saveParentToES(VillageEntity village, Model model){
         VillageEntity village1 = new VillageEntity();
         village1.setId(001);
         village1.setAreaId("002");
@@ -49,7 +49,9 @@ public class SaveToESController {
 //        village1.setLevel(1);
 //          village1.setAvgPrice(5555555);
 //          village1.setYopr("5555555555");
-        Boolean flag = saveToESService.save(index, type, village1);
+        Boolean flag = saveToESService.saveParent(village1);
         model.addAttribute("flag",flag);
     }
+
+
 }

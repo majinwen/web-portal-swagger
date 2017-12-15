@@ -21,6 +21,7 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
@@ -32,17 +33,24 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 public class SaveToESServiceImpl implements SaveToESService {
     @Autowired
     private ESClientTools esClientTools;
+    @Value("${plot.index}")
+    private String index;
+    @Value("${plot.parent.type}")
+    private String parentType;
+    @Value("${plot.child.type}")
+    private String childType;
 
     @Override
-    public Boolean save(String index, String type, VillageEntity village) {
+    public Boolean saveParent( VillageEntity village) {
         TransportClient client = esClientTools.init();
         Boolean flag = true;
         String jsonStr  = JSONObject.toJSONString(village);
         JSONObject json = JSONObject.parseObject(jsonStr);
         BulkRequestBuilder bulkRequest = client.prepareBulk();
-        IndexRequest indexRequest = new IndexRequest(index, type, "2")
+        String id = String.valueOf(village.getId());
+        IndexRequest indexRequest = new IndexRequest(index, parentType,id)
                 .source(json);
-        UpdateRequest updateRequest = new UpdateRequest(index, type, "2")
+        UpdateRequest updateRequest = new UpdateRequest(index, parentType, id)
                 .doc(json)
                 .upsert(indexRequest);
         bulkRequest.add(updateRequest);

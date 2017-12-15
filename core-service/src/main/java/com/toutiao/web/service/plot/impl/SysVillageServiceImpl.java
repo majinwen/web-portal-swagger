@@ -35,7 +35,7 @@ public class SysVillageServiceImpl implements SysVillageService {
     @Value("${plot.index}")
     private String index;
     @Value("${plot.parent.type}")
-    private String type;
+    private String parentType;
     @Value("${plot.child.type}")
     private String childType;
 //    @Value("${distance}")
@@ -50,7 +50,7 @@ public class SysVillageServiceImpl implements SysVillageService {
         List houseList = new ArrayList();
         try {
             TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
             srb.setPostFilter(location1);
@@ -98,7 +98,7 @@ public class SysVillageServiceImpl implements SysVillageService {
             TransportClient client = esClientTools.init();
 
             String key = null;
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //小区ID
             if (villageRequest.getId() != null) {
