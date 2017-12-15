@@ -12,6 +12,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,6 +21,12 @@ import java.net.InetAddress;
 public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingService {
     @Autowired
     private ESClientTools esClientTools;
+    @Value("${plot.index}")
+    private String index;
+    @Value("${plot.parent.type}")
+    private String type;
+    @Value("${plot.child.type}")
+    private String childType;
 
     @Override
     public void buildPoltMapping(String index, String type){
