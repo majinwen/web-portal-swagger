@@ -1,6 +1,4 @@
-$borderLineColor: #ccc;
 $triangleBottomColor: #b1b1b1;
-$borderRadiusColor: #999;
 
 .none {
     display: none;
@@ -90,6 +88,7 @@ $borderRadiusColor: #999;
             box-shadow: 0 rem(4) rem(21) 0 rgba(56, 58, 64, 0.14);
             -webkit-transition-duration: 0.4s;
             transition-duration: 0.4s;
+            overflow: hidden;
     
             > ul {
                 margin: 0;
