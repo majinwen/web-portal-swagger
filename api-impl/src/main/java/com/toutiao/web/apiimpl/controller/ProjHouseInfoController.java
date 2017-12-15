@@ -28,13 +28,17 @@ public class ProjHouseInfoController {
 
 
     /**
-     * 根据房源的id以及小区的经度，维度查询房源详情，以及附近好房信息
      *
-     * @return
+     * 功能描述：功能描述：根据房源的id以及小区的经度，维度查询房源详情，以及附近好房信息
+     * @author zhw
+     * @date 2017/12/15 11:06
+     * @param [model, houseId, lat, lon]
+     * @return java.lang.String
      */
     @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}/{lat}/{lon}")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId
             , @PathVariable("lat") String lat, @PathVariable("lon") String lon) {
+
         //房源详情
         Map<String, Object> houseDetails = null;
         Map<String, Object> builds = null;
@@ -55,15 +59,17 @@ public class ProjHouseInfoController {
         }
         return "esf/esf-detail";
     }
-
     /**
-     * 二手房列表
      *
-     * @param model
-     * @return
+     * 功能描述：二手房列表
+     * @author zhw
+     * @date 2017/12/15 10:59
+     * @param [projHouseInfoQuery, model]
+     * @return java.lang.String
      */
     @RequestMapping("/findProjHouseInfo")
     public String searchNewHouse(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
+
 //        Map<String,Object> builds =  projHouseInfoService.queryProjHouseInfo(projHouseInfoRequest);
 //        model.addAttribute("builds",builds.get("data"));
 //        model.addAttribute("total",builds.get("total"));

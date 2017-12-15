@@ -39,14 +39,17 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String projhouseType = "b";//索引类*/
 
     /**
-     * 通过小区的经度纬度查找房源信息
      *
-     * @param lat
-     * @param lon
-     * @return
+     * 功能描述：通过小区的经度纬度查找房源信息
+     * @author zhw
+     * @date 2017/12/15 11:50
+     * @param [lat, lon]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
      */
     @Override
     public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
+
+
         Map<String, Object> result = null;
         try {
             TransportClient client = esClientTools.init();
@@ -62,7 +65,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //        sort.order(SortOrder.ASC);
 //        sort.point(lat, lon);
             srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName"}, null).execute().actionGet();
-            SearchResponse searchResponse = srb.execute().actionGet();
+            SearchResponse searchResponse = srb.setSize(10).execute().actionGet();
 
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
@@ -84,9 +87,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     }
 
     /**
-     * 随机获取数据并且根据房源级别排序
      *
-     * @return
+     * 功能描述：随机获取数据并且根据房源级别排序
+     * @author zhw
+     * @date 2017/12/15 11:07
+     * @param [projHouseInfoRequest]
+     * @return java.util.List
      */
     @Override
     public List queryProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
@@ -293,13 +299,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     }
 
     /**
-     * 通过二手房id查找房源信息
      *
-     * @param houseId
-     * @return
+     * 功能描述：通过二手房id查找房源信息
+     * @author zhw
+     * @date 2017/12/15 11:50
+     * @param [houseId]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
      */
     @Override
     public Map<String, Object> queryByHouseId(Integer houseId) {
+
         Map<String, Object> result = null;
         try {
             TransportClient client = esClientTools.init();
@@ -309,6 +318,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
             SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                     .setQuery(booleanQueryBuilder)
+                    .setSize(10)
                     .execute().actionGet();
             SearchHits hits = searchresponse.getHits();
             SearchHit[] searchHists = hits.getHits();
