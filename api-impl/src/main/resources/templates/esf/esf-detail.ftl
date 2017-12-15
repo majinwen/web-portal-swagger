@@ -13,13 +13,13 @@
     <div class="swiper-container carousel-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner@3x.png" data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="1">
+                <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="1">
             </li>
-            <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner@3x.png" data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="2">
+            <li onclick="initphoto(this,1)" class="swiper-slide">
+                <img src="${staticurl}/images/esf/esxq_banner2.jpg" data-src="${staticurl}/images/esf/esxq_banner2.jpg" alt="2">
             </li>
-            <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner@3x.png" data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="3">
+            <li onclick="initphoto(this,2)" class="swiper-slide">
+                <img src="${staticurl}/images/esf/esxq_banner3.jpg" data-src="${staticurl}/images/esf/esxq_banner3.jpg" alt="3">
             </li>
         </ul>
         <div class="banner-title">
@@ -39,7 +39,6 @@
                 <div class="pswp__top-bar">
                     <div class="pswp__counter"></div>
                     <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
                     <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
                     <div class="pswp__preloader">
                         <div class="pswp__preloader__icn">
@@ -65,7 +64,7 @@
     <section class="primary-message">
         <div class="primary-header text-center">
             <h2>东贸国际 南北通透无遮挡 好视野</h2>
-            <div class="primary-header-tag">
+            <div class="primary-header-tag house-labelling gray">
                 <span>满二</span>
                 <span>满五</span>
                 <span>随时看房</span>
@@ -289,48 +288,19 @@
         </li>
     </ul>
 </section>
+<section class="detail-contact-box" id="detailContactState">
+    <div class="detail-contact-content">
+        <a href="#" class="contact-share"><i></i>分享</a>
+        <a href="#" class="contact-collect"><i></i>收藏</a>
+        <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+    </div>
+</section>
+
 <script src="${staticurl}/js/zepto.min.js"></script>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script>
-    var describeAllContent = $('.describe-cont p').text();
-    $('.describe-cont p').text(describeAllContent.substr(0,59));
-    $('.describe-show-btn').click(function () {
-        $(this).hide();
-        $('.describe-cont p').text(describeAllContent);
-    });
-</script>
-<script>
-    var mySwiper = new Swiper('.carousel-swiper', {
-        autoplay: 2000,//可选选项，自动滑动
-        loop: true,
-        pagination : '.swiper-pagination',
-        paginationType : 'fraction'
-    });
-
-    function initphoto(a,i) {
-        if(typeof i == 'undefined'){
-            i = 0;
-        }
-        var b = [];
-        var imgW = $(a).parent().find("li").not('.swiper-slide-duplicate').find("img").width();
-        var imgH = $(a).parent().find("li").not('.swiper-slide-duplicate').find("img").height();
-        $(a).parent().find("li").not('.swiper-slide-duplicate').find("img").each(function (a, e) {
-            var c = $(e).attr("data-src");
-            $(e).attr("data-title");
-            c && b.push({src: c, w: imgW, h: imgH})
-        });
-        a = document.querySelectorAll(".pswp")[0];
-        (new PhotoSwipe(a, PhotoSwipeUI_Default, b, {
-            index: i, addCaptionHTMLFn: function (a, b, c) {
-                if (!a.title)return b.children[0].innerHTML = "", !1;
-                b.children[0].innerHTML = a.title;
-                return !0
-            }
-        })).init()
-    }
-</script>
+<script src="${staticurl}/js/detail.js"></script>
 </body>
 </html>

@@ -36,6 +36,11 @@ public class NewHouseQuery {
     private Integer subwayStationId;
 
     /**
+     * 地铁站
+     */
+    private String nearbysubway;
+
+    /**
      * 起始价格（总）
      */
     private Double beginPrice;

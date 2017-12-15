@@ -20,7 +20,7 @@ public interface SysUserMapper extends BaseDao {
 
     List<SysUserEntity> selectByKey(SysUserEntity record);
 
-    int selectByPhone(String phone);
+    SysUserEntity  selectByPhone(String phone);
 
     int insertPhone(String phone);
 }

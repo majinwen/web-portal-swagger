@@ -33,10 +33,19 @@ public class PinyinServeContoller {
 
     }
 
-
+    // 新房详情页
     @RequestMapping("/changepinyin11")
-
     public String getChangepinyin11(Model model){
+
+        model.addAttribute("user","asds");
+
+        return "/newhouse/new-detail";
+
+    }
+
+    // 二手房详情页
+    @RequestMapping("/changepinyin22")
+    public String getChangepinyin22(Model model){
 
         model.addAttribute("user","asds");
 
@@ -44,4 +53,33 @@ public class PinyinServeContoller {
 
     }
 
+    // 新房参数页
+    @RequestMapping("/changepinyin33")
+    public String getChangepinyin33(Model model){
+
+        model.addAttribute("user","asds");
+
+        return "/newhouse/new-parameter";
+
+    }
+
+    // 小区参数页
+    @RequestMapping("/changepinyin44")
+    public String getChangepinyin44(Model model){
+
+        model.addAttribute("user","asds");
+
+        return "/plot/plot-parameter";
+
+    }
+
+    // 新房户型详情页
+    @RequestMapping("/changepinyin55")
+    public String getChangepinyin55(Model model){
+
+        model.addAttribute("user","asds");
+
+        return "/newhouse/new-house-type";
+
+    }
 }

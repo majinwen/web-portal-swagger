@@ -146,7 +146,6 @@
     </dependency>
     <dependency>
         <groupId>com.aliyun</groupId>
-
         <artifactId>aliyun-java-sdk-sms</artifactId>
         <version>3.0.0-rc1</version>
     </dependency>
@@ -154,6 +153,16 @@
         <groupId>com.aliyun</groupId>
         <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
         <version>1.0.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.github.bingoohuang/patchca -->
+    <dependency>
+        <groupId>com.github.bingoohuang</groupId>
+        <artifactId>patchca</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
     </dependency>
     <dependency>
         <groupId>org.elasticsearch</groupId>
@@ -172,8 +181,6 @@
             </exclusion>
         </exclusions>
     </dependency>
-
-
 </dependencies>
 
 </project>

@@ -67,7 +67,7 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="sys_web_user" domainObjectName="SysWebUser"
+        <table tableName="proj_house_info" domainObjectName="ProjHouseInfo"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

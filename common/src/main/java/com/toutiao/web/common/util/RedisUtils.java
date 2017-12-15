@@ -239,6 +239,56 @@ public class RedisUtils {
     }
 
     /**
+     * 向缓存中设置字符串内容
+     *
+     * @param key   key
+     * @param value value
+     * @return
+     * @throws Exception
+     */
+    public static boolean set2(String key,  String value,int expire) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            if (jedis != null) {
+                jedis.set(key, value);
+                jedis.expire(key, expire);
+            }
+            return true;
+        } catch (Exception e) {
+            logger.error("Redis缓存设置key值 出错！", e);
+            return false;
+        } finally {
+            returnResource(jedis);
+        }
+    }
+
+    /**
+     * 保存对象
+     *
+     * @param key
+     * @param expire
+     * @param value
+     */
+    public static void setObject(String key, int expire, Object value) {
+        Jedis jedis = getJedis();
+        jedis.set(key.getBytes(), SerializeUtil.serialize(value));
+        jedis.expire(key.getBytes(), expire);
+    }
+
+    /**
+     * 设置对象
+     *
+     * @param key
+     */
+    public static Object getObject(String key) {
+        Jedis jedis = getJedis();
+        return SerializeUtil.unserialize(jedis.get(key.getBytes()));
+
+    }
+
+
+    /**
      * 判断key是否存在
      */
     public static boolean exists(String key) {

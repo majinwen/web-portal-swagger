@@ -4,6 +4,11 @@ $baseRed: #fb3939;
 $baseGreen: #3bbc6c;
 $baseGray: #747788;
 $baseModuleFillColor: #f2f2f2;
+$baseGray9: #999;
+
+.high-light-red {
+    color: $baseRed !important;
+}
 
 @mixin font-dpr($font-size) {
     [data-dpr="1"] & {
@@ -62,4 +67,58 @@ $FontSize: 16;
     > section {
         background-color: $baseWhite;
     }
+}
+
+.house-labelling {
+    white-space: nowrap;
+    overflow: hidden;
+
+    &.normal, &.gray {
+        span {
+            @include font-dpr(20);
+            height: rem(32);
+            line-height: rem(32);
+            padding-left: rem(20);
+            padding-right: rem(20);
+            margin-right: rem(6);
+        }
+    }
+
+    &.gray {
+        span {
+            color: $baseWhite;
+            background-color: $baseGray;
+        }
+    }
+
+    &.normal {
+        span {
+            color: $baseGray9;
+            border-color: $baseGray9;
+            border: 1px solid $baseGray9;
+        }
+    }
+
+    &.small {
+        span {
+            @include font-dpr(18);
+            height: rem(25);
+            line-height: rem(25);
+            padding-left: rem(10);
+            padding-right: rem(10);
+            margin-right: rem(2);
+        }
+    }
+
+    span {
+        display: inline-block;
+        -webkit-border-radius: rem(6);
+        -moz-border-radius: rem(6);
+        border-radius: rem(6);
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+
 }
