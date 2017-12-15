@@ -1,4 +1,4 @@
-package com.toutiao.web.service;
+package com.toutiao.web.service.rediscache;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
