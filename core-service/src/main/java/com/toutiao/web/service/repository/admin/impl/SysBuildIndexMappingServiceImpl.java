@@ -24,20 +24,20 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
     @Value("${plot.index}")
     private String index;
     @Value("${plot.parent.type}")
-    private String type;
+    private String parentType;
     @Value("${plot.child.type}")
     private String childType;
 
     @Override
-    public void buildPoltMapping(String index, String type){
+    public void buildPoltMapping(){
         TransportClient client = esClientTools.init();
         //创建一个空索引，如没有索引，创建mapping时会报错
-        client.admin().indices().prepareCreate(index).execute().actionGet();
+//        client.admin().indices().prepareCreate(index).execute().actionGet();
         //创建mapping
         XContentBuilder mapping = null;
         try {
             mapping = XContentFactory.jsonBuilder()
-                    .startObject().startObject(type).startObject("properties")
+                    .startObject().startObject(parentType).startObject("properties")
                     .startObject("id").field("type", "integer").field("index", "not_analyzed").endObject()
                     .startObject("rc").field("type", "string").field("index", "not_analyzed").endObject()
                     .startObject("alias").field("type", "string").field("index", "not_analyzed").endObject()
@@ -91,7 +91,6 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
         } catch (IOException e) {
             e.printStackTrace();
         }
-        PutMappingRequest mappingRequest = Requests.putMappingRequest(index).type(type).source(mapping);
+        PutMappingRequest mappingRequest = Requests.putMappingRequest(index).type(parentType).source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
     }
-}
