@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.PriceTrendService;
@@ -54,40 +55,20 @@ public class NewHouseController {
         priceTrend.setBuildId(buildingId);
         priceTrend.setPropertyType((short)1);
 
-        List<PriceTrend> priceTrendList = priceTrendService.priceTrendList(priceTrend);
+        List<Map<String ,List<PriceTrend>>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
 
-        List<PriceTrend>ptCD0=new  ArrayList<>();
-        List<PriceTrend>ptCD1=new  ArrayList<>();
-        List<PriceTrend>ptCD2=new  ArrayList<>();
-        for (int i=0;i<priceTrendList.size();i++){
-             PriceTrend ptitem= priceTrendList.get(i);
-             if (ptitem.getContrastDA()==0){
-                  ptCD0.add(ptitem);
-             }else if (ptitem.getContrastDA()==1){
-                  ptCD1.add(ptitem);
-             }else if (ptitem.getContrastDA()==2){
-                 ptCD2.add(ptitem);
-             }
-        }
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1);
-        ArrayList<String>dateList=new ArrayList<>();
-        for (int i = 0; i < 12; i++){
-            int currentMonth=cal.get(Calendar.MONTH);
-            int currentYear=cal.get(Calendar.YEAR);
-            dateList.add(currentYear+"年"+(currentMonth+1)+"月");
-            cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
-        }
+
+        List<String>dateList= DateUtil.oneYearList();
 
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
-        model.addAttribute("ptCD0",ptCD0);
-        model.addAttribute("ptCD1",ptCD1);
-        model.addAttribute("ptCD2",ptCD2);
+
+        model.addAttribute("tradeline",priceTrendList);
+       // model.addAttribute("ptCD2",ptCD2);
         model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
