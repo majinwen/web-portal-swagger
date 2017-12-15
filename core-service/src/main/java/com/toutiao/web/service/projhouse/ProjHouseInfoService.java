@@ -13,4 +13,6 @@ public interface ProjHouseInfoService {
 
        Map<String,Object> queryByHouseId(Integer houseId);
 
+       List  queryBySearchBox(String text);
+
 }

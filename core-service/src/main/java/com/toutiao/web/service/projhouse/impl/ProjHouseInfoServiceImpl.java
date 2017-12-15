@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
@@ -100,7 +101,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             TransportClient client = esClientTools.init();
 
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            SearchResponse searchresponse;
+            SearchResponse searchresponse=null;
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
         /*//参数都为null,则查询所有数据
@@ -342,6 +343,36 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+    /**
+     *
+     * 功能描述：通过输入的搜索框信息查询数据
+     * @author zhw
+     * @date 2017/12/15 15:07
+     * @param [text]
+     * @return java.util.List
+     */
+    @Override
+    public List queryBySearchBox(String text) {
+        try {
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            //声明符合查询方法
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.should(QueryBuilders.prefixQuery("areaName",text))//区域
+                                .should(QueryBuilders.prefixQuery("houseBusinessName",text))//商圈
+                                .should(QueryBuilders.prefixQuery("housePlotName",text));//小区名
+            booleanQueryBuilder.must(boolQueryBuilder);
+
+            srb.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
