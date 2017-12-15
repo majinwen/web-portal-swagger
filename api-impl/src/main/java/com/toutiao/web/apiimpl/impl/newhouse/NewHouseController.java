@@ -3,7 +3,9 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
+import com.toutiao.web.service.PriceTrendService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("newhouse")
@@ -22,6 +21,8 @@ public class NewHouseController {
 
     @Autowired
     private NewHouseService newHouseService;
+    @Autowired
+    private PriceTrendService priceTrendService;
 
     /**
      * 新房列表
@@ -49,23 +50,45 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseDetails")
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
-        List<Integer> zuobiao=new ArrayList();
-        zuobiao.add(2);
-        zuobiao.add(15);
-        zuobiao.add(22);
-        zuobiao.add(10);
-        model.addAttribute("zz",zuobiao);
+        PriceTrend priceTrend=new PriceTrend();
+        priceTrend.setBuildId(buildingId);
+        priceTrend.setPropertyType((short)1);
+
+        List<PriceTrend> priceTrendList = priceTrendService.priceTrendList(priceTrend);
+
+        List<PriceTrend>ptCD0=new  ArrayList<>();
+        List<PriceTrend>ptCD1=new  ArrayList<>();
+        List<PriceTrend>ptCD2=new  ArrayList<>();
+        for (int i=0;i<priceTrendList.size();i++){
+             PriceTrend ptitem= priceTrendList.get(i);
+             if (ptitem.getContrastDA()==0){
+                  ptCD0.add(ptitem);
+             }else if (ptitem.getContrastDA()==1){
+                  ptCD1.add(ptitem);
+             }else if (ptitem.getContrastDA()==2){
+                 ptCD2.add(ptitem);
+             }
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1);
+        ArrayList<String>dateList=new ArrayList<>();
+        for (int i = 0; i < 12; i++){
+            int currentMonth=cal.get(Calendar.MONTH);
+            int currentYear=cal.get(Calendar.YEAR);
+            dateList.add(currentYear+"年"+(currentMonth+1)+"月");
+            cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
+        }
 
         String detailBuild = (String) details.get("build");
-       /* String listLayout = (String) details.get("layout");
-        String nearbybuild = (String) details.get("nearbybuild");*/
         JSONObject build=JSON.parseObject(detailBuild);
-       /* JSONObject layout=JSON.parseObject(listLayout);
-        JSONObject nearbuild=JSON.parseObject(nearbybuild);*/
-
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
+        model.addAttribute("ptCD0",ptCD0);
+        model.addAttribute("ptCD1",ptCD1);
+        model.addAttribute("ptCD2",ptCD2);
+        model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
     }
@@ -77,6 +100,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
+/*
     @RequestMapping("/getNewHouseLayoutDetails")
     public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -84,6 +108,7 @@ public class NewHouseController {
         return "";
 
     }
+*/
 
     /**
      * 根据楼盘计算不同户型数量
@@ -117,16 +142,5 @@ public class NewHouseController {
         return "newhouse/new-parameter";
     }
 
-    /**
-     * 新房首页
-     * @param model
-     * @return
-     */
-    @RequestMapping("/index")
-    public String index(Model model){
-
-        model.addAttribute("user","asds");
-        return "newhouse/new-index";
-    }
 
 }
