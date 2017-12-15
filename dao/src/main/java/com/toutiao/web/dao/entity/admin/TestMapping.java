@@ -1,8 +1,6 @@
 package com.toutiao.web.dao.entity.admin;
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -68,7 +66,7 @@ public class TestMapping {
 
 		client.admin().indices().prepareCreate("a").execute().actionGet();
 		XContentBuilder mapping = XContentFactory.jsonBuilder().startObject().startObject("b")
-				.startObject("properties").startObject("houseId").field("type", "integer").field("index", "not_analyzed").endObject()
+				.startObject("houseId").field("type", "integer").field("index", "not_analyzed").endObject()
 				.startObject("houseTitle").field("type", "string").field("index", "not_analyzed").endObject()
 				.startObject("houseArea").field("type", "string")
 				.field("index", "not_analyzed").endObject().startObject("houseType").field("type", "string")
