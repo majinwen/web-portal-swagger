@@ -128,6 +128,12 @@ hr {
     .house-labelling span:last-child {
       margin-right: 0; }
 
+.fixed-scroll {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
 .detail-contact-box {
   position: fixed;
   bottom: 0;

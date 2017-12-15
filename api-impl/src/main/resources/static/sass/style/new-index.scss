@@ -2,6 +2,7 @@
 @import "../base/mixin";
 @import "../base/header";
 @import "../pages/office-list";
+//@import "../base/side-nav";
 
 
 .banner-index-box {
@@ -92,7 +93,7 @@
     .column {
         display: -webkit-flex;
         display: flex;
-        margin: rem(-16) rem(-12);
+        margin: rem(-16) rem(-9);
         justify-content: space-between;
 
         .hot-topic-item {
@@ -100,8 +101,8 @@
             -webkit-flex: 1;
             flex: 1;
             width: auto;
-            height: rem(170);
-            margin: rem(16) rem(12);
+            //height: rem(170);
+            margin: rem(16) rem(9);
 
             .topic-item-content {
                 position: absolute;
@@ -180,8 +181,9 @@
 }
 
 .new-index-pull-down {
-    height: rem(84);
-    padding-top: rem(20);
+    line-height: 1;
+    padding-top: rem(19);
+    padding-bottom: rem(10);
     @include font-dpr(20);
     color: $baseGray9;
     text-align: center;
@@ -190,8 +192,9 @@
 
     img {
         display: inline-block;
-        width: rem(26);
+        width: rem(25);
         margin-top: rem(10);
+        vertical-align: top;
     }
 }
 

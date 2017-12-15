@@ -14,7 +14,7 @@
         <i class="icon"></i>
         <input type="text" placeholder="中骏·西山天璟">
     </div>
-    <a href="/" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
 <section class="category-box">
     <ul id="category-nav">
@@ -143,10 +143,10 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item = map['building_imgs']>
-                        <img src="${staticurl}/images/esf/${item[0]}" alt="${map['building_name']}">
+                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                     </div>
                     <div class="list-item-cont">
-                        <span hidden="hidden" >${map['building_name_id']}</span>
+                        <span hidden="hidden">${map['building_name_id']}</span>
                         <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
                         <p class="cont-block-2">${map['average_price']}元/㎡</p>
                         <p class="cont-block-3">
@@ -175,7 +175,32 @@
     </#if>
     </ul>
 </section>
+<#-- 个人中心 侧栏菜单 -->
+<section class="side-nav-cont">
+    <div class="side-user">
+        <img src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
+        <p>188********</p>
+    </div>
+    <div class="side-nav-item-wrapper">
+        <ul class="side-nav-item item-link">
+            <li><a href="#"><i class="icon-index"></i><span>首页</span></a></li>
+            <li><a href="#"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a href="#"><i class="icon-plot"></i><span>找小区</span></a></li>
+            <li><a href="#"><i class="icon-new"></i><span>找新房</span></a></li>
+        </ul>
+        <ul class="side-nav-item item-my">
+            <li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>
+            <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
+        </ul>
+    </div>
+    <div class="side-house-intelligent">
+        <a href="#"><em>智能找房</em></a>
+    </div>
+</section>
+<div class="scroll-mask"></div>
+
 <script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

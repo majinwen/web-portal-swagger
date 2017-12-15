@@ -128,6 +128,12 @@ hr {
     .house-labelling span:last-child {
       margin-right: 0; }
 
+.fixed-scroll {
+  position: fixed;
+  width: 10;
+  height: 100%;
+  overflow: hidden; }
+
 .primary-message .primary-header {
   position: relative;
   padding: 0.5333333333rem 0.4rem;

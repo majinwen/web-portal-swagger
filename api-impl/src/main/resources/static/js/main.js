@@ -1,19 +1,19 @@
 Zepto(function () {
-    // 描述展示全部
-    describeAllShow();
+    describeAllShow();      // 描述展示全部
 
-    // 分享，收藏，咨询展示状态
-    detailContactState();
+    detailContactState();   // 分享，收藏，咨询展示状态
 
-    // 顶部swiper轮播点击弹层photoswipe轮播
-    carouselSwiper();
+    carouselSwiper();       // 顶部swiper轮播点击弹层photoswipe轮播
 
-    // 户型类型切换
-    houseTypeState();
+    houseTypeState();       // 户型类型切换
 
-    // 首页头条公告滚动
-    textSlider();
+    textSlider();           // 首页头条公告滚动
+    
+    $('.header-user').tap(function () {
+        userSideNav();      // 个人中心导航
+    });
 });
+
 
 function describeAllShow() {
     if ($('.describe-cont').length) {
@@ -46,9 +46,8 @@ function detailContactState() {
 
 function carouselSwiper() {
     if ($('.swiper-container').length){
-
         // 详情页
-        var bannerSwiper = new Swiper('.carousel-swiper', {
+        var bannerSwiper = new Swiper('#detail-swiper', {
             autoplay: 2000,//可选选项，自动滑动
             loop: true,
             pagination : '.swiper-pagination',
@@ -56,7 +55,7 @@ function carouselSwiper() {
         });
 
         // 新房首页
-        var newIndexSwiper = new Swiper('.carousel-swiper', {
+        var newIndexSwiper = new Swiper('#index-swiper', {
             autoplay: 2000,//可选选项，自动滑动
             loop: true,
             pagination : '.swiper-pagination'
@@ -119,36 +118,19 @@ function textSlider() {
                 }
             },300)
         },3000);
-
     }
 }
 
-/*
-$(function(){
-    var scrollDiv = $(".scroll"),
-        $ul = scrollDiv.find("ul"),
-        $li = scrollDiv.find("li"),
-        $length = $li.length,
-        $liHeight = $li.height(),
-        num = 0;
-
-    if(scrollDiv.length == 0){
-        return;
-    }
-
-    if($length > 1){
-        $ul.append($li.eq(0).clone());
-        setInterval(
-            function(){
-                num++;
-                $ul.addClass("animate").css("-webkit-transform","translateY(-"+ $liHeight*(num) +"px)");
-                setTimeout(
-                    function(){
-                        if(num == $length){
-                            $ul.removeClass("animate").css("-webkit-transform","translateY(0)");
-                            num = 0;
-                        }
-                    },300);
-            },3000);
-    }
-});*/
+function userSideNav() {
+    $('.scroll-mask').show();
+    $('body').addClass('fixed-scroll');
+    $('.side-nav-cont').addClass('active');
+    setTimeout(maskClick, 500);
+}
+function maskClick() {
+    $('.scroll-mask').tap(function () {
+        $('.scroll-mask').hide();
+        $('body').removeClass('fixed-scroll');
+        $('.side-nav-cont').removeClass('active');
+    });
+}

@@ -10,12 +10,12 @@
 </head>
 <body>
 <div class="carousel-box">
-    <div class="swiper-container carousel-swiper">
+    <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
             <#assign imglist = build['building_imgs']>
             <#list imglist as item>
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/${item}" data-src="${staticurl}/${item}" alt="${build['building_name']}">
+                <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
             </#list>
         </ul>
@@ -203,6 +203,6 @@
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/detail.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
