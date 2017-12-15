@@ -61,7 +61,6 @@ public class SaveToESServiceImpl implements SaveToESService {
         bulkRequest.add(indexRequest);
         IndexResponse indexResponse = client.index(indexRequest).actionGet();
         BulkResponse bulkResponse = bulkRequest.execute().actionGet();
-//         如果失败
         return bulkResponse.hasFailures();
     }
 
@@ -72,7 +71,6 @@ public class SaveToESServiceImpl implements SaveToESService {
         village.setId(projHouseInfo.getHouseId());
         village.setAreaSize(projHouseInfo.getHouseArea());
         village.setLocation(projHouseInfo.getHousePlotLocation());
-        Boolean flag = true;
         String jsonStr  = JSONObject.toJSONString(village);
         JSONObject json = JSONObject.parseObject(jsonStr);
         BulkRequestBuilder bulkRequest = client.prepareBulk();
@@ -88,10 +86,6 @@ public class SaveToESServiceImpl implements SaveToESService {
 //                .upsert(indexRequest);
         bulkRequest.add(indexRequest);
         BulkResponse bulkResponse = bulkRequest.execute().actionGet();
-//         如果失败
-        if (bulkResponse.hasFailures()) {
-            flag = false;
-        }
-        return flag;
+        return bulkResponse.hasFailures();
     }
 }

@@ -29,7 +29,7 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
     private String childType;
 
     @Override
-    public void buildPoltMapping(){
+    public void buildPoltMapping() {
         TransportClient client = esClientTools.init();
         //创建一个空索引，如没有索引，创建mapping时会报错
 //        client.admin().indices().prepareCreate(index).execute().actionGet();
@@ -94,3 +94,4 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
         PutMappingRequest mappingRequest = Requests.putMappingRequest(index).type(parentType).source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
     }
+}
