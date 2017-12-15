@@ -136,8 +136,7 @@
     </div>
 </section>
 <section>
-    <ul>　
-    <#if builds?exists>
+    <ul><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
                 <div class="clear">
@@ -172,8 +171,7 @@
                 </div>
             </a></li>
         </#list>
-    </#if>
-    </ul>
+    </#if></ul>
 </section>
 <#-- 个人中心 侧栏菜单 -->
 <section class="side-nav-cont">
