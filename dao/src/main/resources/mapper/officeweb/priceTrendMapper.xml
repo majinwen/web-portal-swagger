@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toutiao.web.dao.mapper.officeweb.priceTrendMapper">
-  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.priceTrend">
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.PriceTrendMapper">
+  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.PriceTrend">
     <result column="build_id" jdbcType="INTEGER" property="buildId" />
     <result column="property_type" jdbcType="SMALLINT" property="propertyType" />
     <result column="contrast_d_a" jdbcType="SMALLINT" property="contrastDA" />
-    <result column="month" jdbcType="SMALLINT" property="month" />
+    <result column="month" jdbcType="TIMESTAMP" property="month" />
     <result column="price" jdbcType="NUMERIC" property="price" />
   </resultMap>
-  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.priceTrend">
+  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend">
     insert into price_trend (build_id, property_type, contrast_d_a, 
       month, price)
     values (#{buildId,jdbcType=INTEGER}, #{propertyType,jdbcType=SMALLINT}, #{contrastDA,jdbcType=SMALLINT}, 
       #{month,jdbcType=SMALLINT}, #{price,jdbcType=NUMERIC})
   </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.priceTrend">
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend">
     insert into price_trend
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="buildId != null">
@@ -51,4 +51,7 @@
       </if>
     </trim>
   </insert>
+  <select id="searchPriceTrendList" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend" resultMap="BaseResultMap">
+           SELECT * FROM price_trend where build_id=#{buildId,jdbcType=INTEGER} and property_type=#{propertyType,jdbcType=SMALLINT}  and "month" BETWEEN  now() - interval '1 year' AND now() ORDER BY "month"
+  </select>
 </mapper>
