@@ -110,7 +110,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         }
 
-                //面积
+        //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
             BoolQueryBuilder boolQueryBuilder = boolQuery();
 
@@ -173,11 +173,11 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==2){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-             .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).setFetchSource(
-                    new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                            "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                            "location","house_min_area","house_max_area","nearbysubway"},
-                    null)
+                    .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).setFetchSource(
+                            new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                                    "location","house_min_area","house_max_area","nearbysubway"},
+                            null)
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
@@ -252,7 +252,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchHit[] searchLayoutHists = layouthits.getHits();
         for (SearchHit hit : searchLayoutHists) {
             Map<String,Object> item=hit.getSourceAsMap();
-               layouts.add(item);
+            layouts.add(item);
         }
 
         SearchHits hits = searchresponse.getHits();
@@ -357,7 +357,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             Map<String, Object> map = new HashMap<>();
             Bucket roomBucket = (Bucket) roomBucketIt.next();
 
-           // list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
+            // list.add(roomBucket.getKey()+","+roomBucket.getDocCount());
             map.put("room",roomBucket.getKey());
             map.put("count",roomBucket.getDocCount());
             roomCount.add(map);

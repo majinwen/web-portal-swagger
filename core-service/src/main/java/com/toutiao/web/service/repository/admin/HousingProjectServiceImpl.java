@@ -1,9 +1,10 @@
-package com.toutiao.web.service;
+package com.toutiao.web.service.repository.admin;
 
 import com.github.pagehelper.PageHelper;
 import com.toutiao.web.dao.entity.admin.ProjInfo;
 import com.toutiao.web.dao.mapper.admin.ProjInfoMapper;
 import com.toutiao.web.domain.query.HousingProjectQuery;
+import com.toutiao.web.service.HousingProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

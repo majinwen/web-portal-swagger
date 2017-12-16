@@ -11,19 +11,25 @@
 <body>
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper">
+    <#assign item =houseDetail['housePhoto']>
+    <#list item as itemValue>
         <ul class="swiper-wrapper" id="house-pic-container">
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="1">
+                <img src="${staticurl}/images/esf/${itemValue}"
+                     data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="${itemValue_index +1}">
             </li>
-            <li onclick="initphoto(this,1)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner2.jpg" data-src="${staticurl}/images/esf/esxq_banner2.jpg" alt="2">
-            </li>
-            <li onclick="initphoto(this,2)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner3.jpg" data-src="${staticurl}/images/esf/esxq_banner3.jpg" alt="3">
-            </li>
+        <#--<li onclick="initphoto(this,0)" class="swiper-slide">
+            <img src="${staticurl}/images/esf/esxq_banner@3x.png"
+                 data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="2">
+        </li>
+        <li onclick="initphoto(this,0)" class="swiper-slide">
+            <img src="${staticurl}/images/esf/esxq_banner@3x.png"
+                 data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="3">
+        </li>-->
         </ul>
+    </#list>
         <div class="banner-title">
-            <div class="banner-house-number">房源编号：HJ8520</div>
+            <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
     </div>
@@ -63,11 +69,12 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <h2>东贸国际 南北通透无遮挡 好视野</h2>
+            <h2>${houseDetail.houseRecommendInfo}</h2>
             <div class="primary-header-tag house-labelling gray">
-                <span>满二</span>
-                <span>满五</span>
-                <span>随时看房</span>
+            <#assign item =houseDetail['houseLabel']>
+            <#list item as itemValue>
+                <span>${itemValue}</span>
+            </#list>
             </div>
         </div>
         <ul class="primary-item">
@@ -75,37 +82,45 @@
                 <ol>
                     <li>
                         <span>总价</span>
-                        <em>275万</em>
+                        <em>${houseDetail.houseTotalPrices}万</em>
                     </li>
                     <li>
                         <span>户型</span>
-                        <em>3室1厅/南</em>
+                        <em>${houseDetail.houseType}/${houseDetail.houseOrientation}</em>
                     </li>
                     <li>
                         <span>面积</span>
-                        <em>127㎡</em>
+                        <em>${houseDetail.houseArea}㎡</em>
                     </li>
                 </ol>
             </li>
             <li>
-                <p>单价：34220元/㎡</p>
+                <p>单价：${houseDetail.houseUnitCost}元/㎡</p>
             </li>
             <li>
-                <p>预算：参考首付267万，月供5432元/月</p>
+                <p>预算：${houseDetail.houseBudget}</p>
             </li>
             <li>
                 <dl class="module-table-item">
-                    <dd class="odd-item">楼层：<span>低楼层/27层</span></dd>
-                    <dd class="even-item">电梯：<em>有电梯</em></dd>
-                    <dd class="odd-item">类别：<em>花园洋房</em></dd>
-                    <dd class="even-item">楼龄：<em>10年</em></dd>
-                    <dt>小区：<em>东贸国际[朝阳-双井]</em></dt>
-                    <dt>更新时间：2017.12.05</dt>
+                    <dd class="odd-item">楼层：<span>${houseDetail.houseFloor}</span></dd>
+                    <dd class="even-item">电梯：<em>${houseDetail.houseLift}</em></dd>
+                    <dd class="odd-item">类别：
+                    <#if houseDetail.housePurpose?exists>
+                        <em>${houseDetail.housePurpose}</em>
+                    <#else>
+                        <em>${houseDetail.houseBuildingType}</em>
+                    </#if>
+                    </dd>
+                    <dd class="even-item">楼龄：<em>${houseDetail.houseYear}年</em></dd>
+                    <dt>小区：<em>${houseDetail.housePlotName}
+                        [${houseDetail.areaName}-${houseDetail.houseBusinessName}]</em></dt>
+                    <dt>更新时间：${houseDetail.houseUpdateTime}</dt>
                 </dl>
             </li>
             <li>
                 <p>
-                    交通信息：距离地铁国贸站[1号线]<em class="primary-distance">0.6km</em>
+                <#--交通信息：${houseDetail.houseTrafficInfo}距离地铁国贸站[1号线]<em class="primary-distance">0.6km</em>-->
+                    交通信息：${houseDetail.houseTrafficInfo}<em class="primary-distance">0.6km</em>
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
@@ -120,15 +135,17 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" src="${staticurl}/images/esf/esxq_icon_conpany@3x.png" alt="链家">
+                <img class="source-icon" src="${staticurl}/images/esf/${houseDetail.houseProxyPhoto}"
+                     alt="${houseDetail.houseProxyName}">
                 <p>
-                    <span>【链家】刘焱</span>
+                    <span>【${houseDetail.houseManagementType}】${houseDetail.houseProxyName}</span>
                     <em>房屋信息发布人</em>
                 </p>
-                <a href="tel:123456789" class="issuer-tel-icon"></a>
+                <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
             </div>
             <div class="describe-cont">
-                <p>房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向房子南北通透，客厅南向，厨房和餐厅北向，带有独立立北向阳台，主卧室南向，带明卫生间，次卧一个南向立北向阳台，主卧室南向 </p>
+                <p>
+                ${houseDetail.houseRecommend}</p>
                 <span class="describe-show-btn">>>展开</span>
             </div>
         </div>
@@ -138,18 +155,25 @@
     <section>
         <div class="module-header-message">
             <h3>小区信息</h3>
-            <a href="#" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+            <a href="#${houseDetail.housePlotId}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
             <li>
                 <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                <#assign item=houseDetail['housePlotPhoto']>
+                    <img src="${staticurl}/images/esf/${item[0]}" alt="${houseDetail.housePlotName}">
                 </div>
                 <div class="tilelist-content">
-                    <h4>首城国际</h4>
-                    <p>共18栋（2558户），板楼/板塔结合</p>
-                    <p>参考均价<em>115982元</em>/㎡</p>
+                    <h4>${houseDetail.housePlotName}</h4>
+                    <p>${houseDetail.housePlotInfo}</p>
                 </div>
+            <#--
+                            <div class="tilelist-content">
+                                <h4>${houseDetail.housePlotName}首城国际</h4>
+                                <p>共18栋（2558户），板楼/板塔结合</p>
+                                <p>参考均价<em>115982元</em>/㎡</p>
+                            </div>
+            -->
             </li>
         </ul>
     </section>
@@ -168,61 +192,22 @@
             <h3>附近好房</h3>
         </div>
         <ul class="tilelist">
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><em>1800万</em>/262㎡/5室</p>
-                        <h4 class="cont-last">首城国际</h4>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><em>1800万</em>/262㎡/5室</p>
-                        <h4 class="cont-last">首城国际</h4>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><em>1800万</em>/262㎡/5室</p>
-                        <h4 class="cont-last">首城国际</h4>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><em>1800万</em>/262㎡/5室</p>
-                        <h4 class="cont-last">首城国际</h4>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first"><em>1800万</em>/262㎡/5室</p>
-                        <h4 class="cont-last">首城国际</h4>
-                    </div>
-                </a>
-            </li>
+        <#if plot?exists>
+            <#list plot as map>
+                <li>
+                    <a href="#">
+                        <div class="picture-box">
+                            <#assign item=map['housePhoto']>
+                            <img src="${staticurl}/images/esf/${item[0]}" alt="${map.housePlotName}">
+                        </div>
+                        <div class="tilelist-content">
+                            <p class="cont-first"><em>${map.houseTotalPrices}万</em>/${map.houseArea}㎡/${map.houseType}</p>
+                            <h4 class="cont-last">${map.housePlotName}</h4>
+                        </div>
+                    </a>
+                </li>
+            </#list>
+        </#if>
         </ul>
     </section>
 </div>
@@ -230,63 +215,32 @@
     <div class="module-header-message">
         <h3>附近小区</h3>
     </div>
-    <ul class="tilelist">
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">后现代城</h4>
-                    <p class="cont-last"><em>68960元</em>/㎡</p>
-                </div>
-            </a>
-        </li>
-    </ul>
+        <ul class="tilelist">
+            <#if plotList?exists>
+                <#list plotList as plotInfo>
+                    <li>
+                        <a href="#">
+                           <div class="picture-box">
+                                <#if plotInfo['photo']?exists>
+                                    <#assign plotImage=plotInfo['photo'] >
+                                    <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
+                                    <#else >
+                                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
+                                </#if>
+                            </div>
+                            <div class="tilelist-content">
+                                <#if plotInfo['desc']?exists>
+                                    <h4 class="cont-first">${plotInfo.desc}</h4>
+                                </#if>
+                                <#if plotInfo['avgPrice']?exists>
+                                    <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                                </#if>
+                            </div>
+                        </a>
+                    </li>
+                </#list>
+            </#if>
+        </ul>
 </section>
 <section class="detail-contact-box" id="detailContactState">
     <div class="detail-contact-content">
@@ -301,6 +255,6 @@
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/detail.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

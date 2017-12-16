@@ -14,7 +14,7 @@
         <i class="icon"></i>
         <input type="text" placeholder="中骏·西山天璟">
     </div>
-    <a href="/" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
 <section class="category-box">
     <ul id="category-nav">
@@ -97,110 +97,75 @@
 </section>
 <section>
     <ul>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
-                    <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>满5</span>
-                        <span>近地铁</span>
+    <#if builds?exists>
+        <#list builds as map>
+            <li>
+                <#assign itemLocation=map['housePlotLocation']>
+                <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${itemLocation[0]}/${itemLocation[1]}">
+                <input type="hidden" name="houseId" value="${map.houseId}"/>
+
+                <input type="hidden" name="lat" value="${itemLocation[0]}"/>
+                <input type="hidden" name="lon" value="${itemLocation[1]}"/>
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <#assign item=map['housePhoto']>
+                        <img src="${staticurl}/images/esf/${item[0]}" alt="${map.houseTitle}">
                     </div>
-                    <div class="cont-block-price">
-                        <em>980万</em>
-                        <span>68000元/㎡</span>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
-                    <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>满5</span>
-                        <span>近地铁</span>
-                    </div>
-                    <div class="cont-block-price">
-                        <em>980万</em>
-                        <span>68000元/㎡</span>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
-                    <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>满5</span>
-                        <span>近地铁</span>
-                    </div>
-                    <div class="cont-block-price">
-                        <em>980万</em>
-                        <span>68000元/㎡</span>
+                    <div class="list-item-cont">
+                        <h3 class="cont-block-1">${map.houseTitle}</h3>
+                        <p class="cont-block-2">${map.houseArea}㎡/${map.houseType}/${map.houseOrientation}/${map.housePlotName}</p>
+                        <#assign item=map['houseToSubwayDistance']>
+                        <#if map['key']?exists>
+                            <#if item[map['key']]?exists>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${item[map['key']]}</p>
+                            </#if >
+                            <#else >
+                                <p class="cont-block-3 distance"><i class="icon"></i>${map.areaName}[${map.houseBusinessName}]</p>
+                        </#if>
+                        <div class="cont-block-4">
+                            <#assign item =  map['houseLabel']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                        </div>
+                        <div class="cont-block-price">
+                            <em>${map.houseTotalPrices}万</em>
+                            <span>${map.houseUnitCost}元/㎡</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
-                    <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>满5</span>
-                        <span>近地铁</span>
-                    </div>
-                    <div class="cont-block-price">
-                        <em>980万</em>
-                        <span>68000元/㎡</span>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟，特价西南3+1</h3>
-                    <p class="cont-block-2">178㎡/2室2厅/南/西山天璟</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4">
-                        <span>满5</span>
-                        <span>近地铁</span>
-                    </div>
-                    <div class="cont-block-price">
-                        <em>980万</em>
-                        <span>68000元/㎡</span>
-                    </div>
-                </div>
-            </div>
-        </a></li>
+            </a></li>
+        </#list>
+    </#if>
     </ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
+<#-- 个人中心 侧栏菜单 -->
+<section class="side-nav-cont">
+    <div class="side-user">
+        <img src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
+        <p>188********</p>
+    </div>
+    <div class="side-nav-item-wrapper">
+        <ul class="side-nav-item item-link">
+            <li><a href="#"><i class="icon-index"></i><span>首页</span></a></li>
+            <li><a href="#"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a href="#"><i class="icon-plot"></i><span>找小区</span></a></li>
+            <li><a href="#"><i class="icon-new"></i><span>找新房</span></a></li>
+        </ul>
+        <ul class="side-nav-item item-my">
+            <li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>
+            <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
+        </ul>
+    </div>
+    <div class="side-house-intelligent">
+        <a href="#"><em>智能找房</em></a>
+    </div>
+</section>
+<div class="scroll-mask"></div>
+
 <script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

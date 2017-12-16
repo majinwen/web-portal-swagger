@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
+    <script src="${staticurl}/js/echarts.js"></script>
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
     <title>新房详情</title>
 </head>
 <body>
 <div class="carousel-box">
-    <div class="swiper-container carousel-swiper">
+    <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
             <#assign imglist = build['building_imgs']>
-         <#list imglist as item>
+            <#list imglist as item>
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/${item}" data-src="${staticurl}/${item}" alt="${build['building_name']}">
+                <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
-         </#list>
+            </#list>
         </ul>
-
+        <div class="banner-title">
+            <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
+            <div class="swiper-pagination pictrue-index"></div>
+        </div>
     </div>
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
@@ -135,7 +139,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
                     <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
-                    <div class="tilelist-tag">
+                    <div class="house-labelling normal small tilelist-tag">
         <#assign layouttagitem = item['layout_tag']>
         <#list layouttagitem as tagatem>
             <span>${tagatem}</span>
@@ -159,7 +163,7 @@
 </div>
 <div class="module-bottom-fill">
     <section>
-        <div class="module-header-message">
+        <div style="height: 800px" id="main" class="module-header-message">
             <h3>价格走势</h3>
         </div>
     </section>
@@ -200,6 +204,150 @@
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/detail.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
+<script type="text/javascript">
+
+        // 基于准备好的dom，初始化echarts实例
+
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '未来一周气温变化',
+                subtext: '纯属虚构'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['楼盘价格','区域价格','商圈价格']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {readOnly: false},
+                    magicType: {type: ['line', 'bar']},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            xAxis:  {
+                type: 'category',
+                boundaryGap: false,
+                data: [<#list xlist as item >'${item}',</#list>]
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            },
+            series: [
+
+            <#if (ptCD0?size<12)>
+                {
+                    name:'楼盘价格',
+                    type:'scatter',
+                    data:[[10,19]],
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    }
+                },
+
+            <#else> {
+                name:'楼盘价格',
+                type:'line',
+                data:[<#list ptCD0 as item >${item['price']},</#list>],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ]
+                }
+            },
+            </#if>
+                {
+                    name:'区域价格',
+                    type:'line',
+                    data:[<#list ptCD1 as item >${item['price']},</#list>],
+                    markPoint: {
+                        data: [
+                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'},
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: '最大值'
+                                    }
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                },
+                {
+                    name:'商圈价格',
+                    type:'line',
+                    data:[<#list ptCD2 as item >${item['price']},</#list>],
+                    markPoint: {
+                        data: [
+                            {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                        ]
+                    },
+                    markLine: {
+                        data: [
+                            {type: 'average', name: '平均值'},
+                            [{
+                                symbol: 'none',
+                                x: '90%',
+                                yAxis: 'max'
+                            }, {
+                                symbol: 'circle',
+                                label: {
+                                    normal: {
+                                        position: 'start',
+                                        formatter: '最大值'
+                                    }
+                                },
+                                type: 'max',
+                                name: '最高点'
+                            }]
+                        ]
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+
+
+
+
+    // 使用刚指定的配置项和数据显示图表。
+
+</script>
