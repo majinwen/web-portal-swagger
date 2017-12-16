@@ -175,7 +175,6 @@ $detailBorderColor: #e1e1e1;
     .more-arrows {
         position: absolute;
         top: 0;
-        line-height: rem(114);
         right: rem(30);
         @include font-dpr(24);
         color: #999;

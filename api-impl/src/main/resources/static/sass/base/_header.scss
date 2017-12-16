@@ -1,7 +1,8 @@
 $headBackgroundColor: #0a0724;
+@import "side-nav";
 
 header {
-    position: relative;
+    //position: relative;
     height: rem(117);
     line-height: rem(63);
     padding: rem(27) rem(30);

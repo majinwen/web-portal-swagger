@@ -1,11 +1,12 @@
-package com.toutiao.web.apiimpl.controller.sys;
+package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.domain.query.VillageRequest;
-import com.toutiao.web.service.repository.admin.SysVillageService;
+import com.toutiao.web.service.plot.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -16,13 +17,10 @@ public class SysVillageConterller {
 
     //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
+    @ResponseBody
     public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
         List villageList = null;
-        try {
-            villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
         model.addAttribute("villageList", villageList);
         return "plot-list";
     }
@@ -49,11 +47,7 @@ public class SysVillageConterller {
 //        villageRequest1.setId(1);
 //        villageRequest1.setAreaId("001");
         List villageList = null;
-        try {
-            villageList = sysVillageService.findVillageByConditions(villageRequest1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        villageList = sysVillageService.findVillageByConditions(villageRequest1);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }

@@ -51,7 +51,12 @@ public class NewHouseController {
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
 
         String detailBuild = (String) details.get("build");
+       /* String listLayout = (String) details.get("layout");
+        String nearbybuild = (String) details.get("nearbybuild");*/
         JSONObject build=JSON.parseObject(detailBuild);
+       /* JSONObject layout=JSON.parseObject(listLayout);
+        JSONObject nearbuild=JSON.parseObject(nearbybuild);*/
+
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
@@ -66,7 +71,6 @@ public class NewHouseController {
      * @param model
      * @return
      */
-/*
     @RequestMapping("/getNewHouseLayoutDetails")
     public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -74,7 +78,6 @@ public class NewHouseController {
         return "";
 
     }
-*/
 
     /**
      * 根据楼盘计算不同户型数量
@@ -108,5 +111,16 @@ public class NewHouseController {
         return "newhouse/new-parameter";
     }
 
+    /**
+     * 新房首页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/index")
+    public String index(Model model){
+
+        model.addAttribute("user","asds");
+        return "newhouse/new-index";
+    }
 
 }

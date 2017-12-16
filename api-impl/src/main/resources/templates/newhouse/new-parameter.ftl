@@ -8,7 +8,7 @@
     <title>新房参数</title>
 </head>
 <body>
-       <#assign discript = discript[0]>
+<#assign discript = discript[0]>
 <div class="module-bottom-fill"></div>
 <div class="module-bottom-fill">
     <section class="primary-message">
@@ -122,7 +122,6 @@
 </section>
 
 <script src="${staticurl}/js/zepto.min.js"></script>
-<!-------- photoswipe -------->
-<script src="${staticurl}/js/detail.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
