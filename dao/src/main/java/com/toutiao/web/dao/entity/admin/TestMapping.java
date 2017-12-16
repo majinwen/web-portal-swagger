@@ -2,6 +2,7 @@ package com.toutiao.web.dao.entity.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -28,10 +29,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class TestMapping {
 
@@ -41,10 +39,11 @@ public class TestMapping {
 
 		TransportClient client = new PreBuiltTransportClient(settings)
 				.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
-
+		testIk(client,"house123", "house1234");
 		//queryByHouseId( "a", "b",1, client);
 		//buildIndexMapping(client);
-		save("a","b",client);
+		//buildIndexMappingIk(client);
+		//save("house123","house1234",client);
 		//queryList("a", "b", client, null);
 		//System.out.println("=============================");
 		//queryRang("projhouseinfo", "projhouse", client, null);
@@ -63,7 +62,10 @@ public class TestMapping {
 	}
 
 	protected static void buildIndexMapping(TransportClient client) throws Exception {
-
+		/**
+		 .startObject("product_name").field("type", "string")
+		 .field("analyzer","ik").field("search_analyzer","ik_smart").endObject()
+		 */
 		client.admin().indices().prepareCreate("a").execute().actionGet();
 		XContentBuilder mapping = XContentFactory.jsonBuilder().startObject().startObject("b")
 				.startObject("houseId").field("type", "integer").field("index", "not_analyzed").endObject()
@@ -123,11 +125,29 @@ public class TestMapping {
 		client.admin().indices().putMapping(mappingRequest).actionGet();
 	}
 
+	protected static void buildIndexMappingIk(TransportClient client) throws Exception {
+		/**
+		 .startObject("product_name").field("type", "string")
+		 .field("analyzer","ik").field("search_analyzer","ik_smart").endObject()
+		 */
+		client.admin().indices().prepareCreate("house123").execute().actionGet();
+		XContentBuilder mapping = XContentFactory.jsonBuilder()
+				.startObject().startObject("house1234").startObject("properties")
+				.startObject("areaName").field("type", "string").field("analyzer", "ik_smart").endObject()
+				.startObject("houseBusinessName").field("type", "string").field("analyzer", "ik_smart").endObject()
+				.startObject("housePlotName").field("type", "string").field("analyzer", "ik_smart").endObject()
+				.endObject().endObject().endObject();
+		PutMappingRequest mappingRequest = Requests.putMappingRequest("house123").type("house1234")
+				.source(mapping);
+		client.admin().indices().putMapping(mappingRequest).actionGet();
+	}
+
 	public static void save(String index, String type, TransportClient client) throws Exception {
 		ProjHouseInfo houseInfo = new ProjHouseInfo();
 		Random random=new Random();
+		int houseId=random.nextInt(20);
 		// 房源id
-		houseInfo.setHouseId(random.nextInt(20));
+		houseInfo.setHouseId(houseId);
 		// 房源名称
 		houseInfo.setHouseTitle("二手房名称");
 		// 房源面积
@@ -208,23 +228,23 @@ public class TestMapping {
 		houseInfo.setHousePlotLocation(d);
 
 		// 房源小区名称
-		houseInfo.setHousePlotName("首城国际");
+		houseInfo.setHousePlotName("版本");
 
 		String[] photo={"小区照片","小区照片"};
 
 		houseInfo.setHousePlotPhoto(photo);
 
-		// 房源小区信息
-		houseInfo.setHousePlotInfo("首城国际");
+		// 房源小区信息 首城国际
+		houseInfo.setHousePlotInfo("啊啊");
 		// 商圈名称
 		houseInfo.setHouseBusinessNameId("1");
 
 		// 商圈名称
-		houseInfo.setHouseBusinessName("朝阳");
+		houseInfo.setHouseBusinessName("朝阳111");
 		// 区域id
 		houseInfo.setAreaId("12");
 		// 区域名称(朝阳)
-		houseInfo.setAreaName("东城");
+		houseInfo.setAreaName("东城1");
 		String[] LineId={"001","003"};
 		// 地铁线id
 		houseInfo.setSubwayLineId(LineId);
@@ -246,7 +266,7 @@ public class TestMapping {
 		houseInfo.setSubwayStationName(StationName);
 		BulkRequestBuilder bulkRequest = client.prepareBulk();
 		JSONObject json = (JSONObject) JSONObject.toJSON(houseInfo);
-		IndexRequestBuilder lrb = client.prepareIndex(index, type).setSource(json);
+		IndexRequestBuilder lrb = client.prepareIndex(index, type).setSource(json).setId(String.valueOf( houseId))	;
 		bulkRequest.add(lrb);
 		BulkResponse bulkResponse = bulkRequest.execute().actionGet();
 		if (bulkResponse.hasFailures()) {
@@ -255,6 +275,7 @@ public class TestMapping {
 		}
 		bulkRequest = client.prepareBulk();
 	}
+
 
 
 	public static void queryList(String index, String type, TransportClient client, ProjHouseInfoQuery houseInfo) {
@@ -371,5 +392,54 @@ public class TestMapping {
 		return result;
 	}
 
+
+	public static void testIk(TransportClient client,String index,String type){
+		QueryBuilder queryBuilder=null;
+		String content = "朝阳111";//朝阳111  首城国际111  东城1
+		AnalyzeResponse response = client.admin().indices()
+				.prepareAnalyze(content)//内容
+				.setAnalyzer("ik_smart")//指定分词器
+				//.setTokenizer("standard")
+				.execute().actionGet();//执行
+		List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+		BoolQueryBuilder ww = QueryBuilders.boolQuery();
+		for (AnalyzeResponse.AnalyzeToken analyzeToken:
+		tokens) {
+			System.out.println(analyzeToken.getTerm());
+//			queryBuilder =QueryBuilders.boolQuery()
+//					.should(QueryBuilders.prefixQuery("areaName",analyzeToken.getTerm()))
+//			     .should(QueryBuilders.prefixQuery("houseBusinessName",analyzeToken.getTerm()))
+//			     .should(QueryBuilders.prefixQuery("housePlotName",analyzeToken.getTerm()));
+			queryBuilder =QueryBuilders.boolQuery().should(QueryBuilders.termsQuery("areaName",analyzeToken.getTerm()))
+					.should(QueryBuilders.termsQuery("houseBusinessName",analyzeToken.getTerm()))
+			.should(QueryBuilders.termsQuery("housePlotName",analyzeToken.getTerm()));
+
+			ww.should(queryBuilder);
+		}
+		SearchResponse searchResponse = client.prepareSearch(index)
+				.setTypes(type)
+				.setQuery(ww)
+				.get();
+		for(SearchHit searchHit : searchResponse.getHits().getHits()) {
+			System.out.println(searchHit.getSourceAsString());
+		}
+		/*IndicesAdminClient indicesAdminClient = ElasticFactory.getClient().admin().indices();
+		AnalyzeRequestBuilder request = new AnalyzeRequestBuilder(indicesAdminClient,"cloud_repair","中华人民共和国国歌");
+        // request.setAnalyzer("ik");
+		request.setTokenizer("ik");
+         // Analyzer（分析器）、Tokenizer（分词器）
+		List listAnalysis = request.execute().actionGet().getTokens();
+		System.out.println(listAnalysis);
+        // listAnalysis中的结果就是分词的结果
+
+		for (AnalyzeResponse.AnalyzeToken term : listAnalysis) {
+			System.out.print(term.getTerm());
+			System.out.print(',');
+			queryBuilder.should(QueryBuilders.queryString(term.getTerm()).field("search_keys_ik"));
+			//这里可以用must 或者 should 视情况而定
+		}
+		System.out.print('\n');*/
+
+	}
 
 }
