@@ -1,4 +1,4 @@
-package com.toutiao.web.apiimpl.controller;
+package com.toutiao.web.apiimpl.impl.projhouse;
 
 
 import com.toutiao.web.common.restmodel.NashResult;
