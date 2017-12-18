@@ -5,6 +5,7 @@
     overflow-x: auto;
     white-space: nowrap;
     @include box-sizing;
+    -webkit-overflow-scrolling:touch;
     
     li {
         display: inline-block;

@@ -55,6 +55,21 @@
     </div>
 </div>
 <div class="module-bottom-fill">
+    <section class="plot-primary-header">
+        <div class="plot-primary-text">
+            <h2>新世纪丽樽</h2>
+            <p>[顺义-商圈] 中央别墅区 顺语路57号</p>
+            <p>距离地铁马泉营站 [15号线] 3.8km</p>
+            <div class="house-labelling gray">
+                <span>满五</span>
+                <span>满二</span>
+                <span>随时看房</span>
+            </div>
+        </div>
+        <div class="plot-primary-map-box"></div>
+    </section>
+</div>
+<div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>推荐小区好房</h3>
@@ -107,6 +122,164 @@
                 </div>
             </a></li>
         </ul>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>市场行情</h3>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>基本信息</h3>
+            <a href="#" class="more-arrows">查看更多<i class="arrows-right"></i></a>
+        </div>
+        <div class="basic-information">
+            <div class="column item-only-one">
+                <div class="info-card-item">首城国际，<em class="high-light-red">2008</em>年建成住宅，共<em class="high-light-red">18</em>栋（2558户）<br><em class="high-light-red">板楼/板塔结合</em></div>
+            </div>
+            <div class="column item-column-two">
+                <div class="info-card-item">
+                    <i class="item-two-1"></i>
+                    <div class="info-item-text">
+                        <p>人均绿化</p>
+                        <em>19平方米</em>
+                    </div>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-two-2"></i>
+                    <div class="info-item-text">
+                        <p>车位配比</p>
+                        <em>1.5车位/户</em>
+                    </div>
+                </div>
+            </div>
+            <div class="column item-column-two">
+                <div class="info-card-item">
+                    <i class="item-two-3"></i>
+                    <div class="info-item-text">
+                        <p>户均电梯</p>
+                        <em>暂无</em>
+                    </div>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-two-4"></i>
+                    <div class="info-item-text">
+                        <p>空气质量</p>
+                        <em>暂无</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>交通信息</h3>
+        </div>
+        <div class="basic-information">
+            <div class="column item-column-three">
+                <div class="info-card-item">
+                    <i class="item-three-1"></i>
+                    <em>公交</em>
+                    <p>四惠公交站</p>
+                    <span>24条线路</span>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-three-2"></i>
+                    <em>地铁</em>
+                    <p>国贸站[1号线]</p>
+                    <span>0.5km</span>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-three-3"></i>
+                    <em>自驾</em>
+                    <p>三环主路</p>
+                    <span>0.7km</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<div id="mapMessage">地图</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>医疗配套</h3>
+            <a href="javascript:;" class="more-arrows expand-btn"><em>展开</em><i class="arrows-expand"></i></a>
+        </div>
+        <div class="expand-content">
+            <ul class="result-data-expand">
+                <li>
+                    <p>
+                        <i class="expand-icon medical-treatment"></i>
+                        <span class="expand-name">北医三院</span>
+                    </p>
+                    <span class="expand-distance">1.8km内</span>
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon medical-treatment"></i>
+                        <span class="expand-name">北京解放军医院</span>
+                    </p>
+                    <span class="expand-distance">1.8km内</span>
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon medical-treatment"></i>
+                        <span class="expand-name">海淀医院</span>
+                    </p>
+                    <span class="expand-distance">1.8km内</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>生活成本</h3>
+            <a href="javascript:;" class="more-arrows expand-btn"><em>展开</em><i class="arrows-expand"></i></a>
+        </div>
+        <div class="expand-content">
+            <ul class="result-data-expand">
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">水费</span>
+                        <span class="expand-price">3元/吨</span>
+                    </p>
+                    <span class="expand-distance tips">居民用水价格范围为1-4元/吨</span>
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">电费</span>
+                        <span class="expand-price">3元/度</span>
+                    </p>
+                    <span class="expand-distance tips">居民用电价格范围为1-4元/度</span>
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">物业费</span>
+                        <span class="expand-price">4元/㎡·月</span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">停车费</span>
+                        <span class="expand-price">30元/月</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -240,5 +413,11 @@
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+
+    $.get('http://api.map.baidu.com/place/v2/search?query=银行&location=39.915,116.404&radius=2000&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf', function(response){
+        console.log(response);
+    });
+</script>
 </body>
 </html>

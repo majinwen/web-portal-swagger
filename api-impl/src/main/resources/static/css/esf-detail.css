@@ -173,6 +173,9 @@ hr {
     .house-labelling span:last-child {
       margin-right: 0; }
 
+.hidden {
+  overflow: hidden; }
+
 .fixed-scroll {
   position: fixed;
   width: 100%;
@@ -1025,23 +1028,158 @@ a.pswp__share--download:hover {
       font-size: 24px; }
     [data-dpr="3"] .module-header-message .more-arrows {
       font-size: 36px; }
-    .module-header-message .more-arrows .arrows-right {
+    .module-header-message .more-arrows .arrows-right, .module-header-message .more-arrows .arrows-expand {
       position: relative;
-      top: -0.0533333333rem;
       display: inline-block;
-      width: 0.2266666667rem;
-      height: 1.52rem;
       margin-left: 0.1333333333rem;
       vertical-align: middle;
-      background-image: url("../images/global/arrows_right_icon.png");
-      background-repeat: no-repeat;
       background-position: center; }
+    .module-header-message .more-arrows .arrows-right {
+      top: -0.0533333333rem;
+      width: 0.2266666667rem;
+      height: 1.52rem;
+      background-image: url("../images/global/arrows_right_icon.png");
+      background-repeat: no-repeat; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .module-header-message .more-arrows .arrows-right {
           background-image: url("../images/global/arrows_right_icon@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .module-header-message .more-arrows .arrows-right {
           background-image: url("../images/global/arrows_right_icon@3x.png"); } }
+    .module-header-message .more-arrows .arrows-expand {
+      top: 0;
+      width: 0.5866666667rem;
+      height: 1.52rem;
+      background-image: url("../images/global/arrows_bottom_icon.png");
+      background-repeat: no-repeat; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .module-header-message .more-arrows .arrows-expand {
+          background-image: url("../images/global/arrows_bottom_icon@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .module-header-message .more-arrows .arrows-expand {
+          background-image: url("../images/global/arrows_bottom_icon@3x.png"); } }
+    .module-header-message .more-arrows.expand .arrows-expand {
+      background-image: url("../images/global/arrows_top_icon.png");
+      background-repeat: no-repeat; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .module-header-message .more-arrows.expand .arrows-expand {
+          background-image: url("../images/global/arrows_top_icon@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .module-header-message .more-arrows.expand .arrows-expand {
+          background-image: url("../images/global/arrows_top_icon@3x.png"); } }
+
+.plot-primary-header {
+  position: relative;
+  padding: 0.5333333333rem 0.4rem; }
+  .plot-primary-header .plot-primary-text {
+    width: 6.8rem;
+    overflow: hidden; }
+    .plot-primary-header .plot-primary-text h2, .plot-primary-header .plot-primary-text p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+  [data-dpr="1"] .plot-primary-header h2 {
+    font-size: 17px; }
+  [data-dpr="2"] .plot-primary-header h2 {
+    font-size: 34px; }
+  [data-dpr="3"] .plot-primary-header h2 {
+    font-size: 51px; }
+  .plot-primary-header p {
+    margin-top: 0.44rem;
+    color: #666; }
+    [data-dpr="1"] .plot-primary-header p {
+      font-size: 13px; }
+    [data-dpr="2"] .plot-primary-header p {
+      font-size: 26px; }
+    [data-dpr="3"] .plot-primary-header p {
+      font-size: 39px; }
+    .plot-primary-header p:first-child {
+      margin-top: 0; }
+  .plot-primary-header .house-labelling {
+    margin-top: 0.48rem; }
+  .plot-primary-header .plot-primary-map-box {
+    position: absolute;
+    bottom: 0.7066666667rem;
+    right: 0.4rem;
+    width: 2.24rem;
+    height: 2.24rem;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #efeff0; }
+
+.expand-content {
+  display: none;
+  padding: 0.5333333333rem 0.4rem; }
+  .expand-content .result-data-expand {
+    width: 100%;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    border: 0.0133333333rem solid #fff;
+    -webkit-box-shadow: 0 0.0666666667rem 0.24rem 0 rgba(107, 63, 63, 0.17);
+    box-shadow: 0 0.0666666667rem 0.24rem 0 rgba(107, 63, 63, 0.17);
+    box-sizing: border-box; }
+    .expand-content .result-data-expand li {
+      height: 1.3333333333rem;
+      line-height: 1.3333333333rem;
+      border-bottom: 0.0133333333rem solid #ccc; }
+      [data-dpr="1"] .expand-content .result-data-expand li {
+        font-size: 13px; }
+      [data-dpr="2"] .expand-content .result-data-expand li {
+        font-size: 26px; }
+      [data-dpr="3"] .expand-content .result-data-expand li {
+        font-size: 39px; }
+      .expand-content .result-data-expand li p {
+        display: inline-block; }
+      .expand-content .result-data-expand li .expand-icon {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 0.1333333333rem;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        .expand-content .result-data-expand li .expand-icon.living-cost {
+          width: 0.48rem;
+          height: 0.48rem;
+          background-image: url("/static/images/plot/xqxq_shcb_icon.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .result-data-expand li .expand-icon.living-cost {
+              background-image: url("/static/images/plot/xqxq_shcb_icon@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .result-data-expand li .expand-icon.living-cost {
+              background-image: url("/static/images/plot/xqxq_shcb_icon@3x.png"); } }
+        .expand-content .result-data-expand li .expand-icon.medical-treatment {
+          width: 0.4266666667rem;
+          height: 0.4266666667rem;
+          background-image: url("/static/images/plot/xqxq_yl_icon.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .result-data-expand li .expand-icon.medical-treatment {
+              background-image: url("/static/images/plot/xqxq_yl_icon@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .result-data-expand li .expand-icon.medical-treatment {
+              background-image: url("/static/images/plot/xqxq_yl_icon@3x.png"); } }
+      .expand-content .result-data-expand li .expand-type {
+        display: inherit;
+        min-width: 1.2rem;
+        color: #777;
+        margin-right: 0.1333333333rem; }
+      .expand-content .result-data-expand li .expand-distance {
+        float: right;
+        color: #888; }
+        [data-dpr="1"] .expand-content .result-data-expand li .expand-distance {
+          font-size: 12px; }
+        [data-dpr="2"] .expand-content .result-data-expand li .expand-distance {
+          font-size: 24px; }
+        [data-dpr="3"] .expand-content .result-data-expand li .expand-distance {
+          font-size: 36px; }
+        [data-dpr="1"] .expand-content .result-data-expand li .expand-distance.tips {
+          font-size: 10px; }
+        [data-dpr="2"] .expand-content .result-data-expand li .expand-distance.tips {
+          font-size: 20px; }
+        [data-dpr="3"] .expand-content .result-data-expand li .expand-distance.tips {
+          font-size: 30px; }
+      .expand-content .result-data-expand li:last-child {
+        border-bottom: none; }
 
 .tilelist {
   width: 100%;
@@ -1049,7 +1187,8 @@ a.pswp__share--download:hover {
   zoom: 1;
   overflow-x: auto;
   white-space: nowrap;
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch; }
   .tilelist li {
     display: inline-block;
     width: 2.9466666667rem;

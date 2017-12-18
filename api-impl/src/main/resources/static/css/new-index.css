@@ -173,6 +173,9 @@ hr {
     .house-labelling span:last-child {
       margin-right: 0; }
 
+.hidden {
+  overflow: hidden; }
+
 .fixed-scroll {
   position: fixed;
   width: 100%;

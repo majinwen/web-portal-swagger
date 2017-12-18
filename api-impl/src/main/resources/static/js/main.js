@@ -12,6 +12,8 @@ Zepto(function () {
     $('.header-user').tap(function () {
         userSideNav();      // 个人中心导航
     });
+
+    moduleExpand();         // 小区详情模块状态
 });
 
 
@@ -132,5 +134,18 @@ function maskClick() {
         $('.scroll-mask').hide();
         $('body').removeClass('fixed-scroll');
         $('.side-nav-cont').removeClass('active');
+    });
+}
+
+function moduleExpand() {
+    $('.expand-btn').on('click', function () {
+        $(this).toggleClass('expand');
+        if ($(this).hasClass('expand')) {
+            $(this).find('em').text('收起');
+            $('.expand-content').show();
+        } else {
+            $(this).find('em').text('展开');
+            $('.expand-content').hide();
+        }
     });
 }
