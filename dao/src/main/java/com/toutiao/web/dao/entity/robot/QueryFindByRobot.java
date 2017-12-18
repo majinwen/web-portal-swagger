@@ -9,7 +9,7 @@ import lombok.Data;
 public class QueryFindByRobot {
     private Integer newcode; //序号
     private Integer n_or_e;//新房/二手房(0-新房，1-二手房)
-    private String projname;//楼盘名称
+    private String projname;//楼盘名称(小区名称)
     private String nickname;//别名
     private String installment;//楼盘分期
     private String address;//地址
@@ -51,7 +51,7 @@ public class QueryFindByRobot {
     private String livindate_s;//入住时间描述
     private String saletelphone;//售楼热线
     private String saleaddress;//售楼地址
-    private String salecard;//销售证
+    private Object salecard;//销售证
     private String mortgage_bank;//按揭银行
     private Integer saling;//销售状态(0-售完,1-在售,2-不在售,3-出租,4-租售,5-待售)
     private Integer sail_schedule;//销售阶段(0:期房.1:现房.2:尾房.3:二手房)
@@ -102,19 +102,19 @@ public class QueryFindByRobot {
     private Double total_price;//平均总价-新房
     private Double esf_price;//平均单价-二手房
     private Double esf_total_price;//平均总价-二手房
-    private Integer heating_mode;//供暖方式(0-未知，1-集中供暖，2-自供暖）
+    private Integer[] heating_mode;//供暖方式(0-未知，1-集中供暖，2-自供暖）
     private String lift_door_radio;//梯户比
     private String park_radio;//车位配比
     //物业类别/业态：（1-住宅,2-别墅,3-写字楼，4-商铺，5-底商）
-    private Integer property_type;
+    private Integer[] property_type;
     //住宅建筑形式(数组)：1-低层，2-多层，3-小高层，4-高层，5-超高层，
     //6-联排、7-独栋、8-双拼、9-叠拼、10-空中花园、11-空中别墅
-    private Integer build_form;
+    private Integer[] build_form;
     //建筑类别(数组)：1-板楼，2-塔楼，3-板塔结合
-    private Integer build_category;
+    private Integer[] build_category;
     //别墅建筑风格(数组)：1-中式、2-欧式、3-日式、4-美式、5-英式、6-澳式、
     //7-法式、8-西班牙式、9-东南亚式、10-地中海式、11-意大利式、12-现代
-    private Integer villa_style;
+    private Integer[] villa_style;
     //新房平均单价单位
     private String price_unit;
     //新房平均总价单位
@@ -126,10 +126,16 @@ public class QueryFindByRobot {
     //住宅类别(数组)：1-普通住宅，2-公寓，3-酒店式公寓，4-花园洋房，5-商住楼，6-独栋别墅，
     //7-联排别墅，8-经济适用房，9-廉租房，10-公共租赁房，11-定向安置房，
     //12-两限商品房，13-自住型商品房，14-其他
-    private Integer residential_category;
+    private Integer[] residential_category;
     //房天下楼盘Id
     private String soufun_newcode;
     //空气质量
     private String air_quality;
+    //小区照片
+    private String[] plotPhoto;
+   //小区总价最低
+    private Integer  plotTotalricesBegin;
+    //小区总价最高
+    private Integer  plotTotalricesEnd;
 
-}          
+}
