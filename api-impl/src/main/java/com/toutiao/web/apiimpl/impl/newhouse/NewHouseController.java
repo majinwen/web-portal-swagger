@@ -3,7 +3,10 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
+import com.toutiao.web.service.PriceTrendService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("newhouse")
@@ -22,6 +22,8 @@ public class NewHouseController {
 
     @Autowired
     private NewHouseService newHouseService;
+    @Autowired
+    private PriceTrendService priceTrendService;
 
     /**
      * 新房列表
@@ -49,17 +51,25 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseDetails")
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
+        PriceTrend priceTrend=new PriceTrend();
+        priceTrend.setBuildId(buildingId);
+        priceTrend.setPropertyType((short)1);
+
+        List<Map<String ,List<PriceTrend>>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
+
+
+
+        List<String>dateList= DateUtil.oneYearList();
 
         String detailBuild = (String) details.get("build");
-       /* String listLayout = (String) details.get("layout");
-        String nearbybuild = (String) details.get("nearbybuild");*/
         JSONObject build=JSON.parseObject(detailBuild);
-       /* JSONObject layout=JSON.parseObject(listLayout);
-        JSONObject nearbuild=JSON.parseObject(nearbybuild);*/
-
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
+
+        model.addAttribute("tradeline",priceTrendList);
+       // model.addAttribute("ptCD2",ptCD2);
+        model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
     }

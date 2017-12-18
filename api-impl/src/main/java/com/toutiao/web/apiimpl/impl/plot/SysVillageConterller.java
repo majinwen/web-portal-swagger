@@ -29,6 +29,7 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
+        villageRequest1.setAreaSize("80");
 //        villageRequest1.setId(001);
 //        villageRequest1.setSearchSubwayLineId("001");
 //        villageRequest1.setSearchMetroStationId("001");
@@ -50,5 +51,29 @@ public class SysVillageConterller {
         villageList = sysVillageService.findVillageByConditions(villageRequest1);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
+    }
+
+    /**
+     * 小区详情页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/plotDetail")
+    public String detail(Model model){
+
+        model.addAttribute("user","asds");
+        return "plot/plot-detail";
+    }
+
+    /**
+     * 小区待售页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/plotSale")
+    public String sale(Model model){
+
+        model.addAttribute("user","asds");
+        return "plot/plot-sale";
     }
 }

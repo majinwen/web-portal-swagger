@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.TotalRoomRatioMapper">
+  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
+    <result column="total" jdbcType="NUMERIC" property="total" />
+    <result column="room" jdbcType="INTEGER" property="room" />
+    <result column="ratio" jdbcType="NUMERIC" property="ratio" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+  </resultMap>
+  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
+    insert into total_room_ratio (total, room, ratio, 
+      user_type)
+    values (#{total,jdbcType=NUMERIC}, #{room,jdbcType=INTEGER}, #{ratio,jdbcType=NUMERIC}, 
+      #{userType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
+    insert into total_room_ratio
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="total != null">
+        total,
+      </if>
+      <if test="room != null">
+        room,
+      </if>
+      <if test="ratio != null">
+        ratio,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="total != null">
+        #{total,jdbcType=NUMERIC},
+      </if>
+      <if test="room != null">
+        #{room,jdbcType=INTEGER},
+      </if>
+      <if test="ratio != null">
+        #{ratio,jdbcType=NUMERIC},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

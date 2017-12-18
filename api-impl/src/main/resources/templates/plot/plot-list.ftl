@@ -17,79 +17,128 @@
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
 <section class="category-box">
-    <ul id="category-nav">
-        <li><span><em>位置</em><i></i></span></li>
-        <li><span><em>均价</em><i></i></span></li>
-        <li><span><em>楼龄</em><i></i></span></li>
-        <li><span><em>更多</em><i></i></span></li>
+    <ul id="category-tab">
+        <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
+        <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
+        <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
+        <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none">
-        <div class="category-cont">
-            <div class="none">
-                <ul class="category-parent">
-                    <li>区域</li>
-                    <li>地铁</li>
+    <div class="global-mark none"></div>
+    <div class="category-cont">
+        <!-- 区域 -->
+        <div class="filter-item" data-mark="panel-place">
+            <div class="place-list">
+                <ul id="level1" class="nav" data-mark="level1">
+                    <li onclick="showDistrict()">区域</li>
+                    <li onclick="showSubway()">地铁</li>
                 </ul>
-                <ul class="category-child"></ul>
-                <ul class="category-children"></ul>
+                <ul id="level2" class="guide none" data-mark="level2"></ul>
+                <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
-            <div class="none">
-                <ul class="category-parent">
-                    <li>不限</li>
-                    <li>200万以下</li>
-                    <li>200-250万</li>
-                    <li>200-250万</li>
-                    <li>250-300万</li>
-                    <li>350-400万</li>
+        </div>
+        <!-- 价格 -->
+        <div class="filter-item" data-mark="panel-price">
+            <div class="price-list">
+                <ul>
+                    <li class="current">不限</li>
+                    <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
+                    <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
+                    <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
+                    <li data-begin-price="300.0" data-end-price="350.0">300-350万</li>
+                    <li data-begin-price="350.0" data-end-price="400.0">350-400万</li>
+                    <li data-begin-price="400.0" data-end-price="1000.0">400万以上</li>
                 </ul>
             </div>
-            <div class="none">
-                <ul class="category-parent">
-                    <li>不限</li>
-                    <li>5年内</li>
-                    <li>10年内</li>
-                    <li>15年内</li>
-                    <li>20年内</li>
-                    <li>20年以上</li>
+        </div>
+        <!-- 户型 -->
+        <div class="filter-item" data-mark="panel-type">
+            <div class="type-list">
+                <ul>
+                    <li class="current" data-type="0">不限</li>
+                    <li data-type="1">一居 <i></i></li>
+                    <li data-type="2">二居 <i></i></li>
+                    <li data-type="3">三居 <i></i></li>
+                    <li data-type="4">四居 <i></i></li>
+                    <li data-type="5">五居及五居以上 <i></i></li>
                 </ul>
-                <div class="button-group">
-                    <button type="button" class="reset reset-year">重置</button>
-                    <button type="button" class="confrim confrim-year">确定</button>
+                <div class="submit-wrapper">
+                    <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
                 </div>
             </div>
-            <div class="none">
-                <ul class="category-parent">
-                    <li>
-                        <h4>朝向</h4>
-                        <div class="more-options">
-                            <span>朝东</span>
-                            <span>朝西</span>
-                            <span>朝南</span>
-                            <span>朝北</span>
-                            <span>南北通透</span>
-                        </div>
-                    </li>
-                    <li>
-                        <h4>面积</h4>
-                        <div class="more-options">
-                            <span>60以下</span>
-                            <span>60-90</span>
-                            <span>90-120</span>
-                            <span>120以上</span>
-                        </div>
-                    </li>
-                    <li>
-                        <h4>标签</h4>
-                        <div class="more-options">
-                            <span>满两年</span>
-                            <span>满五年</span>
-                            <span>近地铁</span>
-                        </div>
-                    </li>
-                </ul>
-                <div class="button-group">
-                    <button type="button" class="reset reset-more">重置</button>
-                    <button type="button" class="confrim confrim-more">确定</button>
+        </div>
+        <!-- 更多 -->
+        <div class="filter-item" data-mark="panel-more">
+            <div class="more-list">
+                <dl>
+                    <dt data-type="propertyTypeId">物业类型</dt>
+                    <dd>
+                        <span data-info="1">住宅</span>
+                        <span data-info="2">别墅</span>
+                        <span data-info="3">写字楼</span>
+                        <span data-info="4">商铺</span>
+                        <span data-info="5">底商</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="houseAreaSize">面积</dt>
+                    <dd>
+                        <span data-info="0,60">60以下</span>
+                        <span data-info="60,90">60-90</span>
+                        <span data-info="90,120">90-120</span>
+                        <span data-info="120,1000">120以上</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="elevatorFlag">电梯</dt>
+                    <dd>
+                        <span class="only" data-info="1">有</span>
+                        <span class="only" data-info="0">无</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="buildingType">建筑类型</dt>
+                    <dd>
+                        <span data-info="1">板楼</span>
+                        <span data-info="2">塔楼</span>
+                        <span data-info="3">板塔结合</span>
+                        <span data-info="4">砖楼</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="saleType">销售状态</dt>
+                    <dd>
+                        <span data-info="1">售完</span>
+                        <span data-info="2">在售</span>
+                        <span data-info="3">不在售</span>
+                        <span data-info="4">出租</span>
+                        <span data-info="4">待租</span>
+                        <span data-info="4">待售</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="buildingFeature">楼盘特色</dt>
+                    <dd>
+                        <span data-info="1">别墅</span>
+                        <span data-info="2">花园洋房</span>
+                        <span data-info="3">近地铁</span>
+                        <span data-info="4">车位充足</span>
+                        <span data-info="5">低密度</span>
+                        <span data-info="6">高绿化</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="deliverStyle">装修标准</dt>
+                    <dd>
+                        <span data-info="1">毛坯</span>
+                        <span data-info="2">普通装修</span>
+                        <span data-info="3">精装修</span>
+                        <span data-info="4">豪华装修</span>
+                        <span data-info="5">其他</span>
+                    </dd>
+                </dl>
+                <div class="submit-wrapper">
+                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
                 </div>
             </div>
         </div>
