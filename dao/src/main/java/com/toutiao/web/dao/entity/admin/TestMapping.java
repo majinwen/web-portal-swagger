@@ -560,6 +560,9 @@ public class TestMapping {
                 .startObject("residential_category").field("type", "integer").endObject()
                 .startObject("soufun_newcode").field("type", "text").endObject()
                 .startObject("air_quality").field("type", "text").endObject()
+                .startObject("plotPhoto").field("type", "text").endObject()
+                .startObject("plotTotalricesBegin").field("type", "integer").endObject()
+                .startObject("plotTotalricesEnd").field("type", "integer").endObject()
                 .endObject().endObject().endObject();
         PutMappingRequest mappingRequest = Requests.putMappingRequest("robot_index").type("robot_type")
                 .source(mapping);
