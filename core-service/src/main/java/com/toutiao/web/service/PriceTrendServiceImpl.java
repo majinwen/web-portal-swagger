@@ -43,7 +43,7 @@ public class PriceTrendServiceImpl implements PriceTrendService {
       Map<String ,List<PriceTrend>> priceList=new HashMap<>();
       priceList.put("buildingline",ptCD0);
       priceList.put("arealine",ptCD1);
-      priceList.put("tradearealine;",ptCD2);
+      priceList.put("tradearealine",ptCD2);
 
  /*     List<Map<String ,List<PriceTrend>>> list=new ArrayList<>();
         list.add(priceList);*/

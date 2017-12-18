@@ -66,9 +66,7 @@ public class NewHouseController {
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
-
         model.addAttribute("tradeline",priceTrendList);
-       // model.addAttribute("ptCD2",ptCD2);
         model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
