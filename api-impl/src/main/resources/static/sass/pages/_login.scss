@@ -1,0 +1,82 @@
+h2 {
+    margin-top: rem(80);
+    text-align: center;
+    @include font-dpr(36);
+    color: #333;
+}
+p {
+    @include font-dpr(24);
+    color: #999;
+    text-align: center;
+
+    &.registration-prompt {
+        margin-top: rem(40);
+    }
+
+    &.fixed-bottom-tips {
+        position: fixed;
+        bottom: rem(90);
+        left: 0;
+        width: 100%;
+    }
+}
+.login-form {
+    margin-top: rem(74);
+    padding: rem(0) rem(60);
+
+    .input-phone {
+        position: relative;
+
+        .code-btn-box {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding-left: rem(20);
+            background-color: $baseWhite;
+
+            .code-btn {
+                display: block;
+                width: rem(200);
+                height: rem(60);
+                line-height: rem(60);
+                @include font-dpr(28);
+                color: $baseWhite;
+                text-align: center;
+                background-color: #090723;
+                -webkit-border-radius: rem(10);
+                border-radius: rem(10);
+            }
+        }
+    }
+
+    input {
+        @include font-dpr(26);
+        line-height: 1;
+        padding: rem(22) rem(11);
+        width: 100%;
+        color: $baseBlack;
+        border-bottom: rem(1) solid $borderLineColor;
+        @include box-sizing;
+
+        &::-webkit-input-placeholder {
+            color: #999;
+        }
+
+        &.code-text {
+            margin-top: rem(40);
+        }
+    }
+
+    .submit-btn {
+        width: 100%;
+        height: rem(80);
+        line-height: rem(80);
+        margin-top: rem(70);
+        text-align: center;
+        color: $baseWhite;
+        @include font-dpr(30);
+        background-color: #090723;
+        -webkit-border-radius: rem(10);
+        border-radius: rem(10);
+    }
+}

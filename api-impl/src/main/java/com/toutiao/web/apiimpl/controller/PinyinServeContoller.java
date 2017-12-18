@@ -32,24 +32,4 @@ public class PinyinServeContoller {
         return NashResult.build(pinyin);
 
     }
-
-    // 二手房详情页
-    @RequestMapping("/changepinyin22")
-    public String getChangepinyin22(Model model){
-
-        model.addAttribute("user","asds");
-
-        return "/esf/esf-detail";
-
-    }
-
-    // 小区参数页
-    @RequestMapping("/changepinyin44")
-    public String getChangepinyin44(Model model){
-
-        model.addAttribute("user","asds");
-
-        return "/plot/plot-parameter";
-
-    }
 }

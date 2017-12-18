@@ -25,76 +25,26 @@ $textGrayColor: #888;
     .list-item-img-box {
         float: left;
         width: rem(230);
-        height: rem(172);
-        
+
         img {
             width: 100%;
             height: 100%;
         }
     }
-    
+
     .list-item-cont {
         position: relative;
         float: left;
         width: rem(430);
         height: rem(172);
         padding-left: rem(30);
-        
-        .cont-block-1 {
-            height: rem(28);
-            line-height: rem(28);
-            @include font-dpr(28);
-            @include text-ellipses;
-            
-            em {
-                display: inline-block;
-                height: rem(28);
-                line-height: rem(26);
-                padding: 0 rem(12);
-                @include font-dpr(20);
-                margin-left: rem(20);
-                border: 1px solid $borderRadiusColor;
-                -webkit-border-radius: rem(6);
-                -moz-border-radius: rem(6);
-                border-radius: rem(6);
-                @include box-sizing;
-                vertical-align: bottom;
-            }
-        }
-        
-        .cont-block-2 {
-            margin-top: rem(20);
-            color: $baseGray;
-        }
-        
-        .cont-block-3 {
-            position: relative;
-            margin-top: rem(16);
-            color: $baseGray;
-            
-            .icon {
-                position: absolute;
-                top: 0;
-                left: 0;
-                display: block;
-                width: rem(21);
-                height: rem(28);
-                @include bg-image('../images/esf/esf_list_icon_wz');
-                -webkit-background-size: rem(21) auto;
-                background-size: rem(21) auto;
-            }
-            
-            &.distance {
-                padding-left: rem(31);
-            }
-        }
-        
+
         .cont-block-4 {
             position: absolute;
             width: rem(430);
             bottom: 0;
         }
-        
+
         .cont-block-price {
             position: absolute;
             right: 0;
@@ -121,7 +71,56 @@ $textGrayColor: #888;
             }
         }
     }
-    
+
+    .cont-block-1 {
+        height: rem(28);
+        line-height: rem(28);
+        @include font-dpr(28);
+        @include text-ellipses;
+
+        em {
+            display: inline-block;
+            height: rem(28);
+            line-height: rem(26);
+            padding: 0 rem(12);
+            @include font-dpr(20);
+            margin-left: rem(20);
+            color: #999;
+            border: 1px solid $borderRadiusColor;
+            -webkit-border-radius: rem(6);
+                    border-radius: rem(6);
+            @include box-sizing;
+            vertical-align: bottom;
+        }
+    }
+
+    .cont-block-2 {
+        margin-top: rem(20);
+        color: $baseGray;
+    }
+
+    .cont-block-3 {
+        position: relative;
+        margin-top: rem(16);
+        color: $baseGray;
+
+        .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: rem(21);
+            height: rem(28);
+            @include bg-image('../images/esf/esf_list_icon_wz');
+            -webkit-background-size: rem(21) auto;
+            background-size: rem(21) auto;
+        }
+
+        &.distance {
+            padding-left: rem(31);
+        }
+    }
+
     &.new {
         .new-active {
             clear: both;
@@ -165,6 +164,39 @@ $textGrayColor: #888;
             -webkit-border-radius: rem(22) 0 0 rem(22);
             -moz-border-radius: rem(22) 0 0 rem(22);
             border-radius: rem(22) 0 0 rem(22);
+        }
+    }
+
+    &.new-ad-item {
+        .list-item-cont-ad {
+            position: relative;
+            margin-bottom: rem(20);
+
+            h3, p {
+                display: inline-block;
+                margin-top: 0;
+                vertical-align: top;
+            }
+            p {
+                margin-left: rem(20);
+            }
+        }
+
+        .cont-block-2 {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-top: 0;
+        }
+
+        .list-item-img-box {
+            width: rem(222);
+            margin-right: rem(12);
+            margin-bottom: rem(26);
+
+            &:last-child {
+                margin-right: 0;
+            }
         }
     }
 }

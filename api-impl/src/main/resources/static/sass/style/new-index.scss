@@ -2,7 +2,9 @@
 @import "../base/mixin";
 @import "../base/header";
 @import "../pages/office-list";
-//@import "../base/side-nav";
+@import "../base/side-nav";
+@import "../pages/banner-item";
+@import "../pages/hot-topic";
 
 
 .banner-index-box {
@@ -11,53 +13,6 @@
     .carousel-swiper {
         img {
             width: 100%;
-        }
-    }
-
-    .banner-nav {
-        display: -webkit-flex;
-        display: flex;
-        margin: rem(40) rem(-30) 0;
-        justify-content: space-between;
-
-        .banner-nav-item {
-            -webkit-flex: 1;
-            flex: 1;
-            margin-left: rem(30);
-            margin-right: rem(30);
-            text-align: center;
-
-            a {
-                display: block;
-            }
-
-            i {
-                display: inline-block;
-                width: rem(100);
-                height: rem(100);
-                -webkit-background-size: contain;
-                background-size: contain;
-
-                &.all-buildings {
-                    @include bg-image('/static/images/newindex/zf_icon_qblp');
-                }
-                &.featured-properties {
-                    @include bg-image('/static/images/newindex/zf_icon_zslp');
-                }
-                &.houses-open {
-                    @include bg-image('/static/images/newindex/zf_icon_jjkp');
-                }
-                &.houses-intelligent {
-                    @include bg-image('/static/images/newindex/zf_icon_znzf');
-                }
-            }
-
-            p {
-                margin-top: rem(17);
-                @include font-dpr(26);
-                color: #444;
-                white-space: nowrap;
-            }
         }
     }
 }
@@ -83,99 +38,6 @@
             height: rem(90);
             @include bg-image('/static/images/global/arrows_right_icon');
             background-position: right center;
-        }
-    }
-}
-
-.hot-topic {
-    padding: rem(30);
-
-    .column {
-        display: -webkit-flex;
-        display: flex;
-        margin: rem(-16) rem(-9);
-        justify-content: space-between;
-
-        .hot-topic-item {
-            position: relative;
-            -webkit-flex: 1;
-            flex: 1;
-            width: auto;
-            //height: rem(170);
-            margin: rem(16) rem(9);
-
-            .topic-item-content {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                padding: rem(20);
-                color: $baseWhite;
-                @include font-dpr(22);
-                background-color: rgba(69, 73, 95, 0.5);
-                @include box-sizing;
-                -webkit-border-radius: rem(6);
-                -moz-border-radius: rem(6);
-                border-radius: rem(6);
-
-                h5 {
-                    margin-bottom: rem(16);
-                    @include font-dpr(28);
-                }
-
-                h5, p {
-                    @include text-ellipses;
-                }
-            }
-
-            img {
-                width: 100%;
-            }
-        }
-    }
-}
-
-.bulletin-board {
-    position: relative;
-    padding: rem(23) rem(30);
-    height: rem(34);
-    line-height: rem(34);
-
-    .img {
-        position: absolute;
-        left: rem(30);
-        display: block;
-        width: rem(130);
-
-        img {
-            width: 100%;
-        }
-    }
-
-    .text-scroll {
-        position: relative;
-        height: rem(34);
-        margin-left: rem(150);
-        border-left: 1px solid $borderLineColor;
-        overflow: hidden;
-
-        ul {
-            transform: translateY(0);
-
-            li {
-                width: rem(520);
-                margin-left: rem(20);
-                height: rem(34);
-                line-height: rem(34);
-                color: #666;
-                @include font-dpr(24);
-                @include text-ellipses;
-            }
-        }
-
-        .animate {
-            -webkit-transition: all .3s ease-out;
         }
     }
 }
