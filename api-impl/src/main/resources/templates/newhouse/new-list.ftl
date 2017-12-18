@@ -5,6 +5,8 @@
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房列表</title>
 </head>
 <body>

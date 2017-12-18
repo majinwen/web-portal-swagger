@@ -26,6 +26,22 @@ public class NewHouseController {
     private PriceTrendService priceTrendService;
 
     /**
+     * 新房首页
+     * @return
+     */
+    @RequestMapping("/newhouseindex")
+    public String index(NewHouseQuery newHouseQuery, Model model) {
+         newHouseQuery.setSort(0);
+         newHouseQuery.setPageNum(1);
+         System.out.println("aaa");
+         newHouseQuery.setPageSize(4);
+         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
+         model.addAttribute("newbuilds",builds);
+
+         return "newhouse/new-index";
+    }
+
+    /**
      * 新房列表
      * @param newHouseQuery
      * @param model
@@ -56,8 +72,6 @@ public class NewHouseController {
         priceTrend.setPropertyType((short)1);
 
         Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
-
-
 
         List<String>dateList= DateUtil.oneYearList();
 
