@@ -8,9 +8,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class DateUtil {
 
@@ -1156,4 +1154,20 @@ public class DateUtil {
 			return false;
 		}
 	}
+
+	public  static List<String>oneYearList(){
+
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1);
+		ArrayList<String> dateList=new ArrayList<>();
+		for (int i = 0; i < 12; i++){
+			int currentMonth=cal.get(Calendar.MONTH);
+			int currentYear=cal.get(Calendar.YEAR);
+			dateList.add(currentYear+"年"+(currentMonth+1)+"月");
+			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
+		}
+		return  dateList;
+	}
+
+
 }

@@ -75,6 +75,51 @@ hr {
 .high-light-red {
   color: #fb3939 !important; }
 
+.pr {
+  position: relative !important; }
+
+.pt0 {
+  padding-top: 0 !important; }
+
+.pb0 {
+  padding-bottom: 0 !important; }
+
+.pl0 {
+  padding-left: 0 !important; }
+
+.pr0 {
+  padding-right: 0 !important; }
+
+.pa0 {
+  padding: 0 !important; }
+
+.mt0 {
+  margin-top: 0 !important; }
+
+.ml0 {
+  margin-left: 0 !important; }
+
+.mr0 {
+  margin-right: 0 !important; }
+
+.mb0 {
+  margin-bottom: 0 !important; }
+
+.ma0 {
+  margin: 0 !important; }
+
+.border-none {
+  border: none !important; }
+
+.border-bot-none {
+  border-bottom: none !important; }
+
+.border-top-none {
+  border-bottom: none !important; }
+
+.text-center {
+  text-align: center !important; }
+
 .module-bottom-fill {
   padding-bottom: 0.2133333333rem;
   background-color: #f2f2f2; }
@@ -357,34 +402,36 @@ hr {
         width: 0.6rem;
         height: 0.5333333333rem;
         margin-right: 0.1333333333rem;
-        vertical-align: bottom; }
-      .detail-contact-box .detail-contact-content a.contact-share {
+        vertical-align: bottom;
+        -webkit-background-size: contain;
+        background-size: contain; }
+      .detail-contact-box .detail-contact-content a.contact-share i {
         background-image: url("../images/global/contact_icon_share.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .detail-contact-box .detail-contact-content a.contact-share {
+          .detail-contact-box .detail-contact-content a.contact-share i {
             background-image: url("../images/global/contact_icon_share@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .detail-contact-box .detail-contact-content a.contact-share {
+          .detail-contact-box .detail-contact-content a.contact-share i {
             background-image: url("../images/global/contact_icon_share@3x.png"); } }
-      .detail-contact-box .detail-contact-content a.contact-collect {
+      .detail-contact-box .detail-contact-content a.contact-collect i {
         background-image: url("../images/global/contact_icon_sc.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .detail-contact-box .detail-contact-content a.contact-collect {
+          .detail-contact-box .detail-contact-content a.contact-collect i {
             background-image: url("../images/global/contact_icon_sc@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .detail-contact-box .detail-contact-content a.contact-collect {
+          .detail-contact-box .detail-contact-content a.contact-collect i {
             background-image: url("../images/global/contact_icon_sc@3x.png"); } }
-        .detail-contact-box .detail-contact-content a.contact-collect.current {
-          background-image: url("../images/global/contact_icon_sc_red.png");
-          background-repeat: no-repeat; }
-          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-            .detail-contact-box .detail-contact-content a.contact-collect.current {
-              background-image: url("../images/global/contact_icon_sc_red@2x.png"); } }
-          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-            .detail-contact-box .detail-contact-content a.contact-collect.current {
-              background-image: url("../images/global/contact_icon_sc_red@3x.png"); } }
+      .detail-contact-box .detail-contact-content a.contact-collect.current i {
+        background-image: url("../images/global/contact_icon_sc_red.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .detail-contact-box .detail-contact-content a.contact-collect.current i {
+            background-image: url("../images/global/contact_icon_sc_red@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .detail-contact-box .detail-contact-content a.contact-collect.current i {
+            background-image: url("../images/global/contact_icon_sc_red@3x.png"); } }
       .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
         width: 5.3333333333rem;
         height: 0.9066666667rem;

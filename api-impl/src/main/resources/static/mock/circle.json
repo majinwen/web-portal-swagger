@@ -1,1148 +1,1320 @@
-{
-  "circle": [
-    {
-      "districtName": "朝阳",
-      "districtId": 105035,
-      "children": [
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 53,
-          "circleName": "望京"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 54,
-          "circleName": "燕莎"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 55,
-          "circleName": "CBD"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 56,
-          "circleName": "潘家园"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 57,
-          "circleName": "奥林匹克"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 59,
-          "circleName": "朝外"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 83,
-          "circleName": "三元桥"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 86,
-          "circleName": "亮马桥"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 87,
-          "circleName": "三里屯"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 88,
-          "circleName": "十八里店"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 89,
-          "circleName": "双井"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 90,
-          "circleName": "团结湖"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 92,
-          "circleName": "国贸"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 93,
-          "circleName": "定福庄/管庄"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 94,
-          "circleName": "安贞/马甸"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 95,
-          "circleName": "百子湾"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 96,
-          "circleName": "北苑"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 97,
-          "circleName": "朝阳公园"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 98,
-          "circleName": "慈云寺/四惠"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 99,
-          "circleName": "大望路"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 138,
-          "circleName": "朝阳其他"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 139,
-          "circleName": "亚奥"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 140,
-          "circleName": "劲松/潘家园"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 141,
-          "circleName": "朝青"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 142,
-          "circleName": "对外经贸"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 143,
-          "circleName": "北工大"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 144,
-          "circleName": "首都机场"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 145,
-          "circleName": "惠新西街"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 146,
-          "circleName": "北沙滩"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 147,
-          "circleName": "十里堡"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 148,
-          "circleName": "亚运村小营"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 149,
-          "circleName": "东大桥"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 150,
-          "circleName": "华威"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 151,
-          "circleName": "太阳宫"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 152,
-          "circleName": "垡头"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 153,
-          "circleName": "芍药居"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 154,
-          "circleName": "亚运村"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 155,
-          "circleName": "欢乐谷"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 246,
-          "circleName": "四惠"
-        },
-        {
-          "districtName": "朝阳",
-          "districtId": 105035,
-          "circleId": 248,
-          "circleName": "酒仙桥"
-        }
-      ],
-      "shortName": "朝阳"
-    },
-    {
-      "districtName": "海淀",
-      "districtId": 105034,
-      "children": [
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 68,
-          "circleName": "学院路"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 71,
-          "circleName": "上地"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 72,
-          "circleName": "中关村"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 73,
-          "circleName": "万柳"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 74,
-          "circleName": "公主坟"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 77,
-          "circleName": "五棵松"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 100,
-          "circleName": "北太平庄"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 101,
-          "circleName": "紫竹桥"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 103,
-          "circleName": "远大路"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 104,
-          "circleName": "颐和园"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 105,
-          "circleName": "西山"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 106,
-          "circleName": "五道口"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 107,
-          "circleName": "蓟门桥"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 108,
-          "circleName": "航天桥"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 109,
-          "circleName": "定慧寺"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 110,
-          "circleName": "清河"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 156,
-          "circleName": "公主坟/万寿路"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 157,
-          "circleName": "海淀其他"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 158,
-          "circleName": "清华园"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 159,
-          "circleName": "农大"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 160,
-          "circleName": "苏州桥"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 161,
-          "circleName": "双榆树"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 162,
-          "circleName": "马连洼"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 163,
-          "circleName": "世纪城"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 164,
-          "circleName": "四季青"
-        },
-        {
-          "districtName": "海淀",
-          "districtId": 105034,
-          "circleId": 165,
-          "circleName": "颐和园北"
-        }
-      ],
-      "shortName": "海淀"
-    },
-    {
-      "districtName": "西城",
-      "districtId": 105037,
-      "children": [
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 66,
-          "circleName": "马连道"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 67,
-          "circleName": "西单"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 69,
-          "circleName": "金融街"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 70,
-          "circleName": "西直门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 116,
-          "circleName": "德胜门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 117,
-          "circleName": "地安门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 118,
-          "circleName": "复兴门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 119,
-          "circleName": "木樨地"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 124,
-          "circleName": "宣武门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 125,
-          "circleName": "广安门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 126,
-          "circleName": "右安门"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 175,
-          "circleName": "月坛"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 176,
-          "circleName": "展览路"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 177,
-          "circleName": "甘家口"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 178,
-          "circleName": "新街口"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 179,
-          "circleName": "车公庄"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 180,
-          "circleName": "广内大街"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 181,
-          "circleName": "菜市口"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 182,
-          "circleName": "广外大街"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 183,
-          "circleName": "虎坊桥"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 184,
-          "circleName": "陶然亭"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 185,
-          "circleName": "牛街"
-        },
-        {
-          "districtName": "西城",
-          "districtId": 105037,
-          "circleId": 186,
-          "circleName": "大栅栏"
-        }
-      ],
-      "shortName": "西城"
-    },
-    {
-      "districtName": "东城",
-      "districtId": 105036,
-      "children": [
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 58,
-          "circleName": "东直门商业圈"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 60,
-          "circleName": "安定门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 61,
-          "circleName": "王府井"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 62,
-          "circleName": "新世界"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 111,
-          "circleName": "雍和宫"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 112,
-          "circleName": "东四十条"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 113,
-          "circleName": "和平里"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 114,
-          "circleName": "建国门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 115,
-          "circleName": "朝阳门/金宝街"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 120,
-          "circleName": "崇文门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 121,
-          "circleName": "广渠门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 122,
-          "circleName": "前门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 123,
-          "circleName": "左安门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 166,
-          "circleName": "安定门/雍和宫"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 167,
-          "circleName": "东四"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 168,
-          "circleName": "灯市口"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 169,
-          "circleName": "金宝街"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 170,
-          "circleName": "朝阳门内"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 171,
-          "circleName": "天坛"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 172,
-          "circleName": "永定门"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 173,
-          "circleName": "东花市"
-        },
-        {
-          "districtName": "东城",
-          "districtId": 105036,
-          "circleId": 174,
-          "circleName": "广渠门内"
-        }
-      ],
-      "shortName": "东城"
-    },
-    {
-      "districtName": "丰台",
-      "districtId": 105040,
-      "children": [
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 63,
-          "circleName": "方庄"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 64,
-          "circleName": "木樨园"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 65,
-          "circleName": "玉泉营"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 75,
-          "circleName": "丽泽桥"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 127,
-          "circleName": "科技园区"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 128,
-          "circleName": "刘家窑"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 129,
-          "circleName": "马家堡"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 187,
-          "circleName": "六里桥/丽泽桥"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 188,
-          "circleName": "洋桥/木樨园"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 189,
-          "circleName": "岳各庄"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 190,
-          "circleName": "丰台其他"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 191,
-          "circleName": "六里桥"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 192,
-          "circleName": "成寿寺"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 193,
-          "circleName": "花乡"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 194,
-          "circleName": "卢沟桥"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 195,
-          "circleName": "丰台体育馆"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 196,
-          "circleName": "东高地"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 197,
-          "circleName": "西罗园"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 198,
-          "circleName": "菜户营"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 199,
-          "circleName": "草桥"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 200,
-          "circleName": "京石高速"
-        },
-        {
-          "districtName": "丰台",
-          "districtId": 105040,
-          "circleId": 201,
-          "circleName": "丽泽"
-        }
-      ],
-      "shortName": "丰台"
-    },
-    {
-      "districtName": "昌平",
-      "districtId": 105046,
-      "children": [
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 208,
-          "circleName": "昌平区"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 209,
-          "circleName": "百善镇"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 210,
-          "circleName": "龙泽"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 211,
-          "circleName": "霍营"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 212,
-          "circleName": "小汤山"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 213,
-          "circleName": "昌平县城"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 214,
-          "circleName": "沙河"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 215,
-          "circleName": "立水桥"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 216,
-          "circleName": "回龙观"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 217,
-          "circleName": "北七家"
-        },
-        {
-          "districtName": "昌平",
-          "districtId": 105046,
-          "circleId": 218,
-          "circleName": "八达岭高速"
-        }
-      ],
-      "shortName": "昌平"
-    },
-    {
-      "districtName": "大兴",
-      "districtId": 105043,
-      "children": [
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 82,
-          "circleName": "黄村西大街"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 130,
-          "circleName": "西红门"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 131,
-          "circleName": "亦庄"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 203,
-          "circleName": "大兴区"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 204,
-          "circleName": "黄村北"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 205,
-          "circleName": "旧宫东"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 206,
-          "circleName": "大兴"
-        },
-        {
-          "districtName": "大兴",
-          "districtId": 105043,
-          "circleId": 207,
-          "circleName": "黄村卫星城"
-        }
-      ],
-      "shortName": "大兴"
-    },
-    {
-      "districtName": "石景山",
-      "districtId": 105041,
-      "children": [
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 80,
-          "circleName": "西山"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 81,
-          "circleName": "苹果园"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 132,
-          "circleName": "八角"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 133,
-          "circleName": "古城"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 134,
-          "circleName": "玉泉路"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 135,
-          "circleName": "鲁谷/八宝山"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 136,
-          "circleName": "杨庄"
-        },
-        {
-          "districtName": "石景山",
-          "districtId": 105041,
-          "circleId": 202,
-          "circleName": "石景山区"
-        }
-      ],
-      "shortName": "石景山"
-    },
-    {
-      "districtName": "通州",
-      "districtId": 105044,
-      "children": [
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 137,
-          "circleName": "通州区"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 219,
-          "circleName": "西马庄"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 220,
-          "circleName": "乔庄"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 221,
-          "circleName": "新华大街"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 222,
-          "circleName": "八里桥市场"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 223,
-          "circleName": "北关"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 224,
-          "circleName": "武夷花园"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 225,
-          "circleName": "亦庄"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 226,
-          "circleName": "通州北苑"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 227,
-          "circleName": "潞苑南大街"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 228,
-          "circleName": "果园"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 229,
-          "circleName": "九棵树"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 230,
-          "circleName": "永顺"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 231,
-          "circleName": "梨园"
-        },
-        {
-          "districtName": "通州",
-          "districtId": 105044,
-          "circleId": 232,
-          "circleName": "马驹桥"
-        }
-      ],
-      "shortName": "通州"
-    },
-    {
-      "districtName": "顺义",
-      "districtId": 105045,
-      "children": [
-        {
-          "districtName": "顺义",
-          "districtId": 105045,
-          "circleId": 234,
-          "circleName": "顺义"
-        },
-        {
-          "districtName": "顺义",
-          "districtId": 105045,
-          "circleId": 243,
-          "circleName": "后沙峪"
-        },
-        {
-          "districtName": "顺义",
-          "districtId": 105045,
-          "circleId": 244,
-          "circleName": "马坡乡"
-        },
-        {
-          "districtName": "顺义",
-          "districtId": 105045,
-          "circleId": 245,
-          "circleName": "顺义城"
-        }
-      ],
-      "shortName": "顺义"
-    }
-  ]
-}
+[
+  {
+    "districtId": 105036,
+    "children": [
+      {
+        "circle": 1379,
+        "name": "永定门"
+      },
+      {
+        "circle": 1387,
+        "name": "东直门"
+      },
+      {
+        "circle": 1392,
+        "name": "朝阳门内"
+      },
+      {
+        "circle": 1395,
+        "name": "灯市口"
+      },
+      {
+        "circle": 1399,
+        "name": "东四十条"
+      },
+      {
+        "circle": 1401,
+        "name": "东花市"
+      },
+      {
+        "circle": 1402,
+        "name": "崇文门"
+      },
+      {
+        "circle": 1407,
+        "name": "王府井"
+      },
+      {
+        "circle": 1416,
+        "name": "交道口"
+      },
+      {
+        "circle": 1419,
+        "name": "和平里"
+      },
+      {
+        "circle": 1423,
+        "name": "广渠门内"
+      },
+      {
+        "circle": 1442,
+        "name": "天坛"
+      },
+      {
+        "circle": 1482,
+        "name": "龙潭湖"
+      },
+      {
+        "circle": 1495,
+        "name": "安定门"
+      },
+      {
+        "circle": 1525,
+        "name": "金宝街"
+      },
+      {
+        "circle": 1531,
+        "name": "前门"
+      },
+      {
+        "circle": 1534,
+        "name": "光明楼"
+      },
+      {
+        "circle": 1536,
+        "name": "东单"
+      },
+      {
+        "circle": 1553,
+        "name": "雍和宫"
+      },
+      {
+        "circle": 1593,
+        "name": "东四"
+      },
+      {
+        "circle": 1595,
+        "name": "北新桥"
+      }
+    ],
+    "name": "东城"
+  },
+  {
+    "districtId": 105035,
+    "children": [
+      {
+        "circle": 1380,
+        "name": "朝青"
+      },
+      {
+        "circle": 1381,
+        "name": "酒仙桥"
+      },
+      {
+        "circle": 1382,
+        "name": "垡头"
+      },
+      {
+        "circle": 1383,
+        "name": "芍药居"
+      },
+      {
+        "circle": 1384,
+        "name": "北苑"
+      },
+      {
+        "circle": 1385,
+        "name": "大望路"
+      },
+      {
+        "circle": 1386,
+        "name": "亚运村"
+      },
+      {
+        "circle": 1391,
+        "name": "百子湾"
+      },
+      {
+        "circle": 1396,
+        "name": "国贸"
+      },
+      {
+        "circle": 1398,
+        "name": "华威"
+      },
+      {
+        "circle": 1408,
+        "name": "豆各庄"
+      },
+      {
+        "circle": 1409,
+        "name": "管庄"
+      },
+      {
+        "circle": 1410,
+        "name": "东坝"
+      },
+      {
+        "circle": 1420,
+        "name": "朝阳公园"
+      },
+      {
+        "circle": 1425,
+        "name": "欢乐谷"
+      },
+      {
+        "circle": 1427,
+        "name": "健翔桥"
+      },
+      {
+        "circle": 1431,
+        "name": "潘家园"
+      },
+      {
+        "circle": 1434,
+        "name": "惠新西街"
+      },
+      {
+        "circle": 1435,
+        "name": "东八里庄"
+      },
+      {
+        "circle": 1443,
+        "name": "奥林匹克公园"
+      },
+      {
+        "circle": 1450,
+        "name": "双桥"
+      },
+      {
+        "circle": 1457,
+        "name": "四惠"
+      },
+      {
+        "circle": 1468,
+        "name": "十里堡"
+      },
+      {
+        "circle": 1477,
+        "name": "石佛营"
+      },
+      {
+        "circle": 1481,
+        "name": "高碑店"
+      },
+      {
+        "circle": 1483,
+        "name": "劲松"
+      },
+      {
+        "circle": 1494,
+        "name": "亚运村小营"
+      },
+      {
+        "circle": 1498,
+        "name": "双井"
+      },
+      {
+        "circle": 1511,
+        "name": "三里屯"
+      },
+      {
+        "circle": 1515,
+        "name": "安贞"
+      },
+      {
+        "circle": 1519,
+        "name": "太阳宫"
+      },
+      {
+        "circle": 1523,
+        "name": "西坝河"
+      },
+      {
+        "circle": 1527,
+        "name": "北沙滩"
+      },
+      {
+        "circle": 1538,
+        "name": "三元桥"
+      },
+      {
+        "circle": 1540,
+        "name": "工体"
+      },
+      {
+        "circle": 1541,
+        "name": "cbd"
+      },
+      {
+        "circle": 1543,
+        "name": "望京"
+      },
+      {
+        "circle": 1544,
+        "name": "定福庄"
+      },
+      {
+        "circle": 1546,
+        "name": "东大桥"
+      },
+      {
+        "circle": 1566,
+        "name": "甘露园"
+      },
+      {
+        "circle": 1569,
+        "name": "左家庄"
+      },
+      {
+        "circle": 1570,
+        "name": "建国门"
+      },
+      {
+        "circle": 1573,
+        "name": "十八里店"
+      },
+      {
+        "circle": 1582,
+        "name": "甜水园"
+      },
+      {
+        "circle": 1587,
+        "name": "朝阳门"
+      },
+      {
+        "circle": 1591,
+        "name": "红庙"
+      },
+      {
+        "circle": 1594,
+        "name": "国展"
+      },
+      {
+        "circle": 1597,
+        "name": "常营"
+      },
+      {
+        "circle": 1607,
+        "name": "燕莎"
+      },
+      {
+        "circle": 1608,
+        "name": "团结湖"
+      },
+      {
+        "circle": 1622,
+        "name": "北工大"
+      },
+      {
+        "circle": 1625,
+        "name": "来广营"
+      },
+      {
+        "circle": 1626,
+        "name": "广渠门"
+      },
+      {
+        "circle": 1655,
+        "name": "大山子"
+      },
+      {
+        "circle": 1657,
+        "name": "京沈高速"
+      }
+    ],
+    "name": "朝阳"
+  },
+  {
+    "districtId": 105040,
+    "children": [
+      {
+        "circle": 1388,
+        "name": "右安门"
+      },
+      {
+        "circle": 1389,
+        "name": "马家堡"
+      },
+      {
+        "circle": 1390,
+        "name": "西罗园"
+      },
+      {
+        "circle": 1393,
+        "name": "京石高速"
+      },
+      {
+        "circle": 1406,
+        "name": "玉泉营"
+      },
+      {
+        "circle": 1413,
+        "name": "角门"
+      },
+      {
+        "circle": 1417,
+        "name": "卢沟桥"
+      },
+      {
+        "circle": 1422,
+        "name": "方庄"
+      },
+      {
+        "circle": 1432,
+        "name": "大红门"
+      },
+      {
+        "circle": 1437,
+        "name": "草桥"
+      },
+      {
+        "circle": 1439,
+        "name": "新宫"
+      },
+      {
+        "circle": 1440,
+        "name": "宋家庄"
+      },
+      {
+        "circle": 1448,
+        "name": "六里桥"
+      },
+      {
+        "circle": 1453,
+        "name": "青塔"
+      },
+      {
+        "circle": 1454,
+        "name": "科技园区"
+      },
+      {
+        "circle": 1460,
+        "name": "洋桥"
+      },
+      {
+        "circle": 1464,
+        "name": "云岗"
+      },
+      {
+        "circle": 1469,
+        "name": "和义"
+      },
+      {
+        "circle": 1485,
+        "name": "菜户营"
+      },
+      {
+        "circle": 1487,
+        "name": "七里庄"
+      },
+      {
+        "circle": 1507,
+        "name": "丰台体育馆"
+      },
+      {
+        "circle": 1509,
+        "name": "赵公口"
+      },
+      {
+        "circle": 1512,
+        "name": "新发地"
+      },
+      {
+        "circle": 1520,
+        "name": "长辛店"
+      },
+      {
+        "circle": 1521,
+        "name": "左安门"
+      },
+      {
+        "circle": 1526,
+        "name": "丽泽桥"
+      },
+      {
+        "circle": 1528,
+        "name": "成寿寺"
+      },
+      {
+        "circle": 1539,
+        "name": "看丹桥"
+      },
+      {
+        "circle": 1554,
+        "name": "北大地"
+      },
+      {
+        "circle": 1567,
+        "name": "岳各庄"
+      },
+      {
+        "circle": 1577,
+        "name": "刘家窑"
+      },
+      {
+        "circle": 1588,
+        "name": "木樨园"
+      },
+      {
+        "circle": 1590,
+        "name": "花乡"
+      },
+      {
+        "circle": 1600,
+        "name": "蒲黄榆"
+      },
+      {
+        "circle": 1601,
+        "name": "丰台科学城"
+      },
+      {
+        "circle": 1613,
+        "name": "科丰桥"
+      },
+      {
+        "circle": 1620,
+        "name": "东高地"
+      }
+    ],
+    "name": "丰台"
+  },
+  {
+    "districtId": 105037,
+    "children": [
+      {
+        "circle": 1394,
+        "name": "金融街"
+      },
+      {
+        "circle": 1397,
+        "name": "三里河"
+      },
+      {
+        "circle": 1400,
+        "name": "右安门内"
+      },
+      {
+        "circle": 1404,
+        "name": "月坛"
+      },
+      {
+        "circle": 1405,
+        "name": "广安门"
+      },
+      {
+        "circle": 1414,
+        "name": "德胜门"
+      },
+      {
+        "circle": 1418,
+        "name": "西直门"
+      },
+      {
+        "circle": 1421,
+        "name": "官园"
+      },
+      {
+        "circle": 1426,
+        "name": "白云路"
+      },
+      {
+        "circle": 1433,
+        "name": "展览路"
+      },
+      {
+        "circle": 1441,
+        "name": "牛街"
+      },
+      {
+        "circle": 1445,
+        "name": "木樨地"
+      },
+      {
+        "circle": 1447,
+        "name": "西便门"
+      },
+      {
+        "circle": 1451,
+        "name": "宣武门"
+      },
+      {
+        "circle": 1455,
+        "name": "新街口"
+      },
+      {
+        "circle": 1459,
+        "name": "陶然亭"
+      },
+      {
+        "circle": 1463,
+        "name": "西单"
+      },
+      {
+        "circle": 1478,
+        "name": "白纸坊"
+      },
+      {
+        "circle": 1479,
+        "name": "马连道"
+      },
+      {
+        "circle": 1488,
+        "name": "复兴门"
+      },
+      {
+        "circle": 1499,
+        "name": "车公庄"
+      },
+      {
+        "circle": 1501,
+        "name": "六铺炕"
+      },
+      {
+        "circle": 1510,
+        "name": "阜成门"
+      },
+      {
+        "circle": 1514,
+        "name": "长椿街"
+      },
+      {
+        "circle": 1537,
+        "name": "天桥"
+      },
+      {
+        "circle": 1549,
+        "name": "虎坊桥"
+      },
+      {
+        "circle": 1550,
+        "name": "大栅栏"
+      },
+      {
+        "circle": 1562,
+        "name": "西四"
+      },
+      {
+        "circle": 1571,
+        "name": "什刹海"
+      },
+      {
+        "circle": 1576,
+        "name": "积水潭"
+      },
+      {
+        "circle": 1580,
+        "name": "天宁寺"
+      },
+      {
+        "circle": 1602,
+        "name": "和平门"
+      },
+      {
+        "circle": 1616,
+        "name": "鼓楼大街"
+      },
+      {
+        "circle": 1623,
+        "name": "地安门"
+      }
+    ],
+    "name": "西城"
+  },
+  {
+    "districtId": 105041,
+    "children": [
+      {
+        "circle": 1403,
+        "name": "鲁谷"
+      },
+      {
+        "circle": 1411,
+        "name": "八大处"
+      },
+      {
+        "circle": 1412,
+        "name": "杨庄"
+      },
+      {
+        "circle": 1415,
+        "name": "苹果园"
+      },
+      {
+        "circle": 1429,
+        "name": "八角"
+      },
+      {
+        "circle": 1436,
+        "name": "古城"
+      },
+      {
+        "circle": 1438,
+        "name": "模式口"
+      },
+      {
+        "circle": 1470,
+        "name": "老山"
+      },
+      {
+        "circle": 1504,
+        "name": "高井"
+      },
+      {
+        "circle": 1518,
+        "name": "金顶街"
+      },
+      {
+        "circle": 1529,
+        "name": "八宝山"
+      }
+    ],
+    "name": "石景山"
+  },
+  {
+    "districtId": 105046,
+    "children": [
+      {
+        "circle": 1424,
+        "name": "天通苑"
+      },
+      {
+        "circle": 1428,
+        "name": "北七家"
+      },
+      {
+        "circle": 1430,
+        "name": "回龙观"
+      },
+      {
+        "circle": 1452,
+        "name": "龙泽"
+      },
+      {
+        "circle": 1472,
+        "name": "昌平县城"
+      },
+      {
+        "circle": 1491,
+        "name": "立水桥"
+      },
+      {
+        "circle": 1492,
+        "name": "霍营"
+      },
+      {
+        "circle": 1496,
+        "name": "小汤山"
+      },
+      {
+        "circle": 1500,
+        "name": "沙河"
+      },
+      {
+        "circle": 1524,
+        "name": "百善镇"
+      },
+      {
+        "circle": 1560,
+        "name": "南口"
+      },
+      {
+        "circle": 1619,
+        "name": "阳坊"
+      },
+      {
+        "circle": 1630,
+        "name": "八达岭高速"
+      }
+    ],
+    "name": "昌平"
+  },
+  {
+    "districtId": 105043,
+    "children": [
+      {
+        "circle": 1444,
+        "name": "亦庄"
+      },
+      {
+        "circle": 1446,
+        "name": "黄村东"
+      },
+      {
+        "circle": 1449,
+        "name": "西红门"
+      },
+      {
+        "circle": 1475,
+        "name": "旧宫"
+      },
+      {
+        "circle": 1484,
+        "name": "生物医药基地"
+      },
+      {
+        "circle": 1486,
+        "name": "黄村南"
+      },
+      {
+        "circle": 1493,
+        "name": "黄村北"
+      },
+      {
+        "circle": 1502,
+        "name": "庞各庄"
+      }
+    ],
+    "name": "大兴"
+  },
+  {
+    "districtId": 105034,
+    "children": [
+      {
+        "circle": 1456,
+        "name": "玉泉路"
+      },
+      {
+        "circle": 1458,
+        "name": "双榆树"
+      },
+      {
+        "circle": 1461,
+        "name": "清河"
+      },
+      {
+        "circle": 1462,
+        "name": "五道口"
+      },
+      {
+        "circle": 1465,
+        "name": "西北旺"
+      },
+      {
+        "circle": 1467,
+        "name": "万柳"
+      },
+      {
+        "circle": 1473,
+        "name": "中关村"
+      },
+      {
+        "circle": 1474,
+        "name": "苏州桥"
+      },
+      {
+        "circle": 1476,
+        "name": "知春路"
+      },
+      {
+        "circle": 1480,
+        "name": "上地"
+      },
+      {
+        "circle": 1506,
+        "name": "万泉河"
+      },
+      {
+        "circle": 1513,
+        "name": "增光路"
+      },
+      {
+        "circle": 1516,
+        "name": "小西天"
+      },
+      {
+        "circle": 1517,
+        "name": "田村"
+      },
+      {
+        "circle": 1532,
+        "name": "西二旗"
+      },
+      {
+        "circle": 1533,
+        "name": "颐和园"
+      },
+      {
+        "circle": 1535,
+        "name": "五棵松"
+      },
+      {
+        "circle": 1547,
+        "name": "皂君庙"
+      },
+      {
+        "circle": 1548,
+        "name": "魏公村"
+      },
+      {
+        "circle": 1551,
+        "name": "牡丹园"
+      },
+      {
+        "circle": 1552,
+        "name": "定慧寺"
+      },
+      {
+        "circle": 1555,
+        "name": "西三旗"
+      },
+      {
+        "circle": 1556,
+        "name": "马连洼"
+      },
+      {
+        "circle": 1557,
+        "name": "厂洼"
+      },
+      {
+        "circle": 1558,
+        "name": "二里庄"
+      },
+      {
+        "circle": 1559,
+        "name": "学院路"
+      },
+      {
+        "circle": 1561,
+        "name": "军博"
+      },
+      {
+        "circle": 1563,
+        "name": "永定路"
+      },
+      {
+        "circle": 1565,
+        "name": "蓟门桥"
+      },
+      {
+        "circle": 1572,
+        "name": "北太平庄"
+      },
+      {
+        "circle": 1574,
+        "name": "四季青"
+      },
+      {
+        "circle": 1578,
+        "name": "航天桥"
+      },
+      {
+        "circle": 1579,
+        "name": "北京大学"
+      },
+      {
+        "circle": 1581,
+        "name": "温泉镇"
+      },
+      {
+        "circle": 1583,
+        "name": "车道沟"
+      },
+      {
+        "circle": 1584,
+        "name": "公主坟"
+      },
+      {
+        "circle": 1586,
+        "name": "西直门外"
+      },
+      {
+        "circle": 1589,
+        "name": "曙光"
+      },
+      {
+        "circle": 1592,
+        "name": "紫竹桥"
+      },
+      {
+        "circle": 1596,
+        "name": "农大"
+      },
+      {
+        "circle": 1598,
+        "name": "八里庄"
+      },
+      {
+        "circle": 1599,
+        "name": "西山"
+      },
+      {
+        "circle": 1606,
+        "name": "世纪城"
+      },
+      {
+        "circle": 1611,
+        "name": "香山"
+      },
+      {
+        "circle": 1612,
+        "name": "安宁庄"
+      },
+      {
+        "circle": 1617,
+        "name": "花园桥"
+      },
+      {
+        "circle": 1624,
+        "name": "圆明园"
+      },
+      {
+        "circle": 1627,
+        "name": "甘家口"
+      },
+      {
+        "circle": 1629,
+        "name": "马甸"
+      },
+      {
+        "circle": 1653,
+        "name": "万寿寺"
+      }
+    ],
+    "name": "海淀"
+  },
+  {
+    "districtId": 105044,
+    "children": [
+      {
+        "circle": 1466,
+        "name": "梨园"
+      },
+      {
+        "circle": 1471,
+        "name": "通州北苑"
+      },
+      {
+        "circle": 1489,
+        "name": "次渠"
+      },
+      {
+        "circle": 1490,
+        "name": "果园"
+      },
+      {
+        "circle": 1497,
+        "name": "北关"
+      },
+      {
+        "circle": 1503,
+        "name": "潞苑南大街"
+      },
+      {
+        "circle": 1505,
+        "name": "九棵树"
+      },
+      {
+        "circle": 1508,
+        "name": "马驹桥"
+      },
+      {
+        "circle": 1522,
+        "name": "武夷花园"
+      },
+      {
+        "circle": 1530,
+        "name": "运河大街"
+      },
+      {
+        "circle": 1542,
+        "name": "土桥"
+      },
+      {
+        "circle": 1545,
+        "name": "玉桥"
+      },
+      {
+        "circle": 1564,
+        "name": "新华大街"
+      },
+      {
+        "circle": 1568,
+        "name": "东关"
+      },
+      {
+        "circle": 1575,
+        "name": "焦王庄"
+      },
+      {
+        "circle": 1585,
+        "name": "乔庄"
+      },
+      {
+        "circle": 1609,
+        "name": "永顺"
+      }
+    ],
+    "name": "通州"
+  },
+  {
+    "districtId": 105045,
+    "children": [
+      {
+        "circle": 1603,
+        "name": "顺义城"
+      },
+      {
+        "circle": 1604,
+        "name": "马坡"
+      },
+      {
+        "circle": 1605,
+        "name": "后沙峪"
+      },
+      {
+        "circle": 1610,
+        "name": "杨镇"
+      },
+      {
+        "circle": 1614,
+        "name": "机场南楼"
+      },
+      {
+        "circle": 1615,
+        "name": "李桥"
+      },
+      {
+        "circle": 1618,
+        "name": "天竺"
+      },
+      {
+        "circle": 1621,
+        "name": "中央别墅区"
+      },
+      {
+        "circle": 1628,
+        "name": "马坡乡"
+      }
+    ],
+    "name": "顺义"
+  },
+  {
+    "districtId": 105042,
+    "children": [
+      {
+        "circle": 1631,
+        "name": "长阳"
+      },
+      {
+        "circle": 1632,
+        "name": "闫村"
+      },
+      {
+        "circle": 1633,
+        "name": "窦店"
+      },
+      {
+        "circle": 1634,
+        "name": "燕山"
+      },
+      {
+        "circle": 1635,
+        "name": "良乡"
+      },
+      {
+        "circle": 1636,
+        "name": "行宫"
+      },
+      {
+        "circle": 1637,
+        "name": "太平庄"
+      },
+      {
+        "circle": 1638,
+        "name": "房山城关"
+      },
+      {
+        "circle": 1639,
+        "name": "琉璃河"
+      },
+      {
+        "circle": 1642,
+        "name": "韩村河"
+      },
+      {
+        "circle": 1646,
+        "name": "周口店"
+      },
+      {
+        "circle": 1656,
+        "name": "房山"
+      }
+    ],
+    "name": "房山"
+  },
+  {
+    "districtId": 105047,
+    "children": [
+      {
+        "circle": 1640,
+        "name": "宾阳"
+      },
+      {
+        "circle": 1641,
+        "name": "沙河水库"
+      },
+      {
+        "circle": 1643,
+        "name": "鼓楼"
+      },
+      {
+        "circle": 1644,
+        "name": "少年宫"
+      },
+      {
+        "circle": 1645,
+        "name": "密云果园"
+      }
+    ],
+    "name": "密云"
+  },
+  {
+    "districtId": 105051,
+    "children": [
+      {
+        "circle": 1647,
+        "name": "城子"
+      },
+      {
+        "circle": 1648,
+        "name": "大峪"
+      },
+      {
+        "circle": 1649,
+        "name": "新城"
+      },
+      {
+        "circle": 1650,
+        "name": "双峪"
+      },
+      {
+        "circle": 1651,
+        "name": "河滩"
+      },
+      {
+        "circle": 1652,
+        "name": "东辛房"
+      }
+    ],
+    "name": "门头沟"
+  },
+  {
+    "districtId": 105048,
+    "children": [
+      {
+        "circle": 1654,
+        "name": "怀柔"
+      }
+    ],
+    "name": "怀柔"
+  },
+  {
+    "districtId": 105049,
+    "children": [
+      {
+        "circle": 1658,
+        "name": "延庆城区"
+      },
+      {
+        "circle": 1659,
+        "name": "八达岭"
+      },
+      {
+        "circle": 1660,
+        "name": "张山营"
+      }
+    ],
+    "name": "延庆"
+  },
+  {
+    "districtId": 105050,
+    "children": [
+      {
+        "circle": 1661,
+        "name": "平谷"
+      }
+    ],
+    "name": "平谷"
+  },
+  {
+    "districtId": 106013,
+    "children": [
+      {
+        "circle": 1662,
+        "name": "大厂"
+      },
+      {
+        "circle": 1663,
+        "name": "怀来"
+      },
+      {
+        "circle": 1664,
+        "name": "固安"
+      },
+      {
+        "circle": 1665,
+        "name": "香河"
+      },
+      {
+        "circle": 1666,
+        "name": "涿州"
+      },
+      {
+        "circle": 1670,
+        "name": "廊坊"
+      },
+      {
+        "circle": 1671,
+        "name": "永清"
+      },
+      {
+        "circle": 1672,
+        "name": "唐山"
+      },
+      {
+        "circle": 1673,
+        "name": "武清"
+      },
+      {
+        "circle": 1675,
+        "name": "霸州"
+      },
+      {
+        "circle": 1676,
+        "name": "其他"
+      },
+      {
+        "circle": 1677,
+        "name": "秦皇岛"
+      },
+      {
+        "circle": 1678,
+        "name": "天津"
+      },
+      {
+        "circle": 1679,
+        "name": "文安"
+      },
+      {
+        "circle": 1680,
+        "name": "宝坻"
+      },
+      {
+        "circle": 1681,
+        "name": "保定"
+      },
+      {
+        "circle": 1682,
+        "name": "张家口"
+      },
+      {
+        "circle": 1683,
+        "name": "沈阳"
+      },
+      {
+        "circle": 1684,
+        "name": "三河"
+      },
+      {
+        "circle": 1685,
+        "name": "蓟县"
+      },
+      {
+        "circle": 1686,
+        "name": "承德"
+      }
+    ],
+    "name": "北京周边"
+  }
+]

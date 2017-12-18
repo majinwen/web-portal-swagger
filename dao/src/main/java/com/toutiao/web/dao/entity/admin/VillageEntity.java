@@ -55,6 +55,7 @@ public class VillageEntity {
     private String sdr;  //供需关系
     private Integer level;  //楼盘级别
     private String villageCharacteristics;  //楼盘特色
+    private Integer version;  //版本
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源

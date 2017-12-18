@@ -13,26 +13,25 @@
         <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（0）</span>
     <#if room?exists>
     <#list room as roomnode>
-       <#assign roomid=roomnode['room']>
+        <#assign roomid=roomnode['room']>
         <span data-bid="${bid}" <#if tags==roomid>class="current"</#if> data-id="${roomid}">${roomid}居（${roomnode['count']}）</span>
     </#list>
     </#if>
     </div>
 </div>
-<div class="module-bottom-fill">
-       <#if layoutDetails?exists>
-           <#list layoutDetails as datail>
-             <section>
+<div class="module-bottom-fill"><#if layoutDetails?exists>
+    <#list layoutDetails as datail>
+        <section>
         <div class="house-type-header">
             <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['living_area']}㎡</p>
         </div>
         <div class="house-type-tag">
             <p>均价：<em class="high-light-red">${datail['reference_total_price']}万</em>/套</p>
             <div class="house-labelling normal">
-               <#if datail['layout_tag']?exists>
-                   <#list datail['layout_tag'] as tag>
-                       <span>${tag}</span>
-                   </#list></#if>
+                <#if datail['layout_tag']?exists>
+                <#list datail['layout_tag'] as tag>
+                    <span>${tag}</span>
+                </#list></#if>
             </div>
         </div>
         <div class="house-type-image">
@@ -40,7 +39,7 @@
                 <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
                 <span class="sale-state">
                     <#if datail['is_sale']==1>在售
-                     <#else>不在售
+                    <#else>不在售
                     </#if>
                 </span>
             </div>
@@ -53,9 +52,8 @@
             </div>
         </div>
     </section>
-           </#list>
-       </#if>
-</div>
+    </#list>
+</#if></div>
 <p class="bottom-tips">以上是全部户型</p>
 <section class="detail-contact-box" id="detailContactState">
     <div class="detail-contact-content">

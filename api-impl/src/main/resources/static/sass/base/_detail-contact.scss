@@ -27,16 +27,24 @@
                 height: rem(40);
                 margin-right: rem(10);
                 vertical-align: bottom;
+                -webkit-background-size: contain;
+                        background-size: contain;
             }
 
             &.contact-share {
-                @include bg-image('../images/global/contact_icon_share');
+                i {
+                    @include bg-image('../images/global/contact_icon_share');
+                }
             }
             &.contact-collect {
-                @include bg-image('../images/global/contact_icon_sc');
+                i {
+                    @include bg-image('../images/global/contact_icon_sc');
+                }
 
                 &.current {
-                    @include bg-image('../images/global/contact_icon_sc_red');
+                    i {
+                        @include bg-image('../images/global/contact_icon_sc_red');
+                    }
                 }
             }
 

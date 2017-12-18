@@ -14,19 +14,7 @@ public class SysBuildIndexMappingController {
 
     @RequestMapping("/buildPoltMapping")
     @ResponseBody
-    public void BuildIndexMapping(String index,String type){
-        try {
-            sysBuildIndexMappingService.buildPoltMapping(index,type);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @RequestMapping("/buildHouseMapping")
-    public void BuildHouseMapping(String index,String type){
-        try {
-            sysBuildIndexMappingService.buildHouseMapping(index,type);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void BuildIndexMapping() {
+        sysBuildIndexMappingService.buildPoltMapping();
     }
 }
