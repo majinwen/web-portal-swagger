@@ -32,4 +32,16 @@ public class PinyinServeContoller {
         return NashResult.build(pinyin);
 
     }
+
+    /**
+     * 新房首页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/index")
+    public String index(Model model){
+
+        model.addAttribute("user","asds");
+        return "index";
+    }
 }
