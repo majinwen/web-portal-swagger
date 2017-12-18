@@ -26,6 +26,21 @@ public class NewHouseController {
     private PriceTrendService priceTrendService;
 
     /**
+     * 新房首页
+     * @return
+     */
+    @RequestMapping("/newhouseindex")
+    public String index(NewHouseQuery newHouseQuery, Model model) {
+         newHouseQuery.setSort(0);
+         newHouseQuery.setPageNum(1);
+         System.out.println("aaa");
+         newHouseQuery.setPageSize(4);
+         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
+         model.addAttribute("newbuilds",builds);
+         return "newhouse/new-index";
+    }
+
+    /**
      * 新房列表
      * @param newHouseQuery
      * @param model
@@ -55,9 +70,7 @@ public class NewHouseController {
         priceTrend.setBuildId(buildingId);
         priceTrend.setPropertyType((short)1);
 
-        List<Map<String ,List<PriceTrend>>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
-
-
+        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
 
         List<String>dateList= DateUtil.oneYearList();
 
@@ -66,9 +79,7 @@ public class NewHouseController {
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
-
         model.addAttribute("tradeline",priceTrendList);
-       // model.addAttribute("ptCD2",ptCD2);
         model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
@@ -118,7 +129,7 @@ public class NewHouseController {
     public String getNewHouseDiscript(@RequestParam("id") Integer buildingId, Model model){
         List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         model.addAttribute("discript",discripts);
-        return "newhouse/new-parameter";
+        return "newhouse/new- parameter";
     }
 
     /**
