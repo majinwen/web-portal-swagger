@@ -112,7 +112,7 @@ public class NewHouseController {
     }
 
     /**
-     * 新房首页
+     * 大首页
      * @param model
      * @return
      */
@@ -120,7 +120,7 @@ public class NewHouseController {
     public String index(Model model){
 
         model.addAttribute("user","asds");
-        return "newhouse/new-index";
+        return "newhouse/index";
     }
 
 }

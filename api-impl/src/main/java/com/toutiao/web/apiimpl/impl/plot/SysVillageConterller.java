@@ -51,4 +51,28 @@ public class SysVillageConterller {
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
+
+    /**
+     * 小区详情页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/plotDetail")
+    public String detail(Model model){
+
+        model.addAttribute("user","asds");
+        return "plot/plot-detail";
+    }
+
+    /**
+     * 小区待售页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/plotSale")
+    public String sale(Model model){
+
+        model.addAttribute("user","asds");
+        return "plot/plot-sale";
+    }
 }

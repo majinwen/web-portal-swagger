@@ -36,6 +36,19 @@
                 -moz-border-radius: 0 rem(17) rem(17) 0;
                 border-radius: 0 rem(17) rem(17) 0;
             }
+
+            .bottom-text {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: rem(34);
+                line-height: rem(34);
+                text-align: center;
+                color: $baseWhite;
+                @include font-dpr(24);
+                background-color: rgba(0, 0, 0, 0.5);
+            }
         }
         .tilelist-content {
             width: rem(221);
