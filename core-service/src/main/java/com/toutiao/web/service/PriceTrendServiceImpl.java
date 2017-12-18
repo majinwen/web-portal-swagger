@@ -23,7 +23,7 @@ public class PriceTrendServiceImpl implements PriceTrendService {
     @Autowired
     private PriceTrendMapper priceTrendMapper;
 
-   public List<Map<String,List<PriceTrend>>> priceTrendList(PriceTrend priceTrend){
+   public Map<String,List<PriceTrend>> priceTrendList(PriceTrend priceTrend){
        List<PriceTrend> priceTrendList = priceTrendMapper.searchPriceTrendList(priceTrend);
 
        //
@@ -45,8 +45,8 @@ public class PriceTrendServiceImpl implements PriceTrendService {
       priceList.put("arealine",ptCD1);
       priceList.put("tradearealine;",ptCD2);
 
-      List<Map<String ,List<PriceTrend>>> list=new ArrayList<>();
-        list.add(priceList);
-      return list;
+ /*     List<Map<String ,List<PriceTrend>>> list=new ArrayList<>();
+        list.add(priceList);*/
+      return priceList;
    }
 }

@@ -55,7 +55,7 @@ public class NewHouseController {
         priceTrend.setBuildId(buildingId);
         priceTrend.setPropertyType((short)1);
 
-        List<Map<String ,List<PriceTrend>>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
+        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
 
 
 
