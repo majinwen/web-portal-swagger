@@ -18,12 +18,13 @@ public class ProjHouseInfoQuery {
 	
 	//房源朝向id（1，2，3，4）
 	private String houseOrientationId;
-	
-	
-	//房源总价 起始价
-	private Double beginPrice;
+
+	/*//房源总价 起始价
+	private Integer beginPrice;
 	//房源总价 结束价
-	private Double endPrice;
+	private Integer endPrice;*/
+
+	private String price;
 
 	//房源标签(满二)（1，2，3，4）
 	private String houseLabelId;
@@ -64,23 +65,17 @@ public class ProjHouseInfoQuery {
 	private String houseBusinessName;
 
 	//商圈id
-	private Integer houseBusinessId;
-	/**
-	 * id=23008613&name=朝阳
-	 * id=611100323&name=奥林匹克公园
-	 * id=648&name=2号线
-	 * id=20556&name=古城
-	 * 
-	 */
+	private String houseBusinessId;
+
 	//区域id
-	private Integer areaId;
+	private String areaId;
 	//区域
 	private String areaName;
 	// 地铁线id
-	private Integer[] subwayLineId;
+	private String subwayLineId;
 
 	// 地铁站id
-	private Integer[] subwayStationId;
+	private String subwayStationId;
 
 	/**
 	 * 页码
@@ -90,6 +85,14 @@ public class ProjHouseInfoQuery {
 	 * 每页数量
 	 */
 	private Integer pageSize;
+	/**
+	 * 经度
+	 */
+	private double lat;
+	/**
+	 * 维度
+	 */
+	private double lon;
 
 
 }

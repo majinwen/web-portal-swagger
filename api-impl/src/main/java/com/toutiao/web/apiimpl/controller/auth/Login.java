@@ -6,7 +6,7 @@ import com.toutiao.web.apiimpl.authentication.Permission;
 import com.toutiao.web.apiimpl.conf.interceptor.LoginAndPermissionConfig;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.SysUserEntity;
-import com.toutiao.web.service.RedisAndCookieService;
+import com.toutiao.web.service.rediscache.RedisAndCookieService;
 import com.toutiao.web.service.repository.admin.SysMenuService;
 import com.toutiao.web.service.repository.admin.SysRoleService;
 import com.toutiao.web.service.repository.admin.SysUserService;

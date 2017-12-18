@@ -33,23 +33,15 @@ public class PinyinServeContoller {
 
     }
 
-    // 二手房详情页
-    @RequestMapping("/changepinyin22")
-    public String getChangepinyin22(Model model){
+    /**
+     * 新房首页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/index")
+    public String index(Model model){
 
         model.addAttribute("user","asds");
-
-        return "/esf/esf-detail";
-
-    }
-
-    // 小区参数页
-    @RequestMapping("/changepinyin44")
-    public String getChangepinyin44(Model model){
-
-        model.addAttribute("user","asds");
-
-        return "/plot/plot-parameter";
-
+        return "index";
     }
 }

@@ -127,30 +127,28 @@
             <h3>户型信息</h3>
             <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
-        <ul class="tilelist">
-     <#if layout?exists>
-    <#list layout as item>
-        <li>
-            <a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
-                    <span class="sale-state">在售</span>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
-                    <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
-                    <div class="house-labelling normal small tilelist-tag">
-        <#assign layouttagitem = item['layout_tag']>
-        <#list layouttagitem as tagatem>
-            <span>${tagatem}</span>
-        </#list>
-                    </div>
-                </div>
-            </a>
-        </li>
-    </#list>
-    </#if>
-        </ul>
+        <ul class="tilelist"><#if layout?exists>
+            <#list layout as item>
+                <li>
+                    <a href="#">
+                        <div class="picture-box">
+                            <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                            <span class="sale-state">在售</span>
+                        </div>
+                        <div class="tilelist-content">
+                            <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
+                            <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
+                            <div class="house-labelling normal small tilelist-tag">
+                                <#assign layouttagitem = item['layout_tag']>
+                                <#list layouttagitem as tagatem>
+                                    <span>${tagatem}</span>
+                                </#list>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </#list>
+        </#if></ul>
     </section>
 </div>
 <div class="module-bottom-fill">

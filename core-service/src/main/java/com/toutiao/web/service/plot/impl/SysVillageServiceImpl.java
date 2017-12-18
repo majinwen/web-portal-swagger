@@ -1,6 +1,7 @@
 package com.toutiao.web.service.plot.impl;
 
 
+import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
@@ -11,8 +12,6 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -23,33 +22,35 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class SysVillageServiceImpl implements SysVillageService {
-    private String index = "village";
-    private String type = "polt";
-    private String childType = "house";
-    private Double distance = 3000.0;
+    @Value("${plot.index}")
+    private String index;
+    @Value("${plot.parent.type}")
+    private String parentType;
+    @Value("${plot.child.type}")
+    private String childType;
+//    @Value("${distance}")
+    private Double distance = 300000000.0;
+
+    @Autowired
+    private ESClientTools esClientTools;
 
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
         List houseList = new ArrayList();
         try {
-            Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                    .build();
-            TransportClient client = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
             srb.setPostFilter(location1);
@@ -70,8 +71,8 @@ public class SysVillageServiceImpl implements SysVillageService {
                 Map source = hit.getSource();
                 Class<VillageEntity> entityClass = VillageEntity.class;
                 VillageEntity instance = entityClass.newInstance();
-                System.out.println(instance);
                 BeanUtils.populate(instance, source);
+                System.out.println(instance);
                 houseList.add(instance);
 //            List<Double> location = (List<Double>) hit.getSource().get("location");
                 // 获取距离值，并保留两位小数点
@@ -82,25 +83,22 @@ public class SysVillageServiceImpl implements SysVillageService {
 //            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
 ////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
+            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return houseList;
+        return null;
     }
 
 
     @Override
     public List findVillageByConditions(VillageRequest villageRequest) {
         List houseList = new ArrayList();
-        Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
-                .build();
-        TransportClient client = null;
         try {
-            client = new PreBuiltTransportClient(settings)
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
+            TransportClient client = esClientTools.init();
 
             String key = null;
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //小区ID
             if (villageRequest.getId() != null) {
@@ -238,9 +236,10 @@ public class SysVillageServiceImpl implements SysVillageService {
                 houseList.add(instance);
 //            System.out.println(instance);
             }
+            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return houseList;
+        return null;
     }
 }
