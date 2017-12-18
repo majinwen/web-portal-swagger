@@ -37,7 +37,6 @@ public class NewHouseController {
          newHouseQuery.setPageSize(4);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
-
          return "newhouse/new-index";
     }
 
@@ -130,7 +129,7 @@ public class NewHouseController {
     public String getNewHouseDiscript(@RequestParam("id") Integer buildingId, Model model){
         List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         model.addAttribute("discript",discripts);
-        return "newhouse/new-parameter";
+        return "newhouse/new- parameter";
     }
 
     /**

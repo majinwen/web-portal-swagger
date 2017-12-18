@@ -201,9 +201,9 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
-        }else if(newHouseQuery.getSort()!=null&&newHouseQuery.getSort()==0){
+        }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==0){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.ASC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
@@ -211,7 +211,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setFrom((pageNum-1)*4)
                     .setSize(4)
                     .execute().actionGet();
-        } else {
+        }else {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                     .setQuery(booleanQueryBuilder).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
@@ -279,7 +279,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         maprep.put("build",buildings);
         maprep.put("layout",layouts);
         try {
-            if(locations.size() == 2){
+            if(locations.size() ==2){
                 List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
                 maprep.put("nearbybuild",nearBy);
             }
@@ -418,5 +418,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         return nearBy;
     }
+
+
 
 }
