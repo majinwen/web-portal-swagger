@@ -195,7 +195,7 @@ Zepto(function () {
         $('.category-parent').children().eq(0).siblings().removeClass('current');
         $.ajax({
             type: 'GET', // 请求方法
-            url: '/mock/circle.json', // 接口url地址
+            url: '/static/mock/circle.json', // 接口url地址
             dataType: 'json', // 预期服务器返回的数据类型
             success: function (response) { // 成功函数
                 callBack(response)
@@ -214,7 +214,7 @@ Zepto(function () {
     function getSubwayData(callBack) {
         $.ajax({
             type: 'GET',
-            url: '/mock/subway.json',
+            url: '/static/mock/subway.json',
             dataType: 'json',
             success: function (response) {
                 callBack(response)

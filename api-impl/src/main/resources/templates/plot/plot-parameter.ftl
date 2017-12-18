@@ -91,7 +91,6 @@
 </section>
 
 <script src="${staticurl}/js/zepto.min.js"></script>
-<!-------- photoswipe -------->
-<script src="${staticurl}/js/detail.js"></script>
+<script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
