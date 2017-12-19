@@ -1,18 +1,17 @@
+$borderLineColor: #ccc;
 $triangleBottomColor: #b1b1b1;
+$borderRadiusColor: #999;
 
 .none {
     display: none;
 }
-.body-scroll {
-    height: 100%;
-    overflow: hidden;
-}
+
 .category-box {
     position: relative;
     z-index: 1;
     height: rem(110);
     background-color: #f2f2f2;
-    
+
     > ul {
         position: relative;
         overflow: hidden;
@@ -20,7 +19,7 @@ $triangleBottomColor: #b1b1b1;
         background-color: $baseWhite;
         border-bottom: 1px solid $borderLineColor;
         z-index: 20;
-        
+
         li {
             -webkit-flex: 1;
             flex: 1;
@@ -29,7 +28,7 @@ $triangleBottomColor: #b1b1b1;
             line-height: rem(94);
             text-align: center;
             @include font-dpr(30);
-            
+
             span {
                 position: relative;
                 display: inline-block;
@@ -37,12 +36,12 @@ $triangleBottomColor: #b1b1b1;
                 padding-left: rem(10);
                 max-width: 100%;
                 @include box-sizing;
-                
+
                 em {
                     display: block;
                     @include text-ellipses;
                 }
-    
+
                 i {
                     position: absolute;
                     top: rem(44);
@@ -55,18 +54,18 @@ $triangleBottomColor: #b1b1b1;
                     border-top: rem(12) solid $triangleBottomColor;
                 }
             }
-    
+
             &.current {
                 span {
                     color: $baseRed;
-                    
+
                     i {
                         border-top: none;
                         border-bottom: rem(12) solid $baseRed;
                     }
                 }
             }
-            
+
             &.choose {
                 span {
                     color: $baseRed;
@@ -74,169 +73,178 @@ $triangleBottomColor: #b1b1b1;
             }
         }
     }
-    
+
     .category-cont {
-        position: relative;
-        
-        > div {
+        position: absolute;
+        top: rem(94);
+        width: 100%;
+        background-color: $baseWhite;
+        z-index: 1;
+
+
+        .filter-item {
             position: absolute;
-            top: rem(-675);
             width: 100%;
-            height: rem(675);
-            z-index: 1;
-            -webkit-box-shadow: 0 rem(4) rem(21) 0 rgba(56, 58, 64, 0.14);
-            box-shadow: 0 rem(4) rem(21) 0 rgba(56, 58, 64, 0.14);
-            -webkit-transition-duration: 0.4s;
-            transition-duration: 0.4s;
-            overflow: hidden;
-    
-            > ul {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                -webkit-transition-duration: 0.4s;
-                transition-duration: 0.4s;
-                
-                li {
-                    padding: 0 rem(30);
-                    line-height: rem(90);
-                    @include font-dpr(30);
-                    border-bottom: 1px solid $borderLineColor;
-                    
-                    &.current {
-                        color: $baseRed;
+            background-color: $baseWhite;
+            -webkit-box-shadow: 0 rem(-4) rem(21) 0 rgba(56, 58, 64, 0.14);
+            box-shadow: 0 rem(-4) rem(21) 0 rgba(56, 58, 64, 0.14);
+            -webkit-transition: transform .5s ease;
+            transition: transform .5s ease;
+            -webkit-transform: translate3d(0,-100%,0);
+            transform: translate3d(0,-100%,0);
+
+            .place-list, .price-list, .type-list {
+                display: -webkit-flex;
+                display: flex;
+                max-height: rem(676);
+
+                ul {
+                    -webkit-flex: 1;
+                    flex: 1;
+                    max-height: 100%;
+                    border-left: 1px solid $borderLineColor;
+                    overflow-y: auto;
+
+                    &:first-child {
+                        border-left: none;
                     }
                 }
-                
-                &.category-parent {
-                    position: absolute;
-                    background-color: #fff;
-                    z-index: 1;
-                }
-                &.category-child {
-                    position: absolute;
-                    z-index: 2;
-                    left: 100%;
-                    background-color: #fff;
-                    border-left: 1px solid $borderLineColor;
-                }
-                &.category-children {
-                    position: absolute;
-                    z-index: 3;
-                    left: 100%;
-                    background-color: #fff;
-                    border-left: 1px solid $borderLineColor;
-                }
             }
-    
-            .button-group {
+            .type-list {
+                padding-bottom: rem(141);
+                @include box-sizing;
+            }
+
+            .submit-wrapper {
                 position: absolute;
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                height: rem(140);
-                padding: rem(32) rem(30);
+                height: rem(141);
+                padding: rem(31) rem(30);
+                text-align: center;
                 background-color: $baseWhite;
-                z-index: 2;
+                -webkit-box-shadow: 0 rem(-4) rem(21) 0 rgba(56, 58, 64, 0.14);
+                box-shadow: 0 rem(-4) rem(21) 0 rgba(56, 58, 64, 0.14);
                 @include box-sizing;
-                -webkit-box-shadow: 0 rem(-4) rem(21) 0 rgba(56,58,64,0.14), 0 rem(4) rem(21) 0 rgba(56,58,64,0.14);
-                -moz-box-shadow: 0 rem(4) rem(21) 0 rgba(56,58,64,0.14), 0 rem(4) rem(21) 0 rgba(56,58,64,0.14);
-                box-shadow: 0 rem(4) rem(21) 0 rgba(56,58,64,0.14), 0 rem(4) rem(21) 0 rgba(56,58,64,0.14);
-        
-        
-                button {
-                    width: rem(325);
-                    height: rem(78);
-                    line-height: rem(78);
-                    color: $baseWhite;
+
+                .operation-button {
+                    display: inline-block;
+                    height: rem(80);
+                    line-height: rem(80);
                     @include font-dpr(30);
-                    background-color: #fff;
-                    -webkit-border-radius: rem(4);
-                    -moz-border-radius: rem(4);
-                    border-radius: rem(4);
-            
-                    &.reset {
-                        float: left;
-                        background-color: #747788;
+                    color: $baseWhite;
+                    -webkit-border-radius: rem(6);
+                    border-radius: rem(6);
+
+                    &.type-submit {
+                        width: rem(450);
+                        background-color: $baseRed;
                     }
-                    
-                    &.confrim {
+
+                    &.more-reset, &.more-submit {
+                        width: rem(325);
+                    }
+
+                    &.more-reset {
+                        float: left;
+                        background-color: $baseGray;
+                    }
+
+                    &.more-submit {
                         float: right;
                         background-color: $baseRed;
                     }
                 }
             }
-            
-            &.category-roll {
-                top: 0;
-            }
-            
-            &:nth-child(4) {
-                height: rem(1000);
-                
-                ul {
-                    padding-bottom: rem(140);
+
+            li {
+                position: relative;
+                padding-left: rem(30);
+                @include font-dpr(30);
+                line-height: rem(92);
+                border-bottom: 1px solid $borderLineColor;
+
+                i {
+                    position: absolute;
+                    top: 50%;
+                    right: rem(30);
+                    width: rem(30);
+                    height: rem(30);
+                    margin-top: rem(-15);
+                    border: rem(1) solid $baseRed;
                     @include box-sizing;
-                    
-                    li {
-                        padding-bottom: rem(10);
-                        height: auto;
-        
-                        h4 {
-                            display: block;
-                            line-height: 1.2;
-                            padding-top: rem(26);
-                            margin-bottom: rem(24);
-                            @include font-dpr(28);
-                            color: #666;
-                        }
-        
-                        .more-options {
-                            zoom: 1;
-                            margin: 0 rem(-9);
-            
-                            span {
-                                float: left;
-                                display: block;
-                                width: rem(156);
-                                height: rem(58);
-                                line-height: rem(58);
-                                margin: rem(10) rem(9);
-                                @include font-dpr(24);
-                                color: #3a3a3a;
-                                text-align: center;
-                                border: 1px solid $borderRadiusColor;
-                                -webkit-border-radius: rem(4);
-                                -moz-border-radius: rem(4);
-                                border-radius: rem(4);
-                
-                                &.current {
-                                    color: $baseRed;
-                                    border-color: $baseRed;
-                                }
-                            }
-            
-                            &:after {
-                                visibility: hidden;
-                                display: block;
-                                clear: both;
-                                content: '';
-                                height: 0;
-                                font-size: 0;
+                }
+
+                &.current {
+                    color: $baseRed;
+
+                    i {
+                        @include bg-image('../images/global/list_pop_rb_red');
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                    }
+                }
+            }
+
+            .more-list {
+                padding-bottom: rem(141);
+                max-height: rem(1000);
+                overflow-y: auto;
+                @include box-sizing;
+
+                dl {
+                    display: -webkit-flex;
+                    display: flex;
+                    flex-wrap: wrap;
+                    padding: rem(20) rem(30);
+                    border-bottom: 1px solid $borderLineColor;
+
+                    dt {
+                        margin-bottom: rem(20);
+                        width: 100%;
+                        @include font-dpr(28);
+                        color: #666;
+                    }
+
+                    dd {
+                        display: -webkit-flex;
+                        display: flex;
+                        flex-wrap: wrap;
+                        margin-left: rem(-11);
+                        margin-right: rem(-11);
+
+                        span {
+                            width: rem(155);
+                            height: rem(58);
+                            line-height: rem(56);
+                            text-align: center;
+                            margin: rem(11);
+                            border: rem(1) solid $borderLineColor;
+                            -webkit-border-radius: rem(6);
+                            border-radius: rem(6);
+                            @include box-sizing;
+
+                            &.current {
+                                color: $baseRed;
+                                border-color: $baseRed;
                             }
                         }
                     }
                 }
-                
-                
+            }
+
+            &.active {
+                -webkit-transform: translate3d(0,0,0);
+                transform: translate3d(0,0,0);
+                z-index: 99;
             }
         }
+
     }
 }
 .global-mark {
-    
+
     &:after {
         content: '';
         position: fixed;
