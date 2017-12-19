@@ -25,6 +25,7 @@ import java.util.*;
 
 public class newHouseMapping {
 
+
     protected static void buildIndexMapping() throws Exception {
 
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
