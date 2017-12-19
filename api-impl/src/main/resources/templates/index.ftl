@@ -11,9 +11,9 @@
 <body>
 <header class="gradient">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
-    <div class="search-box">
+    <div class="search-box" ">
         <i class="icon"></i>
-        <input type="text" placeholder="中骏·西山天璟">
+        <input  type="text"onclick="searchNewHouse()" placeholder="中骏·西山天璟">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -178,7 +178,60 @@
         <h3>小区推荐</h3>
     </div>
     <ul>
+<#if villageList?exists>
+    <#list villageList as map>
+        <#if map_index==3>
+            <li><a class="list-item new new-ad-item" href="#">
+                <div class="list-item-cont-ad">
+                    <h3 class="cont-block-1">新龙城</h3>
+                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                    <p class="cont-block-2">2008年建成</p>
+                </div>
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    </div>
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    </div>
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    </div>
+                </div>
+                <div class="pr">
+                    <div class="cont-block-4 house-labelling gray middle">
+                        <span>复式</span>
+                        <span>五证齐全</span>
+                        <span>花园洋房</span>
+                    </div>
+                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
+                </div>
+            </a></li>
+        </#if>
         <li><a class="list-item" href="">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                </div>
+                <div class="list-item-cont">
+                    <input type="hidden" value="${map['id']}">
+                    <h3 class="cont-block-1">${map['rc']}</h3>
+                    <p class="cont-block-2">2008年建成</p>
+                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                    <div class="cont-block-4 house-labelling gray middle">
+                        <#list map['label'] as lable>
+                            <span>${lable}</span>
+                        </#list>
+                    </div>
+                    <div class="cont-block-price plot">
+                        <em>${map['avgPrice']}元/㎡</em>
+                    </div>
+                </div>
+            </div>
+        </a></li>
+    </#list>
+    </#if>
+       <#-- <li><a class="list-item" href="">
             <div class="clear">
                 <div class="list-item-img-box">
                     <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
@@ -240,54 +293,9 @@
                     </div>
                 </div>
             </div>
-        </a></li>
-        <li><a class="list-item new new-ad-item" href="#">
-            <div class="list-item-cont-ad">
-                <h3 class="cont-block-1">新龙城</h3>
-                <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                <p class="cont-block-2">2008年建成</p>
-            </div>
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-            </div>
-            <div class="pr">
-                <div class="cont-block-4 house-labelling gray middle">
-                    <span>复式</span>
-                    <span>五证齐全</span>
-                    <span>花园洋房</span>
-                </div>
-                <p class="cont-block-2 high-light-red">68000元/㎡</p>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
+        </a></li>-->
+
+
     </ul>
 </section>
 <#-- 个人中心 侧栏菜单 -->
@@ -317,5 +325,13 @@
 <script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<!-------- photoswipe -------->
+<script src="${staticurl}/js/photoswipe.min.js"></script>
+<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 </body>
 </html>
+<script type="text/javascript" >
+            function searchNewHouse() {
+                alert("bb")
+            }
+</script>
