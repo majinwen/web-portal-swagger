@@ -12,7 +12,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" placeholder="中骏·西山天璟">
+        <input type="text" class="searchesf-foce" placeholder="中骏·西山天璟">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -216,5 +216,11 @@
 <script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+    $('.searchesf-foce').on('click',function () {
+        alert("b")
+        location.href="/queryBySearchBox?text=东城"
+    });
+</script>
 </body>
 </html>
