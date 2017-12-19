@@ -7,11 +7,14 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 @Component
 @Data
@@ -22,13 +25,13 @@ public class ESClientTools {
     @Value("${es.cluster.name}")
     private String esClusterName = "elasticsearch";//集群名
     @Value("${es.server.ips}")
-    private String esServerIps = "47.104.96.88:9300:http";//集群服务IP集合
+    private String esServerIps = "47.104.96.88:9300";//集群服务IP集合
 
-    private volatile RestHighLevelClient client;
+    private volatile TransportClient client;
 
     Settings settings = Settings.builder().put("cluster.name", esClusterName).build();
 
-    public RestHighLevelClient init(){
+    public TransportClient init(){
 
         if(client == null){
             synchronized (TransportClient.class){}
@@ -37,15 +40,14 @@ public class ESClientTools {
                     String[] addresses = esServerIps.split(",");
                     for (String address : addresses) {
                         String[] hostAndPort = address.split(":");
-                        client = new RestHighLevelClient(
-                                RestClient.builder(
-                                        new HttpHost(hostAndPort[0], Integer.valueOf(hostAndPort[1]), hostAndPort[2])));
+                        client =  new PreBuiltTransportClient(settings)
+                                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(hostAndPort[0]), Integer.valueOf(hostAndPort[1])));
                     }
                 } catch (Exception e) {
                     if (client != null) {
                         try {
                             client.close();
-                        } catch (IOException e1) {
+                        } catch (Exception e1) {
                             e1.printStackTrace();
                         }
                     }
@@ -54,13 +56,5 @@ public class ESClientTools {
         }
         return client;
     }
-
-    /**
-     * 创建索引
-     * @param indexName
-     * @param shards
-     * @param replicas
-     * @return
-     */
 
 }
