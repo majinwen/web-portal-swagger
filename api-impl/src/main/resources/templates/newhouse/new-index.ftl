@@ -59,7 +59,7 @@
     <section>
         <div class="index-module-header">
             <h3>热门主题</h3>
-            <a href="#" class="more-arrows"><i class="arrows-right"></i></a>
+            <#--<a href="#" class="more-arrows">&lt;#&ndash;<i class="arrows-right"></i>&ndash;&gt;</a>-->
         </div>
         <div class="hot-topic">
             <div class="column">
@@ -112,6 +112,32 @@
     <ul><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>
     <#list builds as map>
+    <#if map_index==2>
+        <li><a class="list-item new" href="#">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                </div>
+                <div class="list-item-cont">
+                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
+                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
+                    <p class="cont-block-3">东城/88㎡—526㎡</p>
+                    <div class="cont-block-4 house-labelling gray middle">
+                        <span>复式</span>
+                        <span>五证齐全</span>
+                        <span>花园洋房</span>
+                    </div>
+                    <div class="cont-block-sale">
+                        <em>在售</em>
+                    </div>
+                </div>
+            </div>
+            <div class="new-active">
+                <i class="icon"></i><em>活动：</em>
+                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
+            </div>
+        </a></li>
+    </#if>
         <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
             <div class="clear">
                 <div class="list-item-img-box">
@@ -146,30 +172,7 @@
         </a></li>
     </#list>
     </#if>
-        <li><a class="list-item new" href="#">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
+
     </ul>
 </section>
 <div class="new-index-pull-down">
