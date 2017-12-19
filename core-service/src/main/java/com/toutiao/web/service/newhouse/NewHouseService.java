@@ -44,4 +44,11 @@ public interface NewHouseService {
      */
     List<Map<String,Object>> getNewHouseDiscript(Integer id);
 
+    /**
+     * 新房搜索找房
+     *
+     *7u
+     *  */
+    public List searchNewHouse(String text);
+
 }

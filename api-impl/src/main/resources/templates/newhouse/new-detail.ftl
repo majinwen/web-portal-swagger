@@ -15,7 +15,7 @@
         <ul class="swiper-wrapper" id="house-pic-container">
             <#assign imglist = build['building_imgs']>
             <#list imglist as item>
-            <li onclick="initphoto(this,0)" class="swiper-slide">
+            <li onclick="initphoto(this,${item_index})" class="swiper-slide">
                 <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
             </#list>
@@ -220,7 +220,7 @@
 
         // 指定图表的配置项和数据
 
-         var myChartbar = echarts.init(document.getElementById('mainbar'));
+   /*      var myChartbar = echarts.init(document.getElementById('mainbar'));
          option2 = {
          title : {
              text: '某地区蒸发量和降水量',
@@ -291,7 +291,7 @@
              }
          ]
      };
-         myChartbar.setOption(option2);
+         myChartbar.setOption(option2);*/
 
         var myChartline = echarts.init(document.getElementById('main'));
          option = {
@@ -424,4 +424,10 @@
             ]
         };
         myChartline.setOption(option);
+
+  //地图尺寸适配
+     window.addEventListener("resize", function () {
+         myChartline.resize();
+
+     });
 </script>
