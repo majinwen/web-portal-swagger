@@ -96,6 +96,25 @@
                     </dd>
                 </dl>
                 <dl>
+                    <dt data-type="elevatorFlag">楼龄</dt>
+                    <dd>
+                        <span data-info="1">10年</span>
+                        <span data-info="2">20年</span>
+                        <span data-info="3">30年</span>
+                        <span data-info="4">40年</span>
+                        <span data-info="5">50年</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="elevatorFlag">权属</dt>
+                    <dd>
+                        <span data-info="1">公家</span>
+                        <span data-info="2">中介</span>
+                        <span data-info="3">个人</span>
+                        <span data-info="4">其他</span>
+                    </dd>
+                </dl>
+                <dl>
                     <dt data-type="buildingType">建筑类型</dt>
                     <dd>
                         <span data-info="1">板楼</span>
@@ -134,6 +153,22 @@
                         <span data-info="3">精装修</span>
                         <span data-info="4">豪华装修</span>
                         <span data-info="5">其他</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="deliverStyle">朝向</dt>
+                    <dd>
+                        <span data-info="1">东</span>
+                        <span data-info="2">西</span>
+                        <span data-info="3">南</span>
+                        <span data-info="4">北</span>
+                        <span data-info="5">东南</span>
+                        <span data-info="6">西南</span>
+                        <span data-info="7">东北</span>
+                        <span data-info="8">西北</span>
+                        <span data-info="9">东西</span>
+                        <span data-info="10">南北</span>
+                        <span data-info="11">其他</span>
                     </dd>
                 </dl>
                 <div class="submit-wrapper">
