@@ -424,4 +424,10 @@
             ]
         };
         myChartline.setOption(option);
+
+  //地图尺寸适配
+     window.addEventListener("resize", function () {
+         myChartline.resize();
+
+     });
 </script>
