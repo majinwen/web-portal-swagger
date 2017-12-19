@@ -240,6 +240,6 @@ public class SysVillageServiceImpl implements SysVillageService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return houseList;
     }
 }

@@ -87,6 +87,8 @@ public class NewHouseServiceImpl implements NewHouseService{
             keys = keys+","+newHouseQuery.getSubwayStationId().toString();
         }
 
+
+
 //        //地铁
 //        String keys = "";
 //        if (newHouseQuery.getNearbysubway()!=null&&newHouseQuery.getNearbysubway()!=""){

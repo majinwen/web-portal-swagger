@@ -45,7 +45,7 @@ public class PinyinServeContoller {
     }
 
     /**
-     * 新房首页
+     * 大首页
      * @param model
      * @return
      */
