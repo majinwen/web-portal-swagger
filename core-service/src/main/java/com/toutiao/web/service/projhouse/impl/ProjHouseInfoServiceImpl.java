@@ -1,5 +1,6 @@
 package com.toutiao.web.service.projhouse.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -7,11 +8,17 @@ import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
+import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -25,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
@@ -40,12 +46,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String projhouseType = "b";//索引类*/
 
     /**
-     *
      * 功能描述：通过小区的经度纬度查找房源信息
-     * @author zhw
-     * @date 2017/12/15 11:50
+     *
      * @param [lat, lon]
      * @return java.util.Map<java.lang.String,java.lang.Object>
+     * @author zhw
+     * @date 2017/12/15 11:50
      */
     @Override
     public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
@@ -88,12 +94,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     }
 
     /**
-     *
      * 功能描述：随机获取数据并且根据房源级别排序
-     * @author zhw
-     * @date 2017/12/15 11:07
+     *
      * @param [projHouseInfoRequest]
      * @return java.util.List
+     * @author zhw
+     * @date 2017/12/15 11:07
      */
     @Override
     public List queryProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
@@ -101,7 +107,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             TransportClient client = esClientTools.init();
 
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            SearchResponse searchresponse=null;
+            SearchResponse searchresponse = null;
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
         /*//参数都为null,则查询所有数据
@@ -284,7 +290,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
                 ProjHouseInfo instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
-                System.out.println(instance);
                 instance.setKey(key);
                 houseList.add(instance);
             }
@@ -300,12 +305,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     }
 
     /**
-     *
      * 功能描述：通过二手房id查找房源信息
-     * @author zhw
-     * @date 2017/12/15 11:50
+     *
      * @param [houseId]
      * @return java.util.Map<java.lang.String,java.lang.Object>
+     * @author zhw
+     * @date 2017/12/15 11:50
      */
     @Override
     public Map<String, Object> queryByHouseId(Integer houseId) {
@@ -345,35 +350,77 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         }
         return null;
     }
+
     /**
-     *
      * 功能描述：通过输入的搜索框信息查询数据
-     * @author zhw
-     * @date 2017/12/15 15:07
+     *
      * @param [text]
      * @return java.util.List
+     * @author zhw
+     * @date 2017/12/15 15:07
      */
     @Override
     public List queryBySearchBox(String text) {
         try {
+            QueryBuilder queryBuilder = null;
             TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            //声明符合查询方法
-            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                boolQueryBuilder.should(QueryBuilders.prefixQuery("areaName",text))//区域
-                                .should(QueryBuilders.prefixQuery("houseBusinessName",text))//商圈
-                                .should(QueryBuilders.prefixQuery("housePlotName",text));//小区名
-            booleanQueryBuilder.must(boolQueryBuilder);
-
-            srb.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            AnalyzeResponse response = esClientTools.init().admin().indices()
+                    .prepareAnalyze(text)//内容
+                    .setAnalyzer("ik_smart")//指定分词器
+                    //.setTokenizer("standard")
+                    .execute().actionGet();//执行
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+            BoolQueryBuilder ww = QueryBuilders.boolQuery();
+            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                queryBuilder = QueryBuilders.boolQuery()
+                        .should(QueryBuilders.fuzzyQuery("areaName", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("houseBusinessName", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("housePlotName", analyzeToken.getTerm()));
+                ww.should(queryBuilder);
+            }
+            SearchResponse searchResponse = client.prepareSearch("house123")
+                    .setTypes("house1234")
+                    .setQuery(ww)
+                   /* .addSort("houseRank", SortOrder.DESC)*/
+                    .setFrom(0)
+                    .setSize(10)
+                    .execute().actionGet();
+            List houseList = new ArrayList();
+            for (SearchHit searchHit : searchResponse.getHits().getHits()) {
+                Map<String, Object> buildings = searchHit.getSource();
+                Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
+                ProjHouseInfo instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                houseList.add(instance);
+            }
+            return houseList;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
+    }
+    /**
+     *
+     * 功能描述：往es中保存数据
+     * @author zhw
+     * @date 2017/12/16 11:10
+     * @param [projHouseInfo]
+     * @return boolean
+     */
+    @Override
+    public boolean saveProjHouseInfo(ProjHouseInfo projHouseInfo) {
+        TransportClient client = esClientTools.init();
+        boolean flag = true;
+        String json = JSONObject.toJSONString(projHouseInfo);
+        BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
+        IndexRequest indexRequest = new IndexRequest(projhouseIndex, projhouseType, String.valueOf(projHouseInfo.getHouseId()))
+                .version(projHouseInfo.getVersion()).versionType(VersionType.EXTERNAL).source(json);
+        bulkRequestBuilder.add(indexRequest);
+        BulkResponse response = bulkRequestBuilder.execute().actionGet();
+        if (response.hasFailures()) {
+            flag = false;
+        }
+        return flag;
     }
 
 
