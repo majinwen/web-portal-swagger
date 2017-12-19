@@ -154,7 +154,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
 
         int pageNum = 1;
-        int pageSize = 10;
+
         if(newHouseQuery.getPageNum()!=null && newHouseQuery.getPageNum()>1){
             pageNum = newHouseQuery.getPageNum();
         }
@@ -168,8 +168,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==2){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
@@ -178,8 +178,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null&&newHouseQuery.getSort()==3){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
@@ -188,8 +188,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==4){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
@@ -198,28 +198,28 @@ public class NewHouseServiceImpl implements NewHouseService{
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==0){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.DESC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*4)
-                    .setSize(4)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }
         SearchHits hits = searchresponse.getHits();

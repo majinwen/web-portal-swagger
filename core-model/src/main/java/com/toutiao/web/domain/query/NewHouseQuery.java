@@ -103,6 +103,6 @@ public class NewHouseQuery {
     /**
      * 每页数量
      */
-    private Integer pageSize;
+    private Integer pageSize=10;
 
 }
