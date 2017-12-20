@@ -160,8 +160,12 @@
                         </div>
                     </#if>
                     <div class="list-item-cont">
+                        <#if plot['rc']?exists>
                         <h3 class="cont-block-1">${plot['rc']}</h3>
+                        </#if>
+                        <#if plot['abbreviatedAge']?exists>
                         <p class="cont-block-2">${plot['abbreviatedAge']}</p>
+                        </#if>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
@@ -171,10 +175,14 @@
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                                 </#if>
                             <#else>
+                            <#if plot['tradingArea']?exists>
                                 <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
+                            </#if>
                         <#else>
+                        <#if plot['tradingArea']?exists>
                             <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                        </#if>
                         </#if>
                         <div class="cont-block-4">
                             <#assign item =  plot['label']>

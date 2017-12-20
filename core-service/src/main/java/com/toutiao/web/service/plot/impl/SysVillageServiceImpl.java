@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,20 +74,18 @@ public class SysVillageServiceImpl implements SysVillageService {
                 VillageEntity instance = entityClass.newInstance();
                 BeanUtils.populate(instance, source);
                 houseList.add(instance);
-//            List<Double> location = (List<Double>) hit.getSource().get("location");
-                // 获取距离值，并保留两位小数点
-//            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-//            Map<String, Object> hitMap = hit.getSource();
-//            // 在创建MAPPING的时候，属性名的不可为geoDistance。
-//            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-//            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
-////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+//                 获取距离值，并保留两位小数点
+            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+            Map<String, Object> hitMap = hit.getSource();
+            // 在创建MAPPING的时候，属性名的不可为geoDistance。
+            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
+            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+            System.out.println( "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
-            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return houseList;
     }
 
 
@@ -107,11 +106,6 @@ public class SysVillageServiceImpl implements SysVillageService {
             //区域编号
             if (villageRequest.getAreaId() != null) {
                 BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
-                srb.setQuery(queryBuilder);
-            }
-            //区域地名编号
-            if (StringUtils.isNotBlank(villageRequest.getAreaNameId())) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
                 srb.setQuery(queryBuilder);
             }
             //商圈编号
@@ -235,7 +229,6 @@ public class SysVillageServiceImpl implements SysVillageService {
                 houseList.add(instance);
 //            System.out.println(instance);
             }
-            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }

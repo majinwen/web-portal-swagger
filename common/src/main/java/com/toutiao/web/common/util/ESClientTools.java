@@ -32,7 +32,7 @@ public class ESClientTools {
 
 
         if(client == null){
-            synchronized (TransportClient.class){}
+//            synchronized (TransportClient.class){}
             if (client == null){
                 try {
                     String[] addresses = esServerIps.split(",");

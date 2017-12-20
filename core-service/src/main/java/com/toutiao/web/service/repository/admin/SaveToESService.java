@@ -1,11 +1,11 @@
 package com.toutiao.web.service.repository.admin;
 
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
-import com.toutiao.web.dao.entity.admin.VillageEntity;
+import com.toutiao.web.dao.entity.admin.VillageEntityES;
 
 
 public interface SaveToESService {
-     Boolean saveParent( VillageEntity village);
+     void saveParent(VillageEntityES village);
 
-    Boolean saveChild(ProjHouseInfo projHouseInfo1);
+    void saveChild(ProjHouseInfo projHouseInfo1);
 }

@@ -11,12 +11,10 @@ public class VillageRequest {
     private String[] photo;  //小区照片
     private String areaId;  //区域编号
     private String area;  //区域
-    private String areaNameId;  //区域地名编号
-    private String areaName;  //区域地名
     private String tradingAreaId;  //商圈编号
     private String tradingArea;  //商圈
     private String address;  //地址
-    private Double[] location; //坐标
+    private String location; //坐标
     private String[] metroStationId;  //地铁站编号
     private String[] metroStation;  //地铁站
     private String searchMetroStationId;  //搜索地铁站编号
@@ -53,7 +51,6 @@ public class VillageRequest {
     private String[] architectureTypeId;  //建筑类型编号
     private String[] architectureType;  //建筑类型
     private String buildingStructure;  //建筑结构
-    private String too;  //业态
     private String residentialType;  //住宅类型
     private String heatingMode;  //供暖方式
     private String[] searchHeatingMode;  //查询供暖方式
@@ -63,6 +60,8 @@ public class VillageRequest {
     private Integer size;  //每页显示条数
     private String villageCharacteristics;  //楼盘特色
     private String[] searchVillageCharacteristics;  //楼盘特色查询
+    private String cityId;  //城市编号
+    private String ringRoad;  //环线
 //    private Double pm;  //pm2.5
 //    private Double noiseIndex;  //噪声指数
 //    private String[] mainPushHouse;  //主推房源

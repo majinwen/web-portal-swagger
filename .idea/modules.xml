@@ -11,6 +11,8 @@
       <module fileurl="file://$PROJECT_DIR$/dao/web.dao.iml" filepath="$PROJECT_DIR$/dao/web.dao.iml" />
       <module fileurl="file://$PROJECT_DIR$/deploy/web.deploy.iml" filepath="$PROJECT_DIR$/deploy/web.deploy.iml" />
       <module fileurl="file://$PROJECT_DIR$/deploy-config/web.deploy-config.iml" filepath="$PROJECT_DIR$/deploy-config/web.deploy-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deploy-config-mq/web.deploy-config-mq.iml" filepath="$PROJECT_DIR$/deploy-config-mq/web.deploy-config-mq.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deploy-mq/web.deploymq.iml" filepath="$PROJECT_DIR$/deploy-mq/web.deploymq.iml" />
     </modules>
   </component>
 </project>

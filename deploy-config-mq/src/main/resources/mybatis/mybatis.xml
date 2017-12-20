@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="aggressiveLazyLoading" value="false" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultStatementTimeout" value="25000" />
+        <setting name="logPrefix" value="dao."/>
+	</settings>
+	<!--<plugins>-->
+		<!--<plugin interceptor="com.uban.mybatis.PagingPlugin">-->
+			<!--<property name="dialect" value="mysql" />-->
+			<!--<property name="pageSqlId" value=".*ListPage.*" />-->
+		<!--</plugin>-->
+	<!--</plugins>-->
+
+	<typeHandlers>
+
+		<typeHandler handler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"
+					 javaType="java.lang.Integer" jdbcType="ARRAY" />
+		<typeHandler handler="com.toutiao.web.common.extension.mybatis.typehandler.TextLtreeListTypeHandler"
+					 javaType="java.lang.String" jdbcType="ARRAY" />
+	</typeHandlers>
+ 	<plugins>
+         <!-- PageHelper5.1.1 --> 
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="helperDialect" value="postgresql"/>
+            <property name="offsetAsPageNum" value="false"/>
+            <property name="rowBoundsWithCount" value="false"/>
+            <property name="pageSizeZero" value="true"/>
+            <property name="reasonable" value="false"/>
+            <property name="supportMethodsArguments" value="false"/>
+        </plugin>
+    </plugins>  
+</configuration>

@@ -1,0 +1,28 @@
+<configuration scan="true" scanPeriod=" 5 seconds" debug="false">
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%date{yyyy-MM-dd HH:mm:ss} | %highlight(%-5level) | %boldYellow(%thread) | %boldGreen(%logger) | %msg%n"/>
+
+
+    <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%highlight([%-5level]) %d{HH:mm:ss.SSS} [%thread] %highlight(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="dao" >
+        <level value="DEBUG"/>
+        <appender-ref ref="console"/>
+    </logger>
+    <logger name="com.nashwork.corebiz.appollo.apiimpl.authentication" >
+        <level value="DEBUG"/>
+        <appender-ref ref="console"/>
+    </logger>
+    <!-- 日志级别 -->
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="console"/>
+    </root>
+
+
+</configuration>
