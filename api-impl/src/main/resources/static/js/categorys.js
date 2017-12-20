@@ -1,4 +1,6 @@
-var BaseUrl = 'http://localhost:8085/newhouse/searchNewHouse';
+var uu = $('#url');
+var BaseUrl=uu.val();
+console.log(BaseUrl)
 var params;
 var url;
 var submitClickState = false;
@@ -47,6 +49,9 @@ $('.price-list').on('click','li', function (e) {
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e,$(this).text());
+    $.get(url, function () {
+        location.href = url;
+    });
 });
 
 // 户型
@@ -91,7 +96,9 @@ $('#typeSubmit').on('click', function (e) {
     params = '?layoutId=' + layoutTextArr.join(',');
     url = BaseUrl + params;
     console.log(url);
-
+    $.get(url, function () {
+        location.href = url;
+    });
 });
 
 // 更多
@@ -188,6 +195,10 @@ function submitDirstrict(districtid,e,index) {
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e,circleData[index].name);
+    console.log("quyu")
+   /* $.get(url, function () {
+        location.href = url;
+    });*/
 }
 /*
  * 提交选中商圈(区域id及商圈id)
@@ -198,6 +209,7 @@ function submitBussiness(districtid,areaId,e,index) {
     console.log(url);
 
     tabTextReplace(e,businessData[index].name);
+    location.href=url
 }
 
 /*
@@ -254,6 +266,9 @@ function submitSubwayLine(subwayid,e,index) {
             console.log(err);
         }
     });
+    $.get(url, function () {
+        location.href = url;
+    });
 }
 /*
  * 提交选中地铁站点
@@ -263,7 +278,10 @@ function submitStation(subwayid,subwayStationId,e,index) {
     url = BaseUrl + params;
     console.log(url);
 
-    tabTextReplace(e,stationData[index].station_name);
+    tabTextReplace(e,stationData[index].station_name,url);
+    $.get(url, function () {
+        location.href = url;
+    });
 }
 
 /*

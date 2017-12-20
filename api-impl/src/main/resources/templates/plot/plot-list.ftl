@@ -148,7 +148,7 @@
     <ul>
     <#if villageList?exists>
         <#list villageList as plot>
-            <li><a class="list-item" href="">
+            <li><a class="list-item" href="/villageDetail?id=${plot['id']}">
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">

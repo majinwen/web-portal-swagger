@@ -10,11 +10,14 @@
 </head>
 <body>
 <div class="carousel-box">
+    <#assign village = villageList[0]>
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/esxq_banner1.png" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="">
+            <#list village['phote'] as vpphoto>
+            <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                <img src="${staticurl}/${vpphoto}" data-src="${staticurl}/${vpphoto}" alt="">
             </li>
+            </#list>
         </ul>
         <div class="banner-title">
             <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
@@ -145,6 +148,7 @@
                     <p class="green">↓ 3.46%</p>
                 </div>
             </div>
+            <div></div>
         </div>
         <div class="basic-information supply-contrast none">
             <div class="column item-column-two">
@@ -180,6 +184,7 @@
                     </table>
                 </div>
             </div>
+            <div></div>
         </div>
     </section>
 </div>

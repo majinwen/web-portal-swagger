@@ -11,7 +11,7 @@
 <body>
 <header class="gradient">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
-    <div class="search-box" ">
+    <div class="search-box">
         <i class="icon"></i>
         <input  type="text"onclick="searchNewHouse()" placeholder="中骏·西山天璟">
     </div>
@@ -214,23 +214,14 @@
                     <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
                 </div>
                 <div class="list-item-cont">
-<<<<<<< HEAD
-=======
                     <input type="hidden" value="${map['id']}">
->>>>>>> chy02
                     <h3 class="cont-block-1">${map['rc']}</h3>
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4 house-labelling gray middle">
-<<<<<<< HEAD
                        <#list map['label'] as label>
                            <span>${label}</span>
                        </#list>
-=======
-                        <#list map['label'] as lable>
-                            <span>${lable}</span>
-                        </#list>
->>>>>>> chy02
                     </div>
                     <div class="cont-block-price plot">
                         <em>${map['avgPrice']}元/㎡</em>
@@ -302,12 +293,7 @@
                     </div>
                 </div>
             </div>
-        </a></li>-->
-<<<<<<< HEAD
-=======
-
-
->>>>>>> chy02
+        </a></li>
     </ul>
 </section>
 <#-- 个人中心 侧栏菜单 -->

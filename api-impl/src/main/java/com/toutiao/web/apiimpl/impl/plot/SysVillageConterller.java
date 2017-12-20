@@ -30,28 +30,21 @@ public class SysVillageConterller {
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
         villageRequest1.setAreaSize("80");
-//        villageRequest1.setId(001);
-//        villageRequest1.setSearchSubwayLineId("001");
-//        villageRequest1.setSearchMetroStationId("001");
-//        String[] a = {"0","80"};
-//        villageRequest1.setSearchAreaSize(a);
-//        Integer[] ap ={0,70000,70000,80000};
-//        villageRequest1.setSearchAvgPrice(ap);
-//        villageRequest1.setId(1);
-//        villageRequest1.setAreaId("003");
-//        villageRequest1.setAreaNameId("002");
-//        villageRequest1.setId(3);
-//        Integer[] pr = {50000,80000};
-//        villageRequest1.setSearchAvgPrice(pr);
-//        Integer[] ag = {16,16};
-//        villageRequest1.setSearchAge(ag);
-//        villageRequest1.setId(1);
-//        villageRequest1.setAreaId("001");
         List villageList = null;
         villageList = sysVillageService.findVillageByConditions(villageRequest1);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
+
+
+    //小区详情页
+    @RequestMapping("/villageDetail")
+    public String villageDetail(VillageRequest villageRequest, Model model) {
+        List villageList = sysVillageService.findVillageByConditions(villageRequest);
+        model.addAttribute("villageList", villageList);
+        return "plot/plot-detail";
+    }
+
 
     /**
      * 小区详情页
@@ -72,7 +65,6 @@ public class SysVillageConterller {
      */
     @RequestMapping("/plotSale")
     public String sale(Model model){
-
         model.addAttribute("user","asds");
         return "plot/plot-sale";
     }
