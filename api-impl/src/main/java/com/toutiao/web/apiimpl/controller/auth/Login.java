@@ -78,7 +78,7 @@ public class Login {
             if (!redisSession.getValue(phone).equalsIgnoreCase(
                     MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix() + RedisNameUtil.separativeSign
                     + code)))) {
-                modelMap.addAttribute("message", "验证码输入有误！");
+                modelMap.addAttribute("message", "短信验证码输入有误！");
                 return "login";
             }
             //从cookie中获取图片验证码与页面传递过来的验证码进行对比
