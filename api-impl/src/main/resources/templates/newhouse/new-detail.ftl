@@ -220,7 +220,7 @@
 
         // 指定图表的配置项和数据
 
-         var myChartbar = echarts.init(document.getElementById('mainbar'));
+   /*      var myChartbar = echarts.init(document.getElementById('mainbar'));
          option2 = {
          title : {
              text: '某地区蒸发量和降水量',
@@ -291,7 +291,7 @@
              }
          ]
      };
-         myChartbar.setOption(option2);
+         myChartbar.setOption(option2);*/
 
         var myChartline = echarts.init(document.getElementById('main'));
          option = {
@@ -423,5 +423,12 @@
                 }
             ]
         };
+
         myChartline.setOption(option);
+
+  //地图尺寸适配
+     window.addEventListener("resize", function () {
+         myChartline.resize();
+
+     });
 </script>

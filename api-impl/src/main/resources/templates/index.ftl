@@ -11,7 +11,7 @@
 <body>
 <header class="gradient">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
-    <div class="search-box" ">
+    <div class="search-box">
         <i class="icon"></i>
         <input  type="text"onclick="searchNewHouse()" placeholder="中骏·西山天璟">
     </div>
@@ -31,7 +31,7 @@
             <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="#">
+            <div class="banner-nav-item index-nav-item"><a href="/fingNearVillageAndDistance">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="/newhouse/searchNewHouse">
@@ -219,9 +219,9 @@
                     <p class="cont-block-2">2008年建成</p>
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4 house-labelling gray middle">
-                        <#list map['label'] as lable>
-                            <span>${lable}</span>
-                        </#list>
+                       <#list map['label'] as label>
+                           <span>${label}</span>
+                       </#list>
                     </div>
                     <div class="cont-block-price plot">
                         <em>${map['avgPrice']}元/㎡</em>
@@ -273,6 +273,32 @@
                 </div>
             </div>
         </a></li>
+        <li><a class="list-item new new-ad-item" href="#">
+            <div class="list-item-cont-ad">
+                <h3 class="cont-block-1">新龙城</h3>
+                <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                <p class="cont-block-2">2008年建成</p>
+            </div>
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                </div>
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                </div>
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                </div>
+            </div>
+            <div class="pr">
+                <div class="cont-block-4 house-labelling gray middle">
+                    <span>复式</span>
+                    <span>五证齐全</span>
+                    <span>花园洋房</span>
+                </div>
+                <p class="cont-block-2 high-light-red">68000元/㎡</p>
+            </div>
+        </a></li>
         <li><a class="list-item" href="">
             <div class="clear">
                 <div class="list-item-img-box">
@@ -293,9 +319,7 @@
                     </div>
                 </div>
             </div>
-        </a></li>-->
-
-
+        </a></li>
     </ul>
 </section>
 <#-- 个人中心 侧栏菜单 -->

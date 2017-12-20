@@ -5,11 +5,13 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -156,7 +158,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
 
         int pageNum = 1;
-        int pageSize = 10;
+
         if(newHouseQuery.getPageNum()!=null && newHouseQuery.getPageNum()>1){
             pageNum = newHouseQuery.getPageNum();
         }
@@ -170,8 +172,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type","location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==2){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
@@ -180,8 +182,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null&&newHouseQuery.getSort()==3){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
@@ -190,8 +192,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==4){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
@@ -200,28 +202,28 @@ public class NewHouseServiceImpl implements NewHouseService{
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==0){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("opened_time", SortOrder.DESC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*4)
-                    .setSize(4)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
                             null)
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
+                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                    .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }
         SearchHits hits = searchresponse.getHits();
@@ -421,6 +423,51 @@ public class NewHouseServiceImpl implements NewHouseService{
         return nearBy;
     }
 
+    /**
+     * 新房搜索找房
+     *
+     *
+     *  */
+    @Override
+    public ArrayList<HashMap<String,Object>> searchNewHouse(String text) {
+        ArrayList<HashMap<String,Object>> houseList = new ArrayList();
+        try {
+            QueryBuilder queryBuilder = null;
+            TransportClient client = esClientTools.init();
+            AnalyzeResponse response = esClientTools.init().admin().indices()
+                    .prepareAnalyze(text)//内容
+                    .setAnalyzer("ik_smart")//指定分词器3`3
+                    //.setTokenizer("standard")
+                    .execute().actionGet();//执行
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+            BoolQueryBuilder ww = QueryBuilders.boolQuery();
+            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                System.out.println(analyzeToken.getTerm());
+                queryBuilder = QueryBuilders.boolQuery()
+                       // .should(QueryBuilders.fuzzyQuery("keywords", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()));
+                ww.should(queryBuilder);
+            }
 
+            /*ww = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.fuzzyQuery("area_name", text));*/
+            SearchResponse searchResponse = client.prepareSearch("beijing1")
+                    .setTypes("building1")
+                    .setQuery(ww)
+                   /* .addSort("houseRank", SortOrder.DESC)*/
+                    .setFrom(0)
+                    .setSize(10)
+                    .execute().actionGet();
+
+            for (SearchHit hit : searchResponse.getHits().getHits()) {
+                Map<String,Object> buildings = hit.getSourceAsMap();
+                houseList.add((HashMap<String, Object>) buildings);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return houseList;
+    }
 
 }
