@@ -33,6 +33,7 @@
             .info-card-item {
                 line-height: rem(40);
                 padding: rem(26) rem(37) rem(28);
+                text-align: justify;
             }
         }
 
@@ -117,6 +118,73 @@
                 span {
                     margin-top: rem(15);
                     color: #999;
+                }
+            }
+        }
+    }
+
+    &.price-trend {
+        .column {
+            &.item-column-three {
+                .info-card-item {
+                    padding: rem(30);
+
+                    em {
+                        margin-bottom: rem(20);
+                    }
+
+                    p {
+                        @include font-dpr(28);
+                        color: $baseRed;
+                        @include text-ellipses;
+
+                        &.green {
+                            color: #3bbc6c;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &.supply-contrast {
+        .column {
+            &.item-column-two {
+                .info-card-item {
+                    padding: rem(25) rem(30) rem(32);
+                    text-align: center;
+
+                    em {
+                        margin-bottom: rem(24);
+                    }
+
+                    table {
+                        margin: rem(20) auto 0;
+                        @include font-dpr(22);
+
+                        td {
+                            padding-bottom: rem(20);
+                        }
+
+                        tr:nth-child(3) {
+                            td {
+                                padding-bottom: 0;
+                            }
+                        }
+
+                        td:nth-child(1) {
+                            text-align: right;
+                            color: #888;
+                        }
+                        td:nth-child(2) {
+                            text-align: left;
+                        }
+                    }
+                    p {
+                        @include font-dpr(22);
+                        white-space: nowrap;
+                        color: #888;
+                    }
                 }
             }
         }

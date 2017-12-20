@@ -75,6 +75,9 @@ hr {
 .high-light-red {
   color: #fb3939 !important; }
 
+.none {
+  display: none; }
+
 .pr {
   position: relative !important; }
 
@@ -120,6 +123,19 @@ hr {
 .text-center {
   text-align: center !important; }
 
+.clear {
+  zoom: 1; }
+  .clear:after {
+    visibility: hidden;
+    display: block;
+    clear: both;
+    content: '';
+    height: 0;
+    font-size: 0; }
+
+.content-visible {
+  display: block !important; }
+
 .module-bottom-fill {
   padding-bottom: 0.2133333333rem;
   background-color: #f2f2f2; }
@@ -128,7 +144,8 @@ hr {
 
 .house-labelling {
   white-space: nowrap;
-  overflow: hidden; }
+  overflow: hidden;
+  text-overflow: ellipsis; }
   .house-labelling.normal span, .house-labelling.gray span {
     height: 0.4266666667rem;
     line-height: 0.4266666667rem;
@@ -431,15 +448,6 @@ header {
   color: #3a3a3a;
   border-bottom: 1px solid #ccc;
   box-sizing: border-box; }
-  .list-item .clear {
-    zoom: 1; }
-    .list-item .clear:after {
-      visibility: hidden;
-      display: block;
-      clear: both;
-      content: '';
-      height: 0;
-      font-size: 0; }
   .list-item .list-item-img-box {
     float: left;
     width: 3.0666666667rem; }
@@ -1034,17 +1042,11 @@ header {
           bottom: 0;
           left: 50%; }
           .hot-topic .column .hot-topic-item.index-topic-item img.item-1 {
-            width: 1.5733333333rem;
-            margin-left: -0.7866666667rem; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-2 {
-            width: 3.0933333333rem;
-            margin-left: -1.5466666667rem; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-3 {
-            width: 2.3466666667rem;
-            margin-left: -1.1733333333rem; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-4 {
-            width: 2.7466666667rem;
-            margin-left: -1.3733333333rem; }
+            width: 1.5466666667rem;
+            margin-left: -0.7733333333rem; }
+          .hot-topic .column .hot-topic-item.index-topic-item img.item-2, .hot-topic .column .hot-topic-item.index-topic-item img.item-3, .hot-topic .column .hot-topic-item.index-topic-item img.item-4 {
+            width: 2.2666666667rem;
+            margin-left: -1.1333333333rem; }
 
 .banner-index-box {
   padding: 0.1866666667rem 0.4rem 0.4133333333rem; }

@@ -127,7 +127,59 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>市场行情</h3>
+            <h3>市场行情<span class="subtitle">价格走势</span></h3>
+            <div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>
+        </div>
+        <div class="basic-information price-trend">
+            <div class="column item-column-three">
+                <div class="info-card-item">
+                    <em>均价</em>
+                    <p>49806元/㎡</p>
+                </div>
+                <div class="info-card-item">
+                    <em>环比上月</em>
+                    <p class="green">↓ 6.68%</p>
+                </div>
+                <div class="info-card-item">
+                    <em>同比去年</em>
+                    <p class="green">↓ 3.46%</p>
+                </div>
+            </div>
+        </div>
+        <div class="basic-information supply-contrast none">
+            <div class="column item-column-two">
+                <div class="info-card-item">
+                    <em>本月</em>
+                    <table>
+                        <tr>
+                            <td>挂牌出售：</td>
+                            <td>34套</td>
+                        </tr>
+                        <tr>
+                            <td>关注用户：</td>
+                            <td>230人</td>
+                        </tr>
+                    </table>
+                    <p>供需充足，可选余地大。</p>
+                </div>
+                <div class="info-card-item">
+                    <em>上月</em>
+                    <table>
+                        <tr>
+                            <td>挂牌出售：</td>
+                            <td>34套</td>
+                        </tr>
+                        <tr>
+                            <td>成交：</td>
+                            <td>23套</td>
+                        </tr>
+                        <tr>
+                            <td>存量：</td>
+                            <td>36.57%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </section>
 </div>
@@ -139,7 +191,7 @@
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
-                <div class="info-card-item">首城国际，<em class="high-light-red">2008</em>年建成住宅，共<em class="high-light-red">18</em>栋（2558户）<br><em class="high-light-red">板楼/板塔结合</em></div>
+                <div class="info-card-item">首城国际，<em class="high-light-red">2008</em>年建成住宅，共<em class="high-light-red">18</em>栋（2558户）<em class="high-light-red">板楼/板塔结合</em></div>
             </div>
             <div class="column item-column-two">
                 <div class="info-card-item">
@@ -206,7 +258,46 @@
     </section>
 </div>
 
-<div id="mapMessage">地图</div>
+
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
+        </div>
+        <div class="expand-content content-visible">
+            <div class="map-education-box">
+                <ul class="map-message-btn clear" data-type="教育配套">
+                    <li class="parent-child"><i></i><span>亲子</span></li>
+                    <li class="kindergarten"><i></i><span>幼儿园</span></li>
+                    <li class="primary-school"><i></i><span>小学</span></li>
+                    <li class="middle-school"><i></i><span>中学</span></li>
+                    <li class="university"><i></i><span>大学</span></li>
+                </ul>
+            </div>
+            <ul class="result-data-expand" id="educationListDom"></ul>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>休闲购物<span class="subtitle">新世界丽樽生活圈</span></h3>
+        </div>
+        <div class="expand-content content-visible">
+            <div class="map-shopping-box">
+                <ul class="map-message-btn" data-type="休闲购物">
+                    <li class="vegetable-market"><span>菜市场</span><i></i></li>
+                    <li class="supermarket"><span>超市</span><i></i></li>
+                    <li class="shopping-mall"><span>商场</span><i></i></li>
+                    <li class="dining-room"><span>餐厅</span><i></i></li>
+                    <li class="fitness"><span>健身</span><i></i></li>
+                </ul>
+                <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
+            </div>
+            <ul class="result-data-expand height-type" id="shoppintListDom"></ul>
+        </div>
+    </section>
+</div>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -214,28 +305,7 @@
             <a href="javascript:;" class="more-arrows expand-btn"><em>展开</em><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <ul class="result-data-expand">
-                <li>
-                    <p>
-                        <i class="expand-icon medical-treatment"></i>
-                        <span class="expand-name">北医三院</span>
-                    </p>
-                    <span class="expand-distance">1.8km内</span>
-                </li>
-                <li>
-                    <p>
-                        <i class="expand-icon medical-treatment"></i>
-                        <span class="expand-name">北京解放军医院</span>
-                    </p>
-                    <span class="expand-distance">1.8km内</span>
-                </li>
-                <li>
-                    <p>
-                        <i class="expand-icon medical-treatment"></i>
-                        <span class="expand-name">海淀医院</span>
-                    </p>
-                    <span class="expand-distance">1.8km内</span>
-                </li>
+            <ul class="result-data-expand" id="hospitalListDom">
             </ul>
         </div>
     </section>
@@ -407,17 +477,12 @@
     </div>
 </section>
 
-<script src="${staticurl}/js/zepto.min.js"></script>
+<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script>
-
-    $.get('http://api.map.baidu.com/place/v2/search?query=银行&location=39.915,116.404&radius=2000&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf', function(response){
-        console.log(response);
-    });
-</script>
+<script src="${staticurl}/js/plot-detail-map-message.js"></script>
 </body>
 </html>

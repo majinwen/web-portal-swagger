@@ -75,6 +75,9 @@ hr {
 .high-light-red {
   color: #fb3939 !important; }
 
+.none {
+  display: none; }
+
 .pr {
   position: relative !important; }
 
@@ -120,6 +123,19 @@ hr {
 .text-center {
   text-align: center !important; }
 
+.clear {
+  zoom: 1; }
+  .clear:after {
+    visibility: hidden;
+    display: block;
+    clear: both;
+    content: '';
+    height: 0;
+    font-size: 0; }
+
+.content-visible {
+  display: block !important; }
+
 .module-bottom-fill {
   padding-bottom: 0.2133333333rem;
   background-color: #f2f2f2; }
@@ -128,7 +144,8 @@ hr {
 
 .house-labelling {
   white-space: nowrap;
-  overflow: hidden; }
+  overflow: hidden;
+  text-overflow: ellipsis; }
   .house-labelling.normal span, .house-labelling.gray span {
     height: 0.4266666667rem;
     line-height: 0.4266666667rem;
@@ -950,15 +967,15 @@ a.pswp__share--download:hover {
       height: 0.6266666667rem;
       margin-left: 0.1333333333rem;
       vertical-align: top;
-      background-image: url("../images/global/primary_map_icon.png");
+      background-image: url("/static/images/global/primary_map_icon.png");
       background-repeat: no-repeat;
       background-position: center; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .primary-message ul.primary-item > li p .primary-map-icon {
-          background-image: url("../images/global/primary_map_icon@2x.png"); } }
+          background-image: url("/static/images/global/primary_map_icon@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .primary-message ul.primary-item > li p .primary-map-icon {
-          background-image: url("../images/global/primary_map_icon@3x.png"); } }
+          background-image: url("/static/images/global/primary_map_icon@3x.png"); } }
     .primary-message ul.primary-item > li p .arrows-right {
       position: absolute;
       top: 0;
@@ -966,15 +983,15 @@ a.pswp__share--download:hover {
       display: block;
       width: 0.2266666667rem;
       height: 0.6266666667rem;
-      background-image: url("../images/global/arrows_right_icon.png");
+      background-image: url("/static/images/global/arrows_right_icon.png");
       background-repeat: no-repeat;
       background-position: center; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .primary-message ul.primary-item > li p .arrows-right {
-          background-image: url("../images/global/arrows_right_icon@2x.png"); } }
+          background-image: url("/static/images/global/arrows_right_icon@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .primary-message ul.primary-item > li p .arrows-right {
-          background-image: url("../images/global/arrows_right_icon@3x.png"); } }
+          background-image: url("/static/images/global/arrows_right_icon@3x.png"); } }
   .primary-message ul.primary-item > li .module-table-item {
     padding: 0; }
 
@@ -1017,6 +1034,50 @@ a.pswp__share--download:hover {
     font-size: 30px; }
   [data-dpr="3"] .module-header-message {
     font-size: 45px; }
+  .module-header-message .subtitle {
+    display: inline-block;
+    line-height: 1;
+    margin-left: 0.1333333333rem;
+    padding-left: 0.1333333333rem;
+    color: #999;
+    border-left: 0.0133333333rem solid #999; }
+    [data-dpr="1"] .module-header-message .subtitle {
+      font-size: 12px; }
+    [data-dpr="2"] .module-header-message .subtitle {
+      font-size: 24px; }
+    [data-dpr="3"] .module-header-message .subtitle {
+      font-size: 36px; }
+  .module-header-message .markets-btn {
+    position: absolute;
+    right: 0.4rem;
+    top: 0;
+    height: 100%; }
+    .module-header-message .markets-btn .price-trend-btn, .module-header-message .markets-btn .supply-contrast-btn {
+      display: inline-block;
+      width: 0.3733333333rem;
+      height: 1.52rem;
+      background-position: left center; }
+      .module-header-message .markets-btn .price-trend-btn.current, .module-header-message .markets-btn .supply-contrast-btn.current {
+        background-position: right center; }
+    .module-header-message .markets-btn .price-trend-btn {
+      margin-right: 0.2666666667rem;
+      background-image: url("/static/images/plot/xfxq_schq_icon_jg_grey.png");
+      background-repeat: no-repeat; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .module-header-message .markets-btn .price-trend-btn {
+          background-image: url("/static/images/plot/xfxq_schq_icon_jg_grey@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .module-header-message .markets-btn .price-trend-btn {
+          background-image: url("/static/images/plot/xfxq_schq_icon_jg_grey@3x.png"); } }
+    .module-header-message .markets-btn .supply-contrast-btn {
+      background-image: url("/static/images/plot/xfxq_schq_icon_gx_red.png");
+      background-repeat: no-repeat; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .module-header-message .markets-btn .supply-contrast-btn {
+          background-image: url("/static/images/plot/xfxq_schq_icon_gx_red@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .module-header-message .markets-btn .supply-contrast-btn {
+          background-image: url("/static/images/plot/xfxq_schq_icon_gx_red@3x.png"); } }
   .module-header-message .more-arrows {
     position: absolute;
     top: 0;
@@ -1038,35 +1099,35 @@ a.pswp__share--download:hover {
       top: -0.0533333333rem;
       width: 0.2266666667rem;
       height: 1.52rem;
-      background-image: url("../images/global/arrows_right_icon.png");
+      background-image: url("/static/images/global/arrows_right_icon.png");
       background-repeat: no-repeat; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .module-header-message .more-arrows .arrows-right {
-          background-image: url("../images/global/arrows_right_icon@2x.png"); } }
+          background-image: url("/static/images/global/arrows_right_icon@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .module-header-message .more-arrows .arrows-right {
-          background-image: url("../images/global/arrows_right_icon@3x.png"); } }
+          background-image: url("/static/images/global/arrows_right_icon@3x.png"); } }
     .module-header-message .more-arrows .arrows-expand {
       top: 0;
       width: 0.5866666667rem;
       height: 1.52rem;
-      background-image: url("../images/global/arrows_bottom_icon.png");
+      background-image: url("/static/images/global/arrows_bottom_icon.png");
       background-repeat: no-repeat; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .module-header-message .more-arrows .arrows-expand {
-          background-image: url("../images/global/arrows_bottom_icon@2x.png"); } }
+          background-image: url("/static/images/global/arrows_bottom_icon@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .module-header-message .more-arrows .arrows-expand {
-          background-image: url("../images/global/arrows_bottom_icon@3x.png"); } }
+          background-image: url("/static/images/global/arrows_bottom_icon@3x.png"); } }
     .module-header-message .more-arrows.expand .arrows-expand {
-      background-image: url("../images/global/arrows_top_icon.png");
+      background-image: url("/static/images/global/arrows_top_icon.png");
       background-repeat: no-repeat; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .module-header-message .more-arrows.expand .arrows-expand {
-          background-image: url("../images/global/arrows_top_icon@2x.png"); } }
+          background-image: url("/static/images/global/arrows_top_icon@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .module-header-message .more-arrows.expand .arrows-expand {
-          background-image: url("../images/global/arrows_top_icon@3x.png"); } }
+          background-image: url("/static/images/global/arrows_top_icon@3x.png"); } }
 
 .plot-primary-header {
   position: relative;
@@ -1110,6 +1171,215 @@ a.pswp__share--download:hover {
 .expand-content {
   display: none;
   padding: 0.5333333333rem 0.4rem; }
+  .expand-content .map-education-box {
+    margin-bottom: 0.5333333333rem; }
+    .expand-content .map-education-box ul {
+      display: flex;
+      justify-content: center; }
+      .expand-content .map-education-box ul li {
+        position: relative;
+        display: inline-block;
+        width: 3em;
+        margin: 0 0.5333333333rem;
+        text-align: center;
+        white-space: nowrap; }
+        [data-dpr="1"] .expand-content .map-education-box ul li {
+          font-size: 13px; }
+        [data-dpr="2"] .expand-content .map-education-box ul li {
+          font-size: 26px; }
+        [data-dpr="3"] .expand-content .map-education-box ul li {
+          font-size: 39px; }
+        .expand-content .map-education-box ul li i {
+          display: block;
+          width: 0.88rem;
+          height: 0.88rem;
+          margin: 0 auto 0.2666666667rem;
+          background-position: left center; }
+        .expand-content .map-education-box ul li.parent-child i {
+          background-image: url("/static/images/plot/xqxq_jy_icon1_w.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-education-box ul li.parent-child i {
+              background-image: url("/static/images/plot/xqxq_jy_icon1_w@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-education-box ul li.parent-child i {
+              background-image: url("/static/images/plot/xqxq_jy_icon1_w@3x.png"); } }
+        .expand-content .map-education-box ul li.kindergarten i {
+          background-image: url("/static/images/plot/xqxq_jy_icon2_red.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-education-box ul li.kindergarten i {
+              background-image: url("/static/images/plot/xqxq_jy_icon2_red@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-education-box ul li.kindergarten i {
+              background-image: url("/static/images/plot/xqxq_jy_icon2_red@3x.png"); } }
+        .expand-content .map-education-box ul li.primary-school i {
+          background-image: url("/static/images/plot/xqxq_jy_icon3_w.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-education-box ul li.primary-school i {
+              background-image: url("/static/images/plot/xqxq_jy_icon3_w@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-education-box ul li.primary-school i {
+              background-image: url("/static/images/plot/xqxq_jy_icon3_w@3x.png"); } }
+        .expand-content .map-education-box ul li.middle-school i {
+          background-image: url("/static/images/plot/xqxq_jy_icon4_w.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-education-box ul li.middle-school i {
+              background-image: url("/static/images/plot/xqxq_jy_icon4_w@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-education-box ul li.middle-school i {
+              background-image: url("/static/images/plot/xqxq_jy_icon4_w@3x.png"); } }
+        .expand-content .map-education-box ul li.university i {
+          background-image: url("/static/images/plot/xqxq_jy_icon5_w.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-education-box ul li.university i {
+              background-image: url("/static/images/plot/xqxq_jy_icon5_w@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-education-box ul li.university i {
+              background-image: url("/static/images/plot/xqxq_jy_icon5_w@3x.png"); } }
+        .expand-content .map-education-box ul li:before {
+          content: '';
+          position: absolute;
+          right: 0.9333333333rem;
+          top: 0.3466666667rem;
+          width: 1.04rem;
+          height: 0.2266666667rem;
+          background-image: url("/static/images/plot/xqxq_jy_icon0.png");
+          background-repeat: no-repeat;
+          background-position: top center;
+          -webkit-background-size: cover;
+          background-size: cover; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-education-box ul li:before {
+              background-image: url("/static/images/plot/xqxq_jy_icon0@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-education-box ul li:before {
+              background-image: url("/static/images/plot/xqxq_jy_icon0@3x.png"); } }
+        .expand-content .map-education-box ul li:nth-child(1):before {
+          display: none; }
+        .expand-content .map-education-box ul li.current span {
+          color: #fb3939; }
+        .expand-content .map-education-box ul li.current i {
+          background-position: center; }
+        .expand-content .map-education-box ul li.current:before {
+          background-position: bottom center; }
+        .expand-content .map-education-box ul li.choose i {
+          background-position: right center; }
+        .expand-content .map-education-box ul li.choose:before {
+          background-position: bottom center; }
+  .expand-content .map-shopping-box {
+    position: relative;
+    padding-top: 2.6666666667rem;
+    margin-bottom: 0.9333333333rem; }
+    .expand-content .map-shopping-box .map-message-btn li {
+      display: inline-block;
+      position: absolute;
+      bottom: 0; }
+      .expand-content .map-shopping-box .map-message-btn li span {
+        position: absolute;
+        top: -0.6666666667rem;
+        display: block;
+        width: 1.04rem;
+        text-align: center; }
+        [data-dpr="1"] .expand-content .map-shopping-box .map-message-btn li span {
+          font-size: 13px; }
+        [data-dpr="2"] .expand-content .map-shopping-box .map-message-btn li span {
+          font-size: 26px; }
+        [data-dpr="3"] .expand-content .map-shopping-box .map-message-btn li span {
+          font-size: 39px; }
+      .expand-content .map-shopping-box .map-message-btn li i {
+        display: block;
+        width: 0.96rem; }
+      .expand-content .map-shopping-box .map-message-btn li.current span {
+        color: #fb3939; }
+      .expand-content .map-shopping-box .map-message-btn li.vegetable-market {
+        left: 2.9%; }
+        .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
+          height: 2.56rem;
+          background-image: url("/static/images/plot/xqxq_csc.png");
+          background-repeat: no-repeat;
+          background-position: left bottom;
+          -webkit-background-size: auto 2.56rem;
+          background-size: auto 2.56rem; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
+              background-image: url("/static/images/plot/xqxq_csc@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
+              background-image: url("/static/images/plot/xqxq_csc@3x.png"); } }
+        .expand-content .map-shopping-box .map-message-btn li.vegetable-market.current i {
+          background-position: right bottom; }
+      .expand-content .map-shopping-box .map-message-btn li.supermarket {
+        left: 20.4%; }
+        .expand-content .map-shopping-box .map-message-btn li.supermarket i {
+          height: 2.8266666667rem;
+          background-image: url("/static/images/plot/xqxq_cs.png");
+          background-repeat: no-repeat;
+          background-position: left bottom;
+          -webkit-background-size: auto 2.8266666667rem;
+          background-size: auto 2.8266666667rem; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-shopping-box .map-message-btn li.supermarket i {
+              background-image: url("/static/images/plot/xqxq_cs@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-shopping-box .map-message-btn li.supermarket i {
+              background-image: url("/static/images/plot/xqxq_cs@3x.png"); } }
+        .expand-content .map-shopping-box .map-message-btn li.supermarket.current i {
+          background-position: right bottom; }
+      .expand-content .map-shopping-box .map-message-btn li.shopping-mall {
+        right: 31.8%; }
+        .expand-content .map-shopping-box .map-message-btn li.shopping-mall i {
+          height: 3.2933333333rem;
+          background-image: url("/static/images/plot/xqxq_sc.png");
+          background-repeat: no-repeat;
+          background-position: right bottom;
+          -webkit-background-size: auto 3.2933333333rem;
+          background-size: auto 3.2933333333rem; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-shopping-box .map-message-btn li.shopping-mall i {
+              background-image: url("/static/images/plot/xqxq_sc@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-shopping-box .map-message-btn li.shopping-mall i {
+              background-image: url("/static/images/plot/xqxq_sc@3x.png"); } }
+        .expand-content .map-shopping-box .map-message-btn li.shopping-mall.current i {
+          background-position: left bottom; }
+      .expand-content .map-shopping-box .map-message-btn li.dining-room {
+        right: 17.7%; }
+        .expand-content .map-shopping-box .map-message-btn li.dining-room i {
+          height: 2.4rem;
+          background-image: url("/static/images/plot/xqxq_ct.png");
+          background-repeat: no-repeat;
+          background-position: right bottom;
+          -webkit-background-size: auto 2.4rem;
+          background-size: auto 2.4rem; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-shopping-box .map-message-btn li.dining-room i {
+              background-image: url("/static/images/plot/xqxq_ct@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-shopping-box .map-message-btn li.dining-room i {
+              background-image: url("/static/images/plot/xqxq_ct@3x.png"); } }
+        .expand-content .map-shopping-box .map-message-btn li.dining-room.current i {
+          background-position: left bottom; }
+      .expand-content .map-shopping-box .map-message-btn li.fitness {
+        right: 0.9%; }
+        .expand-content .map-shopping-box .map-message-btn li.fitness i {
+          height: 2.64rem;
+          background-image: url("/static/images/plot/xqxq_js.png");
+          background-repeat: no-repeat;
+          background-position: right bottom;
+          -webkit-background-size: auto 2.64rem;
+          background-size: auto 2.64rem; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .map-shopping-box .map-message-btn li.fitness i {
+              background-image: url("/static/images/plot/xqxq_js@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .map-shopping-box .map-message-btn li.fitness i {
+              background-image: url("/static/images/plot/xqxq_js@3x.png"); } }
+        .expand-content .map-shopping-box .map-message-btn li.fitness.current i {
+          background-position: left bottom; }
   .expand-content .result-data-expand {
     width: 100%;
     padding-left: 0.4rem;
@@ -1129,16 +1399,29 @@ a.pswp__share--download:hover {
       [data-dpr="3"] .expand-content .result-data-expand li {
         font-size: 39px; }
       .expand-content .result-data-expand li p {
-        display: inline-block; }
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
       .expand-content .result-data-expand li .expand-icon {
         display: inline-block;
-        vertical-align: middle;
         margin-right: 0.1333333333rem;
         -webkit-background-size: contain;
         background-size: contain; }
+        .expand-content .result-data-expand li .expand-icon.expand-radius {
+          width: 0.48rem;
+          height: 0.48rem;
+          line-height: 0.48rem;
+          margin-right: 0.2666666667rem;
+          text-align: center;
+          color: #fff;
+          -webkit-border-radius: 50%;
+          border-radius: 50%;
+          background-color: #fb3939; }
         .expand-content .result-data-expand li .expand-icon.living-cost {
           width: 0.48rem;
           height: 0.48rem;
+          vertical-align: middle;
           background-image: url("/static/images/plot/xqxq_shcb_icon.png");
           background-repeat: no-repeat; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
@@ -1150,6 +1433,7 @@ a.pswp__share--download:hover {
         .expand-content .result-data-expand li .expand-icon.medical-treatment {
           width: 0.4266666667rem;
           height: 0.4266666667rem;
+          vertical-align: middle;
           background-image: url("/static/images/plot/xqxq_yl_icon.png");
           background-repeat: no-repeat; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
@@ -1158,6 +1442,14 @@ a.pswp__share--download:hover {
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .expand-content .result-data-expand li .expand-icon.medical-treatment {
               background-image: url("/static/images/plot/xqxq_yl_icon@3x.png"); } }
+      .expand-content .result-data-expand li .expand-name {
+        display: inline-block;
+        line-height: 1;
+        vertical-align: middle;
+        max-width: 5.8666666667rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
       .expand-content .result-data-expand li .expand-type {
         display: inherit;
         min-width: 1.2rem;
@@ -1180,6 +1472,31 @@ a.pswp__share--download:hover {
           font-size: 30px; }
       .expand-content .result-data-expand li:last-child {
         border-bottom: none; }
+    .expand-content .result-data-expand.height-type li {
+      height: 1.6rem;
+      line-height: 1.6rem; }
+      .expand-content .result-data-expand.height-type li .expand-name em {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+        .expand-content .result-data-expand.height-type li .expand-name em:nth-child(2) {
+          margin-top: 0.1333333333rem; }
+        .expand-content .result-data-expand.height-type li .expand-name em.star-box i {
+          display: inline-block;
+          width: 0.3333333333rem;
+          height: 0.3066666667rem;
+          margin-right: 0.04rem;
+          background-image: url("/static/images/plot/xqxq_icon_star.png");
+          background-repeat: no-repeat;
+          -webkit-background-size: contain;
+          background-size: contain; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .expand-content .result-data-expand.height-type li .expand-name em.star-box i {
+              background-image: url("/static/images/plot/xqxq_icon_star@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .expand-content .result-data-expand.height-type li .expand-name em.star-box i {
+              background-image: url("/static/images/plot/xqxq_icon_star@3x.png"); } }
 
 .tilelist {
   width: 100%;
@@ -1430,7 +1747,8 @@ a.pswp__share--download:hover {
       margin-bottom: 0.1333333333rem; }
       .basic-information .column.item-only-one .info-card-item {
         line-height: 0.5333333333rem;
-        padding: 0.3466666667rem 0.4933333333rem 0.3733333333rem; }
+        padding: 0.3466666667rem 0.4933333333rem 0.3733333333rem;
+        text-align: justify; }
     .basic-information .column.item-column-two .info-card-item {
       padding: 0.3466666667rem 0.4933333333rem 0.3866666667rem; }
       .basic-information .column.item-column-two .info-card-item i {
@@ -1544,5 +1862,53 @@ a.pswp__share--download:hover {
         .basic-information .column.item-column-three .info-card-item span {
           margin-top: 0.2rem;
           color: #999; }
+  .basic-information.price-trend .column.item-column-three .info-card-item {
+    padding: 0.4rem; }
+    .basic-information.price-trend .column.item-column-three .info-card-item em {
+      margin-bottom: 0.2666666667rem; }
+    .basic-information.price-trend .column.item-column-three .info-card-item p {
+      color: #fb3939;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+      [data-dpr="1"] .basic-information.price-trend .column.item-column-three .info-card-item p {
+        font-size: 14px; }
+      [data-dpr="2"] .basic-information.price-trend .column.item-column-three .info-card-item p {
+        font-size: 28px; }
+      [data-dpr="3"] .basic-information.price-trend .column.item-column-three .info-card-item p {
+        font-size: 42px; }
+      .basic-information.price-trend .column.item-column-three .info-card-item p.green {
+        color: #3bbc6c; }
+  .basic-information.supply-contrast .column.item-column-two .info-card-item {
+    padding: 0.3333333333rem 0.4rem 0.4266666667rem;
+    text-align: center; }
+    .basic-information.supply-contrast .column.item-column-two .info-card-item em {
+      margin-bottom: 0.32rem; }
+    .basic-information.supply-contrast .column.item-column-two .info-card-item table {
+      margin: 0.2666666667rem auto 0; }
+      [data-dpr="1"] .basic-information.supply-contrast .column.item-column-two .info-card-item table {
+        font-size: 11px; }
+      [data-dpr="2"] .basic-information.supply-contrast .column.item-column-two .info-card-item table {
+        font-size: 22px; }
+      [data-dpr="3"] .basic-information.supply-contrast .column.item-column-two .info-card-item table {
+        font-size: 33px; }
+      .basic-information.supply-contrast .column.item-column-two .info-card-item table td {
+        padding-bottom: 0.2666666667rem; }
+      .basic-information.supply-contrast .column.item-column-two .info-card-item table tr:nth-child(3) td {
+        padding-bottom: 0; }
+      .basic-information.supply-contrast .column.item-column-two .info-card-item table td:nth-child(1) {
+        text-align: right;
+        color: #888; }
+      .basic-information.supply-contrast .column.item-column-two .info-card-item table td:nth-child(2) {
+        text-align: left; }
+    .basic-information.supply-contrast .column.item-column-two .info-card-item p {
+      white-space: nowrap;
+      color: #888; }
+      [data-dpr="1"] .basic-information.supply-contrast .column.item-column-two .info-card-item p {
+        font-size: 11px; }
+      [data-dpr="2"] .basic-information.supply-contrast .column.item-column-two .info-card-item p {
+        font-size: 22px; }
+      [data-dpr="3"] .basic-information.supply-contrast .column.item-column-two .info-card-item p {
+        font-size: 33px; }
 
 /*# sourceMappingURL=plot-detail.css.map */

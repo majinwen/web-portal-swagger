@@ -230,7 +230,7 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 
-<script src="${staticurl}/js/zepto.min.js"></script>
+<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
