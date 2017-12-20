@@ -1,7 +1,9 @@
 package com.toutiao.web.dao.entity.officeweb;
 
-import java.math.BigDecimal;
+import lombok.Data;
 
+import java.math.BigDecimal;
+@Data
 public class TotalListedRatio {
     /**
      * 总价
@@ -18,27 +20,5 @@ public class TotalListedRatio {
      */
     private BigDecimal ratio;
 
-    public BigDecimal getTotal() {
-        return total;
-    }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public Integer getListedNum() {
-        return listedNum;
-    }
-
-    public void setListedNum(Integer listedNum) {
-        this.listedNum = listedNum;
-    }
-
-    public BigDecimal getRatio() {
-        return ratio;
-    }
-
-    public void setRatio(BigDecimal ratio) {
-        this.ratio = ratio;
-    }
 }
