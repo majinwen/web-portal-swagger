@@ -402,7 +402,8 @@
                 </div>
                 <div class="tilelist-content">
                     <p class="cont-first">${nearviitem['rc']}</p>
-                    <p class="cont-center"><span>${nearviitem['areaName']}</span><span>${nearviitem['address']}</span></p>
+
+                    <p class="cont-center"><span><#if nearviitem['area']?exists>${nearviitem['area']}</#if></span><span>${nearviitem['address']}</span></p>
                     <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
                 </div>
             </a></li>

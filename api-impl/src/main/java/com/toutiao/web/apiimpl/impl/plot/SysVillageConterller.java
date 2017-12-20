@@ -28,9 +28,11 @@ public class SysVillageConterller {
     //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
     @ResponseBody
-    public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
+    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
         List villageList = null;
-        villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
+        Double lonx = Double.valueOf(lon);
+        Double laty = Double.valueOf(lat);
+        villageList = sysVillageService.GetNearByhHouseAndDistance(lonx, laty);
         model.addAttribute("villageList", villageList);
         return "plot-list";
     }
@@ -55,10 +57,10 @@ public class SysVillageConterller {
         model.addAttribute("village", village);
 
         //附近小区
-        Double [] latandlon = village.getLocation();
-        double lat = latandlon[0];
-        double lon = latandlon[1];
-        List nearvillage = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
+        String[] latandlon = village.getLocation().split(",");
+        Double lonx = Double.valueOf(latandlon[1]);
+        Double laty = Double.valueOf(latandlon[0]);
+        List nearvillage = sysVillageService.GetNearByhHouseAndDistance(lonx,laty);
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房
