@@ -15,7 +15,7 @@ public class ProjHouseInfoQuery {
 
 	//房源户型id（1，2，3，4）
 	private String houseTypeId;
-	
+
 	//房源朝向id（1，2，3，4）
 	private String houseOrientationId;
 
@@ -37,7 +37,10 @@ public class ProjHouseInfoQuery {
 
 	//房源用途（1，2，3，4）
 	private String housePurposeId;
-	
+
+	//销售状态
+	private Integer saling;
+
 	//房源电梯（1，2，3，4）
 	private String houseLiftId;
 	

@@ -423,6 +423,7 @@
                 }
             ]
         };
+
         myChartline.setOption(option);
 
   //地图尺寸适配

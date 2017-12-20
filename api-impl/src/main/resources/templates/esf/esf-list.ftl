@@ -9,6 +9,7 @@
 </head>
 <body>
 <header>
+    <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -18,7 +19,7 @@
 </header>
 <section class="category-box">
     <ul id="category-tab">
-        <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
+        <li data-mark="tab-place"><span><em>位置</em><i></i></span></li>
         <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
@@ -70,7 +71,7 @@
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
                 <dl>
-                    <dt data-type="propertyTypeId">物业类型</dt>
+                    <dt data-type="houseManagementTypeId">物业类型</dt>
                     <dd>
                         <span data-info="1">住宅</span>
                         <span data-info="2">别墅</span>
@@ -80,7 +81,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseAreaSize">面积</dt>
+                    <dt data-type="houseAreaId">面积</dt>
                     <dd>
                         <span data-info="0,60">60以下</span>
                         <span data-info="60,90">60-90</span>
@@ -89,14 +90,32 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="elevatorFlag">电梯</dt>
+                    <dt data-type="houseLiftId">电梯</dt>
                     <dd>
                         <span class="only" data-info="1">有</span>
                         <span class="only" data-info="0">无</span>
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="buildingType">建筑类型</dt>
+                    <dt data-type="houseYearId">楼龄</dt>
+                    <dd>
+                        <span class="only" data-info="0,5">5年内</span>
+                        <span class="only" data-info="0,10">10年内</span>
+                        <span class="only" data-info="0,15">15年内</span>
+                        <span class="only" data-info="0,20">20年内</span>
+                        <span class="only" data-info="20.100">20年以上</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="houseFloorId">楼层</dt>
+                    <dd>
+                        <span data-info="低层楼">低层楼</span>
+                        <span data-info="中层楼">中层楼</span>
+                        <span data-info="高层楼">高层楼</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="buildingTypeId">建筑类型</dt>
                     <dd>
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
@@ -105,7 +124,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="saleType">销售状态</dt>
+                    <dt data-type="houseManagementTypeId">销售状态</dt>
                     <dd>
                         <span data-info="1">售完</span>
                         <span data-info="2">在售</span>
@@ -116,7 +135,20 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="buildingFeature">楼盘特色</dt>
+                    <dt data-type="buildingFeature">权属</dt>
+                    <dd>
+                        <span data-info="1">已购公房</span>
+                        <span data-info="2">商品房</span>
+                        <span data-info="3">空置房</span>
+                        <span data-info="4">经济适用房</span>
+                        <span data-info="5">使用权房</span>
+                        <span data-info="6">央产</span>
+                        <span data-info="7">按经济试用住房管理的房屋</span>
+                        <span data-info="8">其他</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="houseLabelId">楼盘特色</dt>
                     <dd>
                         <span data-info="1">别墅</span>
                         <span data-info="2">花园洋房</span>
@@ -124,6 +156,22 @@
                         <span data-info="4">车位充足</span>
                         <span data-info="5">低密度</span>
                         <span data-info="6">高绿化</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="houseOrientationId">朝向</dt>
+                    <dd>
+                        <span data-info="1">东</span>
+                        <span data-info="2">西</span>
+                        <span data-info="3">南</span>
+                        <span data-info="4">北</span>
+                        <span data-info="5">东南</span>
+                        <span data-info="6">西南</span>
+                        <span data-info="7">东北</span>
+                        <span data-info="8">西北</span>
+                        <span data-info="9">东西</span>
+                        <span data-info="10">南北</span>
+                        <span data-info="11">其他</span>
                     </dd>
                 </dl>
                 <dl>
@@ -217,6 +265,9 @@
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
+  /*  $(function () {
+        var BaseUrl = 'http://localhost:8085/queryBySearchBox';
+    })*/
     $('.searchesf-foce').on('click',function () {
         alert("b")
         location.href="/queryBySearchBox?text=东城"
