@@ -140,6 +140,6 @@ public class NewHouseController {
     public String getNewHouseDiscript(@RequestParam("id") Integer buildingId, Model model){
         List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         model.addAttribute("discript",discripts);
-        return "newhouse/new- parameter";
+        return "newhouse/new-parameter";
     }
 }
