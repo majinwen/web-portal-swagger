@@ -63,4 +63,14 @@ public class PinyinServeContoller {
         model.addAttribute("user","asds");
         return "index";
     }
+
+    /**
+     * 搜索页面
+     * @return
+     */
+    @RequestMapping("/search")
+    public String search(Model model) {
+        model.addAttribute("user","asds");
+        return "search";
+    }
 }

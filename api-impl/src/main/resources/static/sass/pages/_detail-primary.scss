@@ -315,6 +315,8 @@ $detailBorderColor: #e1e1e1;
                     height: rem(66);
                     margin: 0 auto rem(20);
                     background-position: left center;
+                    -webkit-background-size: auto rem(66);
+                    background-size: auto rem(66);
                 }
 
                 &.parent-child {
@@ -413,11 +415,16 @@ $detailBorderColor: #e1e1e1;
                 i {
                     display: block;
                     width: rem(72);
+                    background-position: right bottom;
                 }
 
                 &.current{
                     span {
                         color: $baseRed;
+                    }
+
+                    i {
+                        background-position: left bottom;
                     }
                 }
 
@@ -425,34 +432,20 @@ $detailBorderColor: #e1e1e1;
                     left: 2.9%;
 
                     i {
-                        height: rem(192);
+                        height: rem(182);
                         @include bg-image('/static/images/plot/xqxq_csc');
-                        background-position: left bottom;
-                        -webkit-background-size: auto rem(192);
-                        background-size: auto rem(192);
-                    }
-
-                    &.current {
-                        i {
-                            background-position: right bottom;
-                        }
+                        -webkit-background-size: auto rem(182);
+                        background-size: auto rem(182);
                     }
                 }
                 &.supermarket {
                     left: 20.4%;
 
                     i {
-                        height: rem(212);
+                        height: rem(209);
                         @include bg-image('/static/images/plot/xqxq_cs');
-                        background-position: left bottom;
-                        -webkit-background-size: auto rem(212);
-                        background-size: auto rem(212);
-                    }
-
-                    &.current {
-                        i {
-                            background-position: right bottom;
-                        }
+                        -webkit-background-size: auto rem(209);
+                        background-size: auto rem(209);
                     }
                 }
                 &.shopping-mall {
@@ -461,49 +454,28 @@ $detailBorderColor: #e1e1e1;
                     i {
                         height: rem(247);
                         @include bg-image('/static/images/plot/xqxq_sc');
-                        background-position: right bottom;
                         -webkit-background-size: auto rem(247);
                         background-size: auto rem(247);
-                    }
-
-                    &.current {
-                        i {
-                            background-position: left bottom;
-                        }
                     }
                 }
                 &.dining-room {
                     right: 17.7%;
 
                     i {
-                        height: rem(180);
+                        height: rem(178);
                         @include bg-image('/static/images/plot/xqxq_ct');
-                        background-position: right bottom;
-                        -webkit-background-size: auto rem(180);
-                        background-size: auto rem(180);
-                    }
-
-                    &.current {
-                        i {
-                            background-position: left bottom;
-                        }
+                        -webkit-background-size: auto rem(178);
+                        background-size: auto rem(178);
                     }
                 }
                 &.fitness {
                     right: 0.9%;
 
                     i {
-                        height: rem(198);
+                        height: rem(195);
                         @include bg-image('/static/images/plot/xqxq_js');
-                        background-position: right bottom;
-                        -webkit-background-size: auto rem(198);
-                        background-size: auto rem(198);
-                    }
-
-                    &.current {
-                        i {
-                            background-position: left bottom;
-                        }
+                        -webkit-background-size: auto rem(195);
+                        background-size: auto rem(195);
                     }
                 }
             }

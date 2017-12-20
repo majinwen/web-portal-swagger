@@ -76,7 +76,7 @@ hr {
   color: #fb3939 !important; }
 
 .none {
-  display: none; }
+  display: none !important; }
 
 .pr {
   position: relative !important; }
@@ -1194,7 +1194,9 @@ a.pswp__share--download:hover {
           width: 0.88rem;
           height: 0.88rem;
           margin: 0 auto 0.2666666667rem;
-          background-position: left center; }
+          background-position: left center;
+          -webkit-background-size: auto 0.88rem;
+          background-size: auto 0.88rem; }
         .expand-content .map-education-box ul li.parent-child i {
           background-image: url("/static/images/plot/xqxq_jy_icon1_w.png");
           background-repeat: no-repeat; }
@@ -1292,50 +1294,46 @@ a.pswp__share--download:hover {
           font-size: 39px; }
       .expand-content .map-shopping-box .map-message-btn li i {
         display: block;
-        width: 0.96rem; }
+        width: 0.96rem;
+        background-position: right bottom; }
       .expand-content .map-shopping-box .map-message-btn li.current span {
         color: #fb3939; }
+      .expand-content .map-shopping-box .map-message-btn li.current i {
+        background-position: left bottom; }
       .expand-content .map-shopping-box .map-message-btn li.vegetable-market {
         left: 2.9%; }
         .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
-          height: 2.56rem;
+          height: 2.4266666667rem;
           background-image: url("/static/images/plot/xqxq_csc.png");
           background-repeat: no-repeat;
-          background-position: left bottom;
-          -webkit-background-size: auto 2.56rem;
-          background-size: auto 2.56rem; }
+          -webkit-background-size: auto 2.4266666667rem;
+          background-size: auto 2.4266666667rem; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
               background-image: url("/static/images/plot/xqxq_csc@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
               background-image: url("/static/images/plot/xqxq_csc@3x.png"); } }
-        .expand-content .map-shopping-box .map-message-btn li.vegetable-market.current i {
-          background-position: right bottom; }
       .expand-content .map-shopping-box .map-message-btn li.supermarket {
         left: 20.4%; }
         .expand-content .map-shopping-box .map-message-btn li.supermarket i {
-          height: 2.8266666667rem;
+          height: 2.7866666667rem;
           background-image: url("/static/images/plot/xqxq_cs.png");
           background-repeat: no-repeat;
-          background-position: left bottom;
-          -webkit-background-size: auto 2.8266666667rem;
-          background-size: auto 2.8266666667rem; }
+          -webkit-background-size: auto 2.7866666667rem;
+          background-size: auto 2.7866666667rem; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .expand-content .map-shopping-box .map-message-btn li.supermarket i {
               background-image: url("/static/images/plot/xqxq_cs@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .expand-content .map-shopping-box .map-message-btn li.supermarket i {
               background-image: url("/static/images/plot/xqxq_cs@3x.png"); } }
-        .expand-content .map-shopping-box .map-message-btn li.supermarket.current i {
-          background-position: right bottom; }
       .expand-content .map-shopping-box .map-message-btn li.shopping-mall {
         right: 31.8%; }
         .expand-content .map-shopping-box .map-message-btn li.shopping-mall i {
           height: 3.2933333333rem;
           background-image: url("/static/images/plot/xqxq_sc.png");
           background-repeat: no-repeat;
-          background-position: right bottom;
           -webkit-background-size: auto 3.2933333333rem;
           background-size: auto 3.2933333333rem; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
@@ -1344,42 +1342,34 @@ a.pswp__share--download:hover {
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .expand-content .map-shopping-box .map-message-btn li.shopping-mall i {
               background-image: url("/static/images/plot/xqxq_sc@3x.png"); } }
-        .expand-content .map-shopping-box .map-message-btn li.shopping-mall.current i {
-          background-position: left bottom; }
       .expand-content .map-shopping-box .map-message-btn li.dining-room {
         right: 17.7%; }
         .expand-content .map-shopping-box .map-message-btn li.dining-room i {
-          height: 2.4rem;
+          height: 2.3733333333rem;
           background-image: url("/static/images/plot/xqxq_ct.png");
           background-repeat: no-repeat;
-          background-position: right bottom;
-          -webkit-background-size: auto 2.4rem;
-          background-size: auto 2.4rem; }
+          -webkit-background-size: auto 2.3733333333rem;
+          background-size: auto 2.3733333333rem; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .expand-content .map-shopping-box .map-message-btn li.dining-room i {
               background-image: url("/static/images/plot/xqxq_ct@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .expand-content .map-shopping-box .map-message-btn li.dining-room i {
               background-image: url("/static/images/plot/xqxq_ct@3x.png"); } }
-        .expand-content .map-shopping-box .map-message-btn li.dining-room.current i {
-          background-position: left bottom; }
       .expand-content .map-shopping-box .map-message-btn li.fitness {
         right: 0.9%; }
         .expand-content .map-shopping-box .map-message-btn li.fitness i {
-          height: 2.64rem;
+          height: 2.6rem;
           background-image: url("/static/images/plot/xqxq_js.png");
           background-repeat: no-repeat;
-          background-position: right bottom;
-          -webkit-background-size: auto 2.64rem;
-          background-size: auto 2.64rem; }
+          -webkit-background-size: auto 2.6rem;
+          background-size: auto 2.6rem; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .expand-content .map-shopping-box .map-message-btn li.fitness i {
               background-image: url("/static/images/plot/xqxq_js@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .expand-content .map-shopping-box .map-message-btn li.fitness i {
               background-image: url("/static/images/plot/xqxq_js@3x.png"); } }
-        .expand-content .map-shopping-box .map-message-btn li.fitness.current i {
-          background-position: left bottom; }
   .expand-content .result-data-expand {
     width: 100%;
     padding-left: 0.4rem;
