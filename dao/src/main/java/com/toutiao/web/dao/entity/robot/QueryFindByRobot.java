@@ -102,19 +102,19 @@ public class QueryFindByRobot {
     private Double total_price;//平均总价-新房
     private Double esf_price;//平均单价-二手房
     private Double esf_total_price;//平均总价-二手房
-    private Integer[] heating_mode;//供暖方式(0-未知，1-集中供暖，2-自供暖）
+    private String[] heating_mode;//供暖方式(0-未知，1-集中供暖，2-自供暖）
     private String lift_door_radio;//梯户比
     private String park_radio;//车位配比
     //物业类别/业态：（1-住宅,2-别墅,3-写字楼，4-商铺，5-底商）
-    private Integer[] property_type;
+    private String[] property_type;
     //住宅建筑形式(数组)：1-低层，2-多层，3-小高层，4-高层，5-超高层，
     //6-联排、7-独栋、8-双拼、9-叠拼、10-空中花园、11-空中别墅
-    private Integer[] build_form;
+    private String[] build_form;
     //建筑类别(数组)：1-板楼，2-塔楼，3-板塔结合
-    private Integer[] build_category;
+    private String[] build_category;
     //别墅建筑风格(数组)：1-中式、2-欧式、3-日式、4-美式、5-英式、6-澳式、
     //7-法式、8-西班牙式、9-东南亚式、10-地中海式、11-意大利式、12-现代
-    private Integer[] villa_style;
+    private String[] villa_style;
     //新房平均单价单位
     private String price_unit;
     //新房平均总价单位
@@ -126,16 +126,57 @@ public class QueryFindByRobot {
     //住宅类别(数组)：1-普通住宅，2-公寓，3-酒店式公寓，4-花园洋房，5-商住楼，6-独栋别墅，
     //7-联排别墅，8-经济适用房，9-廉租房，10-公共租赁房，11-定向安置房，
     //12-两限商品房，13-自住型商品房，14-其他
-    private Integer[] residential_category;
+    private String[] residential_category;
     //房天下楼盘Id
     private String soufun_newcode;
     //空气质量
     private String air_quality;
     //小区照片
     private String[] plotPhoto;
-   //小区总价最低
-    private Integer  plotTotalricesBegin;
-    //小区总价最高
-    private Integer  plotTotalricesEnd;
+    //小区总价起始
+    private double plotTotalPricesBegin;
+    //小区总价结束
+    private double plotTotalPricesEnd;
+    //用户的id
+    private Integer userId;
+    //用户的选型
+    private Integer userType;
+    //小区户型
+    private String plotCategory;
+    //小区户型
+    private Integer plotCategoryId;
+    /**
+     * 用户画像类型1,2,3,4,5,6,7
+     */
+    private Integer userPortrayalType;
+
+    //小区最小面积
+    private String plotAreaBegin;
+
+    //小区最大面积
+    private String plotAreaEnd;
+
+    //区域名称
+    private String districtName;
+
+    //学校类型
+    private String[] schoolTypeArray;
+
+    //存储1.5km内是否有 地铁，及具体距离
+    private String  subwayDistance;
+
+    //1.5km内是否有 地铁
+    private Integer  has_subway;
+
+    //环路(1-二环以内,2-二至三环,3-三至四环,4-四至五环,5-五至六环,6-六环以外)
+    private Integer  ring_road;
+    //换手率
+    private String  turnover_rate;
+    //租金月供比
+
+    //铭牌
+
+
+
 
 }
