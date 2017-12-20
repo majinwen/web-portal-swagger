@@ -188,51 +188,63 @@ public class NewHouseBuildings {
     /**
      * 环路
      */
+    @JSONField(name = "ringRoad")
     private Integer roundstation;
     /**
      * 售楼地址
      */
+    @JSONField(name = "saleaddress")
     private String saleAddress;
     /**
      * 占地面积(平方米)
      */
+    @JSONField(name = "groundArea")
     private Double groundArea;
     /**
      * 建筑面积(平方米)
      */
+    @JSONField(name = "purposeArea")
     private Double purposeArea;
     /**
      * 容积率(%)
      */
+    @JSONField(name = "dimension")
     private Double dimension;
     /**
      * 绿化率(%)
      */
+    @JSONField(name = "virescencerate")
     private Double virescencerate;
     /**
      * 总户数
      */
+    @JSONField(name = "totaldoor")
     private String totaldoor;
     /**
      * 停车位数量
      */
+    @JSONField(name = "parkspace")
     private Integer parkSpace;
     /**
      * 物业管理公司
      */
+    @JSONField(name = "propertymanage")
     private String propertymanage;
     /**
      * 物业管理费
      */
+    @JSONField(name = "propertyfee")
     private Double propertyfee;
     /**
      * 供暖方式名称(0-未知，1-集中供暖，2-自供暖）
      */
+
     private String heatingType;
     /**
      * 供暖方式id
      *(0-未知，1-集中供暖，2-自供暖）
      */
+    @JSONField(name = "heatingMode")
     private Integer heatingTypeId;
     /**
      * 最小面积
@@ -245,6 +257,7 @@ public class NewHouseBuildings {
     /**
      * 附件地铁信息
      */
+    @JSONField(name = "subwayDistince")
     private Map<String,String> nearbysubway;
     /**
      * 楼盘等级
