@@ -44,7 +44,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping("/goCheckPrice")
+    @RequestMapping("/checkUserType")
     public String goCheckPrice(@RequestParam("userType") String userType, Model model) {
 
         //判断是否选择类型
@@ -55,22 +55,6 @@ public class IntelligenceFindHouseController {
         //去价格页面
         return "";
     }
-
-    /**
-     * 功能描述：到价格页面
-     *
-     * @param [intelligenceQuery]
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/18 21:41
-     */
-    /*@RequestMapping("/goCategoryPage")
-    public String goPricePage(IntelligenceQuery intelligenceQuery, Model model) {
-
-        //传递用户信息
-        model.addAttribute("intelligenceQuery", intelligenceQuery);
-        return "";
-    }*/
 
     /**
      * 功能描述：异步根据首付与月付获取小区数量与相应的比率
