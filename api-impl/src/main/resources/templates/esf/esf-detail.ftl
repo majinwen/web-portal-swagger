@@ -14,7 +14,7 @@
     <#assign item =houseDetail['housePhoto']>
     <#list item as itemValue>
         <ul class="swiper-wrapper" id="house-pic-container">
-            <li onclick="initphoto(this,0)" class="swiper-slide">
+            <li onclick="initphoto(this,)" class="swiper-slide">
                 <img src="${staticurl}/images/esf/${itemValue}"
                      data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="${itemValue_index +1}">
             </li>

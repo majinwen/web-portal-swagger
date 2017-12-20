@@ -10,5 +10,5 @@ import java.util.Map;
  * Created by 18710 on 2017/12/14.
  */
 public interface PriceTrendService {
-   List<Map<String,List<PriceTrend>>> priceTrendList(PriceTrend priceTrend);
+   Map<String,List<PriceTrend>> priceTrendList(PriceTrend priceTrend);
 }
