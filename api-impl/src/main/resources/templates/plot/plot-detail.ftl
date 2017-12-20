@@ -199,7 +199,7 @@
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
-                <div class="info-card-item">${village['rc']}，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，共<em class="high-light-red">18</em>栋（2558户）<em class="high-light-red">${village['buildingStructure']}</em></div>
+                <div class="info-card-item">${village['rc']}，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，共<em class="high-light-red">${village['sumBuilding']}</em>栋（${village['sumHousehold']}户）<em class="high-light-red">${village['buildingStructure']}</em></div>
             </div>
             <div class="column item-column-two">
                 <div class="info-card-item">
