@@ -49,29 +49,30 @@ public class NewHouseBuildings {
     /**
      * 地铁线名称
      */
-    private String subwayLine;
+    private String[] subwayLine;
     /**
      * 地铁站id
      */
     @JSONField(name = "subwayStation")
-    private Integer subwayStationId;
+    private Integer[] subwayStationId;
     /**
      * 地铁站名称
      */
-    private String subwayStation;
+    private String[] subwayStation;
     /**
      * 物业类型id
      */
     @JSONField(name = "propertyType")
-    private Integer propertyTypeId;
+    private Integer[] propertyTypeId;
     /**
      * 物业类型名称
      */
-    private String propertyType;
+    @JSONField(name = "propertyType")
+    private String[] propertyType;
     /**
      * 是否有电梯
      */
-    @JSONField(name = "propertyType")
+    @JSONField(name = "hasLift")
     private Integer elevatorFlag;
     /**
      * 建筑类型id
@@ -94,12 +95,12 @@ public class NewHouseBuildings {
     /**
      * 楼盘特色id
      */
-    @JSONField(name = "saling")
-    private Integer buildingFeatureId;
+    @JSONField(name = "projFeature")
+    private Integer[] buildingFeatureId;
     /**
      * 楼盘特色名称
      */
-    private String buildingFeature;
+    private String[] buildingFeature;
     /**
      * 装修类型id
      */
@@ -125,13 +126,14 @@ public class NewHouseBuildings {
     @JSONField(name = "totalPrice")
     private Double averagePrice;
     /**
-     * 楼盘标签id
+     * 楼盘标签(特色)id
      */
-    private Integer buildingTagsId;
+    @JSONField(name = "projFeature")
+    private Integer[] buildingTagsId;
     /**
      * 楼盘标签内容
      */
-    private String buildingTags;
+    private String[] buildingTags;
     /**
      * 活动描述
      */
@@ -155,36 +157,46 @@ public class NewHouseBuildings {
     /**
      * 交通状况
      */
-
+    @JSONField(name = "traffic")
     private String trafficCondition;
     /**
      * 开盘时间
      */
+    @JSONField(name = "saledate")
     private Date openedTime;
     /**
      * 交房时间
      */
+    @JSONField(name = "livindate")
     private Date deliverTime;
     /**
      * 开发商
      */
+    @JSONField(name = "developer")
     private String developers;
     /**
      * 销售许可证信息
      */
+    @JSONField(name = "salesLicenseInfo")
     private String sellLicence;
     /**
      * 产权年限
      */
+    @JSONField(name = "rightYear")
     private Integer buildingLife;
     /**
      * 车位配比
      */
+    @JSONField(name = "parkRadio")
     private String parkRadio;
     /**
      * 楼盘地理坐标
      */
-    private Double location;
+    private Double[] location;
+    @JSONField(name = "coordX")
+    private Double coordX;
+    @JSONField(name = "coordY")
+    private Double coordY;
     /**
      * 环路
      */
@@ -238,7 +250,7 @@ public class NewHouseBuildings {
     /**
      * 供暖方式名称(0-未知，1-集中供暖，2-自供暖）
      */
-
+    @JSONField(name = "heatingMode")
     private String heatingType;
     /**
      * 供暖方式id
@@ -263,6 +275,22 @@ public class NewHouseBuildings {
      * 楼盘等级
      *
      */
+    @JSONField(name = "level")
     private Integer buildingLevel;
+    /**
+     * es 类型
+     */
+    @JSONField(name = "Type")
+    private String Type;
+    /**
+     * es 自定义version
+     */
+    @JSONField(name = "version")
+    private Integer version;
+    /**
+     * 楼盘id
+     */
+    @JSONField(name = "key")
+    private Integer key;
 
 }
