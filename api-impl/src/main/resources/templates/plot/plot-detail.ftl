@@ -10,10 +10,9 @@
 </head>
 <body>
 <div class="carousel-box">
-    <#assign village = villageList[0]>
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <#list village['phote'] as vpphoto>
+            <#list village['photo'] as vpphoto>
             <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
                 <img src="${staticurl}/${vpphoto}" data-src="${staticurl}/${vpphoto}" alt="">
             </li>
@@ -60,13 +59,17 @@
 <div class="module-bottom-fill">
     <section class="plot-primary-header">
         <div class="plot-primary-text">
-            <h2>新世纪丽樽</h2>
+            <h2>${village['rc']}</h2>
             <p>[顺义-商圈] 中央别墅区 顺语路57号</p>
-            <p>距离地铁马泉营站 [15号线] 3.8km</p>
+            <p><#assign userMap = village['metroWithPlotsDistance']/>
+            <#assign  keys=userMap?keys/>
+            <#list keys as key>
+            ${userMap[key]!''} ${key}
+            </#list></p>
             <div class="house-labelling gray">
-                <span>满五</span>
-                <span>满二</span>
-                <span>随时看房</span>
+                <#list village['label'] as label>
+                <span>${label}</span>
+                </#list>
             </div>
         </div>
         <div class="plot-primary-map-box"></div>
@@ -137,7 +140,7 @@
             <div class="column item-column-three">
                 <div class="info-card-item">
                     <em>均价</em>
-                    <p>49806元/㎡</p>
+                    <p>${village['avgPrice']}元/㎡</p>
                 </div>
                 <div class="info-card-item">
                     <em>环比上月</em>
@@ -196,21 +199,21 @@
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
-                <div class="info-card-item">首城国际，<em class="high-light-red">2008</em>年建成住宅，共<em class="high-light-red">18</em>栋（2558户）<em class="high-light-red">板楼/板塔结合</em></div>
+                <div class="info-card-item">${village['rc']}，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，共<em class="high-light-red">18</em>栋（2558户）<em class="high-light-red">${village['buildingStructure']}</em></div>
             </div>
             <div class="column item-column-two">
                 <div class="info-card-item">
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                        <em>19平方米</em>
+                        <em>${village['avgGreeningRate']}平方米</em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>1.5车位/户</em>
+                        <em>${village['carPositionRatio']}车位/户</em>
                     </div>
                 </div>
             </div>
