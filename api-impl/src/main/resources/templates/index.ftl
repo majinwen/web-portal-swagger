@@ -167,18 +167,13 @@
         </a></li>
     </#list>
     </#if>
-
-
-
-
     </ul>
 </section>
 <section>
     <div class="index-module-header">
         <h3>小区推荐</h3>
     </div>
-    <ul>
-<#if villageList?exists>
+    <ul><#if villageList?exists>
     <#list villageList as map>
         <#if map_index==3>
             <li><a class="list-item new new-ad-item" href="#">
@@ -230,85 +225,21 @@
             </div>
         </a></li>
     </#list>
-    </#if>
-       <#-- <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>近地铁</span>
-                        <span>优质物业</span>
-                        <span>车位充足</span>
-                    </div>
-                    <div class="cont-block-price plot">
-                        <em>498000元/㎡</em>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-    </ul>
+    </#if></ul>
 </section>
 <#-- 个人中心 侧栏菜单 -->
 <#include "user.ftl">
 
-<script src="${staticurl}/js/zepto.min.js"></script>
+<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
-</body>
-</html>
-<script type="text/javascript" >
+<script>
     $('.search-link').on('focus', function () {
         location.href = url;
-    })
+    });
 </script>
+</body>
+</html>]

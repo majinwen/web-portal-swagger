@@ -394,49 +394,18 @@
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
-                <li><a href="/villageDetail?id=${nearviitem['id']}">
-                    <div class="picture-box">
-                        <#assign photos = nearviitem['photo']>
-                        <img src="${staticurl}/${photos[0]}" alt="${nearviitem['rc']}">
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first">${nearviitem['rc']}</p>
-                        <p class="cont-center"><span>${nearviitem['areaName']}</span><span>${nearviitem['address']}</span></p>
-                        <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
-                    </div>
-                </a></li>
+            <li><a href="/villageDetail?id=${nearviitem['id']}">
+                <div class="picture-box">
+                    <#assign photos = nearviitem['photo']>
+                    <img src="${staticurl}/${photos[0]}" alt="${nearviitem['rc']}">
+                </div>
+                <div class="tilelist-content">
+                    <p class="cont-first">${nearviitem['rc']}</p>
+                    <p class="cont-center"><span>${nearviitem['areaName']}</span><span>${nearviitem['address']}</span></p>
+                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
+                </div>
+            </a></li>
             </#list>
-
-         <#--   <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850</em>/㎡</h4>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850</em>/㎡</h4>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first">五和万科长阳天地</p>
-                    <p class="cont-center"><span>房山</span><span>长阳</span></p>
-                    <h4 class="cont-last">均价：<em>59850</em>/㎡</h4>
-                </div>
-            </a></li>-->
         </ul>
     </section>
 </div>
@@ -445,54 +414,18 @@
         <h3>新房推荐</h3>
     </div>
     <ul class="tilelist">
-        <#list newbuilds as builditem>
-            <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']}">
-                <div class="picture-box">
-            <#assign imglist = builditem['building_imgs']>
-                    <img src="${staticurl}/${imglist[0]}" alt="${imglist[0]}">
-                </div>
-                <div class="tilelist-content">
-                    <h4 class="cont-first">${builditem['building_name']}</h4>
-                    <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
-                </div>
-            </a></li>
-        </#list>
-      <#--  <li><a href="#">
+    <#list newbuilds as builditem>
+        <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']}">
             <div class="picture-box">
-                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+        <#assign imglist = builditem['building_imgs']>
+                <img src="${staticurl}/${imglist[0]}" alt="${imglist[0]}">
             </div>
             <div class="tilelist-content">
-                <h4 class="cont-first">后现代城</h4>
-                <p class="cont-last">均价：<em>68960元</em>/㎡</p>
+                <h4 class="cont-first">${builditem['building_name']}</h4>
+                <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
             </div>
         </a></li>
-        <li><a href="#">
-            <div class="picture-box">
-                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-            </div>
-            <div class="tilelist-content">
-                <h4 class="cont-first">后现代城</h4>
-                <p class="cont-last">均价：<em>68960元</em>/㎡</p>
-            </div>
-        </a></li>
-        <li><a href="#">
-            <div class="picture-box">
-                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-            </div>
-            <div class="tilelist-content">
-                <h4 class="cont-first">后现代城</h4>
-                <p class="cont-last">均价：<em>68960元</em>/㎡</p>
-            </div>
-        </a></li>
-        <li><a href="#">
-            <div class="picture-box">
-                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-            </div>
-            <div class="tilelist-content">
-                <h4 class="cont-first">后现代城</h4>
-                <p class="cont-last">均价：<em>68960元</em>/㎡</p>
-            </div>
-        </a></li>-->
+    </#list>
     </ul>
 </section>
 <section class="detail-contact-box" id="detailContactState">

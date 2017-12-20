@@ -210,12 +210,9 @@
 </body>
 </html>
 <script type="text/javascript">
-
-
      <#assign ptCD0 = tradeline['buildingline']>;
      <#assign ptCD1 = tradeline['arealine']>;
      <#assign ptCD2 = tradeline['tradearealine']>;
-
         // 基于准备好的dom，初始化echarts实例
 
         // 指定图表的配置项和数据
