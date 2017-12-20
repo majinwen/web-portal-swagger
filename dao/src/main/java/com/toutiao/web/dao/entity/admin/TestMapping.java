@@ -1,7 +1,9 @@
 package com.toutiao.web.dao.entity.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
+import org.apache.commons.lang.math.RandomUtils;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -29,6 +31,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TestMapping {
@@ -40,7 +43,8 @@ public class TestMapping {
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
         //testIk(client, "house123", "house1234");
-        buildRobotMapping(client);
+        //buildRobotMapping(client);
+        saveRobot("robot_index", "robot_type", client);
         //queryByHouseId( "a", "b",1, client);
         //buildIndexMapping(client);
         //buildIndexMappingIk(client);
@@ -302,97 +306,6 @@ public class TestMapping {
     }
 
 
-//	public static void queryRang(String index, String type, TransportClient client, ProjHouseInfoRequest houseInfo) {
-//		// 搜索，创建一个termQuery查询，该查询要求全部匹配才会出结果，如果只要包含关键字里面一部分，可以创建fieldQuery。
-//		QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-//				.must(QueryBuilders.termQuery("subwayLineName", "三3号线"))
-//				.must(QueryBuilders.termQuery("subwayStationName", "海淀4"));
-//		SearchResponse searchResponse = client.prepareSearch(index)
-//				.setTypes(type)
-//				.setQuery(queryBuilder)
-//				.get();
-//		for(SearchHit searchHit : searchResponse.getHits().getHits()) {
-//			System.out.println(searchHit.getSourceAsString());
-//		}
-//
-//
-//	}
-
-
-    public static void query2(String index, String type, TransportClient client, String info) {
-        QueryBuilder queryBuilder = null;
-        if (info == null) {
-            queryBuilder = QueryBuilders.boolQuery()
-                    //.must(QueryBuilders.termQuery("areaName1", info));
-                    .must(QueryBuilders.termQuery("areaName", "西城ss"));
-
-        } else {
-            queryBuilder = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.termQuery("areaName1", info))
-                    .must(QueryBuilders.termQuery("areaName", "西城ss"));
-        }
-        SearchResponse searchResponse = client.prepareSearch(index)
-                .setTypes(type)
-                .setQuery(queryBuilder)
-                .get();
-        for (SearchHit searchHit : searchResponse.getHits().getHits()) {
-            System.out.println(searchHit.getSourceAsString());
-        }
-
-    }
-
-
-    /**
-     * 通过二手房id查找房源信息
-     *
-     * @param houseId
-     * @return
-     */
-    public static Map<String, Object> queryByHouseId(String index, String type, Integer houseId, TransportClient client) {
-
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
-        SearchResponse searchresponse = client.prepareSearch(index).setTypes(type)
-                .setQuery(booleanQueryBuilder)
-                .execute().actionGet();
-        SearchHits hits = searchresponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        Map<String, Object> result = new HashMap<>();
-        result.put("data_house", searchHists);
-        result.put("total_house", hits.getTotalHits());
-        return result;
-    }
-
-
-    public Map<String, Object> queryProjHouseByhouseIdandLocation(String projhouseIndex, String projhousetype, double lat, double lon, TransportClient client) {
-
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhousetype);
-        //从该坐标查询距离为distance      housePlotLocation
-        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000", DistanceUnit.METERS);
-        srb.setPostFilter(location1);
-        // 获取距离多少公里 这个才是获取点与点之间的距离的
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("30000", lat, lon);
-        sort.unit(DistanceUnit.METERS);
-        sort.order(SortOrder.ASC);
-        sort.point(lat, lon);
-        srb.addSort(sort).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName"}, null).execute().actionGet();
-        SearchResponse searchResponse = srb.execute().actionGet();
-        SearchHits hits = searchResponse.getHits();
-        String[] house = new String[(int) hits.getTotalHits()];
-        System.out.println("附近的房源(" + hits.getTotalHits() + "个)：");
-        ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit hit : searchHists) {
-            Map<String, Object> buildings = hit.getSource();
-            buildinglist.add(buildings);
-        }
-        Map<String, Object> result = new HashMap<>();
-        result.put("data_plot", buildinglist);
-        result.put("total_plot", hits.getTotalHits());
-        return result;
-    }
-
-
     public static void testIk(TransportClient client, String index, String type) {
         QueryBuilder queryBuilder = null;
         String content = "朝阳111";//朝阳111  首城国际111  东城1
@@ -424,7 +337,7 @@ public class TestMapping {
             System.out.println(searchHit.getSourceAsString());
         }
         /*IndicesAdminClient indicesAdminClient = ElasticFactory.getClient().admin().indices();
-		AnalyzeRequestBuilder request = new AnalyzeRequestBuilder(indicesAdminClient,"cloud_repair","中华人民共和国国歌");
+        AnalyzeRequestBuilder request = new AnalyzeRequestBuilder(indicesAdminClient,"cloud_repair","中华人民共和国国歌");
         // request.setAnalyzer("ik");
 		request.setTokenizer("ik");
          // Analyzer（分析器）、Tokenizer（分词器）
@@ -451,122 +364,367 @@ public class TestMapping {
         client.admin().indices().prepareCreate("robot_index").execute().actionGet();
         XContentBuilder mapping = XContentFactory.jsonBuilder()
                 .startObject().startObject("robot_type").startObject("properties")
-                .startObject("newcode").field("type", "integer").endObject()
-                .startObject("n_or_e").field("type", "integer").endObject()
-                .startObject("projname").field("type", "text").endObject()
-                .startObject("nickname").field("type", "text").endObject()
-                .startObject("installment").field("type", "text").endObject()
-                .startObject("address").field("type", "text").endObject()
-                .startObject("address_info").field("type", "text").endObject()
-                .startObject("housefeature").field("type", "text").endObject()
-                .startObject("proj_feature").field("type", "text").endObject()
-                .startObject("province").field("type", "text").endObject()
-                .startObject("city_id").field("type", "integer").endObject()
-                .startObject("district_id").field("type", "integer").endObject()
-                .startObject("area_id").field("type", "integer").endObject()
-                .startObject("round").field("type", "text").endObject()
-                .startObject("roundstation").field("type", "text").endObject()
-                .startObject("rounddirection").field("type", "text").endObject()
-                .startObject("community_id").field("type", "integer").endObject()
-                .startObject("projdesc").field("type", "text").endObject()
-                .startObject("right_year").field("type", "integer").endObject()
-                .startObject("groundarea").field("type", "double").endObject()
-                .startObject("purposearea").field("type", "double").endObject()
-                .startObject("dimension").field("type", "double").endObject()
-                .startObject("virescencerate").field("type", "double").endObject()
-                .startObject("buildingdes").field("type", "text").endObject()
-                .startObject("totaldoor").field("type", "integer").endObject()
-                .startObject("parkdesc").field("type", "text").endObject()
-                .startObject("parkspace").field("type", "integer").endObject()
-                .startObject("car_rent_price").field("type", "double").endObject()
-                .startObject("car_sell_price").field("type", "double").endObject()
-                .startObject("propertyfee").field("type", "double").endObject()
-                .startObject("propfeetype").field("type", "text").endObject()
-                .startObject("propertyaddition").field("type", "text").endObject()
-                .startObject("fixstatus").field("type", "text").endObject()
-                .startObject("equipment").field("type", "text").endObject()
-                .startObject("layout").field("type", "text").endObject()
-                .startObject("work_schedule").field("type", "text").endObject()
-                .startObject("startdate").field("type", "date").endObject()
-                .startObject("finishdate").field("type", "date").endObject()
-                .startObject("saledate").field("type", "date").endObject()
-                .startObject("saledate_s").field("type", "text").endObject()
-                .startObject("livindate").field("type", "date").endObject()
-                .startObject("livindate_s").field("type", "text").endObject()
-                .startObject("saletelphone").field("type", "text").endObject()
-                .startObject("saleaddress").field("type", "text").endObject()
-                .startObject("salecard").field("type", "object").endObject()
-                .startObject("mortgage_bank").field("type", "text").endObject()
-                .startObject("saling").field("type", "integer").endObject()
-                .startObject("sail_schedule").field("type", "integer").endObject()
-                .startObject("developer").field("type", "text").endObject()
-                .startObject("investor").field("type", "text").endObject()
-                .startObject("propertymanage").field("type", "text").endObject()
-                .startObject("propertyadviser").field("type", "text").endObject()
-                .startObject("landscape").field("type", "text").endObject()
-                .startObject("construct").field("type", "text").endObject()
-                .startObject("agent").field("type", "text").endObject()
-                .startObject("sightdesign").field("type", "text").endObject()
-                .startObject("conextend").field("type", "text").endObject()
-                .startObject("media").field("type", "text").endObject()
-                .startObject("is_approve").field("type", "integer").endObject()
-                .startObject("webaddress").field("type", "text").endObject()
-                .startObject("websaleaddress").field("type", "text").endObject()
-                .startObject("complete_fraction").field("type", "text").endObject()
-                .startObject("coord_x").field("type", "double").endObject()
-                .startObject("coord_y").field("type", "double").endObject()
-                .startObject("saling_optime").field("type", "date").endObject()
-                .startObject("adminstauts_time").field("type", "date").endObject()
-                .startObject("create_time").field("type", "date").endObject()
-                .startObject("update_time").field("type", "date").endObject()
-                .startObject("deldate").field("type", "date").endObject()
-                .startObject("delreason").field("type", "text").endObject()
-                .startObject("tel400").field("type", "text").endObject()
-                .startObject("pricerate").field("type", "double").endObject()
-                .startObject("pricemax").field("type", "double").endObject()
-                .startObject("pricemin").field("type", "double").endObject()
-                .startObject("esf_district").field("type", "text").endObject()
-                .startObject("esf_comarea").field("type", "text").endObject()
-                .startObject("pinyin_name").field("type", "text").endObject()
-                .startObject("pinyin_initials").field("type", "text").endObject()
-                .startObject("esf_address").field("type", "text").endObject()
-                .startObject("esf_operastion").field("type", "text").endObject()
-                .startObject("esf_show").field("type", "integer").endObject()
-                .startObject("esf_is_approve").field("type", "text").endObject()
-                .startObject("update_saledate_time").field("type", "date").endObject()
-                .startObject("update_livindate_time").field("type", "date").endObject()
-                .startObject("right_desc").field("type", "text").endObject()
-                .startObject("zip_code").field("type", "text").endObject()
-                .startObject("property_tele").field("type", "text").endObject()
-                .startObject("property_address").field("type", "text").endObject()
-                .startObject("creator_id").field("type", "integer").endObject()
-                .startObject("updater_id").field("type", "integer").endObject()
-                .startObject("is_del").field("type", "integer").endObject()
-                .startObject("price").field("type", "double").endObject()
-                .startObject("total_price").field("type", "double").endObject()
-                .startObject("esf_price").field("type", "double").endObject()
-                .startObject("esf_total_price").field("type", "double").endObject()
-                .startObject("heating_mode").field("type", "integer").endObject()
-                .startObject("lift_door_radio").field("type", "text").endObject()
-                .startObject("park_radio").field("type", "text").endObject()
-                .startObject("property_type").field("type", "integer").endObject()
-                .startObject("build_form").field("type", "integer").endObject()
-                .startObject("build_category").field("type", "integer").endObject()
-                .startObject("villa_style").field("type", "integer").endObject()
-                .startObject("price_unit").field("type", "text").endObject()
-                .startObject("total_price_unit").field("type", "text").endObject()
-                .startObject("esf_price_unit").field("type", "text").endObject()
-                .startObject("esf_total_price_unit").field("type", "text").endObject()
-                .startObject("residential_category").field("type", "integer").endObject()
-                .startObject("soufun_newcode").field("type", "text").endObject()
-                .startObject("air_quality").field("type", "text").endObject()
-                .startObject("plotPhoto").field("type", "text").endObject()
-                .startObject("plotTotalricesBegin").field("type", "integer").endObject()
-                .startObject("plotTotalricesEnd").field("type", "integer").endObject()
+                .startObject("newcode").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("n_or_e").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("projname").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("nickname").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("installment").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("address").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("address_info").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("housefeature").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("proj_feature").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("province").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("city_id").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("district_id").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("area_id").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("round").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("roundstation").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("rounddirection").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("community_id").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("projdesc").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("right_year").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("groundarea").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("purposearea").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("dimension").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("virescencerate").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("buildingdes").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("totaldoor").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("parkdesc").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("parkspace").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("car_rent_price").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("car_sell_price").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("propertyfee").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("propfeetype").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("propertyaddition").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("fixstatus").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("equipment").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("layout").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("work_schedule").field("type", "string").endObject()
+                .startObject("startdate").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("finishdate").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("saledate").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("saledate_s").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("livindate").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("livindate_s").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("saletelphone").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("saleaddress").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("salecard").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("mortgage_bank").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("saling").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("sail_schedule").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("developer").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("investor").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("propertymanage").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("propertyadviser").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("landscape").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("construct").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("agent").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("sightdesign").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("conextend").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("media").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("is_approve").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("webaddress").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("websaleaddress").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("complete_fraction").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("coord_x").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("coord_y").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("saling_optime").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("adminstauts_time").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("create_time").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("update_time").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("deldate").field("type", "date").field("format", "yyyy-MM-dd").field("index", "not_analyzed").endObject()
+                .startObject("delreason").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("tel400").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("pricerate").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("pricemax").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("pricemin").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("esf_district").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("esf_comarea").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("pinyin_name").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("pinyin_initials").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("esf_address").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("esf_operastion").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("esf_show").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("esf_is_approve").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("update_saledate_time").field("type", "date").field("format", "yyyy-MM-dd").endObject()
+                .startObject("update_livindate_time").field("type", "date").field("format", "yyyy-MM-dd").endObject()
+                .startObject("right_desc").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("zip_code").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("property_tele").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("property_address").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("creator_id").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("updater_id").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("is_del").field("type", "integer").field("index", "not_analyzed").endObject()
+                .startObject("price").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("total_price").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("esf_price").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("esf_total_price").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("heating_mode").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("lift_door_radio").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("park_radio").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("property_type").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("build_form").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("build_category").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("villa_style").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("price_unit").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("total_price_unit").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("esf_price_unit").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("esf_total_price_unit").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("residential_category").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("soufun_newcode").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("air_quality").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("plotPhoto").field("type", "string").field("index", "not_analyzed").endObject()
+                .startObject("plotTotalPricesBegin").field("type", "double").field("index", "not_analyzed").endObject()
+                .startObject("plotTotalPricesEnd").field("type", "double").field("index", "not_analyzed").endObject()
                 .endObject().endObject().endObject();
         PutMappingRequest mappingRequest = Requests.putMappingRequest("robot_index").type("robot_type")
                 .source(mapping);
         client.admin().indices().putMapping(mappingRequest).actionGet();
     }
+
+
+    public static void saveRobot(String index, String type, TransportClient client) throws Exception {
+
+        QueryFindByRobot queryFindByRobot = new QueryFindByRobot();
+        Integer houseId = RandomUtils.nextInt(20);
+
+        queryFindByRobot.setUserId(houseId);
+        queryFindByRobot.setUserType(3);
+        //序号
+        queryFindByRobot.setNewcode(houseId);
+        //新房/二手房(0-新房，1-二手房)
+        queryFindByRobot.setN_or_e(RandomUtils.nextInt(2));
+        //楼盘名称(小区名称)
+        queryFindByRobot.setProjname("楼盘名称");
+        //别名
+        queryFindByRobot.setNickname("别名");
+        //楼盘分期
+        queryFindByRobot.setInstallment("楼盘分期1");
+        //地址
+        queryFindByRobot.setAddress("楼盘地址");
+        //地址描述
+        queryFindByRobot.setAddress_info("楼盘地址描述");
+        //房源特色
+        queryFindByRobot.setHousefeature("房源特色");
+        //项目特色
+        queryFindByRobot.setProj_feature("项目特色");
+        //省
+        queryFindByRobot.setProvince("省");
+        //城市
+        queryFindByRobot.setCity_id(1);
+        //区县
+        queryFindByRobot.setDistrict_id(1);
+        //商圈
+        queryFindByRobot.setArea_id(1);
+        //环线
+        queryFindByRobot.setRound("二环以外，三环以内");
+        //环线方位
+        queryFindByRobot.setRounddirection("二环向东");
+        //环线位置
+        queryFindByRobot.setRoundstation("环线位置");
+        //所属社区
+        queryFindByRobot.setCommunity_id(12);
+        //项目描述
+        queryFindByRobot.setProjdesc("项目描述");
+        //产权年限
+        queryFindByRobot.setRight_year(23);
+        //占地面积(平方米)
+        queryFindByRobot.setGroundarea(123.4);
+        //建筑面积(平方米)
+        queryFindByRobot.setPurposearea(2345.5);
+        //绿化率(%)
+        queryFindByRobot.setVirescencerate(678.3);
+        //容积率(%)
+        queryFindByRobot.setDimension(34.5);
+        //楼层状况
+        queryFindByRobot.setBuildingdes("楼层状况");
+        //总户数
+        queryFindByRobot.setTotaldoor(123);
+        //停车位描述
+        queryFindByRobot.setParkdesc("停车位描述");
+        //停车位数量
+        queryFindByRobot.setParkspace(45);
+        //停车位租价（年租）
+        queryFindByRobot.setCar_rent_price(234.5);
+        //停车位售价
+        queryFindByRobot.setCar_sell_price(4354.5);
+        //物业管理费
+        queryFindByRobot.setPropertyfee(123.4);
+        //物业管理费价格单位
+        queryFindByRobot.setPropfeetype("物业管理费价格单位");
+        //物业管理费附加信息
+        queryFindByRobot.setPropertyaddition("物业管理费附加信息");
+        //装修状况
+        queryFindByRobot.setFixstatus("装修中");
+        //建材设备
+        queryFindByRobot.setEquipment("钢材");
+        //小区内部配套
+        queryFindByRobot.setLayout("小区健身器材");
+
+        queryFindByRobot.setWork_schedule("工程建设中");
+        queryFindByRobot.setStartdate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        queryFindByRobot.setFinishdate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        queryFindByRobot.setSaledate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        queryFindByRobot.setSaledate_s("开始建设");
+        queryFindByRobot.setLivindate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        queryFindByRobot.setLivindate_s("1");
+        queryFindByRobot.setSaletelphone("123");
+        queryFindByRobot.setSaleaddress("1");
+        queryFindByRobot.setSalecard("注册证");
+         queryFindByRobot.setMortgage_bank("中国银行");
+        //销售状态(0-售完,1-在售,2-不在售,3-出租,4-租售,5-待售)
+        queryFindByRobot.setSaling(2);
+        queryFindByRobot.setSail_schedule(4);
+        queryFindByRobot.setDeveloper("开发商");
+        queryFindByRobot.setInvestor("投资商");
+        queryFindByRobot.setPropertymanage("我爱我家");
+        //物业顾问公司
+        queryFindByRobot.setPropertyadviser("物业顾问公司");
+        //建筑及园林设计单位
+        queryFindByRobot.setLandscape("建筑及园林设计单位");
+        //承建商
+        queryFindByRobot.setConstruct("中建竣工");
+        //代理商
+        queryFindByRobot.setAgent("中建竣工");
+        //景观设计单位
+        queryFindByRobot.setSightdesign("景观设计单位");
+        //整合推广单位
+        queryFindByRobot.setConextend("整合推广单位");
+        //平面媒体广告单位
+        queryFindByRobot.setMedia("平面媒体广告单位");
+        //审批状态（0-不通过，1-通过，2-错误）（0-未发布，1-已发布）
+        queryFindByRobot.setIs_approve(4);
+        //网站地址
+        queryFindByRobot.setWebaddress("网站地址");
+        //网上售楼中心地址
+        queryFindByRobot.setWebsaleaddress("网上售楼中心地址");
+        //完成度
+        queryFindByRobot.setComplete_fraction("完成度");
+        //x坐标
+        queryFindByRobot.setCoord_x(3.0);
+        //y坐标
+        queryFindByRobot.setCoord_y(3.5);
+        //楼盘置为售完的时间
+       queryFindByRobot.setSaling_optime(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //移交二手房或者从二手房转回的时间
+        queryFindByRobot.setAdminstauts_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //创建时间
+        queryFindByRobot.setCreate_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //修改时间
+        queryFindByRobot.setUpdate_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //删除时间
+        queryFindByRobot.setDeldate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //删除说明
+         queryFindByRobot.setDelreason("删除说明：2018-1-1");
+        //400电话
+        queryFindByRobot.setTel400("1222111");
+        //价格增长率
+        queryFindByRobot.setPricerate(456.8);
+        //最高价格
+        queryFindByRobot.setPricemax(3443.6);
+        //最低价格
+        queryFindByRobot.setPricemin(345.7);
+        //二手房区县
+       queryFindByRobot.setEsf_district("二手房区县");
+        //二手房商圈
+        queryFindByRobot.setEsf_comarea("二手房商圈");
+        //名称全拼
+        queryFindByRobot.setPinyin_name("名称全拼");
+        //名称拼音首字母
+        queryFindByRobot.setPinyin_initials("名称拼音首字母");
+        //二手房地址
+        queryFindByRobot.setEsf_address("名称拼音首字母");
+        //二手房业态
+        queryFindByRobot.setEsf_operastion("二手房业态");
+        //二手房是否展示(0-否，1-是)
+        queryFindByRobot.setEsf_show(4);
+        //二手房审核状态（Y/N）
+        queryFindByRobot.setEsf_is_approve("y");
+        //开盘更新时间
+        queryFindByRobot.setUpdate_saledate_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //入住更新时间
+       queryFindByRobot.setUpdate_livindate_time(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        //产权年限（下拉：70，50,40）
+        queryFindByRobot.setRight_desc("70");
+        //邮编
+        queryFindByRobot.setZip_code("100000");
+        //物业电话
+        queryFindByRobot.setProperty_tele("11111");
+        //物业地址
+        queryFindByRobot.setProperty_address("物业地址");
+        //创建人ID
+        queryFindByRobot.setCreator_id(43);
+        //更新人ID
+        queryFindByRobot.setUpdater_id(56);
+        //删除标志位(0-否，1-是)
+        queryFindByRobot.setIs_del(23);
+        //平均单价-新房
+        queryFindByRobot.setPrice(23.4);
+        //平均总价-新房
+        queryFindByRobot.setTotal_price(233.3);
+        //平均单价-二手房
+        queryFindByRobot.setEsf_price(321.4);
+        //平均总价-二手房
+        queryFindByRobot.setEsf_total_price(987.2);
+        String  i[]={"1","3","2"};
+        //供暖方式(0-未知，1-集中供暖，2-自供暖）
+        queryFindByRobot.setHeating_mode(i);
+
+        //梯户比
+        queryFindByRobot.setLift_door_radio("1:2");
+        //车位配比
+        queryFindByRobot.setPark_radio("3:4");
+        String w[]={"1","3","2"};
+        //物业类别/业态：（1-住宅,2-别墅,3-写字楼，4-商铺，5-底商）
+        queryFindByRobot.setProperty_type(w);
+        String q[]={"1","3","2"};
+        //住宅建筑形式(数组)：1-低层，2-多层，3-小高层，4-高层，5-超高层，
+        //6-联排、7-独栋、8-双拼、9-叠拼、10-空中花园、11-空中别墅
+        queryFindByRobot.setBuild_form(q);
+        String q1[]={"1","3","2"};
+        //建筑类别(数组)：1-板楼，2-塔楼，3-板塔结合
+         queryFindByRobot.setBuild_category(q1);
+        String q2[]={"1","3","2"};
+        //别墅建筑风格(数组)：1-中式、2-欧式、3-日式、4-美式、5-英式、6-澳式、
+        //7-法式、8-西班牙式、9-东南亚式、10-地中海式、11-意大利式、12-现代
+        queryFindByRobot.setVilla_style(q2);
+        //新房平均单价单位
+        queryFindByRobot.setPrice_unit("新房平均单价单位");
+        //新房平均单价单位
+        queryFindByRobot.setTotal_price_unit("新房平均单价单位");
+        //二手房平均单价单位
+        queryFindByRobot.setEsf_price_unit("二手房平均单价单位");
+        //二手房平均总价单位
+        queryFindByRobot.setEsf_total_price_unit("二手房平均总价单位");
+
+        String y[]={"1","3","2"};
+        //住宅类别(数组)：1-普通住宅，2-公寓，3-酒店式公寓，4-花园洋房，5-商住楼，6-独栋别墅，
+        //7-联排别墅，8-经济适用房，9-廉租房，10-公共租赁房，11-定向安置房，
+        //12-两限商品房，13-自住型商品房，14-其他
+        queryFindByRobot.setResidential_category(y);
+        //房天下楼盘Id
+        queryFindByRobot.setSoufun_newcode("45");
+        //空气质量
+        queryFindByRobot.setAir_quality("质量不错");
+        String photo[]={"/sec","/sx"};
+        //小区照片
+        queryFindByRobot.setPlotPhoto(photo);
+        //小区总价最低
+        queryFindByRobot.setPlotTotalPricesBegin(345.6);
+        //小区总价最高
+        queryFindByRobot.setPlotTotalPricesEnd(763.6);
+
+        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        JSONObject json = (JSONObject) JSONObject.toJSON(queryFindByRobot);
+        IndexRequestBuilder lrb = client.prepareIndex(index, type).setSource(json).setId(String.valueOf(houseId));
+        bulkRequest.add(lrb);
+        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
+        if (bulkResponse.hasFailures()) {
+
+            bulkResponse.buildFailureMessage();
+        }
+        bulkRequest = client.prepareBulk();
+    }
+
 
 }
