@@ -193,7 +193,7 @@ public class NewHouseBuildings {
     /**
      * 楼盘地理坐标
      */
-    private Double[] location;
+    private String[] location;
     @JSONField(name = "coordX")
     private Double coordX;
     @JSONField(name = "coordY")
