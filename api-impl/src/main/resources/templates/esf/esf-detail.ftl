@@ -14,18 +14,9 @@
     <#assign item =houseDetail['housePhoto']>
     <#list item as itemValue>
         <ul class="swiper-wrapper" id="house-pic-container">
-            <li onclick="initphoto(this,)" class="swiper-slide">
-                <img src="${staticurl}/images/esf/${itemValue}"
-                     data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="${itemValue_index +1}">
+            <li onclick="initphoto(this,0)" class="swiper-slide">
+                <img src="${staticurl}/images/esf/${itemValue}" data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="${itemValue_index +1}">
             </li>
-        <#--<li onclick="initphoto(this,0)" class="swiper-slide">
-            <img src="${staticurl}/images/esf/esxq_banner@3x.png"
-                 data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="2">
-        </li>
-        <li onclick="initphoto(this,0)" class="swiper-slide">
-            <img src="${staticurl}/images/esf/esxq_banner@3x.png"
-                 data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="3">
-        </li>-->
         </ul>
     </#list>
         <div class="banner-title">
@@ -119,7 +110,6 @@
             </li>
             <li>
                 <p>
-                <#--交通信息：${houseDetail.houseTrafficInfo}距离地铁国贸站[1号线]<em class="primary-distance">0.6km</em>-->
                     交通信息：${houseDetail.houseTrafficInfo}<em class="primary-distance">0.6km</em>
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
@@ -135,8 +125,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" src="${staticurl}/images/esf/${houseDetail.houseProxyPhoto}"
-                     alt="${houseDetail.houseProxyName}">
+                <img class="source-icon" src="${staticurl}/images/esf/${houseDetail.houseProxyPhoto}" alt="${houseDetail.houseProxyName}">
                 <p>
                     <span>【${houseDetail.houseManagementType}】${houseDetail.houseProxyName}</span>
                     <em>房屋信息发布人</em>
@@ -144,8 +133,7 @@
                 <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
             </div>
             <div class="describe-cont">
-                <p>
-                ${houseDetail.houseRecommend}</p>
+                <p>${houseDetail.houseRecommend}</p>
                 <span class="describe-show-btn">>>展开</span>
             </div>
         </div>
@@ -167,13 +155,11 @@
                     <h4>${houseDetail.housePlotName}</h4>
                     <p>${houseDetail.housePlotInfo}</p>
                 </div>
-            <#--
-                            <div class="tilelist-content">
-                                <h4>${houseDetail.housePlotName}首城国际</h4>
-                                <p>共18栋（2558户），板楼/板塔结合</p>
-                                <p>参考均价<em>115982元</em>/㎡</p>
-                            </div>
-            -->
+                <#--<div class="tilelist-content">
+                    <h4>${houseDetail.housePlotName}首城国际</h4>
+                    <p>共18栋（2558户），板楼/板塔结合</p>
+                    <p>参考均价<em>115982元</em>/㎡</p>
+                </div>-->
             </li>
         </ul>
     </section>
@@ -218,26 +204,24 @@
         <ul class="tilelist">
             <#if plotList?exists>
                 <#list plotList as plotInfo>
-                    <li>
-                        <a href="#">
-                           <div class="picture-box">
-                                <#if plotInfo['photo']?exists>
-                                    <#assign plotImage=plotInfo['photo'] >
-                                    <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
-                                    <#else >
-                                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
-                                </#if>
-                            </div>
-                            <div class="tilelist-content">
-                                <#if plotInfo['desc']?exists>
-                                    <h4 class="cont-first">${plotInfo.desc}</h4>
-                                </#if>
-                                <#if plotInfo['avgPrice']?exists>
-                                    <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
-                                </#if>
-                            </div>
-                        </a>
-                    </li>
+                    <li><a href="#">
+                        <div class="picture-box">
+                            <#if plotInfo['photo']?exists>
+                                <#assign plotImage=plotInfo['photo'] >
+                                <img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
+                                <#else >
+                                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
+                            </#if>
+                        </div>
+                        <div class="tilelist-content">
+                            <#if plotInfo['desc']?exists>
+                                <h4 class="cont-first">${plotInfo.desc}</h4>
+                            </#if>
+                            <#if plotInfo['avgPrice']?exists>
+                                <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                            </#if>
+                        </div>
+                    </a></li>
                 </#list>
             </#if>
         </ul>
@@ -250,7 +234,7 @@
     </div>
 </section>
 
-<script src="${staticurl}/js/zepto.min.js"></script>
+<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>

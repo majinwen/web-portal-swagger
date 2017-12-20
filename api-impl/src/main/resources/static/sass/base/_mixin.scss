@@ -11,6 +11,9 @@ $borderLineColor: #ccc;
 .high-light-red {
     color: $baseRed !important;
 }
+.none {
+    display: none;
+}
 
 .pr {
     position: relative !important;
@@ -58,6 +61,23 @@ $borderLineColor: #ccc;
 
 .text-center {
     text-align: center !important;
+}
+
+.clear {
+    zoom: 1;
+
+    &:after {
+        visibility: hidden;
+        display: block;
+        clear: both;
+        content: '';
+        height: 0;
+        font-size: 0;
+    }
+}
+
+.content-visible {
+    display: block !important;
 }
 
 @mixin font-dpr($font-size) {
@@ -120,8 +140,7 @@ $FontSize: 16;
 }
 
 .house-labelling {
-    white-space: nowrap;
-    overflow: hidden;
+    @include text-ellipses;
 
     &.normal, &.gray {
         span {
@@ -180,6 +199,9 @@ $FontSize: 16;
         }
     }
 
+}
+.hidden {
+    overflow: hidden;
 }
 
 .fixed-scroll {

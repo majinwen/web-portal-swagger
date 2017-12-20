@@ -248,7 +248,7 @@
 </section>
 <div class="scroll-mask"></div>
 
-<script src="${staticurl}/js/zepto.min.js"></script>
+<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>

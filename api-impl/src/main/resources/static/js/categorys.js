@@ -1,6 +1,7 @@
 var BaseUrl = 'http://localhost:8085/newhouse/searchNewHouse';
 var params;
 var url;
+var submitClickState = false;
 
 $('#category-tab').on('click','li', function () {
     var $dom = getDataDom($(this),'panel');
@@ -15,8 +16,10 @@ $('#category-tab').on('click','li', function () {
     }
     if ($('#category-tab').find('.current').length <= 0) {
         $('.global-mark').addClass('none');
+        $('body').removeClass('fixed-scroll');
     } else {
         $('.global-mark').removeClass('none');
+        $('body').addClass('fixed-scroll');
     }
 });
 
@@ -48,6 +51,7 @@ $('.price-list').on('click','li', function (e) {
 
 // 户型
 $('.type-list').on('click','li', function (e) {
+    submitClickState = false;
     if ($(this).attr('data-type') == 0) {
         $(this).addClass('current').siblings().removeClass('current');
     } else {
@@ -59,6 +63,7 @@ $('.type-list').on('click','li', function (e) {
  * 提交选中户型
  * */
 $('#typeSubmit').on('click', function (e) {
+    submitClickState = true;
     var layoutText = $('.type-list').find('li.current').text(),
         chooseType = $('.type-list').find('li.current'),
         layoutTextArr = [];
@@ -131,9 +136,14 @@ $('#moreReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
 });
 
-$('.category-cont').click(function (e) {
+$('.category-cont').on('click', function (e) {
     e.stopPropagation();
 });
+
+/*$('.global-mark').click(function (e) {
+    $('.filter-item').removeClass('active');
+    $('.global-mark').toggleClass('none');
+});*/
 
 /*
  * 显示区域，获取circle json 数据
@@ -235,7 +245,7 @@ function submitSubwayLine(subwayid,e,index) {
 
     tabTextReplace(e,subwayData[index].name);
     $.ajax({
-        method: 'GET',
+        type: 'GET',
         url: url,
         success: function (response) {
             console.log(response);
@@ -281,4 +291,5 @@ function tabTextReplace(e,text) {
     tabMarkDom.find('em').text(text);
     $('.filter-item').removeClass('active');
     $('.global-mark').addClass('none');
+    $('body').removeClass('fixed-scroll');
 }

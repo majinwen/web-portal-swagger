@@ -1,4 +1,4 @@
-Zepto(function () {
+$(function () {
     describeAllShow();      // 描述展示全部
 
     detailContactState();   // 分享，收藏，咨询展示状态
@@ -9,11 +9,14 @@ Zepto(function () {
 
     textSlider();           // 首页头条公告滚动
     
-    $('.header-user').tap(function () {
+    $('.header-user').click(function () {
         userSideNav();      // 个人中心导航
     });
-});
 
+    moduleExpand();         // 小区详情模块状态
+
+    marketsState();         // 小区市场详情切换
+});
 
 function describeAllShow() {
     if ($('.describe-cont').length) {
@@ -43,21 +46,34 @@ function detailContactState() {
         });
     }
 }
-
 function carouselSwiper() {
+    var bannerloop;
+    var newIndexloop;
     if ($('.swiper-container').length){
         // 详情页
+        if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) > 0) {
+            bannerloop = false;
+            $('#detail-swiper').children('.banner-title').hide();
+        } else {
+            bannerloop = true
+        }
         var bannerSwiper = new Swiper('#detail-swiper', {
             autoplay: 2000,//可选选项，自动滑动
-            loop: true,
+            loop: bannerloop,
             pagination : '.swiper-pagination',
             paginationType : 'fraction'
         });
 
         // 新房首页
+        if (($('#index-swiper').find('li').not('.swiper-slide-duplicate').length) > 0) {
+            newIndexloop = false;
+            $('#index-swiper').children('.swiper-pagination').hide();
+        } else {
+            newIndexloop = true
+        }
         var newIndexSwiper = new Swiper('#index-swiper', {
             autoplay: 2000,//可选选项，自动滑动
-            loop: true,
+            loop: newIndexloop,
             pagination : '.swiper-pagination'
         })
     }
@@ -128,9 +144,37 @@ function userSideNav() {
     setTimeout(maskClick, 500);
 }
 function maskClick() {
-    $('.scroll-mask').tap(function () {
+    $('.scroll-mask').click(function () {
         $('.scroll-mask').hide();
         $('body').removeClass('fixed-scroll');
         $('.side-nav-cont').removeClass('active');
     });
+}
+
+function moduleExpand() {
+    $('.expand-btn').on('click', function () {
+        $(this).toggleClass('expand');
+        if ($(this).hasClass('expand')) {
+            $(this).find('em').text('收起');
+            $(this).parent().next('.expand-content').slideDown();
+        } else {
+            $(this).find('em').text('展开');
+            $(this).parent().next('.expand-content').slideUp();
+        }
+    });
+}
+
+function marketsState() {
+    $('.price-trend-btn').on('click', function () {
+        $(this).addClass('current').siblings().removeClass('current');
+        $(this).parent().prev().find('.subtitle').text('价格走势');
+        $('.price-trend').removeClass('none');
+        $('.supply-contrast').addClass('none');
+    });
+    $('.supply-contrast-btn').on('click', function () {
+        $(this).addClass('current').siblings().removeClass('current');
+        $(this).parent().prev().find('.subtitle').text('供需对比');
+        $('.supply-contrast').removeClass('none');
+        $('.price-trend').addClass('none');
+    })
 }
