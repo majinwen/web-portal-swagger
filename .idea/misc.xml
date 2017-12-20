@@ -13,6 +13,8 @@
         <option value="$PROJECT_DIR$/core-service/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/mbg/pom.xml" />
+        <option value="$PROJECT_DIR$/deploy-mq/pom.xml" />
+        <option value="$PROJECT_DIR$/deploy-config-mq/pom.xml" />
       </list>
     </option>
   </component>

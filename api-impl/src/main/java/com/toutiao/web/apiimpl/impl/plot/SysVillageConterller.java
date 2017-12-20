@@ -29,7 +29,7 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-        villageRequest1.setAreaSize("80");
+//        villageRequest1.setAreaSize("80");
 //        villageRequest1.setId(001);
 //        villageRequest1.setSearchSubwayLineId("001");
 //        villageRequest1.setSearchMetroStationId("001");

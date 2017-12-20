@@ -34,7 +34,7 @@ public class ESClientTools {
     public TransportClient init(){
 
         if(client == null){
-            synchronized (TransportClient.class){}
+//            synchronized (TransportClient.class){}
             if (client == null){
                 try {
                     String[] addresses = esServerIps.split(",");
