@@ -13,7 +13,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input  type="text"onclick="searchNewHouse()" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -31,10 +31,10 @@
             <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/fingNearVillageAndDistance">
+            <div class="banner-nav-item index-nav-item"><a href="/findVillageByConditions">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/newhouse/searchNewHouse">
+            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
@@ -329,7 +329,7 @@
 </body>
 </html>
 <script type="text/javascript" >
-            function searchNewHouse() {
-                alert("bb")
-            }
+    $('.search-link').on('focus', function () {
+        location.href = url;
+    })
 </script>

@@ -71,7 +71,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //        sort.unit(DistanceUnit.METERS);
 //        sort.order(SortOrder.ASC);
 //        sort.point(lat, lon);
-            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName"}, null).execute().actionGet();
+            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName","housePlotLocation"}, null).execute().actionGet();
             SearchResponse searchResponse = srb.setSize(10).execute().actionGet();
 
             SearchHits hits = searchResponse.getHits();

@@ -76,7 +76,7 @@ hr {
   color: #fb3939 !important; }
 
 .none {
-  display: none; }
+  display: none !important; }
 
 .pr {
   position: relative !important; }
@@ -373,8 +373,8 @@ hr {
 
 header {
   position: relative;
-  height: 1.56rem;
-  line-height: 0.84rem;
+  height: 1.5733333333rem;
+  line-height: 0.8533333333rem;
   padding: 0.36rem 0.4rem;
   vertical-align: middle;
   background: #0a0724;

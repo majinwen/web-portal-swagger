@@ -107,7 +107,7 @@
 <section>
     <div class="index-module-header">
         <h3>新房推荐</h3>
-        <a href="#" class="more-arrows"><i class="arrows-right"></i></a>
+        <a href="/newhouse/searchNewHouse" class="more-arrows"><i class="arrows-right"></i></a>
     </div>
     <ul><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>

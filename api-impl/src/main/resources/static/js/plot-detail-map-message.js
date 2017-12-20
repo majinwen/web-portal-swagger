@@ -53,6 +53,7 @@ $('.map-message-btn').on('click', 'li', function () {
     if (parentText == '教育配套') {
         $(this).removeClass('choose');
         $(this).prevAll().addClass('choose');
+        $(this).nextAll().removeClass('choose');
     }
     var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf';
     $.ajax({

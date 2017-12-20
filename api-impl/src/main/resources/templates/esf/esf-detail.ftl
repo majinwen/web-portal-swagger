@@ -181,7 +181,8 @@
         <#if plot?exists>
             <#list plot as map>
                 <li>
-                    <a href="#">
+                    <#assign itemLocation=map['housePlotLocation']>
+                    <a href="/queryByHouseIdandLocation/${map.houseId}/${itemLocation[0]}/${itemLocation[1]}">
                         <div class="picture-box">
                             <#assign item=map['housePhoto']>
                             <img src="${staticurl}/images/esf/${item[0]}" alt="${map.housePlotName}">
@@ -204,7 +205,7 @@
         <ul class="tilelist">
             <#if plotList?exists>
                 <#list plotList as plotInfo>
-                    <li><a href="#">
+                    <li><a href="/villageDetail?id=${plotInfo['id']}">
                         <div class="picture-box">
                             <#if plotInfo['photo']?exists>
                                 <#assign plotImage=plotInfo['photo'] >
