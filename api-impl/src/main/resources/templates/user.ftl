@@ -3,8 +3,8 @@
     <div class="side-user">
         <img id="click_login" src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
         <p>
-        <#if phone?exists>
-        ${phone}
+        <#if getUser()?exists>
+        ${getUser()}
         <#else >
             请登录！
         </#if>
