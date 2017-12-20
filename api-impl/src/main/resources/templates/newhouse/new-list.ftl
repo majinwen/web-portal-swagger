@@ -11,6 +11,7 @@
 </head>
 <body>
 <header>
+    <input id="url" type="hidden" value="http://localhost:8085/newhouse/searchNewHouse">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -192,10 +193,10 @@
     </div>
     <div class="side-nav-item-wrapper">
         <ul class="side-nav-item item-link">
-            <li><a href="#"><i class="icon-index"></i><span>首页</span></a></li>
-            <li><a href="#"><i class="icon-esf"></i><span>找二手房</span></a></li>
-            <li><a href="#"><i class="icon-plot"></i><span>找小区</span></a></li>
-            <li><a href="#"><i class="icon-new"></i><span>找新房</span></a></li>
+            <li><a href="/index"><i class="icon-index"></i><span>首页</span></a></li>
+            <li><a href="/findProjHouseInfo"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a href="/fingNearVillageAndDistance"><i class="icon-plot"></i><span>找小区</span></a></li>
+            <li><a href="newhouse/newhouseindex"><i class="icon-new"></i><span>找新房</span></a></li>
         </ul>
         <ul class="side-nav-item item-my">
             <li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>
