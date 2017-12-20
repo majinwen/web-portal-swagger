@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisConfig {
 
-
-
     @Value("${session.redis.maxTotal}")
     private int maxTotal;
 
@@ -39,4 +37,6 @@ public class RedisConfig {
 
     @Value("${session.livetimeseconds}")
     private int livetimeseconds;
+    @Value("${session.redis.AUTH}")
+    private String  auth;
 }

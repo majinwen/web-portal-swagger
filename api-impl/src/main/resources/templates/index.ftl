@@ -103,7 +103,8 @@
     <ul><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>
     <#list builds as map>
-     <#if map_index==1><li><a class="list-item new new-ad-item" href="#">
+     <#if map_index==1>
+         <li><a class="list-item new new-ad-item" href="#">
          <div class="list-item-cont-ad">
              <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
              <p class="cont-block-3">东城/88㎡—526㎡</p>
@@ -227,19 +228,54 @@
     </#list>
     </#if></ul>
 </section>
-<#-- 个人中心 侧栏菜单 -->
-<#include "user.ftl">
+<#--<#include "user.ftl">-->
+<section class="side-nav-cont">
+    <div class="side-user">
+        <img id="click_login" src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
+        <p>
+        <#if phone?exists>
+        ${phone}
+        <#else >
+            请登录！
+        </#if>
+        </p>
+    </div>
+    <div class="side-nav-item-wrapper">
+        <ul class="side-nav-item item-link">
+            <li><a href="#"><i class="icon-index"></i><span>首页</span></a></li>
+            <li><a href="#"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a href="#"><i class="icon-plot"></i><span>找小区</span></a></li>
+            <li><a href="#"><i class="icon-new"></i><span>找新房</span></a></li>
+        </ul>
+        <ul class="side-nav-item item-my">
+            <li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>
+            <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
+            <li><a id="out_login" href="#"><i class="icon-report"></i><span>注销</span></a></li>
+        </ul>
+    </div>
+    <div class="side-house-intelligent">
+        <a href="#"><em>智能找房</em></a>
+    </div>
+</section>
+<div class="scroll-mask"></div>
 
 <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<!-------- photoswipe -------->
-<script src="${staticurl}/js/photoswipe.min.js"></script>
-<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script>
+    $("#click_login").click(function () {
+        window.location.href = "/user/login";
+    });
+    //注销功能
+    $("#out_login").click(function () {
+        <#if phone?exists>
+            window.location.href = "/user/logout?phone=" +${phone};
+           <#else >
+        </#if>
+    });
     $('.search-link').on('focus', function () {
         location.href = url;
     });
 </script>
 </body>
-</html>]
+</html>

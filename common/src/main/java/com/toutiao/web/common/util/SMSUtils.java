@@ -7,7 +7,6 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import org.springframework.beans.factory.annotation.Value;
 
 
 /**
@@ -16,7 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 public class SMSUtils {
     //发送短信模板
     //AccessKey
-    @Value("${send.AccessKeyID}")
+    /*@Value("${send.AccessKeyID}")
     private static String accessKeyId;
     //密钥
     @Value("${send.AccessKey}")
@@ -26,11 +25,21 @@ public class SMSUtils {
     private static String signName;
     //模板id
     @Value("${send.TemplateCode}")
-    private static String templateCode;
+    private static String templateCode;*/
+    private static String accessKeyId="LTAIYnJWqB91gkG2";
+    //密钥
+    private static String accessKeySecret="sGSWWL4g88RkPFNPF99Y4SFaHXrx12";
+    //签名
+    private static String signName="井潇泽";
+    //模板id
+    private static String templateCode="SMS_115950496";
     // 产品名称:云通信短信API产品,开发者无需替换
     static final String product = "Dysmsapi";
     // 产品域名,开发者无需替换
     static final String domain = "dysmsapi.aliyuncs.com";
+
+
+
 
 
     public static SendSmsResponse sendSms(String phone,String code) throws ClientException {
