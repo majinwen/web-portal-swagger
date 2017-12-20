@@ -148,6 +148,7 @@
                     <p class="green">↓ 3.46%</p>
                 </div>
             </div>
+            <div></div>
         </div>
         <div class="basic-information supply-contrast none">
             <div class="column item-column-two">
@@ -183,6 +184,7 @@
                     </table>
                 </div>
             </div>
+            <div></div>
         </div>
     </section>
 </div>
