@@ -13,7 +13,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-focus" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -184,9 +184,8 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-    $('.search-focus').on('focus', function () {
-        console.log('sss');
-        location.href="/newhouse/searchNewHouse";
+    $('.search-link').on('focus', function () {
+        location.href = "/newhouse/searchNewHouse";
     });
 </script>
 </body>
