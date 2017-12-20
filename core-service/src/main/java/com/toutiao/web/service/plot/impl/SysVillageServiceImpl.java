@@ -65,14 +65,13 @@ public class SysVillageServiceImpl implements SysVillageService {
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
-            System.out.println("附近的小区(" + hits.getTotalHits() + "个)：");
+
 
             for (SearchHit hit : searchHists) {
                 Map source = hit.getSource();
                 Class<VillageEntity> entityClass = VillageEntity.class;
                 VillageEntity instance = entityClass.newInstance();
                 BeanUtils.populate(instance, source);
-                System.out.println(instance);
                 houseList.add(instance);
 //            List<Double> location = (List<Double>) hit.getSource().get("location");
                 // 获取距离值，并保留两位小数点

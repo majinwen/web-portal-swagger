@@ -442,7 +442,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
             BoolQueryBuilder ww = QueryBuilders.boolQuery();
             for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
-                System.out.println(analyzeToken.getTerm());
+
                 queryBuilder = QueryBuilders.boolQuery()
                        // .should(QueryBuilders.fuzzyQuery("keywords", analyzeToken.getTerm()))
                         .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))

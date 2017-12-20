@@ -179,7 +179,6 @@ public class newHouseMapping {
 
         IndexResponse indexResponse =  client.prepareIndex(index,type,"1").setSource(json, XContentType.JSON).get();
         RestStatus status = indexResponse.status();
-        System.out.println(status.getStatus());
 
         return null;
 
@@ -207,7 +206,6 @@ public class newHouseMapping {
 //
 //            Integer id = (Integer) hit.getSource().get("newcode");
 //                String name = (String) JSON.toJSON(hit.getSource());
-            System.out.println(hit.getSource());
         }
 
 

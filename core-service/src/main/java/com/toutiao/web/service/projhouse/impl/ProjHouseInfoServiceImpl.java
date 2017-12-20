@@ -76,7 +76,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
-            System.out.println("附近的房源(" + hits.getTotalHits() + "个)：");
+
             ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
@@ -334,7 +334,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
                 ProjHouseInfo instance = entityClass.newInstance();
                 BeanUtils.populate(instance, source);
-                System.out.println(instance);
                 houseList.add(instance);
             }
             result = new HashMap<>();
