@@ -142,7 +142,7 @@
             <div class="clear">
                 <div class="list-item-img-box">
                     <#assign item = map['building_imgs']>
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                      <img src="${staticurl}/${item[0]}" alt="${map['building_name']}">
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']}</span>
