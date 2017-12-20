@@ -48,3 +48,39 @@
     }
 }
 
+.markets-quotations {
+    padding: 0 rem(30);
+
+    .row {
+        padding: rem(30);
+        border-top: rem(1) solid $borderLineColor;
+
+        .cloumn {
+
+            &:first-child {
+                float: left;
+                width: rem(315);
+            }
+            &:last-child {
+                float: right;
+                width: rem(254);
+            }
+
+            h6 {
+                margin-bottom: rem(30);
+                @include font-dpr(22);
+                color: #999;
+            }
+
+            em {
+                color: $baseRed;
+                @include font-dpr(38);
+            }
+
+            span {
+                margin-left: rem(15);
+                @include font-dpr(18);
+            }
+        }
+    }
+}

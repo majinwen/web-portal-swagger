@@ -75,6 +75,9 @@ hr {
 .high-light-red {
   color: #fb3939 !important; }
 
+.high-light-green {
+  color: #3bbc6c; }
+
 .none {
   display: none !important; }
 
@@ -623,6 +626,56 @@ header {
     margin-bottom: 0.3466666667rem; }
     .list-item.new-ad-item .list-item-img-box:last-child {
       margin-right: 0; }
+
+.sort-icon {
+  position: fixed;
+  bottom: 0.4rem;
+  right: 0.4rem;
+  width: 1.4933333333rem;
+  height: 1.4933333333rem;
+  background-image: url("/static/images/global/base_sort_icon.png");
+  background-repeat: no-repeat; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+    .sort-icon {
+      background-image: url("/static/images/global/base_sort_icon@2x.png"); } }
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    .sort-icon {
+      background-image: url("/static/images/global/base_sort_icon@3x.png"); } }
+
+.sort-content-box {
+  display: none;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 200; }
+  .sort-content-box .sort-content {
+    position: relative;
+    background-color: #fff;
+    z-index: 1; }
+    .sort-content-box .sort-content li {
+      padding: 0 0.4rem;
+      height: 1.2rem;
+      line-height: 1.2rem; }
+      .sort-content-box .sort-content li p {
+        color: #666;
+        border-bottom: 0.0133333333rem solid #ccc; }
+        [data-dpr="1"] .sort-content-box .sort-content li p {
+          font-size: 14px; }
+        [data-dpr="2"] .sort-content-box .sort-content li p {
+          font-size: 28px; }
+        [data-dpr="3"] .sort-content-box .sort-content li p {
+          font-size: 42px; }
+      .sort-content-box .sort-content li.current p {
+        color: #fb3939; }
+  .sort-content-box .sort-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); }
 
 .side-nav-cont {
   position: fixed;

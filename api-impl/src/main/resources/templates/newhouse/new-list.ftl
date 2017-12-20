@@ -6,7 +6,6 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
@@ -187,6 +186,15 @@
     </#if></ul>
 </section>
 <#include "../user.ftl">
+<div class="sort-icon"></div>
+<div class="sort-content-box">
+    <div class="sort-mask"></div>
+    <ul class="sort-content">
+        <li class="current"><p>默认排序</p></li>
+        <li><p>价格由高到低</p></li>
+        <li><p>价格由低到高</p></li>
+    </ul>
+</div>
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>

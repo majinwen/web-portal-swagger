@@ -97,6 +97,35 @@
         </div>
     </section>
 </div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="index-module-header border-bot-none">
+            <h3>北京市场成交行情</h3>
+        </div>
+        <div class="markets-quotations">
+            <div class="row clear">
+                <div class="cloumn">
+                    <h6>昨日新房成交量</h6>
+                    <div><em>185</em>套<span class="high-light-red">24.20% ↓</span></div>
+                </div>
+                <div class="cloumn">
+                    <h6>上周新房成交均价</h6>
+                    <div><em>35270</em>元/㎡</div>
+                </div>
+            </div>
+            <div class="row clear">
+                <div class="cloumn">
+                    <h6>上周二手房房成交量</h6>
+                    <div><em>1865</em>套<span class="high-light-green">24.20% ↓</span></div>
+                </div>
+                <div class="cloumn">
+                    <h6>12月二手房参考均价</h6>
+                    <div><em>57650</em>元/㎡</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 <section>
     <div class="index-module-header">
         <h3>新房推荐</h3>
