@@ -204,7 +204,7 @@
         <ul class="tilelist">
             <#if plotList?exists>
                 <#list plotList as plotInfo>
-                    <li><a href="#">
+                    <li><a href="/newhouse/getNewHouseDetails?id=plotInfo['id']">
                         <div class="picture-box">
                             <#if plotInfo['photo']?exists>
                                 <#assign plotImage=plotInfo['photo'] >
