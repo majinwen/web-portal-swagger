@@ -61,13 +61,14 @@ public class CookieUtils {
      * @param cookieName
      * @param cookieValue
      */
-    public static void setCookie(HttpServletRequest request,
+    public static Cookie setCookie(HttpServletRequest request,
                                 HttpServletResponse response, String cookieName,
                                 String cookieValue) {
         Cookie newCookie = new Cookie(cookieName, cookieValue);
-        newCookie.setMaxAge(RedisObjectType.USER_IMAGE_VALIDATECODE.getExpiredTime());
+        newCookie.setMaxAge(-1);
         newCookie.setPath("/");
         response.addCookie(newCookie);
+        return newCookie;
     }
 
 

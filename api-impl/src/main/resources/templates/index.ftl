@@ -29,16 +29,20 @@
         </div>
         <div class="banner-nav">
             <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
-                <i class="index-esf-icon"></i><p>二手房</p>
+                <i class="index-esf-icon"></i>
+                <p>二手房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
-                <i class="index-plot-icon"></i><p>小区</p>
+                <i class="index-plot-icon"></i>
+                <p>小区</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="/newhouse/searchNewHouse">
-                <i class="index-new-icon"></i><p>新房</p>
+                <i class="index-new-icon"></i>
+                <p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
-                <i class="index-intelligent-icon"></i><p>智能找房</p>
+                <i class="index-intelligent-icon"></i>
+                <p>智能找房</p>
             </a></div>
         </div>
     </section>
@@ -101,74 +105,73 @@
         <h3>新房推荐</h3>
     </div>
     <ul><#if newbuilds?exists>
-    <#assign builds = newbuilds['data']>
-    <#list builds as map>
-     <#if map_index==1><li><a class="list-item new new-ad-item" href="#">
-         <div class="list-item-cont-ad">
-             <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-             <p class="cont-block-3">东城/88㎡—526㎡</p>
-         </div>
-         <div class="clear">
-             <div class="list-item-img-box">
-                 <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-             </div>
-             <div class="list-item-img-box">
-                 <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-             </div>
-             <div class="list-item-img-box">
-                 <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-             </div>
-         </div>
-         <div class="pr">
-             <div class="cont-block-4 house-labelling gray middle">
-                 <span>复式</span>
-                 <span>五证齐全</span>
-                 <span>花园洋房</span>
-             </div>
-             <p class="cont-block-2 high-light-red">68000元/㎡</p>
-         </div>
+        <#assign builds = newbuilds['data']>
+        <#list builds as map>
+            <#if map_index==1>
+                <li><a class="list-item new new-ad-item" href="#">
+                    <div class="list-item-cont-ad">
+                        <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
+                        <p class="cont-block-3">东城/88㎡—526㎡</p>
+                    </div>
+                    <div class="clear">
+                        <div class="list-item-img-box">
+                            <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        </div>
+                        <div class="list-item-img-box">
+                            <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        </div>
+                        <div class="list-item-img-box">
+                            <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        </div>
+                    </div>
+                    <div class="pr">
+                        <div class="cont-block-4 house-labelling gray middle">
+                            <span>复式</span>
+                            <span>五证齐全</span>
+                            <span>花园洋房</span>
+                        </div>
+                        <p class="cont-block-2 high-light-red">68000元/㎡</p>
+                    </div>
 
-         <div class="new-active">
-             <i class="icon"></i><em>活动：</em>
-             <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-         </div>
-     </a></li></#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <#assign item = map['building_imgs']>
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
-                </div>
-                <div class="list-item-cont">
-                    <span hidden="hidden">${map['building_name_id']}</span>
-                    <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                    <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
-                    <p class="cont-block-3">
-                        <#if map['nearsubway']??>
-                        ${map['nearsubway']}
-                        <#else>${map['district_name']}
-                        </#if>
-                        /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <#assign item =  map['building_tags']>
-                        <#list item as itemValue>
-                            <span>${itemValue}</span>
-                        </#list>
+                    <div class="new-active">
+                        <i class="icon"></i><em>活动：</em>
+                        <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
                     </div>
-                    <div class="cont-block-sale">
-                        <em>${map['sale_status_name']}</em>
+                </a></li></#if>
+            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <#assign item = map['building_imgs']>
+                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                    </div>
+                    <div class="list-item-cont">
+                        <span hidden="hidden">${map['building_name_id']}</span>
+                        <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
+                        <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                        <p class="cont-block-3">
+                            <#if map['nearsubway']??>
+                            ${map['nearsubway']}
+                            <#else>${map['district_name']}
+                            </#if>
+                            /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                        <div class="cont-block-4 house-labelling gray middle">
+                            <#assign item =  map['building_tags']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                        </div>
+                        <div class="cont-block-sale">
+                            <em>${map['sale_status_name']}</em>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>${map['activity_desc']}</span>
-            </div>
-        </a></li>
-    </#list>
+                <div class="new-active">
+                    <i class="icon"></i><em>活动：</em>
+                    <span>${map['activity_desc']}</span>
+                </div>
+            </a></li>
+        </#list>
     </#if>
-
-
 
 
     </ul>
@@ -293,8 +296,14 @@
 <#-- 个人中心 侧栏菜单 -->
 <section class="side-nav-cont">
     <div class="side-user">
-        <img src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
-        <p>188********</p>
+        <img id="click_login" src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
+        <p>
+        <#if phone?exists>
+        ${phone}
+        <#else >
+            请登录！
+        </#if>
+        </p>
     </div>
     <div class="side-nav-item-wrapper">
         <ul class="side-nav-item item-link">
@@ -306,6 +315,7 @@
         <ul class="side-nav-item item-my">
             <li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>
             <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
+            <li><a id="out_login" href="#"><i class="icon-report"></i><span>注销</span></a></li>
         </ul>
     </div>
     <div class="side-house-intelligent">
@@ -314,8 +324,21 @@
 </section>
 <div class="scroll-mask"></div>
 
-<script src="${staticurl}/js/zepto.min.js"></script>
+<script src="${staticurl}/js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+
+    $("#click_login").click(function () {
+        window.location.href = "/user/login";
+    });
+    //注销功能
+    $("#out_login").click(function () {
+        <#if phone?exists>
+            window.location.href = "/user/logout?phone=" +${phone};
+           <#else >
+        </#if>
+    });
+</script>
 </body>
 </html>

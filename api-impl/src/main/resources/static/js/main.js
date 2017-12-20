@@ -1,4 +1,4 @@
-Zepto(function () {
+$(function () {
     describeAllShow();      // 描述展示全部
 
     detailContactState();   // 分享，收藏，咨询展示状态
@@ -9,7 +9,7 @@ Zepto(function () {
 
     textSlider();           // 首页头条公告滚动
     
-    $('.header-user').tap(function () {
+    $('.header-user').click(function () {
         userSideNav();      // 个人中心导航
     });
 });
@@ -128,7 +128,7 @@ function userSideNav() {
     setTimeout(maskClick, 500);
 }
 function maskClick() {
-    $('.scroll-mask').tap(function () {
+    $('.scroll-mask').click(function () {
         $('.scroll-mask').hide();
         $('body').removeClass('fixed-scroll');
         $('.side-nav-cont').removeClass('active');
