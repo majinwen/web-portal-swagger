@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
     <title>新房详情</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <div class="carousel-box">
@@ -201,7 +202,6 @@
     </div>
 </section>
 
-<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>

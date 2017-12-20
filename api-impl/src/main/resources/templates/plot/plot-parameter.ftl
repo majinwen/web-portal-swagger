@@ -6,6 +6,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>小区参数</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <div class="module-bottom-fill"></div>
@@ -90,7 +91,6 @@
     </div>
 </section>
 
-<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

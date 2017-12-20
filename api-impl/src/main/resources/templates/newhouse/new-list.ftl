@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房列表</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <header>
@@ -187,7 +188,6 @@
 </section>
 <#include "../user.ftl">
 
-<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>

@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/login.css">
     <title>登录页</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <h2>手机快捷登录</h2>
@@ -34,7 +34,7 @@
     <button type="button" id="log_in_button" class="submit-btn">登录</button>
 </form>
 <p class="fixed-bottom-tips">注册/登录即代表同意《头条房产用户使用协议》</p>
-<SCRIPT>
+<script>
     $(document).ready(function () {
         $("#image_code").val('');
         $("#infoDiv").html('');
@@ -168,6 +168,6 @@
         }
       });
 
-</SCRIPT>
+</script>
 </body>
 </html>

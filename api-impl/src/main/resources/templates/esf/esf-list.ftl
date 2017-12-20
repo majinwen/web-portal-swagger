@@ -6,6 +6,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>二手房列表</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <header>
@@ -239,7 +240,6 @@
 </section>
 <#include "../user.ftl">
 
-<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>

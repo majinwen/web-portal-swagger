@@ -6,6 +6,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>小区待售</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <section class="category-box">
@@ -230,7 +231,6 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 
-<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>

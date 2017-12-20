@@ -6,6 +6,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/search.css">
     <title>搜索页</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <header>
@@ -54,7 +55,6 @@
     </div>
 </section>
 
-<script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 <script src="${staticurl}/js/search.js"></script>
 </body>
 </html>
