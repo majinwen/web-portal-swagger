@@ -76,7 +76,7 @@ hr {
   color: #fb3939 !important; }
 
 .none {
-  display: none; }
+  display: none !important; }
 
 .pr {
   position: relative !important; }
