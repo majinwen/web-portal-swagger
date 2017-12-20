@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,9 @@ public class SysVillageConterller {
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, Model model) {
         List villageList = sysVillageService.findVillageByConditions(villageRequest);
-        model.addAttribute("villageList", villageList);
+        VillageResponse village= (VillageResponse) villageList.get(0);
+        model.addAttribute("village", village);
+
         return "plot/plot-detail";
     }
 
