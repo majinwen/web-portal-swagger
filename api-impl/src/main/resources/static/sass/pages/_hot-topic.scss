@@ -88,20 +88,12 @@
                     left: 50%;
 
                     &.item-1 {
-                        width: rem(118);
-                        margin-left: rem(-59);
+                        width: rem(116);
+                        margin-left: rem(-58);
                     }
-                    &.item-2 {
-                        width: rem(232);
-                        margin-left: rem(-116);
-                    }
-                    &.item-3 {
-                        width: rem(176);
-                        margin-left: rem(-88);
-                    }
-                    &.item-4 {
-                        width: rem(206);
-                        margin-left: rem(-103);
+                    &.item-2, &.item-3, &.item-4 {
+                        width: rem(170);
+                        margin-left: rem(-85);
                     }
                 }
             }

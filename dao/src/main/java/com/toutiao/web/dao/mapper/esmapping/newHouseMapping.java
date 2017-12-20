@@ -1,6 +1,7 @@
 package com.toutiao.web.dao.mapper.esmapping;
 
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -24,6 +25,7 @@ import java.util.*;
 
 
 public class newHouseMapping {
+
 
     protected static void buildIndexMapping() throws Exception {
 
@@ -105,68 +107,75 @@ public class newHouseMapping {
     public static void main(String[] args) throws Exception {
 
 //       buildIndexMapping();
-        save("beijing1","building1");
+        save("newhouse","building");
 //        getss();
     }
 
     public static Map save(String index, String type) throws Exception{
 
+        NewHouseBuildings newHouseBuildings = new NewHouseBuildings();
         Settings settings = Settings.builder().put("cluster.name", "elasticsearch")
                 .build();
         TransportClient client = new PreBuiltTransportClient(settings)
                 .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("47.104.96.88"), 9300));
 
         Map<String,Object> json = new HashMap<>();
-        json.put("city_id",12);
-        json.put("city_name","北京");
-        json.put("district_id",2);
-        json.put("district_name","海淀");
-        json.put("area_id",2);
-        json.put("area_name","五道口");
-        json.put("subway_line_id",new int[]{15,13});
-        json.put("subway_line",new String[]{"15号线","13号线"});
-        json.put("subway_station_id",new int[]{15,13});
-        json.put("subway_station",new String[]{"五道口站","清华隔壁站"});
-        json.put("property_type_id",2);
-        json.put("property_type","高层");
-        json.put("elevator_flag",1);
-        json.put("building_type_id",2);
-        json.put("building_type","塔楼");
-        json.put("sale_status_id","1");
-        json.put("sale_status_name","在售");
-        json.put("building_feature_id","2");
-        json.put("building_feature","特色就是好大");
-        json.put("redecorate_type_id","2");
-        json.put("redecorate_type","精装");
-        json.put("building_name_id",121);
-        json.put("building_name","五道口小区");
-        json.put("average_price",22341);
-        json.put("building_tags_id",new int[]{4,2,3});
-        json.put("building_tags",new String[]{"别墅","花园","洋房"});
-        json.put("activity_desc","优惠活动");
-        json.put("building_imgs",new String[]{"11xxx.img","11eee.img"});
-        json.put("building_nickname","五道口了啊");
-        json.put("building_address","北京海淀五道口1号");
-        json.put("traffic_condition","车多");
-        json.put("opened_time","2017-12-01");
-        json.put("deliver_time","2017-12-10");
-        json.put("developers","s公司");
-        json.put("sell_licence","许可证s文件");
-        json.put("building_life",70);
-        json.put("park_radio","1:1");
-        json.put("location",new double[]{11.12,21.23});
-        json.put("roundstation","3环到4环");
-        json.put("sale_address","清华隔壁");
-        json.put("ground_area",11121);
-        json.put("purpose_area",333233);
-        json.put("dimension",2.20);
-        json.put("virescencerate",2222);
-        json.put("totaldoor","123户");
-        json.put("park_space",1221);
-        json.put("propertymanage","s物业公司");
-        json.put("propertyfee",100);
-        json.put("heating_type","自采暖");
-        json.put("heating_type_id",1);
+        json.put("city_id",newHouseBuildings.getCityId());
+        json.put("city_name",newHouseBuildings.getCityName());
+        json.put("district_id",newHouseBuildings.getDistrictId());
+        json.put("district_name",newHouseBuildings.getDistrictName());
+        json.put("area_id",newHouseBuildings.getAreaId());
+        json.put("area_name",newHouseBuildings.getAreaName());
+        json.put("subway_line_id",newHouseBuildings.getSubwayLineId());
+        json.put("subway_line",newHouseBuildings.getSubwayLine());
+        json.put("subway_station_id",newHouseBuildings.getSubwayStationId());
+        json.put("subway_station",newHouseBuildings.getSubwayStationId());
+        json.put("property_type_id",newHouseBuildings.getPropertyTypeId());
+        json.put("property_type",newHouseBuildings.getPropertyType());
+        json.put("elevator_flag",newHouseBuildings.getElevatorFlag());
+        json.put("building_type_id",newHouseBuildings.getBuildingTypeId());
+        json.put("building_type",newHouseBuildings.getBuildingTypeId());
+        json.put("sale_status_id",newHouseBuildings.getSaleStatusId());
+        json.put("sale_status_name",newHouseBuildings.getSaleStatusName());
+        json.put("building_feature_id",newHouseBuildings.getBuildingFeatureId());
+        json.put("building_feature",newHouseBuildings.getBuildingFeature());
+        json.put("redecorate_type_id",newHouseBuildings.getRedecorateTypeId());
+        json.put("redecorate_type",newHouseBuildings.getRedecorateType());
+        json.put("building_name_id",newHouseBuildings.getBuildingNameId());
+        json.put("building_name",newHouseBuildings.getBuildingName());
+        json.put("average_price",newHouseBuildings.getAveragePrice());
+        json.put("building_tags_id",newHouseBuildings.getBuildingTagsId());
+        json.put("building_tags",newHouseBuildings.getBuildingTags());
+        json.put("activity_desc",newHouseBuildings.getActivityDesc());
+        json.put("building_imgs",newHouseBuildings.getBuildingImgs());
+        json.put("building_nickname",newHouseBuildings.getBuildingNickname());
+        json.put("building_address",newHouseBuildings.getBuildingAddress());
+        json.put("traffic_condition",newHouseBuildings.getTrafficCondition());
+        json.put("opened_time",newHouseBuildings.getOpenedTime());
+        json.put("deliver_time",newHouseBuildings.getDeliverTime());
+        json.put("developers",newHouseBuildings.getDevelopers());
+        json.put("sell_licence",newHouseBuildings.getSellLicence());
+        json.put("building_life",newHouseBuildings.getBuildingLife());
+        json.put("park_radio",newHouseBuildings.getParkRadio());
+        json.put("location",newHouseBuildings.getLocation());
+        json.put("roundstation",newHouseBuildings.getRoundstation());
+        json.put("sale_address",newHouseBuildings.getSaleAddress());
+        json.put("ground_area",newHouseBuildings.getGroundArea());
+        json.put("purpose_area",newHouseBuildings.getPurposeArea());
+        json.put("dimension",newHouseBuildings.getDimension());
+        json.put("virescencerate",newHouseBuildings.getVirescencerate());
+        json.put("totaldoor",newHouseBuildings.getTotaldoor());
+        json.put("park_space",newHouseBuildings.getParkSpace());
+        json.put("propertymanage",newHouseBuildings.getPropertymanage());
+        json.put("propertyfee",newHouseBuildings.getPropertyfee());
+        json.put("heating_type",newHouseBuildings.getHeatingType());
+        json.put("heating_type_id",newHouseBuildings.getHeatingTypeId());
+
+
+        json.put("house_min_area",newHouseBuildings.getHouseMinArea());
+        json.put("house_max_area",newHouseBuildings.getHouseMaxArea());
+        json.put("nearbysubway",newHouseBuildings.getNearbysubway());
+        json.put("building_level",newHouseBuildings.getBuildingLevel());
 
         IndexResponse indexResponse =  client.prepareIndex(index,type,"1").setSource(json, XContentType.JSON).get();
         RestStatus status = indexResponse.status();

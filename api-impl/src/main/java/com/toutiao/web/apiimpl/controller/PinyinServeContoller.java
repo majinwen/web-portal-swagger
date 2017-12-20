@@ -44,23 +44,4 @@ public class PinyinServeContoller {
 
     }
 
-    /**
-     * 大首页
-     * @param model
-     * @return
-     */
-    @RequestMapping("/index")
-    public String index( Model model,VillageRequest villageRequest){
-        NewHouseQuery newHouseQuery=new NewHouseQuery();
-        villageRequest.setAreaSize("80");
-        newHouseQuery.setSort(0);
-        newHouseQuery.setPageNum(1);
-        newHouseQuery.setPageSize(4);
-        Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        List villageList = sysVillageService.findVillageByConditions(villageRequest);
-        model.addAttribute("villageList", villageList);
-        model.addAttribute("newbuilds",builds);
-        model.addAttribute("user","asds");
-        return "index";
-    }
 }

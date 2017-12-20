@@ -273,32 +273,6 @@
                 </div>
             </div>
         </a></li>
-        <li><a class="list-item new new-ad-item" href="#">
-            <div class="list-item-cont-ad">
-                <h3 class="cont-block-1">新龙城</h3>
-                <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                <p class="cont-block-2">2008年建成</p>
-            </div>
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-            </div>
-            <div class="pr">
-                <div class="cont-block-4 house-labelling gray middle">
-                    <span>复式</span>
-                    <span>五证齐全</span>
-                    <span>花园洋房</span>
-                </div>
-                <p class="cont-block-2 high-light-red">68000元/㎡</p>
-            </div>
-        </a></li>
         <li><a class="list-item" href="">
             <div class="clear">
                 <div class="list-item-img-box">
