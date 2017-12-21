@@ -44,7 +44,7 @@ public class PlotServiceImpl implements PlotService {
     private String parentType;
     @Value("${plot.child.type}")
     private String childType;
-//    @Value("${distance}")
+    //    @Value("${distance}")
     private Double distance = 300000000.0;
 
     @Autowired
@@ -80,12 +80,12 @@ public class PlotServiceImpl implements PlotService {
                 BeanUtils.populate(instance, source);
                 houseList.add(instance);
 //                 获取距离值，并保留两位小数点
-            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-            Map<String, Object> hitMap = hit.getSource();
-            // 在创建MAPPING的时候，属性名的不可为geoDistance。
-            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
-            System.out.println( "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                Map<String, Object> hitMap = hit.getSource();
+                // 在创建MAPPING的时候，属性名的不可为geoDistance。
+                hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
+                String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+                System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -211,8 +211,14 @@ public class PlotServiceImpl implements PlotService {
             }
             //排序
             //均价
-//        srb.addSort("level",SortOrder.DESC);
-            srb.addSort("avgPrice", SortOrder.ASC);
+            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice() == 1) {
+                srb.addSort("avgPrice", SortOrder.ASC);
+            }
+
+            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice() == 2) {
+                srb.addSort("avgPrice", SortOrder.DESC);
+            }
+
             //分页
             villageRequest.setSize(10);
             if (villageRequest.getPage() == null) {
@@ -225,14 +231,16 @@ public class PlotServiceImpl implements PlotService {
             SearchHits hits = response.getHits();
             SearchHit[] searchHists = hits.getHits();
 
-            for (SearchHit hit : searchHists) {
-                Map source = hit.getSource();
-                Class<VillageResponse> entityClass = VillageResponse.class;
-                VillageResponse instance = entityClass.newInstance();
-                BeanUtils.populate(instance, source);
-                instance.setKey(key);
-                houseList.add(instance);
+            if (searchHists != null) {
+                for (SearchHit hit : searchHists) {
+                    Map source = hit.getSource();
+                    Class<VillageResponse> entityClass = VillageResponse.class;
+                    VillageResponse instance = entityClass.newInstance();
+                    BeanUtils.populate(instance, source);
+                    instance.setKey(key);
+                    houseList.add(instance);
 //            System.out.println(instance);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -246,10 +254,10 @@ public class PlotServiceImpl implements PlotService {
         VillageEntity villageEntity = new VillageEntity();
 //        String jsonStr  = JSONObject.toJSONString(village);
 //        JSONObject json = JSONObject.parseObject(jsonStr);
-        org.springframework.beans.BeanUtils.copyProperties(village,villageEntity);
+        org.springframework.beans.BeanUtils.copyProperties(village, villageEntity);
         JSONObject json = (JSONObject) JSONObject.toJSON(villageEntity);
         String id = String.valueOf(village.getId());
-        IndexRequest indexRequest = new IndexRequest(index, parentType,id)
+        IndexRequest indexRequest = new IndexRequest(index, parentType, id)
                 .version(village.getVersion())
                 .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
                 .source(json);
@@ -265,11 +273,11 @@ public class PlotServiceImpl implements PlotService {
         VillageEntity village = new VillageEntity();
         village.setId(projHouseInfoes.getHouseId());
         village.setAreaSize(projHouseInfoes.getHouseArea());
-        String jsonStr  = JSONObject.toJSONString(village);
+        String jsonStr = JSONObject.toJSONString(village);
         JSONObject json = JSONObject.parseObject(jsonStr);
 //        BulkRequestBuilder bulkRequest = client.prepareBulk();
         String id = String.valueOf(village.getId());
-        IndexRequest indexRequest = new IndexRequest(index, childType,id)
+        IndexRequest indexRequest = new IndexRequest(index, childType, id)
                 .parent(String.valueOf(projHouseInfoes.getHousePlotId()))
                 .version(projHouseInfoes.getVersion())
                 .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())

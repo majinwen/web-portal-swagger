@@ -145,9 +145,11 @@ public class SaveToESMQ implements CommandLineRunner {
 //                                villageEntity.setMetroStationId((String[]) projectInfo.get("metroStationId"));
 //                                //地铁线站与小区的距离
                                 Map projectExtra = (Map) map.get("projectExtra");
-                                String str1 = (String) projectExtra.get("subwayDistince");
-                                Map subwayDistince = (Map) JSONObject.parse(str1);
-                                villageEntityES.setMetroWithPlotsDistance(subwayDistince);
+                                if (projectExtra != null) {
+                                    String str1 = (String) projectExtra.get("subwayDistince");
+                                    Map subwayDistince = (Map) JSONObject.parse(str1);
+                                    villageEntityES.setMetroWithPlotsDistance(subwayDistince);
+                                }
 //                                //交通信息
 //
 //                                //标签编号
@@ -236,7 +238,7 @@ public class SaveToESMQ implements CommandLineRunner {
                             //面积
                             String houseArea = projHouseInfoES.getHouseArea();
                             if (houseUnitCost != null && houseArea != null) {
-                                int houseTotalPrices = (Integer.parseInt(houseUnitCost)) * (Integer.parseInt(houseArea));
+                                Double houseTotalPrices = (Double.valueOf(houseUnitCost)) * (Double.valueOf(houseArea));
                                 projHouseInfoES.setHouseTotalPrices(String.valueOf(houseTotalPrices));
                             }
                             //楼龄
@@ -244,47 +246,51 @@ public class SaveToESMQ implements CommandLineRunner {
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                             String format1 = format.format(new Date());
                             String year2 = format1.split("-")[0];
-                            projHouseInfoES.setHouseYear(String.valueOf(Integer.parseInt(year2)-Integer.parseInt(year)));
+                            projHouseInfoES.setHouseYear(String.valueOf(Integer.parseInt(year2) - Integer.parseInt(year)));
                             //照片
-                            Map houseImage = (Map) map.get("houseImage");
                             JSONArray houseImage1 = jsonObject.getJSONArray("houseImage");
-                            List<Object> images=new ArrayList<>();
-                            for(Object item : houseImage1){
-                                images.addAll(((JSONObject)item).getJSONArray("imagePath"));
+                            if (houseImage1 != null) {
+                                List<Object> images = new ArrayList<>();
+                                for (Object item : houseImage1) {
+                                    images.addAll(((JSONObject) item).getJSONArray("imagePath"));
+                                }
+                                projHouseInfoES.setHousePhoto(images.toArray(new String[0]));
                             }
-                            projHouseInfoES.setHousePhoto(images.toArray(new String[0]));
 
                             Map houseAgent = (Map) map.get("houseAgent");
-                            //经纪人头像
-                            projHouseInfoES.setHouseProxyPhoto((String) houseAgent.get("agentPic"));
-                            //经纪人姓名
-                            projHouseInfoES.setHouseProxyName((String) houseAgent.get("agentName"));
-                            //经纪人电话号
-                            projHouseInfoES.setHouseProxyPhone((String) houseAgent.get("agentTel"));
-
+                            if (houseAgent != null) {
+                                //经纪人头像
+                                projHouseInfoES.setHouseProxyPhoto((String) houseAgent.get("agentPic"));
+                                //经纪人姓名
+                                projHouseInfoES.setHouseProxyName((String) houseAgent.get("agentName"));
+                                //经纪人电话号
+                                projHouseInfoES.setHouseProxyPhone((String) houseAgent.get("agentTel"));
+                            }
                             //获取相应小区的信息
                             VillageRequest villageRequest = new VillageRequest();
                             villageRequest.setId(projHouseInfoES.getHousePlotId());
                             List villageByConditions = plotService.findVillageByConditions(villageRequest);
-                            VillageResponse plot = (VillageResponse) villageByConditions.get(0);
-                            //房源小区地理坐标
-                            projHouseInfoES.setHousePlotLocation(plot.getLocation());
-                            //房源小区名称
-                            projHouseInfoES.setHousePlotName(plot.getRc());
-                            //房源小区照片
-                            projHouseInfoES.setHousePlotPhoto(plot.getPhoto());
-                            //房源小区信息
-                            projHouseInfoES.setHousePlotInfo(plot.getDesc());
-                            //商圈名称
-                            projHouseInfoES.setHouseBusinessName(plot.getTradingAreaId());
-                            //区域id
-                            projHouseInfoES.setAreaId(plot.getAreaId());
-                            //地铁线id
-                            projHouseInfoES.setSubwayLineId(plot.getSubwayLineId());
-                            //地铁站id
-                            projHouseInfoES.setSubwayStationId(plot.getMetroStationId());
-                            //距离您多少公里
-                            projHouseInfoES.setHouseToSubwayDistance(plot.getMetroWithPlotsDistance());
+                            if (villageByConditions != null&&villageByConditions.size()!=0) {
+                                VillageResponse plot = (VillageResponse) villageByConditions.get(0);
+                                //房源小区地理坐标
+                                projHouseInfoES.setHousePlotLocation(plot.getLocation());
+                                //房源小区名称
+                                projHouseInfoES.setHousePlotName(plot.getRc());
+                                //房源小区照片
+                                projHouseInfoES.setHousePlotPhoto(plot.getPhoto());
+                                //房源小区信息
+                                projHouseInfoES.setHousePlotInfo(plot.getDesc());
+                                //商圈名称
+                                projHouseInfoES.setHouseBusinessName(plot.getTradingAreaId());
+                                //区域id
+                                projHouseInfoES.setAreaId(plot.getAreaId());
+                                //地铁线id
+                                projHouseInfoES.setSubwayLineId(plot.getSubwayLineId());
+                                //地铁站id
+                                projHouseInfoES.setSubwayStationId(plot.getMetroStationId());
+                                //距离您多少公里
+                                projHouseInfoES.setHouseToSubwayDistance(plot.getMetroWithPlotsDistance());
+                            }
                             //版本
                             projHouseInfoES.setVersion((Integer) map.get("version"));
 

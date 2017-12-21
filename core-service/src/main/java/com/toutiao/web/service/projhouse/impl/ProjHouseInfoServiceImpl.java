@@ -10,8 +10,6 @@ import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -412,13 +410,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         TransportClient client = esClientTools.init();
         ProjHouseInfo projHouseInfo = new ProjHouseInfo();
         try {
-            BeanUtils.copyProperties(projHouseInfoes,projHouseInfo);
+            BeanUtils.copyProperties(projHouseInfo,projHouseInfoes);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String json = JSONObject.toJSONString(projHouseInfo);
+        JSONObject json = (JSONObject) JSONObject.toJSON(projHouseInfo);
         IndexRequest indexRequest = new IndexRequest(projhouseIndex, projhouseType, String.valueOf(projHouseInfo.getHouseId()))
-                .version(projHouseInfo.getVersion()).versionType(VersionType.EXTERNAL).source(json);
+                .version(projHouseInfo.getVersion())
+                .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
+                .source(json);
         client.index(indexRequest).actionGet();
     }
 
