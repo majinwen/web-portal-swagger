@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
-    <script src="${staticurl}/js/echarts.js"></script>
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
     <title>新房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
 <div class="carousel-box">

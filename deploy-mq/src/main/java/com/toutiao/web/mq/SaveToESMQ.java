@@ -7,6 +7,8 @@ import com.aliyun.openservices.ons.api.*;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
+import com.toutiao.web.dao.sources.beijing.ResidenceMap;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
@@ -66,6 +68,39 @@ public class SaveToESMQ implements CommandLineRunner {
                             //新房
                             if (nOrE == 0) {
 
+                                String jsonString = JSONObject.toJSONString(projectInfo);
+                                NewHouseBuildings newHouseBuildings = JSON.parseObject(jsonString, NewHouseBuildings.class);
+                                //图片
+                                JSONArray projectImages = (JSONArray) map.get("projectImage");
+                                if (projectImages != null) {
+                                    ArrayList<String> arrayList = new ArrayList<String>();
+                                    for (int i = 0; i < projectImages.size(); i++) {
+                                        arrayList.add(projectImages.getString(i));
+                                    }
+                                    String[] str = new String[arrayList.size()];
+                                    String[] img = arrayList.toArray(str);
+                                    newHouseBuildings.setBuildingImgs(img);
+                                }
+                                //坐标
+                                BigDecimal coordX = (BigDecimal) projectInfo.get("coordX");
+                                BigDecimal coordY = (BigDecimal) projectInfo.get("coordY");
+                                newHouseBuildings.setLocation(coordY.toString()+","+coordX.toString());
+
+                                JSONObject projectExtra = (JSONObject) map.get("projectExtra");
+                                //地铁线
+                                String[] subwayLine = (String[]) projectExtra.get("subwayLine");
+                                newHouseBuildings.setSubwayLine(subwayLine);
+                                //地铁站
+                                String[] subwayStation = (String[]) projectExtra.get("subwayStation");
+                                newHouseBuildings.setSubwayStation(subwayStation);
+                                //最大面积。最小面积
+                                Double houseMinArea = (Double) projectExtra.get("minArea");
+                                Double houseMaxArea = (Double) projectExtra.get("maxArea");
+                                newHouseBuildings.setHouseMinArea(houseMinArea);
+                                newHouseBuildings.setHouseMaxArea(houseMaxArea);
+                                //建筑类型
+
+//                                ResidenceMap.getResidenceBuildCategory(newHouseBuildings.getBuildingTypeId());
 
                             }
                             //小区（二手房）

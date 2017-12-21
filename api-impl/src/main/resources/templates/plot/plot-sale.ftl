@@ -230,6 +230,15 @@
     </ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
+<div class="sort-icon"></div>
+<div class="sort-content-box">
+    <div class="sort-mask"></div>
+    <ul class="sort-content">
+        <li class="current"><p>默认排序</p></li>
+        <li><p>价格由高到低</p></li>
+        <li><p>价格由低到高</p></li>
+    </ul>
+</div>
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
