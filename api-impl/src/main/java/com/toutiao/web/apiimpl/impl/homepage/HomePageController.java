@@ -4,7 +4,7 @@ package com.toutiao.web.apiimpl.impl.homepage;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.newhouse.NewHouseService;
-import com.toutiao.web.service.plot.SysVillageService;
+import com.toutiao.web.service.plot.PlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +21,7 @@ public class HomePageController {
     @Autowired
     private NewHouseService newHouseService;
     @Autowired
-    private SysVillageService sysVillageService;
+    private PlotService plotService;
 
 
     /**
@@ -37,7 +37,7 @@ public class HomePageController {
         newHouseQuery.setPageNum(1);
         newHouseQuery.setPageSize(4);
         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        List villageList = sysVillageService.findVillageByConditions(villageRequest);
+        List villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
         model.addAttribute("newbuilds",builds);
         model.addAttribute("user","asds");

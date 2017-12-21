@@ -5,7 +5,7 @@ import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.newhouse.NewHouseService;
-import com.toutiao.web.service.plot.SysVillageService;
+import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class SysVillageConterller {
+public class PlotConterller {
     @Autowired
-    private SysVillageService sysVillageService;
+    private PlotService plotService;
     @Autowired
     private NewHouseService newHouseService;
     @Autowired
@@ -32,7 +32,7 @@ public class SysVillageConterller {
         List villageList = null;
         Double lonx = Double.valueOf(lon);
         Double laty = Double.valueOf(lat);
-        villageList = sysVillageService.GetNearByhHouseAndDistance(lonx, laty);
+        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
         model.addAttribute("villageList", villageList);
         return "plot-list";
     }
@@ -43,7 +43,7 @@ public class SysVillageConterller {
         VillageRequest villageRequest1 = new VillageRequest();
         villageRequest1.setAreaSize("80");
         List villageList = null;
-        villageList = sysVillageService.findVillageByConditions(villageRequest1);
+        villageList = plotService.findVillageByConditions(villageRequest1);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
@@ -52,7 +52,7 @@ public class SysVillageConterller {
     //小区详情页
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
-        List villageList = sysVillageService.findVillageByConditions(villageRequest);
+        List villageList = plotService.findVillageByConditions(villageRequest);
         VillageResponse village= (VillageResponse) villageList.get(0);
         model.addAttribute("village", village);
 
@@ -60,7 +60,7 @@ public class SysVillageConterller {
         String[] latandlon = village.getLocation().split(",");
         Double lonx = Double.valueOf(latandlon[1]);
         Double laty = Double.valueOf(latandlon[0]);
-        List nearvillage = sysVillageService.GetNearByhHouseAndDistance(lonx,laty);
+        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx,laty);
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房

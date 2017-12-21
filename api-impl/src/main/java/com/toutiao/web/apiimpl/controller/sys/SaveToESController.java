@@ -1,9 +1,9 @@
 package com.toutiao.web.apiimpl.controller.sys;
 
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
-import com.toutiao.web.dao.entity.admin.VillageEntity;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
-import com.toutiao.web.service.repository.admin.SaveToESService;
+import com.toutiao.web.service.plot.PlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Controller
 public class SaveToESController {
     @Autowired
-    private SaveToESService saveToESService;
+    private PlotService plotService;
 
     @RequestMapping("/saveParentToES")
     @ResponseBody
@@ -51,17 +51,17 @@ public class SaveToESController {
         village1.setVersion(32);
           village1.setAvgPrice(5555555);
           village1.setYopr("5555555555");
-        saveToESService.saveParent(village);
+        plotService.saveParent(village);
     }
 
     @RequestMapping("/saveChildToES")
     @ResponseBody
-    public void saveChildToES(ProjHouseInfo projHouseInfo,Model model){
+    public void saveChildToES(ProjHouseInfoES projHouseInfo, Model model){
         ProjHouseInfo projHouseInfo1 = new ProjHouseInfo();
         projHouseInfo1.setHouseId(1);
         projHouseInfo1.setHouseArea("66666");
 //        projHouseInfo1.setHousePlotId(1);
-        saveToESService.saveChild(projHouseInfo1);
+        plotService.saveChild(projHouseInfo);
     }
 
 }

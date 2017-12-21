@@ -1,6 +1,7 @@
 package com.toutiao.web.service.projhouse;
 
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface ProjHouseInfoService {
 
        List  queryBySearchBox(String text);
 
-        boolean saveProjHouseInfo(ProjHouseInfo projHouseInfo);
+        void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes);
 
 }
