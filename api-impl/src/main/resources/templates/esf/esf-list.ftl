@@ -207,11 +207,14 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <img src="${staticurl}/images/esf/${item[0]}" alt="${map.houseTitle}">
+                        <img src="${staticurl}/images/esf/<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${map.houseTitle}</h3>
-                        <p class="cont-block-2">${map.houseArea}㎡/${map.houseType}/${map.houseOrientation}/${map.housePlotName}</p>
+                        <p class="cont-block-2"><#if map.houseArea?exists>${map.houseArea}㎡</#if>
+                                                <#if map.houseType?exists>/${map.houseType}</#if>
+                                                <#if map.houseOrientation?exists>/${map.houseOrientation}</#if>
+                                                <#if map.housePlotName?exists>/${map.housePlotName}</p></#if>
                         <#assign item=map['houseToSubwayDistance']>
                         <#if map['key']?exists>
                             <#if item[map['key']]?exists>
@@ -223,12 +226,14 @@
                         <div class="cont-block-4 house-labelling gray middle">
                             <#assign item =  map['houseLabel']>
                             <#list item as itemValue>
-                                <span>${itemValue}</span>
+                              <#if itemValue?exists>
+                                  <span>${itemValue}</span>
+                              </#if>
                             </#list>
                         </div>
                         <div class="cont-block-price">
-                            <em>${map.houseTotalPrices}万</em>
-                            <span>${map.houseUnitCost}元/㎡</span>
+                            <em> <#if map.houseTotalPrices?exists>${map.houseTotalPrices}万</#if></em>
+                            <span> <#if map.houseUnitCost?exists>${map.houseUnitCost}元/㎡</#if></span>
                         </div>
                     </div>
                 </div>
@@ -243,9 +248,11 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <li class="current"><p>默认排序</p></li>
-        <li><p>价格由高到低</p></li>
-        <li><p>价格由低到高</p></li>
+    <#if sort?exists>
+        <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+    </#if>
     </ul>
 </div>
 
