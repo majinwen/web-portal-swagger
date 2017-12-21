@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房首页</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <header>
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -28,13 +29,13 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item"><a href="#">
+            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse ">
                 <i class="all-buildings"></i><p>全部楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="#">
+            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse?saleType=1">
                 <i class="featured-properties"></i><p>在售楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="#">
+            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse?saleType=5">
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
             <div class="banner-nav-item"><a href="#">
@@ -59,7 +60,7 @@
     <section>
         <div class="index-module-header">
             <h3>热门主题</h3>
-            <a href="#" class="more-arrows"><i class="arrows-right"></i></a>
+            <#--<a href="#" class="more-arrows">&lt;#&ndash;<i class="arrows-right"></i>&ndash;&gt;</a>-->
         </div>
         <div class="hot-topic">
             <div class="column">
@@ -107,9 +108,12 @@
 <section>
     <div class="index-module-header">
         <h3>新房推荐</h3>
-        <a href="#" class="more-arrows"><i class="arrows-right"></i></a>
+        <a href="/newhouse/searchNewHouse" class="more-arrows"><i class="arrows-right"></i></a>
     </div>
-    <ul>
+    <ul><#if newbuilds?exists>
+    <#assign builds = newbuilds['data']>
+    <#list builds as map>
+    <#if map_index==2>
         <li><a class="list-item new" href="#">
             <div class="clear">
                 <div class="list-item-img-box">
@@ -134,157 +138,55 @@
                 <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
             </div>
         </a></li>
-        <li><a class="list-item new" href="#">
+    </#if>
+        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    <#assign item = map['building_imgs']>
+                      <img src="${staticurl}/${item[0]}" alt="${map['building_name']}">
                 </div>
                 <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
+                    <span hidden="hidden">${map['building_name_id']}</span>
+                    <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
+                    <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                    <p class="cont-block-3">
+                        <#if map['nearsubway']??>
+                        ${map['nearsubway']}
+                        <#else>${map['district_name']}
+                        </#if>
+                        /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
                     <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
+                        <#assign item =  map['building_tags']>
+                        <#list item as itemValue>
+                            <span>${itemValue}</span>
+                        </#list>
                     </div>
                     <div class="cont-block-sale">
-                        <em>在售</em>
+                        <em>${map['sale_status_name']}</em>
                     </div>
                 </div>
             </div>
             <div class="new-active">
                 <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
+                <span>${map['activity_desc']}</span>
             </div>
         </a></li>
-        <li><a class="list-item new" href="#">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
-        <li><a class="list-item new" href="#">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
-        <li><a class="list-item new" href="#">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
-        <li><a class="list-item new" href="#">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
+    </#list>
+    </#if>
+
     </ul>
 </section>
 <div class="new-index-pull-down">
     <p>想查看更多房源，跟我来！</p><img src="${staticurl}/images/newindex/sy_xf_icon_xl.png" alt="查看更多房源">
 </div>
-<#-- 个人中心 侧栏菜单 -->
-<section class="side-nav-cont">
-    <div class="side-user">
-        <img src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
-        <p>188********</p>
-    </div>
-    <div class="side-nav-item-wrapper">
-        <ul class="side-nav-item item-link">
-            <li><a href="#"><i class="icon-index"></i><span>首页</span></a></li>
-            <li><a href="#"><i class="icon-esf"></i><span>找二手房</span></a></li>
-            <li><a href="#"><i class="icon-plot"></i><span>找小区</span></a></li>
-            <li><a href="#"><i class="icon-new"></i><span>找新房</span></a></li>
-        </ul>
-        <ul class="side-nav-item item-my">
-            <li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>
-            <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
-        </ul>
-    </div>
-    <div class="side-house-intelligent">
-        <a href="#"><em>智能找房</em></a>
-    </div>
-</section>
-<div class="scroll-mask"></div>
+<#include "../user.ftl">
 
-<script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+    $('.search-link').on('focus', function () {
+        location.href = "/newhouse/searchNewHouse";
+    });
+</script>
 </body>
 </html>

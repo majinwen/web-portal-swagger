@@ -1,7 +1,12 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
+import com.toutiao.web.domain.query.NewHouseQuery;
+import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
+import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.SysVillageService;
+import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,18 +14,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SysVillageConterller {
     @Autowired
     private SysVillageService sysVillageService;
+    @Autowired
+    private NewHouseService newHouseService;
+    @Autowired
+    private ProjHouseInfoService projHouseInfoService;
 
     //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
     @ResponseBody
-    public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
+    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
         List villageList = null;
-        villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
+        Double lonx = Double.valueOf(lon);
+        Double laty = Double.valueOf(lat);
+        villageList = sysVillageService.GetNearByhHouseAndDistance(lonx, laty);
         model.addAttribute("villageList", villageList);
         return "plot-list";
     }
@@ -29,27 +41,53 @@ public class SysVillageConterller {
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         VillageRequest villageRequest1 = new VillageRequest();
-//        villageRequest1.setAreaSize("80");
-//        villageRequest1.setId(001);
-//        villageRequest1.setSearchSubwayLineId("001");
-//        villageRequest1.setSearchMetroStationId("001");
-//        String[] a = {"0","80"};
-//        villageRequest1.setSearchAreaSize(a);
-//        Integer[] ap ={0,70000,70000,80000};
-//        villageRequest1.setSearchAvgPrice(ap);
-//        villageRequest1.setId(1);
-//        villageRequest1.setAreaId("003");
-//        villageRequest1.setAreaNameId("002");
-//        villageRequest1.setId(3);
-//        Integer[] pr = {50000,80000};
-//        villageRequest1.setSearchAvgPrice(pr);
-//        Integer[] ag = {16,16};
-//        villageRequest1.setSearchAge(ag);
-//        villageRequest1.setId(1);
-//        villageRequest1.setAreaId("001");
+        villageRequest1.setAreaSize("80");
         List villageList = null;
         villageList = sysVillageService.findVillageByConditions(villageRequest1);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
+    }
+
+
+    //小区详情页
+    @RequestMapping("/villageDetail")
+    public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
+        List villageList = sysVillageService.findVillageByConditions(villageRequest);
+        VillageResponse village= (VillageResponse) villageList.get(0);
+        model.addAttribute("village", village);
+
+        //附近小区
+        String[] latandlon = village.getLocation().split(",");
+        Double lonx = Double.valueOf(latandlon[1]);
+        Double laty = Double.valueOf(latandlon[0]);
+        List nearvillage = sysVillageService.GetNearByhHouseAndDistance(lonx,laty);
+        model.addAttribute("nearvillage",nearvillage);
+
+        //推荐小区好房
+        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+        projHouseInfoQuery.setHousePlotName(village.getRc());
+        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        model.addAttribute("reViHouse",reViHouse);
+
+        newHouseQuery.setSort(0);
+        newHouseQuery.setPageNum(1);
+        newHouseQuery.setPageSize(4);
+        Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
+        List<Object> newbuildrecomed= (List<Object>) builds.get("data");
+        model.addAttribute("newbuilds",newbuildrecomed);
+        return "plot/plot-detail";
+    }
+
+
+
+    /**
+     * 小区待售页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/plotSale")
+    public String sale(Model model){
+        model.addAttribute("user","asds");
+        return "plot/plot-sale";
     }
 }

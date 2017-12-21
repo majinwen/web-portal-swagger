@@ -9,7 +9,7 @@ public enum RedisObjectType {
 
     USER_PHONE_VALIDATECODE("phone_validate_code:", 60 * 20), // 手机验证码
     USER_PHONE_VALIDATE_OK("phone_validate_ok:", 60 * 3),    // 手机验证码通过标识
-    USER_IMAGE_VALIDATECODE("image_validate_code:", 60*10),  // 图片验证码
+    USER_IMAGE_VALIDATECODE("image_code:", 60*10),  // 图片验证码
     SYS_USER_MANAGER("sys_user:", 60 * 60 * 4); // 系统用户缓存key前缀和过期时间
     private String prefix;
 

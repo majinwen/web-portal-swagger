@@ -1,0 +1,50 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../base/header";
+@import "../pages/office-list";
+@import "../base/side-nav";
+@import "../pages/banner-item";
+@import "../pages/hot-topic";
+
+
+.banner-index-box {
+    padding: 0 rem(30) rem(31);
+
+    .carousel-swiper {
+        margin: 0 rem(-30);
+
+        img {
+            width: 100%;
+        }
+    }
+}
+
+.index-module-header {
+    position: relative;
+    height: rem(112);
+    margin: 0 rem(30);
+    line-height: rem(112);
+    @include font-dpr(32);
+    text-align: center;
+    border-bottom: 1px solid $borderLineColor;
+}
+
+
+.new-index-pull-down {
+    line-height: 1;
+    padding-top: rem(19);
+    padding-bottom: rem(10);
+    @include font-dpr(20);
+    color: $baseGray9;
+    text-align: center;
+    background-color: $baseModuleFillColor;
+    @include box-sizing;
+
+    img {
+        display: inline-block;
+        width: rem(25);
+        margin-top: rem(10);
+        vertical-align: top;
+    }
+}
+

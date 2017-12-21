@@ -75,6 +75,67 @@ hr {
 .high-light-red {
   color: #fb3939 !important; }
 
+.none {
+  display: none !important; }
+
+.pr {
+  position: relative !important; }
+
+.pt0 {
+  padding-top: 0 !important; }
+
+.pb0 {
+  padding-bottom: 0 !important; }
+
+.pl0 {
+  padding-left: 0 !important; }
+
+.pr0 {
+  padding-right: 0 !important; }
+
+.pa0 {
+  padding: 0 !important; }
+
+.mt0 {
+  margin-top: 0 !important; }
+
+.ml0 {
+  margin-left: 0 !important; }
+
+.mr0 {
+  margin-right: 0 !important; }
+
+.mb0 {
+  margin-bottom: 0 !important; }
+
+.ma0 {
+  margin: 0 !important; }
+
+.border-none {
+  border: none !important; }
+
+.border-bot-none {
+  border-bottom: none !important; }
+
+.border-top-none {
+  border-bottom: none !important; }
+
+.text-center {
+  text-align: center !important; }
+
+.clear {
+  zoom: 1; }
+  .clear:after {
+    visibility: hidden;
+    display: block;
+    clear: both;
+    content: '';
+    height: 0;
+    font-size: 0; }
+
+.content-visible {
+  display: block !important; }
+
 .module-bottom-fill {
   padding-bottom: 0.2133333333rem;
   background-color: #f2f2f2; }
@@ -83,7 +144,8 @@ hr {
 
 .house-labelling {
   white-space: nowrap;
-  overflow: hidden; }
+  overflow: hidden;
+  text-overflow: ellipsis; }
   .house-labelling.normal span, .house-labelling.gray span {
     height: 0.4266666667rem;
     line-height: 0.4266666667rem;
@@ -127,6 +189,9 @@ hr {
     border-radius: 0.08rem; }
     .house-labelling span:last-child {
       margin-right: 0; }
+
+.hidden {
+  overflow: hidden; }
 
 .fixed-scroll {
   position: fixed;

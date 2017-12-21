@@ -26,6 +26,20 @@ public class NewHouseController {
     private PriceTrendService priceTrendService;
 
     /**
+     * 新房首页
+     * @return
+     */
+    @RequestMapping("/newhouseindex")
+    public String index(NewHouseQuery newHouseQuery, Model model) {
+         newHouseQuery.setSort(0);
+         newHouseQuery.setPageNum(1);
+         newHouseQuery.setPageSize(4);
+         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
+         model.addAttribute("newbuilds",builds);
+         return "newhouse/new-index";
+    }
+
+    /**
      * 新房列表
      * @param newHouseQuery
      * @param model
@@ -41,6 +55,17 @@ public class NewHouseController {
 
     }
 
+    /**
+     * 搜索新房
+     *
+     * */
+
+    @RequestMapping("/searchNewHouseByKey")
+    public String searchNewHouseByKey(@RequestParam("keyword") String text, Model model){
+        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(text);
+        model.addAttribute("builds",build);
+        return "newhouse/new-list";
+    }
 
     /**
      * 楼盘详情信息
@@ -55,9 +80,7 @@ public class NewHouseController {
         priceTrend.setBuildId(buildingId);
         priceTrend.setPropertyType((short)1);
 
-        List<Map<String ,List<PriceTrend>>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
-
-
+        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
 
         List<String>dateList= DateUtil.oneYearList();
 
@@ -66,9 +89,7 @@ public class NewHouseController {
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
-
         model.addAttribute("tradeline",priceTrendList);
-       // model.addAttribute("ptCD2",ptCD2);
         model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
@@ -81,7 +102,6 @@ public class NewHouseController {
      * @param model
      * @return
      */
-/*
     @RequestMapping("/getNewHouseLayoutDetails")
     public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -89,7 +109,6 @@ public class NewHouseController {
         return "";
 
     }
-*/
 
     /**
      * 根据楼盘计算不同户型数量
@@ -122,6 +141,4 @@ public class NewHouseController {
         model.addAttribute("discript",discripts);
         return "newhouse/new-parameter";
     }
-
-
 }

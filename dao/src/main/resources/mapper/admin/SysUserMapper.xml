@@ -8,15 +8,14 @@
     <sql id="Base_Column_List">
     id, phone
   </sql>
-    <insert id="insertPhone" parameterType="java.lang.String" keyProperty="id" useGeneratedKeys="true">\
+    <insert id="insertPhone" parameterType="java.lang.String" keyProperty="id" useGeneratedKeys="true">
 
-     insert into sys_web_user (phone)
-      values (#{phone,jdbcType=VARCHAR})
+     insert into sys_web_user (phone)  values (#{phone})
 
   </insert>
 <select id="selectByPhone" resultType="com.toutiao.web.dao.entity.admin.SysUserEntity" parameterType="java.lang.String">
 
-    select count(*) from sys_web_user where phone=#{phone}
+    select * from sys_web_user where phone=#{phone}
 
 </select>
 

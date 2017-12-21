@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.TotalListedRatioMapper">
+    <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.TotalListedRatio">
+        <result column="total" jdbcType="NUMERIC" property="total"/>
+        <result column="listed_num" jdbcType="INTEGER" property="listedNum"/>
+        <result column="ratio" jdbcType="NUMERIC" property="ratio"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.TotalListedRatio">
+    insert into total_listed_ratio (total, listed_num, ratio
+      )
+    values (#{total,jdbcType=NUMERIC}, #{listedNum,jdbcType=INTEGER}, #{ratio,jdbcType=NUMERIC}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.TotalListedRatio">
+        insert into total_listed_ratio
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="total != null">
+                total,
+            </if>
+            <if test="listedNum != null">
+                listed_num,
+            </if>
+            <if test="ratio != null">
+                ratio,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="total != null">
+                #{total,jdbcType=NUMERIC},
+            </if>
+            <if test="listedNum != null">
+                #{listedNum,jdbcType=INTEGER},
+            </if>
+            <if test="ratio != null">
+                #{ratio,jdbcType=NUMERIC},
+            </if>
+        </trim>
+    </insert>
+    <!--List<TotalListedRatio> selectByTotalPrice(@PathVariable("plotTotal") Double plotTotal);-->
+    <select id="selectByTotalPrice" parameterType="java.lang.Double" resultType="com.toutiao.web.dao.entity.officeweb.TotalListedRatio">
+        SELECT * from total_listed_ratio where  <![CDATA[total<= #{plotTotal}]]>
+  </select>
+
+</mapper>

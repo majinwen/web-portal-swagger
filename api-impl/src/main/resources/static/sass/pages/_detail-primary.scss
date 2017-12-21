@@ -105,7 +105,7 @@ $detailBorderColor: #e1e1e1;
                     height: rem(47);
                     margin-left: rem(10);
                     vertical-align: top;
-                    @include bg-image('../images/global/primary_map_icon');
+                    @include bg-image('/static/images/global/primary_map_icon');
                     background-position: center;
                 }
 
@@ -116,7 +116,7 @@ $detailBorderColor: #e1e1e1;
                     display: block;
                     width: rem(17);
                     height: rem(47);
-                    @include bg-image('../images/global/arrows_right_icon');
+                    @include bg-image('/static/images/global/arrows_right_icon');
                     background-position: center;
                 }
             }
@@ -171,6 +171,43 @@ $detailBorderColor: #e1e1e1;
     padding: 0 rem(30);
     @include font-dpr(30);
     border-bottom: 1px solid $detailBorderColor;
+
+    .subtitle {
+        display: inline-block;
+        line-height: 1;
+        margin-left: rem(10);
+        padding-left: rem(10);
+        @include font-dpr(24);
+        color: #999;
+        border-left: rem(1) solid #999;
+    }
+
+    .markets-btn {
+        position: absolute;
+        right: rem(30);
+        top: 0;
+        height: 100%;
+        
+        .price-trend-btn, .supply-contrast-btn {
+            display: inline-block;
+            width: rem(28);
+            height: rem(114);
+            background-position: left center;
+
+            &.current {
+                background-position: right center;
+            }
+        }
+
+        .price-trend-btn {
+            margin-right: rem(20);
+            @include bg-image('/static/images/plot/xfxq_schq_icon_jg_grey');
+        }
+
+        .supply-contrast-btn {
+            @include bg-image('/static/images/plot/xfxq_schq_icon_gx_red');
+        }
+    }
     
     .more-arrows {
         position: absolute;
@@ -178,17 +215,385 @@ $detailBorderColor: #e1e1e1;
         right: rem(30);
         @include font-dpr(24);
         color: #999;
-        
-        .arrows-right {
+
+        .arrows-right, .arrows-expand {
             position: relative;
-            top: rem(-4);
             display: inline-block;
-            width: rem(17);
-            height: rem(114);
             margin-left: rem(10);
             vertical-align: middle;
-            @include bg-image('../images/global/arrows_right_icon');
             background-position: center;
+        }
+        
+        .arrows-right {
+            top: rem(-4);
+            width: rem(17);
+            height: rem(114);
+            @include bg-image('/static/images/global/arrows_right_icon');
+        }
+
+        .arrows-expand {
+            top: 0;
+            width: rem(44);
+            height: rem(114);
+            @include bg-image('/static/images/global/arrows_bottom_icon');
+        }
+
+        &.expand {
+            .arrows-expand {
+                @include bg-image('/static/images/global/arrows_top_icon');
+            }
+        }
+    }
+}
+
+.plot-primary-header {
+    position: relative;
+    padding: rem(40) rem(30);
+
+    .plot-primary-text {
+        width: rem(510);
+        overflow: hidden;
+
+        h2, p {
+            @include text-ellipses;
+        }
+    }
+
+    h2 {
+        @include font-dpr(34);
+    }
+
+    p {
+        margin-top: rem(33);
+        @include font-dpr(26);
+        color: #666;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .house-labelling {
+        margin-top: rem(36);
+    }
+
+    .plot-primary-map-box {
+        position: absolute;
+        bottom: rem(53);
+        right: rem(30);
+        width: rem(168);
+        height: rem(168);
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        background-color: #efeff0;
+    }
+}
+
+.expand-content {
+    display: none;
+    padding: rem(40) rem(30);
+
+    .map-education-box {
+        margin-bottom: rem(40);
+
+        ul {
+            display: flex;
+            justify-content: center;
+
+            li {
+                position: relative;
+                display: inline-block;
+                width: 3em;
+                margin: 0 rem(40);
+                @include font-dpr(26);
+                text-align: center;
+                white-space: nowrap;
+
+                i {
+                    display: block;
+                    width: rem(66);
+                    height: rem(66);
+                    margin: 0 auto rem(20);
+                    background-position: left center;
+                    -webkit-background-size: auto rem(66);
+                    background-size: auto rem(66);
+                }
+
+                &.parent-child {
+                    i {
+                        @include bg-image('/static/images/plot/xqxq_jy_icon1_w');
+                    }
+                }
+                &.kindergarten {
+                    i {
+                        @include bg-image('/static/images/plot/xqxq_jy_icon2_red');
+                    }
+                }
+                &.primary-school {
+                    i {
+                        @include bg-image('/static/images/plot/xqxq_jy_icon3_w');
+                    }
+                }
+                &.middle-school {
+                    i {
+                        @include bg-image('/static/images/plot/xqxq_jy_icon4_w');
+                    }
+                }
+                &.university {
+                    i {
+                        @include bg-image('/static/images/plot/xqxq_jy_icon5_w');
+                    }
+                }
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    right: rem(70);
+                    top: rem(26);
+                    width: rem(78);
+                    height: rem(17);
+                    @include bg-image('/static/images/plot/xqxq_jy_icon0');
+                    background-position: top center;
+                    -webkit-background-size: cover;
+                    background-size: cover;
+                }
+
+                &:nth-child(1) {
+                    &:before {
+                        display: none;
+                    }
+                }
+
+                &.current {
+                    span {
+                        color: $baseRed;
+                    }
+
+                    i {
+                        background-position: center;
+                    }
+
+                    &:before {
+                        background-position: bottom center;
+                    }
+                }
+
+                &.choose {
+                    i {
+                        background-position: right center;
+                    }
+
+                    &:before {
+                        background-position: bottom center;
+                    }
+                }
+            }
+        }
+    }
+
+    .map-shopping-box {
+        position: relative;
+        padding-top: rem(200);
+        margin-bottom: rem(70);
+
+        .map-message-btn {
+
+            li {
+                display: inline-block;
+                position: absolute;
+                bottom: 0;
+
+                span {
+                    position: absolute;
+                    top: rem(-50);
+                    display: block;
+                    width: rem(78);
+                    @include font-dpr(26);
+                    text-align: center;
+                }
+
+                i {
+                    display: block;
+                    width: rem(72);
+                    background-position: right bottom;
+                }
+
+                &.current{
+                    span {
+                        color: $baseRed;
+                    }
+
+                    i {
+                        background-position: left bottom;
+                    }
+                }
+
+                &.vegetable-market {
+                    left: 2.9%;
+
+                    i {
+                        height: rem(182);
+                        @include bg-image('/static/images/plot/xqxq_csc');
+                        -webkit-background-size: auto rem(182);
+                        background-size: auto rem(182);
+                    }
+                }
+                &.supermarket {
+                    left: 20.4%;
+
+                    i {
+                        height: rem(209);
+                        @include bg-image('/static/images/plot/xqxq_cs');
+                        -webkit-background-size: auto rem(209);
+                        background-size: auto rem(209);
+                    }
+                }
+                &.shopping-mall {
+                    right: 31.8%;
+
+                    i {
+                        height: rem(247);
+                        @include bg-image('/static/images/plot/xqxq_sc');
+                        -webkit-background-size: auto rem(247);
+                        background-size: auto rem(247);
+                    }
+                }
+                &.dining-room {
+                    right: 17.7%;
+
+                    i {
+                        height: rem(178);
+                        @include bg-image('/static/images/plot/xqxq_ct');
+                        -webkit-background-size: auto rem(178);
+                        background-size: auto rem(178);
+                    }
+                }
+                &.fitness {
+                    right: 0.9%;
+
+                    i {
+                        height: rem(195);
+                        @include bg-image('/static/images/plot/xqxq_js');
+                        -webkit-background-size: auto rem(195);
+                        background-size: auto rem(195);
+                    }
+                }
+            }
+        }
+    }
+
+    .result-data-expand {
+        width: 100%;
+        padding-left: rem(30);
+        padding-right: rem(30);
+        border: rem(1) solid $baseWhite;
+        -webkit-box-shadow: 0 rem(5) rem(18) 0 rgba(107, 63, 63, 0.17);
+        box-shadow: 0 rem(5) rem(18) 0 rgba(107, 63, 63, 0.17);
+        @include box-sizing;
+
+        li {
+            height: rem(100);
+            line-height: rem(100);
+            @include font-dpr(26);
+            border-bottom: rem(1) solid $borderLineColor;
+
+            p {
+                display: inline-block;
+                @include text-ellipses;
+            }
+
+            .expand-icon {
+                display: inline-block;
+                margin-right: rem(10);
+                -webkit-background-size: contain;
+                background-size: contain;
+
+                &.expand-radius {
+                    width: rem(36);
+                    height: rem(36);
+                    line-height: rem(36);
+                    margin-right: rem(20);
+                    text-align: center;
+                    color: $baseWhite;
+                    -webkit-border-radius: 50%;
+                    border-radius: 50%;
+                    background-color: $baseRed;
+                }
+
+                &.living-cost {
+                    width: rem(36);
+                    height: rem(36);
+                    vertical-align: middle;
+                    @include bg-image('/static/images/plot/xqxq_shcb_icon');
+                }
+
+                &.medical-treatment {
+                    width: rem(32);
+                    height: rem(32);
+                    vertical-align: middle;
+                    @include bg-image('/static/images/plot/xqxq_yl_icon')
+                }
+            }
+
+            .expand-name {
+                display: inline-block;
+                line-height: 1;
+                vertical-align: middle;
+                max-width: rem(440);
+                @include text-ellipses;
+            }
+
+            .expand-type {
+                display: inherit;
+                min-width: rem(90);
+                color: #777;
+                margin-right: rem(10);
+            }
+
+            .expand-distance {
+                float: right;
+                @include font-dpr(24);
+                color: #888;
+
+                &.tips {
+                    @include font-dpr(20);
+                }
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        &.height-type {
+            li {
+                height: rem(120);
+                line-height: rem(120);
+
+                .expand-name {
+
+                    em {
+                        display: block;
+                        @include text-ellipses;
+
+                        &:nth-child(2) {
+                            margin-top: rem(10);
+                        }
+
+                        &.star-box {
+                            i {
+                                display: inline-block;
+                                width: rem(25);
+                                height: rem(23);
+                                margin-right: rem(3);
+                                @include bg-image('/static/images/plot/xqxq_icon_star');
+                                -webkit-background-size: contain;
+                                background-size: contain;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

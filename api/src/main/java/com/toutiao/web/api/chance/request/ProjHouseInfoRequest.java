@@ -70,5 +70,6 @@ public class ProjHouseInfoRequest{
 	private String subwayId;	
 	//地铁名称
 	private String subwayName;
-	
+
+	private String buildingNname;
 }

@@ -6,6 +6,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/house-type.css">
     <title>户型详情</title>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <div class="module-bottom-fill">
@@ -63,7 +64,6 @@
     </div>
 </section>
 
-<script src="${staticurl}/js/zepto.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

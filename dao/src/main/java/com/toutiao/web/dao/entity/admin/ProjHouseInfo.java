@@ -165,8 +165,10 @@ public class ProjHouseInfo {
     private String[] subwayStationName;
 
     //距离您多少公里
-    private Map<String,String> houseToSubwayDistance;
-
+    private Map<String, String> houseToSubwayDistance;
+    
     private String key;
+    //版本控制
+    private int version;
 
 }

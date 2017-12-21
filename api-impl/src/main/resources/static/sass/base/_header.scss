@@ -1,26 +1,26 @@
 $headBackgroundColor: #0a0724;
-@import "side-nav";
+@import "../base/side-nav";
 
 header {
-    //position: relative;
-    height: rem(117);
-    line-height: rem(63);
+    position: relative;
+    height: rem(118);
+    line-height: rem(64);
     padding: rem(27) rem(30);
     vertical-align: middle;
-    background-color: $headBackgroundColor;
+    background: $headBackgroundColor;
     @include box-sizing;
     z-index: 200;
-    
+
     .header-logo {
         float: left;
         display: block;
         width: rem(138);
-        
+
         img {
             width: 100%;
         }
     }
-    
+
     .search-box {
         float: left;
         position: relative;
@@ -29,7 +29,7 @@ header {
         margin-left: rem(25);
         background-color: $baseWhite;
         border-radius: rem(4);
-        
+
         .icon {
             position: absolute;
             top: rem(20);
@@ -41,7 +41,7 @@ header {
             -webkit-background-size: rem(24) auto;
             background-size: rem(24) auto;
         }
-        
+
         input {
             position: absolute;
             right: 0;
@@ -52,20 +52,28 @@ header {
             @include font-dpr(26);
             background-color: transparent;
             @include box-sizing;
-            
+
             &::-webkit-input-placeholder {
                 color: #999;
             }
         }
     }
-    
+
     .header-user {
         float: right;
         display: block;
         width: rem(32);
-        
+
         img {
             width: 100%;
         }
+    }
+
+    &.gradient {
+        position: absolute;
+        width: 100%;
+        background: url('/static/images/global/dsy_search_jianbian.png') repeat-x;
+        -webkit-background-size: contain;
+                background-size: contain;
     }
 }

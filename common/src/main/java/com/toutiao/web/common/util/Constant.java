@@ -18,7 +18,7 @@ public class Constant {
     public static final int     NUM_EIGHT                         = 8;
     public static final int     NUM_NINE                          = 9;
 
-    public static final String  SYS_FLAGS                         = "phone_";
+    public static final String  SYS_FLAGS                         = "_phone_";
 
     // 字符数字
     public static final String  STR_ONE_F                         = "-1";
@@ -61,4 +61,15 @@ public class Constant {
     public static final String  EMAIL_NOT_BIND                    = "邮箱未绑定到用户";
     public static final String  MOBILE_NOT_BIND                   = "手机未绑定到当前用户";
     public static final String  VALICODE_ERROR                    = "验证码错误";
+
+
+    /**
+     * 通过
+     */
+    public static final String  YES                               = "yes";
+    /**
+     * 不通过
+     */
+    public static final String  NO                                = "no";
+
 }

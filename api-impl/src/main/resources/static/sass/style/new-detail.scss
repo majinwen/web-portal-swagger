@@ -59,8 +59,10 @@
                 width: rem(60);
                 height: rem(60);
                 margin-left: rem(20);
-                vertical-align: text-bottom;
+                //vertical-align: text-bottom;
                 @include bg-image('../images/global/red_icon_phone');
+                -webkit-background-size: contain;
+                background-size: contain;
             }
         }
     }
