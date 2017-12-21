@@ -44,8 +44,8 @@ public class PlotServiceImpl implements PlotService {
     private String parentType;
     @Value("${plot.child.type}")
     private String childType;
-    //    @Value("${distance}")
-    private Double distance = 300000000.0;
+    @Value("${distance}")
+    private Double distance;
 
     @Autowired
     private ESClientTools esClientTools;

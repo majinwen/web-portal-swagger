@@ -49,8 +49,10 @@ public class NewHouseServiceImpl implements NewHouseService{
     private String newhouseIndex;//索引名称
     @Value("${tt.newhouse.type}")
     private String newhouseType;//索引类型
-
-    private String layoutType="layout";//子类索引类型
+    @Value("${tt.newlayout.type}")
+    private String layoutType;//子类索引类型
+    @Value("${distance}")
+    private Double distance;
 
     /**
      * 根绝新房筛选新房
@@ -289,7 +291,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         maprep.put("layout",layouts);
         try {
             if(locations.size() ==2){
-                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),"300000000000",client);
+                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),distance,client);
                 maprep.put("nearbybuild",nearBy);
             }
         } catch (Exception e) {
@@ -397,14 +399,14 @@ public class NewHouseServiceImpl implements NewHouseService{
      * @return
      * @throws Exception
      */
-    public List<Map<String,Object>> getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, String distance,TransportClient client) throws Exception {
+    public List<Map<String,Object>> getNearBuilding(int buildingNameId,String index, String type, double lat, double lon, Double distance,TransportClient client) throws Exception {
 
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
         //从该坐标查询距离为distance
         BoolQueryBuilder boolQueryBuilder =boolQuery();
 
         boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
-        boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(Double.parseDouble(distance), DistanceUnit.METERS));
+        boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(distance, DistanceUnit.METERS));
         srb.setQuery(boolQueryBuilder);
         // 获取距离多少公里 这个才是获取点与点之间的距离的
         GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
