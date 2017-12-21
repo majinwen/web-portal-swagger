@@ -46,7 +46,7 @@ public class NewHouseBuildings {
      * 地铁线id
      */
     @JSONField(name = "subwayLine")
-    private Integer[] subwayLineId;
+    private String[] subwayLineId;
     /**
      * 地铁线名称
      */
@@ -55,7 +55,7 @@ public class NewHouseBuildings {
      * 地铁站id
      */
     @JSONField(name = "subwayStation")
-    private Integer[] subwayStationId;
+    private String[] subwayStationId;
     /**
      * 地铁站名称
      */
@@ -64,7 +64,7 @@ public class NewHouseBuildings {
      * 物业类型id
      */
     @JSONField(name = "propertyType")
-    private Integer[] propertyTypeId;
+    private String[] propertyTypeId;
     /**
      * 物业类型名称
      */
@@ -193,7 +193,7 @@ public class NewHouseBuildings {
     /**
      * 楼盘地理坐标
      */
-    private String[] location;
+    private String location;
     @JSONField(name = "coordX")
     private Double coordX;
     @JSONField(name = "coordY")
