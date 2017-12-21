@@ -23,14 +23,15 @@ public class ESClientTools {
     private String esClusterName;//集群名
     @Value("${es.server.ips}")
     private String esServerIps;//集群服务IP集合
-    @Value("${es.xpack.user}")
-    private String esXpackUser;//集群服务IP集合
+//    @Value("${es.xpack.user}")
+//    private String esXpackUser;//集群服务IP集合
 
     private volatile TransportClient client;
 
 
     Settings settings = Settings.builder().put("cluster.name", esClusterName)
-                                          .put("xpack.security.user",esXpackUser).build();
+//                                          .put("xpack.security.user",esXpackUser)
+            .build();
 
     public TransportClient init(){
 
