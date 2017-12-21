@@ -1,12 +1,11 @@
 <#-- 个人中心 侧栏菜单 -->
-<section class="side-nav-cont">
+<section class="side-nav-cont" xmlns="http://www.w3.org/1999/html">
     <div class="side-user">
         <img id="click_login" src="${staticurl}/images/global/grcl_tx.png" alt="用户头像">
         <p>
         <#if getUser()?exists>
-        ${getUser()}
+           ${getUser()}
         <#else >
-            请登录！
         </#if>
         </p>
     </div>
@@ -31,13 +30,17 @@
 
 <script>
     $("#click_login").click(function () {
+
+    <#if (getUser()=="请登录")>
         window.location.href = "/user/login";
+    <#else >
+    </#if>
     });
     //注销功能
     $("#out_login").click(function () {
-    <#if phone?exists>
-        window.location.href = "/user/logout?phone=" +${phone};
-    <#else >
-    </#if>
+      <#if (getUser()!="请登录")>
+        window.location.href = "/user/logout?phone=" +${getUser()};
+      <#else >
+      </#if>
     });
 </script>
