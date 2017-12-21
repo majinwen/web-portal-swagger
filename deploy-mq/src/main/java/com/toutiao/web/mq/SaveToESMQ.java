@@ -51,7 +51,7 @@ public class SaveToESMQ implements CommandLineRunner {
             public Action consume(Message message, ConsumeContext context) {
                 try {
                     String jsonStr = new String(message.getBody(), "utf-8");
-//                    System.out.println(jsonStr);
+                    System.out.println(jsonStr);
                     if (jsonStr != null) {
                         JSONObject jsonObject = JSON.parseObject(jsonStr);
                         Map map = JSON.parseObject(jsonStr, Map.class);
@@ -234,6 +234,7 @@ public class SaveToESMQ implements CommandLineRunner {
                             //获取相应小区的信息
                             VillageRequest villageRequest = new VillageRequest();
                             villageRequest.setId(projHouseInfoES.getHousePlotId());
+//                            villageRequest.setId(1);
                             List villageByConditions = plotService.findVillageByConditions(villageRequest);
                             if (villageByConditions != null&&villageByConditions.size()!=0) {
                                 VillageResponse plot = (VillageResponse) villageByConditions.get(0);
