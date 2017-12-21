@@ -85,7 +85,7 @@ public class PlotServiceImpl implements PlotService {
                 // 在创建MAPPING的时候，属性名的不可为geoDistance。
                 hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
                 String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
-                System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+//                System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
