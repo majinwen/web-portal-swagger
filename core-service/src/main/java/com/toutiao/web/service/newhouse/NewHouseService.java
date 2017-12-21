@@ -1,5 +1,7 @@
 package com.toutiao.web.service.newhouse;
 
+import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 
 import java.util.List;
@@ -51,4 +53,9 @@ public interface NewHouseService {
      *  */
     public List searchNewHouse(String text);
 
+    /**
+     * 同步新房数据
+     * @param newHouseBuildings
+     */
+    void saveBuildingParent(NewHouseBuildings newHouseBuildings);
 }
