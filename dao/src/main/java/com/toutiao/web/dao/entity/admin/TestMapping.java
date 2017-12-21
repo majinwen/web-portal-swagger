@@ -228,9 +228,10 @@ public class TestMapping {
         houseInfo.setHouseRecommend("主卧室南向");
         // 房源小区id
         houseInfo.setHousePlotId(1);
-        Double[] d = {34.0, 38.0};
+//        Double[] d = {34.0, 38.0};
         // 房源小区地理
-        houseInfo.setHousePlotLocation(d);
+        String la = "";
+        houseInfo.setHousePlotLocation(la);
 
         // 房源小区名称
         houseInfo.setHousePlotName("版本");
