@@ -5,6 +5,7 @@ import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
@@ -48,7 +49,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
      *
-     * @param [lat, lon]
+//     * @param [lat, lon]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
@@ -96,7 +97,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：随机获取数据并且根据房源级别排序
      *
-     * @param [projHouseInfoRequest]
+//     * @param [projHouseInfoRequest]
      * @return java.util.List
      * @author zhw
      * @date 2017/12/15 11:07
@@ -307,7 +308,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过二手房id查找房源信息
      *
-     * @param [houseId]
+//     * @param [houseId]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
@@ -353,7 +354,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过输入的搜索框信息查询数据
      *
-     * @param [text]
+//     * @param [text]
      * @return java.util.List
      * @author zhw
      * @date 2017/12/15 15:07
@@ -403,23 +404,22 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * 功能描述：往es中保存数据
      * @author zhw
      * @date 2017/12/16 11:10
-     * @param [projHouseInfo]
+//     * @param [projHouseInfo]
      * @return boolean
      */
     @Override
-    public boolean saveProjHouseInfo(ProjHouseInfo projHouseInfo) {
+    public void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes) {
         TransportClient client = esClientTools.init();
-        boolean flag = true;
+        ProjHouseInfo projHouseInfo = new ProjHouseInfo();
+        try {
+            BeanUtils.copyProperties(projHouseInfoes,projHouseInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String json = JSONObject.toJSONString(projHouseInfo);
-        BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
         IndexRequest indexRequest = new IndexRequest(projhouseIndex, projhouseType, String.valueOf(projHouseInfo.getHouseId()))
                 .version(projHouseInfo.getVersion()).versionType(VersionType.EXTERNAL).source(json);
-        bulkRequestBuilder.add(indexRequest);
-        BulkResponse response = bulkRequestBuilder.execute().actionGet();
-        if (response.hasFailures()) {
-            flag = false;
-        }
-        return flag;
+        client.index(indexRequest).actionGet();
     }
 
 

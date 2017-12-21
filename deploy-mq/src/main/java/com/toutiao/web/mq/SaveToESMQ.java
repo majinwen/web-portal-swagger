@@ -9,9 +9,8 @@ import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
-import com.toutiao.web.service.plot.SysVillageService;
-import com.toutiao.web.service.repository.admin.SaveToESService;
-import org.apache.commons.lang3.StringUtils;
+import com.toutiao.web.service.plot.PlotService;
+import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -23,11 +22,11 @@ import java.util.*;
 @Component
 public class SaveToESMQ implements CommandLineRunner {
     @Autowired
-    private SaveToESService saveToESService;
-    @Autowired
-    private SysVillageService sysVillageService;
+    private PlotService plotService;
     @Autowired
     private ESClientTools esClientTools;
+    @Autowired
+    private ProjHouseInfoService projHouseInfoService;
 
     @Override
     public void run(String... strings) throws Exception {
@@ -188,7 +187,7 @@ public class SaveToESMQ implements CommandLineRunner {
 //                                //城市编号
 //                                villageEntity.setCityId((String) projectInfo.get("cityId"));
 
-                                saveToESService.saveParent(villageEntityES);
+                                plotService.saveParent(villageEntityES);
                             }
                         }
 
@@ -231,7 +230,7 @@ public class SaveToESMQ implements CommandLineRunner {
                             //获取相应小区的信息
                             VillageRequest villageRequest = new VillageRequest();
                             villageRequest.setId(projHouseInfoES.getHousePlotId());
-                            List villageByConditions = sysVillageService.findVillageByConditions(villageRequest);
+                            List villageByConditions = plotService.findVillageByConditions(villageRequest);
                             VillageResponse plot = (VillageResponse) villageByConditions.get(0);
                             //房源小区地理坐标
                             projHouseInfoES.setHousePlotLocation(plot.getLocation());
@@ -251,7 +250,11 @@ public class SaveToESMQ implements CommandLineRunner {
                             projHouseInfoES.setSubwayStationId(plot.getMetroStationId());
                             //距离您多少公里
                             projHouseInfoES.setHouseToSubwayDistance(plot.getMetroWithPlotsDistance());
+                            //版本
+                            projHouseInfoES.setVersion((Integer) map.get("version"));
 
+                            projHouseInfoService.saveProjHouseInfo(projHouseInfoES);
+                            plotService.saveChild(projHouseInfoES);
 
                         }
 

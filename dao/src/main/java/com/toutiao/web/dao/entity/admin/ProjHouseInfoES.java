@@ -221,4 +221,7 @@ public class ProjHouseInfoES {
 //    @JSONField(name = "")
     private String key;
 
+    //版本控制
+    private int version;
+
 }
