@@ -105,7 +105,7 @@ public class Login {
             e.printStackTrace();
         }
         //去下一页
-        return "index";
+        return "redirect:/index";
 
     }
 

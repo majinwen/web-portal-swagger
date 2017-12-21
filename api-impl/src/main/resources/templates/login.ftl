@@ -12,6 +12,7 @@
 <h2>手机快捷登录</h2>
 <p class="registration-prompt">（未注册过的手机号将自动创建账号）</p>
 <form action="/user/tologin" id="myform" class="login-form" method="post">
+    <input type="hidden" name="count" id="count" value="<#if count?exists>${count}</#if>">
     <div class="input-phone">
         <input type="tel" maxlength="11" id="user_phone" name="phone" placeholder="请输入手机号"
                value="<#if phone?exists>${phone}</#if>"
@@ -45,64 +46,12 @@
         $("#image_code").val('');
         $("#infoDiv").html('');
     });
-    <#if count?exists>
-        <#if  (count>3)>
-        //切换图片
-        function changeImg() {
-            $("#image_code").val('');
-            $("#infoDiv").html('');
-            $("#checkcode").attr("src", "/code/imageCode?date=" + new Date().getTime());
-        };
-        //验证码输入框失去焦点验证验证码是否正确
-        $("#image_code").blur(function () {
-
-            var code = $("#image_code").val();
-
-            //输入验证码后立即验证
-            var code = $("#image_code").val();
-
-            if (code == null || code == '') {
-                $("#infoDiv").html('');
-            } else {
-                if (code.length == 4) {
-                    setTimeout(valideteCode, 100);
-                }
-            }
-        });
-
-        //验证验证码是否正确
-        function valideteCode() {
-            var code = $("#image_code").val();
-            if (code != '') {
-                // 检查会员级别名称是否存在
-                $.ajax({
-                    type: "post",
-                    url: "/code/getCode",
-                    data: {pageCode: code},
-                    async: false,
-                    success: function (data) {
-                        if (data == "yes") {
-                            $("#infoDiv").html("<img id=\"valCode\" src=\"${staticurl}/images/yes-1.png\"/>");
-                        } else {
-                            $("#infoDiv").html("<img id=\"valCode\" src=\"${staticurl}/images/no-1.png\"/>");
-                        }
-                    }
-                });
-            } else {
-                $("#message").html("请填写图片验证码！");
-            }
-        }
-
-        //登陆
-        </#if>
-    </#if>
     //获取短信验证码
     $("#phone_code").click(function () {
         var bo = false;
         var msgInfo = "请先修正以下信息后再操作：<br/>";
 
         var user_phone = $("#user_phone").val();
-        var mycode = $("#mycode").val();
 
         if (user_phone.trim() == null || user_phone.trim() == '') {
 
@@ -114,12 +63,6 @@
             msgInfo += "输入的手机号格式不符！<br/>";
             bo = true;
         }
-
-        if (mycode == null || mycode == '') {
-            msgInfo += "短信验证码不能为空！<br/>";
-            bo = true;
-        }
-
         if (bo) {
             $("#message").html(msgInfo);
         } else {
@@ -135,11 +78,66 @@
                     }
                     if (data1.code == 'success') {
                         //发送成功 js定时器
+                        $("#count").val(data1.data);
                     }
                 }
             });
         }
     });
+
+    var count = $("#count").val();
+    if (count != null) {
+        if (count > 3) {
+            //切换图片
+            function changeImg() {
+                $("#image_code").val('');
+                $("#infoDiv").html('');
+                $("#checkcode").attr("src", "/code/imageCode?date=" + new Date().getTime());
+            };
+
+            //验证码输入框失去焦点验证验证码是否正确
+            $("#image_code").blur(function () {
+
+                var code = $("#image_code").val();
+
+                //输入验证码后立即验证
+                var code = $("#image_code").val();
+
+                if (code == null || code == '') {
+                    $("#infoDiv").html('');
+                } else {
+                    if (code.length == 4) {
+                        setTimeout(valideteCode, 100);
+                    }
+                }
+            });
+
+            //验证验证码是否正确
+            function valideteCode() {
+                var code = $("#image_code").val();
+                if (code != '') {
+                    // 检查会员级别名称是否存在
+                    $.ajax({
+                        type: "post",
+                        url: "/code/getCode",
+                        data: {pageCode: code},
+                        async: false,
+                        success: function (data) {
+                            if (data == "yes") {
+                                $("#infoDiv").html("<img id=\"valCode\" src=\"${staticurl}/images/yes-1.png\"/>");
+                            } else {
+                                $("#infoDiv").html("<img id=\"valCode\" src=\"${staticurl}/images/no-1.png\"/>");
+                            }
+                        }
+                    });
+                } else {
+                    $("#message").html("请填写图片验证码！");
+                }
+            }
+
+        }
+
+    }
     //登陆
     $("#log_in_button").click(function () {
         var bo = false;
@@ -147,7 +145,6 @@
 
         var user_phone = $("#user_phone").val();
         var mycode = $("#mycode").val();
-        alert(mycode);
         if (user_phone.trim() == null || user_phone.trim() == '') {
 
             msgInfo += "输入的手机号不能为空！<br/>";

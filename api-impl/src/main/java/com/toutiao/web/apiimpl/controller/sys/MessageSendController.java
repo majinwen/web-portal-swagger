@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MessageSendController {
     @Autowired
     private RedisSession redisSession;
+
     /**
      * 短信发送
      *
@@ -55,6 +56,9 @@ public class MessageSendController {
                 //记录每次发送一次验证码，缓存中相应的手机号码个数自增长
                 redisSession.incr(phone + RedisNameUtil.separativeSignCount);
                 //处理业务后续改一下
+                String phoneCount = redisSession.getValue(phone + RedisNameUtil.separativeSignCount);
+                nashResult = NashResult.build(phoneCount);
+                return nashResult;
             } else if (sendSmsResponse.getCode().equals("isv.BUSINESS_LIMIT_CONTROL")) {
                 nashResult = NashResult.Fail("fail", "此号码频繁发送验证码，暂时不能获取！");
                 return nashResult;
