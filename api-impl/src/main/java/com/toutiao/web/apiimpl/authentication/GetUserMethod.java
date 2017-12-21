@@ -13,6 +13,8 @@ public class GetUserMethod implements TemplateMethodModelEx {
     public Object exec(List list) throws TemplateModelException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         //request.getAttribute("asdfwfe")
-        return "zjl";
+        Object userphone = request.getAttribute("userphone");
+        System.out.println(userphone);
+        return userphone;
     }
 }

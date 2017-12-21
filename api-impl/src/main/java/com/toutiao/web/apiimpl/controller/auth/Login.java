@@ -7,6 +7,7 @@ import com.toutiao.web.dao.entity.admin.SysUserEntity;
 import com.toutiao.web.service.rediscache.RedisAndCookieService;
 import com.toutiao.web.service.repository.admin.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -118,8 +119,9 @@ public class Login {
     @RequestMapping("/logout")
     public String logout(HttpServletResponse response, HttpServletRequest request,
                          @RequestParam(value = "phone", required = true) String phone) throws Exception {
+
         clearCookieAndCache(request, response,phone);
-        return "index";
+        return "redirect:/index";
     }
 
     /**
@@ -164,5 +166,23 @@ public class Login {
         redisSession.delKey(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
                 + phone);
     }
+    public static void main(String[] args) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        sb.append("15601676403")
+                .append(RedisNameUtil.separativeSign);
+        //用户信息加密
+        String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
+        System.out.println(str);
+
+        //解密
+        String decrypt = Com35Aes.decrypt(Com35Aes.KEYCODE, str);
+
+        String[] split = decrypt.split(RedisNameUtil.separativeSign);
+
+        System.out.println(split);
+
+
+    }
+
 
 }

@@ -217,7 +217,7 @@
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4 house-labelling gray middle">
                        <#list map['label'] as label>
-                           <span>${label}</span>
+                           <span><#if label?exists>${label}</#if></span>
                        </#list>
                     </div>
                     <div class="cont-block-price plot">
@@ -230,7 +230,6 @@
     </#if></ul>
 </section>
 <#include "user.ftl">
-
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
