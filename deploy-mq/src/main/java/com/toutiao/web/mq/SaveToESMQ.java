@@ -5,8 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.*;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
+import com.toutiao.web.service.plot.SysVillageService;
 import com.toutiao.web.service.repository.admin.SaveToESService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -19,6 +24,8 @@ import java.util.*;
 public class SaveToESMQ implements CommandLineRunner {
     @Autowired
     private SaveToESService saveToESService;
+    @Autowired
+    private SysVillageService sysVillageService;
     @Autowired
     private ESClientTools esClientTools;
 
@@ -47,6 +54,7 @@ public class SaveToESMQ implements CommandLineRunner {
                     String jsonStr = new String(message.getBody(), "utf-8");
 //                    System.out.println(jsonStr);
                     if (jsonStr != null) {
+                        JSONObject jsonObject = JSON.parseObject(jsonStr);
                         Map map = JSON.parseObject(jsonStr, Map.class);
 
                         Map projectInfo = (Map) map.get("projectInfo");
@@ -58,6 +66,7 @@ public class SaveToESMQ implements CommandLineRunner {
                             Integer nOrE = (Integer) projectInfo.get("nOrE");
                             //新房
                             if (nOrE == 0) {
+
 
                             }
                             //小区（二手房）
@@ -79,8 +88,8 @@ public class SaveToESMQ implements CommandLineRunner {
                                         arrayList.add(projectImage.getString(i));
                                     }
                                     String[] str = new String[arrayList.size()];
-                                    String[] phone = arrayList.toArray(str);
-                                    villageEntityES.setPhoto(phone);
+                                    String[] photo = arrayList.toArray(str);
+                                    villageEntityES.setPhoto(photo);
                                 }
 //                                //区域编号
 //                                villageEntity.setAreaId((String) projectInfo.get("districtId"));
@@ -95,7 +104,7 @@ public class SaveToESMQ implements CommandLineRunner {
                                 BigDecimal coordY = (BigDecimal) projectInfo.get("coordY");
 //                                Double[] location = {coordX.doubleValue(),coordY.doubleValue()};
 //                                villageEntityES.setLocation(location);
-                                villageEntityES.setLocation(coordY.toString()+","+coordX.toString());
+                                villageEntityES.setLocation(coordY.toString() + "," + coordX.toString());
 //                                //地铁线路编号
 //                                villageEntity.setSubwayLineId((String[]) projectInfo.get("subwayLineId"));
 //                                //地铁站编号
@@ -119,12 +128,13 @@ public class SaveToESMQ implements CommandLineRunner {
 //                                villageEntity.setAbbreviatedAge((String) projectInfo.get("finishdate"));
 //                                //楼龄
                                 String finishdate = (String) projectInfo.get("finishdate");
+
                                 if (finishdate != null) {
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                                String format2 = format.format(new Date());
-                                String date1 = finishdate.split("-")[0];
-                                String date2 = format2.split("-")[0];
-                                villageEntityES.setAge(Integer.parseInt(date2) - Integer.parseInt(date1));
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                                    String format2 = format.format(new Date());
+                                    String date1 = finishdate.split("-")[0];
+                                    String date2 = format2.split("-")[0];
+                                    villageEntityES.setAge(Integer.parseInt(date2) - Integer.parseInt(date1));
                                 }
 //                                //总栋数
 //                                villageEntity.setSumBuilding((String) projectInfo.get("buildCount"));
@@ -184,6 +194,64 @@ public class SaveToESMQ implements CommandLineRunner {
 
                         //二手房
                         if (null != esfHouse) {
+                            String jsonString = JSONObject.toJSONString(esfHouse);
+                            ProjHouseInfoES projHouseInfoES = JSON.parseObject(jsonString, ProjHouseInfoES.class);
+                            //房源总价
+                            //单价
+                            String houseUnitCost = projHouseInfoES.getHouseUnitCost();
+                            //面积
+                            String houseArea = projHouseInfoES.getHouseArea();
+                            if (houseUnitCost != null && houseArea != null) {
+                                int houseTotalPrices = (Integer.parseInt(houseUnitCost)) * (Integer.parseInt(houseArea));
+                                projHouseInfoES.setHouseTotalPrices(String.valueOf(houseTotalPrices));
+                            }
+                            //楼龄
+                            String year = (String) esfHouse.get("year");
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                            String format1 = format.format(new Date());
+                            String year2 = format1.split("-")[0];
+                            projHouseInfoES.setHouseYear(String.valueOf(Integer.parseInt(year2)-Integer.parseInt(year)));
+                            //照片
+                            Map houseImage = (Map) map.get("houseImage");
+                            JSONArray houseImage1 = jsonObject.getJSONArray("houseImage");
+                            List<Object> images=new ArrayList<>();
+                            for(Object item : houseImage1){
+                                images.addAll(((JSONObject)item).getJSONArray("imagePath"));
+                            }
+                            projHouseInfoES.setHousePhoto(images.toArray(new String[0]));
+
+                            Map houseAgent = (Map) map.get("houseAgent");
+                            //经纪人头像
+                            projHouseInfoES.setHouseProxyPhoto((String) houseAgent.get("agentPic"));
+                            //经纪人姓名
+                            projHouseInfoES.setHouseProxyName((String) houseAgent.get("agentName"));
+                            //经纪人电话号
+                            projHouseInfoES.setHouseProxyPhone((String) houseAgent.get("agentTel"));
+
+                            //获取相应小区的信息
+                            VillageRequest villageRequest = new VillageRequest();
+                            villageRequest.setId(projHouseInfoES.getHousePlotId());
+                            List villageByConditions = sysVillageService.findVillageByConditions(villageRequest);
+                            VillageResponse plot = (VillageResponse) villageByConditions.get(0);
+                            //房源小区地理坐标
+                            projHouseInfoES.setHousePlotLocation(plot.getLocation());
+                            //房源小区名称
+                            projHouseInfoES.setHousePlotName(plot.getRc());
+                            //房源小区照片
+                            projHouseInfoES.setHousePlotPhoto(plot.getPhoto());
+                            //房源小区信息
+                            projHouseInfoES.setHousePlotInfo(plot.getDesc());
+                            //商圈名称
+                            projHouseInfoES.setHouseBusinessName(plot.getTradingAreaId());
+                            //区域id
+                            projHouseInfoES.setAreaId(plot.getAreaId());
+                            //地铁线id
+                            projHouseInfoES.setSubwayLineId(plot.getSubwayLineId());
+                            //地铁站id
+                            projHouseInfoES.setSubwayStationId(plot.getMetroStationId());
+                            //距离您多少公里
+                            projHouseInfoES.setHouseToSubwayDistance(plot.getMetroWithPlotsDistance());
+
 
                         }
 
