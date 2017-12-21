@@ -44,4 +44,15 @@ public class PinyinServeContoller {
 
     }
 
+    /**
+     * 小区待售页
+     * @param model
+     * @return
+     */
+    @RequestMapping("/map")
+    public String map(Model model){
+        model.addAttribute("user","asds");
+        return "map";
+    }
+
 }
