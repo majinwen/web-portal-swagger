@@ -63,7 +63,7 @@ public class NewHouseServiceImpl implements NewHouseService{
     public Map<String,Object> getNewHouse(NewHouseQuery newHouseQuery) {
 
         //建立连接
-
+        System.out.println("开始建立连接");
         TransportClient client = esClientTools.init();
         //
         SearchResponse searchresponse = new SearchResponse();
@@ -170,6 +170,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             pageNum = newHouseQuery.getPageNum();
         }
 
+        System.out.println("数据连接newhouseIndex"+newhouseIndex+"newhouseType"+newhouseType);
 
         //排序  0--默认（按楼盘级别（广告优先））--1均价升排序--2均价降排序--3开盘时间升排序--4开盘时间降排序
         if(newHouseQuery.getSort()!=null&& newHouseQuery.getSort()==1){
@@ -233,6 +234,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }
+
+        System.out.println("数据连接newhouseIndex"+newhouseIndex+"newhouseType"+newhouseType);
         SearchHits hits = searchresponse.getHits();
 //        List<String> buildinglist = new ArrayList<>();
         ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
