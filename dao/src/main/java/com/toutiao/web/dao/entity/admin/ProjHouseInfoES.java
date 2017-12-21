@@ -55,7 +55,7 @@ public class ProjHouseInfoES {
     private String[] houseLabelId;
 
     // 房源楼层
-//    @JSONField(name = "")
+    @JSONField(name = "floorNo")
     private String houseFloorId;
     // 房源楼层
     @JSONField(name = "floor")
