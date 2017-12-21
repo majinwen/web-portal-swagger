@@ -597,3 +597,27 @@ $detailBorderColor: #e1e1e1;
         }
     }
 }
+
+.detail-map {
+    position: relative;
+    display: block;
+    padding: rem(40) 0;
+
+    img {
+        width: 100%;
+        height: auto !important;
+    }
+
+    .map-marker-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: block;
+        width: rem(54);
+        height: rem(75);
+        margin: rem(-37) rem(-27);
+        @include bg-image('/static/images/map/zbpt_icon_zb');
+        -webkit-background-size: contain;
+        background-size: contain;
+    }
+}
