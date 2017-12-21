@@ -40,10 +40,15 @@ public class PlotConterller {
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
-        VillageRequest villageRequest1 = new VillageRequest();
-        villageRequest1.setAreaSize("80");
+        villageRequest.setAreaSize("80");
+        if (villageRequest.getAvgPrice()!=null){
+            model.addAttribute("sort",villageRequest.getAvgPrice());
+        }else {
+            villageRequest.setAvgPrice(0);
+            model.addAttribute("sort",0);
+        }
         List villageList = null;
-        villageList = plotService.findVillageByConditions(villageRequest1);
+        villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
@@ -60,7 +65,7 @@ public class PlotConterller {
         String[] latandlon = village.getLocation().split(",");
         Double lonx = Double.valueOf(latandlon[1]);
         Double laty = Double.valueOf(latandlon[0]);
-        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx,laty);
+        List nearvillage = plotService.GetNearByhHouseAndDistance(laty,lonx);
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房

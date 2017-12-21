@@ -14,9 +14,15 @@
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
             <#list village['photo'] as vpphoto>
-            <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                <img src="${staticurl}/${vpphoto}" data-src="${staticurl}/${vpphoto}" alt="">
-            </li>
+                <#if vpphoto?exists>
+                    <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                        <img src="${staticurl}/${vpphoto}" data-src="${staticurl}/${vpphoto}" alt="">
+                    </li>
+                <#else>
+                    <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                        <img src="${staticurl}/" data-src="${staticurl}/" alt="暂无">
+                    </li>
+                </#if>
             </#list>
         </ul>
         <div class="banner-title">
@@ -62,15 +68,22 @@
         <div class="plot-primary-text">
             <h2>${village['rc']}</h2>
             <p>[顺义-商圈] 中央别墅区 顺语路57号</p>
+            <#if village['metroWithPlotsDistance']?exists>
             <p><#assign userMap = village['metroWithPlotsDistance']/>
             <#assign  keys=userMap?keys/>
             <#list keys as key>
             ${userMap[key]!''} ${key}
             </#list></p>
+                <#else >
+                    <p>暂无</p>
+            </#if>
             <div class="house-labelling gray">
-                <#list village['label'] as label>
-                <span>${label}</span>
-                </#list>
+                <#if village['label']?exists>
+                    <#list village['label'] as label>
+                    <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
+                    </#list>
+                <#else><span>暂无</span>
+                </#if>
             </div>
         </div>
         <div class="plot-primary-map-box"></div>
@@ -208,7 +221,13 @@
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
-                <div class="info-card-item">${village['rc']}，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，共<em class="high-light-red">${village['sumBuilding']}</em>栋（${village['sumHousehold']}户）<em class="high-light-red">${village['buildingStructure']}</em></div>
+                <div class="info-card-item">
+                <#if village['rc']?exists>${village['rc']}</#if>
+                <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
+                <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumHousehold']?exists>${village['sumHousehold']}户）</#if>
+                <#if village['buildingStructure']?exists><em class="high-light-red">${village['buildingStructure']}</em></#if>
+                </div>
             </div>
             <div class="column item-column-two">
                 <div class="info-card-item">
@@ -395,14 +414,16 @@
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
-            <li><a href="/villageDetail?id=${nearviitem['id']}">
+            <li><a href="/villageDetail?id=${nearviitem['id']?c}">
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
-                    <img src="${staticurl}/${photos[0]}" alt="${nearviitem['rc']}">
+                    <#if photos[0]?exists>
+                        <img src="${staticurl}/${photos[0]}" alt="${nearviitem['rc']}">
+                    </#if>
+
                 </div>
                 <div class="tilelist-content">
                     <p class="cont-first">${nearviitem['rc']}</p>
-
                     <p class="cont-center"><span><#if nearviitem['area']?exists>${nearviitem['area']}</#if></span><span>${nearviitem['address']}</span></p>
                     <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
                 </div>

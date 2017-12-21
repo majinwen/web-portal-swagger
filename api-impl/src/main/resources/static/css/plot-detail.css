@@ -1491,6 +1491,32 @@ a.pswp__share--download:hover {
             .expand-content .result-data-expand.height-type li .expand-name em.star-box i {
               background-image: url("/static/images/plot/xqxq_icon_star@3x.png"); } }
 
+.detail-map {
+  position: relative;
+  display: block;
+  padding: 0.5333333333rem 0; }
+  .detail-map img {
+    width: 100%;
+    height: auto !important; }
+  .detail-map .map-marker-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 0.72rem;
+    height: 1rem;
+    margin: -0.4933333333rem -0.36rem;
+    background-image: url("/static/images/map/zbpt_icon_zb.png");
+    background-repeat: no-repeat;
+    -webkit-background-size: contain;
+    background-size: contain; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      .detail-map .map-marker-icon {
+        background-image: url("/static/images/map/zbpt_icon_zb@2x.png"); } }
+    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+      .detail-map .map-marker-icon {
+        background-image: url("/static/images/map/zbpt_icon_zb@3x.png"); } }
+
 .tilelist {
   width: 100%;
   padding: 0.5333333333rem 0.4rem;

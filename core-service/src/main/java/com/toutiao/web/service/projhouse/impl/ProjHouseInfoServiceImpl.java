@@ -41,8 +41,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
     private String projhouseType;//索引类
-    /*private String projhouseIndex = "a";//索引名称
-    private String projhouseType = "b";//索引类*/
+    @Value("${distance}")
+    private Double distance;
 
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
@@ -63,7 +63,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
 //        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000000000000", DistanceUnit.METERS);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance("3000", DistanceUnit.METERS));
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance(distance, DistanceUnit.METERS));
 //        srb.setPostFilter(location1);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
 //        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
