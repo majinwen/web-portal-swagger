@@ -846,6 +846,10 @@ hr {
       .detail-map .map-marker-icon {
         background-image: url("/static/images/map/zbpt_icon_zb@3x.png"); } }
 
+.detail-contact-wrapper {
+  position: relative;
+  height: 1.3066666667rem; }
+
 .detail-contact-box {
   position: fixed;
   bottom: 0;

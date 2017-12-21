@@ -202,6 +202,10 @@ hr {
   height: 100%;
   overflow: hidden; }
 
+.detail-contact-wrapper {
+  position: relative;
+  height: 1.3066666667rem; }
+
 .detail-contact-box {
   position: fixed;
   bottom: 0;

@@ -173,7 +173,6 @@
         </a></li>
     </#list>
     </#if>
-
     </ul>
 </section>
 <div class="new-index-pull-down">

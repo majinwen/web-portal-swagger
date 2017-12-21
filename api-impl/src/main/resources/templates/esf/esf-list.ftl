@@ -252,9 +252,6 @@
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-  /*  $(function () {
-        var BaseUrl = 'http://localhost:8085/queryBySearchBox';
-    })*/
     $('.search-link').on('focus',function () {
         location.href="/queryBySearchBox?text=东城"
     });

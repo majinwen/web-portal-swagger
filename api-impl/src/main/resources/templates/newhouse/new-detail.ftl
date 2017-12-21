@@ -197,21 +197,22 @@
     </#if>
     </ul>
 </section>
-<section class="detail-contact-box" id="detailContactState">
-    <div class="detail-contact-content">
-        <a href="#" class="contact-share"><i></i>分享</a>
-        <a href="#" class="contact-collect"><i></i>收藏</a>
-        <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
-    </div>
-</section>
+<div class="detail-contact-wrapper">
+    <section class="detail-contact-box" id="detailContactState">
+        <div class="detail-contact-content">
+            <a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>
+            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+        </div>
+    </section>
+</div>
+
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-</body>
-</html>
 <script>
     <#assign ptCD0 = tradeline['buildingline']>;
     <#assign ptCD1 = tradeline['arealine']>;
@@ -330,12 +331,7 @@
             }
         ]
     };
-
     myChartline.setOption(option);
-/*
-    //地图尺寸适配
-     window.addEventListener("resize", function () {
-         myChartline.resize();
-
-     });*/
 </script>
+</body>
+</html>
