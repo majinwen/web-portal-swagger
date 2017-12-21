@@ -45,7 +45,7 @@ public class PinyinServeContoller {
     }
 
     /**
-     * 小区待售页
+     * 配套地图
      * @param model
      * @return
      */
