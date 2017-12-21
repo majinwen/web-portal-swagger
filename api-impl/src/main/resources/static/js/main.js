@@ -16,6 +16,8 @@ $(function () {
     moduleExpand();         // 小区详情模块状态
 
     marketsState();         // 小区市场详情切换
+
+    listSortTab();          // 列表页排序切换
 });
 
 function describeAllShow() {
@@ -177,4 +179,19 @@ function marketsState() {
         $('.supply-contrast').removeClass('none');
         $('.price-trend').addClass('none');
     })
+}
+
+function listSortTab() {
+    if ($('.sort-icon').length > 0) {
+        $('.sort-icon').on('click', function () {
+            $('.sort-content-box').slideDown();
+        });
+        $('.sort-mask').on('click', function () {
+            $('.sort-content-box').slideUp();
+        });
+        $('.sort-content').on('click', 'li', function () {
+            $(this).addClass('current').siblings().removeClass('current');
+            $('.sort-content-box').slideUp();
+        })
+    }
 }

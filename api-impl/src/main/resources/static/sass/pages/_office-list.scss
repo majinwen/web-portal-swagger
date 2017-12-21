@@ -186,3 +186,54 @@ $textGrayColor: #888;
         }
     }
 }
+
+.sort-icon {
+    position: fixed;
+    bottom: rem(30);
+    right: rem(30);
+    width: rem(112);
+    height: rem(112);
+    @include bg-image('/static/images/global/base_sort_icon');
+}
+.sort-content-box {
+    display: none;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 200;
+
+    .sort-content {
+        position: relative;
+        background-color: #fff;
+        z-index: 1;
+
+        li {
+            padding: 0 rem(30);
+            height: rem(90);
+            line-height: rem(90);
+
+            p {
+                @include font-dpr(28);
+                color: #666;
+                border-bottom: rem(1) solid $borderLineColor;
+            }
+
+            &.current {
+                p {
+                    color: $baseRed;
+                }
+            }
+        }
+    }
+
+    .sort-mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+    }
+}
