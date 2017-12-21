@@ -233,11 +233,13 @@
                     <p class="cont-block-2 high-light-red">68000元/㎡</p>
                 </div>
             </a></li>
+        <#elseif map_index==4>
+        <#break>
         </#if>
         <li><a class="list-item" href="">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="${map['rc']}">
                 </div>
                 <div class="list-item-cont">
                     <input type="hidden" value="${map['id']}">
@@ -246,7 +248,7 @@
                     <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                     <div class="cont-block-4 house-labelling gray middle">
                        <#list map['label'] as label>
-                           <span>${label}</span>
+                           <#if label?exists><span>${label}</span></#if>
                        </#list>
                     </div>
                     <div class="cont-block-price plot">

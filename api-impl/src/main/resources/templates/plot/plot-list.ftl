@@ -150,23 +150,23 @@
     <ul>
     <#if villageList?exists>
         <#list villageList as plot>
-            <li><a class="list-item" href="/villageDetail?id=${plot['id']}">
+            <li><a class="list-item" href="/villageDetail?id=${plot['id']?c}">
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
-                            <#assign photo = plot['photo']>
-                            <#if photo?exists>
-                                <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                            <#if plot['photo']?exists>
+                                <#assign photo = plot['photo']>
+                                <#if photo[0]?exists>
+                                    <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                                <#else><img src="${staticurl}/" alt="暂无">
+                                </#if>
                             </#if>
                         </div>
                     </#if>
                     <div class="list-item-cont">
-                        <#if plot['rc']?exists>
-                        <h3 class="cont-block-1">${plot['rc']}</h3>
-                        </#if>
-                        <#if plot['abbreviatedAge']?exists>
-                        <p class="cont-block-2">${plot['abbreviatedAge']}</p>
-                        </#if>
+                        <h3 class="cont-block-1">
+                           <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
+                         <p class="cont-block-2"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}<#else>暂无</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>

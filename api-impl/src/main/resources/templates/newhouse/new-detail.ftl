@@ -17,7 +17,7 @@
             <#assign imglist = build['building_imgs']>
             <#list imglist as item>
             <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                <img src="${staticurl}/${item[0]}" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
+                    <img src="${staticurl}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
             </#list>
         </ul>
@@ -62,33 +62,34 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>${build['building_name']}<em class="sale-state">${build['sale_status_name']}</em></h2>
-            <p>别名：${build['building_nickname']}</p>
+            <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
+            <p>别名：<#if build['building_nickname']?exists>${build['building_nickname']}<#else>暂无</#if></p>
             <div class="primary-header-tag">
             <#assign tags = build['building_tags']>
             <#list tags as item>
-                <span>${item}</span>
+             <#if item?exists><span>${item}</span></#if>
             </#list>
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red">${build['average_price']}</em>/㎡</p>
+                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}<#else>暂无</#if></em>/㎡</p>
             </li>
             <li>
                 <p>
-                    地址：[${build['district_name']}]${build['building_address']}
+                    地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
+                          <#if build['building_address']?exists>${build['building_address']}<#else>暂无</#if>
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：${build['roundstation']} <#--1.0km<em class="primary-distance">0.6km</em>-->
+                    交通信息：<#if build['roundstation']?exists>${build['roundstation']}<#else>暂无</#if> <#--1.0km<em class="primary-distance">0.6km</em>-->
                 </p>
             </li>
             <li>
-                <p>最新开盘：${build['opened_time']}</p>
-                <p>交房时间：${build['deliver_time']}</p>
-                <p>售楼许可证：${build['sell_licence']}</p>
+                <p>最新开盘：<#if build['opened_time']?exists>${build['opened_time']}<#else>暂无</#if></p>
+                <p>交房时间：<#if build['deliver_time']?exists>${build['deliver_time']}<#else>暂无</#if></p>
+                <p>售楼许可证：<#if build['sell_licence']?exists>${build['sell_licence']}<#else>暂无</#if></p>
             </li>
         </ul>
     </section>
@@ -96,7 +97,7 @@
 <div class="module-bottom-fill">
     <div class="active-module-box">
         <a href="tel:1234567" class="active-module-content">
-            <p class="active-text"><i class="active-icon"></i><span>最新活动：${build['activity_desc']}</span></p>
+            <p class="active-text"><i class="active-icon"></i><span>最新活动：<#if build['activity_desc']?exists>${build['activity_desc']}<#else>暂无</#if></span></p>
             <div class="consule-message">
                 <p>
                     <span>更多优惠信息</span>
@@ -115,10 +116,10 @@
         </div>
         <dl class="module-table-item">
             <dt>开发商：${build['developers']}</dt>
-            <dd class="odd-item">物业类型：<span>${build['property_type']}</span></dd>
-            <dd class="even-item">建筑类型：<em>${build['building_type']}</em></dd>
-            <dd class="odd-item">产权年限：<em>${build['building_life']}年</em></dd>
-            <dd class="even-item">车位配比：<em>${build['park_radio']}</em></dd>
+            <dd class="odd-item">物业类型：<span><#if build['property_type']?exists>${build['property_type']}<#else>暂无</#if></span></dd>
+            <dd class="even-item">建筑类型：<em><#if build['building_type']?exists>${build['building_type']}<#else>暂无</#if></em></dd>
+            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists>${build['building_life']}年<#else>暂无</#if></em></dd>
+            <dd class="even-item">车位配比：<em><#if build['park_radio']?exists>${build['park_radio']}<#else>暂无</#if></em></dd>
         </dl>
     </section>
 </div>
@@ -142,7 +143,9 @@
                             <div class="house-labelling normal small tilelist-tag">
                                 <#assign layouttagitem = item['layout_tag']>
                                 <#list layouttagitem as tagatem>
+                                <#if tagatem?exists>
                                     <span>${tagatem}</span>
+                                </#if>
                                 </#list>
                             </div>
                         </div>

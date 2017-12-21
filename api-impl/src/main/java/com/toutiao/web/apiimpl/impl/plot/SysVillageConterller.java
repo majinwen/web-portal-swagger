@@ -58,21 +58,24 @@ public class SysVillageConterller {
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = sysVillageService.findVillageByConditions(villageRequest);
-        VillageResponse village= (VillageResponse) villageList.get(0);
-        model.addAttribute("village", village);
 
-        //附近小区
-        String[] latandlon = village.getLocation().split(",");
-        Double lonx = Double.valueOf(latandlon[1]);
-        Double laty = Double.valueOf(latandlon[0]);
-        List nearvillage = sysVillageService.GetNearByhHouseAndDistance(lonx,laty);
-        model.addAttribute("nearvillage",nearvillage);
+        if (villageList.size()!=0){
+            VillageResponse village= (VillageResponse) villageList.get(0);
+            model.addAttribute("village", village);
 
-        //推荐小区好房
-        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
-        projHouseInfoQuery.setHousePlotName(village.getRc());
-        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-        model.addAttribute("reViHouse",reViHouse);
+            //附近小区
+            String[] latandlon = village.getLocation().split(",");
+            Double lonx = Double.valueOf(latandlon[1]);
+            Double laty = Double.valueOf(latandlon[0]);
+            List nearvillage = sysVillageService.GetNearByhHouseAndDistance(laty,lonx);
+            model.addAttribute("nearvillage",nearvillage);
+
+            //推荐小区好房
+            ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+            projHouseInfoQuery.setHousePlotName(village.getRc());
+            List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+            model.addAttribute("reViHouse",reViHouse);
+        }
 
         newHouseQuery.setSort(0);
         newHouseQuery.setPageNum(1);

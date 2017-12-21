@@ -57,7 +57,6 @@ public class NewHouseController {
             model.addAttribute("sort",0);
         }
         return "newhouse/new-list";
-
     }
 
     /**
