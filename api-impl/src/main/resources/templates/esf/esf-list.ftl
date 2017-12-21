@@ -243,9 +243,11 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <li class="current"><p>默认排序</p></li>
-        <li><p>价格由高到低</p></li>
-        <li><p>价格由低到高</p></li>
+    <#if sort?exists>
+        <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+    </#if>
     </ul>
 </div>
 

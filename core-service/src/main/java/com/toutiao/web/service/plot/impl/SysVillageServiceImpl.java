@@ -206,8 +206,15 @@ public class SysVillageServiceImpl implements SysVillageService {
             }
             //排序
             //均价
-//        srb.addSort("level",SortOrder.DESC);
-            srb.addSort("avgPrice", SortOrder.ASC);
+            if (villageRequest.getAvgPrice() != null ) {
+                if (villageRequest.getAvgPrice() == 1) {
+                    srb.addSort("avgPrice", SortOrder.ASC);
+                }
+
+                if (villageRequest.getAvgPrice() == 2) {
+                    srb.addSort("avgPrice", SortOrder.DESC);
+                }
+            }
             //分页
             villageRequest.setSize(10);
             if (villageRequest.getPage() == null) {

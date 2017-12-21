@@ -89,6 +89,11 @@ public class ProjHouseInfoController {
         if (StringTool.isNotEmpty(builds)&& builds.size()>0) {
             model.addAttribute("builds", builds);
         }
+        if (projHouseInfoQuery.getSort()!=null){
+            model.addAttribute("sort",projHouseInfoQuery.getSort());
+        }else {
+            model.addAttribute("sort",0);
+        }
         return "esf/esf-list";
 
     }

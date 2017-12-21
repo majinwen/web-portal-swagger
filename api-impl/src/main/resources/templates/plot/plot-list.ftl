@@ -10,6 +10,7 @@
 </head>
 <body>
 <header>
+    <input id="url" type="hidden" value="http://localhost:8085/findVillageByConditions">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -185,10 +186,14 @@
                         </#if>
                         </#if>
                         <div class="cont-block-4">
-                            <#assign item =  plot['label']>
-                            <#list item as itemValue>
-                                <span>${itemValue}</span>
-                            </#list>
+                            <#if plot['label']?exists>
+                                <#assign item =  plot['label']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                    <span>${itemValue}</span>
+                                    </#if>
+                                </#list>
+                            </#if>
                         </div>
                         <div class="cont-block-price plot">
                             <em>${plot['avgPrice']}</em>
@@ -206,9 +211,11 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <li class="current"><p>默认排序</p></li>
-        <li><p>价格由高到低</p></li>
-        <li><p>价格由低到高</p></li>
+    <#if sort?exists>
+        <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+    </#if>
     </ul>
 </div>
 

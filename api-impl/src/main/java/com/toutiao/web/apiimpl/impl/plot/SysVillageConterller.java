@@ -40,10 +40,15 @@ public class SysVillageConterller {
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
-        VillageRequest villageRequest1 = new VillageRequest();
-        villageRequest1.setAreaSize("80");
+        villageRequest.setAreaSize("80");
+        if (villageRequest.getAvgPrice()!=null){
+            model.addAttribute("sort",villageRequest.getAvgPrice());
+        }else {
+            villageRequest.setAvgPrice(0);
+            model.addAttribute("sort",0);
+        }
         List villageList = null;
-        villageList = sysVillageService.findVillageByConditions(villageRequest1);
+        villageList = sysVillageService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
