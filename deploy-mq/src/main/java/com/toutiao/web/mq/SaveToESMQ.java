@@ -85,6 +85,10 @@ public class SaveToESMQ implements CommandLineRunner {
                                 BigDecimal coordX = (BigDecimal) projectInfo.get("coordX");
                                 BigDecimal coordY = (BigDecimal) projectInfo.get("coordY");
                                 newHouseBuildings.setLocation(coordY.toString()+","+coordX.toString());
+                                //城市
+                                newHouseBuildings.setCityName("北京");
+                                //区县名称
+
 
                                 JSONObject projectExtra = (JSONObject) map.get("projectExtra");
                                 //地铁线
@@ -99,8 +103,29 @@ public class SaveToESMQ implements CommandLineRunner {
                                 newHouseBuildings.setHouseMinArea(houseMinArea);
                                 newHouseBuildings.setHouseMaxArea(houseMaxArea);
                                 //建筑类型
+                                Integer[] buildingType = newHouseBuildings.getBuildingTypeId();
+                                String bts ="";
+                                for(int i=0;i<buildingType.length;i++){
+                                    String bt = ResidenceMap.getResidenceBuildCategory(buildingType[i].toString());
+                                    bts = bts+","+bt;
+                                }
+                                newHouseBuildings.setBuildingType(bts);
 
-//                                ResidenceMap.getResidenceBuildCategory(newHouseBuildings.getBuildingTypeId());
+                                //楼盘特色
+                                Integer[] buildingFeature = newHouseBuildings.getBuildingFeatureId();
+                                String bfs ="";
+                                for(int i=0;i<buildingFeature.length;i++){
+                                    String bt = ResidenceMap.getResidenceBuildCategory(buildingFeature[i].toString());
+                                    bfs = bfs+","+bt;
+                                }
+                                newHouseBuildings.setBuildingFeature(bfs);
+                                newHouseBuildings.setBuildingTags(bfs);
+                                //装修
+
+
+                                String str1 = (String) projectExtra.get("subwayDistince");
+                                Map subwayDistince = (Map) JSONObject.parse(str1);
+                                newHouseBuildings.setNearbysubway(subwayDistince);
 
                             }
                             //小区（二手房）

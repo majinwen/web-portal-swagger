@@ -101,7 +101,7 @@ public class NewHouseBuildings {
     /**
      * 楼盘特色名称
      */
-    private String[] buildingFeature;
+    private String buildingFeature;
     /**
      * 装修类型id
      */
@@ -134,7 +134,7 @@ public class NewHouseBuildings {
     /**
      * 楼盘标签内容
      */
-    private String[] buildingTags;
+    private String buildingTags;
     /**
      * 活动描述
      */
@@ -270,7 +270,7 @@ public class NewHouseBuildings {
     /**
      * 附件地铁信息
      */
-    @JSONField(name = "subwayDistince")
+//    @JSONField(name = "subwayDistince")
     private Map<String,String> nearbysubway;
     /**
      * 楼盘等级

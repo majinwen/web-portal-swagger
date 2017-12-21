@@ -1,15 +1,20 @@
 package com.toutiao.web.service.newhouse.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.admin.VillageEntity;
+import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -468,6 +473,23 @@ public class NewHouseServiceImpl implements NewHouseService{
             e.printStackTrace();
         }
         return houseList;
+    }
+
+    @Override
+    public void saveBuildingParent(NewHouseBuildings newHouseBuildings) {
+
+        TransportClient client = esClientTools.init();
+
+        JSONObject json = (JSONObject) JSONObject.toJSON(newHouseBuildings);
+        String id = String.valueOf(newHouseBuildings.getBuildingNameId());
+        IndexRequest indexRequest = new IndexRequest(newhouseIndex, newhouseType, id)
+                .version(newHouseBuildings.getVersion())
+                .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
+                .source(json);
+        client.index(indexRequest).actionGet();
+
+
+
     }
 
 }
