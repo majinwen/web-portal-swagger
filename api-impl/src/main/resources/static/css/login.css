@@ -291,4 +291,7 @@ p {
     [data-dpr="3"] .login-form .submit-btn {
       font-size: 45px; }
 
+.code-text {
+  color: #fb3939; }
+
 /*# sourceMappingURL=login.css.map */

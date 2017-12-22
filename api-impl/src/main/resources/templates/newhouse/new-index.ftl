@@ -10,7 +10,7 @@
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<header>
+<header class="main-top-header">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -173,20 +173,15 @@
         </a></li>
     </#list>
     </#if>
-
     </ul>
 </section>
 <div class="new-index-pull-down">
     <p>想查看更多房源，跟我来！</p><img src="${staticurl}/images/newindex/sy_xf_icon_xl.png" alt="查看更多房源">
 </div>
 <#include "../user.ftl">
+<#include "../search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script>
-    $('.search-link').on('focus', function () {
-        location.href = "/newhouse/searchNewHouse";
-    });
-</script>
 </body>
 </html>
