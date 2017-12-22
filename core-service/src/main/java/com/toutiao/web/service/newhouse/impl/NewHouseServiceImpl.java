@@ -453,7 +453,7 @@ public class NewHouseServiceImpl implements NewHouseService{
      *
      *
      *  */
-    @Override
+   /* @Override
     public ArrayList<HashMap<String,Object>> searchNewHouse(String text) {
         ArrayList<HashMap<String,Object>> houseList = new ArrayList();
         try {
@@ -475,12 +475,12 @@ public class NewHouseServiceImpl implements NewHouseService{
                 ww.should(queryBuilder);
             }
 
-            /*ww = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.fuzzyQuery("area_name", text));*/
+            *//*ww = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.fuzzyQuery("area_name", text));*//*
             SearchResponse searchResponse = client.prepareSearch("beijing1")
                     .setTypes("building1")
                     .setQuery(ww)
-                   /* .addSort("houseRank", SortOrder.DESC)*/
+                   *//* .addSort("houseRank", SortOrder.DESC)*//*
                     .setFrom(0)
                     .setSize(10)
                     .execute().actionGet();
@@ -494,7 +494,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         return houseList;
     }
-
+*/
     @Override
     public void saveBuildingParent(NewHouseBuildings newHouseBuildings) {
 

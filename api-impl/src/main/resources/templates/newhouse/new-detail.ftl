@@ -204,7 +204,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']}</p>
                     <p class="cont-center"><span>${nearitem['district_name']}</span><span>${nearitem['area_name']}</span></p>
-                    <h4 class="cont-last">均价：<em>${nearitem['average_price']}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}<#else >暂无</#if></em>/㎡</h4>
                 </div>
             </a>
         </li>
