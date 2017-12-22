@@ -5,12 +5,11 @@ import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -42,13 +41,13 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
     private String projhouseType;//索引类
-    /*private String projhouseIndex = "a";//索引名称
-    private String projhouseType = "b";//索引类*/
+    @Value("${distance}")
+    private Double distance;
 
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
      *
-     * @param [lat, lon]
+//     * @param [lat, lon]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
@@ -64,7 +63,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
 //        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000000000000", DistanceUnit.METERS);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance("3000", DistanceUnit.METERS));
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance(distance, DistanceUnit.METERS));
 //        srb.setPostFilter(location1);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
 //        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
@@ -96,7 +95,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：随机获取数据并且根据房源级别排序
      *
-     * @param [projHouseInfoRequest]
+//     * @param [projHouseInfoRequest]
      * @return java.util.List
      * @author zhw
      * @date 2017/12/15 11:07
@@ -307,7 +306,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过二手房id查找房源信息
      *
-     * @param [houseId]
+//     * @param [houseId]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
@@ -353,7 +352,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过输入的搜索框信息查询数据
      *
-     * @param [text]
+//     * @param [text]
      * @return java.util.List
      * @author zhw
      * @date 2017/12/15 15:07
@@ -403,23 +402,24 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * 功能描述：往es中保存数据
      * @author zhw
      * @date 2017/12/16 11:10
-     * @param [projHouseInfo]
+//     * @param [projHouseInfo]
      * @return boolean
      */
     @Override
-    public boolean saveProjHouseInfo(ProjHouseInfo projHouseInfo) {
+    public void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes) {
         TransportClient client = esClientTools.init();
-        boolean flag = true;
-        String json = JSONObject.toJSONString(projHouseInfo);
-        BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
-        IndexRequest indexRequest = new IndexRequest(projhouseIndex, projhouseType, String.valueOf(projHouseInfo.getHouseId()))
-                .version(projHouseInfo.getVersion()).versionType(VersionType.EXTERNAL).source(json);
-        bulkRequestBuilder.add(indexRequest);
-        BulkResponse response = bulkRequestBuilder.execute().actionGet();
-        if (response.hasFailures()) {
-            flag = false;
+        ProjHouseInfo projHouseInfo = new ProjHouseInfo();
+        try {
+            BeanUtils.copyProperties(projHouseInfo,projHouseInfoes);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return flag;
+        JSONObject json = (JSONObject) JSONObject.toJSON(projHouseInfo);
+        IndexRequest indexRequest = new IndexRequest(projhouseIndex, projhouseType, String.valueOf(projHouseInfo.getHouseId()))
+                .version(projHouseInfo.getVersion())
+                .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
+                .source(json);
+        client.index(indexRequest).actionGet();
     }
 
 

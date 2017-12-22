@@ -5,7 +5,7 @@ import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.newhouse.NewHouseService;
-import com.toutiao.web.service.plot.SysVillageService;
+import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class SysVillageConterller {
+public class PlotConterller {
     @Autowired
-    private SysVillageService sysVillageService;
+    private PlotService plotService;
     @Autowired
     private NewHouseService newHouseService;
     @Autowired
@@ -28,9 +28,11 @@ public class SysVillageConterller {
     //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
     @ResponseBody
-    public String GetNearByhHouseAndDistance(double lat, double lon, Model model) {
+    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
         List villageList = null;
-        villageList = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
+        Double lonx = Double.valueOf(lon);
+        Double laty = Double.valueOf(lat);
+        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
         model.addAttribute("villageList", villageList);
         return "plot-list";
     }
@@ -38,10 +40,15 @@ public class SysVillageConterller {
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
-        VillageRequest villageRequest1 = new VillageRequest();
-        villageRequest1.setAreaSize("80");
+        villageRequest.setAreaSize("80");
+        if (villageRequest.getAvgPrice()!=null){
+            model.addAttribute("sort",villageRequest.getAvgPrice());
+        }else {
+            villageRequest.setAvgPrice(0);
+            model.addAttribute("sort",0);
+        }
         List villageList = null;
-        villageList = sysVillageService.findVillageByConditions(villageRequest1);
+        villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
         return "plot/plot-list";
     }
@@ -50,15 +57,15 @@ public class SysVillageConterller {
     //小区详情页
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
-        List villageList = sysVillageService.findVillageByConditions(villageRequest);
+        List villageList = plotService.findVillageByConditions(villageRequest);
         VillageResponse village= (VillageResponse) villageList.get(0);
         model.addAttribute("village", village);
 
         //附近小区
-        Double [] latandlon = village.getLocation();
-        double lat = latandlon[0];
-        double lon = latandlon[1];
-        List nearvillage = sysVillageService.GetNearByhHouseAndDistance(lat, lon);
+        String[] latandlon = village.getLocation().split(",");
+        Double lonx = Double.valueOf(latandlon[1]);
+        Double laty = Double.valueOf(latandlon[0]);
+        List nearvillage = plotService.GetNearByhHouseAndDistance(laty,lonx);
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房

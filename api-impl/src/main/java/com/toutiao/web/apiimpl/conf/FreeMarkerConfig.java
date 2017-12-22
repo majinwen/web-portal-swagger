@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.conf;
 import cn.org.rapid_framework.freemarker.directive.BlockDirective;
 import cn.org.rapid_framework.freemarker.directive.ExtendsDirective;
 import cn.org.rapid_framework.freemarker.directive.OverrideDirective;
+import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 
 /**
  * zhangjinglei 2017/10/30 下午5:23
@@ -34,6 +36,7 @@ public class FreeMarkerConfig {
         try {
             configuration.setSharedVariable("staticurl", staticUrl);
             configuration.setSharedVariable("staticversion", staticVersion);
+            configuration.setSharedVariable("getUser",new GetUserMethod());
         }
         catch (Exception e){
             logger.error("freemarker 共享变量 staticurl 初始化失败",e);

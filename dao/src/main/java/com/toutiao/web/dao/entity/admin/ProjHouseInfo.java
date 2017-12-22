@@ -119,7 +119,7 @@ public class ProjHouseInfo {
     private Integer housePlotId;
 
     // 房源小区地理坐标
-    private Double[] housePlotLocation;
+    private String housePlotLocation;
 
     // 房源小区名称
     private String housePlotName;

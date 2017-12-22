@@ -154,32 +154,42 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item = map['building_imgs']>
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                        <#if item[0]?exists>
+                            <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                        </#if>
                     </div>
                     <div class="list-item-cont">
-                        <span hidden="hidden">${map['building_name_id']}</span>
-                        <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                        <p class="cont-block-2">${map['average_price']}元/㎡</p>
+                        <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
+                        <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if>
+                            <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
+                        </h3>
+                        <p class="cont-block-2"> <#if map['average_price']?exists>${map['average_price']}元/㎡<#else>暂无</#if></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                                    ${map['nearsubway']}
-                            <#else>${map['district_name']}
+                            <#else>
+                            <#if map['district_name']?exists>${map['district_name']}</#if>
                             </#if>
-                            /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                            <#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
+                            </p>
                         <div class="cont-block-4 house-labelling gray middle">
-                            <#assign item =  map['building_tags']>
-                            <#list item as itemValue>
-                                <span>${itemValue}</span>
-                            </#list>
+                            <#if  map['building_tags']?exists>
+                                <#assign item =  map['building_tags']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                        <span>${itemValue}</span>
+                                    </#if>
+                                </#list>
+                            </#if>
                         </div>
                         <div class="cont-block-sale">
-                            <em>${map['sale_status_name']}</em>
+                            <em><#if map['sale_status_name']?exists>${map['sale_status_name']}</#if></em>
                         </div>
                     </div>
                 </div>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
-                    <span>${map['activity_desc']}</span>
+                    <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
                 </div>
             </a></li>
         </#list>
@@ -190,9 +200,11 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <li class="current"><p>默认排序</p></li>
-        <li><p>价格由高到低</p></li>
-        <li><p>价格由低到高</p></li>
+        <#if sort?exists>
+                <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+                <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
+                <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+        </#if>
     </ul>
 </div>
 

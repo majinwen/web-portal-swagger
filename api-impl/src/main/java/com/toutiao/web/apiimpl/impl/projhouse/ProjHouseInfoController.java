@@ -1,11 +1,9 @@
 package com.toutiao.web.apiimpl.impl.projhouse;
 
 
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
-import com.toutiao.web.service.plot.SysVillageService;
+import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +26,13 @@ public class ProjHouseInfoController {
     @Autowired
     private ProjHouseInfoService projHouseInfoService;
     @Autowired
-    private SysVillageService sysVillageService;
+    private PlotService plotService;
 
 
     /**
      * 功能描述：功能描述：根据房源的id以及小区的经度，维度查询房源详情，以及附近好房信息
      *
-     * @param [model, houseId, lat, lon]
+//     * @param [model, houseId, lat, lon]
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/15 11:06
@@ -51,7 +49,7 @@ public class ProjHouseInfoController {
         builds = projHouseInfoService.
                 queryProjHouseByhouseIdandLocation(Double.valueOf(lat), Double.valueOf(lon));
         //附近小区缺少接口
-        List plotList = sysVillageService.GetNearByhHouseAndDistance(Double.valueOf(lat), Double.valueOf(lon));
+        List plotList = plotService.GetNearByhHouseAndDistance(Double.valueOf(lat), Double.valueOf(lon));
         if (StringTool.isNotEmpty(plotList)) {
             model.addAttribute("plotList", plotList);
         }
@@ -67,7 +65,7 @@ public class ProjHouseInfoController {
     /**
      * 功能描述：二手房列表
      *
-     * @param [projHouseInfoQuery, model]
+//     * @param [projHouseInfoQuery, model]
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/15 10:59
@@ -89,6 +87,11 @@ public class ProjHouseInfoController {
         if (StringTool.isNotEmpty(builds)&& builds.size()>0) {
             model.addAttribute("builds", builds);
         }
+        if (projHouseInfoQuery.getSort()!=null){
+            model.addAttribute("sort",projHouseInfoQuery.getSort());
+        }else {
+            model.addAttribute("sort",0);
+        }
         return "esf/esf-list";
 
     }
@@ -101,20 +104,20 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 18:30
      */
-    @RequestMapping("/saveProjHouseInfoToEs")
-    public NashResult saveProjHouseInfoToEs(ProjHouseInfo projHouseInfo) {
-        boolean b = projHouseInfoService.saveProjHouseInfo(projHouseInfo);
-        if (b) {
-            return NashResult.build("保存成功！");
-        }
-        return NashResult.Fail("保存失败！");
-    }
+//    @RequestMapping("/saveProjHouseInfoToEs")
+//    public NashResult saveProjHouseInfoToEs(ProjHouseInfo projHouseInfo) {
+//        boolean b = projHouseInfoService.saveProjHouseInfo(projHouseInfo);
+//        if (b) {
+//            return NashResult.build("保存成功！");
+//        }
+//        return NashResult.Fail("保存失败！");
+//    }
     /**
      *
      * 功能描述：通过索搜框查找相应的数据
      * @author zhw
      * @date 2017/12/16 9:46
-     * @param [text]
+//     * @param [text]
      * @return java.lang.String
      */
     @RequestMapping("queryBySearchBox")

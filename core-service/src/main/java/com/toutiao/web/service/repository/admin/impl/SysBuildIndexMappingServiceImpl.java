@@ -87,6 +87,8 @@ public class SysBuildIndexMappingServiceImpl implements SysBuildIndexMappingServ
                     .startObject("sdr").field("type", "string").field("index", "not_analyzed").endObject()
                     .startObject("level").field("type", "integer").field("index", "not_analyzed").endObject()
                     .startObject("villageCharacteristics").field("type", "string").field("index", "not_analyzed").endObject()
+                    .startObject("cityId").field("type", "string").field("index", "not_analyzed").endObject()
+                    .startObject("ringRoad").field("type", "string").field("index", "not_analyzed").endObject()
                     .endObject().endObject().endObject();
         } catch (IOException e) {
             e.printStackTrace();

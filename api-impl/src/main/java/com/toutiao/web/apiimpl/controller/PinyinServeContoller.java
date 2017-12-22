@@ -44,15 +44,5 @@ public class PinyinServeContoller {
 
     }
 
-    /**
-     * 配套地图
-     * @param model
-     * @return
-     */
-    @RequestMapping("/map")
-    public String map(Model model){
-        model.addAttribute("user","asds");
-        return "map";
-    }
 
 }

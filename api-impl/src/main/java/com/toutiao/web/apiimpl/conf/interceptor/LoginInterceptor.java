@@ -5,6 +5,9 @@ import com.toutiao.web.apiimpl.authentication.IgnoreLogin;
 import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.apiimpl.authentication.SerializableData;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.Com35Aes;
+import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.RedisNameUtil;
 import com.toutiao.web.common.util.crypto.AES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,9 +34,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private LoginAndPermissionConfig loginAndPermissionConfig;
 
-    private HashMap<String,String> codes=new HashMap<>();
+    private HashMap<String, String> codes = new HashMap<>();
 
-    public LoginInterceptor( ){
+    public LoginInterceptor() {
 //        List<SysPermissionInfo> sysPermissionInfos = sysPermissionCoreService.selectAll();
 //        for(SysPermissionInfo info:sysPermissionInfos){
 //            codes.put(info.getId().toString(),info.getName());
@@ -47,28 +50,34 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
          * 本请求忽略登录验证
          */
         IgnoreLogin methodAnnotation = ((HandlerMethod) handler).getMethodAnnotation(IgnoreLogin.class);
-        if(methodAnnotation!=null){
+        if (methodAnnotation != null) {
             return true;
         }
         /**
          * 验证cookie
          */
+        /*SerializableData serializableData = validCookieValue(request, config.getCookiename());*/
+        //获取解密后的cookie中的用户数据
 
-        SerializableData serializableData = validCookieValue(request, config.getCookiename());
-
-        if(serializableData==null){
+        String validCookieValue1 = validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        if (validCookieValue1!=null){
+            request.setAttribute("userphone", validCookieValue1);
+        }else{
+            request.setAttribute("userphone", "请登录");
+        }
+        /*if (serializableData == null) {
             response.setContentType("application/json;charset=utf-8");
-            Cookie clearcookie = new Cookie(config.getCookiename(),null);
+            Cookie clearcookie = new Cookie(config.getCookiename(), null);
             clearcookie.setMaxAge(0);
             clearcookie.setPath("/");
             response.addCookie(clearcookie);
 
             PrintWriter writer = response.getWriter();
-            writer.print(JSON.toJSONString(NashResult.Fail("no-login","没有登录")));
+            writer.print(JSON.toJSONString(NashResult.Fail("no-login", "没有登录")));
             writer.flush();
             return false;
         }
-        request.setAttribute("_serializabledata_", serializableData);
+        request.setAttribute("_serializabledata_", serializableData);*/
         return true;
 //        else {
 //            /**
@@ -123,22 +132,48 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //        return true;
     }
 
-    private SerializableData validCookieValue(HttpServletRequest request,String cookieName){
-        cookieName=cookieName.trim();
+    private String validCookieValue1(HttpServletRequest request, String cookieName) {
+        cookieName = cookieName.trim();
         Cookie[] cookies = request.getCookies();
-        if(cookies!=null) {
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+
+                if (c.getName().equals(cookieName)) {
+                    try {
+                        //用户信息解密
+                        String str = Com35Aes.decrypt(Com35Aes.KEYCODE, c.getValue());
+                        if (str != null) {
+                            //截取电话号码
+                            String[] strings = str.split(RedisNameUtil.separativeSign);
+                            return strings[0];
+                        }else{
+                            return null;
+                        }
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    private SerializableData validCookieValue(HttpServletRequest request, String cookieName) {
+        cookieName = cookieName.trim();
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
             for (Cookie c : cookies) {
                 if (c.getName().equals(cookieName)) {
                     try {
                         String cookievalue = AES.decrypt2(c.getValue(), "apollocrm1234567");
                         SerializableData serializableData = SerializableData.fromString(cookievalue);
-                        if(!serializableData.checkVersion()) {
+                        if (!serializableData.checkVersion()) {
                             return null;
                         }
 
                         return serializableData;
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         return null;
                     }
                 }

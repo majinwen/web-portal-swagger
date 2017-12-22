@@ -10,6 +10,7 @@
 </head>
 <body>
 <header>
+    <input id="url" type="hidden" value="http://localhost:8085/findVillageByConditions">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -149,19 +150,23 @@
     <ul>
     <#if villageList?exists>
         <#list villageList as plot>
-            <li><a class="list-item" href="/villageDetail?id=${plot['id']}">
+            <li><a class="list-item" href="/villageDetail?id=${plot['id']?c}">
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
-                            <#assign photo = plot['photo']>
-                            <#if photo?exists>
-                                <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                            <#if plot['photo']?exists>
+                                <#assign photo = plot['photo']>
+                                <#if photo[0]?exists>
+                                    <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
+                                <#else><img src="${staticurl}/" alt="暂无">
+                                </#if>
                             </#if>
                         </div>
                     </#if>
                     <div class="list-item-cont">
-                        <h3 class="cont-block-1">${plot['rc']}</h3>
-                        <p class="cont-block-2">${plot['abbreviatedAge']}</p>
+                        <h3 class="cont-block-1">
+                           <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
+                         <p class="cont-block-2"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}<#else>暂无</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
@@ -171,16 +176,24 @@
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                                 </#if>
                             <#else>
+                            <#if plot['tradingArea']?exists>
                                 <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
+                            </#if>
                         <#else>
+                        <#if plot['tradingArea']?exists>
                             <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                         </#if>
+                        </#if>
                         <div class="cont-block-4">
-                            <#assign item =  plot['label']>
-                            <#list item as itemValue>
-                                <span>${itemValue}</span>
-                            </#list>
+                            <#if plot['label']?exists>
+                                <#assign item =  plot['label']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                    <span>${itemValue}</span>
+                                    </#if>
+                                </#list>
+                            </#if>
                         </div>
                         <div class="cont-block-price plot">
                             <em>${plot['avgPrice']}</em>
@@ -198,9 +211,11 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <li class="current"><p>默认排序</p></li>
-        <li><p>价格由高到低</p></li>
-        <li><p>价格由低到高</p></li>
+    <#if sort?exists>
+        <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+    </#if>
     </ul>
 </div>
 

@@ -192,7 +192,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 QueryFindByRobot instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
                 houseList.add(instance);
-                //houseList.add(instance.getDistrictName()+"@@@@"+instance.getDistrict_id());
             }
             return houseList;
         } catch (InstantiationException e) {

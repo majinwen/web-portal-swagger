@@ -1,18 +1,23 @@
 package com.toutiao.web.service.plot.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
+import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
-import com.toutiao.web.service.plot.SysVillageService;
+import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -26,20 +31,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
-public class SysVillageServiceImpl implements SysVillageService {
+public class PlotServiceImpl implements PlotService {
     @Value("${plot.index}")
     private String index;
     @Value("${plot.parent.type}")
     private String parentType;
     @Value("${plot.child.type}")
     private String childType;
-//    @Value("${distance}")
-    private Double distance = 300000000.0;
+    @Value("${distance}")
+    private Double distance;
 
     @Autowired
     private ESClientTools esClientTools;
@@ -73,20 +79,18 @@ public class SysVillageServiceImpl implements SysVillageService {
                 VillageEntity instance = entityClass.newInstance();
                 BeanUtils.populate(instance, source);
                 houseList.add(instance);
-//            List<Double> location = (List<Double>) hit.getSource().get("location");
-                // 获取距离值，并保留两位小数点
-//            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-//            Map<String, Object> hitMap = hit.getSource();
-//            // 在创建MAPPING的时候，属性名的不可为geoDistance。
-//            hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-//            String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
-////            System.out.println(rc + "距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
+//                 获取距离值，并保留两位小数点
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                Map<String, Object> hitMap = hit.getSource();
+                // 在创建MAPPING的时候，属性名的不可为geoDistance。
+                hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
+                String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+//                System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
-            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return houseList;
     }
 
 
@@ -107,11 +111,6 @@ public class SysVillageServiceImpl implements SysVillageService {
             //区域编号
             if (villageRequest.getAreaId() != null) {
                 BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
-                srb.setQuery(queryBuilder);
-            }
-            //区域地名编号
-            if (StringUtils.isNotBlank(villageRequest.getAreaNameId())) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaNameId", villageRequest.getAreaNameId()));
                 srb.setQuery(queryBuilder);
             }
             //商圈编号
@@ -212,8 +211,14 @@ public class SysVillageServiceImpl implements SysVillageService {
             }
             //排序
             //均价
-//        srb.addSort("level",SortOrder.DESC);
-            srb.addSort("avgPrice", SortOrder.ASC);
+            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice() == 1) {
+                srb.addSort("avgPrice", SortOrder.ASC);
+            }
+
+            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice() == 2) {
+                srb.addSort("avgPrice", SortOrder.DESC);
+            }
+
             //分页
             villageRequest.setSize(10);
             if (villageRequest.getPage() == null) {
@@ -226,19 +231,64 @@ public class SysVillageServiceImpl implements SysVillageService {
             SearchHits hits = response.getHits();
             SearchHit[] searchHists = hits.getHits();
 
-            for (SearchHit hit : searchHists) {
-                Map source = hit.getSource();
-                Class<VillageResponse> entityClass = VillageResponse.class;
-                VillageResponse instance = entityClass.newInstance();
-                BeanUtils.populate(instance, source);
-                instance.setKey(key);
-                houseList.add(instance);
+            if (searchHists != null) {
+                for (SearchHit hit : searchHists) {
+                    Map source = hit.getSource();
+                    Class<VillageResponse> entityClass = VillageResponse.class;
+                    VillageResponse instance = entityClass.newInstance();
+                    BeanUtils.populate(instance, source);
+                    instance.setKey(key);
+                    houseList.add(instance);
 //            System.out.println(instance);
+                }
             }
-            return houseList;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return houseList;
+    }
+
+    @Override
+    public void saveParent(VillageEntityES village) {
+        TransportClient client = esClientTools.init();
+        VillageEntity villageEntity = new VillageEntity();
+//        String jsonStr  = JSONObject.toJSONString(village);
+//        JSONObject json = JSONObject.parseObject(jsonStr);
+        org.springframework.beans.BeanUtils.copyProperties(village, villageEntity);
+        JSONObject json = (JSONObject) JSONObject.toJSON(villageEntity);
+        String id = String.valueOf(village.getId());
+        IndexRequest indexRequest = new IndexRequest(index, parentType, id)
+                .version(village.getVersion())
+                .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
+                .source(json);
+//        UpdateRequest updateRequest = new UpdateRequest(index, parentType, id)
+//                .doc(json)
+//                .upsert(indexRequest);
+        client.index(indexRequest).actionGet();
+    }
+
+    @Override
+    public void saveChild(ProjHouseInfoES projHouseInfoes) {
+        TransportClient client = esClientTools.init();
+        VillageEntity village = new VillageEntity();
+        village.setId(projHouseInfoes.getHouseId());
+        village.setAreaSize(projHouseInfoes.getHouseArea());
+        String jsonStr = JSONObject.toJSONString(village);
+        JSONObject json = JSONObject.parseObject(jsonStr);
+//        BulkRequestBuilder bulkRequest = client.prepareBulk();
+        String id = String.valueOf(village.getId());
+        IndexRequest indexRequest = new IndexRequest(index, childType, id)
+                .parent(String.valueOf(projHouseInfoes.getHousePlotId()))
+                .version(projHouseInfoes.getVersion())
+                .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
+                .source(json);
+//        UpdateRequest updateRequest = new UpdateRequest(index, childType, id)
+//                .parent(String.valueOf(projHouseInfo.getHousePlotId()))
+//                .doc(json)
+//                .upsert(indexRequest);
+//        bulkRequest.add(indexRequest);
+//        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
+//        return bulkResponse.hasFailures();
+        client.index(indexRequest).actionGet();
     }
 }

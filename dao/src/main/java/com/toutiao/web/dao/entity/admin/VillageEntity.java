@@ -12,12 +12,10 @@ public class VillageEntity {
     private String[] photo;  //小区照片
     private String areaId;  //区域编号
     private String area;  //区域
-    private String areaNameId;  //区域地名编号
-    private String areaName;  //区域地名
     private String tradingAreaId;  //商圈编号
     private String tradingArea;  //商圈
     private String address;  //地址
-    private Double[] location; //坐标
+    private String location; //坐标
     private String[] metroStationId;  //地铁站编号
     private String[] metroStation;  //地铁站
     private Map<String,String> metroWithPlotsDistance;  //地铁线站与小区的距离
@@ -36,7 +34,7 @@ public class VillageEntity {
     private String sumHousehold;  //总户数
     private Double avgGreeningRate;  //户均绿化率
     private Double avgElevator;  //户均电梯
-    private String elevator;  //电梯配备
+    private String elevator;  //电梯配备 (1-有，2-无)
     private Double carPositionRatio;  //车位配比
     private Double parkingRate;  //停车费
     private String desc;  //小区详情介绍
@@ -49,13 +47,14 @@ public class VillageEntity {
     private String[] architectureTypeId;  //建筑类型编号
     private String[] architectureType;  //建筑类型
     private String buildingStructure;  //建筑结构
-    private String too;  //业态
     private String residentialType;  //住宅类型
-    private String heatingMode;  //供暖方式
+    private String heatingMode;  //供暖方式(0-未知，1-集中供暖，2-自供暖）
     private String sdr;  //供需关系
     private Integer level;  //楼盘级别
-    private String villageCharacteristics;  //楼盘特色
     private Integer version;  //版本
+    private String cityId;  //城市编号
+    private String villageCharacteristics;  //楼盘特色
+    private String ringRoad;  //环线
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源
