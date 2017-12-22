@@ -7,6 +7,7 @@ var submitClickState = false;
 
 $('#category-tab').on('click','li', function () {
     var $dom = getDataDom($(this),'panel');
+    $('.category-cont').find('.filter-item').removeClass('none');
     $(this).toggleClass('current').removeClass('choose').siblings().removeClass('current');
     $dom.toggleClass('active').siblings().removeClass('active');
 
@@ -195,9 +196,10 @@ function submitDirstrict(districtid,e,index) {
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e,circleData[index].name);
-    console.log("quyu")
+    // console.log("quyu")
+    location.href = url;
    /* $.get(url, function () {
-        location.href = url;
+
     });*/
 }
 /*
