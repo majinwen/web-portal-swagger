@@ -14,13 +14,15 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <#assign imglist = build['building_imgs']>
-            <#list imglist as item>
+            <#if build['building_imgs']?exists>
+            <#list build['building_imgs']?split(",") as item>
+            <#if item?exists>
             <li onclick="initphoto(this,${item_index})" class="swiper-slide">
                 <img src="${staticurl}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
+            </#if>
             </#list>
-
+            </#if>
 
         </ul>
         <div class="banner-title">
@@ -67,10 +69,18 @@
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
             <p>别名：<#if build['building_nickname']?exists>${build['building_nickname']}<#else>暂无</#if></p>
             <div class="primary-header-tag">
-            <#assign tags = build['building_tags']>
-            <#list tags as item>
-             <#if item?exists><span>${item}</span></#if>
-            </#list>
+            <#--<#assign tags = build['building_tags']>-->
+            <#--<#list tags as item>-->
+             <#--<#if item?exists><span>${item}</span></#if>-->
+            <#--</#list>-->
+
+            <#if build['building_tags']?exists>
+                <#list build['building_tags']?split(",") as item>
+                    <#if item?exists><span>${item}</span></#if>
+                </#list>
+            </#if>
+
+
             </div>
         </div>
         <ul class="primary-item">
