@@ -139,11 +139,13 @@
             </div>
         </a></li>
     </#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <#assign item = map['building_imgs']>
+                    <#if map['building_imgs']?exists>
+                    <#assign item = map['building_imgs']?split(",")>
                       <img src="${staticurl}/${item[0]}" alt="${map['building_name']}">
+                    </#if>
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']}</span>
@@ -154,12 +156,17 @@
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡<#else>暂无</#if>
+                        </p>
                     <div class="cont-block-4 house-labelling gray middle">
-                        <#assign item =  map['building_tags']>
-                        <#list item as itemValue>
-                            <span>${itemValue}</span>
-                        </#list>
+                        <#if map['building_tags']?exists>
+                            <#assign item =  map['building_tags']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                            <#else><span>暂无</span>
+                        </#if>
+
                     </div>
                     <div class="cont-block-sale">
                         <em>${map['sale_status_name']}</em>
@@ -168,7 +175,7 @@
             </div>
             <div class="new-active">
                 <i class="icon"></i><em>活动：</em>
-                <span>${map['activity_desc']}</span>
+                <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
             </div>
         </a></li>
     </#list>
