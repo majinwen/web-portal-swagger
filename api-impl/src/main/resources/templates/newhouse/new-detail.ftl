@@ -23,7 +23,6 @@
             </#if>
             </#list>
             </#if>
-
         </ul>
         <div class="banner-title">
             <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
@@ -124,7 +123,7 @@
     <section>
         <div class="module-header-message">
             <h3>楼盘描述</h3>
-            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
+            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']?c}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
             <dt>开发商：${build['developers']}</dt>
@@ -197,14 +196,14 @@
     <#if nearbybuild?exists>
     <#list nearbybuild as nearitem>
         <li>
-            <a href="#">
+            <a href="/newhouse/getNewHouseDetails?id=${nearitem['building_name_id']?c}">
                 <div class="picture-box">
                     <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
                 </div>
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']}</p>
                     <p class="cont-center"><span>${nearitem['district_name']}</span><span>${nearitem['area_name']}</span></p>
-                    <h4 class="cont-last">均价：<em>${nearitem['average_price']}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}<#else >暂无</#if></em>/㎡</h4>
                 </div>
             </a>
         </li>
@@ -221,6 +220,7 @@
         </div>
     </section>
 </div>
+
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>

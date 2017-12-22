@@ -6,8 +6,8 @@
                 <div class="type-menu-box">
                     <i class="triangle-top"></i>
                     <div class="type-menu">
-                        <span data-value="/newhouse/searchNewHouse?keywords=">新房</span>
-                        <span data-value="/queryBySearchBox?text=" class="current">二手房</span>
+                        <span data-value="/newhouse/searchNewHouse?keywords=" class="current">新房</span>
+                        <span data-value="/queryBySearchBox?text=" >二手房</span>
                         <span data-value="/findVillageByConditions?rc=">小区</span>
                     </div>
                 </div>

@@ -14,13 +14,16 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>${discript['building_name']}</h2>
-            <p>别名：${discript['building_nickname']}</p>
+            <h2> <#if discript['building_name']?exists>${discript['building_name']}<#else>暂无</#if></h2>
+            <p>别名：<#if discript['building_nickname']?exists>${discript['building_nickname']}<#else>暂无</#if></p>
             <div class="primary-header-tag">
-            <#assign tags = discript['building_tags']>
-            <#list tags as item>
-            <#if item?exists><span>${item}</span></#if>
-            </#list>
+                <#if discript['building_tags']?exists>
+                    <#assign tags = discript['building_tags']?split(",")>
+                    <#list tags as item>
+                        <#if item?exists><span>${item}</span></#if>
+                    </#list><#else>暂无
+                </#if>
+
             </div>
         </div>
         <ul class="primary-item">

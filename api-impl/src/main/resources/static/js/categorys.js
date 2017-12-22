@@ -1,7 +1,7 @@
 var uu = $('#url');
 var BaseUrl=uu.val();
 console.log(BaseUrl)
-var params;
+var params="";
 var url;
 var submitClickState = false;
 
@@ -44,8 +44,9 @@ $('.price-list').on('click','li', function (e) {
     $(this).addClass('current').siblings().removeClass('current');
     var beginPrice = $(this).attr('data-begin-price'),
         endPrice = $(this).attr('data-end-price');
-
-    params = '?beginPrice=' + beginPrice + '&endPrice=' + endPrice;
+  if(beginPrice!=""||endPrice!=""){
+      params = '?beginPrice=' + beginPrice + '&endPrice=' + endPrice;
+  }
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e,$(this).text());
@@ -77,9 +78,7 @@ $('#typeSubmit').on('click', function (e) {
         tabTextReplace(e,layoutText);
         url = BaseUrl;
         console.log(url);
-        /*$.get(url, function () {
-
-         });*/
+        location.href=BaseUrl;
         return;
     }
 
@@ -195,7 +194,7 @@ function submitDirstrict(districtid,e,index) {
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e,circleData[index].name);
-    console.log("quyu")
+    location.href=url
    /* $.get(url, function () {
         location.href = url;
     });*/
@@ -289,12 +288,14 @@ function submitStation(subwayid,subwayStationId,e,index) {
  * */
 function submitPlace(e) {
     tabTextReplace(e,'区域');
+    location.href=BaseUrl;
 }
 /*
  * 地铁不限,更改导航内容
  * */
 function submitSubway(e) {
     tabTextReplace(e,'地铁');
+    location.href=BaseUrl
 }
 /*
  * 替换导航内容

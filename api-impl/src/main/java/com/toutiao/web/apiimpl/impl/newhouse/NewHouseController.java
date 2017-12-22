@@ -51,6 +51,7 @@ public class NewHouseController {
        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
         model.addAttribute("builds",build);
         model.addAttribute("total",builds.get("total"));
+        model.addAttribute("newHouseQuery",newHouseQuery);
         if (newHouseQuery.getSort()!=null){
             model.addAttribute("sort",newHouseQuery.getSort());
         }else {

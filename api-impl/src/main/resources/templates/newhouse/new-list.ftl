@@ -42,7 +42,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -138,10 +138,10 @@
                         <span data-info="5">其他</span>
                     </dd>
                 </dl>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-                </div>
+            </div>
+            <div class="submit-wrapper">
+                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
     </div>
@@ -207,8 +207,8 @@
     <ul class="sort-content">
         <#if sort?exists>
             <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
-            <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
-            <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+            <li value="1" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
+            <li value="2" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
         </#if>
     </ul>
 </div>
