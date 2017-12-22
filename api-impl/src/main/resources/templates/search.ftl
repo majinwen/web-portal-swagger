@@ -6,9 +6,9 @@
                 <div class="type-menu-box">
                     <i class="triangle-top"></i>
                     <div class="type-menu">
-                        <span>新房</span>
-                        <span class="current">二手房</span>
-                        <span>小区</span>
+                        <span data-value="">新房</span>
+                        <span data-value="" class="current">二手房</span>
+                        <span data-value="">小区</span>
                     </div>
                 </div>
             </div>
