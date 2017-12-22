@@ -70,25 +70,21 @@ public class NewHouseServiceImpl implements NewHouseService{
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
 
+        QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
-                AnalyzeResponse response = esClientTools.init().admin().indices()
-                        .prepareAnalyze(newHouseQuery.getKeywords())//内容
-                        .setAnalyzer("ik_smart")//指定分词器3`3
-                        .execute().actionGet();//执行
-                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-                BoolQueryBuilder query = QueryBuilders.boolQuery();
-                for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+            AnalyzeResponse response = esClientTools.init().admin().indices()
+                    .prepareAnalyze(newHouseQuery.getKeywords())//内容
+                    .setAnalyzer("ik_smart")//指定分词器3`3
+                    .execute().actionGet();//执行
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                queryBuilder = QueryBuilders.boolQuery()
+                        .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
 
-                    booleanQueryBuilder = QueryBuilders.boolQuery()
-                            // .should(QueryBuilders.fuzzyQuery("keywords", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
-
-                    query.should(booleanQueryBuilder);
-                }
-
-            booleanQueryBuilder.must(query);
+                booleanQueryBuilder.should(queryBuilder);
+            }
         }
 
         //城市
