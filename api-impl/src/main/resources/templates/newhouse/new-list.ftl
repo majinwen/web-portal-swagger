@@ -5,17 +5,16 @@
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<header>
+<header class="main-top-header">
     <input id="url" type="hidden" value="http://localhost:8085/newhouse/searchNewHouse">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -196,14 +195,15 @@
     </#if></ul>
 </section>
 <#include "../user.ftl">
+<#include "../search.ftl">
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
         <#if sort?exists>
-                <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
-                <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
-                <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
+            <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+            <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
+            <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
         </#if>
     </ul>
 </div>

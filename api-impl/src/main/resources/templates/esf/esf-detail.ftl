@@ -160,11 +160,6 @@
                     <h4><#if houseDetail.housePlotName?exists>${houseDetail.housePlotName}<#else>暂无</#if></h4>
                     <p><#if houseDetail.housePlotInfo?exists>${houseDetail.housePlotInfo}<#else>暂无</#if></p>
                 </div>
-                <#--<div class="tilelist-content">
-                    <h4>${houseDetail.housePlotName}首城国际</h4>
-                    <p>共18栋（2558户），板楼/板塔结合</p>
-                    <p>参考均价<em>115982元</em>/㎡</p>
-                </div>-->
             </li>
         </ul>
     </section>
@@ -175,6 +170,10 @@
             <h3>配套地图</h3>
             <a href="#" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
+        <a href="#" class="detail-map">
+            <i class="map-marker-icon"></i>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+        </a>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -234,13 +233,15 @@
             </#if>
         </ul>
 </section>
-<section class="detail-contact-box" id="detailContactState">
-    <div class="detail-contact-content">
-        <a href="#" class="contact-share"><i></i>分享</a>
-        <a href="#" class="contact-collect"><i></i>收藏</a>
-        <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
-    </div>
-</section>
+<div class="detail-contact-wrapper">
+    <section class="detail-contact-box" id="detailContactState">
+        <div class="detail-contact-content">
+            <a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>
+            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+        </div>
+    </section>
+</div>
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>

@@ -36,16 +36,6 @@ function describeAllShow() {
 
 function detailContactState() {
     if ($('#detailContactState').length) {
-        $(window).scroll(function(){
-            var winHeight = $(window).height();
-            var docHeight = $(document.body).height();
-            var scrollTop = $(window).scrollTop();
-            if (scrollTop > ((docHeight - winHeight) -5 )) {
-                $('.detail-contact-box').addClass('bottom');
-            } else {
-                $('.detail-contact-box').removeClass('bottom');
-            }
-        });
         $('.contact-collect').click(function () {
             $(this).toggleClass('current');
         });

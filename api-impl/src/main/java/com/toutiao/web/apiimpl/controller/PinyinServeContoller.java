@@ -4,7 +4,6 @@ import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.pinyin.Pinyin;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.pinyin.PinyinService;
-import com.toutiao.web.service.plot.PlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +18,6 @@ public class PinyinServeContoller {
     private NewHouseService newHouseService;
     @Autowired
     private PinyinService pinyinService;
-    @Autowired
-    private PlotService plotService;
 
 
     /**

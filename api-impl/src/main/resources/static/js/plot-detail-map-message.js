@@ -1,7 +1,7 @@
 $(function () {
-    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf';
-    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf';
-    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location=39.915,116.404&radius=3000&scope=2&page_size=3&distance&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf';
+    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location=39.915,116.404&radius=3000&scope=2&page_size=3&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
     $.ajax({
         type: 'GET',
         url: educationUrl,
@@ -55,7 +55,7 @@ $('.map-message-btn').on('click', 'li', function () {
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
     }
-    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=qecR0qeVFD5yOk8NvT5aDLNjgWiKHbaf';
+    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
     $.ajax({
         type: 'GET',
         url: url,

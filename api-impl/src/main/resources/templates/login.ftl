@@ -24,15 +24,11 @@
 <#if count?exists>
     <#if (count>3)>
         <div style="position: relative; margin-top: 0.5333333333rem;;">
-            <input type="text" class="input_css" id="image_code" name="imageCode" maxlength="4"
-                   value="<#if imageCode?exists>${imageCode}</#if>" placeholder="请输入图片验证码">
-            <div id="infoDiv" class="show"
-                 style="position: absolute; top: 0; right: 200px; display:inline-block; width:37px; height: 76px; line-height: 79px; text-align: center"></div>
-            <a href="javascript:changeImg();" style="position: absolute; top:  0; right: 0;"><img width="200"
-                                                                                                  height="80"
-                                                                                                  class="code-btn-box"
-                                                                                                  id="checkcode"
-                                                                                                  src="/code/imageCode"/></a>
+            <input type="text" class="input_css" id="image_code" name="imageCode" maxlength="4" value="<#if imageCode?exists>${imageCode}</#if>" placeholder="请输入图片验证码">
+            <div id="infoDiv" class="show" style="position: absolute; top: 0; right: 200px; display:inline-block; width:37px; height: 76px; line-height: 79px; text-align: center"></div>
+            <a href="javascript:changeImg();" style="position: absolute; top:  0; right: 0;">
+                <img width="200" height="80" class="code-btn-box" id="checkcode" src="/code/imageCode"/>
+            </a>
         </div>
     </#if>
 </#if>

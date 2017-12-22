@@ -10,7 +10,7 @@
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<header class="gradient">
+<header class="main-top-header gradient">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -131,72 +131,72 @@
         <h3>新房推荐</h3>
     </div>
     <ul><#if newbuilds?exists>
-    <#assign builds = newbuilds['data']>
-    <#list builds as map>
-     <#if map_index==1>
-         <li><a class="list-item new new-ad-item" href="#">
-         <div class="list-item-cont-ad">
-             <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-             <p class="cont-block-3">东城/88㎡—526㎡</p>
-         </div>
-         <div class="clear">
-             <div class="list-item-img-box">
-                 <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-             </div>
-             <div class="list-item-img-box">
-                 <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-             </div>
-             <div class="list-item-img-box">
-                 <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
-             </div>
-         </div>
-         <div class="pr">
-             <div class="cont-block-4 house-labelling gray middle">
-                 <span>复式</span>
-                 <span>五证齐全</span>
-                 <span>花园洋房</span>
-             </div>
-             <p class="cont-block-2 high-light-red">68000元/㎡</p>
-         </div>
-
-         <div class="new-active">
-             <i class="icon"></i><em>活动：</em>
-             <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-         </div>
-     </a></li></#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <#assign item = map['building_imgs']>
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+        <#assign builds = newbuilds['data']>
+        <#list builds as map>
+            <#if map_index==1>
+            <li><a class="list-item new new-ad-item" href="#">
+                <div class="list-item-cont-ad">
+                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
+                    <p class="cont-block-3">东城/88㎡—526㎡</p>
                 </div>
-                <div class="list-item-cont">
-                    <span hidden="hidden">${map['building_name_id']}</span>
-                    <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                    <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
-                    <p class="cont-block-3">
-                        <#if map['nearsubway']??>
-                        ${map['nearsubway']}
-                        <#else>${map['district_name']}
-                        </#if>
-                        /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    </div>
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    </div>
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    </div>
+                </div>
+                <div class="pr">
                     <div class="cont-block-4 house-labelling gray middle">
-                        <#assign item =  map['building_tags']>
-                        <#list item as itemValue>
-                            <span>${itemValue}</span>
-                        </#list>
+                        <span>复式</span>
+                        <span>五证齐全</span>
+                        <span>花园洋房</span>
                     </div>
-                    <div class="cont-block-sale">
-                        <em>${map['sale_status_name']}</em>
+                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
+                </div>
+
+                <div class="new-active">
+                    <i class="icon"></i><em>活动：</em>
+                    <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
+                </div>
+            </a></li></#if>
+            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <#assign item = map['building_imgs']>
+                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                    </div>
+                    <div class="list-item-cont">
+                        <span hidden="hidden">${map['building_name_id']}</span>
+                        <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
+                        <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                        <p class="cont-block-3">
+                            <#if map['nearsubway']??>
+                            ${map['nearsubway']}
+                            <#else>${map['district_name']}
+                            </#if>
+                            /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                        <div class="cont-block-4 house-labelling gray middle">
+                            <#assign item =  map['building_tags']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                        </div>
+                        <div class="cont-block-sale">
+                            <em>${map['sale_status_name']}</em>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>${map['activity_desc']}</span>
-            </div>
-        </a></li>
-    </#list>
+                <div class="new-active">
+                    <i class="icon"></i><em>活动：</em>
+                    <span>${map['activity_desc']}</span>
+                </div>
+            </a></li>
+        </#list>
     </#if>
     </ul>
 </section>
@@ -205,8 +205,8 @@
         <h3>小区推荐</h3>
     </div>
     <ul><#if villageList?exists>
-    <#list villageList as map>
-        <#if map_index==3>
+        <#list villageList as map>
+            <#if map_index==3>
             <li><a class="list-item new new-ad-item" href="#">
                 <div class="list-item-cont-ad">
                     <h3 class="cont-block-1">新龙城</h3>
@@ -233,41 +233,40 @@
                     <p class="cont-block-2 high-light-red">68000元/㎡</p>
                 </div>
             </a></li>
-        <#elseif map_index==4>
-        <#break>
-        </#if>
-        <li><a class="list-item" href="">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="${map['rc']}">
-                </div>
-                <div class="list-item-cont">
-                    <input type="hidden" value="${map['id']}">
-                    <h3 class="cont-block-1">${map['rc']}</h3>
-                    <p class="cont-block-2">2008年建成</p>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                       <#list map['label'] as label>
-                           <#if label?exists><span>${label}</span></#if>
-                       </#list>
+            <#elseif map_index==4>
+                <#break>
+            </#if>
+            <li><a class="list-item" href="">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="${map['rc']}">
                     </div>
-                    <div class="cont-block-price plot">
-                        <em>${map['avgPrice']}元/㎡</em>
+                    <div class="list-item-cont">
+                        <input type="hidden" value="${map['id']}">
+                        <h3 class="cont-block-1">${map['rc']}</h3>
+                        <p class="cont-block-2">2008年建成</p>
+                        <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                        <div class="cont-block-4 house-labelling gray middle">
+                            <#list map['label'] as label>
+                                <#if label?exists><span>${label}</span></#if>
+                            </#list>
+                        </div>
+                        <div class="cont-block-price plot">
+                            <em>${map['avgPrice']}元/㎡</em>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a></li>
-    </#list>
+            </a></li>
+        </#list>
     </#if></ul>
 </section>
 <#include "user.ftl">
+<#include "search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-    $('.search-link').on('focus', function () {
-        location.href = url;
-    });
+    $('.type-tab-box').removeClass('none');
 </script>
 </body>
 </html>
