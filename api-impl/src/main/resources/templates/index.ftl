@@ -179,12 +179,16 @@
                             ${map['nearsubway']}
                             <#else>${map['district_name']}
                             </#if>
-                            /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                            <#if map['house_min_area']?exists&&map['house_max_area']?exists>
+                                /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                            </#if>
                         <div class="cont-block-4 house-labelling gray middle">
-                            <#assign item =  map['building_tags']>
-                            <#list item as itemValue>
-                                <span>${itemValue}</span>
-                            </#list>
+                            <#if map['building_tags']?exists>
+                                <#assign item =  map['building_tags']>
+                                <#list item as itemValue>
+                                    <span>${itemValue}</span>
+                                </#list>
+                                </#if>
                         </div>
                         <div class="cont-block-sale">
                             <em>${map['sale_status_name']}</em>
@@ -193,7 +197,10 @@
                 </div>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
-                    <span>${map['activity_desc']}</span>
+                    <span>
+                    <#if map['activity_desc']?exists>
+                        ${map['activity_desc']}
+                    </#if></span>
                 </div>
             </a></li>
         </#list>

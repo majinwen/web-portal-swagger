@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.dao.entity.admin;
 
 import com.alibaba.fastjson.JSONObject;
@@ -53,7 +54,8 @@ public class TestMapping {
         //System.out.println("=============================");
         //queryRang("projhouseinfo", "projhouse", client, null);
         //query2("projhouseinfo", "projhouse", client, "房山v");
-        /*Map<String, Object> map = queryByHouseId("a", "b", 12, client);
+        */
+/*Map<String, Object> map = queryByHouseId("a", "b", 12, client);
         Set<String> set = map.keySet();
 		for (int i=0;i<set.size();i++){
 
@@ -63,14 +65,17 @@ public class TestMapping {
 
 
 		System.out.println(map.get("data_house"));
-		System.out.println(map.size());*/
+		System.out.println(map.size());*//*
+
     }
 
     protected static void buildIndexMapping(TransportClient client) throws Exception {
-        /**
+        */
+/**
          .startObject("product_name").field("type", "string")
          .field("analyzer","ik").field("search_analyzer","ik_smart").endObject()
-         */
+         *//*
+
         client.admin().indices().prepareCreate("a").execute().actionGet();
         XContentBuilder mapping = XContentFactory.jsonBuilder().startObject().startObject("b")
                 .startObject("houseId").field("type", "integer").field("index", "not_analyzed").endObject()
@@ -131,10 +136,12 @@ public class TestMapping {
     }
 
     protected static void buildIndexMappingIk(TransportClient client) throws Exception {
-        /**
+        */
+/**
          .startObject("product_name").field("type", "string")
          .field("analyzer","ik").field("search_analyzer","ik_smart").endObject()
-         */
+         *//*
+
         client.admin().indices().prepareCreate("house123").execute().actionGet();
         XContentBuilder mapping = XContentFactory.jsonBuilder()
                 .startObject().startObject("house1234").startObject("properties")
@@ -337,7 +344,8 @@ public class TestMapping {
         for (SearchHit searchHit : searchResponse.getHits().getHits()) {
             System.out.println(searchHit.getSourceAsString());
         }
-        /*IndicesAdminClient indicesAdminClient = ElasticFactory.getClient().admin().indices();
+        */
+/*IndicesAdminClient indicesAdminClient = ElasticFactory.getClient().admin().indices();
         AnalyzeRequestBuilder request = new AnalyzeRequestBuilder(indicesAdminClient,"cloud_repair","中华人民共和国国歌");
         // request.setAnalyzer("ik");
 		request.setTokenizer("ik");
@@ -352,15 +360,18 @@ public class TestMapping {
 			queryBuilder.should(QueryBuilders.queryString(term.getTerm()).field("search_keys_ik"));
 			//这里可以用must 或者 should 视情况而定
 		}
-		System.out.print('\n');*/
+		System.out.print('\n');*//*
+
 
     }
 
     protected static void buildRobotMapping(TransportClient client) throws Exception {
-        /**
+        */
+/**
          .startObject("product_name").field("type", "string")
          .field("analyzer","ik").field("search_analyzer","ik_smart").endObject()
-         */
+         *//*
+
 
         client.admin().indices().prepareCreate("robot_index").execute().actionGet();
         XContentBuilder mapping = XContentFactory.jsonBuilder()
@@ -729,3 +740,4 @@ public class TestMapping {
 
 
 }
+*/

@@ -59,7 +59,7 @@ public class SaveToESController {
     public void saveChildToES(ProjHouseInfoES projHouseInfo, Model model){
         ProjHouseInfo projHouseInfo1 = new ProjHouseInfo();
         projHouseInfo1.setHouseId(1);
-        projHouseInfo1.setHouseArea("66666");
+
 //        projHouseInfo1.setHousePlotId(1);
         plotService.saveChild(projHouseInfo);
     }

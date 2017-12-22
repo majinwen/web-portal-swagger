@@ -63,10 +63,9 @@ public class NewHouseController {
      * 搜索新房
      *
      * */
-
     @RequestMapping("/searchNewHouseByKey")
-    public String searchNewHouseByKey(@RequestParam("keyword") String text, Model model){
-        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(text);
+    public String searchNewHouseByKey(NewHouseQuery newHouseQuery, Model model){
+        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(newHouseQuery);
         model.addAttribute("builds",build);
         return "newhouse/new-list";
     }
