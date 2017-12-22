@@ -70,6 +70,27 @@ public class NewHouseServiceImpl implements NewHouseService{
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
 
+        if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
+                AnalyzeResponse response = esClientTools.init().admin().indices()
+                        .prepareAnalyze(newHouseQuery.getKeywords())//内容
+                        .setAnalyzer("ik_smart")//指定分词器3`3
+                        .execute().actionGet();//执行
+                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+                BoolQueryBuilder query = QueryBuilders.boolQuery();
+                for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+
+                    booleanQueryBuilder = QueryBuilders.boolQuery()
+                            // .should(QueryBuilders.fuzzyQuery("keywords", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
+
+                    query.should(booleanQueryBuilder);
+                }
+
+            booleanQueryBuilder.must(query);
+        }
+
         //城市
         if(newHouseQuery.getCityId()!=null && newHouseQuery.getCityId()!=0){
             booleanQueryBuilder.must(termQuery("city_id", newHouseQuery.getDistrictId()));
@@ -263,7 +284,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                 .execute().actionGet();
 
         BoolQueryBuilder booleanQueryBuilder1 = boolQuery();
-        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
                 .setQuery(booleanQueryBuilder1)
                 .execute().actionGet();
@@ -280,18 +301,20 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         SearchHit[] searchHists = hits.getHits();
         String buildings = null;
-        List<Double> locations = new ArrayList<>();
+//        List<Double> locations = new ArrayList<>();
+        String locations = "";
         for (SearchHit hit : searchHists) {
             buildings = hit.getSourceAsString();
-            locations = (List<Double>) hit.getSource().get("location");
+            locations = (String) hit.getSource().get("location");
 
         }
         Map<String, Object> maprep = new HashMap<>();
         maprep.put("build",buildings);
         maprep.put("layout",layouts);
+        String[] loca = locations.split(",");
         try {
-            if(locations.size() ==2){
-                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),distance,client);
+            if(loca.length ==2){
+                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,Double.valueOf(loca[0]),Double.valueOf(loca[1]),distance,client);
                 maprep.put("nearbybuild",nearBy);
             }
         } catch (Exception e) {
