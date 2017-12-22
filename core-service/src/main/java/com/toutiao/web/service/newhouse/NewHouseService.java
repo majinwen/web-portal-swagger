@@ -51,7 +51,7 @@ public interface NewHouseService {
      *
      *7u
      *  */
-    public List searchNewHouse(String text);
+    public List searchNewHouse(NewHouseQuery newHouseQuery);
 
     /**
      * 同步新房数据

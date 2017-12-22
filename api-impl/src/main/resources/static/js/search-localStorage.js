@@ -63,6 +63,7 @@ $(function(){
     }
 
     function changeFn() {
+
         if ($(this).val() != null && $.trim($(this).val()) != '') {
             // 匹配数据
 
@@ -81,6 +82,9 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
+    /*       alert("http://192.168.1.8:8085"+$('.type-menu>span.current').data( "value")+$.trim($(this).val()))*/
+            location.href="http://localhost:8085"+$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
+
         }
     }
     

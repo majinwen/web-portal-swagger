@@ -263,7 +263,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                 .execute().actionGet();
 
         BoolQueryBuilder booleanQueryBuilder1 = boolQuery();
-        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
                 .setQuery(booleanQueryBuilder1)
                 .execute().actionGet();
@@ -436,31 +436,37 @@ public class NewHouseServiceImpl implements NewHouseService{
      *
      *  */
     @Override
-    public ArrayList<HashMap<String,Object>> searchNewHouse(String text) {
+    public ArrayList<HashMap<String,Object>> searchNewHouse(NewHouseQuery newHouseQuery) {
         ArrayList<HashMap<String,Object>> houseList = new ArrayList();
         try {
             QueryBuilder queryBuilder = null;
             TransportClient client = esClientTools.init();
-            AnalyzeResponse response = esClientTools.init().admin().indices()
-                    .prepareAnalyze(text)//内容
+            AnalyzeResponse response = client.admin().indices()
+                    .prepareAnalyze(newHouseQuery.getKeywords())//内容
                     .setAnalyzer("ik_smart")//指定分词器3`3
                     //.setTokenizer("standard")
                     .execute().actionGet();//执行
             List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
             BoolQueryBuilder ww = QueryBuilders.boolQuery();
+            int pageNum = 1;
+
+            if(newHouseQuery.getPageNum()!=null && newHouseQuery.getPageNum()>1){
+                pageNum = newHouseQuery.getPageNum();
+            }
             for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
 
                 queryBuilder = QueryBuilders.boolQuery()
                        // .should(QueryBuilders.fuzzyQuery("keywords", analyzeToken.getTerm()))
                         .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
-                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()));
+                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
                 ww.should(queryBuilder);
             }
 
             /*ww = QueryBuilders.boolQuery()
                     .must(QueryBuilders.fuzzyQuery("area_name", text));*/
-            SearchResponse searchResponse = client.prepareSearch("beijing1")
-                    .setTypes("building1")
+            SearchResponse searchResponse = client.prepareSearch(newhouseIndex)
+                    .setTypes(newhouseType)
                     .setQuery(ww)
                    /* .addSort("houseRank", SortOrder.DESC)*/
                     .setFrom(0)
