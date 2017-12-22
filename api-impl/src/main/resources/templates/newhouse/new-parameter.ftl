@@ -26,9 +26,9 @@
         <ul class="primary-item">
             <li>
                 <p>销售状态：待售</p>
-                <p>最新开盘：  <#if discript['opened_time']?exists>${discript['opened_time']}<#else>暂无</#if></p>
-                <p>交房时间：  <#if discript['deliver_time']?exists>${discript['deliver_time']}<#else>暂无</#if></p>
-                <p>参考均价：  <#if discript['average_price']?exists>${discript['average_price']}元/㎡<#else>暂无</#if></p>
+                <p>最新开盘：<#if discript['opened_time']?exists>${discript['opened_time']}<#else>暂无</#if></p>
+                <p>交房时间：<#if discript['deliver_time']?exists>${discript['deliver_time']}<#else>暂无</#if></p>
+                <p>参考均价：<#if discript['average_price']?exists>${discript['average_price']}元/㎡<#else>暂无</#if></p>
             </li>
         </ul>
     </section>
@@ -40,9 +40,9 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置： <#if discript['roundstation']?exists>${discript['roundstation']}<#else>暂无</#if></p>
-                <p>区域位置： <#if discript['district_name']?exists>${discript['district_name']}<#else>暂无</#if></p>
-                <p>楼盘地址： <#if discript['building_address']?exists>${discript['building_address']}<#else>暂无</#if></p>
+                <p>环线位置：<#if discript['roundstation']?exists>${discript['roundstation']}<#else>暂无</#if></p>
+                <p>区域位置：<#if discript['district_name']?exists>${discript['district_name']}<#else>暂无</#if></p>
+                <p>楼盘地址：<#if discript['building_address']?exists>${discript['building_address']}<#else>暂无</#if></p>
                 <p>售楼处地址：<#if discript['sale_address']?exists>${discript['sale_address']}<#else>暂无</#if></p>
             </li>
         </ul>
@@ -78,8 +78,8 @@
             <li>
                 <p>物业类型：<#if discript['property_type']?exists>${discript['property_type']}<#else>暂无</#if></p>
                 <p>物业公司：<#if discript['propertymanage']?exists>${discript['propertymanage']}<#else>暂无</#if></p>
-                <p>物业费：  <#if discript['propertyfee']?exists>${discript['propertyfee']}<#else>暂无</#if></p>
-                <p>供暖：    <#if discript['heating_type']?exists>${discript['heating_type']}<#else>暂无</#if></p>
+                <p>物业费：<#if discript['propertyfee']?exists>${discript['propertyfee']}<#else>暂无</#if></p>
+                <p>供暖：<#if discript['heating_type']?exists>${discript['heating_type']}<#else>暂无</#if></p>
                 <p>供水：暂无</p>
                 <p>供电：暂无</p>
                 <p>燃气：暂无</p>

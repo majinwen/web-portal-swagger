@@ -17,7 +17,7 @@
             <#assign imglist = build['building_imgs']>
             <#list imglist as item>
             <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                    <img src="${staticurl}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
+                <img src="${staticurl}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
             </#list>
         </ul>
@@ -209,7 +209,6 @@
         </div>
     </section>
 </div>
-
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
