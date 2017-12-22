@@ -192,5 +192,21 @@
         <version>5.5.3</version>
     </dependency>
 </dependencies>
+    <repositories>
+
+        <repository>
+            <id>nexus</id>
+            <name>Nexus Repository</name>
+            <url>http://47.104.96.88:9004/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+    </repositories>
+
 
 </project>
