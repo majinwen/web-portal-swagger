@@ -149,12 +149,17 @@
 <section>
     <ul><#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item = map['building_imgs']>
+                        <#if map['building_imgs']?exists>
+                     <#--   <#assign item = map['building_imgs']>
                         <#if item[0]?exists>
                             <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                        </#if>-->
+                            <img src="${staticurl}/${map['building_imgs']}" alt="${map['building_name']}">
+                            <#else >
+                                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
