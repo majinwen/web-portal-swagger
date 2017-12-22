@@ -1,6 +1,5 @@
 package com.toutiao.web.service.newhouse;
 
-import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 
@@ -51,7 +50,7 @@ public interface NewHouseService {
      *
      *7u
      *  */
-    public List searchNewHouse(NewHouseQuery newHouseQuery);
+    public List searchNewHouse(String text);
 
     /**
      * 同步新房数据

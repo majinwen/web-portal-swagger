@@ -69,7 +69,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
-
+        QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
             AnalyzeResponse response = esClientTools.init().admin().indices()
                     .prepareAnalyze(newHouseQuery.getKeywords())//内容

@@ -59,16 +59,16 @@ public class NewHouseController {
         return "newhouse/new-list";
     }
 
-    /**
-     * 搜索新房
-     *
-     * */
-    @RequestMapping("/searchNewHouseByKey")
-    public String searchNewHouseByKey(NewHouseQuery newHouseQuery, Model model){
-        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(newHouseQuery);
-        model.addAttribute("builds",build);
-        return "newhouse/new-list";
-    }
+//    /**
+//     * 搜索新房
+//     *
+//     * */
+//    @RequestMapping("/searchNewHouseByKey")
+//    public String searchNewHouseByKey(NewHouseQuery newHouseQuery, Model model){
+//        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(newHouseQuery);
+//        model.addAttribute("builds",build);
+//        return "newhouse/new-list";
+//    }
 
     /**
      * 楼盘详情信息
