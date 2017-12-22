@@ -257,6 +257,8 @@ p {
           font-size: 28px; }
         [data-dpr="3"] .login-form .input-phone .code-btn-box .code-btn {
           font-size: 42px; }
+        .login-form .input-phone .code-btn-box .code-btn.disabled {
+          background-color: #d3d2d7; }
   .login-form input {
     line-height: 1;
     padding: 0.2933333333rem 0.1466666667rem;
@@ -291,7 +293,28 @@ p {
     [data-dpr="3"] .login-form .submit-btn {
       font-size: 45px; }
 
-.code-text {
-  color: #fb3939; }
+.code-text-tips {
+  display: block;
+  margin-top: 0.1333333333rem;
+  line-height: 1.5;
+  padding-left: 0.1466666667rem;
+  color: #fb3939 !important; }
+
+.code-pic-box {
+  position: relative;
+  margin-top: 0.5333333333rem; }
+  .code-pic-box #infoDiv {
+    position: absolute;
+    top: 0;
+    right: 2.6666666667rem;
+    display: inline-block;
+    width: 0.4933333333rem;
+    height: 1.0133333333rem;
+    line-height: 1.0533333333rem;
+    text-align: center; }
+  .code-pic-box a {
+    position: absolute;
+    top: 0;
+    right: 0; }
 
 /*# sourceMappingURL=login.css.map */

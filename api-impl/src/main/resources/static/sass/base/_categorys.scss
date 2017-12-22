@@ -88,10 +88,10 @@ $borderRadiusColor: #999;
             background-color: $baseWhite;
             -webkit-box-shadow: 0 rem(-4) rem(21) 0 rgba(56, 58, 64, 0.14);
             box-shadow: 0 rem(-4) rem(21) 0 rgba(56, 58, 64, 0.14);
-            -webkit-transition: transform .5s ease;
-            transition: transform .5s ease;
-            -webkit-transform: translate3d(0,-100%,0);
-            transform: translate3d(0,-100%,0);
+            -webkit-transition: transform .2s ease;
+            transition: transform .2s ease;
+            -webkit-transform: translate3d(0,-200%,0);
+            transform: translate3d(0,-200%,0);
 
             .place-list, .price-list, .type-list {
                 display: -webkit-flex;
@@ -109,6 +109,9 @@ $borderRadiusColor: #999;
                         border-left: none;
                     }
                 }
+            }
+            .place-list {
+                min-height: rem(200);
             }
             .type-list {
                 padding-bottom: rem(141);
@@ -189,8 +192,8 @@ $borderRadiusColor: #999;
 
             .more-list {
                 padding-bottom: rem(141);
-                max-height: rem(1000);
-                overflow-y: auto;
+                max-height: rem(850);
+                overflow-y: scroll;
                 @include box-sizing;
 
                 dl {
