@@ -148,9 +148,9 @@
                     </#if>
                 </div>
                 <div class="list-item-cont">
-                    <span hidden="hidden">${map['building_name_id']}</span>
-                    <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                    <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                    <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}<#else >暂无</#if></span>
+                    <h3 class="cont-block-1"><#if map['property_type']?exists>${map['property_type']}<#else >暂无</#if><em></em></h3>
+                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
                         ${map['nearsubway']}
