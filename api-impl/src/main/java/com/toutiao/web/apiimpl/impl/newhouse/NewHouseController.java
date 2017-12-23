@@ -57,6 +57,7 @@ public class NewHouseController {
         }else {
             model.addAttribute("sort",0);
         }
+        model.addAttribute("searchType","newshouse");
         return "newhouse/new-list";
     }
 

@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/newhouse/searchNewHouse">
+    <input id="url" type="hidden" value="/newhouse/searchNewHouse">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -216,5 +216,27 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-url.js"></script>
+<script>
+    var _districtId = ${RequestParameters['districtId']};
+1111
+</script>
+
+
+
+<script>
+    $(function () {
+        $(window).scroll(function () {
+            if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                pullUpAction(function () {});
+            }
+        });
+        //加载内容填充不满屏幕
+        if ($(document).height() <= $(window).height()) {
+
+        }
+
+    });
+</script>
 </body>
 </html>
