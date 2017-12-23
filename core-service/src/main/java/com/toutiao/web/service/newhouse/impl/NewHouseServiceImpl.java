@@ -156,7 +156,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         ///================================
         //物业类型
         if(StringUtil.isNotNullString(newHouseQuery.getPropertyTypeId())){
-            booleanQueryBuilder.must(termsQuery("property_type_id",new int[]{Integer.valueOf(newHouseQuery.getPropertyTypeId())}));
+            booleanQueryBuilder.must(termsQuery("property_type_id",new String[]{newHouseQuery.getPropertyTypeId()}));
         }
 
         //电梯
