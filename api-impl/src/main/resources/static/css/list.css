@@ -706,10 +706,10 @@ hr {
       background-color: #fff;
       -webkit-box-shadow: 0 -0.0533333333rem 0.28rem 0 rgba(56, 58, 64, 0.14);
       box-shadow: 0 -0.0533333333rem 0.28rem 0 rgba(56, 58, 64, 0.14);
-      -webkit-transition: transform .5s ease;
-      transition: transform .5s ease;
-      -webkit-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0); }
+      -webkit-transition: transform .2s ease;
+      transition: transform .2s ease;
+      -webkit-transform: translate3d(0, -200%, 0);
+      transform: translate3d(0, -200%, 0); }
       .category-box .category-cont .filter-item .place-list, .category-box .category-cont .filter-item .price-list, .category-box .category-cont .filter-item .type-list {
         display: -webkit-flex;
         display: flex;
@@ -722,6 +722,8 @@ hr {
           overflow-y: auto; }
           .category-box .category-cont .filter-item .place-list ul:first-child, .category-box .category-cont .filter-item .price-list ul:first-child, .category-box .category-cont .filter-item .type-list ul:first-child {
             border-left: none; }
+      .category-box .category-cont .filter-item .place-list {
+        min-height: 2.6666666667rem; }
       .category-box .category-cont .filter-item .type-list {
         padding-bottom: 1.88rem;
         box-sizing: border-box; }
@@ -796,8 +798,8 @@ hr {
                 background-image: url("../images/global/list_pop_rb_red@3x.png"); } }
       .category-box .category-cont .filter-item .more-list {
         padding-bottom: 1.88rem;
-        max-height: 13.3333333333rem;
-        overflow-y: auto;
+        max-height: 11.3333333333rem;
+        overflow-y: scroll;
         box-sizing: border-box; }
         .category-box .category-cont .filter-item .more-list dl {
           display: -webkit-flex;

@@ -118,17 +118,6 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseManagementTypeId">销售状态</dt>
-                    <dd>
-                        <span data-info="1">售完</span>
-                        <span data-info="2">在售</span>
-                        <span data-info="3">不在售</span>
-                        <span data-info="4">出租</span>
-                        <span data-info="4">待租</span>
-                        <span data-info="4">待售</span>
-                    </dd>
-                </dl>
-                <dl>
                     <dt data-type="buildingFeature">权属</dt>
                     <dd>
                         <span data-info="1">已购公房</span>
@@ -167,20 +156,10 @@
                         <span data-info="11">其他</span>
                     </dd>
                 </dl>
-                <dl>
-                    <dt data-type="deliverStyle">装修标准</dt>
-                    <dd>
-                        <span data-info="1">毛坯</span>
-                        <span data-info="2">普通装修</span>
-                        <span data-info="3">精装修</span>
-                        <span data-info="4">豪华装修</span>
-                        <span data-info="5">其他</span>
-                    </dd>
-                </dl>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-                </div>
+            </div>
+            <div class="submit-wrapper">
+                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
     </div>
