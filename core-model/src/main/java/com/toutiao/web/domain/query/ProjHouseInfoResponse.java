@@ -10,7 +10,7 @@ public class ProjHouseInfoResponse {
 
     /* * 房源ID
  */
-    private Integer houseId;
+    private String  houseId;
 
     /**
      * 房源标题
