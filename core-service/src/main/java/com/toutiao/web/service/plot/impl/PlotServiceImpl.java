@@ -143,11 +143,11 @@ public class PlotServiceImpl implements PlotService {
                 key = SubwayLineId[0] + "$" + SubwayStationId[0];
             }
             //标签
-            String labelId = villageRequest.getLabelId();
-            if (labelId != null && labelId.length() != 0) {
-                String[] LabelId = labelId.split(",");
+            String buildingFeature = villageRequest.getBuildingFeature();
+            if (buildingFeature != null && buildingFeature.length() != 0) {
+                String[] BuildingFeature = buildingFeature.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", LabelId));
+                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", BuildingFeature));
                 queryBuilder = boolQueryBuilder.must(queryBuilder1);
             }
 
@@ -175,15 +175,15 @@ public class PlotServiceImpl implements PlotService {
             }
 
             //面积
-            if (StringUtil.isNotNullString(villageRequest.getAreaSize())) {
-                String[] AreaSize = villageRequest.getAreaSize().split(",");
+            if (StringUtil.isNotNullString(villageRequest.getHouseAreaSize())) {
+                String[] houseAreaSize = villageRequest.getHouseAreaSize().split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < AreaSize.length; i = i + 2) {
-                    if (i + 1 > AreaSize.length) {
+                for (int i = 0; i < houseAreaSize.length; i = i + 2) {
+                    if (i + 1 > houseAreaSize.length) {
                         break;
                     }
                     BoolQueryBuilder areaSize1 = booleanQueryBuilder.should(JoinQueryBuilders
-                            .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(AreaSize[i]).lte(AreaSize[i + 1]), ScoreMode.None));
+                            .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(houseAreaSize[i]).lte(houseAreaSize[i + 1]), ScoreMode.None));
                     queryBuilder = boolQueryBuilder.must(areaSize1);
                 }
             }
@@ -201,29 +201,35 @@ public class PlotServiceImpl implements PlotService {
                 }
             }
 
-            //物业类型
-            String propertyType = villageRequest.getPropertyType();
-            if (propertyType != null && propertyType.length() != 0) {
-                String[] PropertyType = propertyType.split(",");
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", PropertyType));
+            //物业类型ID
+            String propertyTypeId = villageRequest.getPropertyTypeId();
+            if (propertyTypeId != null && propertyTypeId.length() != 0) {
+                String[] PropertyTypeId = propertyTypeId.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", PropertyTypeId));
             }
             //电梯
-            String elevator = villageRequest.getElevator();
-            if (elevator != null && elevator.length() != 0) {
-                String[] Elevator = elevator.split(",");
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", Elevator));
+            String elevatorFlag = villageRequest.getElevatorFlag();
+            if (elevatorFlag != null && elevatorFlag.length() != 0) {
+                String[] ElevatorFlag = elevatorFlag.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", ElevatorFlag));
             }
             //建筑类型编号
-            String architectureTypeId = villageRequest.getArchitectureTypeId();
-            if (architectureTypeId != null && architectureTypeId.length() != 0) {
-                String[] ArchitectureTypeId = architectureTypeId.split(",");
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", ArchitectureTypeId));
+            String buildingType = villageRequest.getBuildingType();
+            if (buildingType != null && buildingType.length() != 0) {
+                String[] BuildingType = buildingType.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", BuildingType));
             }
             //楼盘特色
             String villageCharacteristics = villageRequest.getVillageCharacteristics();
             if (villageCharacteristics != null && villageCharacteristics.length() != 0) {
                 String[] VillageCharacteristics = villageCharacteristics.split(",");
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", VillageCharacteristics));
+            }
+            //装修标准ID
+            String deliverStyle = villageRequest.getDeliverStyle();
+            if (deliverStyle != null && deliverStyle.length() != 0) {
+                String[] DeliverStyle = deliverStyle.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("decorationType", DeliverStyle));
             }
             //供暖方式
             String heatingMode = villageRequest.getHeatingMode();

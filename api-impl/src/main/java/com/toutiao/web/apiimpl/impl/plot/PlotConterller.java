@@ -95,11 +95,12 @@ public class PlotConterller {
         return "plot/plot-sale";
     }
 
+    //基本信息
     @RequestMapping("/plotParameter")
     public String parameter(VillageRequest villageRequest, Model model){
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
-        return "plot/plot-detail";
+        return "plot/plot-parameter";
     }
 }

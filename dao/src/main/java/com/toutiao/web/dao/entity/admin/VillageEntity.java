@@ -54,6 +54,12 @@ public class VillageEntity {
     private String cityId;  //城市编号
     private String villageCharacteristics;  //楼盘特色
     private String ringRoad;  //环线
+    private Double dimension;  //容积率
+    private String airQuality;  //空气质量
+    private String electricSupply;  //供电
+    private String waterSupply;  //供水
+    private String decorationType;  //装修标准
+
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源
