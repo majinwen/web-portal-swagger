@@ -119,7 +119,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", projHouseInfoRequest.getHouseBusinessId()));
 
             }
-            //商圈id
+            //小区id
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getNewcode())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", projHouseInfoRequest.getNewcode()));
+
+            }
+            //房源id
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
 
@@ -269,38 +274,38 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 //朝向
-                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
-                instance.setForwardName(forWard);
+//                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
+//                instance.setForwardName(forWard);
                 //装修
-                String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
-                instance.setFitmentName(fitment);
-                Integer[] tags = instance.getTags();
-                String[] tag = new String[tags.length];
-                for (int i = 0; i < tags.length; i++) {
-
-                    if (StringTool.isNotEmpty(tags[i])){
-                        //标签
-                        tag[i] = LabelMap.getLabel(String.valueOf(tags[i]));
-                    }
-
-                }
-                instance.setTagsName(tag);
+//                String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
+//                instance.setFitmentName(fitment);
+//                Integer[] tags = instance.getTags();
+//                String[] tag = new String[tags.length];
+//                for (int i = 0; i < tags.length; i++) {
+//
+//                    if (StringTool.isNotEmpty(tags[i])){
+//                        //标签
+//                        tag[i] = LabelMap.getLabel(String.valueOf(tags[i]));
+//                    }
+//
+//                }
+                //instance.setTagsName(tag);
                 //权属
-                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
-                //物业类型
-                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
-                //建筑形式
-                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
+//                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
+//                //物业类型
+//                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
+//                //建筑形式
+//                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
                 //电梯
-                if(instance.getElevator()=="1"){
-                   instance.setElevator("有电梯");
-                }
-                if(instance.getElevator()=="2"){
-                    instance.setElevator("无电梯");
-                }
-                if(instance.getElevator()==null){
-                    instance.setElevator("暂无");
-                }
+//                if(instance.getElevator()=="1"){
+//                   instance.setElevator("有电梯");
+//                }
+//                if(instance.getElevator()=="2"){
+//                    instance.setElevator("无电梯");
+//                }
+//                if(instance.getElevator()==null){
+//                    instance.setElevator("暂无");
+//                }
                 houseList.add(instance);
             }
             return houseList;
@@ -347,30 +352,30 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 //小区坐标
                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
-                //朝向
-                String forWard = ForWardMap.getForWard(instance.getFloor());
-                instance.setForwardName(forWard);
-                //装修
-                String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
-                instance.setFitmentName(fitment);
-                Integer[] tags = instance.getTags();
-                String[] tag = new String[tags.length];
-                for (int i = 0; i < tags.length; i++) {
-
-                    if (StringTool.isNotEmpty(tags[i])){
-                        //标签
-                        tag[i] = LabelMap.getLabel(String.valueOf(tags[i]));
-                    }
-                }
-                instance.setTagsName(tag);
-                //权属
-                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
-                //物业类型
-                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
-                //建筑形式
-                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
-                //电梯/
-                instance.setElevator(instance.getElevator() == "1" ? "有电梯" : "无电梯");
+//                //朝向
+//                String forWard = ForWardMap.getForWard(instance.getFloor());
+//                instance.setForwardName(forWard);
+//                //装修
+//                String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
+//                instance.setFitmentName(fitment);
+//                Integer[] tags = instance.getTags();
+//                String[] tag = new String[tags.length];
+//                for (int i = 0; i < tags.length; i++) {
+//
+//                    if (StringTool.isNotEmpty(tags[i])){
+//                        //标签
+//                        tag[i] = LabelMap.getLabel(String.valueOf(tags[i]));
+//                    }
+//                }
+//                instance.setTagsName(tag);
+//                //权属
+//                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
+//                //物业类型
+//                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
+//                //建筑形式
+//                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
+//                //电梯/
+//                instance.setElevator(instance.getElevator() == "1" ? "有电梯" : "无电梯");
                 houseList.add(instance);
             }
             result = new HashMap<>();

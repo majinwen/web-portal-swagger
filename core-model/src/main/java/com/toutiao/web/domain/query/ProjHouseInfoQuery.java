@@ -112,5 +112,9 @@ public class ProjHouseInfoQuery {
 
     private Integer houseHeating;
 
+    //小区id
+    private  String newcode;
+
+
 
 }

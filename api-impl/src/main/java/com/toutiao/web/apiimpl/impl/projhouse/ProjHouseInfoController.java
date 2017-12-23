@@ -46,14 +46,14 @@ public class ProjHouseInfoController {
      * @date 2017/12/15 11:06
      */
     @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}")
-    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId) {
+    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") Integer houseId) {
         //房源详情
-        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
+        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(houseId);
         if (StringTool.isNotEmpty(houseDetails)) {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId,Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(),Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }

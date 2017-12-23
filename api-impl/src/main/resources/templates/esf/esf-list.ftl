@@ -126,14 +126,6 @@
                         <span class="only" data-info="20,100">20年以上</span>
                     </dd>
                 </dl>
-            <#--<dl>-->
-            <#--<dt data-type="houseFloorId">楼层</dt>-->
-            <#--<dd>-->
-            <#--<span data-info="低">低层楼</span>-->
-            <#--<span data-info="中">中层楼</span>-->
-            <#--<span data-info="高">高层楼</span>-->
-            <#--</dd>-->
-            <#--</dl>-->
                 <dl>
                     <dt data-type="elevator">电梯</dt>
                     <dd>
@@ -147,7 +139,6 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
                 <dl>
@@ -175,8 +166,8 @@
         <#list builds as map>
             <li>
             <#--<#assign itemLocation=map['housePlotLocation']>-->
-                <a class="list-item"
-                   href="/queryByHouseIdandLocation/${map.houseId}">
+                <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
+                <a class="list-item" href="#">
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>
@@ -207,17 +198,17 @@
                                         class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
                                     [${map.houseBusinessName}]<#else>暂无</#if></p>
                             </#if>
-
-
                             <div class="cont-block-4 house-labelling gray middle">
                                 <#if map['tagsName']?exists>
-                                    <#assign item =  map['tagsName']>
+                                    <#assign item =map['tagsName']>
                                     <#list item as itemValue>
                                         <#if itemValue?exists>
                                             <span>${itemValue}</span>
                                         </#if>
+                                        <#else >
+                                            暂无
                                     </#list>
-                                <#else >
+                                    <#else >
                                     暂无
                                 </#if>
                             </div>
@@ -231,7 +222,7 @@
                                     ${map.houseTotalPrices}万
                                     </#if>
                                 </em>
-                                <#--<span>-->
+                            <#--<span>-->
                                 <em>
                                     <#if map.houseUnitCost?exists>
                                     <#--<#if map.houseUnitCost==0>
@@ -242,7 +233,7 @@
                                         暂无单价
                                     </#if>
                                 </em>
-                               <#-- </span>-->
+                            <#-- </span>-->
                             </div>
                         </div>
                     </div>
