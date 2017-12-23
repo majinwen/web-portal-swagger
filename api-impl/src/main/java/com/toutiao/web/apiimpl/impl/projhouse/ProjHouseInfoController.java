@@ -41,25 +41,25 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 11:06
      */
-    @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}/{lat}/{lon}")
-    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId
-            , @PathVariable("lat") String lat, @PathVariable("lon") String lon) {
-
+    @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}")
+    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String houseId) {
         //房源详情
-        Map<String, Object> houseDetails  = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
+        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
         if (StringTool.isNotEmpty(houseDetails)) {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
+            ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
+            //附近好房
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId,Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            if (StringTool.isNotEmpty(houseInfo)) {
+                model.addAttribute("plot", houseInfo);
+            }
+            //附近小区缺少接口
+            List plotList = plotService.GetNearByhHouseAndDistance(Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            if (StringTool.isNotEmpty(plotList)) {
+                model.addAttribute("plotList", plotList);
+            }
         }
-        //附近好房
-        Map<String, Object> builds = projHouseInfoService.queryProjHouseByhouseIdandLocation(Double.valueOf(lat), Double.valueOf(lon));
-        if (StringTool.isNotEmpty(builds)) {
-            model.addAttribute("plot", builds.get("data_plot"));
-        }
-        //附近小区缺少接口
-        List plotList = plotService.GetNearByhHouseAndDistance(Double.valueOf(lat), Double.valueOf(lon));
-        if (StringTool.isNotEmpty(plotList)) {
-            model.addAttribute("plotList", plotList);
-        }
+
         return "esf/esf-detail";
     }
 

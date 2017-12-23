@@ -8,6 +8,7 @@
     <title>二手房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
+<#setting url_escaping_charset="UTF-8">
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
@@ -175,10 +176,7 @@
             <li>
             <#--<#assign itemLocation=map['housePlotLocation']>-->
                 <a class="list-item"
-                   href="/queryByHouseIdandLocation/${map.houseId}/${map.lon?if_exists?string(",####.####################")}/${map.lat?if_exists?string(",####.####################")}">
-                    <input type="hidden" name="houseId" value="${map.houseId}"/>
-                    <input type="hidden" name="lon" value="${map.lon?if_exists?string(",####.####################")}"/>
-                    <input type="hidden" name="lat" value="${map.lat?if_exists?string(",####.####################")}"/>
+                   href="/queryByHouseIdandLocation/${map.houseId}">
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>

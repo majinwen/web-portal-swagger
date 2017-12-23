@@ -63,7 +63,7 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <h2><#if houseDetail.recommendReason?exists>${houseDetail.recommendReason}<#else>暂无</#if></h2>
+            <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}<#else>暂无</#if></h2>
             <div class="primary-header-tag house-labelling gray">
             <#assign item =houseDetail['tagsName']>
             <#list item as itemValue>
@@ -83,7 +83,8 @@
                     </li>
                     <li>
                         <span>户型</span>
-                        <em><#if houseDetail.room?exists>${houseDetail.room}室<#else>暂无</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅<#else>暂无</#if></em>
+                        <em><#if houseDetail.room?exists>${houseDetail.room}室<#else>
+                            暂无</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅<#else>暂无</#if></em>
                     </li>
                     <li>
                         <span>面积</span>
@@ -108,7 +109,8 @@
                         <em>${houseDetail.houseTypeName}</em>
                     <#else>
                         <#if houseDetail.buildCategoryName?exists> <em>${houseDetail.buildCategoryName}</em><#else>
-                            暂无</#if>
+                            暂无
+                        </#if>
                     </#if>
                     </dd>
                     <dd class="even-item">楼龄：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无</#if></em>
@@ -198,16 +200,19 @@
         <#if plot?exists>
             <#list plot as map>
                 <li>
-                    <#assign itemLocation=map['housePlotLocation']>
-                    <#if map.houseId?exists&&itemLocation?split(",")[0]?exists&&itemLocation?split(",")[1]?exists>
-                    <a href="/queryByHouseIdandLocation/${map.houseId}/${itemLocation?split(",")[0]}/${itemLocation?split(",")[1]}">
+
+                    <#if map.houseId?exists>
+                    <a href="/queryByHouseIdandLocation/${map.houseId}">
                     <#--<a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${map.lon?if_exists?string(",####.####################")}/${map.lat?if_exists?string(",####.####################")}">-->
                     <#else>
                     <a href="#">
                     </#if>
                     <div class="picture-box">
-                        <#assign item=map['housePhoto']>
-                        <img src="${item[0]}" alt="<#if map.houseTitle?exists>${map.houseTitle}<#else>暂无</#if>">
+                        <#if map['housePhoto']?exists>
+                            <#assign item=map['housePhoto']>
+                            <img src="<#if item[0]?exists>${item[0]}</#if>"
+                                 alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                        </#if>
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first"><em><#if map.houseTotalPrices?exists>${map.houseTotalPrices}万<#else>
