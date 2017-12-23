@@ -144,12 +144,12 @@
                 <div class="list-item-img-box">
                     <#if map['building_imgs']?exists>
                     <#assign item = map['building_imgs']?split(",")>
-                      <img src="${staticurl}/${item[0]}" alt="${map['building_name']}">
+                      <img src="http://s1.qn.toutiaofangchan.com/${item[0]}" alt="${map['building_name']}">
                     </#if>
                 </div>
                 <div class="list-item-cont">
-                    <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}<#else >暂无</#if></span>
-                    <h3 class="cont-block-1"><#if map['property_type']?exists>${map['property_type']}<#else >暂无</#if><em></em></h3>
+                    <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
+                    <h3 class="cont-block-1">${map['property_type']!'暂无'}<em></em></h3>
                     <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>

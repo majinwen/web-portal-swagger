@@ -18,7 +18,7 @@
             <#list build['building_imgs']?split(",") as item>
             <#if item?exists>
             <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                <img src="${staticurl}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
+                <img src="http://s1.qn.toutiaofangchan.com/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
             </#if>
             </#list>
@@ -89,18 +89,18 @@
             <li>
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
-                          <#if build['building_address']?exists>${build['building_address']}<#else>暂无</#if>
+                           ${build['building_address']!'暂无'}
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：<#if build['roundstation']?exists>${build['roundstation']}<#else>暂无</#if> <#--1.0km<em class="primary-distance">0.6km</em>-->
+                    交通信息：${build['roundstation']!'暂无'} <#--1.0km<em class="primary-distance">0.6km</em>-->
                 </p>
             </li>
             <li>
-                <p>最新开盘：<#if build['opened_time']?exists>${build['opened_time']}<#else>暂无</#if></p>
-                <p>交房时间：<#if build['deliver_time']?exists>${build['deliver_time']}<#else>暂无</#if></p>
-                <p>售楼许可证：<#if build['sell_licence']?exists>${build['sell_licence']}<#else>暂无</#if></p>
+                <p>最新开盘：${build['opened_time']!'暂无'}</p>
+                <p>交房时间：${build['deliver_time']!'暂无'}</p>
+                <p>售楼许可证：${build['sell_licence']!'暂无'}</p>
             </li>
         </ul>
     </section>
@@ -126,11 +126,11 @@
             <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']?c}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
-            <dt>开发商：${build['developers']}</dt>
-            <dd class="odd-item">物业类型：<span><#if build['property_type']?exists>${build['property_type']}<#else>暂无</#if></span></dd>
-            <dd class="even-item">建筑类型：<em><#if build['building_type']?exists>${build['building_type']}<#else>暂无</#if></em></dd>
+            <dt>开发商：${build['developers']!'暂无'}</dt>
+            <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无'}</span></dd>
+            <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无'}</em></dd>
             <dd class="odd-item">产权年限：<em><#if build['building_life']?exists>${build['building_life']}年<#else>暂无</#if></em></dd>
-            <dd class="even-item">车位配比：<em><#if build['park_radio']?exists>${build['park_radio']}<#else>暂无</#if></em></dd>
+            <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
         </dl>
     </section>
 </div>
@@ -149,8 +149,8 @@
                             <span class="sale-state">在售</span>
                         </div>
                         <div class="tilelist-content">
-                            <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
-                            <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
+                            <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
+                            <h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>
                             <div class="house-labelling normal small tilelist-tag">
                                 <#assign layouttagitem = item['layout_tag']>
                                 <#list layouttagitem as tagatem>
