@@ -139,6 +139,7 @@
         <version>2.5.0</version>
     </dependency>
     <!-- 阿里云短信服务  -->
+
     <dependency>
         <groupId>com.aliyun</groupId>
         <artifactId>aliyun-java-sdk-core</artifactId>

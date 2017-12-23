@@ -165,38 +165,40 @@
                     </#if>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">
-                           <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
-                         <p class="cont-block-2"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}<#else>暂无</#if></p>
+                            <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
+                        <p class="cont-block-2"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>
+                            暂无</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
+                                    <#assign split=map[plot['key']]?split("$")/>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                                 </#if>
                             <#else>
+                                <#if plot['tradingArea']?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                </#if>
+                            </#if>
+                        <#else>
                             <#if plot['tradingArea']?exists>
                                 <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
-                            </#if>
-                        <#else>
-                        <#if plot['tradingArea']?exists>
-                            <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
-                        </#if>
                         </#if>
                         <div class="cont-block-4">
                             <#if plot['label']?exists>
                                 <#assign item =  plot['label']>
                                 <#list item as itemValue>
                                     <#if itemValue?exists>
-                                    <span>${itemValue}</span>
+                                        <span>${itemValue}</span>
                                     </#if>
                                 </#list>
                             </#if>
                         </div>
                         <div class="cont-block-price plot">
-                            <em>${plot['avgPrice']}</em>
+                            <em>${plot['avgPrice']}元/㎡</em>
                         </div>
                     </div>
                 </div>

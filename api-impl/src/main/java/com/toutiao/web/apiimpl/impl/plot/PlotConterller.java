@@ -40,11 +40,10 @@ public class PlotConterller {
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
-        villageRequest.setAreaSize("80");
         if (villageRequest.getAvgPrice()!=null){
-            model.addAttribute("sort",villageRequest.getAvgPrice());
+            model.addAttribute("sort",Integer.parseInt(villageRequest.getAvgPrice()));
         }else {
-            villageRequest.setAvgPrice(0);
+            villageRequest.setAvgPrice("0");
             model.addAttribute("sort",0);
         }
         List villageList = null;
@@ -63,15 +62,16 @@ public class PlotConterller {
 
         //附近小区
         String[] latandlon = village.getLocation().split(",");
-        Double lonx = Double.valueOf(latandlon[1]);
-        Double laty = Double.valueOf(latandlon[0]);
-        List nearvillage = plotService.GetNearByhHouseAndDistance(laty,lonx);
+        Double lonx = Double.valueOf(latandlon[0]);
+        Double laty = Double.valueOf(latandlon[1]);
+        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx,laty);
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房
-        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
-        projHouseInfoQuery.setHousePlotName(village.getRc());
-        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+//        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+//        projHouseInfoQuery.setHousePlotName(village.getRc());
+//        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        List reViHouse = null;
         model.addAttribute("reViHouse",reViHouse);
 
         newHouseQuery.setSort(0);

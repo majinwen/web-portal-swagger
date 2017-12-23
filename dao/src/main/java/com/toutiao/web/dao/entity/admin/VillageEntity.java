@@ -32,13 +32,12 @@ public class VillageEntity {
     private String areaSize;  //面积
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
-    private Double avgGreeningRate;  //户均绿化率
-    private Double avgElevator;  //户均电梯
+    private Double avgGreening;  //户均绿化率
+    private Double liftDoorRadio;  //梯户比
     private String elevator;  //电梯配备 (1-有，2-无)
     private Double carPositionRatio;  //车位配比
-    private Double parkingRate;  //停车费
+    private String parkingRate;  //停车费
     private String desc;  //小区详情介绍
-    private String characteristic;  //小区特色
     private String developers;  //开发商
     private String property;  //物业公司
     private String propertyFee;  //物业费
