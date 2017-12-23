@@ -30,6 +30,7 @@ public class FreeMarkerConfig {
 
     @PostConstruct
     public void setSharedVariable(){
+        configuration.setNumberFormat("#");
         configuration.setSharedVariable("block", new BlockDirective());
         configuration.setSharedVariable("override", new OverrideDirective());
         configuration.setSharedVariable("extends", new ExtendsDirective());

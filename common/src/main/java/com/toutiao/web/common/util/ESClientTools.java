@@ -23,14 +23,15 @@ public class ESClientTools {
     private String esClusterName;//集群名
     @Value("${es.server.ips}")
     private String esServerIps;//集群服务IP集合
-    @Value("${es.xpack.user}")
-    private String esXpackUser;//xpack
+//    @Value("${es.xpack.user}")
+//    private String esXpackUser;//xpack
 
     private volatile TransportClient client;
 
 
     Settings settings = Settings.builder().put("cluster.name", esClusterName)
-                                          .put("xpack.security.user",esXpackUser).build();
+//                                          .put("xpack.security.user",esXpackUser)
+            .build();
 
     public TransportClient init(){
 
@@ -50,7 +51,7 @@ public class ESClientTools {
                     String[] addresses = esServerIps.split(",");
                     for (String address : addresses) {
                         String[] hostAndPort = address.split(":");
-                        client = new PreBuiltXPackTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
+                        client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
                                 InetAddress.getByName(hostAndPort[0]), Integer.valueOf(hostAndPort[1])));
                     }
                 } catch (UnknownHostException e) {
