@@ -125,14 +125,14 @@
                         <span class="only" data-info="20,100">20年以上</span>
                     </dd>
                 </dl>
-                <#--<dl>-->
-                    <#--<dt data-type="houseFloorId">楼层</dt>-->
-                    <#--<dd>-->
-                        <#--<span data-info="低">低层楼</span>-->
-                        <#--<span data-info="中">中层楼</span>-->
-                        <#--<span data-info="高">高层楼</span>-->
-                    <#--</dd>-->
-                <#--</dl>-->
+            <#--<dl>-->
+            <#--<dt data-type="houseFloorId">楼层</dt>-->
+            <#--<dd>-->
+            <#--<span data-info="低">低层楼</span>-->
+            <#--<span data-info="中">中层楼</span>-->
+            <#--<span data-info="高">高层楼</span>-->
+            <#--</dd>-->
+            <#--</dl>-->
                 <dl>
                     <dt data-type="elevator">电梯</dt>
                     <dd>
@@ -173,51 +173,82 @@
     <#if builds?exists>
         <#list builds as map>
             <li>
-                <#--<#assign itemLocation=map['housePlotLocation']>-->
-                    <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${map.lon?if_exists?string(",####.####################")}/${map.lat?if_exists?string(",####.####################")}">
-                <input type="hidden" name="houseId" value="${map.houseId}"/>
-                <input type="hidden" name="lon" value="${map.lon?if_exists?string(",####.####################")}"/>
-                <input type="hidden" name="lat" value="${map.lat?if_exists?string(",####.####################")}"/>
-                <div class="clear">
-                    <div class="list-item-img-box">
-                        <#assign item=map['housePhoto']>
-                        <img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
-                    </div>
-                    <div class="list-item-cont">
-                        <h3 class="cont-block-1">${map.houseTitle}</h3>
+            <#--<#assign itemLocation=map['housePlotLocation']>-->
+                <a class="list-item"
+                   href="/queryByHouseIdandLocation/${map.houseId}/${map.lon?if_exists?string(",####.####################")}/${map.lat?if_exists?string(",####.####################")}">
+                    <input type="hidden" name="houseId" value="${map.houseId}"/>
+                    <input type="hidden" name="lon" value="${map.lon?if_exists?string(",####.####################")}"/>
+                    <input type="hidden" name="lat" value="${map.lat?if_exists?string(",####.####################")}"/>
+                    <div class="clear">
+                        <div class="list-item-img-box">
+                            <#assign item=map['housePhoto']>
+                            <img src="<#if item[0]?exists>${item[0]}</#if>"
+                                 alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                        </div>
+                        <div class="list-item-cont">
+                            <h3 class="cont-block-1">${map.houseTitle}</h3>
                         <p class="cont-block-2"><#if map.buildArea?exists>${map.buildArea}㎡</#if>
-                                                |<#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
-                                                |<#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
-                                                |<#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
-                        <#if map['subwayDistince']?exists>
-                            <#assign item=map['subwayDistince']>
-                            <#if map['key']?exists>
-                                <#if item[map['key']]?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m</p>
-                                </#if >
-                              <#else >
-                                  <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}[${map.houseBusinessName}]<#else>暂无</#if></p>
+                            |<#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
+                            |<#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
+                            |<#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
+                            <#if map['subwayDistince']?exists>
+                                <#assign item=map['subwayDistince']>
+                                <#if map['key']?exists>
+                                    <#if item[map['key']]?exists>
+                                        <p class="cont-block-3 distance"><i
+                                                class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                        </p>
+                                    </#if >
+                                <#else >
+                                    <p class="cont-block-3 distance"><i
+                                            class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                        [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                </#if>
+                            <#else >
+                                <p class="cont-block-3 distance"><i
+                                        class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                    [${map.houseBusinessName}]<#else>暂无</#if></p>
                             </#if>
-                           <#else >
-                               <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}[${map.houseBusinessName}]<#else>暂无</#if></p>
-                        </#if>
 
 
-                        <div class="cont-block-4 house-labelling gray middle">
-                            <#assign item =  map['tagsName']>
-                            <#list item as itemValue>
-                              <#if itemValue?exists>
-                                  <span>${itemValue}</span>
-                              </#if>
-                            </#list>
-                        </div>
-                        <div class="cont-block-price">
-                            <em> <#if map.houseTotalPrices?exists>${map.houseTotalPrices}万<#else>暂无</#if></em>
-                            <span> <#if map.houseUnitCost?exists>${map.houseUnitCost}元/㎡<#else>暂无</#if></span>
+                            <div class="cont-block-4 house-labelling gray middle">
+                                <#if map['tagsName']?exists>
+                                    <#assign item =  map['tagsName']>
+                                    <#list item as itemValue>
+                                        <#if itemValue?exists>
+                                            <span>${itemValue}</span>
+                                        </#if>
+                                    </#list>
+                                <#else >
+                                    暂无
+                                </#if>
+                            </div>
+                            <div class="cont-block-price">
+                                <em>
+                                    <#if map.houseTotalPrices?exists>
+                                        <#if map.houseTotalPrices==0>
+                                            暂无总价
+                                        </#if>
+                                    <#else>
+                                    ${map.houseTotalPrices}万
+                                    </#if>
+                                </em>
+                                <#--<span>-->
+                                <em>
+                                    <#if map.houseUnitCost?exists>
+                                    <#--<#if map.houseUnitCost==0>
+
+                                    </#if>-->
+                                    ${map.houseUnitCost}元/㎡
+                                    <#else>
+                                        暂无单价
+                                    </#if>
+                                </em>
+                               <#-- </span>-->
+                            </div>
                         </div>
                     </div>
-                </div>
-            </a></li>
+                </a></li>
         </#list>
     </#if>
     </ul>
