@@ -3,6 +3,7 @@ package com.toutiao.web.service.plot.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
@@ -78,7 +79,13 @@ public class PlotServiceImpl implements PlotService {
                 Class<VillageEntity> entityClass = VillageEntity.class;
                 VillageEntity instance = entityClass.newInstance();
                 BeanUtils.populate(instance, source);
-                houseList.add(instance);
+                String location = lat + "," + lon;
+                if (instance.getLocation() != null) {
+                    String[] split = instance.getLocation().split(",");
+                    if (Double.valueOf(split[0]) != lat & Double.valueOf(split[1]) != lon) {
+                        houseList.add(instance);
+                    }
+                }
 //                 获取距离值，并保留两位小数点
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
                 Map<String, Object> hitMap = hit.getSource();
@@ -97,6 +104,7 @@ public class PlotServiceImpl implements PlotService {
     @Override
     public List findVillageByConditions(VillageRequest villageRequest) {
         List houseList = new ArrayList();
+        BoolQueryBuilder queryBuilder = null;
         try {
             TransportClient client = esClientTools.init();
 
@@ -105,131 +113,149 @@ public class PlotServiceImpl implements PlotService {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //小区ID
             if (villageRequest.getId() != null) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
-                srb.setQuery(queryBuilder);
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
+            }
+            //小区名称
+            if (villageRequest.getRc() != null) {
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
             }
             //区域编号
-            if (villageRequest.getAreaId() != null) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getAreaId()));
-                srb.setQuery(queryBuilder);
+            if (villageRequest.getDistrictId() != null) {
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", villageRequest.getDistrictId()));
             }
             //商圈编号
-            if (StringUtils.isNotBlank(villageRequest.getTradingAreaId())) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", villageRequest.getTradingAreaId()));
-                srb.setQuery(queryBuilder);
+            if (StringUtils.isNotBlank(villageRequest.getAreaId())) {
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", villageRequest.getAreaId()));
             }
             //地铁线路编号
-            if (StringUtils.isNotBlank(villageRequest.getSearchSubwayLineId())) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", villageRequest.getSearchSubwayLineId()));
-                srb.setQuery(queryBuilder);
-                key = villageRequest.getSearchSubwayLineId();
+            String subwayLineId = villageRequest.getSubwayLineId();
+            String[] SubwayLineId = null;
+            if (subwayLineId != null && subwayLineId.length() != 0) {
+                SubwayLineId = subwayLineId.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", SubwayLineId[0]));
+                key = SubwayLineId[0];
             }
             //地铁站编号
-            if (StringUtils.isNotBlank(villageRequest.getSearchMetroStationId()) && StringUtils.isNotBlank(villageRequest.getSearchSubwayLineId())) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.should(QueryBuilders.termsQuery("metroStationId", villageRequest.getSearchMetroStationId()));
-                srb.setQuery(queryBuilder);
-                key = villageRequest.getSearchSubwayLineId() + "_" + villageRequest.getSearchMetroStationId();
+            String subwayStationId = villageRequest.getSubwayStationId();
+            if (subwayLineId != null && subwayLineId.length() != 0 && subwayStationId != null && subwayStationId.length() != 0) {
+                String[] SubwayStationId = subwayStationId.split(",");
+                queryBuilder = boolQueryBuilder.should(QueryBuilders.termsQuery("metroStationId", SubwayStationId[0]));
+                key = SubwayLineId[0] + "$" + SubwayStationId[0];
             }
             //标签
-            String[] labelId = villageRequest.getLabelId();
-            if (labelId != null && labelId.length != 0) {
+            String labelId = villageRequest.getLabelId();
+            if (labelId != null && labelId.length() != 0) {
+                String[] LabelId = labelId.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                BoolQueryBuilder queryBuilder = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", labelId));
-                BoolQueryBuilder must = boolQueryBuilder.must(queryBuilder);
-                srb.setQuery(must);
+                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", LabelId));
+                queryBuilder = boolQueryBuilder.must(queryBuilder1);
             }
 
             //均价
-            Integer[] searchAvgPrice = villageRequest.getSearchAvgPrice();
-            if (searchAvgPrice != null && searchAvgPrice.length != 0) {
-                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < searchAvgPrice.length; i = i + 2) {
-                    if (i + 1 > searchAvgPrice.length) {
-                        break;
+            String avgPrice = villageRequest.getAvgPrice();
+            if (avgPrice != null && avgPrice.length() != 0) {
+                String[] AvgPrice = avgPrice.split(",");
+                if (AvgPrice.length % 2 == 0) {
+                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                    for (int i = 0; i < AvgPrice.length; i = i + 2) {
+                        if (i + 1 > AvgPrice.length) {
+                            break;
+                        }
+                        BoolQueryBuilder AvgPrice1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("avgPrice").gt(AvgPrice[i]).lte(AvgPrice[i + 1]));
+                        queryBuilder = boolQueryBuilder.must(AvgPrice1);
                     }
-                    BoolQueryBuilder avgPrice = booleanQueryBuilder.should(QueryBuilders.rangeQuery("avgPrice").gt(searchAvgPrice[i]).lte(searchAvgPrice[i + 1]));
-                    BoolQueryBuilder must = boolQueryBuilder.must(avgPrice);
-                    srb.setQuery(must);
                 }
             }
+
+            //总价
+            String beginPrice = villageRequest.getBeginPrice();
+            String endPrice = villageRequest.getEndPrice();
+            if (beginPrice != null && beginPrice.length() != 0 &&!beginPrice.equals("undefined")&&!endPrice.equals("undefined")&& endPrice != null && endPrice.length() != 0) {
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("sumPrice").gt(Double.valueOf(beginPrice)).lte(Double.valueOf(endPrice)));
+            }
+
             //面积
-            String[] areaSize = villageRequest.getSearchAreaSize();
-            if (areaSize != null && areaSize.length != 0) {
+            if (StringUtil.isNotNullString(villageRequest.getAreaSize())) {
+                String[] AreaSize = villageRequest.getAreaSize().split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < areaSize.length; i = i + 2) {
-                    if (i + 1 > areaSize.length) {
+                for (int i = 0; i < AreaSize.length; i = i + 2) {
+                    if (i + 1 > AreaSize.length) {
                         break;
                     }
                     BoolQueryBuilder areaSize1 = booleanQueryBuilder.should(JoinQueryBuilders
-                            .hasChildQuery(childType, QueryBuilders.rangeQuery("areaSize").gt(areaSize[i]).lte(areaSize[i + 1]), ScoreMode.None));
-                    BoolQueryBuilder must = boolQueryBuilder.must(areaSize1);
-                    srb.setQuery(must);
+                            .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(AreaSize[i]).lte(AreaSize[i + 1]), ScoreMode.None));
+                    queryBuilder = boolQueryBuilder.must(areaSize1);
                 }
             }
             //楼龄
-            Integer[] searchAge = villageRequest.getSearchAge();
-            if (searchAge != null && searchAge.length != 0) {
+            String age = villageRequest.getAge();
+            if (age != null && age.length() != 0 && age.length() % 2 == 0) {
+                String[] Age = age.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < searchAge.length; i = i + 2) {
-                    if (i + 1 > searchAge.length) {
+                for (int i = 0; i < Age.length; i = i + 2) {
+                    if (i + 1 > Age.length) {
                         break;
                     }
-                    BoolQueryBuilder age = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(searchAge[i]).lte(searchAge[i + 1]));
-                    BoolQueryBuilder must = boolQueryBuilder.must(age);
-                    srb.setQuery(must);
+                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(Age[i]).lte(Age[i + 1]));
+                    queryBuilder = boolQueryBuilder.must(Age1);
                 }
             }
+
             //物业类型
-            String[] searchPropertyType = villageRequest.getSearchPropertyType();
-            if (searchPropertyType != null && searchPropertyType.length != 0) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", searchPropertyType));
-                srb.setQuery(queryBuilder);
+            String propertyType = villageRequest.getPropertyType();
+            if (propertyType != null && propertyType.length() != 0) {
+                String[] PropertyType = propertyType.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", PropertyType));
             }
             //电梯
-            String[] searchElevator = villageRequest.getSearchElevator();
-            if (searchElevator != null && searchElevator.length != 0) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", searchElevator));
-                srb.setQuery(queryBuilder);
+            String elevator = villageRequest.getElevator();
+            if (elevator != null && elevator.length() != 0) {
+                String[] Elevator = elevator.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", Elevator));
             }
-            //建筑类型
-            String[] architectureTypeId = villageRequest.getArchitectureTypeId();
-            if (architectureTypeId != null && architectureTypeId.length != 0) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", architectureTypeId));
-                srb.setQuery(queryBuilder);
+            //建筑类型编号
+            String architectureTypeId = villageRequest.getArchitectureTypeId();
+            if (architectureTypeId != null && architectureTypeId.length() != 0) {
+                String[] ArchitectureTypeId = architectureTypeId.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", ArchitectureTypeId));
             }
             //楼盘特色
-            String[] searchVillageCharacteristics = villageRequest.getSearchVillageCharacteristics();
-            if (searchVillageCharacteristics != null && searchVillageCharacteristics.length != 0) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", searchVillageCharacteristics));
-                srb.setQuery(queryBuilder);
+            String villageCharacteristics = villageRequest.getVillageCharacteristics();
+            if (villageCharacteristics != null && villageCharacteristics.length() != 0) {
+                String[] VillageCharacteristics = villageCharacteristics.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", VillageCharacteristics));
             }
             //供暖方式
-            String[] searchHeatingMode = villageRequest.getSearchHeatingMode();
-            if (searchHeatingMode != null && searchHeatingMode.length != 0) {
-                BoolQueryBuilder queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", searchHeatingMode));
-                srb.setQuery(queryBuilder);
+            String heatingMode = villageRequest.getHeatingMode();
+            if (heatingMode != null && heatingMode.length() != 0) {
+                String[] HeatingMode = heatingMode.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
             //排序
             //均价
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice() == 1) {
+            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("2")) {
                 srb.addSort("avgPrice", SortOrder.ASC);
             }
 
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice() == 2) {
+            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("1")) {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
 
             //分页
-            villageRequest.setSize(10);
-            if (villageRequest.getPage() == null) {
+            // 每页大小
+            if (villageRequest.getSize() == null || villageRequest.getSize() < 1) {
+                villageRequest.setSize(10);
+            }
+            // 当前页
+            if (villageRequest.getPage() == null || villageRequest.getPage() < 1) {
                 villageRequest.setPage(1);
             }
+
             int rows = (villageRequest.getPage() - 1) * villageRequest.getSize();
             Integer size = villageRequest.getSize();
             srb.setFrom(rows).setSize(size);
-            SearchResponse response = srb.execute().actionGet();
-            SearchHits hits = response.getHits();
-            SearchHit[] searchHists = hits.getHits();
+            SearchResponse response = srb.setQuery(queryBuilder).execute().actionGet();
+            SearchHit[] searchHists = response.getHits().getHits();
 
             if (searchHists != null) {
                 for (SearchHit hit : searchHists) {
@@ -242,7 +268,8 @@ public class PlotServiceImpl implements PlotService {
 //            System.out.println(instance);
                 }
             }
-        } catch (Exception e) {
+        } catch
+                (Exception e) {
             e.printStackTrace();
         }
         return houseList;
@@ -270,13 +297,10 @@ public class PlotServiceImpl implements PlotService {
     @Override
     public void saveChild(ProjHouseInfoES projHouseInfoes) {
         TransportClient client = esClientTools.init();
-        VillageEntity village = new VillageEntity();
-        village.setId(projHouseInfoes.getHouseId());
-        village.setAreaSize(projHouseInfoes.getHouseArea());
-        String jsonStr = JSONObject.toJSONString(village);
+        String jsonStr = JSONObject.toJSONString(projHouseInfoes);
         JSONObject json = JSONObject.parseObject(jsonStr);
 //        BulkRequestBuilder bulkRequest = client.prepareBulk();
-        String id = String.valueOf(village.getId());
+        String id = String.valueOf(projHouseInfoes.getHouseId());
         IndexRequest indexRequest = new IndexRequest(index, childType, id)
                 .parent(String.valueOf(projHouseInfoes.getHousePlotId()))
                 .version(projHouseInfoes.getVersion())

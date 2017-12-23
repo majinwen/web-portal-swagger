@@ -139,6 +139,7 @@
         <version>2.5.0</version>
     </dependency>
     <!-- 阿里云短信服务  -->
+
     <dependency>
         <groupId>com.aliyun</groupId>
         <artifactId>aliyun-java-sdk-core</artifactId>
@@ -165,9 +166,17 @@
         <artifactId>tomcat-embed-core</artifactId>
     </dependency>
     <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>x-pack-transport</artifactId>
+        <version>5.5.3</version>
+
+    </dependency>
+    <dependency>
         <groupId>org.elasticsearch</groupId>
         <artifactId>elasticsearch</artifactId>
         <version>5.5.3</version>
+        <scope>compile</scope>
+        <optional>true</optional>
     </dependency>
     <dependency>
         <groupId>org.elasticsearch.client</groupId>
@@ -180,17 +189,31 @@
                 <artifactId>elasticsearch</artifactId>
             </exclusion>
         </exclusions>
+        <scope>compile</scope>
+        <optional>true</optional>
     </dependency>
     <!--<dependency>-->
         <!--<groupId>org.elasticsearch.client</groupId>-->
         <!--<artifactId>elasticsearch-rest-high-level-client</artifactId>-->
         <!--<version>6.1.0</version>-->
     <!--</dependency>-->
-    <dependency>
-        <groupId>org.elasticsearch.client</groupId>
-        <artifactId>x-pack-transport</artifactId>
-        <version>5.5.3</version>
-    </dependency>
+
 </dependencies>
+    <!--<repositories>-->
+
+        <!--<repository>-->
+            <!--<id>nexus</id>-->
+            <!--<name>Nexus Repository</name>-->
+            <!--<url>http://47.104.96.88:9004/nexus/content/groups/public/</url>-->
+            <!--<releases>-->
+                <!--<enabled>true</enabled>-->
+            <!--</releases>-->
+            <!--<snapshots>-->
+                <!--<enabled>false</enabled>-->
+            <!--</snapshots>-->
+        <!--</repository>-->
+
+    <!--</repositories>-->
+
 
 </project>

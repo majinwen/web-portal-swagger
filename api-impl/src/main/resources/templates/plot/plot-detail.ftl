@@ -16,11 +16,11 @@
             <#list village['photo'] as vpphoto>
                 <#if vpphoto?exists>
                     <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${staticurl}/${vpphoto}" data-src="${staticurl}/${vpphoto}" alt="">
+                        <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
                     </li>
                 <#else>
                     <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${staticurl}/" data-src="${staticurl}/" alt="暂无">
+                        <img src="${qiniuimage}/" data-src="${qiniuimage}/" alt="暂无">
                     </li>
                 </#if>
             </#list>
@@ -66,17 +66,20 @@
 <div class="module-bottom-fill">
     <section class="plot-primary-header">
         <div class="plot-primary-text">
-            <h2>${village['rc']}</h2>
-            <p>[顺义-商圈] 中央别墅区 顺语路57号</p>
-            <#if village['metroWithPlotsDistance']?exists>
-            <p><#assign userMap = village['metroWithPlotsDistance']/>
-            <#assign  keys=userMap?keys/>
-            <#list keys as key>
-            ${userMap[key]!''} ${key}
-            </#list></p>
-                <#else >
-                    <p>暂无</p>
-            </#if>
+            <h2>${village['rc']!''}</h2>
+            <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
+            <#--<#if village['metroWithPlotsDistance']?exists>-->
+            <#--<p><#assign userMap = village['metroWithPlotsDistance']/>-->
+            <#--<#assign  keys=userMap?keys/>-->
+            <#--<#list keys as key>-->
+            <#--${userMap[key]!''}${key}-->
+                <#--&lt;#&ndash;<#assign split=userMap[key]?split("$")/>&ndash;&gt;-->
+                <#--&lt;#&ndash;<p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>&ndash;&gt;-->
+            <#--</#list></p>-->
+                <#--<#else >-->
+                    <#--<p>暂无</p>-->
+            <#--</#if>-->
+            <p>${village['trafficInformation']!'暂无'}</p>
             <div class="house-labelling gray">
                 <#if village['label']?exists>
                     <#list village['label'] as label>
@@ -96,6 +99,7 @@
             <a href="#" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
+            <#if reViHouse?exists>
             <#list reViHouse as reitem>
                   <#if reitem_index==4>
                       <#break >
@@ -112,6 +116,43 @@
                     </div>
                 </a></li>
             </#list>
+            </#if>
+        <#--    <li><a href="#">
+                <div class="picture-box">
+                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                    <p class="bottom-text">262㎡</p>
+                </div>
+                <div class="tilelist-content">
+                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
+                </div>
+            </a></li>
+            <li><a href="#">
+                <div class="picture-box">
+                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                    <p class="bottom-text">262㎡</p>
+                </div>
+                <div class="tilelist-content">
+                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
+                </div>
+            </a></li>
+            <li><a href="#">
+                <div class="picture-box">
+                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                    <p class="bottom-text">262㎡</p>
+                </div>
+                <div class="tilelist-content">
+                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
+                </div>
+            </a></li>
+            <li><a href="#">
+                <div class="picture-box">
+                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                    <p class="bottom-text">262㎡</p>
+                </div>
+                <div class="tilelist-content">
+                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
+                </div>
+            </a></li>-->
         </ul>
     </section>
 </div>
@@ -188,7 +229,7 @@
                 <#if village['rc']?exists>${village['rc']}</#if>
                 <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
                 <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                <#if village['sumHousehold']?exists>${village['sumHousehold']}户）</#if>
+                <#if village['sumHousehold']?exists>（${village['sumHousehold']}户）</#if>
                 <#if village['buildingStructure']?exists><em class="high-light-red">${village['buildingStructure']}</em></#if>
                 </div>
             </div>
@@ -197,14 +238,14 @@
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                        <em>${village['avgGreeningRate']}平方米</em>
+                        <em>${village['avgGreeningRate']!''}平方米</em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${village['carPositionRatio']}车位/户</em>
+                        <em>${village['carPositionRatio']!''}车位/户</em>
                     </div>
                 </div>
             </div>
@@ -213,7 +254,7 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>户均电梯</p>
-                        <em>暂无</em>
+                        <em>${village['liftDoorRadio']!'暂无'}</em>
                     </div>
                 </div>
                 <div class="info-card-item">
@@ -256,6 +297,8 @@
         </div>
     </section>
 </div>
+
+
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -383,7 +426,7 @@
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
-                        <img src="${staticurl}/${photos[0]}" alt="${nearviitem['rc']}">
+                        <img src="${qiniuimage}/${photos[0]}" alt="${nearviitem['rc']}">
                     </#if>
 
                 </div>
@@ -405,8 +448,10 @@
     <#list newbuilds as builditem>
         <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']}">
             <div class="picture-box">
-        <#assign imglist = builditem['building_imgs']>
-                <img src="${staticurl}/${imglist[0]}" alt="${imglist[0]}">
+                <#assign imglist = builditem['building_imgs']>
+                <#if imglist?exists>
+                <img src="${qiniuimage}/${imglist?split(",")[0]!''}" alt="${imglist?split(",")[0]!''}">
+                </#if>
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']}</h4>

@@ -195,6 +195,7 @@ function submitDirstrict(districtid,e,index) {
     console.log(url);
     tabTextReplace(e,circleData[index].name);
     location.href=url
+    // console.log("quyu")
    /* $.get(url, function () {
         location.href = url;
     });*/
@@ -250,7 +251,7 @@ function showStation(subwayid, index) {
  * 站点为不限
  * */
 function submitSubwayLine(subwayid,e,index) {
-    params = '?districtId=' + subwayid;
+    params = '?subwayLineId=' + subwayid;
     url = BaseUrl + params;
     console.log(url);
 
