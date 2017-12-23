@@ -49,6 +49,7 @@ public class PlotConterller {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
+        model.addAttribute("searchType","plot");
         return "plot/plot-list";
     }
 

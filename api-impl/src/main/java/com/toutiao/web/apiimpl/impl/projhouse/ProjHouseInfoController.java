@@ -86,6 +86,7 @@ public class ProjHouseInfoController {
         } else {
             model.addAttribute("sort", 0);
         }
+        model.addAttribute("searchType","projhouse");
         return "esf/esf-list";
 
     }
@@ -124,9 +125,12 @@ public class ProjHouseInfoController {
 
             model.addAttribute("builds", queryBySearchBox);
             model.addAttribute("text", text);
+            model.addAttribute("searchType","projhouse");
+
         } else {
             model.addAttribute("message", "没有该相应的数据信息");
             model.addAttribute("text", text);
+            model.addAttribute("searchType","projhouse");
         }
         return "esf/esf-list";
     }
