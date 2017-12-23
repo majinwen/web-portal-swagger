@@ -73,8 +73,8 @@
              <#--<#if item?exists><span>${item}</span></#if>-->
             <#--</#list>-->
 
-            <#if build['building_tags']?exists>
-                <#list build['building_tags']?split(",") as item>
+            <#if (build['building_tags']?exists)&&(build['building_tags']?size>0)>
+                <#list build['building_tags'] as item>
                     <#if item?exists><span>${item}</span></#if>
                 </#list>
             </#if>
@@ -94,13 +94,21 @@
                     <a href="#" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：${build['roundstation']!'暂无'} <#--1.0km<em class="primary-distance">0.6km</em>-->
+                    交通信息：<#if build['roundstation']?exists>
+                        <#assign rounditems = build['roundstation']?split("$")>
+                          距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
+                   <#else >暂无
+                    </#if> <#--1.0km<em class="primary-distance">0.6km</em>-->
                 </p>
             </li>
             <li>
                 <p>最新开盘：${build['opened_time']!'暂无'}</p>
                 <p>交房时间：${build['deliver_time']!'暂无'}</p>
-                <p>售楼许可证：${build['sell_licence']!'暂无'}</p>
+                <p>售楼许可证：
+                <#if (build['sell_licence']?exists)&&(build['sell_licence']?size>0)>
+                  <#assign item = build['sell_licence'] >
+                        <#if item['licenseName']?exists><span>${item['licenseName']}</span></#if>
+                </#if></p>
             </li>
         </ul>
     </section>
@@ -135,12 +143,13 @@
     </section>
 </div>
 <div class="module-bottom-fill">
+<#if layout?exists>
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
             <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
-        <ul class="tilelist"><#if layout?exists>
+        <ul class="tilelist">
             <#list layout as item>
                 <li>
                     <a href="#">
@@ -163,8 +172,9 @@
                     </a>
                 </li>
             </#list>
-        </#if></ul>
+        </ul>
     </section>
+        </#if>
 </div>
 <div class="module-bottom-fill">
     <section>
@@ -200,7 +210,7 @@
                 <div class="picture-box">
                     <#if nearitem['building_imgs']?exists>
                     <#assign imgt = nearitem['building_imgs']?split(",")>
-                        <img src="${qiniuimage}/${imgt[0]}" alt="${nearitem['building_name']!'暂无'}">
+                        <img src="${qiniuimage}/${imgt[0]}" width="332" height="249" alt="${nearitem['building_name']!'暂无'}">
                   </#if>
 
                 </div>
