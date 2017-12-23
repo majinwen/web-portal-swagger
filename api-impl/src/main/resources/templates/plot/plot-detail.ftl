@@ -79,7 +79,7 @@
                 <#--<#else >-->
                     <#--<p>暂无</p>-->
             <#--</#if>-->
-            <p>${village['trafficInformation']!''}</p>
+            <p>${village['trafficInformation']!'暂无'}</p>
             <div class="house-labelling gray">
                 <#if village['label']?exists>
                     <#list village['label'] as label>
@@ -229,7 +229,7 @@
                 <#if village['rc']?exists>${village['rc']}</#if>
                 <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
                 <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                <#if village['sumHousehold']?exists>${village['sumHousehold']}户）</#if>
+                <#if village['sumHousehold']?exists>（${village['sumHousehold']}户）</#if>
                 <#if village['buildingStructure']?exists><em class="high-light-red">${village['buildingStructure']}</em></#if>
                 </div>
             </div>
@@ -450,7 +450,7 @@
             <div class="picture-box">
                 <#assign imglist = builditem['building_imgs']>
                 <#if imglist?exists>
-                <#--<img src="${qiniuimage}/${imglist[0]}" alt="${imglist[0]}">-->
+                <img src="${qiniuimage}/${imglist?split(",")[0]!''}" alt="${imglist?split(",")[0]!''}">
                 </#if>
             </div>
             <div class="tilelist-content">

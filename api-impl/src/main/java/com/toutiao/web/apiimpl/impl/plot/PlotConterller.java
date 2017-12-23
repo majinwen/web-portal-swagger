@@ -68,9 +68,10 @@ public class PlotConterller {
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房
-        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
-        projHouseInfoQuery.setHousePlotName(village.getRc());
-        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+//        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+//        projHouseInfoQuery.setHousePlotName(village.getRc());
+//        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        List reViHouse = null;
         model.addAttribute("reViHouse",reViHouse);
 
         newHouseQuery.setSort(0);
