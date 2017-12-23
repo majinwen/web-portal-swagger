@@ -1,7 +1,11 @@
 package com.toutiao.web.apiimpl.impl.projhouse;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -62,6 +66,29 @@ public class ProjHouseInfoController {
 
         return "esf/esf-detail";
     }
+
+    /**
+     * 二手房配套地图
+     * @return
+     */
+    @RequestMapping("/getProjHouseMapDetail")
+    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
+
+        List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+
+        ProjHouseInfoResponse build = (ProjHouseInfoResponse)list.get(0);
+
+
+        build.setLocation(build.getHousePlotLocation());
+
+        model.addAttribute("build",build);
+
+        return "map";
+
+    }
+
+
+
 
     /**
      * 功能描述：二手房列表

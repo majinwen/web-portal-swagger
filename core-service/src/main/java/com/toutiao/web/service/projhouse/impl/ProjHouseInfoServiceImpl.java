@@ -119,6 +119,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", projHouseInfoRequest.getHouseBusinessId()));
 
             }
+            //商圈id
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
+
+            }
             String id = projHouseInfoRequest.getAreaId();
             //区域
             if (StringTool.isNotEmpty((projHouseInfoRequest.getAreaId()))) {

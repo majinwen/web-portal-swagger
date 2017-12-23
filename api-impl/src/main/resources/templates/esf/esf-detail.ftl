@@ -162,7 +162,7 @@
     <section>
         <div class="module-header-message">
             <h3>小区信息</h3>
-            <a href="#${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+            <a href="/villageDetail?id=${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
             <li>
@@ -182,7 +182,7 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="#" class="more-arrows">配套详情<i class="arrows-right"></i></a>
+            <a href="/getProjHouseMapDetail?houseId=${houseDetail.houseId}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
         <a href="#" class="detail-map">
             <i class="map-marker-icon"></i>
@@ -211,7 +211,7 @@
                         <#if map['housePhoto']?exists>
                             <#assign item=map['housePhoto']>
                             <img src="<#if item[0]?exists>${item[0]}</#if>"
-                                 alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                                 alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>" width="150" height="119">
                         </#if>
                     </div>
                     <div class="tilelist-content">
@@ -231,23 +231,23 @@
     <div class="module-header-message">
         <h3>附近小区</h3>
     </div>
-<#--<ul class="tilelist">
+<ul class="tilelist">
     <#if plotList?exists>
         <#list plotList as plotInfo>
             <li><a href="/villageDetail?id=${plotInfo['id']}">
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
-                        <#if plotImage[0]?exists><img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
-                        <#else><img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
-                        </#if>
+                        <#if plotImage[0]?exists>
+                              <img src="${qiniuimage}/${plotImage[0]}" alt="${plotInfo.rc}" width="150" height="119">
                         <#else >
                             <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
+                        </#if >
                     </#if>
                 </div>
                 <div class="tilelist-content">
-                    <#if plotInfo['desc']?exists>
-                        <h4 class="cont-first">${plotInfo.desc}</h4>
+                    <#if plotInfo['rc']?exists>
+                        <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
                         <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
@@ -256,7 +256,7 @@
             </a></li>
         </#list>
     </#if>
-</ul>-->
+</ul>
 </section>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
