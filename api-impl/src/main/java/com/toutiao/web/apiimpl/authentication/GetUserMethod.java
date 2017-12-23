@@ -14,7 +14,6 @@ public class GetUserMethod implements TemplateMethodModelEx {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         //request.getAttribute("asdfwfe")
         Object userphone = request.getAttribute("userphone");
-        System.out.println(userphone);
         return userphone;
     }
 }
