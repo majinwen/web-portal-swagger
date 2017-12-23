@@ -14,11 +14,11 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2> <#if discript['building_name']?exists>${discript['building_name']}<#else>暂无</#if></h2>
-            <p>别名：<#if discript['building_nickname']?exists>${discript['building_nickname']}<#else>暂无</#if></p>
+            <h2> ${discript['building_name']!'暂无'}</h2>
+            <p>别名：${discript['building_nickname']!'暂无'}</p>
             <div class="primary-header-tag">
-                <#if discript['building_tags']?exists>
-                    <#assign tags = discript['building_tags']?split(",")>
+                <#if discript['building_tags']?exists&&(discript['building_tags']?size>0)>
+                    <#assign tags = discript['building_tags']>
                     <#list tags as item>
                         <#if item?exists><span>${item}</span></#if>
                     </#list><#else>暂无
@@ -100,21 +100,15 @@
             <th>发证时间</th>
             <th>绑定楼栋</th>
         </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
+    <#if discript['sell_licence']?exists&&(discript['sell_licence']?size>0)>
+        <#assign tags = discript['sell_licence']>
+            <tr>
+                <td>${tags['licenseName']!'暂无'}</td>
+                <td>${tags['time']?substring(0,10)!'暂无'}</td>
+                <td>${tags['buildInfo']!'暂无'}</td>
+            </tr>
+         <#else>暂无
+    </#if>
     </table>
 </section>
 <div class="detail-contact-wrapper">

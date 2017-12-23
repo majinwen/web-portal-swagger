@@ -17,23 +17,24 @@
         <input type="tel" maxlength="11" id="user_phone" name="phone" placeholder="请输入手机号"
                value="<#if phone?exists>${phone}</#if>"
                onkeyup="this.value=this.value.replace(/[^0-9]*$/,'') ">
-        <div id="phone_code" class="code-btn-box">
-            <span class="code-btn">获取验证码</span>
+        <div class="code-btn-box">
+            <span class="code-btn" id="phone_code">获取验证码</span>
+            <span class="code-btn disabled none"><em class="time-number">120</em> 重新获取</span>
         </div>
     </div>
 <#if count?exists>
     <#if (count>3)>
-        <div style="position: relative; margin-top: 0.5333333333rem;;">
+        <div class="code-pic-box">
             <input type="text" class="input_css" id="image_code" name="imageCode" maxlength="4" value="<#if imageCode?exists>${imageCode}</#if>" placeholder="请输入图片验证码">
-            <div id="infoDiv" class="show" style="position: absolute; top: 0; right: 200px; display:inline-block; width:37px; height: 76px; line-height: 79px; text-align: center"></div>
-            <a href="javascript:changeImg();" style="position: absolute; top:  0; right: 0;">
+            <div id="infoDiv" class="show"></div>
+            <a href="javascript:changeImg();">
                 <img width="200" height="80" class="code-btn-box" id="checkcode" src="/code/imageCode"/>
             </a>
         </div>
     </#if>
 </#if>
     <input class="code-text" type="number" id="mycode" name="code" maxlength="4" placeholder="请输入验证码">
-    <span id="message" class="code-text" style="color: red;"><#if message?exists>${message}</#if></span>
+    <span id="message" class="code-text-tips"><#if message?exists>${message}</#if></span>
     <button type="button" id="log_in_button" class="submit-btn">登录</button>
 </form>
 <p class="fixed-bottom-tips">注册/登录即代表同意《头条房产用户使用协议》</p>
@@ -43,9 +44,9 @@
         $("#infoDiv").html('');
     });
     //获取短信验证码
-    $("#phone_code").click(function () {
+    $('.code-btn-box').on('click', '#phone_code', function () {
         var bo = false;
-        var msgInfo = "请先修正以下信息后再操作：<br/>";
+        var msgInfo = '';
 
         var user_phone = $("#user_phone").val();
 
@@ -62,6 +63,19 @@
         if (bo) {
             $("#message").html(msgInfo);
         } else {
+            var seconds = 120;
+            $('#phone_code').addClass('none');
+            $('.disabled').removeClass('none');
+            timer = setInterval(function () {
+                seconds -= 1;
+                $('.time-number').text(seconds);
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    $('#phone_code').removeClass('none');
+                    $('.disabled').addClass('none')
+                }
+            },1000);
+
             $.ajax({
                 type: "post",
                 url: "/message/getCode",
@@ -80,7 +94,6 @@
             });
         }
     });
-
     var count = $("#count").val();
     if (count != null) {
         if (count > 3) {
@@ -137,7 +150,7 @@
     //登陆
     $("#log_in_button").click(function () {
         var bo = false;
-        var msgInfo = "请先修正以下信息后再操作：<br/>";
+        var msgInfo = '';
 
         var user_phone = $("#user_phone").val();
         var mycode = $("#mycode").val();

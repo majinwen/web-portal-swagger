@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 <head>
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/index.css">
     <title>大首页</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="/static/js/modernizr.custom.js"></script>
 </head>
 <body>
 <header class="main-top-header gradient">
@@ -57,6 +58,33 @@
     </section>
 </div>
 <div class="module-bottom-fill">
+    <section class="elastics-stack-box">
+        <div class="elastics-stack-content">
+            <ul id="elastics-stack" class="elastics-stack">
+                <li class="bgtype-1">
+                    <div>
+                        <h4>11月销量榜</h4>
+                        <p>大家都在看这4个商圈</p>
+                    </div>
+                    <img src="${staticurl}/images/index/dsy_ts_image@3x.png" alt="">
+                </li>
+                <li class="bgtype-2">
+                    <div>
+                        <h4>11月销量榜</h4>
+                        <p>大家都在看这4个商圈</p>
+                    </div>
+                    <img src="${staticurl}/images/index/dsy_ts_image@3x.png" alt="">
+                </li>
+                <li class="bgtype-3">
+                    <div>
+                        <h4>11月销量榜</h4>
+                        <p>大家都在看这4个商圈</p>
+                    </div>
+                    <img src="${staticurl}/images/index/dsy_ts_image@3x.png" alt=""></li>
+                </li>
+            </ul>
+        </div>
+    </section>
     <section>
         <div class="index-module-header border-bot-none">
             <h3>精选主题</h3>
@@ -273,9 +301,12 @@
 <#include "search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
+<script src="/static/js/draggabilly.pkgd.min.js"></script>
+<script src="/static/js/elastiStack.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
+    new  ElastiStack(document.getElementById('elastics-stack'));
 </script>
 </body>
 </html>

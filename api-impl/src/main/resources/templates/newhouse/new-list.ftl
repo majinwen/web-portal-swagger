@@ -138,10 +138,10 @@
                         <span data-info="5">其他</span>
                     </dd>
                 </dl>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-                </div>
+            </div>
+            <div class="submit-wrapper">
+                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
     </div>
@@ -168,7 +168,7 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"> <#if map['average_price']?exists>${map['average_price']}元/㎡<#else>暂无</#if></p>
+                        <p class="cont-block-2">${map['average_price']!0}元/㎡</p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                                    ${map['nearsubway']}
