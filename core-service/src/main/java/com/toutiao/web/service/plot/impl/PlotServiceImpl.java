@@ -3,6 +3,7 @@ package com.toutiao.web.service.plot.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
@@ -174,9 +175,8 @@ public class PlotServiceImpl implements PlotService {
             }
 
             //面积
-            String areaSize = villageRequest.getAreaSize();
-            if (areaSize != null && areaSize.length() != 0) {
-                String[] AreaSize = areaSize.split(",");
+            if (StringUtil.isNotNullString(villageRequest.getAreaSize())) {
+                String[] AreaSize = villageRequest.getAreaSize().split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 for (int i = 0; i < AreaSize.length; i = i + 2) {
                     if (i + 1 > AreaSize.length) {

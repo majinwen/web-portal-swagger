@@ -276,7 +276,7 @@
             <li><a class="list-item" href="">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${qiniuimage}/${map['img']}" alt="${map['rc']}">
+                        <img src="${qiniuimage}/${map['photo'][0]!''}" alt="${map['rc']}">
                     </div>
                     <div class="list-item-cont">
                         <input type="hidden" value="${map['id']}">
@@ -284,9 +284,11 @@
                         <p class="cont-block-2">2008年建成</p>
                         <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
                         <div class="cont-block-4 house-labelling gray middle">
+                            <#if (map['label']??)&&(map['label']?size>0)>
                             <#list map['label'] as label>
                                 <#if label?exists><span>${label}</span></#if>
                             </#list>
+                            </#if>
                         </div>
                         <div class="cont-block-price plot">
                             <em>${map['avgPrice']}元/㎡</em>
