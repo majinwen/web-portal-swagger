@@ -449,7 +449,7 @@
         <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']}">
             <div class="picture-box">
         <#assign imglist = builditem['building_imgs']>
-                <img src="${staticurl}/${imglist[0]}" alt="${imglist[0]}">
+                <#--<img src="${staticurl}/${imglist[0]}" alt="${imglist[0]}">-->
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']}</h4>
