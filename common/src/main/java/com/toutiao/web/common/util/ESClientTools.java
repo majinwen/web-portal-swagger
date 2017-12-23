@@ -20,7 +20,8 @@ public class ESClientTools {
 
     public ESClientTools(@Value("${es.cluster.name}")String esClusterName,@Value("${es.xpack.user}")String esXpackUser){
         settings = Settings.builder().put("cluster.name", esClusterName)
-                .put("xpack.security.user",esXpackUser).build();
+                //.put("xpack.security.user",esXpackUser)
+                .build();
     }
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(ESClientTools.class);
@@ -43,7 +44,7 @@ public class ESClientTools {
             if (client == null){
                 try {
 
-                    client = new PreBuiltXPackTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
+                    client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
                             InetAddress.getByName(esServerIps), Integer.valueOf(esServerPort)));
 
                 } catch (UnknownHostException e) {
