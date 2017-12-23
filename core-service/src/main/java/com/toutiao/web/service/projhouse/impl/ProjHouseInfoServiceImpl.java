@@ -54,8 +54,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      */
     @Override
     public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
-
-
         Map<String, Object> result = null;
         try {
             TransportClient client = esClientTools.init();
@@ -124,13 +122,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //商圈id
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessId())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaId", projHouseInfoRequest.getHouseBusinessId()));
-
             }
             String id = projHouseInfoRequest.getAreaId();
             //区域
             if (StringTool.isNotEmpty((projHouseInfoRequest.getAreaId()))) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", projHouseInfoRequest.getAreaId()));
-
             }
             //地铁线id
             if (StringTool.isNotEmpty(projHouseInfoRequest.getSubwayLineId())) {
@@ -211,8 +207,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseOrientationId())) {
                 String[] layoutId = projHouseInfoRequest.getHouseOrientationId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOrientationId", layoutId));
-
-
             }
             //标签(满二，满三，满五)houseLabelId
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLabelId())) {
@@ -289,7 +283,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
                 ProjHouseInfo instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
-                instance.setKey(key);
+                instance.setSubwayDistince(key);
                 houseList.add(instance);
             }
             return houseList;

@@ -27,6 +27,8 @@ public class FreeMarkerConfig {
 
     @Value("${static.version}")
     private String staticVersion;
+    @Value("${qiniu.img_domain}")
+    private String qiniuImage;
 
     @PostConstruct
     public void setSharedVariable(){
@@ -35,6 +37,7 @@ public class FreeMarkerConfig {
         configuration.setSharedVariable("extends", new ExtendsDirective());
         try {
             configuration.setSharedVariable("staticurl", staticUrl);
+            configuration.setSharedVariable("qiniuimage",qiniuImage);
             configuration.setSharedVariable("staticversion", staticVersion);
             configuration.setSharedVariable("getUser",new GetUserMethod());
         }

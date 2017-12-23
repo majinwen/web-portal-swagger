@@ -45,6 +45,10 @@ p {
                 background-color: #090723;
                 -webkit-border-radius: rem(10);
                 border-radius: rem(10);
+
+                &.disabled {
+                    background-color: #d3d2d7;
+                }
             }
         }
     }
@@ -78,5 +82,34 @@ p {
         background-color: #090723;
         -webkit-border-radius: rem(10);
         border-radius: rem(10);
+    }
+}
+.code-text-tips {
+    display: block;
+    margin-top: rem(10);
+    line-height: 1.5;
+    padding-left: rem(11);
+    color: $baseRed !important;
+}
+
+.code-pic-box {
+    position: relative;
+    margin-top: rem(40);
+
+    #infoDiv {
+        position: absolute;
+        top: 0;
+        right: rem(200);
+        display:inline-block;
+        width: rem(37);
+        height: rem(76);
+        line-height: rem(79);
+        text-align: center;
+    }
+
+    a {
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 }

@@ -1,6 +1,5 @@
 package com.toutiao.web.service;
 
-import com.sun.jdi.IntegerType;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.dao.mapper.officeweb.PriceTrendMapper;
 import com.toutiao.web.service.PriceTrendService;

@@ -36,16 +36,6 @@ function describeAllShow() {
 
 function detailContactState() {
     if ($('#detailContactState').length) {
-        $(window).scroll(function(){
-            var winHeight = $(window).height();
-            var docHeight = $(document.body).height();
-            var scrollTop = $(window).scrollTop();
-            if (scrollTop > ((docHeight - winHeight) -5 )) {
-                $('.detail-contact-box').addClass('bottom');
-            } else {
-                $('.detail-contact-box').removeClass('bottom');
-            }
-        });
         $('.contact-collect').click(function () {
             $(this).toggleClass('current');
         });
@@ -56,11 +46,11 @@ function carouselSwiper() {
     var newIndexloop;
     if ($('.swiper-container').length){
         // 详情页
-        if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) > 0) {
+        if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) == 1) {
             bannerloop = false;
-            $('#detail-swiper').children('.banner-title').hide();
+            $('#detail-swiper').children('.banner-title').addClass('none');
         } else {
-            bannerloop = true
+            bannerloop = true;
         }
         var bannerSwiper = new Swiper('#detail-swiper', {
             autoplay: 2000,//可选选项，自动滑动
@@ -70,9 +60,9 @@ function carouselSwiper() {
         });
 
         // 新房首页
-        if (($('#index-swiper').find('li').not('.swiper-slide-duplicate').length) > 0) {
+        if (($('#index-swiper').find('li').not('.swiper-slide-duplicate').length) == 1) {
             newIndexloop = false;
-            $('#index-swiper').children('.swiper-pagination').hide();
+            $('#index-swiper').children('.swiper-pagination').addClass('none');
         } else {
             newIndexloop = true
         }

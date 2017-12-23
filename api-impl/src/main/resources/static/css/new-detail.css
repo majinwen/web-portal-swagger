@@ -1664,6 +1664,10 @@ a.pswp__share--download:hover {
     height: 0;
     font-size: 0; }
 
+.detail-contact-wrapper {
+  position: relative;
+  height: 1.3066666667rem; }
+
 .detail-contact-box {
   position: fixed;
   bottom: 0;
