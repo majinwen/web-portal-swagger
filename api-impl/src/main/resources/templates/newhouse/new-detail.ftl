@@ -186,8 +186,8 @@
             <i class="map-marker-icon"></i>
             <#if build['location']?exists>
                 <#assign locations = build['location']?split(",")>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=${locations[1]},${locations[0]}&&zoom=16" alt="">
-            <#else ><img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locations[1]},${locations[0]}&&zoom=16" alt="">
+            <#else ><img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
         </a>
     </section>

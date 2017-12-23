@@ -41,7 +41,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=57b4dbd0d142e9649ed54160b45ecb1f"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <script type="text/javascript" src="${staticurl}/js/around-map.js"></script>
 <script>
     var x = $('#mapContainer').attr('data-mapx'),

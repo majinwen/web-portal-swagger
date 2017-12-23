@@ -160,7 +160,7 @@
                         </#if>-->
                             <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
                             <#else >
-                                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                                <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
