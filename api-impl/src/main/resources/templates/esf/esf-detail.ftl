@@ -13,6 +13,7 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
+
         <#assign item =houseDetail['housePhoto']>
         <#list item as itemValue>
             <#if itemValue?exists>
@@ -78,8 +79,17 @@
                 <ol>
                     <li>
                         <span>总价</span>
-                        <em><#if houseDetail.houseTotalPrices?exists>${houseDetail.houseTotalPrices}万<#else>
-                            暂无</#if></em>
+                        <em>
+                        <#if houseDetail.houseTotalPrices?exists>
+                            <#if houseDetail.houseTotalPrices==0>
+                                暂无总价
+                            <#else>
+                            ${houseDetail.houseTotalPrices}万
+                            </#if>
+                        <#else>
+                            暂无总价
+                        </#if>
+                        </em>
                     </li>
                     <li>
                         <span>户型</span>
@@ -88,21 +98,46 @@
                     </li>
                     <li>
                         <span>面积</span>
-                        <em><#if houseDetail.buildArea?exists>${houseDetail.buildArea}㎡<#else>暂无</#if></em>
+                        <em>
+                        <#if houseDetail.buildArea?exists>
+                            <#if houseDetail.buildArea==0>
+                                暂无面积
+                            <#else>
+                            ${houseDetail.buildArea}㎡
+                            </#if>
+                        <#else>
+                            暂无面积
+                        </#if>
+                        </em>
                     </li>
                 </ol>
             </li>
             <li>
-                <p>单价：<#if houseDetail.houseUnitCost?exists>${houseDetail.houseUnitCost}元/㎡<#else>暂无</#if></p>
+                <p>单价：
+                <#if houseDetail.houseUnitCost?exists>
+                ${houseDetail.houseUnitCost}元/㎡
+                <#else>
+                    暂无单价
+                </#if>
+                </p>
             </li>
             <li>
-                <p>预算：<#if houseDetail.houseBudget?exists>${houseDetail.houseBudget}<#else>暂无</#if></p>
+                <p>预算：
+                <#if houseDetail.houseBudget?exists>
+                ${houseDetail.houseBudget}元/㎡
+                <#else>
+                    暂无预算
+                </#if>
+                </p>
             </li>
             <li>
                 <dl class="module-table-item">
-                    <dd class="odd-item">楼层：<span><#if houseDetail.floor?exists>${houseDetail.floor}<#else>暂无</#if>
-                        /<#if houseDetail.floorNo?exists>${houseDetail.floorNo}层<#else>暂无</#if></span></dd>
-                    <dd class="even-item">电梯：<em><#if houseDetail.elevator?exists>${houseDetail.elevator}<#else>
+                    <dd class="odd-item">楼层：<span>
+                    <#if houseDetail.floor?exists&& houseDetail.floorNo?exists>${houseDetail.floor}
+                        楼层/${houseDetail.floorNo}层<#else>暂无</#if>
+                    </span></dd>
+                    <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}
+                        电梯<#else>
                         暂无</#if></em></dd>
                     <dd class="odd-item">类别：
                     <#if houseDetail.houseTypeName?exists>
@@ -140,7 +175,7 @@
         <div class="describe-box">
             <div class="describe-header">
                 <img class="source-icon"
-                     src="<#if houseDetail.houseProxyPhoto?exists>${houseDetail.houseProxyPhoto}<#else>暂无</#if>"
+                     <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}"</#if>
                      alt="<#if houseDetail.houseProxyName?exists>${houseDetail.houseProxyName}<#else>暂无</#if>">
                 <p>
                     <span><#if houseDetail.ofCompany?exists>【${houseDetail.ofCompany}】<#else>
@@ -162,7 +197,7 @@
     <section>
         <div class="module-header-message">
             <h3>小区信息</h3>
-            <a href="#${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+            <a href="/villageDetail?id=${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
             <li>
@@ -182,7 +217,8 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="#" class="more-arrows">配套详情<i class="arrows-right"></i></a>
+            <a href="/getProjHouseMapDetail?newcode=${houseDetail.newcode}" class="more-arrows">配套详情<i
+                    class="arrows-right"></i></a>
         </div>
         <a href="#" class="detail-map">
             <i class="map-marker-icon"></i>
@@ -200,10 +236,8 @@
         <#if plot?exists>
             <#list plot as map>
                 <li>
-
                     <#if map.houseId?exists>
                     <a href="/queryByHouseIdandLocation/${map.houseId}">
-                    <#--<a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${map.lon?if_exists?string(",####.####################")}/${map.lat?if_exists?string(",####.####################")}">-->
                     <#else>
                     <a href="#">
                     </#if>
@@ -231,23 +265,28 @@
     <div class="module-header-message">
         <h3>附近小区</h3>
     </div>
-<#--<ul class="tilelist">
+    <ul class="tilelist">
     <#if plotList?exists>
         <#list plotList as plotInfo>
-            <li><a href="/villageDetail?id=${plotInfo['id']}">
+            <li>
+                <#if plotInfo['id']?exists>
+                <a href="/villageDetail?id=${plotInfo['id']}">
+                <#else >
+                <a href="#">
+                </#if>
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
-                        <#if plotImage[0]?exists><img src="${staticurl}/images/esf/${plotImage[0]}" alt="${plotInfo.rc}">
-                        <#else><img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
-                        </#if>
+                        <#if plotImage[0]?exists>
+                            <img src="${qiniuimage}/${plotImage[0]}" alt="${plotInfo.rc}">
                         <#else >
                             <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${plotInfo.rc}">
+                        </#if >
                     </#if>
                 </div>
                 <div class="tilelist-content">
-                    <#if plotInfo['desc']?exists>
-                        <h4 class="cont-first">${plotInfo.desc}</h4>
+                    <#if plotInfo['rc']?exists>
+                        <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
                         <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
@@ -256,7 +295,7 @@
             </a></li>
         </#list>
     </#if>
-</ul>-->
+    </ul>
 </section>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">

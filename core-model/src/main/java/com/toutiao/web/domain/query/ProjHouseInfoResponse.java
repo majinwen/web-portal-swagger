@@ -10,7 +10,7 @@ public class ProjHouseInfoResponse {
 
     /* * 房源ID
  */
-    private String  houseId;
+    private String houseId;
 
     /**
      * 房源标题
@@ -182,7 +182,7 @@ public class ProjHouseInfoResponse {
     private String buildCategory;
 
     private String buildCategoryName;
-
+    
 
     /**
      * 建筑形式1：低层，2：多层，3：小高层，4：高层，5：超高层
@@ -289,6 +289,11 @@ public class ProjHouseInfoResponse {
     //电梯(有 无)
     private String elevator;
 
+    private String elevatorName;
+
+    //供暖
     private Integer houseHeating;
+    //小区坐标
+    private String location;
 
 }
