@@ -6,7 +6,6 @@ import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.pinyin.PinyinService;
-import com.toutiao.web.service.plot.SysVillageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +25,8 @@ public class PinyinServeContoller {
     private NewHouseService newHouseService;
     @Autowired
     private PinyinService pinyinService;
-    @Autowired
-    private SysVillageService sysVillageService;
+//    @Autowired
+//    private SysVillageService sysVillageService;
 
 
     /**
@@ -44,5 +43,14 @@ public class PinyinServeContoller {
 
     }
 
-
+    /**
+     * 智能找房
+     * @param model
+     * @return
+     */
+    @RequestMapping("/intelligent")
+    public String sale(Model model){
+        model.addAttribute("user","asds");
+        return "/intelligent-find";
+    }
 }
