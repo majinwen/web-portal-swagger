@@ -112,43 +112,6 @@
                     </div>
                 </a></li>
             </#list>
-
-        <#--    <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>-->
         </ul>
     </section>
 </div>
@@ -293,8 +256,6 @@
         </div>
     </section>
 </div>
-
-
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -394,6 +355,10 @@
             <h3>配套地图</h3>
             <a href="#" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
+        <a href="#" class="detail-map">
+            <i class="map-marker-icon"></i>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+        </a>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -451,13 +416,15 @@
     </#list>
     </ul>
 </section>
-<section class="detail-contact-box" id="detailContactState">
-    <div class="detail-contact-content">
-        <a href="#" class="contact-share"><i></i>分享</a>
-        <a href="#" class="contact-collect"><i></i>收藏</a>
-        <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
-    </div>
-</section>
+<div class="detail-contact-wrapper">
+    <section class="detail-contact-box" id="detailContactState">
+        <div class="detail-contact-content">
+            <a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>
+            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+        </div>
+    </section>
+</div>
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>

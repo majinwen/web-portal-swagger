@@ -10,7 +10,7 @@
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<header>
+<header class="main-top-header">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -139,27 +139,34 @@
             </div>
         </a></li>
     </#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <#assign item = map['building_imgs']>
-                      <img src="${staticurl}/${item[0]}" alt="${map['building_name']}">
+                    <#if map['building_imgs']?exists>
+                    <#assign item = map['building_imgs']?split(",")>
+                      <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                    </#if>
                 </div>
                 <div class="list-item-cont">
-                    <span hidden="hidden">${map['building_name_id']}</span>
-                    <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                    <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                    <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
+                    <h3 class="cont-block-1">${map['property_type']!'暂无'}<em></em></h3>
+                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡<#else>暂无</#if>
+                        </p>
                     <div class="cont-block-4 house-labelling gray middle">
-                        <#assign item =  map['building_tags']>
-                        <#list item as itemValue>
-                            <span>${itemValue}</span>
-                        </#list>
+                        <#if map['building_tags']?exists>
+                            <#assign item =  map['building_tags']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                            <#else><span>暂无</span>
+                        </#if>
+
                     </div>
                     <div class="cont-block-sale">
                         <em>${map['sale_status_name']}</em>
@@ -168,25 +175,20 @@
             </div>
             <div class="new-active">
                 <i class="icon"></i><em>活动：</em>
-                <span>${map['activity_desc']}</span>
+                <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
             </div>
         </a></li>
     </#list>
     </#if>
-
     </ul>
 </section>
 <div class="new-index-pull-down">
     <p>想查看更多房源，跟我来！</p><img src="${staticurl}/images/newindex/sy_xf_icon_xl.png" alt="查看更多房源">
 </div>
 <#include "../user.ftl">
+<#include "../search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script>
-    $('.search-link').on('focus', function () {
-        location.href = "/newhouse/searchNewHouse";
-    });
-</script>
 </body>
 </html>

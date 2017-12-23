@@ -14,12 +14,15 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <#assign imglist = build['building_imgs']>
-            <#list imglist as item>
+            <#if build['building_imgs']?exists>
+            <#list build['building_imgs']?split(",") as item>
+            <#if item?exists>
             <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                    <img src="${staticurl}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
+                <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
+            </#if>
             </#list>
+            </#if>
         </ul>
         <div class="banner-title">
             <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
@@ -65,10 +68,18 @@
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
             <p>别名：<#if build['building_nickname']?exists>${build['building_nickname']}<#else>暂无</#if></p>
             <div class="primary-header-tag">
-            <#assign tags = build['building_tags']>
-            <#list tags as item>
-             <#if item?exists><span>${item}</span></#if>
-            </#list>
+            <#--<#assign tags = build['building_tags']>-->
+            <#--<#list tags as item>-->
+             <#--<#if item?exists><span>${item}</span></#if>-->
+            <#--</#list>-->
+
+            <#if build['building_tags']?exists>
+                <#list build['building_tags']?split(",") as item>
+                    <#if item?exists><span>${item}</span></#if>
+                </#list>
+            </#if>
+
+
             </div>
         </div>
         <ul class="primary-item">
@@ -78,18 +89,18 @@
             <li>
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
-                          <#if build['building_address']?exists>${build['building_address']}<#else>暂无</#if>
+                           ${build['building_address']!'暂无'}
                     <a href="#" class="primary-map-icon"></a>
                     <a href="#" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：<#if build['roundstation']?exists>${build['roundstation']}<#else>暂无</#if> <#--1.0km<em class="primary-distance">0.6km</em>-->
+                    交通信息：${build['roundstation']!'暂无'} <#--1.0km<em class="primary-distance">0.6km</em>-->
                 </p>
             </li>
             <li>
-                <p>最新开盘：<#if build['opened_time']?exists>${build['opened_time']}<#else>暂无</#if></p>
-                <p>交房时间：<#if build['deliver_time']?exists>${build['deliver_time']}<#else>暂无</#if></p>
-                <p>售楼许可证：<#if build['sell_licence']?exists>${build['sell_licence']}<#else>暂无</#if></p>
+                <p>最新开盘：${build['opened_time']!'暂无'}</p>
+                <p>交房时间：${build['deliver_time']!'暂无'}</p>
+                <p>售楼许可证：${build['sell_licence']!'暂无'}</p>
             </li>
         </ul>
     </section>
@@ -112,14 +123,14 @@
     <section>
         <div class="module-header-message">
             <h3>楼盘描述</h3>
-            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
+            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']?c}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
-            <dt>开发商：${build['developers']}</dt>
-            <dd class="odd-item">物业类型：<span><#if build['property_type']?exists>${build['property_type']}<#else>暂无</#if></span></dd>
-            <dd class="even-item">建筑类型：<em><#if build['building_type']?exists>${build['building_type']}<#else>暂无</#if></em></dd>
+            <dt>开发商：${build['developers']!'暂无'}</dt>
+            <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无'}</span></dd>
+            <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无'}</em></dd>
             <dd class="odd-item">产权年限：<em><#if build['building_life']?exists>${build['building_life']}年<#else>暂无</#if></em></dd>
-            <dd class="even-item">车位配比：<em><#if build['park_radio']?exists>${build['park_radio']}<#else>暂无</#if></em></dd>
+            <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
         </dl>
     </section>
 </div>
@@ -138,8 +149,8 @@
                             <span class="sale-state">在售</span>
                         </div>
                         <div class="tilelist-content">
-                            <p class="cont-first"><span>${item['room']}室${item['hall']}厅${item['toilet']}卫</span><span>${item['building_area']}㎡</span></p>
-                            <h4 class="cont-last">均价：${item['reference_price']}元/㎡</h4>
+                            <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
+                            <h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>
                             <div class="house-labelling normal small tilelist-tag">
                                 <#assign layouttagitem = item['layout_tag']>
                                 <#list layouttagitem as tagatem>
@@ -185,14 +196,18 @@
     <#if nearbybuild?exists>
     <#list nearbybuild as nearitem>
         <li>
-            <a href="#">
+            <a href="/newhouse/getNewHouseDetails?id=${nearitem['building_name_id']?c}">
                 <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                    <#if nearitem['building_imgs']?exists>
+                    <#assign imgt = nearitem['building_imgs']?split(",")>
+                        <img src="${qiniuimage}/${imgt[0]}" alt="${nearitem['building_name']!'暂无'}">
+                  </#if>
+
                 </div>
                 <div class="tilelist-content">
-                    <p class="cont-first">${nearitem['building_name']}</p>
-                    <p class="cont-center"><span>${nearitem['district_name']}</span><span>${nearitem['area_name']}</span></p>
-                    <h4 class="cont-last">均价：<em>${nearitem['average_price']}</em>/㎡</h4>
+                    <p class="cont-first">${nearitem['building_name']!'暂无'}</p>
+                    <p class="cont-center"><span>${nearitem['district_name']!'暂无'}</span><span>${nearitem['area_name']!'暂无'}</span></p>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}<#else >暂无</#if></em>/㎡</h4>
                 </div>
             </a>
         </li>
@@ -200,21 +215,21 @@
     </#if>
     </ul>
 </section>
-<section class="detail-contact-box" id="detailContactState">
-    <div class="detail-contact-content">
-        <a href="#" class="contact-share"><i></i>分享</a>
-        <a href="#" class="contact-collect"><i></i>收藏</a>
-        <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
-    </div>
-</section>
+<div class="detail-contact-wrapper">
+    <section class="detail-contact-box" id="detailContactState">
+        <div class="detail-contact-content">
+            <a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>
+            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+        </div>
+    </section>
+</div>
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-</body>
-</html>
 <script>
     <#assign ptCD0 = tradeline['buildingline']>;
     <#assign ptCD1 = tradeline['arealine']>;
@@ -333,12 +348,7 @@
             }
         ]
     };
-
     myChartline.setOption(option);
-/*
-    //地图尺寸适配
-     window.addEventListener("resize", function () {
-         myChartline.resize();
-
-     });*/
 </script>
+</body>
+</html>

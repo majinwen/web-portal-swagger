@@ -9,7 +9,7 @@
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<header>
+<header class="main-top-header">
     <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
@@ -74,11 +74,11 @@
                 <dl>
                     <dt data-type="houseManagementTypeId">物业类型</dt>
                     <dd>
-                        <span data-info="1">住宅</span>
-                        <span data-info="2">别墅</span>
-                        <span data-info="3">写字楼</span>
-                        <span data-info="4">商铺</span>
-                        <span data-info="5">底商</span>
+                        <span data-info="1">普通住宅</span>
+                        <span data-info="2">公寓</span>
+                        <span data-info="3">酒店式公寓</span>
+                        <span data-info="4">花园洋房</span>
+                        <span data-info="5">商住楼</span>
                     </dd>
                 </dl>
                 <dl>
@@ -91,20 +91,13 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseLiftId">电梯</dt>
-                    <dd>
-                        <span class="only" data-info="1">有</span>
-                        <span class="only" data-info="0">无</span>
-                    </dd>
-                </dl>
-                <dl>
                     <dt data-type="houseYearId">楼龄</dt>
                     <dd>
                         <span class="only" data-info="0,5">5年内</span>
                         <span class="only" data-info="0,10">10年内</span>
                         <span class="only" data-info="0,15">15年内</span>
                         <span class="only" data-info="0,20">20年内</span>
-                        <span class="only" data-info="20.100">20年以上</span>
+                        <span class="only" data-info="20,100">20年以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -149,14 +142,13 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseLabelId">楼盘特色</dt>
+                    <dt data-type="houseType">标签</dt>
                     <dd>
-                        <span data-info="1">别墅</span>
-                        <span data-info="2">花园洋房</span>
-                        <span data-info="3">近地铁</span>
-                        <span data-info="4">车位充足</span>
-                        <span data-info="5">低密度</span>
-                        <span data-info="6">高绿化</span>
+                        <span data-info="1">近地铁</span>
+                        <span data-info="4">随时看</span>
+                        <span data-info="8">满二年</span>
+                        <span data-info="16">满五年</span>
+                        <span data-info="32">近公园</span>
                     </dd>
                 </dl>
                 <dl>
@@ -243,6 +235,7 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
+<#include "../search.ftl">
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
@@ -257,13 +250,5 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script>
-  /*  $(function () {
-        var BaseUrl = 'http://localhost:8085/queryBySearchBox';
-    })*/
-    $('.search-link').on('focus',function () {
-        location.href="/queryBySearchBox?text=东城"
-    });
-</script>
 </body>
 </html>

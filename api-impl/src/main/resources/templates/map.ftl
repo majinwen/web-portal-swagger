@@ -2,11 +2,9 @@
 <html xmlns:c="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="renderer" content="webkit">
     <script src="${staticurl}/js/flexible.js"></script>
-
     <title>地图页</title>
     <link rel="stylesheet" href="${staticurl}/css/map.css">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>

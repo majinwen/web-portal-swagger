@@ -1,6 +1,5 @@
 package com.toutiao.web.service.newhouse;
 
-import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 
@@ -46,13 +45,13 @@ public interface NewHouseService {
      */
     List<Map<String,Object>> getNewHouseDiscript(Integer id);
 
-    /**
+   /* *//**
      * 新房搜索找房
      *
      *7u
-     *  */
-    public List searchNewHouse(String text);
-
+     *  *//*
+    public List searchNewHouse(NewHouseQuery newHouseQuery);
+*/
     /**
      * 同步新房数据
      * @param newHouseBuildings

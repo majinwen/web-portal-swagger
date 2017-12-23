@@ -51,6 +51,7 @@ public class NewHouseController {
        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
         model.addAttribute("builds",build);
         model.addAttribute("total",builds.get("total"));
+        model.addAttribute("newHouseQuery",newHouseQuery);
         if (newHouseQuery.getSort()!=null){
             model.addAttribute("sort",newHouseQuery.getSort());
         }else {
@@ -59,17 +60,16 @@ public class NewHouseController {
         return "newhouse/new-list";
     }
 
-    /**
-     * 搜索新房
-     *
-     * */
-
-    @RequestMapping("/searchNewHouseByKey")
-    public String searchNewHouseByKey(@RequestParam("keyword") String text, Model model){
-        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(text);
-        model.addAttribute("builds",build);
-        return "newhouse/new-list";
-    }
+//    /**
+//     * 搜索新房
+//     *
+//     * */
+//    @RequestMapping("/searchNewHouseByKey")
+//    public String searchNewHouseByKey(NewHouseQuery newHouseQuery, Model model){
+//        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(newHouseQuery);
+//        model.addAttribute("builds",build);
+//        return "newhouse/new-list";
+//    }
 
     /**
      * 楼盘详情信息
