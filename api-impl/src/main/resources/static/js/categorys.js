@@ -133,7 +133,7 @@ $('#moreSubmit').on('click', function (e) {
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
     console.log(moresubmitUrl.substr(0, moresubmitUrl.length -1));
-
+    location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
 });
 /*
  * 更多筛选重置
