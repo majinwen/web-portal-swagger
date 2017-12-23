@@ -71,6 +71,8 @@ public class ProjHouseInfoQuery {
     //房源小区名称
     private String housePlotName;
 
+    private String newcode;
+
 
     //商圈名称
     private String houseBusinessName;

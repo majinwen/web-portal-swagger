@@ -11,23 +11,31 @@
 <body>
 <div class="module-bottom-fill"></div>
 <div class="module-bottom-fill">
+    <#if (villageList?exists)&&(villageList?size>0)>
+    <#if villageList[0]?exists><#assign village = villageList[0]>
+    </#if>
+    </#if>
     <section class="primary-message">
         <div class="primary-header">
-            <h2>一渡龙湾</h2>
-            <p>别名：一渡龙湾</p>
+            <h2>${village['rc']!"暂无"}</h2>
+            <p>别名：${village['alias']!"暂无"}</p>
             <div class="primary-header-tag house-labelling gray">
-                <span>满二</span>
-                <span>满五</span>
-                <span>随时看房</span>
+                <#if village['label']?exists>
+                     <#assign labels = village['label']>
+                         <#list labels as label>
+                             <span>${label!""}</span>
+                         </#list>
+                    <#else>暂无
+                </#if>
             </div>
             <div class="isopsophic-air-index">
-                <p>空气指数：</p>
-                <p>噪音指数：</p>
+                <p>空气指数：暂无</p>
+                <p>噪音指数：暂无</p>
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>参考均价：<em class="high-light-red">12345元</em>/㎡ </p>
+                <p>参考均价：<#if village['avgPrice']?exists><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无</#if></p>
             </li>
         </ul>
     </section>
@@ -39,9 +47,9 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置：二环到三环</p>
-                <p>区域位置：丰台</p>
-                <p>小区地址：</p>
+                <p>环线位置：${village['ringRoad']!"暂无"}</p>
+                <p>区域位置：${village['area']!"暂无"}</p>
+                <p>小区地址：${village['address']!"暂无"}</p>
             </li>
         </ul>
     </section>
@@ -53,16 +61,19 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>建成年代：2016年</p>
-                <p>建筑类型：板楼</p>
-                <p>产权年限：70年</p>
-                <p>占地面积：420000㎡</p>
-                <p>建筑面积：340000㎡</p>
-                <p>容积率：1.20</p>
-                <p>绿化率：34%</p>
-                <p>规划户数：11栋/123户</p>
-                <p>规划车位：EEEEEEEE</p>
-                <p>车位配比：户数/车位数</p>
+                <p>建成年代：${village['abbreviatedAge']!"暂无"}</p>
+                <p>建筑类型：<#if village['architectureType']?exists><#list village['architectureType'] as arType>
+                        ${arType!""}&nbsp;&nbsp;
+                </#list></#if>
+                </p>
+                <p>产权年限：${village['yopr']!"暂无"}年</p>
+                <p>占地面积：${village['areaSize']!"暂无"}㎡</p>
+                <p>建筑面积：${village['buildingAreaSize']!"暂无"}㎡</p>
+                <p>容积率：${village['dimension']!"暂无"}</p>
+                <p>绿化率：${village['avgGreening']!"暂无"}%</p>
+                <p>规划户数：${village['sumBuilding']!"暂无"}栋/${village['sumHousehold']!"暂无"}户</p>
+               <#-- <p>规划车位：EEEEEEEE</p>-->
+                <p>车位配比：${village['sumHousehold']!"暂无"}户数/${village['carPositionRatio']!"暂无"}车位数</p>
             </li>
         </ul>
     </section>
@@ -73,13 +84,13 @@
     </div>
     <ul class="primary-item">
         <li>
-            <p>物业类型：住宅</p>
-            <p>物业公司：XXXXXX</p>
-            <p>物业费：XXXXXXXXXX</p>
-            <p>供暖：自采暖</p>
-            <p>供水：暂无</p>
-            <p>供电：暂无</p>
-            <p>燃气：暂无</p>
+            <p>物业类型：${village['propertyType']!"暂无"}</p>
+            <p>物业公司：${village['property']!"暂无"}</p>
+            <p>物业费：${village['propertyFee']!"暂无"}</p>
+            <p>供暖：${village['heatingMode']!"暂无"}</p>
+            <p>供水：${village['waterSupply']!"暂无"}</p>
+            <p>供电：${village['electricSupply']!"暂无"}</p>
+       <#--     <p>燃气：${village['heatingMode']!"暂无"}暂无</p>-->
         </li>
     </ul>
 </section>
