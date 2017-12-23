@@ -56,7 +56,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @date 2017/12/15 11:50
      */
     @Override
-    public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
+    public List queryProjHouseByhouseIdandLocation(String houseId,double lat, double lon) {
 
 
         Map<String, Object> result = null;
@@ -66,30 +66,26 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.METERS));
-            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "buildArea", "plotName", "housePlotLocation"}, null).execute().actionGet();
-            SearchResponse searchResponse = srb.setSize(10).execute().actionGet();
+            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "room","hall", "buildArea", "plotName"}, null).execute().actionGet();
+            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
 
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 
-            ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
+            ArrayList buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
                 Map<String, Object> buildings = hit.getSource();
                 //排除自身
-                String housePlotLocation = (String) hit.getSource().get("housePlotLocation");
-                StringBuffer stringBuffer = new StringBuffer();
-                stringBuffer.append(lat).append(lon);
-                if (stringBuffer.toString().equalsIgnoreCase(housePlotLocation)) {
-                   //移除指定的小区坐标
-                    buildings.remove(housePlotLocation);
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                buildinglist.add(instance);
+                if(instance.getHouseId().equals(houseId)){
+                    buildinglist.remove(instance);
                 }
-                buildinglist.add(buildings);
             }
-            result = new HashMap<>();
-            result.put("data_plot", buildinglist);
-            result.put("total_plot", hits.getTotalHits());
-            return result;
+            return buildinglist;
         } catch (Exception e) {
             e.printStackTrace();
         }

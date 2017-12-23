@@ -9,11 +9,11 @@ import java.util.Map;
 
 public interface ProjHouseInfoService {
 
-       Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon);
+       List queryProjHouseByhouseIdandLocation(String houseId,double lat, double lon);
 
        List queryProjHouseInfo(ProjHouseInfoQuery ProjHouseInfoQuery);
 
-       Map<String,Object> queryByHouseId(Integer houseId);
+       Map<String, Object> queryByHouseId(Integer houseId);
 
        List  queryBySearchBox(String text);
 
