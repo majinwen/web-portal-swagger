@@ -28,6 +28,12 @@
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>5.5.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>elasticsearch</artifactId>
+                    <groupId>org.elasticsearch</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
@@ -45,6 +51,12 @@
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>x-pack-transport</artifactId>
             <version>5.5.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.elasticsearch</groupId>
+                    <artifactId>elasticsearch</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

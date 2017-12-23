@@ -11,25 +11,25 @@ public class ProjHouseInfoQuery {
      * 页面需要传递的字段
      */
     //房源面积(1,2,3,4)
-    private String buildAreaId;
+    private String houseAreaId;
 
     /**
      * 室 数字
      */
-    private String room;
+    private String layoutId;
 
     /**
      * 朝向(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
-    private String forward;
+    private String houseOrientationId;
 
 
     //房源总价 起始价
-    private Integer beginPrice;
+    private String beginPrice;
 
 
     //房源总价 结束价
-    private Integer endPrice;
+    private String endPrice;
 
 
     //房源标签(满二)（1，2，3，4）
@@ -48,18 +48,18 @@ public class ProjHouseInfoQuery {
      * 房屋类型：普通住宅、经济适用房、公寓、安置房、四合院等（物业类型）
      * （ 1：普通住宅，2：公寓，3：酒店式公寓，4：花园洋房，5：商住楼
      */
-    private String houseTypeId;
+    private String houseManagementTypeId;
 
     /**
      * 产权性质(1:已购公房,2:商品房,3:空置房,4:使用权房,5:央产,6:经济适用房)（权属）
      */
-    private String propertyRightId;
+    private String buildingFeature;
 
 
     /**
      * 建筑类别：1：板楼，2：塔楼，3：板塔结合，4：砖楼 5：其他
      */
-    private String buildCategoryId;
+    private String buildingTypeId;
 
 
     /**

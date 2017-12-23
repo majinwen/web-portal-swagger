@@ -17,7 +17,7 @@
     <#if itemValue?exists>
         <ul class="swiper-wrapper" id="house-pic-container">
             <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                <img src="${itemValue}" data-src="${staticurl}/images/esf/esxq_banner@3x.png" alt="${itemValue_index}">
+                <img src="${itemValue}" data-src="${itemValue}" alt="${itemValue_index}">
             </li>
         </ul>
     </#if>
@@ -130,15 +130,15 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" src="${houseDetail.houseProxyPhoto}" alt="${houseDetail.houseProxyName}">
+                <img class="source-icon" src="<#if houseDetail.houseProxyPhoto?exists>${houseDetail.houseProxyPhoto}</#if>" alt="${houseDetail.houseProxyName}">
                 <p>
                     <span><#if houseDetail.ofCompany?exists>【${houseDetail.ofCompany}】<#else>暂无</#if><#if houseDetail.houseProxyName?exists>${houseDetail.houseProxyName}<#else>暂无</#if></span>
                     <em>房屋信息发布人</em>
                 </p>
-                <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
+                <a href="tel:<#if houseDetail.houseProxyPhone?exists>${houseDetail.houseProxyPhone}<#else>#</#if>" class="issuer-tel-icon"></a>
             </div>
             <div class="describe-cont">
-                <p><#if houseDetail.houseDesc?exists>${houseDetail.houseDesc}</#if></p>
+                <p><#if houseDetail.houseDesc?exists>${houseDetail.houseDesc}<#else>暂无</#if></p>
                 <span class="describe-show-btn">>>展开</span>
             </div>
         </div>
@@ -154,7 +154,7 @@
             <li>
                 <div class="picture-box">
                 <#assign item=houseDetail['plotPhoto']>
-                    <#if item[0]?exists><img src="${}/${item[0]}" alt="${houseDetail.plotName}"></#if>
+                    <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"></#if>
                 </div>
                 <div class="tilelist-content">
                     <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else>暂无</#if></h4>

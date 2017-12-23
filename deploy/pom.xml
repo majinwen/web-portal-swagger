@@ -44,6 +44,12 @@
         <groupId>com.toutiao</groupId>
         <artifactId>web.api</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <exclusions>
+            <exclusion>
+                <artifactId>elasticsearch</artifactId>
+                <groupId>org.elasticsearch</groupId>
+            </exclusion>
+        </exclusions>
     </dependency>
     <dependency>
         <groupId>com.toutiao</groupId>
@@ -74,6 +80,13 @@
         <groupId>org.elasticsearch</groupId>
         <artifactId>elasticsearch</artifactId>
         <version>5.5.3</version>
+        <exclusions>
+            <exclusion>
+                <artifactId>elasticsearch</artifactId>
+                <groupId>org.elasticsearch</groupId>
+            </exclusion>
+
+        </exclusions>
     </dependency>
     <dependency>
         <groupId>org.elasticsearch.client</groupId>

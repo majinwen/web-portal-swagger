@@ -18,8 +18,9 @@ import java.net.UnknownHostException;
 public class ESClientTools {
 
 
-    public ESClientTools(@Value("${es.cluster.name}")String esClusterName){
-        settings = Settings.builder().put("cluster.name", esClusterName).build();
+    public ESClientTools(@Value("${es.cluster.name}")String esClusterName,@Value("${es.xpack.user}")String esXpackUser){
+        settings = Settings.builder().put("cluster.name", esClusterName)
+                .put("xpack.security.user",esXpackUser).build();
     }
 
     private org.slf4j.Logger logger = LoggerFactory.getLogger(ESClientTools.class);
@@ -28,8 +29,7 @@ public class ESClientTools {
     private String esServerIps;//集群服务IP集合
     @Value("${es.server.port}")
     private String esServerPort;
-    @Value("${es.xpack.user}")
-    private String esXpackUser;
+
 
     private volatile TransportClient client;
 
@@ -43,7 +43,7 @@ public class ESClientTools {
             if (client == null){
                 try {
 
-                client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
+                client = new PreBuiltXPackTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
                         InetAddress.getByName(esServerIps), Integer.valueOf(esServerPort)));
 
                 } catch (UnknownHostException e) {

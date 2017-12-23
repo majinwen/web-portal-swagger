@@ -147,15 +147,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //范围====================
             //总价查询
-            if (projHouseInfoRequest.getBeginPrice() != null && projHouseInfoRequest.getEndPrice() != 0) {
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getBeginPrice()) &&StringTool.isNotEmpty(projHouseInfoRequest.getEndPrice())) {
                 booleanQueryBuilder
                         .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(projHouseInfoRequest.getBeginPrice()).lte(projHouseInfoRequest.getEndPrice())));
 
             }
             //面积
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildAreaId())) {
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getBuildAreaId().split(",");
+                String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
@@ -178,24 +178,24 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 }
             }
             //户型(室)
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getRoom())) {
-                String[] layoutId = projHouseInfoRequest.getRoom().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getLayoutId())) {
+                String[] layoutId = projHouseInfoRequest.getLayoutId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             //物业类型
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseTypeId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseTypeId().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
+                String[] layoutId = projHouseInfoRequest.getHouseManagementTypeId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("houseType", layoutId));
             }
             //建筑类型
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildCategoryId())) {
-                String[] layoutId = projHouseInfoRequest.getBuildCategoryId().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingTypeId())) {
+                String[] layoutId = projHouseInfoRequest.getBuildingTypeId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("buildCategory", layoutId));
             }
 
             //朝向
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getForward())) {
-                String[] layoutId = projHouseInfoRequest.getForward().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseOrientationId())) {
+                String[] layoutId = projHouseInfoRequest.getHouseOrientationId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", layoutId));
             }
             //标签(满二，满三，满五)
@@ -211,8 +211,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //权属
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getPropertyRightId())) {
-                String[] layoutId = projHouseInfoRequest.getPropertyRightId().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingFeature())) {
+                String[] layoutId = projHouseInfoRequest.getBuildingFeature().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
             }
@@ -262,11 +262,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 //朝向
-                String forWard = ForWardMap.getForWard(instance.getFloor());
+                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
                 instance.setForwardName(forWard);
-                /*//装修
+                //装修
                 String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
-                instance.setFitmentName(fitment);*/
+                instance.setFitmentName(fitment);
                 Integer[] tags = instance.getTags();
                 String[] tag = new String[tags.length];
                 for (int i = 0; i < tags.length; i++) {
@@ -278,14 +278,14 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                 }
                 instance.setTagsName(tag);
-                /*//权属
-                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));*/
+                //权属
+                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
                 //物业类型
-//                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
-//                //建筑形式
-//                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
-//                //电梯/
-//                instance.setElevator(instance.getElevator() == null || instance.getElevator() == "" ? "无电梯" : "有电梯");
+                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
+                //建筑形式
+                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
+                //电梯/
+                instance.setElevator(instance.getElevator() == null || instance.getElevator() == "" ? "无电梯" : "有电梯");
                 houseList.add(instance);
             }
             return houseList;

@@ -11,86 +11,89 @@
 
     <artifactId>web.api-impl</artifactId>
 
-<dependencies>
-    <dependency>
-        <!-- Import dependency management from Spring Boot -->
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>1.3.2.RELEASE</version>
-        <type>pom</type>
-        <scope>import</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-redis</artifactId>
-        <version>1.3.2.RELEASE</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>com.toutiao</groupId>
-        <artifactId>web.core-service</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>com.toutiao</groupId>
-        <artifactId>web.common</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-        <groupId>com.toutiao</groupId>
-        <artifactId>web.api</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <!--<dependency>-->
-	    <!--<groupId>commons-beanutils</groupId>-->
-	    <!--<artifactId>commons-beanutils</artifactId>-->
-	    <!--<version>1.9.3</version>-->
-	<!--</dependency>-->
+    <dependencies>
+        <dependency>
+            <!-- Import dependency management from Spring Boot -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>1.3.2.RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.3.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.toutiao</groupId>
+            <artifactId>web.core-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.toutiao</groupId>
+            <artifactId>web.common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.toutiao</groupId>
+            <artifactId>web.api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>commons-beanutils</groupId>-->
+        <!--<artifactId>commons-beanutils</artifactId>-->
+        <!--<version>1.9.3</version>-->
+        <!--</dependency>-->
 
-    <dependency>
-        <groupId>org.jsoup</groupId>
-        <artifactId>jsoup</artifactId>
-        <version>1.7.3</version>
-    </dependency>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-freemarker</artifactId>
-        <version>1.4.1.RELEASE</version>
-    </dependency>
-    <dependency>
-        <groupId>com.googlecode.rapid-framework</groupId>
-        <artifactId>rapid-core</artifactId>
-        <version>4.0.5</version>
-    </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+            <version>1.4.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.rapid-framework</groupId>
+            <artifactId>rapid-core</artifactId>
+            <version>4.0.5</version>
+        </dependency>
 
-    <!--
-        加入devtools的依赖
-        optional=true,依赖不会传递
-    -->
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-devtools</artifactId>
-        <optional>true</optional>
-    </dependency>
+        <!--
+            加入devtools的依赖
+            optional=true,依赖不会传递
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
 
-    <dependency>
-        <groupId>com.qiniu</groupId>
-        <artifactId>qiniu-java-sdk</artifactId>
-        <version>[7.2.0, 7.2.99]</version>
-    </dependency>
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
+        </dependency>
 
-    <dependency>
-        <groupId>com.github.bingoohuang</groupId>
-        <artifactId>patchca</artifactId>
-        <version>0.0.1</version>
-    </dependency>
-</dependencies>
+        <dependency>
+            <groupId>com.github.bingoohuang</groupId>
+            <artifactId>patchca</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
     <build>
-
-
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -103,5 +106,14 @@
             </resource>
 
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
