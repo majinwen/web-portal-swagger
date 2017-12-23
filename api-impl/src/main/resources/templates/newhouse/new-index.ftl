@@ -144,7 +144,7 @@
                 <div class="list-item-img-box">
                     <#if map['building_imgs']?exists>
                     <#assign item = map['building_imgs']?split(",")>
-                      <img src="http://s1.qn.toutiaofangchan.com/${item[0]}" alt="${map['building_name']}">
+                      <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
                     </#if>
                 </div>
                 <div class="list-item-cont">

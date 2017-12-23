@@ -169,7 +169,7 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign item = map['building_imgs']?split(",")>
-                            <img src="http://s1.qn.toutiaofangchan.com/${item[0]}" alt="${map['building_name']}">
+                            <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -248,7 +248,7 @@
             <li><a class="list-item" href="">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="http://s1.qn.toutiaofangchan.com/${map['img']}" alt="${map['rc']}">
+                        <img src="${qiniuimage}/${map['img']}" alt="${map['rc']}">
                     </div>
                     <div class="list-item-cont">
                         <input type="hidden" value="${map['id']}">

@@ -153,11 +153,12 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
+                            <#assign imgt = map['building_imgs']?split(",")>
                      <#--   <#assign item = map['building_imgs']>
                         <#if item[0]?exists>
                             <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>-->
-                            <img src="<#--${staticurl}-->http://s1.qn.toutiaofangchan.com/${map['building_imgs']}" alt="${map['building_name']}">
+                            <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
                             <#else >
                                 <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>

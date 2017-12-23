@@ -18,7 +18,7 @@
             <#list build['building_imgs']?split(",") as item>
             <#if item?exists>
             <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                <img src="http://s1.qn.toutiaofangchan.com/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
+                <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
             </li>
             </#if>
             </#list>
@@ -198,11 +198,15 @@
         <li>
             <a href="/newhouse/getNewHouseDetails?id=${nearitem['building_name_id']?c}">
                 <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
+                    <#if nearitem['building_imgs']?exists>
+                    <#assign imgt = nearitem['building_imgs']?split(",")>
+                        <img src="${qiniuimage}/${imgt[0]}" alt="${nearitem['building_name']!'暂无'}">
+                  </#if>
+
                 </div>
                 <div class="tilelist-content">
-                    <p class="cont-first">${nearitem['building_name']}</p>
-                    <p class="cont-center"><span>${nearitem['district_name']}</span><span>${nearitem['area_name']}</span></p>
+                    <p class="cont-first">${nearitem['building_name']!'暂无'}</p>
+                    <p class="cont-center"><span>${nearitem['district_name']!'暂无'}</span><span>${nearitem['area_name']!'暂无'}</span></p>
                     <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}<#else >暂无</#if></em>/㎡</h4>
                 </div>
             </a>
