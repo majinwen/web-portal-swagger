@@ -13,17 +13,20 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <#list village['photo'] as vpphoto>
-                <#if vpphoto?exists>
-                    <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
-                    </li>
-                <#else>
-                    <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/" data-src="${qiniuimage}/" alt="暂无">
-                    </li>
-                </#if>
-            </#list>
+            <#if village['photo']?exists>
+                <#list village['photo'] as vpphoto>
+                    <#if vpphoto?exists>
+                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                            <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
+                        </li>
+                    <#else>
+                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                            <img src="${qiniuimage}/" data-src="${qiniuimage}/" alt="暂无">
+                        </li>
+                    </#if>
+                </#list>
+            </#if>
+
         </ul>
         <div class="banner-title">
             <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
@@ -221,7 +224,7 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息</h3>
-            <a href="/findVillageByConditions?id=${village['id']}" class="more-arrows">查看更多<i class="arrows-right"></i></a>
+            <a href="/plotParameter?id=${village['id']}" class="more-arrows">查看更多<i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-only-one">

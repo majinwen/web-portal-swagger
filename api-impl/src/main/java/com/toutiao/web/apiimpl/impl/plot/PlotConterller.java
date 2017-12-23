@@ -100,6 +100,6 @@ public class PlotConterller {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
-        return "plot/plot-detail";
+        return "plot/plot-parameter";
     }
 }
