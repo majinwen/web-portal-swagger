@@ -165,9 +165,7 @@
     <#if builds?exists>
         <#list builds as map>
             <li>
-            <#--<#assign itemLocation=map['housePlotLocation']>-->
                 <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
-                <a class="list-item" href="#">
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>

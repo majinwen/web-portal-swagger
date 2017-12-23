@@ -15,13 +15,13 @@
         <ul class="swiper-wrapper" id="house-pic-container">
 
         <#assign item =houseDetail['housePhoto']>
-            <#list item as itemValue>
-                <#if itemValue?exists>
-                    <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                        <img src="${itemValue}" data-src="${itemValue}" alt="${itemValue_index}">
-                    </li>
-                </#if>
-            </#list>
+        <#list item as itemValue>
+            <#if itemValue?exists>
+                <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
+                    <img src="${itemValue}" data-src="${itemValue}" alt="${itemValue_index}">
+                </li>
+            </#if>
+        </#list>
         </ul>
         <div class="banner-title">
             <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
@@ -234,12 +234,11 @@
         </div>
         <ul class="tilelist">
         <#if plot?exists>
-                <#list plot as map>
+            <#list plot as map>
                 <li>
-
                     <#if map.houseId?exists>
-
-                    <#else><a href="/queryByHouseIdandLocation/${map.houseId}">
+                    <a href="/queryByHouseIdandLocation/${map.houseId}">
+                    <#else>
                     <a href="#">
                     </#if>
                     <div class="picture-box">
@@ -269,7 +268,12 @@
     <ul class="tilelist">
     <#if plotList?exists>
         <#list plotList as plotInfo>
-            <li><a href="/villageDetail?id=${plotInfo['id']}">
+            <li>
+                <#if plotInfo['id']?exists>
+                <a href="/villageDetail?id=${plotInfo['id']}">
+                <#else >
+                <a href="#">
+                </#if>
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
