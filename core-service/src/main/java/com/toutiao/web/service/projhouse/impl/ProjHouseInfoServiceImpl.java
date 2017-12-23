@@ -198,6 +198,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 String[] layoutId = projHouseInfoRequest.getHouseOrientationId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", layoutId));
             }
+
+            //电梯
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getElevator())) {
+                String[] layoutId = projHouseInfoRequest.getElevator().split(",");
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("elevator", layoutId));
+            }
             //标签(满二，满三，满五)
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLabelId())) {
                 String[] layoutId = projHouseInfoRequest.getHouseLabelId().split(",");
@@ -284,8 +290,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
                 //建筑形式
                 instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
-                //电梯/
-                instance.setElevator(instance.getElevator() == null || instance.getElevator() == "" ? "无电梯" : "有电梯");
+                //电梯
+                if(instance.getElevator()=="1"){
+                   instance.setElevator("有电梯");
+                }
+                if(instance.getElevator()=="2"){
+                    instance.setElevator("无电梯");
+                }
+                if(instance.getElevator()==null){
+                    instance.setElevator("暂无");
+                }
                 houseList.add(instance);
             }
             return houseList;
