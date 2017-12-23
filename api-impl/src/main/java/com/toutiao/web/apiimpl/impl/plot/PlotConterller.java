@@ -68,10 +68,9 @@ public class PlotConterller {
         model.addAttribute("nearvillage",nearvillage);
 
         //推荐小区好房
-//        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
-//        projHouseInfoQuery.setHousePlotName(village.getRc());
-//        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-        List reViHouse = null;
+        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+        projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
+        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
         model.addAttribute("reViHouse",reViHouse);
 
         newHouseQuery.setSort(0);
@@ -94,5 +93,13 @@ public class PlotConterller {
     public String sale(Model model){
         model.addAttribute("user","asds");
         return "plot/plot-sale";
+    }
+
+    @RequestMapping("/plotParameter")
+    public String parameter(VillageRequest villageRequest, Model model){
+        List villageList = null;
+        villageList = plotService.findVillageByConditions(villageRequest);
+        model.addAttribute("villageList", villageList);
+        return "plot/plot-detail";
     }
 }

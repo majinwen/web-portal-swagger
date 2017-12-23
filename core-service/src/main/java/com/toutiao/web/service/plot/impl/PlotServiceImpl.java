@@ -60,7 +60,7 @@ public class PlotServiceImpl implements PlotService {
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
-            srb.setPostFilter(location1);
+            srb.setPostFilter(location1).setSize(5);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
             sort.unit(DistanceUnit.METERS);

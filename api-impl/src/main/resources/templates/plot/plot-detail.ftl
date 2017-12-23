@@ -96,7 +96,7 @@
     <section>
         <div class="module-header-message">
             <h3>推荐小区好房</h3>
-            <a href="#" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#if reViHouse?exists>
@@ -221,7 +221,7 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息</h3>
-            <a href="#" class="more-arrows">查看更多<i class="arrows-right"></i></a>
+            <a href="/findVillageByConditions?id=${village['id']}" class="more-arrows">查看更多<i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
@@ -229,7 +229,11 @@
                 <#if village['rc']?exists>${village['rc']}</#if>
                 <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
                 <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                <#if village['sumHousehold']?exists>（${village['sumHousehold']}户）</#if>
+                <#if village['sumHousehold']?exists>
+                <#if village['sumHousehold']?number gt 0>
+                    （${village['sumHousehold']}户）
+                </#if>
+                </#if>
                 <#if village['buildingStructure']?exists><em class="high-light-red">${village['buildingStructure']}</em></#if>
                 </div>
             </div>
@@ -408,7 +412,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="#" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -446,7 +450,7 @@
     </div>
     <ul class="tilelist">
     <#list newbuilds as builditem>
-        <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']}">
+        <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']!''}">
             <div class="picture-box">
                 <#assign imglist = builditem['building_imgs']>
                 <#if imglist?exists>
@@ -454,8 +458,8 @@
                 </#if>
             </div>
             <div class="tilelist-content">
-                <h4 class="cont-first">${builditem['building_name']}</h4>
-                <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                <h4 class="cont-first">${builditem['building_name']!''}</h4>
+                <p class="cont-last">均价：<em>${builditem['average_price']!''}元</em>/㎡</p>
             </div>
         </a></li>
     </#list>
