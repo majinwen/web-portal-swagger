@@ -107,20 +107,8 @@ public class NewHouseServiceImpl implements NewHouseService{
         //地铁站id
         if(newHouseQuery.getSubwayLineId()!=null && newHouseQuery.getSubwayStationId()!=0){
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseQuery.getSubwayStationId()}));
-            keys = keys+","+newHouseQuery.getSubwayStationId().toString();
+            keys = keys+"$"+newHouseQuery.getSubwayStationId().toString();
         }
-
-
-
-//        //地铁
-//        String keys = "";
-//        if (newHouseQuery.getNearbysubway()!=null&&newHouseQuery.getNearbysubway()!=""){
-//
-//
-//            keys = newHouseQuery.getNearbysubway();
-//        }
-
-        ///==============================
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
@@ -140,8 +128,6 @@ public class NewHouseServiceImpl implements NewHouseService{
         //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
             BoolQueryBuilder boolQueryBuilder = boolQuery();
-
-
             String[] layoutId = newHouseQuery.getHouseAreaSize().split(",");
             for (int i = 0; i < layoutId.length ; i=i+2) {
                 if(i+1>layoutId.length){
@@ -156,7 +142,12 @@ public class NewHouseServiceImpl implements NewHouseService{
         ///================================
         //物业类型
         if(StringUtil.isNotNullString(newHouseQuery.getPropertyTypeId())){
-            booleanQueryBuilder.must(termsQuery("property_type_id",new int[]{Integer.valueOf(newHouseQuery.getPropertyTypeId())}));
+            String[] py = newHouseQuery.getPropertyTypeId().split(",");
+            String[] propertyType = new String[py.length];
+            for(int i=0; i<py.length;i++){
+                propertyType[i] = py[i];
+            }
+            booleanQueryBuilder.must(termsQuery("property_type_id",propertyType));
         }
 
         //电梯
@@ -165,7 +156,12 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //建筑类型
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingType())){
-            booleanQueryBuilder.must(termsQuery("building_type_id", new int[]{Integer.valueOf(newHouseQuery.getBuildingType())}));
+            String[] py = newHouseQuery.getBuildingType().split(",");
+            String[] BuildingType = new String[py.length];
+            for(int i=0; i<py.length;i++){
+                BuildingType[i] = py[i];
+            }
+            booleanQueryBuilder.must(termsQuery("building_type_id", BuildingType));
         }
 //        //销售状态
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
@@ -173,11 +169,17 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
-            booleanQueryBuilder.must(termsQuery("building_feature_id", new int[]{Integer.valueOf(newHouseQuery.getBuildingFeature())}));
+            String[] py = newHouseQuery.getBuildingFeature().split(",");
+            String[] BuildingFeature = new String[py.length];
+            for(int i=0; i<py.length;i++){
+                BuildingFeature[i] = py[i];
+            }
+            booleanQueryBuilder.must(termsQuery("building_feature_id", BuildingFeature));
+
         }
         //装修
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){
-            booleanQueryBuilder.must(termsQuery("redecorate_type_id", new int[]{Integer.valueOf(newHouseQuery.getDeliverStyle())}));
+            booleanQueryBuilder.must(termsQuery("redecorate_type_id", new String[]{newHouseQuery.getDeliverStyle()}));
         }
 
         int pageNum = 1;
@@ -351,7 +353,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         TransportClient client = esClientTools.init();
         BoolQueryBuilder detailsBuilder = boolQuery();
 //        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
-        detailsBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         if(tags > 0){
             detailsBuilder.must(QueryBuilders.termQuery("room",tags));
         }
@@ -380,7 +382,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         TransportClient client = esClientTools.init();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
-        sizeBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
 
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType).setQuery(sizeBuilder)
                 .addAggregation(AggregationBuilders.terms("roomCount").field("room"))

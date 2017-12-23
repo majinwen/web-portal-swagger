@@ -1,14 +1,15 @@
-package com.toutiao.web.dao.entity.admin;
+package com.toutiao.web.domain.query;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.Map;
 
 @Data
-public class ProjHouseInfo {
-    /**
-     * 房源ID
-     */
+public class ProjHouseInfoResponse {
+
+    /* * 房源ID
+ */
     private Integer houseId;
 
     /**
@@ -31,6 +32,8 @@ public class ProjHouseInfo {
      * 装修(1:毛坯 2:普通装修 3:精装修 4:豪华装修 5:其他)
      */
     private Integer fitment;
+
+    private String fitmentName;
 
     /**
      * 室 数字
@@ -63,6 +66,8 @@ public class ProjHouseInfo {
      */
     private Integer forward;
 
+    private String forwardName;
+
     // 房源总价
     private Double houseTotalPrices;
 
@@ -79,6 +84,8 @@ public class ProjHouseInfo {
      * 标签(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
     private Integer[] tags;
+
+    private String[] tagsName;
 
     /**
      * 是否推荐房源，0-否，1-是
@@ -118,16 +125,22 @@ public class ProjHouseInfo {
      */
     private Integer propertyRight;
 
+    private String propertyRightName;
+
     /**
      * 房屋类型：普通住宅、经济适用房、公寓、安置房、四合院等（物业类型）
      * （ 1：普通住宅，2：公寓，3：酒店式公寓，4：花园洋房，5：商住楼
      */
     private Integer houseType;
 
+    private String houseTypeName;
+
     /**
      * 房源信息来源（0-未知来源，1-编辑录入，2-我爱我家导入，3-中原地产导入）
      */
     private Integer source;
+
+    private String sourceName;
 
     /**
      * 推荐理由
@@ -160,7 +173,7 @@ public class ProjHouseInfo {
     /**
      * 更新时间 "updateTime": 1513310890506,
      */
-    private Data updateTime;
+    private String updateTime;
 
 
     /**
@@ -168,17 +181,23 @@ public class ProjHouseInfo {
      */
     private String buildCategory;
 
+    private String buildCategoryName;
+
 
     /**
      * 建筑形式1：低层，2：多层，3：小高层，4：高层，5：超高层
      */
     private String buildForm;
 
+    private String buildFormName;
+
 
     /**
      * 住宅-房屋结构（平层、错层、跃层、复式、开间） 别墅-厅结构（平层、挑高）
      */
     private String houseStructure;
+
+    private String houseStructureName;
 
 
     /**
@@ -253,22 +272,23 @@ public class ProjHouseInfo {
     //小区描述
 
     private String plotdesc;
+
     //查询距离使用的key
     private String key;
 
-    /**
-     * 经度
-     */
-    private double lat;
+
     /**
      * 维度
      */
+    private double lat;
+    /**
+     * 经度
+     */
     private double lon;
+
     //电梯(有 无)
     private String elevator;
 
     private Integer houseHeating;
-
-
 
 }

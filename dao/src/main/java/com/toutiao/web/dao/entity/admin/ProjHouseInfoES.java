@@ -14,6 +14,10 @@ public class ProjHouseInfoES {
     @JSONField(name = "houseId")
     private Integer houseId;
 
+//    //房源编号
+//    @JSONField()
+//    private String houseNumber;
+
     // 房源名称
     @JSONField(name = "houseTitle")
     private String houseTitle;
@@ -23,7 +27,7 @@ public class ProjHouseInfoES {
     private String houseArea;
 
     // 房源户型
-//    @JSONField(name = "")
+    @JSONField(name = "room")
     private String houseType;
 
     // 房源户型id
@@ -55,17 +59,17 @@ public class ProjHouseInfoES {
     private String[] houseLabelId;
 
     // 房源楼层
-//    @JSONField(name = "")
+    @JSONField(name = "floorNo")
     private String houseFloorId;
     // 房源楼层
-    @JSONField(name = "floor")
+//    @JSONField(name = "")
     private String houseFloor;
 
     // 房源楼龄
 //    @JSONField(name = "")
     private String houseYear;
 
-    // 房源用途id
+    // 房源用途，
     @JSONField(name = "houseType")
     private String housePurposeId;
 

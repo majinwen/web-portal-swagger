@@ -27,17 +27,17 @@ public class VillageEntityES {
     private String address;  //地址
 //    @JSONField(name = "")
     private String location; //坐标
-    @JSONField(name = "metroStationId")
+//    @JSONField(name = "")
     private String[] metroStationId;  //地铁站编号
 //    @JSONField(name = "")
     private String[] metroStation;  //地铁站
 //    @JSONField(name = "")
     private Map<String,String> metroWithPlotsDistance;  //地铁线站与小区的距离
-    @JSONField(name = "subwayLineId")
+//    @JSONField(name = "")
     private String[] subwayLineId;  //地铁线路编号
 //    @JSONField(name = "")
     private String[] subwayLine;  //地铁线路
-//    @JSONField(name = "")
+    @JSONField(name = "traffic")
     private String TrafficInformation;  //交通信息
 //    @JSONField(name = "")
     private String[] labelId;  //标签编号
@@ -53,26 +53,24 @@ public class VillageEntityES {
     private String abbreviatedAge;  //建成年代
 //    @JSONField(name = "")
     private Integer age;  //楼龄
-//    @JSONField(name = "")
+    @JSONField(name = "purposearea")
     private String areaSize;  //面积
     @JSONField(name = "buildCount")
     private String sumBuilding;  //总栋数
-    @JSONField(name = "sumHousehold")
+    @JSONField(name = "totaldoor")
     private String sumHousehold;  //总户数
 //    @JSONField(name = "")
-    private Double avgGreeningRate;  //户均绿化率
+    private Double avgGreening;  //户均绿化面积
 //    @JSONField(name = "")
-    private Double avgElevator;  //户均电梯
+    private Double liftDoorRadio;  //户均电梯
     @JSONField(name = "hasLift")
     private String elevator;  //电梯配备 (1-有，2-无)
     @JSONField(name = "parkRadio")
     private Double carPositionRatio;  //车位配比
     @JSONField(name = "carRentPrice")
-    private Double parkingRate;  //停车费
+    private String parkingRate;  //停车费
     @JSONField(name = "projdesc")
     private String desc;  //小区详情介绍
-    @JSONField(name = "projdesc")
-    private String characteristic;  //小区特色
     @JSONField(name = "developer")
     private String developers;  //开发商
     @JSONField(name = "propertymanage")
@@ -83,7 +81,7 @@ public class VillageEntityES {
     private String propertyType;  //物业类型
     @JSONField(name = "rightYear")
     private String yopr;  //产权年限
-    @JSONField(name = "buildForm")
+    @JSONField(name = "buildCategory")
     private String[] architectureTypeId;  //建筑类型编号
 //    @JSONField(name = "")
     private String[] architectureType;  //建筑类型

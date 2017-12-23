@@ -153,13 +153,14 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
+                            <#assign imgt = map['building_imgs']?split(",")>
                      <#--   <#assign item = map['building_imgs']>
                         <#if item[0]?exists>
                             <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>-->
-                            <img src="${staticurl}/${map['building_imgs']}" alt="${map['building_name']}">
+                            <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
                             <#else >
-                                <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                                <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -167,7 +168,7 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"> <#if map['average_price']?exists>${map['average_price']}元/㎡<#else>暂无</#if></p>
+                        <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                                    ${map['nearsubway']}

@@ -133,7 +133,7 @@ $('#moreSubmit').on('click', function (e) {
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
     console.log(moresubmitUrl.substr(0, moresubmitUrl.length -1));
-
+    location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
 });
 /*
  * 更多筛选重置
@@ -195,6 +195,7 @@ function submitDirstrict(districtid,e,index) {
     console.log(url);
     tabTextReplace(e,circleData[index].name);
     location.href=url
+    // console.log("quyu")
    /* $.get(url, function () {
         location.href = url;
     });*/
@@ -250,7 +251,7 @@ function showStation(subwayid, index) {
  * 站点为不限
  * */
 function submitSubwayLine(subwayid,e,index) {
-    params = '?districtId=' + subwayid;
+    params = '?subwayLineId=' + subwayid;
     url = BaseUrl + params;
     console.log(url);
 

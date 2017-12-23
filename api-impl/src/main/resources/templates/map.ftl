@@ -19,7 +19,13 @@
     <li class="map-type-item" data-w="休闲" data-icon="fallow" data-key="电影院,KTV,剧院,休闲广场,游戏场所">休闲</li>
     <li class="map-type-item" data-w="健身" data-icon="fitness" data-key="体育场馆,极限运动,健身中心">健身</li>
 </ul>
-<div class="map-container" id="mapContainer" data-mapx="116.467001" data-mapy="39.920542" data-cnname="富尔大厦"></div>
+<#if build?exists>
+<#if build['location']?exists>
+    <#assign locations = build['location']?split(",")>
+<div class="map-container" id="mapContainer" data-mapx="${locations[1]}" data-mapy="${locations[0]}" data-cnname="富尔大厦"></div>
+<#else ><div class="map-container" id="mapContainer" data-mapx="116.467001" data-mapy="39.920542" data-cnname="富尔大厦"></div>
+</#if><#else><div class="map-container" id="mapContainer" data-mapx="116.467001" data-mapy="39.920542" data-cnname="富尔大厦"></div>
+</#if>
 <div class="type-result-box">
     <div class="results-panel-box">
         <div class="results-panel-btn"><p></p></div>
@@ -35,7 +41,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=57b4dbd0d142e9649ed54160b45ecb1f"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <script type="text/javascript" src="${staticurl}/js/around-map.js"></script>
 <script>
     var x = $('#mapContainer').attr('data-mapx'),

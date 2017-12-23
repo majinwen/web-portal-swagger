@@ -32,7 +32,6 @@ public class HomePageController {
     @RequestMapping("/index")
     public String index(Model model, VillageRequest villageRequest){
         NewHouseQuery newHouseQuery=new NewHouseQuery();
-        villageRequest.setAreaSize("80");
         newHouseQuery.setSort(0);
         newHouseQuery.setPageNum(1);
         newHouseQuery.setPageSize(4);

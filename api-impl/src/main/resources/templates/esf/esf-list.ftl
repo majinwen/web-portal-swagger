@@ -82,6 +82,31 @@
                     </dd>
                 </dl>
                 <dl>
+                    <dt data-type="houseOrientationId">朝向</dt>
+                    <dd>
+                        <span data-info="1">东</span>
+                        <span data-info="2">西</span>
+                        <span data-info="3">南</span>
+                        <span data-info="4">北</span>
+                        <span data-info="5">东南</span>
+                        <span data-info="6">西南</span>
+                        <span data-info="7">东北</span>
+                        <span data-info="8">西北</span>
+                        <span data-info="9">东西</span>
+                        <span data-info="10">南北</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="houseLabelId">标签</dt>
+                    <dd>
+                        <span data-info="1">近地铁</span>
+                        <span data-info="4">随时看</span>
+                        <span data-info="8">满二年</span>
+                        <span data-info="16">满五年</span>
+                        <span data-info="32">近公园</span>
+                    </dd>
+                </dl>
+                <dl>
                     <dt data-type="houseAreaId">面积</dt>
                     <dd>
                         <span data-info="0,60">60以下</span>
@@ -100,12 +125,19 @@
                         <span class="only" data-info="20,100">20年以上</span>
                     </dd>
                 </dl>
+                <#--<dl>-->
+                    <#--<dt data-type="houseFloorId">楼层</dt>-->
+                    <#--<dd>-->
+                        <#--<span data-info="低">低层楼</span>-->
+                        <#--<span data-info="中">中层楼</span>-->
+                        <#--<span data-info="高">高层楼</span>-->
+                    <#--</dd>-->
+                <#--</dl>-->
                 <dl>
-                    <dt data-type="houseFloorId">楼层</dt>
+                    <dt data-type="elevator">电梯</dt>
                     <dd>
-                        <span data-info="低层楼">低层楼</span>
-                        <span data-info="中层楼">中层楼</span>
-                        <span data-info="高层楼">高层楼</span>
+                        <span data-info="1">有</span>
+                        <span data-info="2">无</span>
                     </dd>
                 </dl>
                 <dl>
@@ -123,43 +155,15 @@
                         <span data-info="1">已购公房</span>
                         <span data-info="2">商品房</span>
                         <span data-info="3">空置房</span>
-                        <span data-info="4">经济适用房</span>
-                        <span data-info="5">使用权房</span>
-                        <span data-info="6">央产</span>
-                        <span data-info="7">按经济试用住房管理的房屋</span>
-                        <span data-info="8">其他</span>
+                        <span data-info="4">使用权房</span>
+                        <span data-info="5">央产</span>
+                        <span data-info="6">经济适用房</span>
                     </dd>
                 </dl>
-                <dl>
-                    <dt data-type="houseType">标签</dt>
-                    <dd>
-                        <span data-info="1">近地铁</span>
-                        <span data-info="4">随时看</span>
-                        <span data-info="8">满二年</span>
-                        <span data-info="16">满五年</span>
-                        <span data-info="32">近公园</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseOrientationId">朝向</dt>
-                    <dd>
-                        <span data-info="1">东</span>
-                        <span data-info="2">西</span>
-                        <span data-info="3">南</span>
-                        <span data-info="4">北</span>
-                        <span data-info="5">东南</span>
-                        <span data-info="6">西南</span>
-                        <span data-info="7">东北</span>
-                        <span data-info="8">西北</span>
-                        <span data-info="9">东西</span>
-                        <span data-info="10">南北</span>
-                        <span data-info="11">其他</span>
-                    </dd>
-                </dl>
-            </div>
-            <div class="submit-wrapper">
-                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
+                <div class="submit-wrapper">
+                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
+                </div>
             </div>
         </div>
     </div>
@@ -169,33 +173,38 @@
     <#if builds?exists>
         <#list builds as map>
             <li>
-                <#assign itemLocation=map['housePlotLocation']>
-                <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${itemLocation[0]}/${itemLocation[1]}">
+                <#--<#assign itemLocation=map['housePlotLocation']>-->
+                    <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${map.lon?if_exists?string(",####.####################")}/${map.lat?if_exists?string(",####.####################")}">
                 <input type="hidden" name="houseId" value="${map.houseId}"/>
-
-                <input type="hidden" name="lat" value="${itemLocation[0]}"/>
-                <input type="hidden" name="lon" value="${itemLocation[1]}"/>
+                <input type="hidden" name="lon" value="${map.lon?if_exists?string(",####.####################")}"/>
+                <input type="hidden" name="lat" value="${map.lat?if_exists?string(",####.####################")}"/>
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <img src="${staticurl}/images/esf/<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                        <img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${map.houseTitle}</h3>
-                        <p class="cont-block-2"><#if map.houseArea?exists>${map.houseArea}㎡</#if>
-                                                <#if map.houseType?exists>/${map.houseType}</#if>
-                                                <#if map.houseOrientation?exists>/${map.houseOrientation}</#if>
-                                                <#if map.housePlotName?exists>/${map.housePlotName}</p></#if>
-                        <#assign item=map['houseToSubwayDistance']>
-                        <#if map['key']?exists>
-                            <#if item[map['key']]?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${item[map['key']]}</p>
-                            </#if >
-                            <#else >
-                                <p class="cont-block-3 distance"><i class="icon"></i>${map.areaName}[${map.houseBusinessName}]</p>
+                        <p class="cont-block-2"><#if map.buildArea?exists>${map.buildArea}㎡</#if>
+                                                |<#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
+                                                |<#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
+                                                |<#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
+                        <#if map['subwayDistince']?exists>
+                            <#assign item=map['subwayDistince']>
+                            <#if map['key']?exists>
+                                <#if item[map['key']]?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m</p>
+                                </#if >
+                              <#else >
+                                  <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}[${map.houseBusinessName}]<#else>暂无</#if></p>
+                            </#if>
+                           <#else >
+                               <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}[${map.houseBusinessName}]<#else>暂无</#if></p>
                         </#if>
+
+
                         <div class="cont-block-4 house-labelling gray middle">
-                            <#assign item =  map['houseLabel']>
+                            <#assign item =  map['tagsName']>
                             <#list item as itemValue>
                               <#if itemValue?exists>
                                   <span>${itemValue}</span>
@@ -203,8 +212,8 @@
                             </#list>
                         </div>
                         <div class="cont-block-price">
-                            <em> <#if map.houseTotalPrices?exists>${map.houseTotalPrices}万</#if></em>
-                            <span> <#if map.houseUnitCost?exists>${map.houseUnitCost}元/㎡</#if></span>
+                            <em> <#if map.houseTotalPrices?exists>${map.houseTotalPrices}万<#else>暂无</#if></em>
+                            <span> <#if map.houseUnitCost?exists>${map.houseUnitCost}元/㎡<#else>暂无</#if></span>
                         </div>
                     </div>
                 </div>

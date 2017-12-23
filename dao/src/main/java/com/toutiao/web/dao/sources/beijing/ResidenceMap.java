@@ -16,6 +16,7 @@ public class ResidenceMap {
         residenceBuildCategoryMap.put("2", "塔楼");
         residenceBuildCategoryMap.put("3", "板塔结合");
         residenceBuildCategoryMap.put("4", "砖楼");
+        residenceBuildCategoryMap.put("5", "其他");
     }
 
     static {
