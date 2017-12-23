@@ -192,16 +192,18 @@
                     <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
                 </div>
             </a></li></#if>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item = map['building_imgs']>
-                        <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                        <#if map['building_imgs']?exists>
+                            <#assign item = map['building_imgs']?split(",")>
+                            <img src="http://s1.qn.toutiaofangchan.com/${item[0]}" alt="${map['building_name']}">
+                        </#if>
                     </div>
                     <div class="list-item-cont">
-                        <span hidden="hidden">${map['building_name_id']}</span>
-                        <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                        <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                        <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
+                        <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if><em><#if map['property_type']?exists>${map['property_type']}<#else>暂无</#if></em></h3>
+                        <p class="cont-block-2 high-light-red">${map['average_price']!'暂无'}/㎡</p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             ${map['nearsubway']}
@@ -274,7 +276,7 @@
             <li><a class="list-item" href="">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="${map['rc']}">
+                        <img src="http://s1.qn.toutiaofangchan.com/${map['img']}" alt="${map['rc']}">
                     </div>
                     <div class="list-item-cont">
                         <input type="hidden" value="${map['id']}">

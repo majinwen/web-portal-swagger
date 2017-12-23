@@ -157,7 +157,7 @@
                         <#if item[0]?exists>
                             <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>-->
-                            <img src="${staticurl}/${map['building_imgs']}" alt="${map['building_name']}">
+                            <img src="<#--${staticurl}-->http://s1.qn.toutiaofangchan.com/${map['building_imgs']}" alt="${map['building_name']}">
                             <#else >
                                 <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>
