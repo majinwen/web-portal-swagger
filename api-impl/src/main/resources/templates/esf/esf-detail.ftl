@@ -83,8 +83,7 @@
                     </li>
                     <li>
                         <span>户型</span>
-                        <em><#if houseDetail.room?exists>${houseDetail.room}<#else>暂无</#if>
-                            /<#if houseDetail.hall?exists>${houseDetail.hall}<#else>暂无</#if></em>
+                        <em><#if houseDetail.room?exists>${houseDetail.room}室<#else>暂无</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅<#else>暂无</#if></em>
                     </li>
                     <li>
                         <span>面积</span>
