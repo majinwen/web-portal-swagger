@@ -11,7 +11,7 @@
 <body>
 <div class="module-bottom-fill">
     <div class="house-type-state">
-        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（${layoutDetails?size}）</span>
+        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（${roomcount}）</span>
     <#if room?exists>
     <#list room as roomnode>
         <#assign roomid=roomnode['room']>
