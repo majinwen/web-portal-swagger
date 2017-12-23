@@ -57,11 +57,11 @@ public class SaveToESController {
     @RequestMapping("/saveChildToES")
     @ResponseBody
     public void saveChildToES(ProjHouseInfoES projHouseInfo, Model model){
-        ProjHouseInfo projHouseInfo1 = new ProjHouseInfo();
+        ProjHouseInfoES projHouseInfo1 = new ProjHouseInfoES();
         projHouseInfo1.setHouseId(1);
         projHouseInfo1.setHouseArea("66666");
 //        projHouseInfo1.setHousePlotId(1);
-        plotService.saveChild(projHouseInfo);
+        plotService.saveChild(projHouseInfo1);
     }
 
 }

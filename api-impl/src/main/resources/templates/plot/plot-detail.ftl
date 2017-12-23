@@ -66,17 +66,20 @@
 <div class="module-bottom-fill">
     <section class="plot-primary-header">
         <div class="plot-primary-text">
-            <h2>${village['rc']}</h2>
-            <p>[顺义-商圈] 中央别墅区 顺语路57号</p>
-            <#if village['metroWithPlotsDistance']?exists>
-            <p><#assign userMap = village['metroWithPlotsDistance']/>
-            <#assign  keys=userMap?keys/>
-            <#list keys as key>
-            ${userMap[key]!''} ${key}
-            </#list></p>
-                <#else >
-                    <p>暂无</p>
-            </#if>
+            <h2>${village['rc']!''}</h2>
+            <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
+            <#--<#if village['metroWithPlotsDistance']?exists>-->
+            <#--<p><#assign userMap = village['metroWithPlotsDistance']/>-->
+            <#--<#assign  keys=userMap?keys/>-->
+            <#--<#list keys as key>-->
+            <#--${userMap[key]!''}${key}-->
+                <#--&lt;#&ndash;<#assign split=userMap[key]?split("$")/>&ndash;&gt;-->
+                <#--&lt;#&ndash;<p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>&ndash;&gt;-->
+            <#--</#list></p>-->
+                <#--<#else >-->
+                    <#--<p>暂无</p>-->
+            <#--</#if>-->
+            <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
                 <#if village['label']?exists>
                     <#list village['label'] as label>
@@ -96,6 +99,7 @@
             <a href="#" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
+            <#if reViHouse?exists>
             <#list reViHouse as reitem>
                   <#if reitem_index==4>
                       <#break >
@@ -112,7 +116,7 @@
                     </div>
                 </a></li>
             </#list>
-
+            </#if>
         <#--    <li><a href="#">
                 <div class="picture-box">
                     <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
@@ -234,14 +238,14 @@
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                        <em>${village['avgGreeningRate']}平方米</em>
+                        <em>${village['avgGreeningRate']!''}平方米</em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${village['carPositionRatio']}车位/户</em>
+                        <em>${village['carPositionRatio']!''}车位/户</em>
                     </div>
                 </div>
             </div>
@@ -250,7 +254,7 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>户均电梯</p>
-                        <em>暂无</em>
+                        <em>${village['liftDoorRadio']!'暂无'}</em>
                     </div>
                 </div>
                 <div class="info-card-item">

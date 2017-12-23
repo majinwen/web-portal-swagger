@@ -159,15 +159,16 @@ public class SaveToESMQ implements CommandLineRunner {
 //                                //地址
 //                                villageEntity.setAddress((String) projectInfo.get("address"));
 //                                //坐标
-                                BigDecimal coordX = (BigDecimal) projectInfo.get("coordX");
-                                BigDecimal coordY = (BigDecimal) projectInfo.get("coordY");
+                                Double coordX = (Double) projectInfo.get("coordX");
+                                Double coordY = (Double) projectInfo.get("coordY");
 //                                Double[] location = {coordX.doubleValue(),coordY.doubleValue()};
 //                                villageEntityES.setLocation(location);
                                 villageEntityES.setLocation(coordY.toString() + "," + coordX.toString());
-//                                //地铁线路编号
-//                                villageEntity.setSubwayLineId((String[]) projectInfo.get("subwayLineId"));
+                                //地铁线路编号
+                                Map projectExtra1 = (Map) map.get("projectExtra");
+                                villageEntityES.setSubwayLineId((String[]) projectExtra1.get("subwayLine"));
 //                                //地铁站编号
-//                                villageEntity.setMetroStationId((String[]) projectInfo.get("metroStationId"));
+                                villageEntityES.setMetroStationId((String[]) projectExtra1.get("subwayStation"));
 //                                //地铁线站与小区的距离
                                 Map projectExtra = (Map) map.get("projectExtra");
                                 if (projectExtra != null) {

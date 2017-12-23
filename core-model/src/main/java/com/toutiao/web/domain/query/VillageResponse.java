@@ -21,7 +21,7 @@ public class VillageResponse {
     private Map metroWithPlotsDistance;  //地铁站与小区的距离
     private String[] subwayLineId;  //地铁线路编号
     private String[] subwayLine;  //地铁线路
-    private String TrafficInformation;  //交通信息
+    private String trafficInformation;  //交通信息
     private String[] labelId;  //标签编号
     private String[] label;  //标签
     private String[] saleHouse;  //待售房源
@@ -32,11 +32,11 @@ public class VillageResponse {
     private String areaSize;  //面积
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
-    private Double avgGreeningRate;  //户均绿化率
-    private Double avgElevator;  //户均电梯
+    private Double avgGreening;  //户均绿化率
+    private Double liftDoorRadio;  //户均电梯
     private String elevator;  //电梯配备
     private Double carPositionRatio;  //车位配比
-    private Double parkingRate;  //停车费
+    private String parkingRate;  //停车费
     private String desc;  //小区详情介绍
     private String characteristic;  //小区特色
     private String developers;  //开发商

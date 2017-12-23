@@ -37,7 +37,7 @@ public class VillageEntityES {
     private String[] subwayLineId;  //地铁线路编号
 //    @JSONField(name = "")
     private String[] subwayLine;  //地铁线路
-//    @JSONField(name = "")
+    @JSONField(name = "traffic")
     private String TrafficInformation;  //交通信息
 //    @JSONField(name = "")
     private String[] labelId;  //标签编号
@@ -60,15 +60,15 @@ public class VillageEntityES {
     @JSONField(name = "totaldoor")
     private String sumHousehold;  //总户数
 //    @JSONField(name = "")
-    private Double avgGreeningRate;  //户均绿化率
+    private Double avgGreening;  //户均绿化面积
 //    @JSONField(name = "")
-    private Double avgElevator;  //户均电梯
+    private Double liftDoorRadio;  //户均电梯
     @JSONField(name = "hasLift")
     private String elevator;  //电梯配备 (1-有，2-无)
     @JSONField(name = "parkRadio")
     private Double carPositionRatio;  //车位配比
     @JSONField(name = "carRentPrice")
-    private Double parkingRate;  //停车费
+    private String parkingRate;  //停车费
     @JSONField(name = "projdesc")
     private String desc;  //小区详情介绍
     @JSONField(name = "developer")
@@ -81,7 +81,7 @@ public class VillageEntityES {
     private String propertyType;  //物业类型
     @JSONField(name = "rightYear")
     private String yopr;  //产权年限
-    @JSONField(name = "buildForm")
+    @JSONField(name = "buildCategory")
     private String[] architectureTypeId;  //建筑类型编号
 //    @JSONField(name = "")
     private String[] architectureType;  //建筑类型
