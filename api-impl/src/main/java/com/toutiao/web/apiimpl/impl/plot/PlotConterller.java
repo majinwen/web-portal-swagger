@@ -96,6 +96,7 @@ public class PlotConterller {
         return "plot/plot-sale";
     }
 
+    //基本信息
     @RequestMapping("/plotParameter")
     public String parameter(VillageRequest villageRequest, Model model){
         List villageList = null;

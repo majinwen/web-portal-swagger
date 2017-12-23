@@ -102,8 +102,8 @@
             <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
-            <#if reViHouse?exists>
-            <#list reViHouse as reitem>
+            <#if builds?exists>
+            <#list builds as reitem>
                   <#if reitem_index==4>
                       <#break >
                   </#if>
@@ -111,7 +111,7 @@
                 <li><a href="/queryByHouseIdandLocation/${reitem.houseId}/${itemLocation[0]}/${itemLocation[1]}">
                     <div class="picture-box">
                         <#assign photoitem=reitem['housePhoto']>
-                        <img src="${staticurl}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
+                        <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
                         <p class="bottom-text">${reitem['houseArea']}㎡</p>
                     </div>
                     <div class="tilelist-content">
@@ -403,7 +403,7 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="#" class="more-arrows">配套详情<i class="arrows-right"></i></a>
+            <a href="/getProjHouseMapDetail？newcode=${village['id']}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
         <a href="#" class="detail-map">
             <i class="map-marker-icon"></i>
@@ -415,7 +415,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="/findProjHouseInfo" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -462,7 +462,11 @@
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']!''}</h4>
-                <p class="cont-last">均价：<em>${builditem['average_price']!''}元</em>/㎡</p>
+                <#if builditem['average_price']?exists>
+                <#if builditem['average_price']?number gt 0>
+                <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                </#if>
+                </#if>
             </div>
         </a></li>
     </#list>
