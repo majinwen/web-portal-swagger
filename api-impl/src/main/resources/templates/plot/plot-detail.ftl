@@ -16,11 +16,11 @@
             <#list village['photo'] as vpphoto>
                 <#if vpphoto?exists>
                     <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${staticurl}/${vpphoto}" data-src="${staticurl}/${vpphoto}" alt="">
+                        <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
                     </li>
                 <#else>
                     <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${staticurl}/" data-src="${staticurl}/" alt="暂无">
+                        <img src="${qiniuimage}/" data-src="${qiniuimage}/" alt="暂无">
                     </li>
                 </#if>
             </#list>
@@ -426,7 +426,7 @@
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
-                        <img src="${staticurl}/${photos[0]}" alt="${nearviitem['rc']}">
+                        <img src="${qiniuimage}/${photos[0]}" alt="${nearviitem['rc']}">
                     </#if>
 
                 </div>
@@ -448,8 +448,10 @@
     <#list newbuilds as builditem>
         <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']}">
             <div class="picture-box">
-        <#assign imglist = builditem['building_imgs']>
-                <#--<img src="${staticurl}/${imglist[0]}" alt="${imglist[0]}">-->
+                <#assign imglist = builditem['building_imgs']>
+                <#if imglist?exists>
+                <#--<img src="${qiniuimage}/${imglist[0]}" alt="${imglist[0]}">-->
+                </#if>
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']}</h4>
