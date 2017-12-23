@@ -208,8 +208,8 @@
     <ul class="sort-content">
     <#if sort?exists>
         <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
-        <li value="1" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
-        <li value="2" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
     </#if>
     </ul>
 </div>
