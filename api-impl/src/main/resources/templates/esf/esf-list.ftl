@@ -152,10 +152,10 @@
                         <span data-info="6">经济适用房</span>
                     </dd>
                 </dl>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-                </div>
+            </div>
+            <div class="submit-wrapper">
+                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
     </div>
