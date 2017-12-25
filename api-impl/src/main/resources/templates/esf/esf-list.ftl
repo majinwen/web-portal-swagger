@@ -169,7 +169,9 @@
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>
-                            <img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                            <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                                <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
                         </div>
                         <div class="list-item-cont">
                             <h3 class="cont-block-1">${map.houseTitle}</h3>

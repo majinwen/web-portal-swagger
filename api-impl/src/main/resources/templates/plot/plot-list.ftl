@@ -103,17 +103,6 @@
                         <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
-                <#--<dl>-->
-                    <#--<dt data-type="saleType">销售状态</dt>-->
-                    <#--<dd>-->
-                        <#--<span data-info="1">售完</span>-->
-                        <#--<span data-info="2">在售</span>-->
-                        <#--<span data-info="3">不在售</span>-->
-                        <#--<span data-info="4">出租</span>-->
-                        <#--<span data-info="4">待租</span>-->
-                        <#--<span data-info="4">待售</span>-->
-                    <#--</dd>-->
-                <#--</dl>-->
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>

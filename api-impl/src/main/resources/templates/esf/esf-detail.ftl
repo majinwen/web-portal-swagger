@@ -13,7 +13,6 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-
         <#assign item =houseDetail['housePhoto']>
         <#list item as itemValue>
             <#if itemValue?exists>
@@ -170,17 +169,14 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon"
-                     <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}"</#if>
-                     alt="">
+                <img class="source-icon"<#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}"</#if> alt="">
                 <p>
-                        <span><#if houseDetail.ofCompany?exists>【${houseDetail.ofCompany}】<#else>
-                            暂无</#if><#if houseDetail.houseProxyName?exists>${houseDetail.houseProxyName}<#else>
-                            暂无</#if></span>
+                    <span><#if houseDetail.ofCompany?exists>【${houseDetail.ofCompany}】<#else>
+                        暂无</#if><#if houseDetail.houseProxyName?exists>${houseDetail.houseProxyName}<#else>
+                        暂无</#if></span>
                     <em>房屋信息发布人</em>
                 </p>
-                <a href="tel:<#if houseDetail.houseProxyPhone?exists>${houseDetail.houseProxyPhone}<#else>#</#if>"
-                   class="issuer-tel-icon"></a>
+                <a href="tel:<#if houseDetail.houseProxyPhone?exists>${houseDetail.houseProxyPhone}<#else>#</#if>" class="issuer-tel-icon"></a>
             </div>
             <div class="describe-cont">
                 <p><#if houseDetail.houseDesc?exists>${houseDetail.houseDesc}<#else>暂无</#if></p>
@@ -201,14 +197,16 @@
         </#if>
         <ul class="tilelist row">
             <li>
-                <div class="picture-box">
-                    <#assign item=houseDetail['plotPhoto']>
-                    <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"></#if>
-                </div>
-                <div class="tilelist-content">
-                    <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else>暂无</#if></h4>
-                    <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else>暂无</#if></p>
-                </div>
+                <a href="#">
+                    <div class="picture-box">
+                        <#assign item=houseDetail['plotPhoto']>
+                        <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"></#if>
+                    </div>
+                    <div class="tilelist-content">
+                        <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else>暂无</#if></h4>
+                        <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else>暂无</#if></p>
+                    </div>
+                </a>
             </li>
         </ul>
     </section>
@@ -220,117 +218,111 @@
         <#if houseDetail.newcode?exists>
             <div class="module-header-message">
                 <h3>配套地图</h3>
-                <a href="/getProjHouseMapDetail?newcode=${houseDetail.newcode}" class="more-arrows">配套详情<i
-                        class="arrows-right"></i></a>
+                <a href="/getProjHouseMapDetail?newcode=${houseDetail.newcode}" class="more-arrows"><i class="arrows-right"></i></a>
             </div>
         </#if>
         <a href="#" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
-                     alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16" alt="">
             <#else >
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16"
-                     alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
         </a>
     </section>
 </div>
 </#if>
 <#if plot?exists>
-        <div class="module-bottom-fill">
-            <section>
-                <div class="module-header-message">
-                    <h3>附近好房</h3>
-                </div>
-                <ul class="tilelist">
-                    <#list plot as map>
-                        <li>
-                            <#if map.houseId?exists>
-                            <a href="/queryByHouseIdandLocation/${map.houseId}">
-                            <#else>
-                            <a href="#">
-                            </#if>
-                            <div class="picture-box">
-                                <#if map['housePhoto']?exists>
-                                    <#assign item=map['housePhoto']>
-                                    <#if item[0]?exists>
-                                        <img src="${item[0]}"
-                                             alt="">
-                                    </#if>
-                                    <#else >
-                                        <img  src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产">
-                                </#if>
-                            </div>
-                            <div class="tilelist-content">
-                                <p class="cont-first">
-                                    <em>
-                                        <#if map.houseTotalPrices?exists>
-                                            <#if map.houseTotalPrices==0>
-                                            </#if>
-                                        <#else>
-                                        ${map.houseTotalPrices}万|
-                                        </#if>
-                                        <#if map.buildArea?exists&&(map.buildArea>0)>
-                                        ${map.buildArea}㎡|
-                                        </#if>
-                                        <#if map.room?exists&&map.hall?exists>
-                                        ${map.room}室${map.hall}厅
-                                        <#else>
-                                        </#if>
-                                    </em>
-                                </p>
-                                <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
-                            </div>
-                        </a>
-                        </li>
-                    </#list>
-                </ul>
-            </section>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>附近好房</h3>
         </div>
+        <ul class="tilelist">
+            <#list plot as map>
+                <li>
+                    <#if map.houseId?exists>
+                    <a href="/queryByHouseIdandLocation/${map.houseId}">
+                    <#else>
+                    <a href="#">
+                    </#if>
+                    <div class="picture-box">
+                        <#if map['housePhoto']?exists>
+                            <#assign item=map['housePhoto']>
+                            <#if item[0]?exists><img src="${item[0]}" alt="">
+                                <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                        </#if>
+                    </div>
+                    <div class="tilelist-content">
+                        <p class="cont-first">
+                            <em>
+                                <#if map.houseTotalPrices?exists>
+                                    <#if map.houseTotalPrices==0>
+                                    </#if>
+                                <#else>
+                                ${map.houseTotalPrices}万|
+                                </#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>
+                                ${map.buildArea}㎡|
+                                </#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                ${map.room}室${map.hall}厅
+                                <#else>
+                                </#if>
+                            </em>
+                        </p>
+                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
+                    </div>
+                </a>
+                </li>
+            </#list>
+        </ul>
+    </section>
+</div>
 </#if>
 <#if plotList?exists>
-        <section>
-            <div class="module-header-message">
-                <h3>附近小区</h3>
-            </div>
-            <ul class="tilelist">
-                <#list plotList as plotInfo>
-                    <li>
-                        <#if plotInfo['id']?exists>
-                        <a href="/villageDetail?id=${plotInfo['id']}">
-                        <#else >
-                        <a href="#">
-                        </#if>
-                        <div class="picture-box">
-                            <#if plotInfo['photo']?exists>
-                                <#assign plotImage=plotInfo['photo'] >
-                                    <#if plotImage[0]?exists>
-                                        <img src="${qiniuimage}/${plotImage[0]}" alt="">
-                                    </#if >
-                            </#if>
-                        </div>
-                        <div class="tilelist-content">
-                            <#if plotInfo['rc']?exists>
-                                <h4 class="cont-first">${plotInfo.rc}</h4>
-                            </#if>
-                            <#if plotInfo['avgPrice']?exists>
-                                <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
-                            </#if>
-                        </div>
-                    </a></li>
-                </#list>
-            </ul>
-        </section>
+<section>
+    <div class="module-header-message">
+        <h3>附近小区</h3>
+    </div>
+    <ul class="tilelist">
+        <#list plotList as plotInfo>
+            <li>
+                <#if plotInfo['id']?exists>
+                <a href="/villageDetail?id=${plotInfo['id']}">
+                <#else >
+                <a href="#">
+                </#if>
+                <div class="picture-box">
+                    <#if plotInfo['photo']?exists>
+                        <#assign plotImage=plotInfo['photo'] >
+                        <#if plotImage[0]?exists><img src="${qiniuimage}/${plotImage[0]}" alt="">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if >
+                    </#if>
+                </div>
+                <div class="tilelist-content">
+                    <#if plotInfo['rc']?exists>
+                        <h4 class="cont-first">${plotInfo.rc}</h4>
+                    </#if>
+                    <#if plotInfo['avgPrice']?exists>
+                        <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                    </#if>
+                </div>
+            </a></li>
+        </#list>
+    </ul>
+</section>
 </#if>
 <#if houseDetail.houseProxyPhone?exists>
-        <div class="detail-contact-wrapper">
-            <section class="detail-contact-box" id="detailContactState">
-                <div class="detail-contact-content">
-                    <a href="tel:${houseDetail.houseProxyPhone}" class="contact-telephone-counseling">咨询经纪人</a>
-                </div>
-            </section>
+<div class="detail-contact-wrapper">
+    <section class="detail-contact-box" id="detailContactState">
+        <div class="detail-contact-content">
+            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
         </div>
+    </section>
+</div>
 </#if>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>

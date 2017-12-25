@@ -138,11 +138,11 @@ $detailBorderColor: #e1e1e1;
         margin-bottom: rem(20);
         
         &.odd-item {
-            width: rem(390);
+            width: 56%;
         }
         
         &.even-item {
-            width: rem(290);
+            width: 41%;
             padding-left: rem(10);
             @include box-sizing;
         }
@@ -276,6 +276,8 @@ $detailBorderColor: #e1e1e1;
 
     .house-labelling {
         margin-top: rem(36);
+        overflow-x: scroll;
+        text-overflow: clip;
     }
 
     .plot-primary-map-box {
@@ -608,7 +610,7 @@ $detailBorderColor: #e1e1e1;
 .detail-map {
     position: relative;
     display: block;
-    padding: rem(40) 0;
+    padding: 0 0 rem(40);
 
     img {
         width: 100%;
