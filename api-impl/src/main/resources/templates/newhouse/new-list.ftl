@@ -31,8 +31,8 @@
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
                 <ul id="level1" class="nav" data-mark="level1">
-                    <li data-page="0" onclick="showOnlyDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
+                    <li id="district-option">区域</li>
+                    <li id="subway-option">地铁</li>
                 </ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
@@ -84,10 +84,10 @@
                 <dl>
                     <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -214,5 +214,6 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js?version=123"></script>
+<script src="${staticurl}/js/list-link.js"></script>
 </body>
 </html>
