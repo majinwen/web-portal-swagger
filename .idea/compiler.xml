@@ -21,6 +21,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="mbg" target="1.8" />
+      <module name="web-parent" target="1.8" />
       <module name="web-portal" target="1.8" />
       <module name="web.api" target="1.8" />
       <module name="web.api-impl" target="1.8" />
