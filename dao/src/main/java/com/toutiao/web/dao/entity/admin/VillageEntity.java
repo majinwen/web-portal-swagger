@@ -42,6 +42,7 @@ public class VillageEntity {
     private String property;  //物业公司
     private String propertyFee;  //物业费
     private String propertyType;  //物业类型
+    private String propertyTypeName;  //物业类型名称
     private String yopr;  //产权年限
     private String[] architectureTypeId;  //建筑类型编号
     private String[] architectureType;  //建筑类型
@@ -57,8 +58,13 @@ public class VillageEntity {
     private Double dimension;  //容积率
     private String airQuality;  //空气质量
     private String electricSupply;  //供电
+    private String electricFee;  //电费
     private String waterSupply;  //供水
+    private String waterFee;  //水费s
     private String decorationType;  //装修标准
+    private String ringRoadName;  //详情环线
+    private String ringRoadDistance;  //详情环线距离
+
 
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数

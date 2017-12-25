@@ -22,7 +22,7 @@
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
         <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
-        <#--<li data-mark="tab-type"><span><em>户型</em><i></i></span></li>-->
+    <#--<li data-mark="tab-type"><span><em>户型</em><i></i></span></li>-->
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none"></div>
@@ -53,21 +53,21 @@
             </div>
         </div>
         <!-- 户型 -->
-        <#--<div class="filter-item" data-mark="panel-type">-->
-            <#--<div class="type-list">-->
-                <#--<ul>-->
-                    <#--<li class="current" data-type="0">不限</li>-->
-                    <#--<li data-type="1">一居 <i></i></li>-->
-                    <#--<li data-type="2">二居 <i></i></li>-->
-                    <#--<li data-type="3">三居 <i></i></li>-->
-                    <#--<li data-type="4">四居 <i></i></li>-->
-                    <#--<li data-type="5">五居及五居以上 <i></i></li>-->
-                <#--</ul>-->
-                <#--<div class="submit-wrapper">-->
-                    <#--<a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>-->
-                <#--</div>-->
-            <#--</div>-->
-        <#--</div>-->
+    <#--<div class="filter-item" data-mark="panel-type">-->
+    <#--<div class="type-list">-->
+    <#--<ul>-->
+    <#--<li class="current" data-type="0">不限</li>-->
+    <#--<li data-type="1">一居 <i></i></li>-->
+    <#--<li data-type="2">二居 <i></i></li>-->
+    <#--<li data-type="3">三居 <i></i></li>-->
+    <#--<li data-type="4">四居 <i></i></li>-->
+    <#--<li data-type="5">五居及五居以上 <i></i></li>-->
+    <#--</ul>-->
+    <#--<div class="submit-wrapper">-->
+    <#--<a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>-->
+    <#--</div>-->
+    <#--</div>-->
+    <#--</div>-->
         <!-- 更多 -->
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
@@ -106,17 +106,17 @@
                         <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
-                <#--<dl>-->
-                    <#--<dt data-type="saleType">销售状态</dt>-->
-                    <#--<dd>-->
-                        <#--<span data-info="1">售完</span>-->
-                        <#--<span data-info="2">在售</span>-->
-                        <#--<span data-info="3">不在售</span>-->
-                        <#--<span data-info="4">出租</span>-->
-                        <#--<span data-info="4">待租</span>-->
-                        <#--<span data-info="4">待售</span>-->
-                    <#--</dd>-->
-                <#--</dl>-->
+            <#--<dl>-->
+            <#--<dt data-type="saleType">销售状态</dt>-->
+            <#--<dd>-->
+            <#--<span data-info="1">售完</span>-->
+            <#--<span data-info="2">在售</span>-->
+            <#--<span data-info="3">不在售</span>-->
+            <#--<span data-info="4">出租</span>-->
+            <#--<span data-info="4">待租</span>-->
+            <#--<span data-info="4">待售</span>-->
+            <#--</dd>-->
+            <#--</dl>-->
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
@@ -173,18 +173,19 @@
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
                                     <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
+                                    <p class="cont-block-3 distance"><i
+                                            class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
                                 <#else>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             <#else>
                                 <#if plot['tradingArea']?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             </#if>
                         <#else>
                             <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                             </#if>
                         </#if>
                         <div class="cont-block-4">
@@ -192,7 +193,9 @@
                                 <#assign item =  plot['label']>
                                 <#list item as itemValue>
                                     <#if itemValue?exists>
-                                        <span>${itemValue}</span>
+                                        <#if itemValue_index==0||itemValue_index==1||itemValue_index==2>
+                                            <span>${itemValue}</span>
+                                        </#if>
                                     </#if>
                                 </#list>
                             </#if>

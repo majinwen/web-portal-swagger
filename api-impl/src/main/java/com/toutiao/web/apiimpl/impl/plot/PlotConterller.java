@@ -40,8 +40,9 @@ public class PlotConterller {
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
-        if (villageRequest.getAvgPrice()!=null){
-            model.addAttribute("sort",Integer.parseInt(villageRequest.getAvgPrice()));
+        if (villageRequest.getSort()!=null){
+            model.addAttribute("sort",Integer.parseInt(villageRequest.getSort()));
+            villageRequest.setAvgPrice(villageRequest.getSort());
         }else {
             villageRequest.setAvgPrice("0");
             model.addAttribute("sort",0);

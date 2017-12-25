@@ -84,7 +84,7 @@
     </div>
     <ul class="primary-item">
         <li>
-            <p>物业类型：${village['propertyType']!"暂无"}</p>
+            <p>物业类型：${village['propertyTypeName']!"暂无"}</p>
             <p>物业公司：${village['property']!"暂无"}</p>
             <p>物业费：${village['propertyFee']!"暂无"}</p>
             <p>供暖：${village['heatingMode']!"暂无"}</p>
