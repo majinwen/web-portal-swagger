@@ -66,7 +66,7 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                console.log(response.results);
+                // console.log(response.results);
                 var subwayLine = (response.results[0].address).split(';')[0].substring(2);
                 var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
                 $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');

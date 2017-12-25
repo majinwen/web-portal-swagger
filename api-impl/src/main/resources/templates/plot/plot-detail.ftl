@@ -234,7 +234,7 @@
                 <#if village['rc']?exists>${village['rc']}</#if>
                 <#if village['abbreviatedAge']?exists>，<em
                         class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
-                <#if village['sumBuilding']?exists>共<em class="high-light-red">，${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumBuilding']?exists>，共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
                         ，${village['sumHousehold']}户
@@ -296,24 +296,24 @@
         <div class="basic-information">
             <div class="column item-column-three">
             <#if village['metroWithPlotsDistance']?exists>
-                    <div class="info-card-item">
-                        <i class="item-three-1"></i>
-                        <em>公交</em>
-                        <p id="busStation">暂无</p>
-                        <span id="busStationNumber">暂无</span>
-                    </div>
-                    <div class="info-card-item">
-                        <i class="item-three-2"></i>
-                        <em>地铁</em>
-                        <p id="subwayLine">暂无</p>
-                        <span id="subwayDistance">暂无</span>
-                    </div>
+                <div class="info-card-item">
+                    <i class="item-three-1"></i>
+                    <em>公交</em>
+                    <p id="busStation">暂无</p>
+                    <span id="busStationNumber">暂无</span>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-three-2"></i>
+                    <em>地铁</em>
+                    <p id="subwayLine">暂无</p>
+                    <span id="subwayDistance">暂无</span>
+                </div>
             </#if>
                 <div class="info-card-item">
                     <i class="item-three-3"></i>
                     <em>自驾</em>
-                    <p>三环主路</p>
-                    <span>暂无</span>
+                    <p>${village['ringRoadName']!'暂无'}</p>
+                    <span>${village['ringRoadDistance']!'暂无'}</span>
                 </div>
             </div>
         </div>
@@ -491,7 +491,7 @@
 </div>
 <script>
     var locationnumber = '${village['location']}';
-    var mapBaiduNumber = locationnumber.split(",").indexOf(1)+locationnumber.split(",").indexOf(0)
+    var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
 </script>
 <section>
     <div class="module-header-message">
@@ -502,8 +502,9 @@
         <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']!''}">
             <div class="picture-box">
                 <#assign imglist = builditem['building_imgs']>
-                <#if imglist?exists>
-                    <img src="${qiniuimage}/${imglist?split(",")[0]!''}" alt="${imglist?split(",")[0]!''}">
+                <#if imglist?exists&&imglist!="">
+                        <img src="${qiniuimage}/${imglist?split(",")[0]}" alt="${imglist?split(",")[0]}">
+                    <#else>
                 </#if>
             </div>
             <div class="tilelist-content">
@@ -533,7 +534,6 @@
 </div>
 
 <!-------- photoswipe -------->
-
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>

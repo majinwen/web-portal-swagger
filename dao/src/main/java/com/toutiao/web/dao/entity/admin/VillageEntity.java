@@ -60,7 +60,7 @@ public class VillageEntity {
     private String electricSupply;  //供电
     private String electricFee;  //电费
     private String waterSupply;  //供水
-    private String waterFee;  //水费s
+    private String waterFee;  //水费
     private String decorationType;  //装修标准
     private String ringRoadName;  //详情环线
     private String ringRoadDistance;  //详情环线距离
