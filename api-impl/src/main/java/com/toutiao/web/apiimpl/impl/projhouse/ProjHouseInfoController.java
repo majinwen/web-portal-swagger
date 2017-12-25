@@ -53,7 +53,7 @@ public class ProjHouseInfoController {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(),Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }
@@ -69,26 +69,31 @@ public class ProjHouseInfoController {
 
     /**
      * 二手房配套地图
+     *
      * @return
      */
     @RequestMapping("/getProjHouseMapDetail")
-    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
-
+    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
 
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
-        ProjHouseInfoResponse build = (ProjHouseInfoResponse)list.get(0);
+        if (list != null && list.size() > 0) {
+            ProjHouseInfoResponse build = (ProjHouseInfoResponse) list.get(0);
+            build.setLocation(build.getHousePlotLocation());
 
+            model.addAttribute("build", build);
+            return "map";
+        }
+        ProjHouseInfoResponse build = new ProjHouseInfoResponse();
+        build.setNewcode(Integer.valueOf(projHouseInfoQuery.getNewcode()));
+        build.setLocation("39.913329,116.382001");
 
-        build.setLocation(build.getHousePlotLocation());
-
-        model.addAttribute("build",build);
+        model.addAttribute("build", build);
 
         return "map";
 
     }
-
 
 
     /**
@@ -114,7 +119,7 @@ public class ProjHouseInfoController {
         } else {
             model.addAttribute("sort", 0);
         }
-        model.addAttribute("searchType","projhouse");
+        model.addAttribute("searchType", "projhouse");
         return "esf/esf-list";
 
     }
@@ -153,12 +158,12 @@ public class ProjHouseInfoController {
 
             model.addAttribute("builds", queryBySearchBox);
             model.addAttribute("text", text);
-            model.addAttribute("searchType","projhouse");
+            model.addAttribute("searchType", "projhouse");
 
         } else {
             model.addAttribute("message", "没有该相应的数据信息");
             model.addAttribute("text", text);
-            model.addAttribute("searchType","projhouse");
+            model.addAttribute("searchType", "projhouse");
         }
         return "esf/esf-list";
     }
