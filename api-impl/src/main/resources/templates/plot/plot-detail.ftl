@@ -118,15 +118,21 @@
                 </a></li>
             </#list>
                         <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
-                        <p class="bottom-text">${reitem['houseArea']}㎡</p>
+                        <p class="bottom-text">
+                        <#if reitem['houseArea']??>${reitem['houseArea']}㎡
+                        <#else >
+                            暂无
+                        </#if></p>
                     </div>
                     <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>${reitem.houseTotalPrices}
-                            万</em>/${reitem.houseOrientation}/${reitem.houseType}室</p>
+                        <p class="cont-first text-center"><em>
+                            <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
+                            <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
+                            <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p >
                     </div>
                 </a></li>
             </#list>
-            </#if>
+
         </ul>
     </section>
 </div>
@@ -201,16 +207,17 @@
         <div class="basic-information">
             <div class="column item-only-one">
                 <div class="info-card-item">
-                <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
-                <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                <#if village['sumHousehold']?exists>
-                <#if village['sumHousehold']?number gt 0>
-                    （${village['sumHousehold']}户）
-                </#if>
-                <#if village['buildingStructure']?exists>
-                    ，${village['buildingStructure']}
-                </#if>
+                    <#if village['rc']?exists>${village['rc']}</#if>
+                    <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
+                    <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                    <#if village['sumHousehold']?exists>
+                        <#if village['sumHousehold']?number gt 0>
+                            （${village['sumHousehold']}户）
+                        </#if>
+                        <#if village['buildingStructure']?exists>
+                            ，${village['buildingStructure']}
+                        </#if>
+                    </#if>
                 </div>
             </div>
             <div class="column item-column-two">
