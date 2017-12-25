@@ -23,8 +23,8 @@
 <#if build['location']?exists>
     <#assign locations = build['location']?split(",")>
 <div class="map-container" id="mapContainer" data-mapx="${locations[1]}" data-mapy="${locations[0]}" data-cnname="富尔大厦"></div>
-<#else ><div class="map-container" id="mapContainer" data-mapx="116.467001" data-mapy="39.920542" data-cnname="富尔大厦"></div>
-</#if><#else><div class="map-container" id="mapContainer" data-mapx="116.467001" data-mapy="39.920542" data-cnname="富尔大厦"></div>
+<#else ><div class="map-container" id="mapContainer" data-mapx="${locations[1]}" data-mapy="${locations[0]}" data-cnname="富尔大厦"></div>
+</#if><#else><div class="map-container" id="mapContainer" data-mapx="${locations[1]}" data-mapy="${locations[0]}" data-cnname="富尔大厦"></div>
 </#if>
 <div class="type-result-box">
     <div class="results-panel-box">
