@@ -1,6 +1,11 @@
 $(function () {
     var req = GetRequest();
 
+    console.log(req);
+
+    console.log(joinParams(req));
+
+
     $('#category-tab').on('click','li', function () {
         var $dom = getDataDom($(this),'panel');
         $(this).toggleClass('current').removeClass('choose').siblings().removeClass('current');
@@ -290,4 +295,18 @@ $(function () {
         return theRequest;
     };
 
+    function joinParams(req) {
+        var targetUrl = '';
+        for (var key in req) {
+            if (req[key]) {
+                targetUrl += '&' + key + "=" + req[key];
+            }
+        }
+
+        if (targetUrl.length > 1) {
+            targetUrl = '?' + targetUrl.substring(1);
+        }
+
+        return targetUrl;
+    }
 });
