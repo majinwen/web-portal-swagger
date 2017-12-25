@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:c="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
-    <title>登录页</title>
+    <title>筛选</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
 </head>
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="section page2 active">
+    <div class="section page2">
         <div class="bgbox bg2">
             <div class="page-content">
                 <h2>请选择程序关键词</h2>
@@ -67,8 +67,24 @@
     <div class="section page3">
 3
     </div>
-    <div class="section page4">
-4
+    <div class="section page4 active">
+        <div class="bgbox bg4">
+            <div class="page-content">
+                <div class="user-header-box">
+                    <div class="user-line-triangle"></div>
+                    <img src="/static/images/intelligent/user-header.png" alt="用户头像">
+                </div>
+                <div class="word-cont">
+                    <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
+                    <ol>
+                        <li>-    尽量离交通站近，睡多一点</li>
+                        <li>-    餐饮便利，到家能吃口热饭</li>
+                        <li>-    有休闲地儿，周末看场大片</li>
+                    </ol>
+                </div>
+                <button type="button" class="button">开始体验</button>
+            </div>
+        </div>
     </div>
 </div>
 

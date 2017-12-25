@@ -197,3 +197,78 @@ $inteBorderBlack: #000;
         }
     }
 }
+
+.page4 {
+    .bg4 {
+        @include bg-image('/static/images/intelligent/znzf_user_bg');
+        background-repeat: repeat-y;
+        background-position: center;
+        -webkit-background-size: contain;
+        background-size: contain;
+    }
+
+    .user-header-box {
+        position: relative;
+        width: rem(349);
+        height: rem(349);
+        padding: rem(14);
+        margin: rem(90) auto 0;
+        @include box-sizing;
+
+        &:before, &:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: rem(22);
+            height: rem(22);
+            border-left: rem(2) solid $inteBorderRed;
+            @include box-sizing;
+        }
+
+        &:before {
+            top: 0;
+            border-top: rem(2) solid $inteBorderRed;
+        }
+
+        &:after {
+            bottom: 0;
+            border-bottom: rem(2) solid $inteBorderRed;
+        }
+
+        .user-line-triangle {
+            &:before, &:after {
+                content: '';
+                position: absolute;
+                right: 0;
+                width: rem(22);
+                height: rem(22);
+                border-right: rem(2) solid $inteBorderRed;
+                @include box-sizing;
+            }
+            &:before {
+                top: 0;
+                border-top: rem(2) solid $inteBorderRed;
+            }
+            &:after {
+                bottom: 0;
+                border-bottom: rem(2) solid $inteBorderRed;
+            }
+        }
+
+        img {
+            width: rem(320);
+            height: rem(320);
+        }
+    }
+
+    .word-cont {
+        width: rem(432);
+        margin: rem(74) auto 0;
+        line-height: rem(48);
+        text-align: justify;
+
+        ol {
+            margin-top: rem(30);
+        }
+    }
+}
