@@ -1,9 +1,9 @@
 $(function () {
-    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     $.ajax({
         type: 'GET',
         url: educationUrl,
@@ -88,7 +88,7 @@ $('.map-message-btn').on('click', 'li', function () {
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
     }
-    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     $.ajax({
         type: 'GET',
         url: url,
