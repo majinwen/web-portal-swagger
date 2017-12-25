@@ -54,7 +54,7 @@ public class ProjHouseInfoController {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(),Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }
@@ -70,11 +70,12 @@ public class ProjHouseInfoController {
 
     /**
      * 二手房配套地图
-     *
      * @return
      */
     @RequestMapping("/getProjHouseMapDetail")
-    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
+    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
+
+
 
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
@@ -87,6 +88,8 @@ public class ProjHouseInfoController {
         return "map";
 
     }
+
+
 
 
     /**
