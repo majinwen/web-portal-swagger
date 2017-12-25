@@ -74,6 +74,8 @@ public class ProjHouseInfoController {
     @RequestMapping("/getProjHouseMapDetail")
     public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
 
+
+
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         ProjHouseInfoResponse build = (ProjHouseInfoResponse)list.get(0);
