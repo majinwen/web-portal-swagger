@@ -1,10 +1,6 @@
+var req = GetRequest();
+
 $(function () {
-    var req = GetRequest();
-
-    console.log(req);
-
-    console.log(joinParams(req));
-
 
     $('#category-tab').on('click','li', function () {
         var $dom = getDataDom($(this),'panel');
@@ -12,20 +8,24 @@ $(function () {
         $dom.toggleClass('active').siblings().removeClass('active');
 
         if ($dom.hasClass('active')) {
-            if ($('#level2').is(':hidden') && $dom.attr('data-mark') == 'panel-place'){
-
-                //有区域条件
-                if (req['districtId']) {
-                    $dom.find('#level1').children().eq(0).addClass('current');
-                    showDistrict(req['districtId'], req['areaId']);
-                }
-
-                //有线路条件
-                if (req['subwayLineId']) {
-                    $dom.find('#level1').children().eq(1).addClass('current');
-                    showSubway(req['subwayLineId'], req['subwayStationId']);
-                }
+            if ($('#level2').is(':hidden') && $dom.attr('data-mark') == 'panel-place') {
+                $('#level1').find('li').removeClass('current');
+                $('#district-option').addClass('current');
+                showDistrict();
             }
+        }
+        //有区域条件
+        if (req['districtId']) {
+            $('#level1').find('li').removeClass('current');
+            $('#district-option').addClass('current');
+            showDistrict(req['districtId'], req['areaId']);
+        }
+
+        //有线路条件
+        if (req['subwayLineId']) {
+            $('#level1').find('li').removeClass('current');
+            $('#subway-option').addClass('current');
+            showSubway(req['subwayLineId'], req['subwayStationId']);
         }
         if ($('#category-tab').find('.current').length <= 0) {
             $('.global-mark').addClass('none');
@@ -75,7 +75,7 @@ $(function () {
                 $('.price-list li').removeClass('current');
                 $(this).addClass('current');
 
-                $('li[data-mark="tab-price"]').addClass('current').find('em').html($(this).html());
+                $('li[data-mark="tab-price"]').addClass('choose').find('em').html($(this).html());
             }
         });
     };
@@ -95,9 +95,9 @@ $(function () {
                     $(this).addClass('current');
 
                     if (layoutArray.length > 1) {
-                        $('li[data-mark="tab-type"]').addClass('current').find('em').html('多选');
+                        $('li[data-mark="tab-type"]').addClass('choose').find('em').html('多选');
                     } else {
-                        $('li[data-mark="tab-type"]').addClass('current').find('em').html($(this).html());
+                        $('li[data-mark="tab-type"]').addClass('choose').find('em').html($(this).html());
                     }
                 }
             });
@@ -109,37 +109,14 @@ $(function () {
      * 物业类型筛选--多选
      */
     if (req['propertyTypeId']) {
-
-        var propertyTypeArray = req['propertyTypeId'].split(',');
-
-        $('dt[data-type="propertyTypeId"]').next('dd').find('span').removeClass('current');
-        $.each(propertyTypeArray, function (index, item) {
-
-            $('dt[data-type="propertyTypeId"]').next('dd').find('span').each(function () {
-                if (item == $(this).data('info')) {
-                    $(this).addClass('current');
-                }
-            });
-        });
+        moreOption('propertyTypeId');
     };
 
     /**
      * 面积筛选---多选
      */
     if (req['houseAreaSize']) {
-
-        var houseAreaArray = req['houseAreaSize'].split(',');
-
-        $('dt[data-type="houseAreaSize"]').next('dd').find('span').removeClass('current');
-        $.each(houseAreaArray, function (index, item) {
-
-            $('dt[data-type="houseAreaSize"]').next('dd').find('span').each(function () {
-
-                if (item == $(this).data('info')) {
-                    $(this).addClass('current');
-                }
-            });
-        });
+        moreOption('houseAreaSize');
     };
 
     /**
@@ -159,71 +136,32 @@ $(function () {
      * 建筑类型---多选
      */
     if (req['buildingType']) {
-        var buildingTypeArray = req['buildingType'].split(',');
 
-        $('dt[data-type="buildingType"]').next('dd').find('span').removeClass('current');
-        $.each(buildingTypeArray, function (index, item) {
-
-            $('dt[data-type="buildingType"]').next('dd').find('span').each(function () {
-                if (item == $(this).data('info')) {
-                    $(this).addClass('current');
-                }
-            });
-        });
+        moreOption('buildingType');
     };
 
     /**
      * 销售状态筛选---多选
      */
     if (req['saleType']) {
-        var saleTypeArray = req['saleType'].split(',');
 
-        $('dt[data-type="saleType"]').next('dd').find('span').removeClass('current');
-        $.each(saleTypeArray, function (index, item) {
-
-            $('dt[data-type="saleType"]').next('dd').find('span').each(function () {
-                if (item == $(this).data('info')) {
-                    $(this).addClass('current');
-                }
-            });
-        });
+        moreOption('saleType');
     };
 
     /**
      * 楼盘特色筛选---多选
      */
     if (req['buildingFeature']) {
-        var buildingFeatureArray = req['buildingFeature'].split(',');
 
-        $('dt[data-type="buildingFeature"]').next('dd').find('span').removeClass('current');
-        $.each(buildingFeatureArray, function (index, item) {
-
-            $('dt[data-type="buildingFeature"]').next('dd').find('span').each(function () {
-                if (item == $(this).data('info')) {
-                    $(this).addClass('current');
-                }
-            });
-        });
+        moreOption('buildingFeature');
     };
 
     /**
      * 装修标准筛选---多选
      */
     if (req['deliverStyle']) {
-        var deliverStyleArray = req['deliverStyle'].split(',');
-
-        $('dt[data-type="deliverStyle"]').next('dd').find('span').removeClass('current');
-        $.each(deliverStyleArray, function (index, item) {
-
-            $('dt[data-type="deliverStyle"]').next('dd').find('span').each(function () {
-                if (item == $(this).data('info')) {
-                    $(this).addClass('current');
-                }
-            });
-        });
+        moreOption('deliverStyle');
     };
-
-
 
     /**
      * 区域商圈处理
@@ -248,7 +186,7 @@ $(function () {
                 }
             }
 
-            $('li[data-mark="tab-place"]').addClass('current').find('em').html(_circleName?_circleName:_districtName);
+            $('li[data-mark="tab-place"]').addClass('choose').find('em').html(_circleName?_circleName:_districtName);
         });
     };
 
@@ -266,8 +204,6 @@ $(function () {
                 if (_subwayLineId == subwayList[i].subwayid) {
                     _subwayLineName = subwayList[i].name;
                     _station = subwayList[i].children;
-
-                    console.log(_station);
                 }
             }
 
@@ -277,36 +213,248 @@ $(function () {
                 }
             }
 
-            $('li[data-mark="tab-place"]').addClass('current').find('em').html(_subwayStationName?_subwayStationName:_subwayLineName);
+            $('li[data-mark="tab-place"]').addClass('choose').find('em').html(_subwayStationName?_subwayStationName:_subwayLineName);
         });
-    }
-
-    function GetRequest() {
-        var url = location.search; //获取url中"?"符后的字串
-        var theRequest = new Object();
-        if (url.indexOf("?") != -1) {
-            var str = url.substr(1);
-            var strArray = str.split("&");
-
-            for (var i in strArray) {
-                theRequest[strArray[i].split("=")[0]]=(strArray[i].split("=")[1]);
-            }
-        }
-        return theRequest;
     };
 
-    function joinParams(req) {
-        var targetUrl = '';
-        for (var key in req) {
-            if (req[key]) {
-                targetUrl += '&' + key + "=" + req[key];
-            }
-        }
+    /**
+     * 更多筛选项处理
+     * @param optionType
+     */
+    function moreOption(optionType) {
+        $('#category-tab').find('li[data-mark="tab-more"]').addClass('choose').find('em').text('多选');
 
-        if (targetUrl.length > 1) {
-            targetUrl = '?' + targetUrl.substring(1);
-        }
+        var moreOptionArray = req[optionType].split(',');
 
-        return targetUrl;
+        $('dt[data-type="' + optionType + '"]').next('dd').find('span').removeClass('current');
+        $.each(moreOptionArray, function (index, item) {
+
+            $('dt[data-type="' + optionType + '"]').next('dd').find('span').each(function () {
+                if (item == $(this).data('info')) {
+                    $(this).addClass('current');
+                }
+            });
+        });
     }
 });
+
+/**
+ * 选中区域条件
+ * @param districtid
+ * @param e
+ */
+function submitDirstrict(districtid,e) {
+    if (districtid) {
+        req['subwayLineId'] = null;
+        req['subwayStationId'] = null;
+        req['areaId'] = null;
+    }
+    req['districtId'] = districtid;
+    var params = joinParams(req);
+    url = BaseUrl + params;
+    tabTextReplace(e);
+    $.get(url, function () {
+        location.href=url;
+    });
+}
+/**
+ * 筛选商圈条件
+ * @param districtid
+ * @param areaId
+ * @param e
+ */
+function submitBussiness(districtid,areaId,e) {
+    if (districtid) {
+        req['subwayLineId'] = null;
+        req['subwayStationId'] = null;
+    }
+    req['districtId'] = districtid;
+    req['areaId'] = areaId;
+    params = joinParams(req);
+    url = BaseUrl + params;
+    tabTextReplace(e);
+    $.get(url, function () {
+        location.href=url;
+    });
+};
+
+//区域不限
+function submitPlace(e) {
+    req['areaId'] = null;
+    req['districtId'] = null;
+    params = joinParams(req);
+    url = BaseUrl + params;
+    tabTextReplace(e,'区域');
+    $.get(url, function () {
+        location.href=url;
+    });
+}
+
+/*
+ * 提交选中地铁线路
+ * 站点为不限
+ * */
+function submitSubwayLine(subwayid,e) {
+
+    if (subwayid) {
+        req['districtId'] = null;
+        req['areaId'] = null;
+        req['subwayStationId'] = null;
+    }
+   req['subwayLineId']=subwayid
+    params = joinParams(req);
+    url = BaseUrl + params;
+    tabTextReplace(e);
+    $.get(url, function () {
+        location.href = url;
+    });
+};
+
+
+/*
+ * 提交选中地铁站点
+ * */
+function submitStation(subwayid, subwayStationId, e) {
+    if (subwayid) {
+        req['districtId'] = null;
+        req['areaId'] = null;
+    }
+    req['subwayLineId']=subwayid
+    req['subwayStationId']=subwayStationId
+    params = joinParams(req);
+    url = BaseUrl + params;
+
+    tabTextReplace(e,url);
+    $.get(url, function () {
+        location.href = url;
+    });
+};
+
+
+//地铁不限
+function submitSubway(e) {
+    req['subwayLineId'] = null;
+    req['subwayStationId'] = null;
+    params = joinParams(req);
+    url = BaseUrl + params;
+    tabTextReplace(e,'地铁');
+    $.get(url, function () {
+        location.href=url;
+    });
+};
+
+
+//价格
+$('.price-list').on('click','li', function (e) {
+    $(this).addClass('current').siblings().removeClass('current');
+    var beginPrice = $(this).attr('data-begin-price'),
+        endPrice = $(this).attr('data-end-price');
+    if(beginPrice!=""||endPrice!=""){
+        req['beginPrice']= beginPrice ;
+        req['endPrice']=endPrice;
+    }else if (beginPrice==""||endPrice==""){
+        req['beginPrice']= null;
+        req['endPrice']= null;
+    }
+    params = joinParams(req);
+    url = BaseUrl + params;
+    tabTextReplace(e,$(this).text());
+    $.get(url, function () {
+        location.href = url;
+    });
+});
+
+//户型提交
+$('#typeSubmit').on('click', function (e) {
+    submitClickState = true;
+    var layoutText = $('.type-list').find('li.current').text(),
+        chooseType = $('.type-list').find('li.current'),
+        layoutTextArr = [];
+
+    if (layoutText == '不限') {
+        tabTextReplace(e,layoutText);
+        params = joinParams(req);
+        url = BaseUrl + params;
+        $.get(url, function () {
+            location.href=url;
+        });
+        return;
+    }
+
+    for (var i = 0; i < chooseType.length; i++) {
+        layoutTextArr.push(chooseType[i].dataset['type']);
+    }
+
+    if (layoutTextArr.length > 1) {
+        tabTextReplace(e,'多选');
+    } else {
+        tabTextReplace(e,layoutText);
+    }
+
+    req['layoutId']=layoutTextArr.join(',');
+    params = joinParams(req);
+    url = BaseUrl + params;
+    $.get(url, function () {
+        location.href = url;
+    });
+});
+
+//更多筛选提交
+$('#moreSubmit').on('click', function (e) {
+    var domList = $('.more-list').find('dl');
+
+    $(domList).each(function () {
+        var dataType = $(this).find('dt').attr('data-type'),
+            dataTypeArr = $(this).find('.current'),
+            arr = [];
+        if (dataTypeArr.length) {
+            $(dataTypeArr).each(function () {
+                arr.push($(this).attr('data-info'));
+            });
+            console.log(arr.join());
+            console.log(dataType);
+            req[dataType]= arr.join().toString();
+        }
+    });
+
+    if ($('.more-list').find('.current').length > 0) {
+        tabTextReplace(e, '多选')
+    } else {
+        tabTextReplace(e, '更多');
+        $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
+    }
+    params = joinParams(req);
+    url = BaseUrl + params;
+    $.get(url, function () {
+        location.href=url;
+    });
+});
+
+function GetRequest() {
+    var url = location.search; //获取url中"?"符后的字串
+    var theRequest = new Object();
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        var strArray = str.split("&");
+
+        for (var i in strArray) {
+            theRequest[strArray[i].split("=")[0]]=(strArray[i].split("=")[1]);
+        }
+    }
+    return theRequest;
+};
+
+function joinParams(req) {
+    var targetUrl = '';
+    for (var key in req) {
+        if (req[key]) {
+            targetUrl += '&' + key + "=" + req[key];
+        }
+    };
+
+    if (targetUrl.length > 1) {
+        targetUrl = '?' + targetUrl.substring(1);
+    };
+
+    return targetUrl;
+};

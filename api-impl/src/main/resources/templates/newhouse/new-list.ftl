@@ -218,5 +218,6 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js?version=123"></script>
+<script src="${staticurl}/js/list-link.js"></script>
 </body>
 </html>

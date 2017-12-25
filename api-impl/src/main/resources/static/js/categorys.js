@@ -20,7 +20,7 @@ $('.place-list').on('click','li', function () {
 });
 
 // 价格
-$('.price-list').on('click','li', function (e) {
+/*$('.price-list').on('click','li', function (e) {
     $(this).addClass('current').siblings().removeClass('current');
     var beginPrice = $(this).attr('data-begin-price'),
         endPrice = $(this).attr('data-end-price');
@@ -33,7 +33,7 @@ $('.price-list').on('click','li', function (e) {
     $.get(url, function () {
         location.href = url;
     });
-});
+});*/
 
 // 户型
 $('.type-list').on('click','li', function (e) {
@@ -48,7 +48,7 @@ $('.type-list').on('click','li', function (e) {
 /*
  * 提交选中户型
  * */
-$('#typeSubmit').on('click', function (e) {
+/*$('#typeSubmit').on('click', function (e) {
     submitClickState = true;
     var layoutText = $('.type-list').find('li.current').text(),
         chooseType = $('.type-list').find('li.current'),
@@ -78,7 +78,7 @@ $('#typeSubmit').on('click', function (e) {
     $.get(url, function () {
         location.href = url;
     });
-});
+});*/
 
 // 更多
 $('.more-list').on('click','span', function () {
@@ -91,7 +91,7 @@ $('.more-list').on('click','span', function () {
 /*
  * 更多筛选提交
  * */
-$('#moreSubmit').on('click', function (e) {
+/*$('#moreSubmit').on('click', function (e) {
     var moresubmitUrl = BaseUrl + '?';
     var domList = $('.more-list').children('dl');
     for (var i=0; i < domList.length; i++) {
@@ -114,7 +114,7 @@ $('#moreSubmit').on('click', function (e) {
     }
     console.log(moresubmitUrl.substr(0, moresubmitUrl.length -1));
     location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
-});
+});*/
 /*
  * 更多筛选重置
  * */
@@ -203,28 +203,30 @@ function showBusiness(districtid, circleId) {
 /*
  * 提交选中区域
  * */
-function submitDirstrict(districtid,e,index) {
+/*function submitDirstrict(districtid,e,index) {
     params = '?districtId=' + districtid;
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e);
     location.href=url
     // console.log("quyu")
-   /* $.get(url, function () {
+   /!* $.get(url, function () {
         location.href = url;
-    });*/
-}
+    });*!/
+}*/
 /*
  * 提交选中商圈(区域id及商圈id)
  */
-function submitBussiness(districtid,areaId,e) {
+
+/*function submitBussiness(districtid,areaId,e) {
     params = '?districtId=' + districtid + '&areaId=' + areaId;
     url = BaseUrl + params;
     console.log(url);
 
     tabTextReplace(e);
     location.href=url
-}
+}*/
+
 
 /*
  * 显示地铁线，获取subway json 数据
@@ -302,7 +304,7 @@ function showStation(lineId, stationId) {
  * 提交选中地铁线路
  * 站点为不限
  * */
-function submitSubwayLine(subwayid,e) {
+/*function submitSubwayLine(subwayid,e) {
 
     params = '?subwayLineId=' + subwayid;
     url = BaseUrl + params;
@@ -322,11 +324,11 @@ function submitSubwayLine(subwayid,e) {
     $.get(url, function () {
         location.href = url;
     });
-}
+}*/
 /*
  * 提交选中地铁站点
  * */
-function submitStation(subwayid, subwayStationId, e) {
+/*function submitStation(subwayid, subwayStationId, e) {
     params = '?subwayLineId=' + subwayid + '&subwayStationId=' + subwayStationId;
     url = BaseUrl + params;
     console.log(url);
@@ -335,22 +337,22 @@ function submitStation(subwayid, subwayStationId, e) {
     $.get(url, function () {
         location.href = url;
     });
-}
+}*/
 
 /*
  * 区域不限,更改导航内容
  * */
-function submitPlace(e) {
+/*function submitPlace(e) {
     tabTextReplace(e,'区域');
     location.href=BaseUrl;
-}
+}*/
 /*
  * 地铁不限,更改导航内容
  * */
-function submitSubway(e) {
+/*function submitSubway(e) {
     tabTextReplace(e,'地铁');
     location.href=BaseUrl
-}
+}*/
 /*
  * 替换导航内容
  * */

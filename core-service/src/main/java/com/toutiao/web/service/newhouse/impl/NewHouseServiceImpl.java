@@ -105,7 +105,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             keys = newHouseQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if(newHouseQuery.getSubwayLineId()!=null && newHouseQuery.getSubwayStationId()!=0){
+        if(newHouseQuery.getSubwayStationId()!=null && newHouseQuery.getSubwayStationId()!=0){
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseQuery.getSubwayStationId()}));
             keys = keys+"$"+newHouseQuery.getSubwayStationId().toString();
         }
