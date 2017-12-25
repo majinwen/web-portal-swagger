@@ -11,7 +11,7 @@
 <#setting url_escaping_charset="UTF-8">
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
+    <input id="url" type="hidden" value="/findProjHouseInfo">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -199,32 +199,25 @@
                                         <#if itemValue?exists>
                                             <span>${itemValue}</span>
                                         </#if>
-                                        <#else >
-                                            暂无
-                                    </#list>
                                     <#else >
-                                    暂无
+                                    </#list>
+                                <#else >
                                 </#if>
                             </div>
                             <div class="cont-block-price">
                                 <em>
                                     <#if map.houseTotalPrices?exists>
                                         <#if map.houseTotalPrices==0>
-                                            暂无总价
                                         </#if>
                                     <#else>
-                                    ${map.houseTotalPrices}万
+                                        ${map.houseTotalPrices}万
                                     </#if>
                                 </em>
-                            <#--<span>-->
                                 <em>
                                     <#if map.houseUnitCost?exists>
-                                    <#--<#if map.houseUnitCost==0>
-
-                                    </#if>-->
-                                    ${map.houseUnitCost}元/㎡
-                                    <#else>
-                                        暂无单价
+                                        <#if map.houseUnitCost==0>
+                                        </#if>
+                                        ${map.houseUnitCost}元/㎡
                                     </#if>
                                 </em>
                             <#-- </span>-->

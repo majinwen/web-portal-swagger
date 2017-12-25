@@ -22,7 +22,7 @@
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
         <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
-        <#--<li data-mark="tab-type"><span><em>户型</em><i></i></span></li>-->
+        <li data-mark="tab-age"><span><em>楼龄</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none"></div>
@@ -42,7 +42,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -52,22 +52,19 @@
                 </ul>
             </div>
         </div>
-        <!-- 户型 -->
-        <#--<div class="filter-item" data-mark="panel-type">-->
-            <#--<div class="type-list">-->
-                <#--<ul>-->
-                    <#--<li class="current" data-type="0">不限</li>-->
-                    <#--<li data-type="1">一居 <i></i></li>-->
-                    <#--<li data-type="2">二居 <i></i></li>-->
-                    <#--<li data-type="3">三居 <i></i></li>-->
-                    <#--<li data-type="4">四居 <i></i></li>-->
-                    <#--<li data-type="5">五居及五居以上 <i></i></li>-->
-                <#--</ul>-->
-                <#--<div class="submit-wrapper">-->
-                    <#--<a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>-->
-                <#--</div>-->
-            <#--</div>-->
-        <#--</div>-->
+        <!-- 楼龄 -->
+        <div class="filter-item" data-mark="panel-age">
+            <div class="age-list">
+                <ul>
+                    <li data-begin-age="" data-end-age="" class="current">不限</li>
+                    <li data-begin-age="0" data-end-age="5">5年内</li>
+                    <li data-begin-age="0" data-end-age="10">10年内</li>
+                    <li data-begin-age="0" data-end-age="15">15年内</li>
+                    <li data-begin-age="0" data-end-age="20">20年内</li>
+                    <li data-begin-age="20" data-end-age="200">20年以上</li>
+                </ul>
+            </div>
+        </div>
         <!-- 更多 -->
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
@@ -166,7 +163,7 @@
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">
                             <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
-                        <p class="cont-block-2"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>
+                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>
                             暂无</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>

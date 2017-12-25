@@ -188,10 +188,12 @@
                         </div>
                     </div>
                 </div>
+                <#if map['activity_desc']?exists>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
-                    <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
+                   <span>${map['activity_desc']}</span>
                 </div>
+                </#if>
             </a></li>
         </#list>
     </#if></ul>
@@ -204,13 +206,13 @@
     <ul class="sort-content">
     <#if sort?exists>
         <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
-        <li value="1" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
-        <li value="2" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
     </#if>
     </ul>
 </div>
 
 <script src="${staticurl}/js/categorys.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/main.js?version=123"></script>
 </body>
 </html>
