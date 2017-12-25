@@ -49,8 +49,10 @@
         <div class="describe-box">
             <div class="describe-header">户型描述</div>
             <div class="describe-cont">
-                <p><#if datail['layout_desc']?exists>${datail['layout_desc']}</#if></p>
-                <span class="describe-show-btn">>>展开</span>
+                <#if datail['layout_desc']?exists>
+                    <p>  ${datail['layout_desc']}</p>
+                  <span class="describe-show-btn">>>展开</span>
+            </#if>
             </div>
         </div>
     </section>
