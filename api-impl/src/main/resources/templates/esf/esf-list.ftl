@@ -11,8 +11,8 @@
 <#setting url_escaping_charset="UTF-8">
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <input id="url" type="hidden" value="/findProjHouseInfo">
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
