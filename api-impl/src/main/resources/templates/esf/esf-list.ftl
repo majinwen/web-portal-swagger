@@ -11,8 +11,8 @@
 <#setting url_escaping_charset="UTF-8">
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <input id="url" type="hidden" value="/findProjHouseInfo">
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -43,7 +43,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li data-begin-price="0.0" data-end-price="" class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -169,27 +169,27 @@
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>
-                            <img src="<#if item[0]?exists>${item[0]}</#if>"
-                                 alt="">
-                        <#--<#else >
-                            <img  src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产">-->
+                                <img src="<#if item[0]?exists>${item[0]}</#if>"
+                                     alt="">
+                                <#--<#else >
+                                    <img  src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产">-->
                         </div>
                         <div class="list-item-cont">
                             <h3 class="cont-block-1">${map.houseTitle}</h3>
-                            <p class="cont-block-2">
-                                <#if map.buildArea?exists&&(map.buildArea>0)>
-                                ${map.buildArea}㎡|
-                                </#if>
-                                <#if map.room?exists&&map.hall?exists>
-                                ${map.room}室${map.hall}厅|
-                                </#if>
-                                <#if map.forwardName?exists>
-                                ${map.forwardName}|
-                                </#if>
-                                <#if map.plotName?exists>
+                        <p class="cont-block-2">
+                            <#if map.buildArea?exists&&(map.buildArea>0)>
+                                 ${map.buildArea}㎡|
+                            </#if>
+                            <#if map.room?exists&&map.hall?exists>
+                               ${map.room}室${map.hall}厅|
+                            </#if>
+                            <#if map.forwardName?exists>
+                               ${map.forwardName}|
+                            </#if>
+                            <#if map.plotName?exists>
                                 ${map.plotName}
-                                </#if>
-                            </p>
+                            </#if>
+                        </p>
                             <#if map['subwayDistince']?exists>
                                 <#assign item=map['subwayDistince']>
                                 <#if map['key']?exists>
@@ -226,14 +226,14 @@
                                         <#if map.houseTotalPrices==0>
                                         </#if>
                                     <#else>
-                                    ${map.houseTotalPrices}万
+                                        ${map.houseTotalPrices}万
                                     </#if>
                                 </em>
                                 <em>
                                     <#if map.houseUnitCost?exists>
                                         <#if map.houseUnitCost==0>
                                         </#if>
-                                    ${map.houseUnitCost}元/㎡
+                                        ${map.houseUnitCost}元/㎡
                                     </#if>
                                 </em>
                             </div>
