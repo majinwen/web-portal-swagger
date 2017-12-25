@@ -31,7 +31,7 @@
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
                 <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
+                    <li data-page="0" onclick="showOnlyDistrict()">区域</li>
                     <li onclick="showSubway()">地铁</li>
                 </ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
@@ -154,10 +154,6 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign imgt = map['building_imgs']?split(",")>
-                        <#--   <#assign item = map['building_imgs']>
-                           <#if item[0]?exists>
-                               <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
-                           </#if>-->
                             <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
                         <#else >
                             <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
@@ -165,8 +161,8 @@
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1">${map['building_name']!"暂无"}
-                             <em>${map['property_type']!"暂无"}</em>
+                        <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
+                            <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
                         <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
                         <p class="cont-block-3">

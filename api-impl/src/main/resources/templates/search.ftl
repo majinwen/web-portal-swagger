@@ -14,7 +14,7 @@
             </div>
             <div class="searchpage-search-content">
                 <i class="icon"></i>
-                <input type="text" placeholder="中骏·西山天璟" class="key-words"  >
+                <input type="text" placeholder="中骏·西山天璟" class="key-words">
             </div>
         </div>
             <button type="button" class="searchpage-search-btn">取消</button>

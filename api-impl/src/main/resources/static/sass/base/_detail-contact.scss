@@ -63,6 +63,10 @@
                 -webkit-border-radius: rem(10);
                 -moz-border-radius: rem(10);
                 border-radius: rem(10);
+
+                &.only {
+                    width: 100%;
+                }
             }
         }
     }

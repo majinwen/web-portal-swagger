@@ -71,7 +71,8 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-        <p><#if village['trafficInformation']?exists>${village['trafficInformation']}</#if></p>
+        <#--<p><#if village['trafficInformation']?exists>${village['trafficInformation']}</#if></p>-->
+            <p>${village['trafficInformation']!'暂无'}</p>
             <div class="house-labelling gray">
         <#if village['label']?exists>
                     <#list village['label'] as label>
@@ -80,7 +81,7 @@
         </#if>
             </div>
         </div>
-        <div class="plot-primary-map-box"></div>
+        <a href="#" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <#if (reViHouse?exists) && (reViHouse?size>0)>
@@ -125,42 +126,7 @@
                     </div>
                 </a></li>
             </#list>
-        <#--    <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>-->
+            </#if>
         </ul>
     </section>
 </div>
@@ -236,13 +202,11 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>，<em
-                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
-                <#if village['sumBuilding']?exists>共<em class="high-light-red">，${village['sumBuilding']}</em>栋</#if>
+                <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
+                <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
-                    <#if village['sumHousehold']?number gt 0>
-                        ，${village['sumHousehold']}户
-                    </#if>
+                <#if village['sumHousehold']?number gt 0>
+                    （${village['sumHousehold']}户）
                 </#if>
                 <#if village['buildingStructure']?exists>
                     ，${village['buildingStructure']}
@@ -529,9 +493,9 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>
-            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+            <#--<a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>-->
+            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
 </div>
