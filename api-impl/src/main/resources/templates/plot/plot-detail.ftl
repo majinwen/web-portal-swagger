@@ -71,17 +71,16 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-        <#--<p><#if village['trafficInformation']?exists>${village['trafficInformation']}</#if></p>-->
             <p>${village['trafficInformation']!'暂无'}</p>
             <div class="house-labelling gray">
-        <#if village['label']?exists>
-                    <#list village['label'] as label>
-                    <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
-                    </#list>
-        </#if>
+            <#if village['label']?exists>
+                <#list village['label'] as label>
+                <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
+                </#list>
+            </#if>
             </div>
         </div>
-        <a href="#" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="/getProjHouseMapDetail?newcode=${village['id']}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -154,10 +153,6 @@
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
-                  <#if reitem_index==4>
-                      <#break >
-                  </#if>
-            <#list reViHouse as reitem>
                 <#if reitem_index==4>
                     <#break >
                 </#if>
@@ -166,8 +161,10 @@
                     <div class="picture-box">
                         <#if reitem['housePhoto']?exists>
                         <#assign photoitem=reitem['housePhoto']>
-                        <img src="${staticurl}/${photoitem[0]!""}" alt="暂无图片">
-                        <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
+                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                                <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
                         </#if>
                     </div>
                     <div class="tilelist-content">
@@ -178,22 +175,6 @@
                     </div>
                 </a></li>
             </#list>
-                        <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
-                        <p class="bottom-text">
-                        <#if reitem['houseArea']??>${reitem['houseArea']}㎡
-                        <#else >
-                            暂无
-                        </#if></p>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
-                            <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
-                            <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p >
-                    </div>
-                </a></li>
-            </#list>
-
         </ul>
     </section>
 </div>
@@ -395,7 +376,6 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
-                    <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
                     <#if village['parkingRate']?exists>
                         <span class="expand-price">${village['parkingRate']}元/月</span>
                     <#else >

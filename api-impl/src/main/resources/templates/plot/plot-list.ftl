@@ -159,7 +159,7 @@
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
                                     <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                                 </#if>
@@ -173,7 +173,7 @@
                                 <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
                         </#if>
-                        <div class="cont-block-4">
+                        <div class="cont-block-4 house-labelling gray">
                             <#if plot['label']?exists>
                                 <#assign item =  plot['label']>
                                 <#list item as itemValue>

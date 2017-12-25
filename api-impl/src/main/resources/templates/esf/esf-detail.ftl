@@ -190,24 +190,22 @@
 <div class="module-bottom-fill">
     <section>
         <#if houseDetail.newcode?exists>
-            <div class="module-header-message">
-                <h3>小区信息</h3>
-                <a href="/villageDetail?id=${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
-            </div>
-        </#if>
+        <div class="module-header-message">
+            <h3>小区信息</h3>
+            <a href="/villageDetail?id=${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+        </div>
         <ul class="tilelist row">
-            <li>
-                <a href="#">
-                    <div class="picture-box">
-                        <#assign item=houseDetail['plotPhoto']>
-                        <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"></#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else>暂无</#if></h4>
-                        <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else>暂无</#if></p>
-                    </div>
-                </a>
-            </li>
+            <li><a href="/villageDetail?id=${houseDetail.newcode}">
+        </#if>
+                <div class="picture-box">
+                    <#assign item=houseDetail['plotPhoto']>
+                    <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"></#if>
+                </div>
+                <div class="tilelist-content">
+                    <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else>暂无</#if></h4>
+                    <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else>暂无</#if></p>
+                </div>
+            </a></li>
         </ul>
     </section>
 </div>
@@ -241,10 +239,8 @@
         <ul class="tilelist">
             <#list plot as map>
                 <li>
-                    <#if map.houseId?exists>
-                    <a href="/queryByHouseIdandLocation/${map.houseId}">
-                    <#else>
-                    <a href="#">
+                    <#if map.houseId?exists><a href="/queryByHouseIdandLocation/${map.houseId}">
+                        <#else><a href="#">
                     </#if>
                     <div class="picture-box">
                         <#if map['housePhoto']?exists>
@@ -258,24 +254,16 @@
                         <p class="cont-first">
                             <em>
                                 <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0>
-                                    </#if>
-                                <#else>
-                                ${map.houseTotalPrices}万|
+                                    <#if map.houseTotalPrices==0></#if>
+                                    <#else>${map.houseTotalPrices}万/
                                 </#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)>
-                                ${map.buildArea}㎡|
-                                </#if>
-                                <#if map.room?exists&&map.hall?exists>
-                                ${map.room}室${map.hall}厅
-                                <#else>
-                                </#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
+                                <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
                             </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
                     </div>
-                </a>
-                </li>
+                </a></li>
             </#list>
         </ul>
     </section>
