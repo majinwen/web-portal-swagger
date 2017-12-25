@@ -66,7 +66,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
-            <p>别名：<#if build['building_nickname']?exists>${build['building_nickname']}<#else>暂无</#if></p>
+        <#if build['building_nickname']?exists><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag">
             <#--<#assign tags = build['building_tags']>-->
             <#--<#list tags as item>-->
@@ -90,8 +90,8 @@
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
                            ${build['building_address']!'暂无'}
-                    <a href="#" class="primary-map-icon"></a>
-                    <a href="#" class="arrows-right"></a>
+                    <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="primary-map-icon"></a>
+                    <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="arrows-right"></a>
                 </p>
                 <p>
                     交通信息：<#if build['roundstation']?exists>
@@ -114,9 +114,10 @@
     </section>
 </div>
 <div class="module-bottom-fill">
+<#if build['activity_desc']?exists>
     <div class="active-module-box">
         <a href="tel:1234567" class="active-module-content">
-            <p class="active-text"><i class="active-icon"></i><span>最新活动：<#if build['activity_desc']?exists>${build['activity_desc']}<#else>暂无</#if></span></p>
+            <p class="active-text"><i class="active-icon"></i><span>最新活动：${build['activity_desc']}</span></p>
             <div class="consule-message">
                 <p>
                     <span>更多优惠信息</span>
@@ -126,6 +127,7 @@
             </div>
         </a>
     </div>
+</#if>
 </div>
 <div class="module-bottom-fill">
     <section>
@@ -143,7 +145,7 @@
     </section>
 </div>
 <div class="module-bottom-fill">
-<#if layout?exists>
+<#if (layout?exists) && (layout?size>0)>
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
@@ -160,14 +162,16 @@
                         <div class="tilelist-content">
                             <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
                             <h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>
-                            <#--<div class="house-labelling normal small tilelist-tag">-->
-                                <#--<#assign layouttagitem = item['layout_tag']>-->
-                                <#--<#list layouttagitem as tagatem>-->
-                                <#--<#if tagatem?exists>-->
-                                    <#--<span>${tagatem}</span>-->
-                                <#--</#if>-->
-                                <#--</#list>-->
-                            <#--</div>-->
+                            <div class="house-labelling normal small tilelist-tag">
+                                <#if item['layout_tag']??>
+                                    <#assign layouttagitem = item['layout_tag']>
+                                    <#list layouttagitem as tagatem>
+                                        <#if tagatem?exists>
+                                            <span>${tagatem}</span>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </div>
                         </div>
                     </a>
                 </li>
@@ -182,7 +186,7 @@
             <h3>配套地图</h3>
             <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
-        <a href="#" class="detail-map">
+        <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if build['location']?exists>
                 <#assign locations = build['location']?split(",")>

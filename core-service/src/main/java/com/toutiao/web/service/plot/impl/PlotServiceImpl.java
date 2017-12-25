@@ -188,17 +188,15 @@ public class PlotServiceImpl implements PlotService {
                 }
             }
             //楼龄
-            String age = villageRequest.getAge();
-            if (age != null && age.length() != 0 && age.length() % 2 == 0) {
-                String[] Age = age.split(",");
+            if (villageRequest.getBeginAge() != null && villageRequest.getBeginAge().length() != 0&&villageRequest.getEndAge()!= null && villageRequest.getEndAge().length() != 0  ) {
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < Age.length; i = i + 2) {
-                    if (i + 1 > Age.length) {
-                        break;
-                    }
-                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(Age[i]).lte(Age[i + 1]));
+//                for (int i = 0; i < Age.length; i = i + 2) {
+//                    if (i + 1 > Age.length) {
+//                        break;
+//                    }
+                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(villageRequest.getBeginAge()).lte(villageRequest.getEndAge()));
                     queryBuilder = boolQueryBuilder.must(Age1);
-                }
+//                }
             }
 
             //物业类型ID

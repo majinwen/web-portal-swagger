@@ -5,6 +5,7 @@ $(function(){
     }
     $('.search-link').on('focus', function () {
         $('.search-page-wrapper').addClass('active');
+        $('.key-words').focus();
     });
     $('.searchpage-search-btn').on('click', function () {
         $('.search-page-wrapper').removeClass('active');

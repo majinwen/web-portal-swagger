@@ -12,6 +12,7 @@ import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -78,16 +79,16 @@ public class ProjHouseInfoController {
 
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
-        ProjHouseInfoResponse build = (ProjHouseInfoResponse)list.get(0);
+        if (list!=null &&list.size()!=0) {
+            ProjHouseInfoResponse build = (ProjHouseInfoResponse) list.get(0);
+            build.setLocation(build.getHousePlotLocation());
 
-
-        build.setLocation(build.getHousePlotLocation());
-
-        model.addAttribute("build",build);
-
+            model.addAttribute("build", build);
+        }
         return "map";
 
     }
+
 
 
 
@@ -114,7 +115,7 @@ public class ProjHouseInfoController {
         } else {
             model.addAttribute("sort", 0);
         }
-        model.addAttribute("searchType","projhouse");
+        model.addAttribute("searchType", "projhouse");
         return "esf/esf-list";
 
     }
@@ -153,12 +154,12 @@ public class ProjHouseInfoController {
 
             model.addAttribute("builds", queryBySearchBox);
             model.addAttribute("text", text);
-            model.addAttribute("searchType","projhouse");
+            model.addAttribute("searchType", "projhouse");
 
         } else {
             model.addAttribute("message", "没有该相应的数据信息");
             model.addAttribute("text", text);
-            model.addAttribute("searchType","projhouse");
+            model.addAttribute("searchType", "projhouse");
         }
         return "esf/esf-list";
     }

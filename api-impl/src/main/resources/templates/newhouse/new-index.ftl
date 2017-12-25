@@ -39,7 +39,7 @@
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
             <div class="banner-nav-item"><a href="#">
-                <i class="houses-intelligent"></i><p>智能找房</p>
+                <i class="houses-intelligent"></i><p>懂房帝</p>
             </a></div>
         </div>
     </section>
@@ -149,7 +149,7 @@
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                    <h3 class="cont-block-1">${map['property_type']!'暂无'}<em></em></h3>
+                    <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']!'暂无'}</em></h3>
                     <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
@@ -173,10 +173,12 @@
                     </div>
                 </div>
             </div>
+            <#if map['activity_desc']?exists>
             <div class="new-active">
                 <i class="icon"></i><em>活动：</em>
-                <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
+                <span>${map['activity_desc']}</span>
             </div>
+            </#if>
         </a></li>
     </#list>
     </#if>

@@ -40,7 +40,7 @@
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
-                <i class="index-intelligent-icon"></i><p>智能找房</p>
+                <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
     </section>
@@ -225,13 +225,14 @@
                         </div>
                     </div>
                 </div>
+                <#if map['activity_desc']?exists>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
                     <span>
-                    <#if map['activity_desc']?exists>
                         ${map['activity_desc']}
-                    </#if></span>
+                    </span>
                 </div>
+                    </#if>
             </a></li>
         </#list>
     </#if>
@@ -273,7 +274,7 @@
             <#elseif map_index==4>
                 <#break>
             </#if>
-            <li><a class="list-item" href="">
+            <li><a class="list-item" href="/villageDetail?id=${map['id']?c}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <img src="${qiniuimage}/${map['photo'][0]!''}" alt="${map['rc']}">

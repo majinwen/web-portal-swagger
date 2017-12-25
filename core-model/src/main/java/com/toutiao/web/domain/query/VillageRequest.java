@@ -24,11 +24,14 @@ public class VillageRequest {
     private String label;  //标签
     private String saleHouse;  //待售房源
     private String avgPrice;  //均价
+    private String sort;  //排序
     private String sumPrice;  //总价
     private String beginPrice;  //开始价格
     private String endPrice;  //结束价格
     private String abbreviatedAge;  //建成年代
     private String age;  //楼龄
+    private String beginAge;  //楼龄
+    private String endAge;  //楼龄
     private String areaSize;  //面积
     private String houseAreaSize;  //二手房面积
     private String sumBuilding;  //总栋数
