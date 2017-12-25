@@ -83,7 +83,7 @@ $(function(){
             }
             init();
     /*       alert("http://192.168.1.8:8085"+$('.type-menu>span.current').data( "value")+$.trim($(this).val()))*/
-            location.href="http://localhost:8085"+$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
+            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
 
         }
     }

@@ -107,7 +107,10 @@
                 <td>${tags['time']?substring(0,10)!'暂无'}</td>
                 <td>${tags['buildInfo']!'暂无'}</td>
             </tr>
-         <#else>暂无
+         <#else>
+             <tr>
+                 <td>暂无</td>
+             </tr>
     </#if>
     </table>
 </section>

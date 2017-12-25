@@ -185,9 +185,9 @@ function listSortTab() {
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
             if(BaseUrl=="/findVillageByConditions"){
-                location.href=BaseUrl+'?avgPrice='+$(this).val();
+                location.replace(BaseUrl+'?avgPrice='+$(this).val());
             }else {
-                location.href=BaseUrl+'?sort='+$(this).val();
+                location.replace(BaseUrl+'?sort='+$(this).val());
             }
             $('.sort-content-box').slideUp();
         })

@@ -165,8 +165,8 @@
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if>
-                            <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
+                        <h3 class="cont-block-1">${map['building_name']!"暂无"}
+                             <em>${map['property_type']!"暂无"}</em>
                         </h3>
                         <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
                         <p class="cont-block-3">
@@ -192,10 +192,12 @@
                         </div>
                     </div>
                 </div>
+                <#if map['activity_desc']?exists>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
-                    <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
+                   <span>${map['activity_desc']}</span>
                 </div>
+                </#if>
             </a></li>
         </#list>
     </#if></ul>
@@ -215,6 +217,6 @@
 </div>
 
 <script src="${staticurl}/js/categorys.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/main.js?version=123"></script>
 </body>
 </html>

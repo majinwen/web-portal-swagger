@@ -71,26 +71,14 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-            <#--<#if village['metroWithPlotsDistance']?exists>-->
-            <#--<p><#assign userMap = village['metroWithPlotsDistance']/>-->
-            <#--<#assign  keys=userMap?keys/>-->
-            <#--<#list keys as key>-->
-            <#--${userMap[key]!''}${key}-->
-                <#--&lt;#&ndash;<#assign split=userMap[key]?split("$")/>&ndash;&gt;-->
-                <#--&lt;#&ndash;<p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>&ndash;&gt;-->
-            <#--</#list></p>-->
-                <#--<#else >-->
-                    <#--<p>暂无</p>-->
-            <#--</#if>-->
-            <p>${village['trafficInformation']!'暂无'}</p>
+           <#if village['trafficInformation']?exists><p>${village['trafficInformation']}</p></#if>
+        <#if village['label']?exists>
             <div class="house-labelling gray">
-                <#if village['label']?exists>
                     <#list village['label'] as label>
                     <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
                     </#list>
-                <#else><span>暂无</span>
-                </#if>
             </div>
+        </#if>
         </div>
         <div class="plot-primary-map-box"></div>
     </section>
@@ -108,54 +96,23 @@
                       <#break >
                   </#if>
                 <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="/queryByHouseIdandLocation/${reitem.houseId}/${itemLocation[0]}/${itemLocation[1]}">
+                <li><a href="/queryByHouseIdandLocation/${reitem.houseId}<#--/${itemLocation[0]}/${itemLocation[1]}-->">
                     <div class="picture-box">
+                        <#if reitem['housePhoto']?exists>
                         <#assign photoitem=reitem['housePhoto']>
-                        <img src="${staticurl}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
-                        <p class="bottom-text">${reitem['houseArea']}㎡</p>
+                        <img src="${staticurl}/${photoitem[0]!""}" alt="暂无图片">
+                        <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
+                        </#if>
                     </div>
                     <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>${reitem.houseTotalPrices}万</em>/${reitem.houseOrientation}/${reitem.houseType}室</p>
+                        <p class="cont-first text-center"><em>
+                         <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
+                         <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
+                         <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
                     </div>
                 </a></li>
             </#list>
             </#if>
-        <#--    <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>-->
         </ul>
     </section>
 </div>
