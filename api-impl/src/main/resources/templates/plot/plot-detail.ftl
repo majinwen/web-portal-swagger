@@ -232,7 +232,7 @@
                 <#if village['buildingStructure']?exists>
                     ，${village['buildingStructure']}
                 </#if>
-                <#if village['buildingStructure']?exists><em class="high-light-red">${village['buildingStructure']}</em></#if>
+
                 </div>
             </div>
             <div class="column item-column-two">
