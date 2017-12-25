@@ -12,11 +12,12 @@
     .column {
         display: -webkit-flex;
         display: flex;
+        justify-content: center;
 
         .info-card-item {
             -webkit-flex: 1;
             flex: 1;
-
+            width: 0;
             margin: rem(15) rem(15);
             @include font-dpr(28);
             border: rem(1) solid #ccc;
@@ -108,6 +109,11 @@
 
                 em, span {
                     display: block;
+                    @include text-ellipses;
+                }
+
+                p {
+                    @include text-ellipses;
                 }
 
                 em {
