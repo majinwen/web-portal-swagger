@@ -169,13 +169,13 @@
                 </div>
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                 </div>
                 <div class="pr">
@@ -198,6 +198,7 @@
                         <#if map['building_imgs']?exists>
                             <#assign item = map['building_imgs']?split(",")>
                             <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="list-item-cont">

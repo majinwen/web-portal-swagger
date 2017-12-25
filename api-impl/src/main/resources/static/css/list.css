@@ -970,7 +970,7 @@ hr {
     .list-item .cont-block-3.distance {
       padding-left: 0.4133333333rem; }
   .list-item.new .cont-block-1 {
-    width: 4.4rem; }
+    max-width: 4.4rem; }
   .list-item.new .new-active {
     clear: both;
     height: 0.64rem;

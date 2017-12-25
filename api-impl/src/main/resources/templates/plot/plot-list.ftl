@@ -155,7 +155,7 @@
                                 <#assign photo = plot['photo']>
                                 <#if photo[0]?exists>
                                     <img src="${qiniuimage}/${photo[0]}" alt="${plot['rc']}">
-                                <#else><img src="${staticurl}/" alt="暂无">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无">
                                 </#if>
                             </#if>
                         </div>

@@ -444,8 +444,8 @@
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
                         <img src="${qiniuimage}/${photos[0]}" alt="${nearviitem['rc']}">
+                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
-
                 </div>
                 <div class="tilelist-content">
                     <p class="cont-first">${nearviitem['rc']}</p>
@@ -472,6 +472,7 @@
                 <#assign imglist = builditem['building_imgs']>
                 <#if imglist?exists>
                 <img src="${qiniuimage}/${imglist?split(",")[0]!''}" alt="${imglist?split(",")[0]!''}">
+                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 </#if>
             </div>
             <div class="tilelist-content">
