@@ -5,26 +5,6 @@ var params="";
 var url;
 var submitClickState = false;
 
-$('#category-tab').on('click','li', function () {
-    var $dom = getDataDom($(this),'panel');
-    $(this).toggleClass('current').removeClass('choose').siblings().removeClass('current');
-    $dom.toggleClass('active').siblings().removeClass('active');
-
-    if ($dom.hasClass('active')) {
-        if ($('#level2').is(':hidden') && $dom.attr('data-mark') == 'panel-place'){
-            $dom.find('#level1').children().eq(0).addClass('current');
-            showDistrict();
-        }
-    }
-    if ($('#category-tab').find('.current').length <= 0) {
-        $('.global-mark').addClass('none');
-        $('body').removeClass('fixed-scroll');
-    } else {
-        $('.global-mark').removeClass('none');
-        $('body').addClass('fixed-scroll');
-    }
-});
-
 function getDataDom(attrDom, attrStr) {
     var str = attrDom.attr('data-mark'),
         index = str.indexOf('-'),
@@ -156,35 +136,69 @@ $('.category-cont').on('click', function (e) {
  * cicleData 数据存储
  * */
 var circleData = null;
-function showDistrict() {
+function showDistrict(districtId, circleId) {
     $.getJSON('/static/mock/circle.json', function (districtList) {
         circleData = districtList;
         $('#level2').removeClass('none');
         $('#level3').addClass('none');
         $('#level2').empty();
-        var str = '<li class="current" onclick="submitPlace(event)">不限</li>';
-        for (var i = 0; i < districtList.length; i++) {
-            str += '<li onclick="showBusiness('+ districtList[i].districtId +','+ i +')">'+ districtList[i].name +'</li>'
+
+        var str;
+        if (districtId || circleId) {
+            str = '<li onclick="submitPlace(event)">不限</li>';
+        } else {
+            str = '<li class="current" onclick="submitPlace(event)">不限</li>';
+        }
+
+        for (var i in districtList) {
+
+            if (districtId && districtId == districtList[i].districtId) {
+                str += '<li ' + 'class="current"' + ' onclick="showBusiness('+ districtList[i].districtId +'">'+ districtList[i].name +'</li>';
+            } else {
+                str += '<li onclick="showBusiness('+ districtList[i].districtId +')">'+ districtList[i].name +'</li>';
+            }
         }
         $('#level2').append(str);
+
+        if (districtId) {
+            showBusiness(districtId, circleId);
+        }
     });
 }
 /*
  * 显示商圈，使用circleData json 数据
  * businessData 存储商圈信息
  * */
-var businessData = null;
-function showBusiness(districtid, index) {
-    businessData = circleData[index].children;
-
+function showBusiness(districtid, circleId) {
     $('#level3').removeClass('none');
     $('#level3').empty();
-    var str = '<li class="current" onclick="submitDirstrict('+ districtid +',event'+','+ index +')">不限</li>';
-    for (var i = 0; i < businessData.length; i++) {
-        str += '<li onclick="submitBussiness('+ districtid +',' + businessData[i].circle +',event'+','+ i +')">'+ businessData[i].name +'</li>'
-    }
-    $('#level3').append(str);
-}
+
+    $.getJSON('/static/mock/circle.json',function (districtList) {
+        var _circle;
+        for (var i in districtList) {
+            if (districtid == districtList[i].districtId) {
+                _circle = districtList[i].children;
+            }
+        }
+
+        var str;
+        if (circleId) {
+            str = '<li onclick="submitDirstrict('+ districtid +',event)">不限</li>';
+        } else {
+            str = '<li class="current" onclick="submitDirstrict('+ districtid +',event)">不限</li>';
+        }
+
+        for (var i in _circle) {
+
+            if (circleId == _circle[i].circle) {
+                str += '<li class="current" onclick="submitBussiness('+ districtid +',' + _circle[i].circle +',event)">'+ _circle[i].name +'</li>'
+            } else {
+                str += '<li onclick="submitBussiness('+ districtid +',' + _circle[i].circle +',event)">'+ _circle[i].name +'</li>'
+            }
+        }
+        $('#level3').append(str);
+    });
+};
 
 /*
  * 提交选中区域
@@ -193,7 +207,7 @@ function submitDirstrict(districtid,e,index) {
     params = '?districtId=' + districtid;
     url = BaseUrl + params;
     console.log(url);
-    tabTextReplace(e,circleData[index].name);
+    tabTextReplace(e);
     location.href=url
     // console.log("quyu")
    /* $.get(url, function () {
@@ -202,13 +216,13 @@ function submitDirstrict(districtid,e,index) {
 }
 /*
  * 提交选中商圈(区域id及商圈id)
- * */
-function submitBussiness(districtid,areaId,e,index) {
+ */
+function submitBussiness(districtid,areaId,e) {
     params = '?districtId=' + districtid + '&areaId=' + areaId;
     url = BaseUrl + params;
     console.log(url);
 
-    tabTextReplace(e,businessData[index].name);
+    tabTextReplace(e);
     location.href=url
 }
 
@@ -217,16 +231,33 @@ function submitBussiness(districtid,areaId,e,index) {
  * subwayData 数据存储
  * */
 var subwayData = null;
-function showSubway() {
+function showSubway(lineId, stationId) {
     $.getJSON('/static/mock/subway.json',function (subwayList) {
         subwayData = subwayList;
         $('#level2').removeClass('none');
         $('#level3').addClass('none');
         $('#level2').empty();
-        var str = '<li class="current" onclick="submitSubway(event)">不限</li>';
-        for (var i = 0; i < subwayList.length; i++) {
-            str += '<li onclick="showStation('+ subwayList[i].subwayid +','+ i +')">'+ subwayList[i].name +'</li>'
+
+        var str;
+        if (lineId) {
+            str = '<li onclick="submitSubway(event)">不限</li>';
+        } else {
+            str = '<li class="current" onclick="submitSubway(event)">不限</li>';
         }
+
+        for (var i in subwayList) {
+
+            if (lineId == subwayList[i].subwayid) {
+                str += '<li class="current" onclick="showStation('+ subwayList[i].subwayid + ')">'+ subwayList[i].name +'</li>';
+            } else {
+                str += '<li onclick="showStation('+ subwayList[i].subwayid + ')">'+ subwayList[i].name +'</li>';
+            }
+        }
+
+        if (stationId) {
+            showStation(lineId, stationId);
+        }
+
         $('#level2').append(str);
     })
 }
@@ -234,28 +265,50 @@ function showSubway() {
  * 显示站点，使用subwayData json 数据
  * stationData 存储站点信息
  * */
-var stationData = null;
-function showStation(subwayid, index) {
-    stationData = subwayData[index].children;
+function showStation(lineId, stationId) {
 
     $('#level3').removeClass('none');
     $('#level3').empty();
-    var str = '<li class="current" onclick="submitSubwayLine('+ subwayid +',event'+','+ index +')">不限</li>';
-    for (var i = 0; i < stationData.length; i++) {
-        str += '<li onclick="submitStation('+ subwayid +',' + stationData[i].stationid +',event'+','+ i +')">'+ stationData[i].station_name +'</li>'
-    }
-    $('#level3').append(str);
-}
+
+    $.getJSON('/static/mock/subway.json',function (subwayList) {
+        var _station;
+        for (var index in subwayList) {
+            if (lineId == subwayList[index].subwayid) {
+                _station = subwayList[index].children;
+            }
+        }
+
+        var str;
+        if (stationId) {
+            str = '<li onclick="submitSubwayLine('+ lineId +',event)">不限</li>';
+        } else {
+            str = '<li class="current" onclick="submitSubwayLine('+ lineId +',event)">不限</li>';
+        }
+
+        for (var i in _station) {
+
+            if (stationId == _station[i].stationid) {
+                str += '<li class="current" onclick="submitStation('+ lineId +',' + _station[i].stationid +',event)">'+ _station[i]['station_name'] +'</li>';
+            } else {
+                str += '<li onclick="submitStation('+ lineId +',' + _station[i].stationid +',event)">'+ _station[i]['station_name'] +'</li>';
+            }
+        }
+
+        $('#level3').append(str);
+    });
+};
+
 /*
  * 提交选中地铁线路
  * 站点为不限
  * */
-function submitSubwayLine(subwayid,e,index) {
+function submitSubwayLine(subwayid,e) {
+
     params = '?subwayLineId=' + subwayid;
     url = BaseUrl + params;
     console.log(url);
 
-    tabTextReplace(e,subwayData[index].name);
+    tabTextReplace(e);
     $.ajax({
         type: 'GET',
         url: url,
@@ -273,12 +326,12 @@ function submitSubwayLine(subwayid,e,index) {
 /*
  * 提交选中地铁站点
  * */
-function submitStation(subwayid,subwayStationId,e,index) {
+function submitStation(subwayid, subwayStationId, e) {
     params = '?subwayLineId=' + subwayid + '&subwayStationId=' + subwayStationId;
     url = BaseUrl + params;
     console.log(url);
 
-    tabTextReplace(e,stationData[index].station_name,url);
+    tabTextReplace(e,url);
     $.get(url, function () {
         location.href = url;
     });
@@ -308,7 +361,7 @@ function tabTextReplace(e,text) {
         tabMarkDom = $('#category-tab').find('li[data-mark="tab-' + tabMarkText +'"]');
     tabMarkDom.attr('class','choose');
     tabMarkDom.find('em').text('');
-    tabMarkDom.find('em').text(text);
+    // tabMarkDom.find('em').text(text);
     $('.filter-item').removeClass('active');
     $('.global-mark').addClass('none');
     $('body').removeClass('fixed-scroll');
