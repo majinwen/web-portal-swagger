@@ -84,7 +84,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}<#else>暂无</#if></em>/㎡</p>
+                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>暂无</#if></em></p>
             </li>
             <li>
                 <p>
@@ -160,14 +160,14 @@
                         <div class="tilelist-content">
                             <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
                             <h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>
-                            <div class="house-labelling normal small tilelist-tag">
-                                <#assign layouttagitem = item['layout_tag']>
-                                <#list layouttagitem as tagatem>
-                                <#if tagatem?exists>
-                                    <span>${tagatem}</span>
-                                </#if>
-                                </#list>
-                            </div>
+                            <#--<div class="house-labelling normal small tilelist-tag">-->
+                                <#--<#assign layouttagitem = item['layout_tag']>-->
+                                <#--<#list layouttagitem as tagatem>-->
+                                <#--<#if tagatem?exists>-->
+                                    <#--<span>${tagatem}</span>-->
+                                <#--</#if>-->
+                                <#--</#list>-->
+                            <#--</div>-->
                         </div>
                     </a>
                 </li>
@@ -221,7 +221,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无'}</span><span>${nearitem['area_name']!'暂无'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}<#else >暂无</#if></em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}元/㎡<#else >暂无</#if></em></h4>
                 </div>
             </a>
         </li>

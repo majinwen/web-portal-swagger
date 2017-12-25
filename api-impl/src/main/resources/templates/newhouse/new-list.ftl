@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/newhouse/searchNewHouse">
+    <input id="url" type="hidden" value="/newhouse/searchNewHouse">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -154,13 +154,13 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign imgt = map['building_imgs']?split(",")>
-                     <#--   <#assign item = map['building_imgs']>
-                        <#if item[0]?exists>
-                            <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
-                        </#if>-->
+                        <#--   <#assign item = map['building_imgs']>
+                           <#if item[0]?exists>
+                               <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                           </#if>-->
                             <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
-                            <#else >
-                                <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                        <#else >
+                            <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -171,12 +171,12 @@
                         <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
-                                   ${map['nearsubway']}
+                            <#assign rounditems = map['nearsubway']?split("$")>
+                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
                             <#else>
-                            <#if map['district_name']?exists>${map['district_name']}</#if>
+                                <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                             </#if>
-                            <#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
-                            </p>
+                        </p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if  map['building_tags']?exists>
                                 <#assign item =  map['building_tags']>
@@ -206,11 +206,11 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <#if sort?exists>
-            <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
-            <li value="1" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
-            <li value="2" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
-        </#if>
+    <#if sort?exists>
+        <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+        <li value="1" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="2" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
+    </#if>
     </ul>
 </div>
 

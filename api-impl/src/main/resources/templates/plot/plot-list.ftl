@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/findVillageByConditions">
+    <input id="url" type="hidden" value="/findVillageByConditions">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -22,7 +22,7 @@
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
         <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
-        <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
+        <#--<li data-mark="tab-type"><span><em>户型</em><i></i></span></li>-->
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none"></div>
@@ -53,21 +53,21 @@
             </div>
         </div>
         <!-- 户型 -->
-        <div class="filter-item" data-mark="panel-type">
-            <div class="type-list">
-                <ul>
-                    <li class="current" data-type="0">不限</li>
-                    <li data-type="1">一居 <i></i></li>
-                    <li data-type="2">二居 <i></i></li>
-                    <li data-type="3">三居 <i></i></li>
-                    <li data-type="4">四居 <i></i></li>
-                    <li data-type="5">五居及五居以上 <i></i></li>
-                </ul>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
-                </div>
-            </div>
-        </div>
+        <#--<div class="filter-item" data-mark="panel-type">-->
+            <#--<div class="type-list">-->
+                <#--<ul>-->
+                    <#--<li class="current" data-type="0">不限</li>-->
+                    <#--<li data-type="1">一居 <i></i></li>-->
+                    <#--<li data-type="2">二居 <i></i></li>-->
+                    <#--<li data-type="3">三居 <i></i></li>-->
+                    <#--<li data-type="4">四居 <i></i></li>-->
+                    <#--<li data-type="5">五居及五居以上 <i></i></li>-->
+                <#--</ul>-->
+                <#--<div class="submit-wrapper">-->
+                    <#--<a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>-->
+                <#--</div>-->
+            <#--</div>-->
+        <#--</div>-->
         <!-- 更多 -->
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
@@ -106,17 +106,17 @@
                         <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
-                <dl>
-                    <dt data-type="saleType">销售状态</dt>
-                    <dd>
-                        <span data-info="1">售完</span>
-                        <span data-info="2">在售</span>
-                        <span data-info="3">不在售</span>
-                        <span data-info="4">出租</span>
-                        <span data-info="4">待租</span>
-                        <span data-info="4">待售</span>
-                    </dd>
-                </dl>
+                <#--<dl>-->
+                    <#--<dt data-type="saleType">销售状态</dt>-->
+                    <#--<dd>-->
+                        <#--<span data-info="1">售完</span>-->
+                        <#--<span data-info="2">在售</span>-->
+                        <#--<span data-info="3">不在售</span>-->
+                        <#--<span data-info="4">出租</span>-->
+                        <#--<span data-info="4">待租</span>-->
+                        <#--<span data-info="4">待售</span>-->
+                    <#--</dd>-->
+                <#--</dl>-->
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
