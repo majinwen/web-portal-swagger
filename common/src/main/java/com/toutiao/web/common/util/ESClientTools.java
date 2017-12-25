@@ -4,6 +4,7 @@ import lombok.Data;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ public class ESClientTools {
 
     public ESClientTools(@Value("${es.cluster.name}")String esClusterName,@Value("${es.xpack.user}")String esXpackUser){
         settings = Settings.builder().put("cluster.name", esClusterName)
-             .put("xpack.security.user",esXpackUser)
+             //.put("xpack.security.user",esXpackUser)
                 .build();
     }
 
@@ -43,7 +44,7 @@ public class ESClientTools {
             if (client == null){
                 try {
 
-                    client = new PreBuiltXPackTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
+                    client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
                             InetAddress.getByName(esServerIps), Integer.valueOf(esServerPort)));
 
                 } catch (UnknownHostException e) {

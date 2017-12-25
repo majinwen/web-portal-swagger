@@ -1059,7 +1059,8 @@ a.pswp__share--download:hover {
       display: inline-block;
       width: 0.3733333333rem;
       height: 1.52rem;
-      background-position: left center; }
+      background-position: left center;
+      background-size: auto 0.36rem; }
       .module-header-message .markets-btn .price-trend-btn.current, .module-header-message .markets-btn .supply-contrast-btn.current {
         background-position: right center; }
     .module-header-message .markets-btn .price-trend-btn {
@@ -1170,6 +1171,9 @@ a.pswp__share--download:hover {
     -webkit-border-radius: 50%;
     border-radius: 50%;
     background-color: #efeff0; }
+    .plot-primary-header .plot-primary-map-box img {
+      width: 100%;
+      height: 100%; }
 
 .expand-content {
   display: none;
@@ -1288,7 +1292,8 @@ a.pswp__share--download:hover {
         top: -0.6666666667rem;
         display: block;
         width: 1.04rem;
-        text-align: center; }
+        text-align: center;
+        white-space: nowrap; }
         [data-dpr="1"] .expand-content .map-shopping-box .map-message-btn li span {
           font-size: 13px; }
         [data-dpr="2"] .expand-content .map-shopping-box .map-message-btn li span {
@@ -1532,8 +1537,11 @@ a.pswp__share--download:hover {
     .tilelist li .picture-box {
       position: relative;
       width: 2.9466666667rem;
-      height: 2.2133333333rem; }
+      height: 2.2133333333rem;
+      overflow: hidden;
+      text-align: center; }
       .tilelist li .picture-box img {
+        min-width: 100%;
         height: 100%; }
       .tilelist li .picture-box .sale-state {
         display: inline-block;
@@ -1743,6 +1751,8 @@ a.pswp__share--download:hover {
           font-size: 30px; }
         [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
           font-size: 45px; }
+        .detail-contact-box .detail-contact-content a.contact-telephone-counseling.only {
+          width: 100%; }
   .detail-contact-box.bottom {
     position: relative; }
 

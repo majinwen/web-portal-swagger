@@ -71,17 +71,6 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-            <#--<#if village['metroWithPlotsDistance']?exists>-->
-            <#--<p><#assign userMap = village['metroWithPlotsDistance']/>-->
-            <#--<#assign  keys=userMap?keys/>-->
-            <#--<#list keys as key>-->
-            <#--${userMap[key]!''}${key}-->
-                <#--&lt;#&ndash;<#assign split=userMap[key]?split("$")/>&ndash;&gt;-->
-                <#--&lt;#&ndash;<p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>&ndash;&gt;-->
-            <#--</#list></p>-->
-                <#--<#else >-->
-                    <#--<p>暂无</p>-->
-            <#--</#if>-->
             <p>${village['trafficInformation']!'暂无'}</p>
             <div class="house-labelling gray">
                 <#if village['label']?exists>
@@ -92,7 +81,7 @@
                 </#if>
             </div>
         </div>
-        <div class="plot-primary-map-box"></div>
+        <a href="#" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -120,42 +109,6 @@
                 </a></li>
             </#list>
             </#if>
-        <#--    <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>-->
         </ul>
     </section>
 </div>
@@ -475,9 +428,9 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>
-            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+            <#--<a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>-->
+            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
 </div>

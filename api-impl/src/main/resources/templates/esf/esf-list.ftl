@@ -169,8 +169,7 @@
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>
-                            <img src="<#if item[0]?exists>${item[0]}</#if>"
-                                 alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                            <img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
                         </div>
                         <div class="list-item-cont">
                             <h3 class="cont-block-1">${map.houseTitle}</h3>
@@ -182,21 +181,18 @@
                                 <#assign item=map['subwayDistince']>
                                 <#if map['key']?exists>
                                     <#if item[map['key']]?exists>
-                                        <p class="cont-block-3 distance"><i
-                                                class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                        <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
                                         </p>
                                     </#if >
                                 <#else >
-                                    <p class="cont-block-3 distance"><i
-                                            class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                    <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
                                         [${map.houseBusinessName}]<#else>暂无</#if></p>
                                 </#if>
                             <#else >
-                                <p class="cont-block-3 distance"><i
-                                        class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
                                     [${map.houseBusinessName}]<#else>暂无</#if></p>
                             </#if>
-                            <div class="cont-block-4 house-labelling gray middle">
+                            <div class="cont-block-4 house-labelling gray middle esf">
                                 <#if map['tagsName']?exists>
                                     <#assign item =map['tagsName']>
                                     <#list item as itemValue>
