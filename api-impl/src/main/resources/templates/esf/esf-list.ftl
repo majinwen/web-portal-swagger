@@ -12,7 +12,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="/findProjHouseInfo">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -43,7 +43,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -152,10 +152,10 @@
                         <span data-info="6">经济适用房</span>
                     </dd>
                 </dl>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-                </div>
+            </div>
+            <div class="submit-wrapper">
+                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
     </div>
@@ -169,30 +169,46 @@
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>
-                            <img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                                <img src="<#if item[0]?exists>${item[0]}</#if>"
+                                     alt="">
+                                <#--<#else >
+                                    <img  src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产">-->
                         </div>
                         <div class="list-item-cont">
                             <h3 class="cont-block-1">${map.houseTitle}</h3>
-                        <p class="cont-block-2"><#if map.buildArea?exists>${map.buildArea}㎡</#if>
-                            |<#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
-                            |<#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
-                            |<#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
+                        <p class="cont-block-2">
+                            <#if map.buildArea?exists&&(map.buildArea>0)>
+                                 ${map.buildArea}㎡|
+                            </#if>
+                            <#if map.room?exists&&map.hall?exists>
+                               ${map.room}室${map.hall}厅|
+                            </#if>
+                            <#if map.forwardName?exists>
+                               ${map.forwardName}|
+                            </#if>
+                            <#if map.plotName?exists>
+                                ${map.plotName}
+                            </#if>
+                        </p>
                             <#if map['subwayDistince']?exists>
                                 <#assign item=map['subwayDistince']>
                                 <#if map['key']?exists>
                                     <#if item[map['key']]?exists>
-                                        <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                        <p class="cont-block-3 distance"><i
+                                                class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
                                         </p>
                                     </#if >
                                 <#else >
-                                    <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                        [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                    <p class="cont-block-3 distance"><i
+                                            class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                        [${map.houseBusinessName}]<#else></#if></p>
                                 </#if>
                             <#else >
-                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                    [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                <p class="cont-block-3 distance"><i
+                                        class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                    [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
-                            <div class="cont-block-4 house-labelling gray middle esf">
+                            <div class="cont-block-4 house-labelling gray middle">
                                 <#if map['tagsName']?exists>
                                     <#assign item =map['tagsName']>
                                     <#list item as itemValue>
@@ -220,7 +236,6 @@
                                         ${map.houseUnitCost}元/㎡
                                     </#if>
                                 </em>
-                            <#-- </span>-->
                             </div>
                         </div>
                     </div>
