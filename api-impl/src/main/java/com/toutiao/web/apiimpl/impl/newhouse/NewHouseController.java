@@ -82,7 +82,7 @@ public class NewHouseController {
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         PriceTrend priceTrend=new PriceTrend();
-        priceTrend.setBuildId(buildingId);
+        priceTrend.setBuildingId(buildingId);
         priceTrend.setPropertyType((short)1);
 
         Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
@@ -142,7 +142,7 @@ public class NewHouseController {
     public String getNewHouseMapDetail(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         PriceTrend priceTrend=new PriceTrend();
-        priceTrend.setBuildId(buildingId);
+        priceTrend.setBuildingId(buildingId);
         priceTrend.setPropertyType((short)1);
 
         Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);

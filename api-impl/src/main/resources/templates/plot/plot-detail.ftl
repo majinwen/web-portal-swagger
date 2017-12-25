@@ -71,18 +71,20 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-           <#if village['trafficInformation']?exists><p>${village['trafficInformation']}</p></#if>
-        <#if village['label']?exists>
+        <p><#if village['trafficInformation']?exists>${village['trafficInformation']}</#if></p>
             <div class="house-labelling gray">
+        <#if village['label']?exists>
                     <#list village['label'] as label>
                     <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
                     </#list>
-            </div>
         </#if>
+            </div>
+
         </div>
         <div class="plot-primary-map-box"></div>
     </section>
 </div>
+<#if (reViHouse?exists) && (reViHouse?size>0)>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -90,7 +92,6 @@
             <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
-            <#if reViHouse?exists>
             <#list reViHouse as reitem>
                   <#if reitem_index==4>
                       <#break >
@@ -112,10 +113,10 @@
                     </div>
                 </a></li>
             </#list>
-            </#if>
         </ul>
     </section>
 </div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -126,7 +127,7 @@
             <div class="column item-column-three">
                 <div class="info-card-item">
                     <em>均价</em>
-                    <p>${village['avgPrice']}元/㎡</p>
+                    <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
                 </div>
                 <div class="info-card-item">
                     <em>环比上月</em>
@@ -364,7 +365,12 @@
         </div>
         <a href="#" class="detail-map">
             <i class="map-marker-icon"></i>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+            <#if  village['location']?exists>
+                <#assign locationIp = village['location'] ? split(",")>
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
+              <#else>
+                  <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+            </#if>
         </a>
     </section>
 </div>
