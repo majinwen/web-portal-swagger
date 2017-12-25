@@ -143,7 +143,9 @@
                     <#if houseDetail.houseTypeName?exists>
                         <em>${houseDetail.houseTypeName}</em>
                     <#else>
-                        <#if houseDetail.buildCategoryName?exists> <em>${houseDetail.buildCategoryName}</em><#else>
+                        <#if houseDetail.buildCategoryName?exists>
+                            <em>${houseDetail.buildCategoryName}</em>
+                          <#else>
                             暂无
                         </#if>
                     </#if>
