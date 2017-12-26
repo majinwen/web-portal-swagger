@@ -69,4 +69,6 @@ public class IntelligenceQuery {
     private  int flag=0;
 
 
+
+
 }

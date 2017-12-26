@@ -10,6 +10,7 @@ import com.toutiao.web.dao.entity.officeweb.TotalRoomRatio;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper;
+import com.toutiao.web.dao.mapper.officeweb.IntelligenceFindhouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.TotalListedRatioMapper;
 import com.toutiao.web.dao.mapper.officeweb.TotalRoomRatioMapper;
 import com.toutiao.web.domain.query.IntelligenceQuery;
@@ -48,6 +49,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     private TotalRoomRatioMapper totalRoomRatioMapper;
     @Autowired
     private IntelligenceFhResMapper intelligenceFhResMapper;
+
+    @Autowired
+    private IntelligenceFindhouseMapper intelligenceFindhouseMapper;
 
     /**
      * 功能描述：通过总价获取相依小区的数量
@@ -350,73 +354,89 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         return hits;
     }
 
-
+    /**
+     * 智能找房过滤条件：用户画像1
+     * 无过滤条件，推荐小区均价最低2个，离地铁最近3个
+     * @param intelligenceQuery
+     * @return
+     */
     protected List queryPlotInfoByCondition(IntelligenceQuery intelligenceQuery) {
-        try {
-            List save = new ArrayList();
-            //结果处理：小区均价最低2个，离地铁最近3个
-            SearchHits hits = esInfo(intelligenceQuery);
+        //总价
+        Double plotTotal = intelligenceQuery.getPlotTotal();
 
-            List<QueryFindByRobot> houseList = new ArrayList();
-            for (SearchHit searchHit : hits.getHits()) {
-                Map<String, Object> buildings = searchHit.getSource();
-                Class<QueryFindByRobot> entityClass = QueryFindByRobot.class;
-                QueryFindByRobot instance = entityClass.newInstance();
-                BeanUtils.populate(instance, buildings);
-                houseList.add(instance);
-            }
-            //小区均价最低2个
-            Collections.sort(houseList, new Comparator<QueryFindByRobot>() {
-                @Override
-                public int compare(QueryFindByRobot o1, QueryFindByRobot o2) {
-                    //按照小区均价排序
-                    if (o1.getEsf_total_price() > o2.getEsf_total_price()) {
-                        return 1;
-                    }
-                    if (o1.getEsf_total_price() == o2.getEsf_total_price()) {
-                        return 0;
-                    }
-                    return -1;
-                }
-            });
+//        intelligenceFindhouseMapper
 
-            save.add(houseList.get(0));
-            save.add(houseList.get(1));
-            //移除选择的这两个数据
-            houseList.remove(0);
-            houseList.remove(1);
-            List<SubwayDistance> subwayDistances = new ArrayList<>();
-            //离地铁最近3个
-            for (QueryFindByRobot queryFindByRobot : houseList) {
-                subwayDistances.add(JSONObject.parseObject(queryFindByRobot.getSubwayDistance(), SubwayDistance.class));
-            }
-            Collections.sort(subwayDistances, new Comparator<SubwayDistance>() {
-                @Override
-                public int compare(SubwayDistance o1, SubwayDistance o2) {
-
-                    //按照地铁距离排序
-                    if (o1.getDistance() > o2.getDistance()) {
-                        return 1;
-                    }
-                    if (o1.getDistance() == o2.getDistance()) {
-                        return 0;
-                    }
-                    return -1;
-                }
-            });
-            //离地铁最近3个
-            save.add(subwayDistances.get(0));
-            save.add(subwayDistances.get(1));
-            save.add(subwayDistances.get(2));
-            return save;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
         return null;
     }
+
+//    protected List queryPlotInfoByCondition(IntelligenceQuery intelligenceQuery) {
+//        try {
+//            List save = new ArrayList();
+//            //结果处理：小区均价最低2个，离地铁最近3个
+//            SearchHits hits = esInfo(intelligenceQuery);
+//
+//            List<QueryFindByRobot> houseList = new ArrayList();
+//            for (SearchHit searchHit : hits.getHits()) {
+//                Map<String, Object> buildings = searchHit.getSource();
+//                Class<QueryFindByRobot> entityClass = QueryFindByRobot.class;
+//                QueryFindByRobot instance = entityClass.newInstance();
+//                BeanUtils.populate(instance, buildings);
+//                houseList.add(instance);
+//            }
+//            //小区均价最低2个
+//            Collections.sort(houseList, new Comparator<QueryFindByRobot>() {
+//                @Override
+//                public int compare(QueryFindByRobot o1, QueryFindByRobot o2) {
+//                    //按照小区均价排序
+//                    if (o1.getEsf_total_price() > o2.getEsf_total_price()) {
+//                        return 1;
+//                    }
+//                    if (o1.getEsf_total_price() == o2.getEsf_total_price()) {
+//                        return 0;
+//                    }
+//                    return -1;
+//                }
+//            });
+//
+//            save.add(houseList.get(0));
+//            save.add(houseList.get(1));
+//            //移除选择的这两个数据
+//            houseList.remove(0);
+//            houseList.remove(1);
+//            List<SubwayDistance> subwayDistances = new ArrayList<>();
+//            //离地铁最近3个
+//            for (QueryFindByRobot queryFindByRobot : houseList) {
+//                subwayDistances.add(JSONObject.parseObject(queryFindByRobot.getSubwayDistance(), SubwayDistance.class));
+//            }
+//            Collections.sort(subwayDistances, new Comparator<SubwayDistance>() {
+//                @Override
+//                public int compare(SubwayDistance o1, SubwayDistance o2) {
+//
+//                    //按照地铁距离排序
+//                    if (o1.getDistance() > o2.getDistance()) {
+//                        return 1;
+//                    }
+//                    if (o1.getDistance() == o2.getDistance()) {
+//                        return 0;
+//                    }
+//                    return -1;
+//                }
+//            });
+//            //离地铁最近3个
+//            save.add(subwayDistances.get(0));
+//            save.add(subwayDistances.get(1));
+//            save.add(subwayDistances.get(2));
+//            return save;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        return null;
+//    }
 
     protected List queryPlotInfoByCondition2(IntelligenceQuery intelligenceQuery) {
 
