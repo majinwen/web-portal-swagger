@@ -148,7 +148,7 @@ $('#moreSubmit').on('click', function (e) {
         tabTextReplace(e, '更多');
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
-    // location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
+     location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
     console.log(moresubmitUrl.substr(0, moresubmitUrl.length -1));
 });
 /*
