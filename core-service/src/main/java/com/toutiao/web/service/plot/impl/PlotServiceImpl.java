@@ -116,6 +116,12 @@ public class PlotServiceImpl implements PlotService {
             String key = null;
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //默认查询均格大于零
+            if (villageRequest.getAvgPrice()==null){
+                villageRequest.setAvgPrice("0,10000000");
+            }else {
+                villageRequest.setAvgPrice("0,10000000,"+villageRequest.getAvgPrice());
+            }
             //小区ID
             if (villageRequest.getId() != null) {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
@@ -244,11 +250,11 @@ public class PlotServiceImpl implements PlotService {
             }
             //排序
             //均价
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("2")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
                 srb.addSort("avgPrice", SortOrder.ASC);
             }
 
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("1")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
 
@@ -286,8 +292,8 @@ public class PlotServiceImpl implements PlotService {
                         instance.setWaterFee("5");
                     }
                     PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                    instance.setTongbi(Integer.parseInt(plotRatio.getTongbi()));
-                    instance.setHuanbi(Integer.parseInt(plotRatio.getHuanbi()));
+                    instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                    instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                     houseList.add(instance);
 //            System.out.println(instance);
                 }

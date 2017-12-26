@@ -42,9 +42,7 @@ public class PlotConterller {
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         if (villageRequest.getSort() != null) {
             model.addAttribute("sort", Integer.parseInt(villageRequest.getSort()));
-            villageRequest.setAvgPrice(villageRequest.getSort());
         } else {
-            villageRequest.setAvgPrice("0");
             model.addAttribute("sort", 0);
         }
         List villageList = null;
