@@ -12,7 +12,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="/findProjHouseInfo">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -32,8 +32,8 @@
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
                 <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
+                    <li id="district-option">区域</li>
+                    <li id="subway-option">地铁</li>
                 </ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
@@ -43,7 +43,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -152,10 +152,10 @@
                         <span data-info="6">经济适用房</span>
                     </dd>
                 </dl>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-                </div>
+            </div>
+            <div class="submit-wrapper">
+                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
     </div>
@@ -244,5 +244,6 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-link.js"></script>
 </body>
 </html>
