@@ -21,18 +21,19 @@
             </div>
         </div>
     </div>
-    <div class="section page2">
+    <div class="section page2 active">
         <div class="bgbox bg2">
             <div class="page-content">
-                <h2>请选择程序关键词</h2>
-                <p>方便给您提供最精确的服务</p>
+                <h2>请选择购房目的</h2>
+                <p>方便为您提供更精准的服务</p>
                 <div class="choose-wrapper">
-                    <div class="choose-item-box current">
+                    <div class="choose-item-box">
                         <div class="box-line-triangle"></div>
                         <div class="choose-item-cont">
-                            <p>
+                            <div class="dashed-line"></div>
+                            <p data-user-type="1">
                                 <span>自住</span>
-                                <span>首套</span>
+                                <span>刚需</span>
                                 <span>交通便利</span>
                             </p>
                         </div>
@@ -41,9 +42,10 @@
                         <div class="choose-item-box">
                             <div class="box-line-triangle"></div>
                             <div class="choose-item-cont">
-                                <p>
+                                <div class="dashed-line"></div>
+                                <p data-user-type="2">
                                     <span>自住</span>
-                                    <span>二套</span>
+                                    <span>改善</span>
                                     <span>配套完善</span>
                                 </p>
                             </div>
@@ -51,7 +53,8 @@
                         <div class="choose-item-box">
                             <div class="box-line-triangle"></div>
                             <div class="choose-item-cont">
-                                <p>
+                                <div class="dashed-line"></div>
+                                <p data-user-type="3">
                                     <span>出租</span>
                                     <span>保值</span>
                                     <span>回报率</span>
@@ -65,9 +68,9 @@
         </div>
     </div>
     <div class="section page3">
-3
+3<button type="button" class="button">开始体验</button>
     </div>
-    <div class="section page4 active">
+    <div class="section page4">
         <div class="bgbox bg4">
             <div class="page-content">
                 <div class="user-header-box">
@@ -86,11 +89,32 @@
             </div>
         </div>
     </div>
+    <div class="section page5">
+        5
+    </div>
 </div>
 
 <script>
     $(function () {
-        $('#superContainer').fullpage();
+        $('#superContainer').fullpage({
+            onLeave: function (index, nextIndex, direction) {
+                if (nextIndex == 4) {
+                    $.fn.fullpage.setAllowScrolling(true, 'down');
+                }
+            }
+        });
+
+        $.fn.fullpage.setAllowScrolling(false, 'up, down');
+
+        $('.button').on('click', function () {
+            $.fn.fullpage.moveSectionDown();
+        });
+
+        $('.choose-wrapper').on('click', '.choose-item-box', function () {
+            $('.choose-wrapper').find('.choose-item-box').removeClass('current');
+            $(this).addClass('current');
+            console.log($(this).find('p').data('user-type'));
+        });
     })
 </script>
 </body>

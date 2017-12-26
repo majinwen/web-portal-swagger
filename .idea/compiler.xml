@@ -6,7 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="mbg" />
         <module name="web.api" />
         <module name="web.api-impl" />
         <module name="web.common" />
@@ -15,14 +14,10 @@
         <module name="web.dao" />
         <module name="web.deploy" />
         <module name="web.deploy-config" />
-        <module name="web.deploy-config-mq" />
-        <module name="web.deploymq" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="mbg" target="1.8" />
       <module name="web-parent" target="1.8" />
-      <module name="web-portal" target="1.8" />
       <module name="web.api" target="1.8" />
       <module name="web.api-impl" target="1.8" />
       <module name="web.common" target="1.8" />
@@ -31,8 +26,6 @@
       <module name="web.dao" target="1.8" />
       <module name="web.deploy" target="1.8" />
       <module name="web.deploy-config" target="1.8" />
-      <module name="web.deploy-config-mq" target="1.8" />
-      <module name="web.deploymq" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
