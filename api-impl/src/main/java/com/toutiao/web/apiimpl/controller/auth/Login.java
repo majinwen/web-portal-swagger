@@ -75,22 +75,27 @@ public class Login {
                 modelMap.addAttribute("message", "短信验证码失效！");
                 return "login";
             }
-
+            if(StringTool.isBlank(redisSession.getValue(phone))){
+                modelMap.addAttribute("message", "短信验证码失效！");
+                return "login";
+            }
             if (!redisSession.getValue(phone).equalsIgnoreCase(
                     MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix() + RedisNameUtil.separativeSign
-                    + code)))) {
+                            + code)))) {
                 modelMap.addAttribute("message", "短信验证码输入有误！");
                 return "login";
             }
             //从cookie中获取图片验证码与页面传递过来的验证码进行对比
             if (count > Constant.LOGIN_ERROR_TIMES) {
-                if (StringUtils.isEmpty(imageCode) || StringTool.isEmpty(CookieUtils.getCookie(request, response,
-                        "imageCode")) || CookieUtils.getCookie(request, response,
+
+                if (StringTool.isNotBlank(imageCode) && StringTool.isNotBlank(CookieUtils.getCookie(request, response,
+                        "imageCode")) && !CookieUtils.getCookie(request, response,
                         "imageCode").equalsIgnoreCase(imageCode)) {
                     modelMap.addAttribute("imageCode", imageCode);
                     modelMap.addAttribute("message", "图片验证码有误！");
                     return "login";
                 }
+
             }
             //查询该电话号是否存在
             SysUserEntity sysUser = sysUserService.selectByPhone(phone);
@@ -120,7 +125,7 @@ public class Login {
     public String logout(HttpServletResponse response, HttpServletRequest request,
                          @RequestParam(value = "phone", required = true) String phone) throws Exception {
 
-        clearCookieAndCache(request, response,phone);
+        clearCookieAndCache(request, response, phone);
         return "redirect:/index";
     }
 
@@ -159,13 +164,14 @@ public class Login {
      * @param response
      * @throws Exception
      */
-    private void clearCookieAndCache(HttpServletRequest request, HttpServletResponse response,String phone) throws Exception {
+    private void clearCookieAndCache(HttpServletRequest request, HttpServletResponse response, String phone) throws Exception {
         //从cookie中删除用户数据
-        CookieUtils.deleteCookie(request, response,CookieUtils.COOKIE_NAME_User_LOGIN);
+        CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_User_LOGIN);
         //删除redis中的用户数据
         redisSession.delKey(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
                 + phone);
     }
+
     public static void main(String[] args) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append("15601676403")

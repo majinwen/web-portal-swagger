@@ -85,7 +85,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     buildinglist.remove(instance);
                 }
             }
-            return buildinglist;
+            if(buildinglist!=null&&buildinglist.size()>0){
+                return buildinglist;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -310,7 +313,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                }
                 houseList.add(instance);
             }
-            return houseList;
+            if (houseList!=null&&houseList.size()>0){
+                return houseList;
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -381,9 +386,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 houseList.add(instance);
             }
             result = new HashMap<>();
-            result.put("data_house", houseList.get(0));
-            result.put("total_house", hits.getTotalHits());
-            return result;
+            if (houseList!=null&&houseList.size()>0){
+                result.put("data_house",houseList.get(0) );
+                result.put("total_house", hits.getTotalHits());
+                return result;
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -439,7 +446,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 houseList.add(instance);
             }
-            return houseList;
+            if (houseList!=null&&houseList.size()>0){
+                return houseList;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
