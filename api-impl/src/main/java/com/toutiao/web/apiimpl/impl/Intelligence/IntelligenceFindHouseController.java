@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 
 
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.query.IntelligenceQuery;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,29 @@ public class IntelligenceFindHouseController {
 
     @Autowired
     private IntelligenceFindHouseService intelligenceFindHouseService;
+    /**
+     *
+     * 功能描述：查找我的报告
+     * @author zhw
+     * @date 2017/12/26 13:57
+     * @param []
+     * @return java.lang.String
+     */
+    @RequestMapping("/queryMyReport")
+    public String getMyReport(HttpServletRequest request){
+
+        //从cookie中获取用户手机号码
+        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+
+        if(StringTool.isNotBlank(usePhone)){
+            //查询用户是否有报告数据
+
+        }
+
+        //跳转到报告页
+        return "";
+    }
+
 
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
@@ -45,7 +70,7 @@ public class IntelligenceFindHouseController {
      * @date 2017/12/18 18:44
      */
     @RequestMapping("/checkUserType")
-    public String goCheckPrice(@RequestParam("userType") String userType, Model model) {
+    public String goCheckPrice(@RequestParam(value = "userType",required = true) String userType, Model model) {
 
         //判断是否选择类型
         if (StringTool.isBlank(userType)) {
@@ -195,6 +220,8 @@ public class IntelligenceFindHouseController {
 
         return "";
     }
+
+
 
 
 }

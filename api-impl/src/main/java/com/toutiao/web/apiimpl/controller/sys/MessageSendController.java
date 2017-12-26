@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 public class MessageSendController {
     @Autowired
     private RedisSession redisSession;
+    @Autowired
+    private SMSUtils smsUtils;
 
     /**
      * 短信发送
@@ -46,7 +48,7 @@ public class MessageSendController {
             }
             String code = StringUtil.randomFourDigits();
             //获取手机号码
-            SendSmsResponse sendSmsResponse = SMSUtils.sendSms(phone, code);
+            SendSmsResponse sendSmsResponse = smsUtils.sendSms(phone, code);
             if (sendSmsResponse.getCode() != null
                     && sendSmsResponse.getCode().equals("OK")) {
                 // 请求成功,将用户的手机号码与短信验证码存入redis缓存中
