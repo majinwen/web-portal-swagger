@@ -1,7 +1,5 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
-import com.toutiao.web.dao.entity.admin.MapLocation;
-import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -15,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
