@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/findVillageByConditions">
+    <input id="url" type="hidden" value="/findVillageByConditions">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -22,7 +22,7 @@
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
         <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
-        <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
+        <li data-mark="tab-age"><span><em>楼龄</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none"></div>
@@ -31,8 +31,8 @@
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
                 <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
+                    <li id="district-option">区域</li>
+                    <li id="subway-option">地铁</li>
                 </ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
@@ -42,7 +42,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -52,20 +52,17 @@
                 </ul>
             </div>
         </div>
-        <!-- 户型 -->
-        <div class="filter-item" data-mark="panel-type">
-            <div class="type-list">
+        <!-- 楼龄 -->
+        <div class="filter-item" data-mark="panel-age">
+            <div class="age-list">
                 <ul>
-                    <li class="current" data-type="0">不限</li>
-                    <li data-type="1">一居 <i></i></li>
-                    <li data-type="2">二居 <i></i></li>
-                    <li data-type="3">三居 <i></i></li>
-                    <li data-type="4">四居 <i></i></li>
-                    <li data-type="5">五居及五居以上 <i></i></li>
+                    <li data-begin-age="" data-end-age="" class="current">不限</li>
+                    <li data-begin-age="0" data-end-age="5">5年内</li>
+                    <li data-begin-age="0" data-end-age="10">10年内</li>
+                    <li data-begin-age="0" data-end-age="15">15年内</li>
+                    <li data-begin-age="0" data-end-age="20">20年内</li>
+                    <li data-begin-age="20" data-end-age="200">20年以上</li>
                 </ul>
-                <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
-                </div>
             </div>
         </div>
         <!-- 更多 -->
@@ -104,17 +101,6 @@
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
                         <span data-info="4">砖楼</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="saleType">销售状态</dt>
-                    <dd>
-                        <span data-info="1">售完</span>
-                        <span data-info="2">在售</span>
-                        <span data-info="3">不在售</span>
-                        <span data-info="4">出租</span>
-                        <span data-info="4">待租</span>
-                        <span data-info="4">待售</span>
                     </dd>
                 </dl>
                 <dl>
@@ -157,46 +143,50 @@
                             <#if plot['photo']?exists>
                                 <#assign photo = plot['photo']>
                                 <#if photo[0]?exists>
-                                    <img src="${staticurl}/images/esf/${photo[0]}" alt="${plot['rc']}">
-                                <#else><img src="${staticurl}/" alt="暂无">
+                                    <img src="${qiniuimage}/${photo[0]}" alt="${plot['rc']}">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无">
                                 </#if>
                             </#if>
                         </div>
                     </#if>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">
-                           <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
-                         <p class="cont-block-2"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}<#else>暂无</#if></p>
+                            <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
+                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>
+                            暂无</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${map[plot['key']]}</p>
+                                    <#assign split=map[plot['key']]?split("$")/>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                                 </#if>
                             <#else>
+                                <#if plot['tradingArea']?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                </#if>
+                            </#if>
+                        <#else>
                             <#if plot['tradingArea']?exists>
                                 <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
-                            </#if>
-                        <#else>
-                        <#if plot['tradingArea']?exists>
-                            <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                         </#if>
-                        </#if>
-                        <div class="cont-block-4">
+                        <div class="cont-block-4 house-labelling gray">
                             <#if plot['label']?exists>
                                 <#assign item =  plot['label']>
                                 <#list item as itemValue>
                                     <#if itemValue?exists>
-                                    <span>${itemValue}</span>
+                                        <#if itemValue_index==0||itemValue_index==1||itemValue_index==2>
+                                            <span>${itemValue}</span>
+                                        </#if>
                                     </#if>
                                 </#list>
                             </#if>
                         </div>
                         <div class="cont-block-price plot">
-                            <em>${plot['avgPrice']}</em>
+                            <em>${plot['avgPrice']}元/㎡</em>
                         </div>
                     </div>
                 </div>
@@ -222,5 +212,6 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-link.js"></script>
 </body>
 </html>

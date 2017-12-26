@@ -5,6 +5,7 @@ $(function(){
     }
     $('.search-link').on('focus', function () {
         $('.search-page-wrapper').addClass('active');
+        $('.key-words').focus();
     });
     $('.searchpage-search-btn').on('click', function () {
         $('.search-page-wrapper').removeClass('active');
@@ -63,6 +64,7 @@ $(function(){
     }
 
     function changeFn() {
+
         if ($(this).val() != null && $.trim($(this).val()) != '') {
             // 匹配数据
 
@@ -81,9 +83,10 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
+            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
         }
     }
-    
+
     $('.clear-icon').on('click', function () {
         for (var f = 0; f < hisTime.length; f++) {
             localStorage.removeItem(hisTime[f]);

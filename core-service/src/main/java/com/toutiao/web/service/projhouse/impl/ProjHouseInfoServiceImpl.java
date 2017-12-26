@@ -6,9 +6,12 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
+import com.toutiao.web.dao.sources.beijing.*;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
+import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.ss.formula.functions.Now;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -27,10 +30,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
@@ -46,14 +48,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
+     * <p>
+     * //     * @param [lat, lon]
      *
-//     * @param [lat, lon]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
      */
     @Override
-    public Map<String, Object> queryProjHouseByhouseIdandLocation(double lat, double lon) {
+    public List queryProjHouseByhouseIdandLocation(String houseId, double lat, double lon) {
 
 
         Map<String, Object> result = null;
@@ -61,31 +64,28 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             //从该坐标查询距离为distance      housePlotLocation
-//        GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("30000000000000", DistanceUnit.METERS);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lon, lat).distance(distance, DistanceUnit.METERS));
-//        srb.setPostFilter(location1);
-            // 获取距离多少公里 这个才是获取点与点之间的距离的
-//        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
-//        sort.unit(DistanceUnit.METERS);
-//        sort.order(SortOrder.ASC);
-//        sort.point(lat, lon);
-            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "houseType", "houseArea", "housePlotName","housePlotLocation"}, null).execute().actionGet();
-            SearchResponse searchResponse = srb.setSize(10).execute().actionGet();
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.METERS));
+            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
+            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
 
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 
-            ArrayList<Map<String, Object>> buildinglist = new ArrayList<>();
+            ArrayList buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
                 Map<String, Object> buildings = hit.getSource();
-                buildinglist.add(buildings);
+                //排除自身
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                buildinglist.add(instance);
+                if (instance.getHouseId().equals(houseId)) {
+                    buildinglist.remove(instance);
+                }
             }
-            result = new HashMap<>();
-            result.put("data_plot", buildinglist);
-            result.put("total_plot", hits.getTotalHits());
-            return result;
+            return buildinglist;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,8 +94,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     /**
      * 功能描述：随机获取数据并且根据房源级别排序
+     * <p>
+     * //     * @param [projHouseInfoRequest]
      *
-//     * @param [projHouseInfoRequest]
      * @return java.util.List
      * @author zhw
      * @date 2017/12/15 11:07
@@ -109,140 +110,131 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchResponse searchresponse = null;
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
-        /*//参数都为null,则查询所有数据
-        if (projHouseInfoRequest==null) {
-            booleanQueryBuilder.must(QueryBuilders.matchAllQuery());
-        }*/
-            // 二手房ID
-        /*if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
-        }*/
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", projHouseInfoRequest.getHouseBusinessName()));
             }
+            //小区id
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getNewcode())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", projHouseInfoRequest.getNewcode()));
+            }
             //商圈id
-            if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessId())) {
-                booleanQueryBuilder.must(QueryBuilders.termQuery("businessAreaId", projHouseInfoRequest.getHouseBusinessId()));
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getAreaId())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", projHouseInfoRequest.getAreaId()));
 
             }
-            String id = projHouseInfoRequest.getAreaId();
-            //区域
-            if (StringTool.isNotEmpty((projHouseInfoRequest.getAreaId()))) {
-                booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", projHouseInfoRequest.getAreaId()));
+            //小区id
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getNewcode())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", projHouseInfoRequest.getNewcode()));
 
             }
+            //房源id
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseId())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", projHouseInfoRequest.getHouseId()));
+
+            }
+            String id = projHouseInfoRequest.getDistrictId();
+            //区域id
+            if (StringTool.isNotEmpty((projHouseInfoRequest.getDistrictId()))) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", projHouseInfoRequest.getDistrictId()));
+
+            }
+            //区域的名称
+            if (StringTool.isNotEmpty((projHouseInfoRequest.getArea()))) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("area", projHouseInfoRequest.getArea()));
+
+            }
+
             //地铁线id
             if (StringTool.isNotEmpty(projHouseInfoRequest.getSubwayLineId())) {
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", projHouseInfoRequest.getSubwayLineId()));
                 key = projHouseInfoRequest.getSubwayLineId();
-
             }
             //地铁站id
             if (StringTool.isNotEmpty(projHouseInfoRequest.getSubwayStationId())) {
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", projHouseInfoRequest.getSubwayStationId()));
-                key = projHouseInfoRequest.getSubwayLineId() + "," + projHouseInfoRequest.getSubwayStationId();
-
+                key = projHouseInfoRequest.getSubwayLineId() + "$" + projHouseInfoRequest.getSubwayStationId();
             }
-        /*//查找距离
-        if (StringTool.isNotEmpty(key)) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseToSubwayDistance", key));
-        }*/
             //范围====================
-            //总价  单选
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getPrice())) {
-                String[] layoutId = projHouseInfoRequest.getPrice().split(",");
+            //总价查询
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getBeginPrice()) && StringTool.isNotEmpty(projHouseInfoRequest.getEndPrice())) {
                 booleanQueryBuilder
-                        .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(layoutId[0]).lte(layoutId[1])));
+                        .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(projHouseInfoRequest.getBeginPrice()).lte(projHouseInfoRequest.getEndPrice())));
 
             }
-            //范围=========================
-            //多选=========================
             //面积
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
+                String area = projHouseInfoRequest.getHouseAreaId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
+                String[] layoutId = area.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
                     }
-                    boolQueryBuilder.should(QueryBuilders.rangeQuery("houseArea").gt(layoutId[i]).lte(layoutId[i + 1]));
+                    boolQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gt(layoutId[i]).lte(layoutId[i + 1]));
                     booleanQueryBuilder.must(boolQueryBuilder);
                 }
             }
             //楼龄
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseYearId())) {
+                String houseyear = projHouseInfoRequest.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getHouseYearId().split(",");
+                String[] layoutId = houseyear.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
                     }
-                    boolQueryBuilder.should(QueryBuilders.rangeQuery("houseYear").gt(layoutId[i]).lte(layoutId[i + 1]));
+                    boolQueryBuilder.should(QueryBuilders.rangeQuery("year")
+                            //计算房源建成年代
+                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i+1]))))
+                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i])))));
                     booleanQueryBuilder.must(boolQueryBuilder);
 
                 }
             }
-            //户型
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseTypeId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseTypeId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseTypeId", layoutId));
+            //户型(室)
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getLayoutId())) {
+                String[] layoutId = projHouseInfoRequest.getLayoutId().split(",");
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             //物业类型
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
                 String[] layoutId = projHouseInfoRequest.getHouseManagementTypeId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseManagementTypeId", layoutId));
-            }
-            //电梯
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLiftId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseLiftId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLiftId", layoutId));
-
-
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseType", layoutId));
             }
             //建筑类型
             if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingTypeId())) {
                 String[] layoutId = projHouseInfoRequest.getBuildingTypeId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBuildingTypeId", layoutId));
-
-
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("buildCategory", layoutId));
             }
-            //朝向houseOrientationId
+
+            //朝向
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseOrientationId())) {
                 String[] layoutId = projHouseInfoRequest.getHouseOrientationId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOrientationId", layoutId));
-
-
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", layoutId));
             }
-            //标签(满二，满三，满五)houseLabelId
+
+            //电梯
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getElevator())) {
+                String[] layoutId = projHouseInfoRequest.getElevator().split(",");
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("elevator", layoutId));
+            }
+            //标签(满二，满三，满五)
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLabelId())) {
                 String[] layoutId = projHouseInfoRequest.getHouseLabelId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseLabelId", layoutId));
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", layoutId));
             }
-            //楼层houseFloorId
+
+            //楼层
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseFloorId())) {
                 String[] layoutId = projHouseInfoRequest.getHouseFloorId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseFloorId", layoutId));
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("floor", layoutId));
 
             }
-            //用途housePurposeId
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHousePurposeId())) {
-                String[] layoutId = projHouseInfoRequest.getHousePurposeId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("housePurposeId", layoutId));
-
-            }
-
-            //供暖houseHeatingId
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseHeatingId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseHeatingId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseHeatingId", layoutId));
-
-            }
-
-            //权属houseOwnershipId
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseOwnershipId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseOwnershipId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("houseOwnershipId", layoutId));
+            //权属
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingFeature())) {
+                String[] layoutId = projHouseInfoRequest.getBuildingFeature().split(",");
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
             }
             /**
@@ -256,40 +248,66 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //            System.out.println(booleanQueryBuilder);
 
             if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
-                        /**
-                         * 设置需要返回的参数传递到页面
-                         * setFetchSource(
-                         new String[]{"building_name_id", "building_name", "average_price", "building_tags", "activity_desc", "city_id",
-                         "district_id", "district_name", "area_id", "area_name", "building_imgs"},
-                         null)
-                         */
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
-            } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
                 searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
                         .setFrom((pageNum - 1) * pageSize)
                         .setSize(pageSize)
                         .execute().actionGet();
+            } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
+                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
+                        .setFrom((pageNum - 1) * pageSize)
+                        .setSize(pageSize)
+                        .execute().actionGet();
             } else {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseRank", SortOrder.DESC)
+                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
                         .setFrom((pageNum - 1) * pageSize)
                         .setSize(pageSize)
                         .execute().actionGet();
             }
             SearchHits hits = searchresponse.getHits();
-
-
             List houseList = new ArrayList();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
                 Map<String, Object> buildings = hit.getSource();
-
-                Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
-                ProjHouseInfo instance = entityClass.newInstance();
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
+                //小区坐标
+                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                //朝向
+//                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
+//                instance.setForwardName(forWard);
+                //装修
+//                String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
+//                instance.setFitmentName(fitment);
+//                Integer[] tags = instance.getTags();
+//                String[] tag = new String[tags.length];
+//                for (int i = 0; i < tags.length; i++) {
+//
+//                    if (StringTool.isNotEmpty(tags[i])){
+//                        //标签
+//                        tag[i] = LabelMap.getLabel(String.valueOf(tags[i]));
+//                    }
+//
+//                }
+                //instance.setTagsName(tag);
+                //权属
+//                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
+//                //物业类型
+//                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
+//                //建筑形式
+//                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
+                //电梯
+//                if(instance.getElevator()=="1"){
+//                   instance.setElevator("有电梯");
+//                }
+//                if(instance.getElevator()=="2"){
+//                    instance.setElevator("无电梯");
+//                }
+//                if(instance.getElevator()==null){
+//                    instance.setElevator("暂无");
+//                }
                 houseList.add(instance);
             }
             return houseList;
@@ -306,7 +324,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过二手房id查找房源信息
      *
-//     * @param [houseId]
+     * @param
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
@@ -329,10 +347,37 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchHit[] searchHists = hits.getHits();
             List houseList = new ArrayList();
             for (SearchHit hit : searchHists) {
-                Map source = hit.getSource();
-                Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
-                ProjHouseInfo instance = entityClass.newInstance();
-                BeanUtils.populate(instance, source);
+                Map<String, Object> buildings = hit.getSource();
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                //小区坐标
+                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+//                //朝向
+//                String forWard = ForWardMap.getForWard(instance.getFloor());
+//                instance.setForwardName(forWard);
+//                //装修
+//                String fitment = FitmentMap.getFitment(String.valueOf(instance.getFitment()));
+//                instance.setFitmentName(fitment);
+//                Integer[] tags = instance.getTags();
+//                String[] tag = new String[tags.length];
+//                for (int i = 0; i < tags.length; i++) {
+//
+//                    if (StringTool.isNotEmpty(tags[i])){
+//                        //标签
+//                        tag[i] = LabelMap.getLabel(String.valueOf(tags[i]));
+//                    }
+//                }
+//                instance.setTagsName(tag);
+//                //权属
+//                instance.setPropertyRightName(OwnerShipMap.getOwnership(String.valueOf(instance.getPropertyRight())));
+//                //物业类型
+//                instance.setHouseTypeName(PropertyTypeMap.getPropertyType(String.valueOf(instance.getHouseType())));
+//                //建筑形式
+//                instance.setBuildCategoryName(ResidenceMap.getResidenceBuildCategory(instance.getBuildCategory()));
+//                //电梯/
+//                instance.setElevator(instance.getElevator() == "1" ? "有电梯" : "无电梯");
                 houseList.add(instance);
             }
             result = new HashMap<>();
@@ -351,8 +396,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     /**
      * 功能描述：通过输入的搜索框信息查询数据
+     * <p>
+     * //     * @param [text]
      *
-//     * @param [text]
      * @return java.util.List
      * @author zhw
      * @date 2017/12/15 15:07
@@ -369,15 +415,14 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     .execute().actionGet();//执行
             List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
             BoolQueryBuilder ww = QueryBuilders.boolQuery();
-            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+            for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
                 queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.fuzzyQuery("areaName", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
                         .should(QueryBuilders.fuzzyQuery("houseBusinessName", analyzeToken.getTerm()))
-                        .should(QueryBuilders.fuzzyQuery("housePlotName", analyzeToken.getTerm()));
+                        .should(QueryBuilders.fuzzyQuery("plotName", analyzeToken.getTerm()));
                 ww.should(queryBuilder);
             }
-            SearchResponse searchResponse = client.prepareSearch("house123")
-                    .setTypes("house1234")
+            SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                     .setQuery(ww)
                    /* .addSort("houseRank", SortOrder.DESC)*/
                     .setFrom(0)
@@ -386,9 +431,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             List houseList = new ArrayList();
             for (SearchHit searchHit : searchResponse.getHits().getHits()) {
                 Map<String, Object> buildings = searchHit.getSource();
-                Class<ProjHouseInfo> entityClass = ProjHouseInfo.class;
-                ProjHouseInfo instance = entityClass.newInstance();
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
+                //小区坐标
+                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 houseList.add(instance);
             }
             return houseList;
@@ -397,20 +445,21 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         }
         return null;
     }
+
     /**
-     *
      * 功能描述：往es中保存数据
+     *
+     * @return boolean
      * @author zhw
      * @date 2017/12/16 11:10
-//     * @param [projHouseInfo]
-     * @return boolean
+     * //     * @param [projHouseInfo]
      */
     @Override
     public void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes) {
         TransportClient client = esClientTools.init();
         ProjHouseInfo projHouseInfo = new ProjHouseInfo();
         try {
-            BeanUtils.copyProperties(projHouseInfo,projHouseInfoes);
+            BeanUtils.copyProperties(projHouseInfo, projHouseInfoes);
         } catch (Exception e) {
             e.printStackTrace();
         }

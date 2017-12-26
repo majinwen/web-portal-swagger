@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/newhouse/searchNewHouse">
+    <input id="url" type="hidden" value="/newhouse/searchNewHouse">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -31,8 +31,8 @@
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
                 <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
+                    <li id="district-option">区域</li>
+                    <li id="subway-option">地铁</li>
                 </ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
@@ -42,7 +42,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -84,10 +84,10 @@
                 <dl>
                     <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -149,28 +149,30 @@
 <section>
     <ul><#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item = map['building_imgs']>
-                        <#if item[0]?exists>
-                            <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                        <#if map['building_imgs']?exists>
+                            <#assign imgt = map['building_imgs']?split(",")>
+                            <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if>
+                        <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"> <#if map['average_price']?exists>${map['average_price']}元/㎡<#else>暂无</#if></p>
+                        <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
-                                   ${map['nearsubway']}
+                            <#assign rounditems = map['nearsubway']?split("$")>
+                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
                             <#else>
-                            <#if map['district_name']?exists>${map['district_name']}</#if>
+                                <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                             </#if>
-                            <#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
-                            </p>
+                        </p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if  map['building_tags']?exists>
                                 <#assign item =  map['building_tags']>
@@ -186,10 +188,12 @@
                         </div>
                     </div>
                 </div>
+                <#if map['activity_desc']?exists>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
-                    <span><#if map['activity_desc']?exists>${map['activity_desc']}</#if></span>
+                   <span>${map['activity_desc']}</span>
                 </div>
+                </#if>
             </a></li>
         </#list>
     </#if></ul>
@@ -200,15 +204,16 @@
 <div class="sort-content-box">
     <div class="sort-mask"></div>
     <ul class="sort-content">
-        <#if sort?exists>
-            <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
-            <li value="1" <#if sort==1>class="current"</#if>><p>价格由高到低</p></li>
-            <li value="2" <#if sort==2>class="current"</#if>><p>价格由低到高</p></li>
-        </#if>
+    <#if sort?exists>
+        <li value="0" <#if sort==0>class="current"</#if>><p>默认排序</p></li>
+        <li value="2" <#if sort==2>class="current"</#if>><p>价格由高到低</p></li>
+        <li value="1" <#if sort==1>class="current"</#if>><p>价格由低到高</p></li>
+    </#if>
     </ul>
 </div>
 
 <script src="${staticurl}/js/categorys.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/main.js?version=123"></script>
+<script src="${staticurl}/js/list-link.js"></script>
 </body>
 </html>

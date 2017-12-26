@@ -26,7 +26,7 @@ $(function () {
 function describeAllShow() {
     if ($('.describe-cont').length) {
         var describeAllContent = $('.describe-cont p').text();
-        $('.describe-cont p').text(describeAllContent.substr(0,59));
+        $('.describe-cont p').text(describeAllContent.substr(0,56));
         $('.describe-show-btn').click(function () {
             $(this).hide();
             $('.describe-cont p').text(describeAllContent);
@@ -150,10 +150,8 @@ function moduleExpand() {
     $('.expand-btn').on('click', function () {
         $(this).toggleClass('expand');
         if ($(this).hasClass('expand')) {
-            $(this).find('em').text('收起');
             $(this).parent().next('.expand-content').slideDown();
         } else {
-            $(this).find('em').text('展开');
             $(this).parent().next('.expand-content').slideUp();
         }
     });
@@ -184,10 +182,10 @@ function listSortTab() {
         });
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
-            if(BaseUrl=="http://localhost:8085/findVillageByConditions"){
-                location.href=BaseUrl+'?avgPrice='+$(this).val();
+            if(BaseUrl=="/findVillageByConditions"){
+                location.replace(BaseUrl+'?avgPrice='+$(this).val());
             }else {
-                location.href=BaseUrl+'?sort='+$(this).val();
+                location.replace(BaseUrl+'?sort='+$(this).val());
             }
             $('.sort-content-box').slideUp();
         })

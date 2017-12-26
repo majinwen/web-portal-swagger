@@ -340,9 +340,9 @@ hr {
     display: inline-block;
     margin-bottom: 0.2666666667rem; }
     .module-table-item dd.odd-item {
-      width: 5.2rem; }
+      width: 56%; }
     .module-table-item dd.even-item {
-      width: 3.8666666667rem;
+      width: 41%;
       padding-left: 0.1333333333rem;
       box-sizing: border-box; }
     .module-table-item dd:nth-last-child(2) {
@@ -388,7 +388,8 @@ hr {
       display: inline-block;
       width: 0.3733333333rem;
       height: 1.52rem;
-      background-position: left center; }
+      background-position: left center;
+      background-size: auto 0.36rem; }
       .module-header-message .markets-btn .price-trend-btn.current, .module-header-message .markets-btn .supply-contrast-btn.current {
         background-position: right center; }
     .module-header-message .markets-btn .price-trend-btn {
@@ -489,7 +490,9 @@ hr {
     .plot-primary-header p:first-child {
       margin-top: 0; }
   .plot-primary-header .house-labelling {
-    margin-top: 0.48rem; }
+    margin-top: 0.48rem;
+    overflow-x: scroll;
+    text-overflow: clip; }
   .plot-primary-header .plot-primary-map-box {
     position: absolute;
     bottom: 0.7066666667rem;
@@ -499,6 +502,9 @@ hr {
     -webkit-border-radius: 50%;
     border-radius: 50%;
     background-color: #efeff0; }
+    .plot-primary-header .plot-primary-map-box img {
+      width: 100%;
+      height: 100%; }
 
 .expand-content {
   display: none;
@@ -617,7 +623,8 @@ hr {
         top: -0.6666666667rem;
         display: block;
         width: 1.04rem;
-        text-align: center; }
+        text-align: center;
+        white-space: nowrap; }
         [data-dpr="1"] .expand-content .map-shopping-box .map-message-btn li span {
           font-size: 13px; }
         [data-dpr="2"] .expand-content .map-shopping-box .map-message-btn li span {
@@ -823,7 +830,7 @@ hr {
 .detail-map {
   position: relative;
   display: block;
-  padding: 0.5333333333rem 0; }
+  padding: 0 0 0.5333333333rem; }
   .detail-map img {
     width: 100%;
     height: auto !important; }
@@ -925,6 +932,8 @@ hr {
           font-size: 30px; }
         [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
           font-size: 45px; }
+        .detail-contact-box .detail-contact-content a.contact-telephone-counseling.only {
+          width: 100%; }
   .detail-contact-box.bottom {
     position: relative; }
 

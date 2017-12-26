@@ -281,6 +281,8 @@ hr {
           font-size: 30px; }
         [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
           font-size: 45px; }
+        .detail-contact-box .detail-contact-content a.contact-telephone-counseling.only {
+          width: 100%; }
   .detail-contact-box.bottom {
     position: relative; }
 

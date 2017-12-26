@@ -39,7 +39,7 @@
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
             <div class="banner-nav-item"><a href="#">
-                <i class="houses-intelligent"></i><p>智能找房</p>
+                <i class="houses-intelligent"></i><p>懂房帝</p>
             </a></div>
         </div>
     </section>
@@ -117,7 +117,7 @@
         <li><a class="list-item new" href="#">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                 </div>
                 <div class="list-item-cont">
                     <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
@@ -139,37 +139,48 @@
             </div>
         </a></li>
     </#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']}">
+        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <#assign item = map['building_imgs']>
-                      <img src="${staticurl}/${item[0]}" alt="${map['building_name']}">
+                    <#if map['building_imgs']?exists>
+                    <#assign item = map['building_imgs']?split(",")>
+                    <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    </#if>
+                    </#if>
                 </div>
                 <div class="list-item-cont">
-                    <span hidden="hidden">${map['building_name_id']}</span>
-                    <h3 class="cont-block-1">${map['building_name']} <em>${map['property_type']}</em></h3>
-                    <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                    <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
+                    <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']!'暂无'}</em></h3>
+                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡<#else>暂无</#if>
+                        </p>
                     <div class="cont-block-4 house-labelling gray middle">
-                        <#assign item =  map['building_tags']>
-                        <#list item as itemValue>
-                            <span>${itemValue}</span>
-                        </#list>
+                        <#if map['building_tags']?exists>
+                            <#assign item =  map['building_tags']>
+                            <#list item as itemValue>
+                                <span>${itemValue}</span>
+                            </#list>
+                            <#else><span>暂无</span>
+                        </#if>
+
                     </div>
                     <div class="cont-block-sale">
                         <em>${map['sale_status_name']}</em>
                     </div>
                 </div>
             </div>
+            <#if map['activity_desc']?exists>
             <div class="new-active">
                 <i class="icon"></i><em>活动：</em>
                 <span>${map['activity_desc']}</span>
             </div>
+            </#if>
         </a></li>
     </#list>
     </#if>

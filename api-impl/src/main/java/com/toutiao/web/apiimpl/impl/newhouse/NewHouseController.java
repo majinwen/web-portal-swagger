@@ -36,6 +36,7 @@ public class NewHouseController {
          newHouseQuery.setPageSize(4);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
+         model.addAttribute("searchType","newhouse");
          return "newhouse/new-index";
     }
 
@@ -51,25 +52,26 @@ public class NewHouseController {
        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
         model.addAttribute("builds",build);
         model.addAttribute("total",builds.get("total"));
+        model.addAttribute("newHouseQuery",newHouseQuery);
         if (newHouseQuery.getSort()!=null){
             model.addAttribute("sort",newHouseQuery.getSort());
         }else {
             model.addAttribute("sort",0);
         }
+        model.addAttribute("searchType","newhouse");
         return "newhouse/new-list";
     }
 
-    /**
-     * 搜索新房
-     *
-     * */
-
-    @RequestMapping("/searchNewHouseByKey")
-    public String searchNewHouseByKey(@RequestParam("keyword") String text, Model model){
-        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(text);
-        model.addAttribute("builds",build);
-        return "newhouse/new-list";
-    }
+//    /**
+//     * 搜索新房
+//     *
+//     * */
+//    @RequestMapping("/searchNewHouseByKey")
+//    public String searchNewHouseByKey(NewHouseQuery newHouseQuery, Model model){
+//        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(newHouseQuery);
+//        model.addAttribute("builds",build);
+//        return "newhouse/new-list";
+//    }
 
     /**
      * 楼盘详情信息
@@ -81,7 +83,7 @@ public class NewHouseController {
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         PriceTrend priceTrend=new PriceTrend();
-        priceTrend.setBuildId(buildingId);
+        priceTrend.setBuildingId(buildingId);
         priceTrend.setPropertyType((short)1);
 
         Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
@@ -124,14 +126,44 @@ public class NewHouseController {
     public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+        int rs = 0;
+        if(room.size() > 0){
+            for(int i=0;i<room.size();i++){
+                rs = rs+ Integer.valueOf(String.valueOf(room.get(i).get("count")));
+            }
+        }
         model.addAttribute("layoutDetails", details.get("layouts"));
         model.addAttribute("room",room);
         model.addAttribute("bid",buildingId);
         model.addAttribute("tags",tags);
+        model.addAttribute("roomcount",rs);
         return "newhouse/new-house-type";
 
     }
 
+
+    /**
+     * 新房配套地图
+     * @return
+     */
+    @RequestMapping("/getNewHouseMapDetail")
+    public String getNewHouseMapDetail(@RequestParam("id") Integer buildingId, Model model){
+        Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
+        PriceTrend priceTrend=new PriceTrend();
+        priceTrend.setBuildingId(buildingId);
+        priceTrend.setPropertyType((short)1);
+
+        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
+
+        List<String>dateList= DateUtil.oneYearList();
+
+        String detailBuild = (String) details.get("build");
+        JSONObject build=JSON.parseObject(detailBuild);
+        model.addAttribute("build",build);
+
+        return "map";
+
+    }
 
     /**
      * 楼盘全部描述

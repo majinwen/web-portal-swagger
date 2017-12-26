@@ -69,6 +69,22 @@ public class NewHouseServiceImpl implements NewHouseService{
         SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
+        QueryBuilder queryBuilder = null;
+        if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
+            AnalyzeResponse response = esClientTools.init().admin().indices()
+                    .prepareAnalyze(newHouseQuery.getKeywords())//内容
+                    .setAnalyzer("ik_smart")//指定分词器3`3
+                    .execute().actionGet();//执行
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                queryBuilder = QueryBuilders.boolQuery()
+                        .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
+                        .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
+
+                booleanQueryBuilder.should(queryBuilder);
+            }
+        }
 
         //城市
         if(newHouseQuery.getCityId()!=null && newHouseQuery.getCityId()!=0){
@@ -89,22 +105,10 @@ public class NewHouseServiceImpl implements NewHouseService{
             keys = newHouseQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if(newHouseQuery.getSubwayLineId()!=null && newHouseQuery.getSubwayStationId()!=0){
+        if(newHouseQuery.getSubwayStationId()!=null && newHouseQuery.getSubwayStationId()!=0){
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseQuery.getSubwayStationId()}));
-            keys = keys+","+newHouseQuery.getSubwayStationId().toString();
+            keys = keys+"$"+newHouseQuery.getSubwayStationId().toString();
         }
-
-
-
-//        //地铁
-//        String keys = "";
-//        if (newHouseQuery.getNearbysubway()!=null&&newHouseQuery.getNearbysubway()!=""){
-//
-//
-//            keys = newHouseQuery.getNearbysubway();
-//        }
-
-        ///==============================
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
@@ -123,10 +127,9 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
+            String area = newHouseQuery.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
             BoolQueryBuilder boolQueryBuilder = boolQuery();
-
-
-            String[] layoutId = newHouseQuery.getHouseAreaSize().split(",");
+            String[] layoutId = area.split(",");
             for (int i = 0; i < layoutId.length ; i=i+2) {
                 if(i+1>layoutId.length){
                     break;
@@ -140,7 +143,12 @@ public class NewHouseServiceImpl implements NewHouseService{
         ///================================
         //物业类型
         if(StringUtil.isNotNullString(newHouseQuery.getPropertyTypeId())){
-            booleanQueryBuilder.must(termsQuery("property_type_id",new int[]{Integer.valueOf(newHouseQuery.getPropertyTypeId())}));
+            String[] py = newHouseQuery.getPropertyTypeId().split(",");
+            String[] propertyType = new String[py.length];
+            for(int i=0; i<py.length;i++){
+                propertyType[i] = py[i];
+            }
+            booleanQueryBuilder.must(termsQuery("property_type_id",propertyType));
         }
 
         //电梯
@@ -149,7 +157,12 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //建筑类型
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingType())){
-            booleanQueryBuilder.must(termsQuery("building_type_id", new int[]{Integer.valueOf(newHouseQuery.getBuildingType())}));
+            String[] py = newHouseQuery.getBuildingType().split(",");
+            String[] BuildingType = new String[py.length];
+            for(int i=0; i<py.length;i++){
+                BuildingType[i] = py[i];
+            }
+            booleanQueryBuilder.must(termsQuery("building_type_id", BuildingType));
         }
 //        //销售状态
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
@@ -157,11 +170,17 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
-            booleanQueryBuilder.must(termsQuery("building_feature_id", new int[]{Integer.valueOf(newHouseQuery.getBuildingFeature())}));
+            String[] py = newHouseQuery.getBuildingFeature().split(",");
+            String[] BuildingFeature = new String[py.length];
+            for(int i=0; i<py.length;i++){
+                BuildingFeature[i] = py[i];
+            }
+            booleanQueryBuilder.must(termsQuery("building_feature_id", BuildingFeature));
+
         }
         //装修
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){
-            booleanQueryBuilder.must(termsQuery("redecorate_type_id", new int[]{Integer.valueOf(newHouseQuery.getDeliverStyle())}));
+            booleanQueryBuilder.must(termsQuery("redecorate_type_id", new String[]{newHouseQuery.getDeliverStyle()}));
         }
 
         int pageNum = 1;
@@ -169,7 +188,6 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(newHouseQuery.getPageNum()!=null && newHouseQuery.getPageNum()>1){
             pageNum = newHouseQuery.getPageNum();
         }
-
 
         //排序  0--默认（按楼盘级别（广告优先））--1均价升排序--2均价降排序--3开盘时间升排序--4开盘时间降排序
         if(newHouseQuery.getSort()!=null&& newHouseQuery.getSort()==1){
@@ -233,6 +251,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }
+
         SearchHits hits = searchresponse.getHits();
 //        List<String> buildinglist = new ArrayList<>();
         ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
@@ -263,7 +282,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                 .execute().actionGet();
 
         BoolQueryBuilder booleanQueryBuilder1 = boolQuery();
-        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        booleanQueryBuilder1.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
                 .setQuery(booleanQueryBuilder1)
                 .execute().actionGet();
@@ -280,18 +299,20 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         SearchHit[] searchHists = hits.getHits();
         String buildings = null;
-        List<Double> locations = new ArrayList<>();
+//        List<Double> locations = new ArrayList<>();
+        String locations = "";
         for (SearchHit hit : searchHists) {
             buildings = hit.getSourceAsString();
-            locations = (List<Double>) hit.getSource().get("location");
+            locations = (String) hit.getSource().get("location");
 
         }
         Map<String, Object> maprep = new HashMap<>();
         maprep.put("build",buildings);
         maprep.put("layout",layouts);
+        String[] loca = locations.split(",");
         try {
-            if(locations.size() ==2){
-                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,locations.get(0),locations.get(1),distance,client);
+            if(loca.length ==2){
+                List<Map<String,Object>>nearBy = getNearBuilding(buildingId,newhouseIndex,newhouseType,Double.valueOf(loca[0]),Double.valueOf(loca[1]),distance,client);
                 maprep.put("nearbybuild",nearBy);
             }
         } catch (Exception e) {
@@ -333,7 +354,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         TransportClient client = esClientTools.init();
         BoolQueryBuilder detailsBuilder = boolQuery();
 //        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
-        detailsBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         if(tags > 0){
             detailsBuilder.must(QueryBuilders.termQuery("room",tags));
         }
@@ -362,7 +383,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         TransportClient client = esClientTools.init();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
-        sizeBuilder.must(JoinQueryBuilders.hasParentQuery("building1",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
 
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType).setQuery(sizeBuilder)
                 .addAggregation(AggregationBuilders.terms("roomCount").field("room"))
@@ -435,7 +456,7 @@ public class NewHouseServiceImpl implements NewHouseService{
      *
      *
      *  */
-    @Override
+   /* @Override
     public ArrayList<HashMap<String,Object>> searchNewHouse(String text) {
         ArrayList<HashMap<String,Object>> houseList = new ArrayList();
         try {
@@ -457,12 +478,12 @@ public class NewHouseServiceImpl implements NewHouseService{
                 ww.should(queryBuilder);
             }
 
-            /*ww = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.fuzzyQuery("area_name", text));*/
+            *//*ww = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.fuzzyQuery("area_name", text));*//*
             SearchResponse searchResponse = client.prepareSearch("beijing1")
                     .setTypes("building1")
                     .setQuery(ww)
-                   /* .addSort("houseRank", SortOrder.DESC)*/
+                   *//* .addSort("houseRank", SortOrder.DESC)*//*
                     .setFrom(0)
                     .setSize(10)
                     .execute().actionGet();
@@ -476,7 +497,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         return houseList;
     }
-
+*/
     @Override
     public void saveBuildingParent(NewHouseBuildings newHouseBuildings) {
 

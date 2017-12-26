@@ -8,10 +8,11 @@
     <title>二手房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
+<#setting url_escaping_charset="UTF-8">
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="http://localhost:8085/findProjHouseInfo">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <input id="url" type="hidden" value="/findProjHouseInfo">
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -31,8 +32,8 @@
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
                 <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
+                    <li id="district-option">区域</li>
+                    <li id="subway-option">地铁</li>
                 </ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
@@ -42,7 +43,7 @@
         <div class="filter-item" data-mark="panel-price">
             <div class="price-list">
                 <ul>
-                    <li class="current">不限</li>
+                    <li data-begin-price="" data-end-price="" class="current">不限</li>
                     <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                     <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                     <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
@@ -82,6 +83,31 @@
                     </dd>
                 </dl>
                 <dl>
+                    <dt data-type="houseOrientationId">朝向</dt>
+                    <dd>
+                        <span data-info="1">东</span>
+                        <span data-info="2">西</span>
+                        <span data-info="3">南</span>
+                        <span data-info="4">北</span>
+                        <span data-info="5">东南</span>
+                        <span data-info="6">西南</span>
+                        <span data-info="7">东北</span>
+                        <span data-info="8">西北</span>
+                        <span data-info="9">东西</span>
+                        <span data-info="10">南北</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="houseLabelId">标签</dt>
+                    <dd>
+                        <span data-info="1">近地铁</span>
+                        <span data-info="4">随时看</span>
+                        <span data-info="8">满二年</span>
+                        <span data-info="16">满五年</span>
+                        <span data-info="32">近公园</span>
+                    </dd>
+                </dl>
+                <dl>
                     <dt data-type="houseAreaId">面积</dt>
                     <dd>
                         <span data-info="0,60">60以下</span>
@@ -101,11 +127,10 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseFloorId">楼层</dt>
+                    <dt data-type="elevator">电梯</dt>
                     <dd>
-                        <span data-info="低层楼">低层楼</span>
-                        <span data-info="中层楼">中层楼</span>
-                        <span data-info="高层楼">高层楼</span>
+                        <span data-info="1">有</span>
+                        <span data-info="2">无</span>
                     </dd>
                 </dl>
                 <dl>
@@ -114,7 +139,6 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
                 <dl>
@@ -123,37 +147,9 @@
                         <span data-info="1">已购公房</span>
                         <span data-info="2">商品房</span>
                         <span data-info="3">空置房</span>
-                        <span data-info="4">经济适用房</span>
-                        <span data-info="5">使用权房</span>
-                        <span data-info="6">央产</span>
-                        <span data-info="7">按经济试用住房管理的房屋</span>
-                        <span data-info="8">其他</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseType">标签</dt>
-                    <dd>
-                        <span data-info="1">近地铁</span>
-                        <span data-info="4">随时看</span>
-                        <span data-info="8">满二年</span>
-                        <span data-info="16">满五年</span>
-                        <span data-info="32">近公园</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseOrientationId">朝向</dt>
-                    <dd>
-                        <span data-info="1">东</span>
-                        <span data-info="2">西</span>
-                        <span data-info="3">南</span>
-                        <span data-info="4">北</span>
-                        <span data-info="5">东南</span>
-                        <span data-info="6">西南</span>
-                        <span data-info="7">东北</span>
-                        <span data-info="8">西北</span>
-                        <span data-info="9">东西</span>
-                        <span data-info="10">南北</span>
-                        <span data-info="11">其他</span>
+                        <span data-info="4">使用权房</span>
+                        <span data-info="5">央产</span>
+                        <span data-info="6">经济适用房</span>
                     </dd>
                 </dl>
             </div>
@@ -165,53 +161,71 @@
     </div>
 </section>
 <section>
-    <ul>
-    <#if builds?exists>
+    <ul><#if builds?exists>
         <#list builds as map>
-            <li>
-                <#assign itemLocation=map['housePlotLocation']>
-                <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}/${itemLocation[0]}/${itemLocation[1]}">
-                <input type="hidden" name="houseId" value="${map.houseId}"/>
-
-                <input type="hidden" name="lat" value="${itemLocation[0]}"/>
-                <input type="hidden" name="lon" value="${itemLocation[1]}"/>
+            <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <img src="${staticurl}/images/esf/<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${map.houseTitle}</h3>
-                        <p class="cont-block-2"><#if map.houseArea?exists>${map.houseArea}㎡</#if>
-                                                <#if map.houseType?exists>/${map.houseType}</#if>
-                                                <#if map.houseOrientation?exists>/${map.houseOrientation}</#if>
-                                                <#if map.housePlotName?exists>/${map.housePlotName}</p></#if>
-                        <#assign item=map['houseToSubwayDistance']>
-                        <#if map['key']?exists>
-                            <#if item[map['key']]?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${item[map['key']]}</p>
-                            </#if >
+                        <p class="cont-block-2"><#if map.buildArea?exists>${map.buildArea}㎡</#if>
+                        / <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
+                        / <#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
+                        / <#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
+                        <#if map['subwayDistince']?exists>
+                            <#assign item=map['subwayDistince']>
+                            <#if map['key']?exists>
+                                <#if item[map['key']]?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                    </p>
+                                </#if >
                             <#else >
-                                <p class="cont-block-3 distance"><i class="icon"></i>${map.areaName}[${map.houseBusinessName}]</p>
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                    [${map.houseBusinessName}]<#else>暂无</#if></p>
+                            </#if>
+                        <#else >
+                            <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                [${map.houseBusinessName}]<#else>暂无</#if></p>
                         </#if>
-                        <div class="cont-block-4 house-labelling gray middle">
-                            <#assign item =  map['houseLabel']>
-                            <#list item as itemValue>
-                              <#if itemValue?exists>
-                                  <span>${itemValue}</span>
-                              </#if>
-                            </#list>
+                        <div class="cont-block-4 house-labelling gray middle esf">
+                            <#if map['tagsName']?exists>
+                                <#assign item =map['tagsName']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                        <span>${itemValue}</span>
+                                    </#if>
+                                <#else >
+                                </#list>
+                            <#else >
+                            </#if>
                         </div>
                         <div class="cont-block-price">
-                            <em> <#if map.houseTotalPrices?exists>${map.houseTotalPrices}万</#if></em>
-                            <span> <#if map.houseUnitCost?exists>${map.houseUnitCost}元/㎡</#if></span>
+                            <em>
+                                <#if map.houseTotalPrices?exists>
+                                    <#if map.houseTotalPrices==0>
+                                    </#if>
+                                <#else>
+                                    ${map.houseTotalPrices}万
+                                </#if>
+                            </em>
+                            <em>
+                                <#if map.houseUnitCost?exists>
+                                    <#if map.houseUnitCost==0>
+                                    </#if>
+                                    ${map.houseUnitCost}元/㎡
+                                </#if>
+                            </em>
                         </div>
                     </div>
                 </div>
             </a></li>
         </#list>
-    </#if>
-    </ul>
+    </#if></ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -230,5 +244,6 @@
 
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-link.js"></script>
 </body>
 </html>

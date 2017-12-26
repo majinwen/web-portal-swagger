@@ -18,18 +18,13 @@ public class IntelligenceQuery {
      * 首付(起始)
      */
     private Double beginDownPayment;
-   /* *//**
-     * 首付(结束)
-     *//*
-    private Double endDownPayment;*/
+
     /**
      * 月供(起始)
      */
     private Double beginMonthPayment;
-    /**
-     * 月供（結束）
-     *//*
-    private Double endMonthPayment;*/
+
+    private Double preconcTotal;
 
     /**
      * 总价
@@ -40,7 +35,7 @@ public class IntelligenceQuery {
      */
     private long plotCount;
     /**
-     * 有35%的用户和你一样
+     * 百分比
      */
     private String ratio;
 

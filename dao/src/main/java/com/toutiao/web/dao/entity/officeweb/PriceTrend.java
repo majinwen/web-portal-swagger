@@ -12,7 +12,7 @@ public class PriceTrend {
     /**
      * 楼盘/小区id
      */
-    private Integer buildId;
+    private Integer buildingId;
 
     /**
      * 物业类型1-新房，0小区

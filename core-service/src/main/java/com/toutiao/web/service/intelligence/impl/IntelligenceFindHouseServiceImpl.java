@@ -59,30 +59,31 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //初始化
         Double plotTotal = null;
         try {
-            //首付(起始)
-            Double beginDownPayment = intelligenceQuery.getBeginDownPayment();
-           /* //首付(结束)
-            Double endDownPayment = intelligenceQuery.getEndDownPayment();*/
-            //月供(起始)
-            Double beginMonthPayment = intelligenceQuery.getBeginMonthPayment();
-            /*//月供（結束）
-            Double endMonthPayment = intelligenceQuery.getEndMonthPayment();*/
-            //通过页面传递的参数获取用户期望的总价范围
-            //计算总价范围 总价=首付+月供*12*30
-            plotTotal = beginDownPayment + beginMonthPayment * 12 * 30;
+            if (StringTool.isNotEmpty(intelligenceQuery.getBeginDownPayment()) && StringTool.isNotEmpty(intelligenceQuery.getBeginMonthPayment())) {
+               //首付(起始)
+                Double beginDownPayment = intelligenceQuery.getBeginDownPayment();
+                //月供(起始)
+                Double beginMonthPayment = intelligenceQuery.getBeginMonthPayment();
 
+                //通过页面传递的参数获取用户期望的总价范围
+                //计算总价范围 总价=首付+月供*12*30
+                plotTotal = beginDownPayment + beginMonthPayment * 12 * 30;
+            }else {
+                //获取页面填入的总价数据
+                plotTotal = intelligenceQuery.getPreconcTotal();
+            }
             intelligenceQuery.setPlotTotal(plotTotal);
 
             String userType = intelligenceQuery.getUserType();
             //总价高于400万 将用户的类型升级到自住改善
-            if (plotTotal >= 4 * 1000000 && userType.equals("1")) {
+            if (plotTotal >= 4E6 && userType.equals("1")) {
                 userType = "3";
                 //将用户选择的类型放入对象中
                 intelligenceQuery.setUserType(userType);
 
             }
             if ("3".equals(intelligenceQuery.getUserType())) {
-                 //将第七种画像附给当前用户
+                //将第七种画像附给当前用户
                 intelligenceQuery.setUserPortrayalType(7);
             }
             //获取该总价范围内的小区数量
@@ -687,7 +688,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
     /**
      * 换手率最高2个
-     租金月供比最高1个住宅，1个商铺（无商铺则推住宅),铭牌2个
+     * 租金月供比最高1个住宅，1个商铺（无商铺则推住宅),铭牌2个
+     *
      * @param intelligenceQuery
      * @return
      */

@@ -14,13 +14,16 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2>${discript['building_name']}</h2>
-            <p>别名：${discript['building_nickname']}</p>
+            <h2> ${discript['building_name']!'暂无'}</h2>
+            <p><#if discript['building_nickname']??>别名：${discript['building_nickname']}</#if></p>
             <div class="primary-header-tag">
-            <#assign tags = discript['building_tags']>
-            <#list tags as item>
-            <#if item?exists><span>${item}</span></#if>
-            </#list>
+                <#if discript['building_tags']?exists&&(discript['building_tags']?size>0)>
+                    <#assign tags = discript['building_tags']>
+                    <#list tags as item>
+                        <#if item?exists><span>${item}</span></#if>
+                    </#list><#else>暂无
+                </#if>
+
             </div>
         </div>
         <ul class="primary-item">
@@ -40,7 +43,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置：<#if discript['roundstation']?exists>${discript['roundstation']}<#else>暂无</#if></p>
+                <p>环线位置：<#if discript['loop_position']?exists>${discript['loop_position']}<#else>暂无</#if></p>
                 <p>区域位置：<#if discript['district_name']?exists>${discript['district_name']}<#else>暂无</#if></p>
                 <p>楼盘地址：<#if discript['building_address']?exists>${discript['building_address']}<#else>暂无</#if></p>
                 <p>售楼处地址：<#if discript['sale_address']?exists>${discript['sale_address']}<#else>暂无</#if></p>
@@ -97,29 +100,26 @@
             <th>发证时间</th>
             <th>绑定楼栋</th>
         </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
-        <tr>
-            <td>X京(2017)不动产第34号</td>
-            <td>20170909</td>
-            <td>8号楼</td>
-        </tr>
+    <#if discript['sell_licence']?exists&&(discript['sell_licence']?size>0)>
+        <#assign tags = discript['sell_licence']>
+            <tr>
+                <td>${tags['licenseName']!'暂无'}</td>
+                <td>${tags['time']?substring(0,10)!'暂无'}</td>
+                <td>${tags['buildInfo']!'暂无'}</td>
+            </tr>
+         <#else>
+             <tr>
+                 <td>暂无</td>
+             </tr>
+    </#if>
     </table>
 </section>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>
-            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+            <#--<a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>-->
+            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
 </div>
