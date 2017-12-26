@@ -1,5 +1,8 @@
 package com.toutiao.web.dao.entity.officeweb;
 
+import lombok.Data;
+
+@Data
 public class IntelligenceFhRes {
     /**
      * id
@@ -16,27 +19,39 @@ public class IntelligenceFhRes {
      */
     private Object fhResult;
 
-    public Integer getId() {
-        return id;
-    }
+    /**
+     * 首付
+     */
+    private Integer downPayment;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    /**
+     * 月供
+     */
+    private Integer monthPayment;
 
-    public String getPhone() {
-        return phone;
-    }
+    /**
+     * 用户类型（1-自住刚需，2-自住改善，3-投资出租）
+     */
+    private Integer userType;
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
+    /**
+     * 总价
+     */
+    private Integer totalPrice;
 
-    public Object getFhResult() {
-        return fhResult;
-    }
+    /**
+     * 户型
+     */
+    private Integer layout;
 
-    public void setFhResult(Object fhResult) {
-        this.fhResult = fhResult;
-    }
+    /**
+     * 是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
+     */
+    private Integer hasChild;
+
+    /**
+     * 是否有老人(0-无，1-有)
+     */
+    private Integer hasOldman;
+
 }
