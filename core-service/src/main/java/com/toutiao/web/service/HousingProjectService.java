@@ -17,6 +17,6 @@ public interface HousingProjectService {
      * 获取楼盘列表
      * @return
      */
-    List<ProjInfo> listHousingProject(HousingProjectQuery query);
+//    List<ProjInfo> listHousingProject(HousingProjectQuery query);
 
 }
