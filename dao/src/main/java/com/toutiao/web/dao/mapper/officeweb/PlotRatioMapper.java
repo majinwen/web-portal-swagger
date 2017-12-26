@@ -5,7 +5,9 @@ import com.toutiao.web.dao.entity.officeweb.PlotRatio;
 import com.toutiao.web.dao.entity.officeweb.PlotRatioExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface PlotRatioMapper extends BaseDao {
     int countByExample(PlotRatioExample example);
 
