@@ -76,6 +76,7 @@
                     $('.disabled').addClass('none')
                 }
             },1000);
+
             $.ajax({
                 type: "post",
                 url: "/message/getCode",
