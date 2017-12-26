@@ -648,6 +648,7 @@ hr {
   .category-box > ul {
     position: relative;
     overflow: hidden;
+    display: -webkit-flex;
     display: flex;
     background-color: #fff;
     border-bottom: 1px solid #ccc;

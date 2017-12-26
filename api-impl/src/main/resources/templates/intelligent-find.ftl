@@ -12,16 +12,16 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1">
+    <div class="section page1 active">
         <div class="bgbox bg1">
             <div class="page-content">
                 <h1>智能找房</h1>
                 <p>房产头条大数据<br>根据您的需求推荐最匹配的小区和房源</p>
-                <button type="button" class="button">开始体验</button>
+                <button type="button" class="button begin">开始体验</button>
             </div>
         </div>
     </div>
-    <div class="section page2 active">
+    <div class="section page2">
         <div class="bgbox bg2">
             <div class="page-content">
                 <h2>请选择购房目的</h2>
@@ -30,7 +30,7 @@
                     <div class="choose-item-box">
                         <div class="box-line-triangle"></div>
                         <div class="choose-item-cont">
-                            <div class="dashed-line"></div>
+                            <div class="dashed-line one"></div>
                             <p data-user-type="1">
                                 <span>自住</span>
                                 <span>刚需</span>
@@ -42,7 +42,7 @@
                         <div class="choose-item-box">
                             <div class="box-line-triangle"></div>
                             <div class="choose-item-cont">
-                                <div class="dashed-line"></div>
+                                <div class="dashed-line two"></div>
                                 <p data-user-type="2">
                                     <span>自住</span>
                                     <span>改善</span>
@@ -53,7 +53,7 @@
                         <div class="choose-item-box">
                             <div class="box-line-triangle"></div>
                             <div class="choose-item-cont">
-                                <div class="dashed-line"></div>
+                                <div class="dashed-line three"></div>
                                 <p data-user-type="3">
                                     <span>出租</span>
                                     <span>保值</span>
@@ -63,12 +63,13 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="button">确定</button>
+                <button type="button" class="button" id="userTypeSubmit">确定</button>
             </div>
         </div>
     </div>
     <div class="section page3">
-3<button type="button" class="button">开始体验</button>
+
+        <button type="button" class="button">开始体验</button>
     </div>
     <div class="section page4">
         <div class="bgbox bg4">
@@ -97,6 +98,8 @@
 <script>
     $(function () {
         $('#superContainer').fullpage({
+            fitToSection: true,
+            resize: false,
             onLeave: function (index, nextIndex, direction) {
                 if (nextIndex == 4) {
                     $.fn.fullpage.setAllowScrolling(true, 'down');
@@ -106,15 +109,31 @@
 
         $.fn.fullpage.setAllowScrolling(false, 'up, down');
 
-        $('.button').on('click', function () {
+        $('.begin').on('click', function () {
             $.fn.fullpage.moveSectionDown();
         });
 
+        // 用户类型选择
         $('.choose-wrapper').on('click', '.choose-item-box', function () {
             $('.choose-wrapper').find('.choose-item-box').removeClass('current');
             $(this).addClass('current');
-            console.log($(this).find('p').data('user-type'));
         });
+
+        if ($('.choose-wrapper').find('.current').length > 0){
+            $('.button').on('click', function () {
+                $.fn.fullpage.moveSectionDown();
+            });
+        }
+
+        // 提交选中用户类型
+        $('#userTypeSubmit').on('click', function () {
+            if ($('.choose-wrapper').find('.current').length > 0){
+                var params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
+                var userTypeUrl = 'userType=' + params;
+                $.fn.fullpage.moveSectionDown();
+                console.log(userTypeUrl);
+            }
+        })
     })
 </script>
 </body>

@@ -939,6 +939,7 @@ a.pswp__share--download:hover {
   [data-dpr="3"] .primary-message ul.primary-item > li {
     font-size: 39px; }
   .primary-message ul.primary-item > li ol {
+    display: -webkit-flex;
     display: flex;
     margin: 0 -0.4rem;
     padding: 0.04rem 0; }
@@ -1183,8 +1184,11 @@ a.pswp__share--download:hover {
   .expand-content .map-education-box {
     margin-bottom: 0.5333333333rem; }
     .expand-content .map-education-box ul {
+      width: 100%;
       display: flex;
-      justify-content: center; }
+      justify-content: center;
+      white-space: nowrap;
+      overflow-x: scroll; }
       .expand-content .map-education-box ul li {
         position: relative;
         display: inline-block;

@@ -327,11 +327,13 @@ hr {
         margin: -1.24rem;
         padding: 0.4rem;
         background-color: #f7f6f6;
-        border: 0.0133333333rem solid #000; }
+        border: 0.0133333333rem solid #000;
+        z-index: 1; }
         .page2 .page-content .choose-item-box .choose-item-cont p span {
           display: block;
           margin-top: 0.1866666667rem;
-          color: #3a3a3a; }
+          color: #3a3a3a;
+          white-space: nowrap; }
           [data-dpr="1"] .page2 .page-content .choose-item-box .choose-item-cont p span {
             font-size: 14px; }
           [data-dpr="2"] .page2 .page-content .choose-item-box .choose-item-cont p span {
@@ -340,6 +342,25 @@ hr {
             font-size: 42px; }
           .page2 .page-content .choose-item-box .choose-item-cont p span:first-child {
             margin-top: 0; }
+      .page2 .page-content .choose-item-box .choose-item-cont .dashed-line {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5.7333333333rem;
+        height: 0;
+        border-bottom: 0.0133333333rem dashed #000;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        z-index: 0; }
+        .page2 .page-content .choose-item-box .choose-item-cont .dashed-line.one {
+          -webkit-transform: rotate(60deg);
+          transform: rotate(60deg); }
+        .page2 .page-content .choose-item-box .choose-item-cont .dashed-line.two {
+          -webkit-transform: rotate(-60deg);
+          transform: rotate(-60deg); }
+        .page2 .page-content .choose-item-box .choose-item-cont .dashed-line.three {
+          -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
     .page2 .page-content .choose-item-box.current:before, .page2 .page-content .choose-item-box.current:after {
       content: '';
       position: absolute;
@@ -373,9 +394,13 @@ hr {
         .page2 .page-content .choose-item-box.current .choose-item-cont p span {
           color: #fb3939; }
   .page2 .page-content button {
+    position: absolute;
+    left: 50%;
+    bottom: 1.3333333333rem;
     width: 6.1333333333rem;
     height: 1.2rem;
-    line-height: 1.2rem; }
+    line-height: 1.2rem;
+    margin-left: -3.0666666667rem; }
     [data-dpr="1"] .page2 .page-content button {
       font-size: 15px; }
     [data-dpr="2"] .page2 .page-content button {
@@ -383,6 +408,9 @@ hr {
     [data-dpr="3"] .page2 .page-content button {
       font-size: 45px; }
 
+@media (max-device-width: 325px) {
+  .page2 .page-content button {
+    bottom: 0.6666666667rem; } }
 .page4 .bg4 {
   background-image: url("/static/images/intelligent/znzf_user_bg.png");
   background-repeat: no-repeat;
