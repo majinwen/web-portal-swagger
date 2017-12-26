@@ -66,8 +66,7 @@ public class IntelligenceQuery {
     /**
      * 教育配套标签标记
      */
-    private  int flag=0;
-
+    private int flag=0;
 
 
 

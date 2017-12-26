@@ -11,6 +11,7 @@ import com.toutiao.web.dao.entity.officeweb.TotalRoomRatio;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper;
+import com.toutiao.web.dao.mapper.officeweb.IntelligenceFindhouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.TotalListedRatioMapper;
 import com.toutiao.web.dao.mapper.officeweb.TotalRoomRatioMapper;
 import com.toutiao.web.domain.query.IntelligenceQuery;
@@ -94,6 +95,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
 
         }
+
 
 
         return null;
