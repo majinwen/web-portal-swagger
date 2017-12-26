@@ -43,15 +43,15 @@ public class PlotConterller {
     //根据条件查询小区
     @RequestMapping("/findVillageByConditions")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
-        if (villageRequest.getAvgPrice()!=null){
-            model.addAttribute("sort",Integer.parseInt(villageRequest.getAvgPrice()));
-        }else {
-            villageRequest.setAvgPrice("0");
-            model.addAttribute("sort",0);
+        if (villageRequest.getSort() != null) {
+            model.addAttribute("sort", Integer.parseInt(villageRequest.getSort()));
+        } else {
+            model.addAttribute("sort", 0);
         }
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
+        model.addAttribute("searchType", "plot");
         return "plot/plot-list";
     }
 
@@ -81,49 +81,59 @@ public class PlotConterller {
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
-        VillageResponse village= (VillageResponse) villageList.get(0);
+        VillageResponse village = (VillageResponse) villageList.get(0);
         model.addAttribute("village", village);
 
         //附近小区
         String[] latandlon = village.getLocation().split(",");
         Double lonx = Double.valueOf(latandlon[0]);
         Double laty = Double.valueOf(latandlon[1]);
-        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx,laty);
-        model.addAttribute("nearvillage",nearvillage);
+        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx, laty);
+        model.addAttribute("nearvillage", nearvillage);
 
         //推荐小区好房
         ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
         projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
         List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-        model.addAttribute("reViHouse",reViHouse);
+        model.addAttribute("reViHouse", reViHouse);
 
         newHouseQuery.setSort(0);
         newHouseQuery.setPageNum(1);
         newHouseQuery.setPageSize(4);
-        Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        List<Object> newbuildrecomed= (List<Object>) builds.get("data");
-        model.addAttribute("newbuilds",newbuildrecomed);
+        Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
+        List<Object> newbuildrecomed = (List<Object>) builds.get("data");
+        model.addAttribute("newbuilds", newbuildrecomed);
         return "plot/plot-detail";
     }
 
 
-
     /**
      * 小区待售页
+     *
      * @param model
      * @return
      */
     @RequestMapping("/plotSale")
-    public String sale(Model model){
-        model.addAttribute("user","asds");
+    public String sale(Model model) {
+        model.addAttribute("user", "asds");
         return "plot/plot-sale";
     }
 
+    //基本信息
     @RequestMapping("/plotParameter")
-    public String parameter(VillageRequest villageRequest, Model model){
+    public String parameter(VillageRequest villageRequest, Model model) {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
         return "plot/plot-parameter";
+    }
+
+    //获取小区地图
+    @RequestMapping("/getPlotMap")
+    public String plotMap(VillageRequest villageRequest, Model model) {
+        List villageList = plotService.findVillageByConditions(villageRequest);
+        VillageResponse village = (VillageResponse) villageList.get(0);
+        model.addAttribute("build", village);
+        return "map";
     }
 }

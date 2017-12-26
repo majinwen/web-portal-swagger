@@ -84,7 +84,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}<#else>暂无</#if></em>/㎡</p>
+                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>暂无</#if></em></p>
             </li>
             <li>
                 <p>
@@ -225,7 +225,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无'}</span><span>${nearitem['area_name']!'暂无'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}<#else >暂无</#if></em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}元/㎡<#else >暂无</#if></em></h4>
                 </div>
             </a>
         </li>

@@ -1,6 +1,5 @@
 var uu = $('#url');
 var BaseUrl=uu.val();
-console.log(BaseUrl)
 var params="";
 var url;
 var submitClickState = false;
@@ -40,33 +39,7 @@ $('.more-list').on('click','span', function () {
         $(this).toggleClass('current');
     }
 });
-/*
- * 更多筛选提交
- * */
-/*$('#moreSubmit').on('click', function (e) {
-    var moresubmitUrl = BaseUrl + '?';
-    var domList = $('.more-list').children('dl');
-    for (var i=0; i < domList.length; i++) {
-        var dataType = domList.eq(i).children('dt').attr('data-type'),
-            dataTypeArr = domList.eq(i).find('.current'),
-            arr = [];
-        if (dataTypeArr.length) {
-            for(var j=0; j<dataTypeArr.length; j++) {
-                arr.push(dataTypeArr.eq(j).attr('data-info'))
-            }
-            moresubmitUrl += dataType + '=' + arr.join(',') + '&';
-        }
 
-    }
-    if ($('.more-list').find('.current').length > 0) {
-        tabTextReplace(e, '多选')
-    } else {
-        tabTextReplace(e, '更多');
-        $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
-    }
-    console.log(moresubmitUrl.substr(0, moresubmitUrl.length -1));
-    location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
-});*/
 /*
  * 更多筛选重置
  * */
@@ -77,11 +50,6 @@ $('#moreReset').on('click', function () {
 $('.category-cont').on('click', function (e) {
     e.stopPropagation();
 });
-
-/*$('.global-mark').click(function (e) {
-    $('.filter-item').removeClass('active');
-    $('.global-mark').toggleClass('none');
-});*/
 
 /*
  * 显示区域，获取circle json 数据

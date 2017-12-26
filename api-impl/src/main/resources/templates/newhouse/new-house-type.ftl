@@ -11,7 +11,7 @@
 <body>
 <div class="module-bottom-fill">
     <div class="house-type-state">
-        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（0）</span>
+        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（${roomcount}）</span>
     <#if room?exists>
     <#list room as roomnode>
         <#assign roomid=roomnode['room']>
@@ -24,7 +24,7 @@
     <#list layoutDetails as datail>
         <section>
         <div class="house-type-header">
-            <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['living_area']}㎡</p>
+            <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['building_area']}㎡</p>
         </div>
         <div class="house-type-tag">
             <p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>
@@ -39,9 +39,10 @@
             <div>
                 <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
                 <span class="sale-state">
-                    <#if datail['is_sale']?exists&&datail['is_sale']==1>在售
-                    <#else>不在售
-                    </#if>
+                    <#--<#if datail['is_sale']?exists&&datail['is_sale']!'在售'>-->
+                    <#---->
+                    <#--</#if>-->
+                    ${datail['is_sale']!'在售'}
                 </span>
             </div>
         </div>

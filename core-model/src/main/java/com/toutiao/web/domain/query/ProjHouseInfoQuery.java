@@ -78,10 +78,10 @@ public class ProjHouseInfoQuery {
     private String houseBusinessName;
 
     //商圈id
-    private String houseBusinessId;
+    private String areaId;
 
     //区域id
-    private String areaId;
+    private String districtId;
 
     //区域名称
     private String area;
@@ -113,6 +113,8 @@ public class ProjHouseInfoQuery {
 
 
     private Integer houseHeating;
+
+
 
 
 }

@@ -7,6 +7,8 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.entity.officeweb.PlotRatio;
+import com.toutiao.web.dao.mapper.officeweb.PlotRatioMapper;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
@@ -33,7 +35,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +54,8 @@ public class PlotServiceImpl implements PlotService {
 
     @Autowired
     private ESClientTools esClientTools;
-
+    @Autowired
+    private PlotRatioMapper plotRatioMapper;
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
@@ -111,6 +116,12 @@ public class PlotServiceImpl implements PlotService {
             String key = null;
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //默认查询均格大于零
+            if (villageRequest.getAvgPrice()==null){
+                villageRequest.setAvgPrice("0,10000000");
+            }else {
+                villageRequest.setAvgPrice("0,10000000,"+villageRequest.getAvgPrice());
+            }
             //小区ID
             if (villageRequest.getId() != null) {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
@@ -143,11 +154,11 @@ public class PlotServiceImpl implements PlotService {
                 key = SubwayLineId[0] + "$" + SubwayStationId[0];
             }
             //标签
-            String labelId = villageRequest.getLabelId();
-            if (labelId != null && labelId.length() != 0) {
-                String[] LabelId = labelId.split(",");
+            String buildingFeature = villageRequest.getBuildingFeature();
+            if (buildingFeature != null && buildingFeature.length() != 0) {
+                String[] BuildingFeature = buildingFeature.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", LabelId));
+                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", BuildingFeature));
                 queryBuilder = boolQueryBuilder.must(queryBuilder1);
             }
 
@@ -175,55 +186,62 @@ public class PlotServiceImpl implements PlotService {
             }
 
             //面积
-            if (StringUtil.isNotNullString(villageRequest.getAreaSize())) {
-                String[] AreaSize = villageRequest.getAreaSize().split(",");
+            if (StringUtil.isNotNullString(villageRequest.getHouseAreaSize())) {
+                String area = villageRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String[] houseAreaSize = area.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < AreaSize.length; i = i + 2) {
-                    if (i + 1 > AreaSize.length) {
+                for (int i = 0; i < houseAreaSize.length; i = i + 2) {
+                    if (i + 1 > houseAreaSize.length) {
                         break;
                     }
                     BoolQueryBuilder areaSize1 = booleanQueryBuilder.should(JoinQueryBuilders
-                            .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(AreaSize[i]).lte(AreaSize[i + 1]), ScoreMode.None));
+                            .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(houseAreaSize[i]).lte(houseAreaSize[i + 1]), ScoreMode.None));
                     queryBuilder = boolQueryBuilder.must(areaSize1);
                 }
             }
             //楼龄
-            String age = villageRequest.getAge();
-            if (age != null && age.length() != 0 && age.length() % 2 == 0) {
-                String[] Age = age.split(",");
+            if (villageRequest.getBeginAge() != null && villageRequest.getBeginAge().length() != 0&&villageRequest.getEndAge()!= null && villageRequest.getEndAge().length() != 0  ) {
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                for (int i = 0; i < Age.length; i = i + 2) {
-                    if (i + 1 > Age.length) {
-                        break;
-                    }
-                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(Age[i]).lte(Age[i + 1]));
+//                for (int i = 0; i < Age.length; i = i + 2) {
+//                    if (i + 1 > Age.length) {
+//                        break;
+//                    }
+                    BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
+                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getEndAge()))))
+                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getBeginAge())))));
                     queryBuilder = boolQueryBuilder.must(Age1);
-                }
+//                }
             }
 
-            //物业类型
-            String propertyType = villageRequest.getPropertyType();
-            if (propertyType != null && propertyType.length() != 0) {
-                String[] PropertyType = propertyType.split(",");
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", PropertyType));
+            //物业类型ID
+            String propertyTypeId = villageRequest.getPropertyTypeId();
+            if (propertyTypeId != null && propertyTypeId.length() != 0) {
+                String[] PropertyTypeId = propertyTypeId.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType", PropertyTypeId));
             }
             //电梯
-            String elevator = villageRequest.getElevator();
-            if (elevator != null && elevator.length() != 0) {
-                String[] Elevator = elevator.split(",");
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", Elevator));
+            String elevatorFlag = villageRequest.getElevatorFlag();
+            if (elevatorFlag != null && elevatorFlag.length() != 0) {
+                String[] ElevatorFlag = elevatorFlag.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("elevator", ElevatorFlag));
             }
             //建筑类型编号
-            String architectureTypeId = villageRequest.getArchitectureTypeId();
-            if (architectureTypeId != null && architectureTypeId.length() != 0) {
-                String[] ArchitectureTypeId = architectureTypeId.split(",");
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", ArchitectureTypeId));
+            String buildingType = villageRequest.getBuildingType();
+            if (buildingType != null && buildingType.length() != 0) {
+                String[] BuildingType = buildingType.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId", BuildingType));
             }
             //楼盘特色
             String villageCharacteristics = villageRequest.getVillageCharacteristics();
             if (villageCharacteristics != null && villageCharacteristics.length() != 0) {
                 String[] VillageCharacteristics = villageCharacteristics.split(",");
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics", VillageCharacteristics));
+            }
+            //装修标准ID
+            String deliverStyle = villageRequest.getDeliverStyle();
+            if (deliverStyle != null && deliverStyle.length() != 0) {
+                String[] DeliverStyle = deliverStyle.split(",");
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("decorationType", DeliverStyle));
             }
             //供暖方式
             String heatingMode = villageRequest.getHeatingMode();
@@ -233,11 +251,11 @@ public class PlotServiceImpl implements PlotService {
             }
             //排序
             //均价
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("2")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
                 srb.addSort("avgPrice", SortOrder.ASC);
             }
 
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("1")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
 
@@ -264,6 +282,19 @@ public class PlotServiceImpl implements PlotService {
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
                     instance.setKey(key);
+                    if ("商电".equals(instance.getElectricSupply())){
+                        instance.setElectricFee("1.33");
+                    }else {
+                        instance.setElectricFee("0.48");
+                    }
+                    if ("商水".equals(instance.getWaterSupply())){
+                        instance.setWaterFee("6");
+                    }else {
+                        instance.setWaterFee("5");
+                    }
+                    PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                    instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                    instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                     houseList.add(instance);
 //            System.out.println(instance);
                 }

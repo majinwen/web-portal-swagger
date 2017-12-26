@@ -39,6 +39,7 @@ public class NewHouseController {
          newHouseQuery.setPageSize(4);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
+         model.addAttribute("searchType","newhouse");
          return "newhouse/new-index";
     }
 
@@ -60,7 +61,7 @@ public class NewHouseController {
         }else {
             model.addAttribute("sort",0);
         }
-        model.addAttribute("searchType","newshouse");
+        model.addAttribute("searchType","newhouse");
         return "newhouse/new-list";
     }
 
@@ -150,10 +151,17 @@ public class NewHouseController {
     public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+        int rs = 0;
+        if(room.size() > 0){
+            for(int i=0;i<room.size();i++){
+                rs = rs+ Integer.valueOf(String.valueOf(room.get(i).get("count")));
+            }
+        }
         model.addAttribute("layoutDetails", details.get("layouts"));
         model.addAttribute("room",room);
         model.addAttribute("bid",buildingId);
         model.addAttribute("tags",tags);
+        model.addAttribute("roomcount",rs);
         return "newhouse/new-house-type";
 
     }
@@ -177,10 +185,7 @@ public class NewHouseController {
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);
         model.addAttribute("build",build);
-        model.addAttribute("layout", details.get("layout"));
-        model.addAttribute("nearbybuild",details.get("nearbybuild"));
-        model.addAttribute("tradeline",priceTrendList);
-        model.addAttribute("xlist",dateList);
+
         return "map";
 
     }

@@ -35,7 +35,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>参考均价：<#if village['avgPrice']?exists><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无</#if></p>
+                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无</#if></p>
             </li>
         </ul>
     </section>
@@ -66,11 +66,11 @@
                         ${arType!""}&nbsp;&nbsp;
                 </#list></#if>
                 </p>
-                <p>产权年限：${village['yopr']!"暂无"}年</p>
-                <p>占地面积：${village['areaSize']!"暂无"}㎡</p>
-                <p>建筑面积：${village['buildingAreaSize']!"暂无"}㎡</p>
-                <p>容积率：${village['dimension']!"暂无"}</p>
-                <p>绿化率：${village['avgGreening']!"暂无"}%</p>
+                <p>产权年限：<#if village['yopr']?exists&&village['yopr']?number gt 0> ${village['yopr']}年<#else>暂无</#if></p>
+                <p>占地面积：<#if village['areaSize']?exists&&village['areaSize']?number gt 0>${village['areaSize']}㎡<#else >暂无</#if></p>
+                <p>建筑面积：<#if village['buildingAreaSize']?exists&&village['buildingAreaSize']?number gt 0 >${village['buildingAreaSize']}㎡<#else>暂无</#if></p>
+                <p>容积率：${village['dimension']}</p>
+                <p>绿化率：${village['avgGreening']}%</p>
                 <p>规划户数：${village['sumBuilding']!"暂无"}栋/${village['sumHousehold']!"暂无"}户</p>
                <#-- <p>规划车位：EEEEEEEE</p>-->
                 <p>车位配比：${village['sumHousehold']!"暂无"}户数/${village['carPositionRatio']!"暂无"}车位数</p>
@@ -84,7 +84,7 @@
     </div>
     <ul class="primary-item">
         <li>
-            <p>物业类型：${village['propertyType']!"暂无"}</p>
+            <p>物业类型：${village['propertyTypeName']!"暂无"}</p>
             <p>物业公司：${village['property']!"暂无"}</p>
             <p>物业费：${village['propertyFee']!"暂无"}</p>
             <p>供暖：${village['heatingMode']!"暂无"}</p>

@@ -127,8 +127,9 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
+            String area = newHouseQuery.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
             BoolQueryBuilder boolQueryBuilder = boolQuery();
-            String[] layoutId = newHouseQuery.getHouseAreaSize().split(",");
+            String[] layoutId = area.split(",");
             for (int i = 0; i < layoutId.length ; i=i+2) {
                 if(i+1>layoutId.length){
                     break;

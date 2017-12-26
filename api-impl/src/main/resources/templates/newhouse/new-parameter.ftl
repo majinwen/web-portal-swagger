@@ -43,7 +43,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置：<#if discript['roundstation']?exists>${discript['roundstation']}<#else>暂无</#if></p>
+                <p>环线位置：<#if discript['loop_position']?exists>${discript['loop_position']}<#else>暂无</#if></p>
                 <p>区域位置：<#if discript['district_name']?exists>${discript['district_name']}<#else>暂无</#if></p>
                 <p>楼盘地址：<#if discript['building_address']?exists>${discript['building_address']}<#else>暂无</#if></p>
                 <p>售楼处地址：<#if discript['sale_address']?exists>${discript['sale_address']}<#else>暂无</#if></p>
