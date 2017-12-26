@@ -18,4 +18,8 @@ public interface IntelligenceFindHouseService {
 
 
     Map<String,String> queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
+
+
+    List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery);
+
 }

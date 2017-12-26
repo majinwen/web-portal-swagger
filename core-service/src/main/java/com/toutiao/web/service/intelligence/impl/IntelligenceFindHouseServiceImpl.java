@@ -99,4 +99,24 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
         return null;
     }
+
+    @Override
+    public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
+        //判断类型
+        //类型2A
+        if ("4".equals(intelligenceQuery.getUserType())){
+//            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectHouseByCondition(intelligenceQuery);
+            return null;
+        }
+        //类型2B
+        if ("5".equals(intelligenceQuery.getUserType())){
+            return null;
+        }
+        //类型2C
+        if ("6".equals(intelligenceQuery.getUserType())){
+            return null;
+        }
+
+        return null;
+    }
 }
