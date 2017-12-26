@@ -35,7 +35,7 @@ public class VillageEntity {
     private Double avgGreening;  //户均绿化率
     private Double liftDoorRadio;  //梯户比
     private String elevator;  //电梯配备 (1-有，2-无)
-    private Double carPositionRatio;  //车位配比
+    private String carPositionRatio;  //车位配比
     private String parkingRate;  //停车费
     private String desc;  //小区详情介绍
     private String developers;  //开发商

@@ -227,7 +227,7 @@
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                    <#if village['carPositionRatio']?number gt 0>
+                    <#if village['avgGreening']?number gt 0>
                         <em>${village['avgGreeningRate']}平方米</em>
                     <#else >
                         <em>暂无</em>
@@ -238,7 +238,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                    <#if village['carPositionRatio']?number gt 0>
+                    <#if village['carPositionRatio']?exists>
                         <em>${village['carPositionRatio']}车位/户</em>
                     <#else >
                         <em>暂无</em>
