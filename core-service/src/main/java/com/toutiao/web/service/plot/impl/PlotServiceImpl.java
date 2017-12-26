@@ -187,7 +187,8 @@ public class PlotServiceImpl implements PlotService {
 
             //面积
             if (StringUtil.isNotNullString(villageRequest.getHouseAreaSize())) {
-                String[] houseAreaSize = villageRequest.getHouseAreaSize().split(",");
+                String area = villageRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String[] houseAreaSize = area.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 for (int i = 0; i < houseAreaSize.length; i = i + 2) {
                     if (i + 1 > houseAreaSize.length) {

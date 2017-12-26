@@ -73,18 +73,24 @@ public class ProjHouseInfoController {
      * @return
      */
     @RequestMapping("/getProjHouseMapDetail")
-    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
-
+    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
 
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
-        if (list!=null &&list.size()!=0) {
+        if (list != null && list.size() > 0) {
             ProjHouseInfoResponse build = (ProjHouseInfoResponse) list.get(0);
             build.setLocation(build.getHousePlotLocation());
 
             model.addAttribute("build", build);
+            return "map";
         }
+        ProjHouseInfoResponse build = new ProjHouseInfoResponse();
+        build.setNewcode(Integer.valueOf(projHouseInfoQuery.getNewcode()));
+        build.setLocation("39.913329,116.382001");
+
+        model.addAttribute("build", build);
+
         return "map";
 
     }

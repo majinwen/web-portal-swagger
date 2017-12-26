@@ -164,8 +164,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //面积
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
+                String area = projHouseInfoRequest.getHouseAreaId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
+                String[] layoutId = area.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
@@ -176,8 +177,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //楼龄
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseYearId())) {
+                String houseyear = projHouseInfoRequest.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getHouseYearId().split(",");
+                String[] layoutId = houseyear.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
@@ -322,7 +324,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过二手房id查找房源信息
      *
-     * @param [houseId]
+     * @param
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50

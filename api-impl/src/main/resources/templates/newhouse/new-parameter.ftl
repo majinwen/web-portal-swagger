@@ -15,7 +15,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2> ${discript['building_name']!'暂无'}</h2>
-            <p>别名：${discript['building_nickname']!'暂无'}</p>
+            <p><#if discript['building_nickname']??>别名：${discript['building_nickname']}</#if></p>
             <div class="primary-header-tag">
                 <#if discript['building_tags']?exists&&(discript['building_tags']?size>0)>
                     <#assign tags = discript['building_tags']>
