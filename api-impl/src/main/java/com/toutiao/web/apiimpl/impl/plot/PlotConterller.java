@@ -112,11 +112,9 @@ public class PlotConterller {
     //获取小区地图
     @RequestMapping("/getPlotMap")
     public String plotMap(VillageRequest villageRequest, Model model) {
-        String location = villageRequest.getLocation();
-        String[] loca = {location.split(",")[0], location.split(",")[1]};
-        MapLocation locationMap = new MapLocation();
-        locationMap.setLocation(loca);
-        model.addAttribute("build", locationMap);
+        List villageList = plotService.findVillageByConditions(villageRequest);
+        VillageResponse village = (VillageResponse) villageList.get(0);
+        model.addAttribute("build", village);
         return "map";
     }
 }
