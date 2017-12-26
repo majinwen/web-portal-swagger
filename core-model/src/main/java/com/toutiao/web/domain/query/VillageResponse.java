@@ -64,7 +64,9 @@ public class VillageResponse {
     private String waterFee;  //水费
     private String decorationType;  //装修标准
     private String ringRoadName;  //详情环线
-    private String ringRoadDistance;  //详情环线距离
+    private Integer ringRoadDistance;  //详情环线距离
+    private Integer tongbi;  //同比
+    private Integer huanbi;  //环比
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源

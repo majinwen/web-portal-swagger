@@ -7,6 +7,7 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.entity.officeweb.PlotRatio;
 import com.toutiao.web.dao.mapper.officeweb.PlotRatioMapper;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
@@ -53,6 +54,8 @@ public class PlotServiceImpl implements PlotService {
 
     @Autowired
     private ESClientTools esClientTools;
+    @Autowired
+    private PlotRatioMapper plotRatioMapper;
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
@@ -282,6 +285,9 @@ public class PlotServiceImpl implements PlotService {
                     }else {
                         instance.setWaterFee("5");
                     }
+                    PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                    instance.setTongbi(Integer.parseInt(plotRatio.getTongbi()));
+                    instance.setHuanbi(Integer.parseInt(plotRatio.getHuanbi()));
                     houseList.add(instance);
 //            System.out.println(instance);
                 }

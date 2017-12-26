@@ -82,7 +82,8 @@
             </#if>
             </div>
         </div>
-        <a href="/getPlotMap?id=${village['id']}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="/getPlotMap?id=${village['id']}" class="plot-primary-map-box"><img
+                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <#if (reViHouse?exists) && (reViHouse?size>0)>
@@ -101,19 +102,19 @@
                 <#assign itemLocation=reitem['housePlotLocation']>
                 <li>
                     <a href="/queryByHouseIdandLocation/${reitem.houseId}<#--/${itemLocation[0]}/${itemLocation[1]}-->">
-                        <div class="picture-box">
-                            <#if reitem['housePhoto']?exists>
-                                <#assign photoitem=reitem['housePhoto']>
-                                <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
-                                <p class="bottom-text">${reitem['houseArea']}㎡</p>
-                            </div>
-                            <div class="tilelist-content">
-                                <p class="cont-first text-center"><em>
-                                    <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
-                                    <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
-                                    <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
-                            </#if>
+                    <div class="picture-box">
+                        <#if reitem['housePhoto']?exists>
+                            <#assign photoitem=reitem['housePhoto']>
+                            <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
+                            <p class="bottom-text">${reitem['houseArea']}㎡</p>
                         </div>
+                        <div class="tilelist-content">
+                            <p class="cont-first text-center"><em>
+                                <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
+                                <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
+                                <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
+                        </#if>
+                    </div>
                     </a>
                 </li>
             </#list>
@@ -135,11 +136,27 @@
                 </div>
                 <div class="info-card-item">
                     <em>环比上月</em>
-                    <p class="green">↓ 6.68%</p>
+                <p class="green">
+                    <#if village['huanbi']?exists&&(village['huanbi'] gt 0)>
+                        ↑ ${(village['huanbi']?abs)?string.percent}
+                    <#elseif village['huanbi']?exists&&village['huanbi'] lt 0>
+                        ↓ ${(village['huanbi']?abs)?string.percent}
+                    <#else>
+                        暂无
+                    </#if>
+                </p>
                 </div>
                 <div class="info-card-item">
                     <em>同比去年</em>
-                    <p class="green">↓ 3.46%</p>
+                <p class="green">
+                    <#if village['tongbi']?exists&&(village['tongbi'] gt 0)>
+                        ↑ ${(village['tongbi']?abs)?string.percent}
+                    <#elseif village['tongbi']?exists&&village['tongbi'] lt 0>
+                        ↓ ${(village['tongbi']?abs)?string.percent}
+                    <#else>
+                        暂无
+                    </#if>
+                </p>
                 </div>
             </div>
             <div></div>
@@ -192,11 +209,12 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['abbreviatedAge']?exists>，<em
+                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
                 <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
-                        ${village['sumHousehold']}户
+                    ${village['sumHousehold']}户
                     </#if>
                     <#if village['buildingStructure']?exists>
                         ，${village['buildingStructure']}
@@ -272,7 +290,7 @@
                     <i class="item-three-3"></i>
                     <em>自驾</em>
                     <p>${village['ringRoadName']!'暂无'}</p>
-                    <span>${village['ringRoadDistance']!'暂无'}m</span>
+                    <span>${(village['ringRoadDistance']/1000)?string('#.#')!'暂无'}km</span>
                 </div>
             </div>
         </div>
@@ -382,7 +400,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
                     <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
-                    <#if village['parkingRate']?exists>
+                    <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">${village['parkingRate']}元/月</span>
                     <#else >
                         <span class="expand-price">暂无</span>
