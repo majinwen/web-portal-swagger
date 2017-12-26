@@ -105,14 +105,14 @@
                     <div class="picture-box">
                         <#if reitem['housePhoto']?exists>
                             <#assign photoitem=reitem['housePhoto']>
-                            <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
-                            <p class="bottom-text">${reitem['houseArea']}㎡</p>
+                            <img src="${photoitem[0]}" alt=">${reitem['houseTitle']}">
+                            <p class="bottom-text"><#if reitem['buildArea']?exists&&reitem['buildArea']?number gt 0>${reitem['buildArea']}㎡</#if></p>
                         </div>
                         <div class="tilelist-content">
                             <p class="cont-first text-center"><em>
-                                <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
-                                <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
-                                <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
+                                <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices'] gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
+                                <#if reitem['forwardName']?exists&&reitem['forwardName']!=''>${'/'+reitem.forwardName}</#if>
+                                <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if></p>
                         </#if>
                     </div>
                     </a>
