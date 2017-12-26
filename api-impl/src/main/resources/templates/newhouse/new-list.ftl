@@ -11,7 +11,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="/newhouse/searchNewHouse">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -147,7 +147,7 @@
     </div>
 </section>
 <section>
-    <ul><#if builds?exists>
+    <ul id="valueList"><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
                 <div class="clear">
@@ -219,5 +219,60 @@
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js?version=123"></script>
 <script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="test" type="text/html">
+
+    {{each data}}
+    <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
+        <div class="clear">
+            <div class="list-item-img-box">
+                <img src="<#--${staticurl}-->${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
+            </div>
+            <div class="list-item-cont">
+                <span hidden="hidden">{{$value.building_name_id}}</span>
+                <h3 class="cont-block-1">{{$value.building_name}}
+                    <em>{{$value.property_type}}</em>
+                </h3>
+                <p class="cont-block-2"><em class="high-light-red">
+                    <%if ($value['activity_desc'] != null){%>
+                    {{$value.average_price}}
+                    <%}else{%>
+                      0
+                    <%}%></em>元/㎡</p>
+                <p class="cont-block-3">
+                    {{$value.district_name}}
+                    <%if ($value['house_min_area'] != null) {%>
+                    <%if ($value['house_max_area'] != null) {%>
+                    / {{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                    <%}%>
+                    <%}%>
+                </p>
+                <div class="cont-block-4 house-labelling gray middle">
+                   {{each $value.building_tags}}
+                   <span>{{$value}}</span>
+                   {{/each}}
+                </div>
+                <div class="cont-block-sale">
+                    <em>{{$value.sale_status_name}}</em>
+                </div>
+            </div>
+        </div>
+ <#--   <#if map['activity_desc']?exists>
+        <div class="new-active">
+            <i class="icon"></i><em>活动：</em>
+            <span>${map['activity_desc']}</span>
+        </div>
+    </#if>-->
+        <%if($value['activity_desc'] != null){%>
+        <div class="new-active">
+            <i class="icon"></i><em>活动：</em>
+            <span>{{$value['activity_desc']}}</span>
+        </div>
+        <%}%>
+    </a></li>
+    {{/each}}
+</script>
+
 </body>
 </html>

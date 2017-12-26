@@ -5,6 +5,7 @@ var params="";
 var url;
 var submitClickState = false;
 
+
 function getDataDom(attrDom, attrStr) {
     var str = attrDom.attr('data-mark'),
         index = str.indexOf('-'),

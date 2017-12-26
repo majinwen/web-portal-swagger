@@ -1,6 +1,16 @@
 var req = GetRequest();
-
+var pageNum = 2;
 $(function () {
+
+    /**
+     * 下滑翻页
+     */
+    $(window).scroll(function () {
+        if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+            showNextPage(pageNum);
+        }
+    });
+
 
     $('#category-tab').on('click','li', function () {
         var $dom = getDataDom($(this),'panel');
@@ -458,3 +468,46 @@ function joinParams(req) {
 
     return targetUrl;
 };
+
+
+/**
+ * 列表页分页
+ * @param pageNum
+ */
+function showNextPage(pageNumn) {
+
+    var paramData = req;
+    paramData['pageNum'] = pageNumn;
+    params = joinParams(paramData);
+
+     if(BaseUrl=="/newhouse/searchNewHouse"){
+         url ="/newhouse/pageSearchNewHouse" + params;
+
+     }else if (BaseUrl=="/findProjHouseInfo"){
+
+         url ="二手房接口" + params;
+     }
+      //console.log(paramData)
+     console.log(url);
+
+    $.ajax({
+        type: "post",
+        url: url,
+        async: true,
+        success: function (data) {
+            pageNum+=1;
+            //获取异步调用的数据
+            if (data.code == 'success') {
+
+                console.log(template)
+
+                var html = template('test',data.data);
+              $('#valueList li:last-child').after(html);
+            }
+         console.log(data);
+        }
+    });
+}
+
+
+
