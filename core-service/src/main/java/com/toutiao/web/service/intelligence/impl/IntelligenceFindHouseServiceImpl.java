@@ -4,10 +4,12 @@ package com.toutiao.web.service.intelligence.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.entity.officeweb.TotalListedRatio;
 import com.toutiao.web.dao.entity.officeweb.TotalRoomRatio;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
+import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper;
 import com.toutiao.web.dao.mapper.officeweb.TotalListedRatioMapper;
 import com.toutiao.web.dao.mapper.officeweb.TotalRoomRatioMapper;
 import com.toutiao.web.domain.query.IntelligenceQuery;
@@ -45,6 +47,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     private TotalListedRatioMapper totalListedRatioMapper;
     @Autowired
     private TotalRoomRatioMapper totalRoomRatioMapper;
+    @Autowired
+    private IntelligenceFhResMapper intelligenceFhResMapper;
 
     /**
      * 功能描述：通过总价获取相依小区的数量
@@ -286,6 +290,21 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             e.printStackTrace();
         }
         return null;
+    }
+    /**
+     *
+     * 功能描述：根据用户的手机号码获取用户报表相关数据信息
+     * @author zhw
+     * @date 2017/12/26 15:45
+     * @param [usePhone]
+     * @return com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes
+     */
+    @Override
+    public IntelligenceFhRes queryUserReport(String usePhone) {
+
+        IntelligenceFhRes intelligenceFhRes= intelligenceFhResMapper.selectByUserPhone(usePhone);
+
+        return intelligenceFhRes;
     }
 
     /**

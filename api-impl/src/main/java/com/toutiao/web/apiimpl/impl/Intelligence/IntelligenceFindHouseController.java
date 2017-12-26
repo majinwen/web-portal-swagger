@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
@@ -39,6 +40,7 @@ public class IntelligenceFindHouseController {
 
         if(StringTool.isNotBlank(usePhone)){
             //查询用户是否有报告数据
+            IntelligenceFhRes userReport = intelligenceFindHouseService.queryUserReport(usePhone);
 
         }
 

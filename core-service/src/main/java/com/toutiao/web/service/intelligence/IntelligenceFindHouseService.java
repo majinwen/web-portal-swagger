@@ -1,6 +1,7 @@
 package com.toutiao.web.service.intelligence;
 
 
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 
@@ -17,5 +18,9 @@ public interface IntelligenceFindHouseService {
     List<Long> queryPlotCountBySchoolType(IntelligenceQuery intelligenceQuery);
 
     List queryPlotInfoByUserType(IntelligenceQuery intelligenceQuery);
+
+    IntelligenceFhRes queryUserReport(String usePhone);
+
+
 
 }
