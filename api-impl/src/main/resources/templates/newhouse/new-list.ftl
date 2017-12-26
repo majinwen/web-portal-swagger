@@ -221,7 +221,7 @@
 <script src="${staticurl}/js/list-link.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 
-<script id="test" type="text/html">
+<script id="newhousepage" type="text/html">
 
     {{each data}}
     <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">

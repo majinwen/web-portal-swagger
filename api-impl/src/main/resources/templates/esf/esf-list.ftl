@@ -170,7 +170,7 @@
     </div>
 </section>
 <section>
-    <ul>
+    <ul id="esfvalueList">
     <#if builds?exists>
         <#list builds as map>
             <li>
@@ -269,5 +269,13 @@
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="esfhousepage" type="text/html">
+
+
+
+ </script>
+
 </body>
 </html>

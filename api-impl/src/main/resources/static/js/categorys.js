@@ -20,21 +20,6 @@ $('.place-list').on('click','li', function () {
     $(this).addClass('current').siblings().removeClass('current');
 });
 
-// 价格
-/*$('.price-list').on('click','li', function (e) {
-    $(this).addClass('current').siblings().removeClass('current');
-    var beginPrice = $(this).attr('data-begin-price'),
-        endPrice = $(this).attr('data-end-price');
-  if(beginPrice!=""||endPrice!=""){
-      params = '?beginPrice=' + beginPrice + '&endPrice=' + endPrice;
-  }
-    url = BaseUrl + params;
-    console.log(url);
-    tabTextReplace(e,$(this).text());
-    $.get(url, function () {
-        location.href = url;
-    });
-});*/
 
 // 户型
 $('.type-list').on('click','li', function (e) {
@@ -46,40 +31,6 @@ $('.type-list').on('click','li', function (e) {
         $(this).toggleClass('current');
     }
 });
-/*
- * 提交选中户型
- * */
-/*$('#typeSubmit').on('click', function (e) {
-    submitClickState = true;
-    var layoutText = $('.type-list').find('li.current').text(),
-        chooseType = $('.type-list').find('li.current'),
-        layoutTextArr = [];
-
-    if (layoutText == '不限') {
-        tabTextReplace(e,layoutText);
-        url = BaseUrl;
-        console.log(url);
-        location.href=BaseUrl;
-        return;
-    }
-
-    for (var i = 0; i < chooseType.length; i++) {
-        layoutTextArr.push(chooseType[i].dataset['type']);
-    }
-
-    if (layoutTextArr.length > 1) {
-        tabTextReplace(e,'多选');
-    } else {
-        tabTextReplace(e,layoutText);
-    }
-
-    params = '?layoutId=' + layoutTextArr.join(',');
-    url = BaseUrl + params;
-    console.log(url);
-    $.get(url, function () {
-        location.href = url;
-    });
-});*/
 
 // 更多
 $('.more-list').on('click','span', function () {
@@ -201,32 +152,6 @@ function showBusiness(districtid, circleId) {
     });
 };
 
-/*
- * 提交选中区域
- * */
-/*function submitDirstrict(districtid,e,index) {
-    params = '?districtId=' + districtid;
-    url = BaseUrl + params;
-    console.log(url);
-    tabTextReplace(e);
-    location.href=url
-    // console.log("quyu")
-   /!* $.get(url, function () {
-        location.href = url;
-    });*!/
-}*/
-/*
- * 提交选中商圈(区域id及商圈id)
- */
-
-/*function submitBussiness(districtid,areaId,e) {
-    params = '?districtId=' + districtid + '&areaId=' + areaId;
-    url = BaseUrl + params;
-    console.log(url);
-
-    tabTextReplace(e);
-    location.href=url
-}*/
 
 
 /*
@@ -301,52 +226,7 @@ function showStation(lineId, stationId) {
     });
 };
 
-/*
- * 提交选中地铁线路
- * 站点为不限
- * */
-/*function submitSubwayLine(subwayid,e) {
 
-    params = '?subwayLineId=' + subwayid;
-    url = BaseUrl + params;
-    console.log(url);
-
-    tabTextReplace(e);
-    $.ajax({
-        type: 'GET',
-        url: url,
-        success: function (response) {
-            console.log(response);
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
-    $.get(url, function () {
-        location.href = url;
-    });
-}*/
-/*
- * 提交选中地铁站点
- * */
-/*function submitStation(subwayid, subwayStationId, e) {
-    params = '?subwayLineId=' + subwayid + '&subwayStationId=' + subwayStationId;
-    url = BaseUrl + params;
-    console.log(url);
-
-    tabTextReplace(e,url);
-    $.get(url, function () {
-        location.href = url;
-    });
-}*/
-
-/*
- * 区域不限,更改导航内容
- * */
-/*function submitPlace(e) {
-    tabTextReplace(e,'区域');
-    location.href=BaseUrl;
-}*/
 /*
  * 地铁不限,更改导航内容
  * */

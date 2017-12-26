@@ -383,6 +383,7 @@ $('#typeSubmit').on('click', function (e) {
 
     if (layoutText == '不限') {
         tabTextReplace(e,layoutText);
+        req['layoutId']=null;
         params = joinParams(req);
         url = BaseUrl + params;
         $.get(url, function () {
@@ -483,30 +484,67 @@ function showNextPage(pageNumn) {
      if(BaseUrl=="/newhouse/searchNewHouse"){
          url ="/newhouse/pageSearchNewHouse" + params;
 
+         $.ajax({
+             type: "post",
+             url: url,
+             async: true,
+             success: function (data) {
+                 pageNum+=1;
+                 //获取异步调用的数据
+                 if (data.code == 'success') {
+
+                     console.log(template)
+
+                     var html = template('newhousepage',data.data);
+                     $('#valueList li:last-child').after(html);
+                 }
+                 console.log(data);
+             }
+         });
+
      }else if (BaseUrl=="/findProjHouseInfo"){
+         url ="/esfHousePageSearch" + params;
 
-         url ="二手房接口" + params;
+         $.ajax({
+             type: "post",
+             url: url,
+             async: true,
+             success: function (data) {
+                 pageNum+=1;
+                 //获取异步调用的数据
+                 if (data.code == 'success') {
+
+                     console.log(template)
+
+                     var html = template('esfhousepage',data.data);
+                     $('#esfvalueList li:last-child').after(html);
+                 }
+                 console.log(data);
+             }
+         });
+     }else if (BaseUrl=="/findVillageByConditions"){
+         url ="/villagePage" + params;
+
+         $.ajax({
+             type: "post",
+             url: url,
+             async: true,
+             success: function (data) {
+                 pageNum+=1;
+                 //获取异步调用的数据
+                 if (data.code == 'success') {
+                     console.log(pageNum)
+                     console.log(template)
+
+                     var html = template('villagepage',data.data);
+                     $('#villagelist li:last-child').after(html);
+                 }
+                 console.log(data);
+             }
+         });
      }
-      //console.log(paramData)
-     console.log(url);
 
-    $.ajax({
-        type: "post",
-        url: url,
-        async: true,
-        success: function (data) {
-            pageNum+=1;
-            //获取异步调用的数据
-            if (data.code == 'success') {
 
-                console.log(template)
-
-                var html = template('test',data.data);
-              $('#valueList li:last-child').after(html);
-            }
-         console.log(data);
-        }
-    });
 }
 
 
