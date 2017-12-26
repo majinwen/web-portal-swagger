@@ -57,6 +57,8 @@ public class MessageSendController {
                         RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
                 //记录每次发送一次验证码，缓存中相应的手机号码个数自增长
                 redisSession.incr(phone + RedisNameUtil.separativeSignCount);
+                //设置给手机号登陆次数时间5分钟
+                redisSession.setExpire(phone + RedisNameUtil.separativeSignCount,300);
                 //处理业务后续改一下
                 String phoneCount = redisSession.getValue(phone + RedisNameUtil.separativeSignCount);
                 nashResult = NashResult.build(phoneCount);

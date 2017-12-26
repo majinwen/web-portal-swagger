@@ -50,7 +50,7 @@ public class ProjHouseInfoController {
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") Integer houseId) {
         //房源详情
         Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(houseId);
-        if (StringTool.isNotEmpty(houseDetails)) {
+        if (StringTool.isNotBlank(houseDetails)) {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
             //附近好房
