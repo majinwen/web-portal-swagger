@@ -15,11 +15,10 @@
     <#if villageList[0]?exists><#assign village = villageList[0]>
     </#if>
     </#if>
-    <section class="primary-mes
-    sage">
+    <section class="primary-message">
         <div class="primary-header">
             <h2>${village['rc']!"暂无"}</h2>
-            <p><#if discript['building_nickname']??>别名：${discript['building_nickname']}</#if></p>
+            <p>别名：${village['alias']!"暂无"}</p>
             <div class="primary-header-tag house-labelling gray">
                 <#if village['label']?exists>
                      <#assign labels = village['label']>

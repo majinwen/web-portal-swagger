@@ -33,7 +33,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -194,7 +196,9 @@ public class PlotServiceImpl implements PlotService {
 //                    if (i + 1 > Age.length) {
 //                        break;
 //                    }
-                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(villageRequest.getBeginAge()).lte(villageRequest.getEndAge()));
+                    BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
+                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getEndAge()))))
+                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getBeginAge())))));
                     queryBuilder = boolQueryBuilder.must(Age1);
 //                }
             }

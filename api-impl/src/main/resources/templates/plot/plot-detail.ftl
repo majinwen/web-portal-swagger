@@ -90,7 +90,8 @@
     <section>
         <div class="module-header-message">
             <h3>推荐小区好房</h3>
-            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部房源<i
+                    class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -98,59 +99,24 @@
                     <#break >
                 </#if>
                 <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="/queryByHouseIdandLocation/${reitem.houseId}<#--/${itemLocation[0]}/${itemLocation[1]}-->">
-                    <div class="picture-box">
-                        <#if reitem['housePhoto']?exists>
-                        <#assign photoitem=reitem['housePhoto']>
-                        <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
-                        <p class="bottom-text">${reitem['houseArea']}㎡</p>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                         <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
-                         <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
-                         <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
-                    </div>
-                </a></li>
+                <li>
+                    <a href="/queryByHouseIdandLocation/${reitem.houseId}<#--/${itemLocation[0]}/${itemLocation[1]}-->">
+                        <div class="picture-box">
+                            <#if reitem['housePhoto']?exists>
+                                <#assign photoitem=reitem['housePhoto']>
+                                <img src="${qiniuimage}/${photoitem[0]}" alt=">${reitem['houseTitle']}">
+                                <p class="bottom-text">${reitem['houseArea']}㎡</p>
+                            </div>
+                            <div class="tilelist-content">
+                                <p class="cont-first text-center"><em>
+                                    <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
+                                    <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
+                                    <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
+                            </#if>
+                        </div>
+                    </a>
+                </li>
             </#list>
-
-
-        <#--    <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>
-            <li><a href="#">
-                <div class="picture-box">
-                    <img src="${staticurl}/images/esf/esxq_xq_image2@3x.png" alt="首城国际">
-                    <p class="bottom-text">262㎡</p>
-                </div>
-                <div class="tilelist-content">
-                    <p class="cont-first text-center"><em>1800万</em>/南/5室</p>
-                </div>
-            </a></li>-->
         </ul>
     </section>
 </div>
@@ -225,17 +191,17 @@
         <div class="basic-information">
             <div class="column item-only-one">
                 <div class="info-card-item">
-                    <#if village['rc']?exists>${village['rc']}</#if>
-                    <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅，</#if>
-                    <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                    <#if village['sumHousehold']?exists>
-                        <#if village['sumHousehold']?number gt 0>
-                            （${village['sumHousehold']}户）
-                        </#if>
-                        <#if village['buildingStructure']?exists>
-                            ，${village['buildingStructure']}
-                        </#if>
+                <#if village['rc']?exists>${village['rc']}</#if>
+                <#if village['abbreviatedAge']?exists>，<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumHousehold']?exists>
+                    <#if village['sumHousehold']?number gt 0>
+                        ${village['sumHousehold']}户
                     </#if>
+                    <#if village['buildingStructure']?exists>
+                        ，${village['buildingStructure']}
+                    </#if>
+                </#if>
                 </div>
             </div>
             <div class="column item-column-two">
@@ -289,24 +255,24 @@
         <div class="basic-information">
             <div class="column item-column-three">
             <#if village['metroWithPlotsDistance']?exists>
-                    <div class="info-card-item">
-                        <i class="item-three-1"></i>
-                        <em>公交</em>
-                        <p id="busStation">暂无</p>
-                        <span id="busStationNumber">暂无</span>
-                    </div>
-                    <div class="info-card-item">
-                        <i class="item-three-2"></i>
-                        <em>地铁</em>
-                        <p id="subwayLine">暂无</p>
-                        <span id="subwayDistance">暂无</span>
-                    </div>
+                <div class="info-card-item">
+                    <i class="item-three-1"></i>
+                    <em>公交</em>
+                    <p id="busStation">暂无</p>
+                    <span id="busStationNumber">暂无</span>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-three-2"></i>
+                    <em>地铁</em>
+                    <p id="subwayLine">暂无</p>
+                    <span id="subwayDistance">暂无</span>
+                </div>
             </#if>
                 <div class="info-card-item">
                     <i class="item-three-3"></i>
                     <em>自驾</em>
                     <p>${village['ringRoadName']!'暂无'}</p>
-                    <span>${village['ringRoadDistance']!'暂无'}</span>
+                    <span>${village['ringRoadDistance']!'暂无'}m</span>
                 </div>
             </div>
         </div>
@@ -431,16 +397,18 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="/getProjHouseMapDetail?newcode=${village['id']}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
+            <a href="/getPlotMap?location=${village['location']}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
         <a href="#" class="detail-map">
             <i class="map-marker-icon"></i>
-            <#if  village['location']?exists>
-                <#assign locationIp = village['location'] ? split(",")>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
-              <#else>
-                  <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
-            </#if>
+        <#if  village['location']?exists>
+            <#assign locationIp = village['location'] ? split(",")>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16"
+                 alt="">
+        <#else>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=57b4dbd0d142e9649ed54160b45ecb1f&width=700&height=350&center=116.382001,39.913329&&zoom=16"
+                 alt="">
+        </#if>
         </a>
     </section>
 </div>
@@ -449,7 +417,8 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="/findProjHouseInfo/?newcode=${village['id']}" class="more-arrows">查看全部待售<i
+                    class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -460,7 +429,7 @@
             <h3>看了本楼盘的用户还看了</h3>
         </div>
         <ul class="tilelist">
-            <#list nearvillage as nearviitem>
+        <#list nearvillage as nearviitem>
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
@@ -474,17 +443,19 @@
                 </div>
                 <div class="tilelist-content">
                     <p class="cont-first">${nearviitem['rc']}</p>
-                    <p class="cont-center"><span><#if nearviitem['area']?exists>${nearviitem['area']}</#if></span><span>${nearviitem['address']}</span></p>
+                    <p class="cont-center">
+                        <span><#if nearviitem['area']?exists>${nearviitem['area']}</#if></span><span>${nearviitem['address']}</span>
+                    </p>
                     <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
                 </div>
             </a></li>
-            </#list>
+        </#list>
         </ul>
     </section>
 </div>
 <script>
     var locationnumber = '${village['location']}';
-    var mapBaiduNumber = locationnumber.split(",").indexOf(1)+locationnumber.split(",").indexOf(0)
+    var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
 </script>
 <section>
     <div class="module-header-message">
@@ -495,8 +466,8 @@
         <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']!''}">
             <div class="picture-box">
                 <#assign imglist = builditem['building_imgs']>
-                <#if imglist?exists>
-                <img src="${qiniuimage}/${imglist?split(",")[0]!''}" alt="${imglist?split(",")[0]!''}">
+                <#if imglist?exists&&imglist!=''>
+                    <img src="${qiniuimage}/${imglist?split(",")[0]!''}" alt="${imglist?split(",")[0]!''}">
                 </#if>
             </div>
             <div class="tilelist-content">
@@ -518,8 +489,8 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <#--<a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>-->
+        <#--<a href="#" class="contact-share"><i></i>分享</a>
+        <a href="#" class="contact-collect"><i></i>收藏</a>-->
             <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>

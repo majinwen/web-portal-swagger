@@ -89,7 +89,7 @@ $('.map-message-btn').on('click', 'li', function () {
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
     }
-    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
     $.ajax({
         type: 'GET',
         url: url,
