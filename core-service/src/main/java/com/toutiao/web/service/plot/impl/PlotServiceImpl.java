@@ -272,6 +272,16 @@ public class PlotServiceImpl implements PlotService {
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
                     instance.setKey(key);
+                    if ("商电".equals(instance.getElectricSupply())){
+                        instance.setElectricFee("1.33");
+                    }else {
+                        instance.setElectricFee("0.48");
+                    }
+                    if ("商水".equals(instance.getWaterSupply())){
+                        instance.setWaterFee("6");
+                    }else {
+                        instance.setWaterFee("5");
+                    }
                     houseList.add(instance);
 //            System.out.println(instance);
                 }

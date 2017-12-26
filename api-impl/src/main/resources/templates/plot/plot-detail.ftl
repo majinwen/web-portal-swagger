@@ -82,7 +82,7 @@
             </#if>
             </div>
         </div>
-        <a href="#" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="/getPlotMap?id=${village['id']}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <#if (reViHouse?exists) && (reViHouse?size>0)>
@@ -370,8 +370,8 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
                     <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
-                    <#if village['electricFee']?exists>
-                        <span class="expand-price">${village['electricFee']}元/㎡·月</span>
+                    <#if village['propertyFee']?exists>
+                        <span class="expand-price">${village['propertyFee']}元/㎡·月</span>
                     <#else >
                         <span class="expand-price">暂无</span>
                     </#if>
@@ -399,7 +399,7 @@
             <h3>配套地图</h3>
             <a href="/getPlotMap?id=${village['id']}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
-        <a href="#" class="detail-map">
+        <a href="/getPlotMap?id=${village['id']}" class="detail-map">
             <i class="map-marker-icon"></i>
         <#if  village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
