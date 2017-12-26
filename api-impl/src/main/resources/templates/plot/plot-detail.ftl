@@ -290,7 +290,21 @@
                     <i class="item-three-3"></i>
                     <em>自驾</em>
                     <p>${village['ringRoadName']!'暂无'}</p>
-                    <span>${(village['ringRoadDistance']/1000)?string('#.#')!'暂无'}km</span>
+
+                    <span>
+                    <#if village['ringRoadDistance']?exists>
+                    <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
+                    <#--${(village['ringRoadDistance']/1000)?string('#.#')}km-->
+                    <#--<#else >-->
+                    <#--暂无-->
+                    <#--</#if>-->
+                        <#if village['ringRoadDistance']?number gt 0>
+                        ${(village['ringRoadDistance']/1000)?string('#.#')}km
+                        <#else>
+                            暂无
+                        </#if>
+                    </#if>
+                    </span>
                 </div>
             </div>
         </div>
@@ -361,7 +375,6 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">水费</span>
-                    <#--<#if village['waterFee']?exists&&village['waterFee']?number gt 0>-->
                     <#if village['waterFee']?exists>
                         <span class="expand-price">${village['waterFee']}元/吨</span>
                     <#else >
@@ -374,7 +387,6 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">电费</span>
-                    <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
                     <#if village['electricFee']?exists>
                         <span class="expand-price">${village['electricFee']}元/度</span>
                     <#else >
@@ -387,9 +399,14 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
-                    <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
                     <#if village['propertyFee']?exists>
-                        <span class="expand-price">${village['propertyFee']}元/㎡·月</span>
+                        <span class="expand-price">
+                            <#if village['propertyFee']?number gt 0>
+                            ${village['propertyFee']}元/㎡·月
+                            <#else >
+                                暂无
+                            </#if>
+                        </span>
                     <#else >
                         <span class="expand-price">暂无</span>
                     </#if>
@@ -399,9 +416,14 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
-                    <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
-                        <span class="expand-price">${village['parkingRate']}元/月</span>
+                        <span class="expand-price">
+                            <#if village['parkingRate']?number gt 0>
+                            ${village['parkingRate']}元/月
+                            <#else >
+                                暂无
+                            </#if>
+                        </span>
                     <#else >
                         <span class="expand-price">暂无</span>
                     </#if>
