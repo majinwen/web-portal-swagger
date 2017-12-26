@@ -63,7 +63,6 @@
         if (bo) {
             $("#message").html(msgInfo);
         } else {
-
             var seconds = 120;
             $('#phone_code').addClass('none');
             $('.disabled').removeClass('none');
@@ -94,10 +93,6 @@
                 }
             });
         }
-
-
-
-
     });
     var count = $("#count").val();
     if (count != null) {
