@@ -169,10 +169,7 @@
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['housePhoto']>
-                                <img src="<#if item[0]?exists>${item[0]}</#if>"
-                                     alt="">
-                                <#--<#else >
-                                    <img  src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产">-->
+                            <img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
                         </div>
                         <div class="list-item-cont">
                             <h3 class="cont-block-1">${map.houseTitle}</h3>
@@ -208,7 +205,7 @@
                                         class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
-                            <div class="cont-block-4 house-labelling gray middle">
+                            <div class="cont-block-4 house-labelling gray middle esf">
                                 <#if map['tagsName']?exists>
                                     <#assign item =map['tagsName']>
                                     <#list item as itemValue>
@@ -236,6 +233,7 @@
                                         ${map.houseUnitCost}元/㎡
                                     </#if>
                                 </em>
+                            <#-- </span>-->
                             </div>
                         </div>
                     </div>

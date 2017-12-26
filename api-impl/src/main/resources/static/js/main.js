@@ -184,10 +184,10 @@ function listSortTab() {
         });
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
-            if(BaseUrl=="http://localhost:8085/findVillageByConditions"){
-                location.href=BaseUrl+'?avgPrice='+$(this).val();
+            if(BaseUrl=="/findVillageByConditions"){
+                location.replace(BaseUrl+'?avgPrice='+$(this).val());
             }else {
-                location.href=BaseUrl+'?sort='+$(this).val();
+                location.replace(BaseUrl+'?sort='+$(this).val());
             }
             $('.sort-content-box').slideUp();
         })

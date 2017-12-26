@@ -193,6 +193,7 @@ $detailBorderColor: #e1e1e1;
             width: rem(28);
             height: rem(114);
             background-position: left center;
+            background-size: auto rem(27);
 
             &.current {
                 background-position: right center;
@@ -286,6 +287,11 @@ $detailBorderColor: #e1e1e1;
         -webkit-border-radius: 50%;
         border-radius: 50%;
         background-color: #efeff0;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
     }
 }
 
@@ -410,6 +416,7 @@ $detailBorderColor: #e1e1e1;
                     width: rem(78);
                     @include font-dpr(26);
                     text-align: center;
+                    white-space: nowrap;
                 }
 
                 i {

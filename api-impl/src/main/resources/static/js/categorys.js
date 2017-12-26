@@ -1,6 +1,5 @@
 var uu = $('#url');
 var BaseUrl=uu.val();
-console.log(BaseUrl)
 var params="";
 var url;
 var submitClickState = false;
@@ -13,7 +12,11 @@ $('#category-tab').on('click','li', function () {
     if ($dom.hasClass('active')) {
         if ($('#level2').is(':hidden') && $dom.attr('data-mark') == 'panel-place'){
             $dom.find('#level1').children().eq(0).addClass('current');
-            showDistrict();
+            if ($('#level1').find('li').eq(0).attr('data-page') == '0') {
+                showOnlyDistrict();
+            } else {
+                showDistrict();
+            }
         }
     }
     if ($('#category-tab').find('.current').length <= 0) {
@@ -44,11 +47,25 @@ $('.price-list').on('click','li', function (e) {
     $(this).addClass('current').siblings().removeClass('current');
     var beginPrice = $(this).attr('data-begin-price'),
         endPrice = $(this).attr('data-end-price');
-  if(beginPrice!=""||endPrice!=""){
-      params = '?beginPrice=' + beginPrice + '&endPrice=' + endPrice;
-  }
+    if(beginPrice != "" || endPrice != ""){
+        params = '?beginPrice=' + beginPrice + '&endPrice=' + endPrice;
+    }
     url = BaseUrl + params;
-    console.log(url);
+    tabTextReplace(e,$(this).text());
+    $.get(url, function () {
+        location.href = url;
+    });
+});
+
+// 楼龄
+$('.age-list').on('click', 'li', function (e) {
+    $(this).addClass('current').siblings().removeClass('current');
+    var beginAge = $(this).attr('data-begin-age'),
+        endAge = $(this).attr('data-end-age');
+    if(beginAge != "" || endAge != ""){
+        params = '?beginAge=' + beginAge + '&endAge=' + endAge;
+    }
+    url = BaseUrl + params;
     tabTextReplace(e,$(this).text());
     $.get(url, function () {
         location.href = url;
@@ -94,7 +111,6 @@ $('#typeSubmit').on('click', function (e) {
 
     params = '?layoutId=' + layoutTextArr.join(',');
     url = BaseUrl + params;
-    console.log(url);
     $.get(url, function () {
         location.href = url;
     });
@@ -132,8 +148,8 @@ $('#moreSubmit').on('click', function (e) {
         tabTextReplace(e, '更多');
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
+    // location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
     console.log(moresubmitUrl.substr(0, moresubmitUrl.length -1));
-    location.href=moresubmitUrl.substr(0, moresubmitUrl.length -1);
 });
 /*
  * 更多筛选重置
@@ -146,10 +162,10 @@ $('.category-cont').on('click', function (e) {
     e.stopPropagation();
 });
 
-/*$('.global-mark').click(function (e) {
+$('.global-mark').click(function (e) {
     $('.filter-item').removeClass('active');
     $('.global-mark').toggleClass('none');
-});*/
+});
 
 /*
  * 显示区域，获取circle json 数据
@@ -165,6 +181,19 @@ function showDistrict() {
         var str = '<li class="current" onclick="submitPlace(event)">不限</li>';
         for (var i = 0; i < districtList.length; i++) {
             str += '<li onclick="showBusiness('+ districtList[i].districtId +','+ i +')">'+ districtList[i].name +'</li>'
+        }
+        $('#level2').append(str);
+    });
+}
+function showOnlyDistrict() {
+    $.getJSON('/static/mock/circle.json', function (districtList) {
+        circleData = districtList;
+        $('#level2').removeClass('none');
+        $('#level3').addClass('none');
+        $('#level2').empty();
+        var str = '<li class="current" onclick="submitPlace(event)">不限</li>';
+        for (var i = 0; i < districtList.length; i++) {
+            str += '<li onclick="submitDirstrict('+ districtList[i].districtId +',event'+','+ i +')">'+ districtList[i].name +'</li>'
         }
         $('#level2').append(str);
     });
@@ -194,11 +223,9 @@ function submitDirstrict(districtid,e,index) {
     url = BaseUrl + params;
     console.log(url);
     tabTextReplace(e,circleData[index].name);
-    location.href=url
-    // console.log("quyu")
-   /* $.get(url, function () {
-        location.href = url;
-    });*/
+    $.get(url, function () {
+        location.href=url;
+    });
 }
 /*
  * 提交选中商圈(区域id及商圈id)
@@ -206,10 +233,10 @@ function submitDirstrict(districtid,e,index) {
 function submitBussiness(districtid,areaId,e,index) {
     params = '?districtId=' + districtid + '&areaId=' + areaId;
     url = BaseUrl + params;
-    console.log(url);
-
     tabTextReplace(e,businessData[index].name);
-    location.href=url
+    $.get(url, function () {
+        location.href=url;
+    });
 }
 
 /*
@@ -276,8 +303,6 @@ function submitSubwayLine(subwayid,e,index) {
 function submitStation(subwayid,subwayStationId,e,index) {
     params = '?subwayLineId=' + subwayid + '&subwayStationId=' + subwayStationId;
     url = BaseUrl + params;
-    console.log(url);
-
     tabTextReplace(e,stationData[index].station_name,url);
     $.get(url, function () {
         location.href = url;
@@ -289,14 +314,18 @@ function submitStation(subwayid,subwayStationId,e,index) {
  * */
 function submitPlace(e) {
     tabTextReplace(e,'区域');
-    location.href=BaseUrl;
+    $.get(BaseUrl, function () {
+        location.href=BaseUrl;
+    });
 }
 /*
  * 地铁不限,更改导航内容
  * */
 function submitSubway(e) {
     tabTextReplace(e,'地铁');
-    location.href=BaseUrl
+    $.get(BaseUrl, function () {
+        location.href=BaseUrl;
+    });
 }
 /*
  * 替换导航内容
