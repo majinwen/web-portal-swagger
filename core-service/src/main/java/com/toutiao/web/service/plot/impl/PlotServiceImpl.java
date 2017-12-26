@@ -7,6 +7,7 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.mapper.officeweb.PlotRatioMapper;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
@@ -52,7 +53,6 @@ public class PlotServiceImpl implements PlotService {
 
     @Autowired
     private ESClientTools esClientTools;
-
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {

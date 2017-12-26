@@ -67,7 +67,7 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="plot_ratio" domainObjectName="lotRatio"
+        <table tableName="plot_ratio" domainObjectName="PlotRatio"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">
