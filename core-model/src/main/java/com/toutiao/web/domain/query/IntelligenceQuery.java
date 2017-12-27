@@ -27,15 +27,15 @@ public class IntelligenceQuery {
     //用户填入的页面总价信息
     private Double preconcTotal;
     /**
-     * 总价
+     * 通过首付和月付计算出来的总价
      */
     private Double plotTotal;
     /**
-     * 小区个数
+     * 赛选出来的小区个数
      */
-    private long plotCount;
+    private int plotCount;
     /**
-     * 百分比
+     * 赛选出来的百分比
      */
     private String ratio;
 
@@ -60,13 +60,23 @@ public class IntelligenceQuery {
     private String schoolTypeName;
 
     /**
-     * 区域的id
+     * 用户传递的区域id
      */
-    private Integer district_Id;
+    private String districtId;
     /**
      * 教育配套标签标记
      */
-    private int flag=0;
+    private int schoolFlag;
+
+    //医疗配套标签标记
+
+    private int hospitalFlag;
+
+    //是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
+    private Integer hasChild;
+
+    //是否有老人(0-无，1-有)
+    private Integer hasOldman;
 
 
 

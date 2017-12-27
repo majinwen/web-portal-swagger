@@ -321,7 +321,7 @@
 </div>
 </#if>
 <#else >
-暂时没有该房源的详细信息!
+<p class="tip-box">非常抱歉，目前暂时没有该房源的详细信息！</p>
 </#if>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>

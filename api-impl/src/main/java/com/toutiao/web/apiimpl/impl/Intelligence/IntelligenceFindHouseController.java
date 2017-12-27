@@ -8,8 +8,10 @@ import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.query.IntelligenceQuery;
+import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,12 +22,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("ifh")
 public class IntelligenceFindHouseController {
 
     @Autowired
     private IntelligenceFindHouseService intelligenceFindHouseService;
+    @Autowired
+    private IntelligenceFhResService intelligenceFhResService;
 
     /**
      * 功能描述：查找我的报告
@@ -42,7 +46,7 @@ public class IntelligenceFindHouseController {
         String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
-            IntelligenceFhRes userReport = intelligenceFindHouseService.queryUserReport(usePhone);
+            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
             model.addAttribute("userReport", userReport);
         }
         //跳转到报告页
@@ -102,15 +106,85 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
-        Map<String,String> map=intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
-
+        intelligenceQuery=intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceQuery);
     }
+    /**
+     *
+     * 功能描述：跳转到用户选择户型页面controller
+     * @author zhw
+     * @date 2017/12/26 20:40
+     * @param [intelligenceQuery]
+     * @return java.lang.String
+     */
+    @RequestMapping("/queryUserCheckCategory")
+    public String userCheckCategory(IntelligenceQuery intelligenceQuery,Model model){
 
+        if ("3".equals(intelligenceQuery.getUserType())) {
+            //将第七种画像附给当前用户
+            intelligenceQuery.setUserPortrayalType(7);
+            model.addAttribute("intelligenceQuery",intelligenceQuery);
+            //直接生成报表
+            //调用接口
 
+            return "";
+        }
 
+        model.addAttribute("intelligenceQuery",intelligenceQuery);
+        //户型页面
+        return "";
+    }
+    /**
+     *
+     * 功能描述：根据户型和总价查询小区数量
+     * @author zhw
+     * @date 2017/12/26 20:56
+     * @param [intelligenceQuery, model]
+     * @return java.lang.String
+     */
+    @RequestMapping("/userCheckCategoryPage")
+    @ResponseBody
+    public NashResult  queryPlotCountByCategory(IntelligenceQuery intelligenceQuery,Model model){
 
+        //根据户型与总价条件赛选条件
+        intelligenceQuery=intelligenceFindHouseService.queryUserCheckPriceAndCaategory(intelligenceQuery);
+
+        return NashResult.build(intelligenceQuery);
+    }
+    /**
+     *
+     * 功能描述：用户选择区域页面
+     * @author zhw
+     * @date 2017/12/26 21:42
+     * @param [intelligenceQuery, model]
+     * @return java.lang.String
+     */
+    //选择区域
+    @RequestMapping("/chooseDistinct")
+    public String checkDistrict(IntelligenceQuery intelligenceQuery,Model model){
+
+        model.addAttribute("intelligenceQuery",intelligenceQuery);
+
+        return "";
+    }
+    /**
+     *
+     * 功能描述：家庭页面
+     * @author zhw
+     * @date 2017/12/26 21:45
+     * @param [intelligenceQuery]
+     * @return com.toutiao.web.common.restmodel.NashResult
+     */
+    @RequestMapping("/queryPlotCountByDistrict")
+    public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery,Model model){
+
+        //通过页面传递过来的区域等信息赛选小区数量
+        intelligenceQuery = intelligenceQuery = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
+        model.addAttribute("intelligenceQuery",intelligenceQuery);
+        //报告生成页
+        return "";
+    }
 
 
 

@@ -51,53 +51,105 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     @Autowired
     private TotalRoomRatioMapper totalRoomRatioMapper;
     @Autowired
-    private IntelligenceFhResMapper intelligenceFhResMapper;
-    @Autowired
     private IntelligenceFindhouseMapper intelligenceFindhouseMapper;
 
-    /**
-     * 功能描述：根据用户的手机号码获取用户报表相关数据信息
-     *
-     * @param [usePhone]
-     * @return com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes
-     * @author zhw
-     * @date 2017/12/26 15:45
-     */
     @Override
-    public IntelligenceFhRes queryUserReport(String usePhone) {
-
-        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectByUserPhone(usePhone);
-
-        return intelligenceFhRes;
-    }
-
-    @Override
-    public Map<String, String> queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
+    public IntelligenceQuery queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
         //初始化
         Double plotTotal = null;
         //判断用户是否首付还是总价
         //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
         if (StringTool.isNotBlank(intelligenceQuery.getBeginDownPayment()) && StringTool.isNotBlank(intelligenceQuery.getBeginMonthPayment())) {
             plotTotal = intelligenceQuery.getBeginDownPayment() + intelligenceQuery.getBeginMonthPayment() * 12 * 30;
+            //设置总价
+            intelligenceQuery.setPlotTotal(plotTotal);
         }
         //选择总价
         if (StringTool.isNotBlank(intelligenceQuery.getPreconcTotal())) {
-            plotTotal = intelligenceQuery.getBeginDownPayment() + intelligenceQuery.getBeginMonthPayment() * 12 * 30;
+            plotTotal = intelligenceQuery.getPreconcTotal();
         }
+        //获取用户类型
         String userType = intelligenceQuery.getUserType();
         //判断总价是否高于400万
         if (StringTool.isNotBlank(plotTotal) && plotTotal >= 4E6) {
             //获取用户的类型
             if (StringTool.isNotBlank(userType) && userType.equalsIgnoreCase("1")) {
                 //需要将用户选择的类型改成自住 改善
-                userType="3";
+                userType = "2";
                 intelligenceQuery.setUserType(userType);
             }
-
         }
+        //根据总价，筛选小区（小区总价范围=当前均价*小区全部面积，不只是待售），得到结果集数量，即为您筛选出X个小区
+        int plotCount = intelligenceFindhouseMapper.queryPlotCount(plotTotal);
+        //获取相对应的比率
+        List<TotalListedRatio> totalPriceRate = totalListedRatioMapper.selectByTotalPrice(plotTotal);
+        //用户所对应的小区比率
+        String totalRate = new StringBuffer().append(totalPriceRate.get(0).getRatio().intValue() * 100).append("%").toString();
+        intelligenceQuery.setRatio(totalRate);
+        intelligenceQuery.setPlotCount(plotCount);
+        return intelligenceQuery;
+    }
 
+    @Override
+    public IntelligenceQuery queryUserCheckPriceAndCaategory(IntelligenceQuery intelligenceQuery) {
 
+        //初始化
+        int count = 0;
+        Double plotTotal = null;
+        //判断用户首付和月付计算出的总价是否存在
+        if (StringTool.isNotBlank(intelligenceQuery.getPlotTotal())) {
+            plotTotal = intelligenceQuery.getPlotTotal();
+            //通过首付和月付计算出的总价和户型查询小区数量
+            count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotal, intelligenceQuery.getCategoryId());
+        }
+        if (StringTool.isNotBlank(intelligenceQuery.getPreconcTotal())) {
+            plotTotal = intelligenceQuery.getPreconcTotal();
+            //用户填入的总价和户型查询小区数量
+            count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotal, intelligenceQuery.getCategoryId());
+        }
+        //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
+        if (StringTool.isNotBlank(intelligenceQuery.getCategoryId())) {
+            intelligenceQuery.setSchoolFlag(0);
+            intelligenceQuery.setHospitalFlag(1);
+        }
+        //获取相对应的比率
+        //比率
+        TotalRoomRatio roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotal, intelligenceQuery.getCategoryId());
+        //用户画像类型
+        intelligenceQuery.setUserPortrayalType(roomRatio.getUserPortrayalType());
+        //用户比率
+        intelligenceQuery.setRatio(new StringBuffer().append(roomRatio.getRatio().intValue() * 100).append("%").toString());
+        intelligenceQuery.setPlotCount(count);
+        return intelligenceQuery;
+    }
 
-        return null;
+    /**
+     * 功能描述：根据区域赛选小区数量
+     *
+     * @param [intelligenceQuery]
+     * @return com.toutiao.web.domain.query.IntelligenceQuery
+     * @author zhw
+     * @date 2017/12/26 21:48
+     */
+    @Override
+    public IntelligenceQuery queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery) {
+        //初始化
+        int count = 0;
+        //区域的id
+        String[] split = intelligenceQuery.getDistrictId().split(",");
+        for( int i=0;i<split.length;i++){
+            //判断用户首付和月付计算出的总价是否存在
+            if (StringTool.isNotBlank(intelligenceQuery.getPlotTotal())) {
+                //通过首付和月付计算出的总价和户型查询小区数量
+                count += intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(intelligenceQuery.getPlotTotal(), intelligenceQuery.getCategoryId(), split[i]);
+            }
+            if (StringTool.isNotBlank(intelligenceQuery.getPreconcTotal())) {
+                //用户填入的总价和户型查询小区数量
+                count += intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(intelligenceQuery.getPreconcTotal(), intelligenceQuery.getCategoryId(), split[i]);
+            }
+        }
+        //保存查询的小区数量
+        intelligenceQuery.setPlotCount(count);
+        return intelligenceQuery;
     }
 }

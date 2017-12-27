@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.officeweb;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     int insertSelective(IntelligenceFindhouse record);
 
-    List<IntelligenceFindhouse> selectByUserPrice(double totlaPrice);
+    int queryPlotCount(Double plotTotal);
+
+    int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
+
+    int queryPlotCountByCategoryAndPriceAndDistict(@PathVariable("plotTotal") Double plotTotal, @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);
 }
