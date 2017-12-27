@@ -53,14 +53,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     @Autowired
     private IntelligenceFindhouseMapper intelligenceFindhouseMapper;
 
-    /**
-     * 功能描述：根据用户的手机号码获取用户报表相关数据信息
-     *
-     * @param [usePhone]
-     * @return com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes
-     * @author zhw
-     * @date 2017/12/26 15:45
-     */
     @Override
     public IntelligenceQuery queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
         //初始化
@@ -98,6 +90,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         return intelligenceQuery;
     }
 
+
+
+
     @Override
     public IntelligenceQuery queryUserCheckPriceAndCaategory(IntelligenceQuery intelligenceQuery) {
 
@@ -134,7 +129,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     /**
      * 功能描述：根据区域赛选小区数量
      *
-     * @param [intelligenceQuery]
+     * @param
      * @return com.toutiao.web.domain.query.IntelligenceQuery
      * @author zhw
      * @date 2017/12/26 21:48
@@ -159,7 +154,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //保存查询的小区数量
         intelligenceQuery.setPlotCount(count);
         return intelligenceQuery;
-        return null;
     }
 
     @Override

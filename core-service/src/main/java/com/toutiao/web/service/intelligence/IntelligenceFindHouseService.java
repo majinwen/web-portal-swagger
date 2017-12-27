@@ -15,10 +15,10 @@ public interface IntelligenceFindHouseService {
 
     IntelligenceQuery queryUserCheckPriceAndCaategory(IntelligenceQuery intelligenceQuery);
 
-    IntelligenceFhRes queryUserReport(String usePhone);
+//    IntelligenceFhRes queryUserReport(String usePhone);
 
 
-    Map<String,String> queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
+    IntelligenceQuery queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
 
 
     List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery);
