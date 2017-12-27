@@ -169,13 +169,13 @@
                 </div>
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                 </div>
                 <div class="pr">
@@ -197,7 +197,8 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign item = map['building_imgs']?split(",")>
-                            <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -253,13 +254,13 @@
                 </div>
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                 </div>
                 <div class="pr">
@@ -277,7 +278,9 @@
             <li><a class="list-item" href="/villageDetail?id=${map['id']?c}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${qiniuimage}/${map['photo'][0]!''}" alt="${map['rc']}">
+                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}" alt="${map['rc']}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
                     </div>
                     <div class="list-item-cont">
                         <input type="hidden" value="${map['id']}">
