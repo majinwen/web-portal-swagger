@@ -16,9 +16,15 @@
         <#assign item =houseDetail['housePhoto']>
         <#list item as itemValue>
             <#if itemValue?exists>
-                <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                    <img src="${itemValue}" data-src="${itemValue}" alt="${itemValue_index}">
-                </li>
+                <#if itemValue?? && itemValue != ''>
+                    <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
+                        <img src="${itemValue}" data-src="${itemValue}" alt="${itemValue_index}">
+                    </li>
+                <#else >
+                    <li onclick="initphoto(this,0)" class="swiper-slide">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                    </li>
+                </#if>
             </#if>
         </#list>
         </ul>

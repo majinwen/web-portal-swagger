@@ -16,12 +16,18 @@
         <#if village['photo']?exists>
             <#list village['photo'] as vpphoto>
                 <#if vpphoto?exists>
-                    <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
-                    </li>
+                    <#if vpphoto?? && vpphoto != ''>
+                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                            <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
+                        </li>
+                    <#else >
+                        <li onclick="initphoto(this,0)" class="swiper-slide">
+                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                        </li>
+                    </#if>
                 <#else>
-                    <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/" data-src="${qiniuimage}/" alt="暂无">
+                    <li onclick="initphoto(this,0)" class="swiper-slide">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
                     </li>
                 </#if>
             </#list>

@@ -17,9 +17,15 @@
             <#if build['building_imgs']?exists>
             <#list build['building_imgs']?split(",") as item>
             <#if item?exists>
-            <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
-            </li>
+                <#if item?? && item!= ''>
+                    <li onclick="initphoto(this,${item_index})" class="swiper-slide">
+                        <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${qiniuimage}/<#if item?exists>${item}</#if>" alt="${build['building_name']}">
+                    </li>
+                <#else >
+                    <li onclick="initphoto(this,0)" class="swiper-slide">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                    </li>
+                </#if>
             </#if>
             </#list>
             </#if>

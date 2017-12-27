@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1 active">
+    <div class="section page1">
         <div class="bgbox bg1">
             <div class="page-content">
                 <h1>智能找房</h1>
@@ -67,8 +67,15 @@
             </div>
         </div>
     </div>
-    <div class="section page3">
-
+    <div class="section page3 active">
+        <div class="bgbox bg3">
+            <div class="page-content">
+                <div class="result-text">
+                    <p>为您匹配了<em class="high-light-red">234</em>个小区</p>
+                    <p>有<em class="high-light-red">37%</em>的用户和您的需求相同</p>
+                </div>
+            </div>
+        </div>
         <button type="button" class="button">开始体验</button>
     </div>
     <div class="section page4">

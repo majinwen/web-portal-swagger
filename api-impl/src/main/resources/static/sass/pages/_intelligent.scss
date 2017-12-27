@@ -130,7 +130,6 @@ $inteBorderBlack: #000;
                         margin-top: rem(14);
                         color: $baseBlack;
                         white-space: nowrap;
-                        @include font-dpr(28);
 
                         &:first-child {
                             margin-top: 0;
@@ -232,9 +231,34 @@ $inteBorderBlack: #000;
 @media (max-device-width: 325px) {
     .page2 {
         .page-content {
+            p {
+                @include font-dpr(24);
+            }
+
             button {
                 bottom: rem(50);
             }
+        }
+    }
+}
+
+.page3 {
+    .bg3 {
+        @include bg-image('/static/images/intelligent/znzf_bg');
+        background-repeat: repeat-y;
+        background-position: center bottom;
+        -webkit-background-size: contain;
+        background-size: contain;
+    }
+
+    .page-content {
+        .result-text {
+            height: rem(179);
+            padding: rem(42) 0;
+            text-align: center;
+            background-color: #f7f6f6;
+            color: $inteBlack;
+            @include box-sizing;
         }
     }
 }

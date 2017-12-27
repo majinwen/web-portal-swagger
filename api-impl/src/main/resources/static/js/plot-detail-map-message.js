@@ -51,9 +51,11 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                var lineNumber = (response.results[0].address).split(';').length;
-                $('#busStation').text(response.results[0].name);
-                $('#busStationNumber').text(lineNumber + '条线路')
+                if (response.results.length > 0){
+                    var lineNumber = (response.results[0].address).split(';').length;
+                    $('#busStation').text(response.results[0].name);
+                    $('#busStationNumber').text(lineNumber + '条线路')
+                }
             }
         },
         error: function (err) {
@@ -66,10 +68,12 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                var subwayLine = (response.results[0].address).split(';')[0].substring(2);
-                var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
-                $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
-                $('#subwayDistance').text(subwayDistance);
+                if (response.results.length > 0) {
+                    var subwayLine = (response.results[0].address).split(';')[0].substring(2);
+                    var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
+                    $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
+                    $('#subwayDistance').text(subwayDistance);
+                }
             }
         },
         error: function (err) {
