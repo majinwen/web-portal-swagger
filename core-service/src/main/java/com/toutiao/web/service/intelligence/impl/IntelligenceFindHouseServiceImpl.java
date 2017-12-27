@@ -105,19 +105,19 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
         //判断类型
         //类型2A
-        if ("4".equals(intelligenceQuery.getUserType())){
+        if (intelligenceQuery.getUserPortrayalType()==4){
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoA(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommendHouse(list);
             return finalList;
         }
         //类型2B
-        if ("5".equals(intelligenceQuery.getUserType())){
+        if (intelligenceQuery.getUserPortrayalType()==5){
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoB(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommendHouse(list);
             return finalList;
         }
         //类型2C
-        if ("6".equals(intelligenceQuery.getUserType())){
+        if (intelligenceQuery.getUserPortrayalType()==6){
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoC(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommendHouse(list);
             return finalList;
@@ -131,7 +131,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * 功能描述：筛选方法
      * @author zengqingzhou
      * @date 2017/12/27 14:58
-     * @param [list]
+     * @param
      * @return java.util.List<com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse>
      */
     public List<IntelligenceFindhouse> recommendHouse(List<IntelligenceFindhouse> list){
@@ -144,8 +144,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             for (int i = 0;i<list.size()-1;i++){
                 for (int j = 0; j <list.size()-1-i;j++){
 
-                    double esfPriceJ= Double.parseDouble(null);
-                    double esfPriceJ_1= Double.parseDouble(null);
+                    double esfPriceJ = 0.0;
+                    double esfPriceJ_1= 0.0;
                     if (null!=list.get(j).getEsfPrice()&&list.get(j).getEsfPrice().doubleValue()>0){
                         esfPriceJ= list.get(j).getEsfPrice().doubleValue();
                     }
@@ -178,8 +178,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             for (int i = 0;i<list.size()-1;i++){
                 for (int j = 0; j <list.size()-1-i;j++){
 
-                    short ringRoad = Short.parseShort(null);
-                    short ringRoad_1 = Short.parseShort(null);
+                    short ringRoad = 10;
+                    short ringRoad_1 = 10;
                     if (null!=list.get(j).getRingRoad()&&list.get(j).getRingRoad()>0){
                         ringRoad= list.get(j).getRingRoad();
                     }
@@ -204,8 +204,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             for (int i = 0;i<list.size()-1;i++){
                 for (int j = 0; j <list.size()-1-i;j++){
 
-                    Integer starProperty = null;
-                    Integer starProperty_1 = null;
+                    Integer starProperty = 0;
+                    Integer starProperty_1 = 0;
                     if (null!=list.get(j).getStarProperty()&&list.get(j).getStarProperty()>0){
                         starProperty= list.get(j).getStarProperty();
                     }
@@ -222,6 +222,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 }
             }
             finalList.add(list.get(1));
+            finalList.add(list.get(2));
         }
     return finalList;
     }

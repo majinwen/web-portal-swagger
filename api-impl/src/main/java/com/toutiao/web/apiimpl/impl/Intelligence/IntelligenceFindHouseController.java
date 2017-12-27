@@ -107,6 +107,14 @@ public class IntelligenceFindHouseController {
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceQuery);
     }
+    @RequestMapping("/intelligenceFindHouseTypeTwo")
+    @ResponseBody
+    public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery){
+        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+        intelligenceQuery1.setUserPortrayalType(4);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceTypeTwo(intelligenceQuery1);
+        return null;
+    }
 
 
 
