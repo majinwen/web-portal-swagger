@@ -154,9 +154,9 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign imgt = map['building_imgs']?split(",")>
-                            <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
-                        <#else >
-                            <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                            <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
