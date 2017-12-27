@@ -1,5 +1,7 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
+import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +55,27 @@ public class PlotConterller {
         model.addAttribute("villageList", villageList);
         model.addAttribute("searchType","plot");
         return "plot/plot-list";
+    }
+
+
+    //小区分页
+    @RequestMapping("/villagePage")
+    @ResponseBody
+    public NashResult villagePage(VillageRequest villageRequest) {
+        List villageList = null;
+        villageList = plotService.findVillageByConditions(villageRequest);
+
+        for (int i=0;i<villageList.size();i++) {
+            HashMap<String,Object> itemMap = (HashMap<String, Object>) villageList.get(i);
+            String imginfo= (String) itemMap.get("building_imgs");
+            if (StringUtil.isNotNullString(imginfo)){
+                String [] imgs= imginfo.split(",");
+                itemMap.put("building_imgs",imgs[0]);
+                villageList.set(i,itemMap);
+            }
+        }
+
+        return NashResult.build(villageList);
     }
 
 
