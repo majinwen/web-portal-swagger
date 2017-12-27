@@ -47,7 +47,12 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
-            model.addAttribute("userReport", userReport);
+            if(StringTool.isNotBlank(userReport)){
+                model.addAttribute("userReport", userReport);
+            }
+            model.addAttribute("message", "没有报告记录！");
+        }else{
+            model.addAttribute("message","登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
         return "";
@@ -185,7 +190,19 @@ public class IntelligenceFindHouseController {
         //报告生成页
         return "";
     }
+    /**
+     * 功能描述：8完成，生成报告
+     * @author zhw
+     * @date 2017/12/27 12:33
+     * @param [intelligenceQuery, model]
+     * @return java.lang.String
+     */
+    @RequestMapping("/goCreateReport")
+    public String goCreateMyReport(IntelligenceQuery intelligenceQuery,Model model){
 
+        model.addAttribute("intelligenceQuery",intelligenceQuery);
+        return "";
+    }
 
 
 
