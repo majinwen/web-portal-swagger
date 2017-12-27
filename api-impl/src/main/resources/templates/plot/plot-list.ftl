@@ -81,10 +81,10 @@
                 <dl>
                     <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -101,6 +101,17 @@
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
                         <span data-info="4">砖楼</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt data-type="saleType">销售状态</dt>
+                    <dd>
+                        <span data-info="1">售完</span>
+                        <span data-info="2">在售</span>
+                        <span data-info="3">不在售</span>
+                        <span data-info="4">出租</span>
+                        <span data-info="4">待租</span>
+                        <span data-info="4">待售</span>
                     </dd>
                 </dl>
                 <dl>
@@ -133,7 +144,7 @@
     </div>
 </section>
 <section>
-    <ul>
+    <ul id="villagelist">
     <#if villageList?exists>
         <#list villageList as plot>
             <li><a class="list-item" href="/villageDetail?id=${plot['id']?c}">
@@ -213,5 +224,69 @@
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="villagepage" type="text/html">
+    {{each data}}
+    <li><a class="list-item" href="/villageDetail?id={{$value.id}}">
+        <div class="clear">
+            <div class="list-item-img-box">
+                        <img src="${qiniuimage}/{{$value.photo[0]}}" alt="{{$value.rc}}">
+           <div class="list-item-cont">
+                <h3 class="cont-block-1">
+                    <%if ($value['rc'] != null){%>
+                    {{$value.rc}}
+                    <%}else{%>
+                    暂无
+                    <%}%>
+                    <%}%>
+               </h3>
+
+                <p class="cont-block-2">
+                    <%if ($value['abbreviatedAge'] != null){%>
+                    {{$value.abbreviatedAge}}
+                    <%}else{%>
+                       暂无
+                    <%}%>
+                    <%}%>
+                </p>
+            <#if plot['metroWithPlotsDistance']?exists>
+                <#assign map = plot['metroWithPlotsDistance']>
+                <#if plot['key']?exists>
+                    <#if map[plot['key']]?exists>
+                        <#assign split=map[plot['key']]?split("$")/>
+                        <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
+                    <#else>
+                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                    </#if>
+                <#else>
+                    <#if plot['tradingArea']?exists>
+                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                    </#if>
+                </#if>
+            <#else>
+                <#if plot['tradingArea']?exists>
+                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                </#if>
+            </#if>
+                <div class="cont-block-4">
+                <#if plot['label']?exists>
+                    <#assign item =  plot['label']>
+                    <#list item as itemValue>
+                        <#if itemValue?exists>
+                            <span>${itemValue}</span>
+                        </#if>
+                    </#list>
+                </#if>
+                </div>
+                <div class="cont-block-price plot">
+                    <em>${plot['avgPrice']}元/㎡</em>
+                </div>
+            </div>-->
+        </div>
+    </a></li>
+    {{/each}}
+ </script>
 </body>
 </html>

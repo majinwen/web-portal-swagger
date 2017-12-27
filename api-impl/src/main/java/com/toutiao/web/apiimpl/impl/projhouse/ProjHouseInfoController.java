@@ -1,9 +1,7 @@
 package com.toutiao.web.apiimpl.impl.projhouse;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
@@ -19,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +98,19 @@ public class ProjHouseInfoController {
 
 
     /**
+     * 功能描述：二手房分页
+     */
+    @RequestMapping("/esfHousePageSearch")
+    @ResponseBody
+    public NashResult esfHousePageSearch(ProjHouseInfoQuery projHouseInfoQuery) {
+
+        List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+
+        return  NashResult.build(builds);
+
+    }
+
+    /**
      * 功能描述：二手房列表
      * <p>
      * //     * @param [projHouseInfoQuery, model]
@@ -125,6 +137,7 @@ public class ProjHouseInfoController {
         return "esf/esf-list";
 
     }
+
 
     /**
      * 功能描述：往es服务器中插入数据

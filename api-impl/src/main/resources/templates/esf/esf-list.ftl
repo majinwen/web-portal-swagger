@@ -110,20 +110,20 @@
                 <dl>
                     <dt data-type="houseAreaId">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
                     <dt data-type="houseYearId">楼龄</dt>
                     <dd>
-                        <span class="only" data-info="0,5">5年内</span>
-                        <span class="only" data-info="0,10">10年内</span>
-                        <span class="only" data-info="0,15">15年内</span>
-                        <span class="only" data-info="0,20">20年内</span>
-                        <span class="only" data-info="20,100">20年以上</span>
+                        <span class="only" data-info="[0-5]">5年内</span>
+                        <span class="only" data-info="[0-10]">10年内</span>
+                        <span class="only" data-info="[0-15]">15年内</span>
+                        <span class="only" data-info="[0-20]">20年内</span>
+                        <span class="only" data-info="[20-120]">20年以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -139,6 +139,7 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
+                        <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
                 <dl>
@@ -161,7 +162,7 @@
     </div>
 </section>
 <section>
-    <ul><#if builds?exists>
+    <ul id="esfvalueList"><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
                 <div class="clear">
@@ -245,5 +246,14 @@
 <script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="esfhousepage" type="text/html">
+
+
+
+ </script>
+
 </body>
 </html>
