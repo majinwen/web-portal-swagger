@@ -27,7 +27,7 @@
             <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['building_area']}㎡</p>
         </div>
         <div class="house-type-tag">
-            <p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>
+            <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
             <div class="house-labelling normal">
                 <#if datail['layout_tag']?exists>
                 <#list datail['layout_tag'] as tag>
@@ -37,7 +37,11 @@
         </div>
         <div class="house-type-image">
             <div>
-                <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
+                <#if datail['layout_img']?exists>
+                    <img src="${qiniuimage}/${datail['layout_img']}" alt="户型图">
+                <#else><img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
+                </#if>
+                <#--<img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">-->
                 <span class="sale-state">
                     <#--<#if datail['is_sale']?exists&&datail['is_sale']!'在售'>-->
                     <#---->

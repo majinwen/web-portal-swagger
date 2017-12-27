@@ -163,6 +163,15 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
         //判断类型
         if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1A){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
+
+        }
+        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1B){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
+
+        }
+        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1C){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
 
         }
         //类型2A
@@ -182,6 +191,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoC(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommendHouse(list);
             return finalList;
+        }
+        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_3A){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
+
         }
 
         return null;
