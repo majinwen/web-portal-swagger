@@ -40,7 +40,7 @@ public class VillageRequest {
     private Double liftDoorRadio;  //户均电梯
     private String elevator;  //电梯配备
     private String elevatorFlag;  //电梯配备查询ID
-    private Double carPositionRatio;  //车位配比
+    private String carPositionRatio;  //车位配比
     private String parkingRate;  //停车费
     private String desc;  //小区详情介绍
     private String characteristic;  //小区特色

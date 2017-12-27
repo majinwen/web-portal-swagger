@@ -51,7 +51,7 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                if (response.results.length > 0){
+                if(response.results.length>0){
                     var lineNumber = (response.results[0].address).split(';').length;
                     $('#busStation').text(response.results[0].name);
                     $('#busStationNumber').text(lineNumber + '条线路')
@@ -68,8 +68,8 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                if (response.results.length > 0) {
-                    console.log(response.results);
+                // console.log(response.results);
+                if(response.results.length>0){
                     var subwayLine = (response.results[0].address).split(';')[0].substring(2);
                     var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
                     $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
@@ -93,7 +93,7 @@ $('.map-message-btn').on('click', 'li', function () {
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
     }
-    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&tag='+ text +'&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
     $.ajax({
         type: 'GET',
         url: url,

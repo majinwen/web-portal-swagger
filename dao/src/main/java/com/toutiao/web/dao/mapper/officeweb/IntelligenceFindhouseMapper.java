@@ -2,26 +2,30 @@ package com.toutiao.web.dao.mapper.officeweb;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.toutiao.web.domain.query.IntelligenceQuery;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- *  
+ *
  * 功能描述：智能找房接口
  * @author
  * @date 2017/12/25 19:09
- * @param 
- * @return 
+ * @param
+ * @return
  */
+@Repository
 public interface IntelligenceFindhouseMapper extends BaseDao {
     int insert(IntelligenceFindhouse record);
 
     int insertSelective(IntelligenceFindhouse record);
 
-    int queryPlotCount(Double plotTotal);
+    List<IntelligenceFindhouse> selectByUserPrice(double totlaPrice);
 
-    int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
+    List<IntelligenceFindhouse> selectByTypeTwoA(IntelligenceQuery intelligenceQuery);
 
-    int queryPlotCountByCategoryAndPriceAndDistict(@PathVariable("plotTotal") Double plotTotal, @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);
+    List<IntelligenceFindhouse> selectByTypeTwoB(IntelligenceQuery intelligenceQuery);
+
+    List<IntelligenceFindhouse> selectByTypeTwoC(IntelligenceQuery intelligenceQuery);
 }

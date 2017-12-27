@@ -53,6 +53,14 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     @Autowired
     private IntelligenceFindhouseMapper intelligenceFindhouseMapper;
 
+    /**
+     * 功能描述：根据用户的手机号码获取用户报表相关数据信息
+     *
+     * @param [usePhone]
+     * @return com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes
+     * @author zhw
+     * @date 2017/12/26 15:45
+     */
     @Override
     public IntelligenceQuery queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
         //初始化
@@ -151,5 +159,34 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //保存查询的小区数量
         intelligenceQuery.setPlotCount(count);
         return intelligenceQuery;
+        return null;
+    }
+
+    @Override
+    public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
+        //判断类型
+        //类型2A
+        if ("4".equals(intelligenceQuery.getUserType())){
+            List finalList = new ArrayList();
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoA(intelligenceQuery);
+            for (int i = 0;i<list.size();i++){
+                for (int j = 0; j <list.size();j++){
+
+                }
+            }
+            return null;
+        }
+        //类型2B
+        if ("5".equals(intelligenceQuery.getUserType())){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoB(intelligenceQuery);
+            return null;
+        }
+        //类型2C
+        if ("6".equals(intelligenceQuery.getUserType())){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoC(intelligenceQuery);
+            return null;
+        }
+
+        return null;
     }
 }

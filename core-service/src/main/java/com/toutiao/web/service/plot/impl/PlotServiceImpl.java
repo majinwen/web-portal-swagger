@@ -7,6 +7,8 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.entity.officeweb.PlotRatio;
+import com.toutiao.web.dao.mapper.officeweb.PlotRatioMapper;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
@@ -33,7 +35,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +54,8 @@ public class PlotServiceImpl implements PlotService {
 
     @Autowired
     private ESClientTools esClientTools;
-
+    @Autowired
+    private PlotRatioMapper plotRatioMapper;
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
@@ -111,6 +116,12 @@ public class PlotServiceImpl implements PlotService {
             String key = null;
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //默认查询均格大于零
+            if (villageRequest.getAvgPrice()==null){
+                villageRequest.setAvgPrice("0,10000000");
+            }else {
+                villageRequest.setAvgPrice("0,10000000,"+villageRequest.getAvgPrice());
+            }
             //小区ID
             if (villageRequest.getId() != null) {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
@@ -195,7 +206,9 @@ public class PlotServiceImpl implements PlotService {
 //                    if (i + 1 > Age.length) {
 //                        break;
 //                    }
-                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(villageRequest.getBeginAge()).lte(villageRequest.getEndAge()));
+                    BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
+                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getEndAge()))))
+                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getBeginAge())))));
                     queryBuilder = boolQueryBuilder.must(Age1);
 //                }
             }
@@ -238,11 +251,11 @@ public class PlotServiceImpl implements PlotService {
             }
             //排序
             //均价
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("2")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
                 srb.addSort("avgPrice", SortOrder.ASC);
             }
 
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("1")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
 
@@ -269,6 +282,19 @@ public class PlotServiceImpl implements PlotService {
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
                     instance.setKey(key);
+                    if ("商电".equals(instance.getElectricSupply())){
+                        instance.setElectricFee("1.33");
+                    }else {
+                        instance.setElectricFee("0.48");
+                    }
+                    if ("商水".equals(instance.getWaterSupply())){
+                        instance.setWaterFee("6");
+                    }else {
+                        instance.setWaterFee("5");
+                    }
+                    PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                    instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                    instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                     houseList.add(instance);
 //            System.out.println(instance);
                 }
