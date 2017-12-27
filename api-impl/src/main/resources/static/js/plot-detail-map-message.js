@@ -2,8 +2,8 @@ $(function () {
     var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交站&tag=公交车站&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁站&tag=地铁站&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     $.ajax({
         type: 'GET',
         url: educationUrl,
@@ -69,6 +69,7 @@ $(function () {
         success: function (response) {
             if (response.message === 'ok') {
                 if (response.results.length > 0) {
+                    console.log(response.results);
                     var subwayLine = (response.results[0].address).split(';')[0].substring(2);
                     var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
                     $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
