@@ -15,6 +15,7 @@ $borderRadiusColor: #999;
     > ul {
         position: relative;
         overflow: hidden;
+        display: -webkit-flex;
         display: flex;
         background-color: $baseWhite;
         border-bottom: 1px solid $borderLineColor;

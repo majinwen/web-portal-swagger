@@ -103,17 +103,6 @@
                         <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
-                <#--<dl>-->
-                    <#--<dt data-type="saleType">销售状态</dt>-->
-                    <#--<dd>-->
-                        <#--<span data-info="1">售完</span>-->
-                        <#--<span data-info="2">在售</span>-->
-                        <#--<span data-info="3">不在售</span>-->
-                        <#--<span data-info="4">出租</span>-->
-                        <#--<span data-info="4">待租</span>-->
-                        <#--<span data-info="4">待售</span>-->
-                    <#--</dd>-->
-                <#--</dl>-->
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
@@ -155,7 +144,7 @@
                                 <#assign photo = plot['photo']>
                                 <#if photo[0]?exists>
                                     <img src="${qiniuimage}/${photo[0]}" alt="${plot['rc']}">
-                                <#else><img src="${staticurl}/" alt="暂无">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无">
                                 </#if>
                             </#if>
                         </div>
@@ -170,7 +159,7 @@
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
                                     <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                                 </#if>
@@ -184,7 +173,7 @@
                                 <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
                             </#if>
                         </#if>
-                        <div class="cont-block-4">
+                        <div class="cont-block-4 house-labelling gray">
                             <#if plot['label']?exists>
                                 <#assign item =  plot['label']>
                                 <#list item as itemValue>

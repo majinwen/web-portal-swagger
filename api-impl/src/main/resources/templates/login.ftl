@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:c="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
