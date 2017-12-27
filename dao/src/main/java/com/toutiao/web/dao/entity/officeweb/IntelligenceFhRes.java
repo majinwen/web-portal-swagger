@@ -18,24 +18,6 @@ public class IntelligenceFhRes {
      * 智能找房结果
      */
     private Object fhResult;
-    /**
-     *首付
-     */
-    private Integer downPayMent;
-    /**
-     *月供
-     */
-    private  Integer monthPayMent;
-
-    /**
-     *户型
-     */
-    private  Integer layOut;
-
-    /**
-     *是否有老人(0-无，1-有)
-     */
-    private Integer hasOldMan;
 
     /**
      * 首付
