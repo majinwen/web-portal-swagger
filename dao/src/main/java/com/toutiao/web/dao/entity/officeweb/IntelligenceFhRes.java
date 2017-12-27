@@ -26,22 +26,12 @@ public class IntelligenceFhRes {
      *月供
      */
     private  Integer monthPayMent;
-    /**
-     *用户类型（1-自住刚需，2-自住改善，3-投资出租）
-     */
-    private Integer userType;
-    /**
-     *总价
-     */
-    private  Integer totalPrice ;
+
     /**
      *户型
      */
     private  Integer layOut;
-    /**
-     *是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
-     */
-    private  Integer hasChild;
+
     /**
      *是否有老人(0-无，1-有)
      */
