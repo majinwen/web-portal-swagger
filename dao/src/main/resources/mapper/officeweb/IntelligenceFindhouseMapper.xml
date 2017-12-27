@@ -150,6 +150,7 @@
         <result column="subway_station" property="subwayStation" jdbcType="ARRAY"/>
         <result column="subway_distince" property="subwayDistince" jdbcType="VARCHAR"/>
         <result column="proj_layout" property="projLayout" jdbcType="VARCHAR"/>
+        <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="intelligenceFindHouse" >
         newcode,projname,coord_x,coord_y,purposearea,price,esfPrice,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
