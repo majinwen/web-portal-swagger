@@ -153,8 +153,8 @@
         <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="intelligenceFindHouse" >
-        newcode,projname,coord_x,coord_y,purposearea,price,esfPrice,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
-        heating_mode,propertyfee,carRentPrice,water_supply,power_supply,star_property
+        newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
+        heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property
     </sql>
     <select id="selectByTypeTwoA"
             resultMap="BaseResultMap"
