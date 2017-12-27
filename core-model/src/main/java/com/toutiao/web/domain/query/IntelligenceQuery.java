@@ -24,8 +24,8 @@ public class IntelligenceQuery {
      */
     private Double beginMonthPayment;
 
+    //用户填入的页面总价信息
     private Double preconcTotal;
-
     /**
      * 总价
      */
@@ -67,6 +67,8 @@ public class IntelligenceQuery {
      * 教育配套标签标记
      */
     private  int flag=0;
+
+
 
 
 }

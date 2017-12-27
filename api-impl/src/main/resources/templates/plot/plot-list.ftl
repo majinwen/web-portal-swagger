@@ -161,16 +161,16 @@
                                     <#assign split=map[plot['key']]?split("$")/>
                                     <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
                                 <#else>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             <#else>
                                 <#if plot['tradingArea']?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             </#if>
                         <#else>
                             <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                             </#if>
                         </#if>
                         <div class="cont-block-4 house-labelling gray">

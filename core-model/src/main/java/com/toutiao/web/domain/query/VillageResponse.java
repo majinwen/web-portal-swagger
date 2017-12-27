@@ -35,7 +35,7 @@ public class VillageResponse {
     private Double avgGreening;  //户均绿化率
     private Double liftDoorRadio;  //户均电梯
     private String elevator;  //电梯配备
-    private Double carPositionRatio;  //车位配比
+    private String carPositionRatio;  //车位配比
     private String parkingRate;  //停车费
     private String desc;  //小区详情介绍
     private String characteristic;  //小区特色
@@ -64,7 +64,9 @@ public class VillageResponse {
     private String waterFee;  //水费
     private String decorationType;  //装修标准
     private String ringRoadName;  //详情环线
-    private String ringRoadDistance;  //详情环线距离
+    private Integer ringRoadDistance;  //详情环线距离
+    private Double tongbi;  //同比
+    private Double huanbi;  //环比
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源

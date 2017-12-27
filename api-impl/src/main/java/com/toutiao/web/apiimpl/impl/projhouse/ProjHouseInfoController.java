@@ -50,7 +50,7 @@ public class ProjHouseInfoController {
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") Integer houseId) {
         //房源详情
         Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(houseId);
-        if (StringTool.isNotEmpty(houseDetails)) {
+        if (StringTool.isNotBlank(houseDetails)) {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
             //附近好房
@@ -73,18 +73,24 @@ public class ProjHouseInfoController {
      * @return
      */
     @RequestMapping("/getProjHouseMapDetail")
-    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
-
+    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
 
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
-        if (list!=null &&list.size()!=0) {
+        if (list != null && list.size() > 0) {
             ProjHouseInfoResponse build = (ProjHouseInfoResponse) list.get(0);
             build.setLocation(build.getHousePlotLocation());
 
             model.addAttribute("build", build);
+            return "map";
         }
+        ProjHouseInfoResponse build = new ProjHouseInfoResponse();
+        build.setNewcode(Integer.valueOf(projHouseInfoQuery.getNewcode()));
+        build.setLocation("39.913329,116.382001");
+
+        model.addAttribute("build", build);
+
         return "map";
 
     }
