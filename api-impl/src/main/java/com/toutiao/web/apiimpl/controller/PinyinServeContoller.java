@@ -36,16 +36,26 @@ public class PinyinServeContoller {
     }
 
     /**
-     * 根据名字转换拼音及首字大写
+     * 智能找房
      *
      * @return
      */
     @RequestMapping("/intelligent")
-//    @ResponseBody
     public String intelligent(Model model){
 
         int t = 1;
         model.addAttribute("t",t);
         return "intelligent-find";
+    }
+
+    /**
+     * 404
+     *
+     * @return
+     */
+    @RequestMapping("/404")
+    public String empty(Model model){
+
+        return "404";
     }
 }
