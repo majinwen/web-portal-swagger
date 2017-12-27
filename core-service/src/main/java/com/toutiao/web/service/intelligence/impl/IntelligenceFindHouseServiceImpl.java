@@ -40,12 +40,14 @@ import java.util.concurrent.ExecutionException;
 @Service
 @Transactional
 public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseService {
-    @Autowired
-    private ESClientTools esClientTools;
-    @Value("${tt.robot.index}")
-    private String robotIndex;//索引名称
-    @Value("${tt.robot.index}")
-    private String robotType;//索引类
+
+    private static final Integer USERTYPE_1A = 1;
+    private static final Integer USERTYPE_1B = 2;
+    private static final Integer USERTYPE_1C = 3;
+    private static final Integer USERTYPE_2A = 4;
+    private static final Integer USERTYPE_2B = 5;
+    private static final Integer USERTYPE_2C = 6;
+    private static final Integer USERTYPE_3A = 7;
     @Autowired
     private TotalListedRatioMapper totalListedRatioMapper;
     @Autowired
@@ -159,6 +161,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     @Override
     public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
         //判断类型
+        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1A){
+
+        }
         //类型2A
         if ("4".equals(intelligenceQuery.getUserType())){
             List finalList = new ArrayList();
