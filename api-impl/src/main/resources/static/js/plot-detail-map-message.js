@@ -1,4 +1,4 @@
-$(function () {
+    $(function () {
     var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
     var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
     var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';

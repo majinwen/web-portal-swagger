@@ -105,15 +105,23 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //判断类型
         //类型2A
         if ("4".equals(intelligenceQuery.getUserType())){
-//            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectHouseByCondition(intelligenceQuery);
+            List finalList = new ArrayList();
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoA(intelligenceQuery);
+            for (int i = 0;i<list.size();i++){
+                for (int j = 0; j <list.size();j++){
+
+                }
+            }
             return null;
         }
         //类型2B
         if ("5".equals(intelligenceQuery.getUserType())){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoB(intelligenceQuery);
             return null;
         }
         //类型2C
         if ("6".equals(intelligenceQuery.getUserType())){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoC(intelligenceQuery);
             return null;
         }
 
