@@ -10,7 +10,6 @@
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<#if houseDetail?exists>
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -95,8 +94,13 @@
                     </li>
                     <li>
                         <span>户型</span>
-                        <em><#if houseDetail.room?exists>${houseDetail.room}室<#else>
-                            暂无</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅<#else>暂无</#if></em>
+                        <em><#if houseDetail.room?exists&&houseDetail.hall?exists>
+
+                             ${houseDetail.room}室${houseDetail.hall}厅
+                            <#else>
+                                暂无
+                        </#if>
+                        </em>
                     </li>
                     <li>
                         <span>面积</span>
@@ -318,9 +322,6 @@
         </div>
     </section>
 </div>
-</#if>
-<#else >
-<p class="tip-box">非常抱歉，目前暂时没有该房源的详细信息！</p>
 </#if>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>

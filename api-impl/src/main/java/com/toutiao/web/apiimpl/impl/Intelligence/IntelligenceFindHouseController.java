@@ -201,10 +201,31 @@ public class IntelligenceFindHouseController {
     public String goCreateMyReport(IntelligenceQuery intelligenceQuery,Model model){
 
         model.addAttribute("intelligenceQuery",intelligenceQuery);
+        //过渡页vs封面
         return "";
     }
 
+    /**
+     *
+     * 功能描述：报告页-用户画像
+     * @author zhw
+     * @date 2017/12/27 15:17
+     * @param [intelligenceQuery, model]
+     * @return java.lang.String
+     */
+    @RequestMapping("/showUserPortrayal")
+    public String showUserPortrayal(IntelligenceQuery intelligenceQuery,Model model){
 
+        Integer userPortrayalType = intelligenceQuery.getUserPortrayalType();
+
+        if (StringTool.isNotBlank(userPortrayalType)){
+            //根据用户画像，查询用户画像介绍
+
+        }
+
+
+        return "";
+    }
 
 
 

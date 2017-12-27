@@ -63,6 +63,9 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+        }else{
+            //跳转到404页
+            return "";
         }
 
         return "esf/esf-detail";
