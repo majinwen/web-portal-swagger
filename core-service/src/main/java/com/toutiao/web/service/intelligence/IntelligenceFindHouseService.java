@@ -12,10 +12,9 @@ import java.util.Map;
 
 public interface IntelligenceFindHouseService {
 
+    IntelligenceQuery queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
 
+    IntelligenceQuery queryUserCheckPriceAndCaategory(IntelligenceQuery intelligenceQuery);
 
-    IntelligenceFhRes queryUserReport(String usePhone);
-
-
-    Map<String,String> queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
+    IntelligenceQuery queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery);
 }
