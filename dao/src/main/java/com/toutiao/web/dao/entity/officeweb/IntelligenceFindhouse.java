@@ -747,4 +747,9 @@ public class IntelligenceFindhouse {
      */
     private String projLayout;
 
+    /**
+     * 明星楼盘搜索量
+     */
+    private Integer starProperty;
+
 }

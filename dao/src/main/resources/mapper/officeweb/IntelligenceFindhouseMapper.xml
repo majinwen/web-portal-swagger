@@ -150,7 +150,45 @@
         <result column="subway_station" property="subwayStation" jdbcType="ARRAY"/>
         <result column="subway_distince" property="subwayDistince" jdbcType="VARCHAR"/>
         <result column="proj_layout" property="projLayout" jdbcType="VARCHAR"/>
+        <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
     </resultMap>
+    <sql id="intelligenceFindHouse" >
+        newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
+        heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property
+    </sql>
+    <select id="selectByTypeTwoA"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse" />
+        from intelligence_findhouse
+        where 1=1
+        ORDER BY  has_subway ,ring_road ,has_lift DESC ,has_market
+        LIMIT
+        10
+    </select>
+    <select id="selectByTypeTwoB"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse" />
+        from intelligence_findhouse
+        where 1=1
+        ORDER BY ring_road ,park_radio DESC,has_lift DESC ,has_market,propertyfee DESC
+        LIMIT
+        10
+    </select>
+    <select id="selectByTypeTwoC"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse" />
+        from intelligence_findhouse
+        where 1=1
+        ORDER BY ring_road ,park_radio DESC,has_lift DESC ,has_market,propertyfee DESC
+        LIMIT
+        10
+    </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
     insert into intelligence_findhouse (newcode, n_or_e, projname, 
       nickname, installment, address, 
