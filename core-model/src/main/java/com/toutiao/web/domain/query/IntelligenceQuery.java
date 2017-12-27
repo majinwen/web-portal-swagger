@@ -79,4 +79,5 @@ public class IntelligenceQuery {
     private Integer hasOldman;
 
 
+
 }

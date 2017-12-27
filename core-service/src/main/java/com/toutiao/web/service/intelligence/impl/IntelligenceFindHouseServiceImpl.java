@@ -90,6 +90,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         return intelligenceQuery;
     }
 
+
+
+
     @Override
     public IntelligenceQuery queryUserCheckPriceAndCaategory(IntelligenceQuery intelligenceQuery) {
 
@@ -126,7 +129,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     /**
      * 功能描述：根据区域赛选小区数量
      *
-     * @param [intelligenceQuery]
+     * @param
      * @return com.toutiao.web.domain.query.IntelligenceQuery
      * @author zhw
      * @date 2017/12/26 21:48
@@ -151,5 +154,33 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //保存查询的小区数量
         intelligenceQuery.setPlotCount(count);
         return intelligenceQuery;
+    }
+
+    @Override
+    public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
+        //判断类型
+        //类型2A
+        if ("4".equals(intelligenceQuery.getUserType())){
+            List finalList = new ArrayList();
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoA(intelligenceQuery);
+            for (int i = 0;i<list.size();i++){
+                for (int j = 0; j <list.size();j++){
+
+                }
+            }
+            return null;
+        }
+        //类型2B
+        if ("5".equals(intelligenceQuery.getUserType())){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoB(intelligenceQuery);
+            return null;
+        }
+        //类型2C
+        if ("6".equals(intelligenceQuery.getUserType())){
+            List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoC(intelligenceQuery);
+            return null;
+        }
+
+        return null;
     }
 }
