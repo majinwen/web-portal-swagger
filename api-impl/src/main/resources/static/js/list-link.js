@@ -475,7 +475,7 @@ function showNextPage(pageNumn) {
     var paramData = req;
     paramData['pageNum'] = pageNumn;
     params = joinParams(paramData);
-
+    console.log(pageNumn)
      if(BaseUrl=="/newhouse/searchNewHouse"){
          url ="/newhouse/pageSearchNewHouse" + params;
 
@@ -494,6 +494,7 @@ function showNextPage(pageNumn) {
                      $('#valueList li:last-child').after(html);
                  }
                  console.log(data);
+                /* console.log(url)*/
              }
          });
 
