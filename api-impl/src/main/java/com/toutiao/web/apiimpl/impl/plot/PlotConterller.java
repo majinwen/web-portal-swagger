@@ -63,15 +63,18 @@ public class PlotConterller {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
 
-        for (int i=0;i<villageList.size();i++) {
-            HashMap<String,Object> itemMap = (HashMap<String, Object>) villageList.get(i);
-            String imginfo= (String) itemMap.get("building_imgs");
-            if (StringUtil.isNotNullString(imginfo)){
-                String [] imgs= imginfo.split(",");
-                itemMap.put("building_imgs",imgs[0]);
+  /*      for (int i=0;i<villageList.size();i++) {
+            VillageResponse itemMap = (VillageResponse) villageList.get(i);
+            String key= itemMap.getKey();
+            if (StringUtil.isNotNullString(key)){
+                HashMap<String ,Object> stationsionf = (HashMap<String, Object>) itemMap.getMetroWithPlotsDistance();
+                String stationinfo = (String) stationsionf.get(key);
+                String [] sinfo = stationinfo.split("$");
+                itemMap.setMetroWithPlotsDistance("",sinfo);
                 villageList.set(i,itemMap);
             }
         }
+        System.out.println("a");*/
 
         return NashResult.build(villageList);
     }
