@@ -65,6 +65,9 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+        }else{
+            //跳转到404页
+            return "";
         }
 
         return "esf/esf-detail";
@@ -124,8 +127,6 @@ public class ProjHouseInfoController {
      */
     @RequestMapping("/findProjHouseInfo")
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
-
-
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {

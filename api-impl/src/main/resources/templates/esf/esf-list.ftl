@@ -159,7 +159,8 @@
     </div>
 </section>
 <section>
-    <ul id="esfvalueList"><#if builds?exists>
+    <ul id="esfvalueList">
+    <#if builds?exists>
         <#list builds as map>
             <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
                 <div class="clear">

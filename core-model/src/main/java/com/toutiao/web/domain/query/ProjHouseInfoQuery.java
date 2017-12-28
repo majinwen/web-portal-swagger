@@ -53,7 +53,7 @@ public class ProjHouseInfoQuery {
     /**
      * 产权性质(1:已购公房,2:商品房,3:空置房,4:使用权房,5:央产,6:经济适用房)（权属）
      */
-    private String buildingFeature;
+    private String ownership;
 
 
     /**

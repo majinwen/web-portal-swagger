@@ -7,9 +7,11 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +36,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：查找我的报告
      *
-     * @param []
+     * @param
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/26 13:57
@@ -47,7 +49,12 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
-            model.addAttribute("userReport", userReport);
+            if (StringTool.isNotBlank(userReport)) {
+                model.addAttribute("userReport", userReport);
+            }
+            model.addAttribute("message", "没有报告记录！");
+        } else {
+            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
         return "";
@@ -57,7 +64,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
-     * @param [model]
+     * @param model
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/18 18:28
@@ -71,7 +78,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：判断选择的类型，进行跳转
      *
-     * @param [userType, model]
+     * @param userType, model
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/18 18:44
@@ -92,7 +99,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：异步根据首付与月付获取小区数量与相应的比率
      *
-     * @param [intelligenceQuery]
+     * @param intelligenceQuery
      * @return com.toutiao.web.common.restmodel.NashResult
      * @author zhw
      * @date 2017/12/18 21:05
@@ -101,15 +108,16 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
         //判断页面传递所需的参数是否为空
-        if (StringTool.isBlank(intelligenceQuery.getBeginDownPayment())
-                || StringTool.isBlank(intelligenceQuery.getBeginDownPayment())
+        if (StringTool.isBlank(intelligenceQuery.getDownPayMent())
+                || StringTool.isBlank(intelligenceQuery.getMonthPayMent())
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
-        intelligenceQuery=intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
+        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
-        return NashResult.build(intelligenceQuery);
+        return NashResult.build(intelligenceFh);
     }
+
     @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery){
@@ -119,85 +127,140 @@ public class IntelligenceFindHouseController {
         return null;
     }
     /**
-     *
      * 功能描述：跳转到用户选择户型页面controller
+     *
+     * @param intelligenceQuery
+     * @return java.lang.String
      * @author zhw
      * @date 2017/12/26 20:40
-     * @param [intelligenceQuery]
-     * @return java.lang.String
      */
     @RequestMapping("/queryUserCheckCategory")
-    public String userCheckCategory(IntelligenceQuery intelligenceQuery,Model model){
+    public String userCheckCategory(IntelligenceQuery intelligenceQuery, Model model) {
 
-        if ("3".equals(intelligenceQuery.getUserType())) {
+        //复制数据信息
+        IntelligenceFh intelligenceFh = new IntelligenceFh();
+        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
+        if ("3".equals(intelligenceFh.getUserType())) {
             //将第七种画像附给当前用户
-            intelligenceQuery.setUserPortrayalType(7);
-            model.addAttribute("intelligenceQuery",intelligenceQuery);
+            intelligenceFh.setUserPortrayalType(7);
+            model.addAttribute("intelligenceFh", intelligenceFh);
             //直接生成报表
             //调用接口
 
             return "";
         }
-
-        model.addAttribute("intelligenceQuery",intelligenceQuery);
+        model.addAttribute("intelligenceFh", intelligenceFh);
         //户型页面
         return "";
     }
+
     /**
-     *
      * 功能描述：根据户型和总价查询小区数量
+     *
+     * @param intelligenceQuery, model
+     * @return java.lang.String
      * @author zhw
      * @date 2017/12/26 20:56
-     * @param [intelligenceQuery, model]
-     * @return java.lang.String
      */
     @RequestMapping("/userCheckCategoryPage")
     @ResponseBody
-    public NashResult  queryPlotCountByCategory(IntelligenceQuery intelligenceQuery,Model model){
+    public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
 
         //根据户型与总价条件赛选条件
-        intelligenceQuery=intelligenceFindHouseService.queryUserCheckPriceAndCaategory(intelligenceQuery);
+        IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
 
-        return NashResult.build(intelligenceQuery);
+        return NashResult.build(IntelligenceFh);
     }
+
     /**
-     *
      * 功能描述：用户选择区域页面
+     *
+     * @param intelligenceQuery, model
+     * @return java.lang.String
      * @author zhw
      * @date 2017/12/26 21:42
-     * @param [intelligenceQuery, model]
-     * @return java.lang.String
      */
     //选择区域
     @RequestMapping("/chooseDistinct")
-    public String checkDistrict(IntelligenceQuery intelligenceQuery,Model model){
+    public String checkDistrict(IntelligenceQuery intelligenceQuery, Model model) {
+        //复制数据信息
+        IntelligenceFh intelligenceFh = new IntelligenceFh();
+        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
+        model.addAttribute("intelligenceFh", intelligenceFh);
+        //选择非一居的用户，才出现此问题；
+        if(intelligenceFh.getLayOut()==1){
 
-        model.addAttribute("intelligenceQuery",intelligenceQuery);
+            //跳转过渡页，生成画像
+            return "";
+        }
 
+
+        //去家庭页面选择小孩和老人
         return "";
     }
+
     /**
-     *
      * 功能描述：家庭页面
+     *
+     * @param intelligenceQuery
+     * @return com.toutiao.web.common.restmodel.NashResult
      * @author zhw
      * @date 2017/12/26 21:45
-     * @param [intelligenceQuery]
-     * @return com.toutiao.web.common.restmodel.NashResult
      */
     @RequestMapping("/queryPlotCountByDistrict")
-    public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery,Model model){
+    public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
 
         //通过页面传递过来的区域等信息赛选小区数量
-        intelligenceQuery = intelligenceQuery = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
-        model.addAttribute("intelligenceQuery",intelligenceQuery);
+        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
+        model.addAttribute("intelligenceFh", intelligenceFh);
         //报告生成页
         return "";
     }
 
+    /**
+     * 功能描述：8完成，生成报告
+     *
+     * @param intelligenceQuery, model
+     * @return java.lang.String
+     * @author zhw
+     * @date 2017/12/27 12:33
+     */
+    @RequestMapping("/goCreateReport")
+    public String goCreateMyReport(IntelligenceQuery intelligenceQuery, Model model) {
+        //复制数据信息
+        IntelligenceFh intelligenceFh = new IntelligenceFh();
+        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
+        //若用户选择“无小孩”或“18岁以上”，则去掉页面3中的教育配套标签；
+        if ("0".equalsIgnoreCase(intelligenceFh.getUserType()) || "5".equalsIgnoreCase(intelligenceFh.getUserType())) {
+            intelligenceFh.setSchoolFlag(false);
+            intelligenceFh.setHospitalFlag(false);
+        }
+        model.addAttribute("intelligenceFh", intelligenceFh);
+        //过渡页vs封面
+        return "";
+    }
+
+    /**
+     * 功能描述：报告页-用户画像
+     *
+     * @param intelligenceQuery, model
+     * @return java.lang.String
+     * @author zhw
+     * @date 2017/12/27 15:17
+     */
+    @RequestMapping("/showUserPortrayal")
+    public String showUserPortrayal(IntelligenceQuery intelligenceQuery, Model model) {
+
+        Integer userPortrayalType = intelligenceQuery.getUserPortrayalType();
+
+        if (StringTool.isNotBlank(userPortrayalType)) {
+            //根据用户画像，查询用户画像介绍
+
+        }
 
 
-
-
+        return "";
+    }
 
 
 }

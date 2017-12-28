@@ -16,7 +16,7 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
     /**
      * 功能描述：根据用户的手机号码获取用户报表相关数据信息
      *
-     * @param [usePhone]
+     * @param usePhone
      * @return com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes
      * @author zhw
      * @date 2017/12/26 15:45

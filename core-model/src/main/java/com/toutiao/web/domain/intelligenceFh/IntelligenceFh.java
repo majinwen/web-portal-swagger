@@ -16,15 +16,41 @@ public class IntelligenceFh {
     /**
      * 首付
      */
-    private Integer downPayMent;
+    private Double downPayMent;
     /**
      * 月供
      */
-    private  Integer monthPayMent;
+    private  Double monthPayMent;
     /**
      * 总价
      */
-    private Integer totalPrice;
+    private Double totalPrice;
+
+    /**
+     * 用户类型(1--自住 刚需,2--自住 改善,3--出租 投资)
+     */
+    private String userType;
+
+    /**
+     * 赛选出来的小区个数
+     */
+    private Integer plotCount;
+    /**
+     * 用户画像类型1,2,3,4,5,6,7
+     */
+    private Integer userPortrayalType;
+    /**
+     * 教育配套标签标记(有true,无false)
+     */
+    private Boolean schoolFlag;
+
+    //医疗配套标签标记(有true,无false)
+
+    private Boolean hospitalFlag;
+
+    //用户填入的页面总价信息
+    private Double preconcTotal;
+
     /**
      * 户型
      */
@@ -45,5 +71,10 @@ public class IntelligenceFh {
      * 用户与历史数据百分比
      */
     private String ratio;
+
+    /**
+     * 用户传递的区域id
+     */
+    private String districtId;
 
 }

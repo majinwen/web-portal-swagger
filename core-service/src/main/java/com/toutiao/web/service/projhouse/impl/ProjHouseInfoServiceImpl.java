@@ -235,8 +235,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //权属
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingFeature())) {
-                String[] layoutId = projHouseInfoRequest.getBuildingFeature().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getOwnership())) {
+                String[] layoutId = projHouseInfoRequest.getOwnership().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
             }
@@ -275,9 +275,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
-                //小区坐标
-                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                     //小区坐标
+                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                }
                 //朝向
 //                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
 //                instance.setForwardName(forWard);
