@@ -118,9 +118,9 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists>${reitem.houseTotalPrices+'万/'}</#if></em>
-                            <#if reitem['houseOrientation']?exists>${reitem.houseOrientation+'/'}</#if>
-                            <#if reitem['houseType']?exists>${reitem.houseType+'室'}</#if></p>
+                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
+                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
+                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if></p>
                     </div>
                 </a></li>
             </#list>
@@ -247,15 +247,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                    <#if village['carPositionRatio']?exists>
-                        <#if village['carPositionRatio']?number gt 0>
-                            <em>${village['carPositionRatio']}车位/户</em>
-                        <#else >
-                            <em>暂无</em>
-                        </#if>
-                    <#else >
-                        <em>暂无</em>
-                    </#if>
+                        <em>${village['carPositionRatio']!'暂无'}车位/户</em>
                     </div>
                 </div>
             </div>

@@ -30,8 +30,6 @@ public class VillageRequest {
     private String endPrice;  //结束价格
     private String abbreviatedAge;  //建成年代
     private String age;  //楼龄
-    private String beginAge;  //楼龄
-    private String endAge;  //楼龄
     private String areaSize;  //面积
     private String houseAreaSize;  //二手房面积
     private String sumBuilding;  //总栋数

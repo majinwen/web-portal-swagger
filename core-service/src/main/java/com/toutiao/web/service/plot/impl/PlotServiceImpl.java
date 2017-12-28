@@ -200,15 +200,17 @@ public class PlotServiceImpl implements PlotService {
                 }
             }
             //楼龄
-            if (villageRequest.getBeginAge() != null && villageRequest.getBeginAge().length() != 0&&villageRequest.getEndAge()!= null && villageRequest.getEndAge().length() != 0  ) {
+            if (StringUtil.isNotNullString(villageRequest.getAge())) {
+                String age = villageRequest.getAge().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String[] Age = age.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 //                for (int i = 0; i < Age.length; i = i + 2) {
 //                    if (i + 1 > Age.length) {
 //                        break;
 //                    }
                     BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
-                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getEndAge()))))
-                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(villageRequest.getBeginAge())))));
+                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(Age[1]))))
+                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(Age[0])))));
                     queryBuilder = boolQueryBuilder.must(Age1);
 //                }
             }
