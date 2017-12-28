@@ -8,32 +8,33 @@
     <link rel="stylesheet" href="${staticurl}/css/plot-detail.css">
     <title>小区详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <#if village['photo']?exists>
-                <#list village['photo'] as vpphoto>
-                    <#if vpphoto?exists>
-                        <#if vpphoto?? && vpphoto != ''>
-                            <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                                <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
-                            </li>
-                        <#else >
-                            <li onclick="initphoto(this,0)" class="swiper-slide">
-                                <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                     data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-                            </li>
-                        </#if>
-                    <#else>
+        <#if village['photo']?exists>
+            <#list village['photo'] as vpphoto>
+                <#if vpphoto?exists>
+                    <#if vpphoto?? && vpphoto != ''>
+                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                            <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
+                        </li>
+                    <#else >
                         <li onclick="initphoto(this,0)" class="swiper-slide">
                             <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                 data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
+                                 data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                         </li>
                     </#if>
-                </#list>
-            </#if>
+                <#else>
+                    <li onclick="initphoto(this,0)" class="swiper-slide">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png"
+                             data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
+                    </li>
+                </#if>
+            </#list>
+        </#if>
         </ul>
         <div class="banner-title">
         <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
@@ -132,10 +133,13 @@
     <section>
         <div class="module-header-message">
             <h3>市场行情<span class="subtitle">价格走势</span></h3>
-            <div class="markets-btn"><i class="price-trend-btn current"></i><#--<i class="supply-contrast-btn"></i>--></div>
+            <div class="markets-btn"><i class="price-trend-btn current"></i><#--<i class="supply-contrast-btn"></i>-->
+            </div>
         </div>
         <div class="basic-information price-trend">
             <div class="column item-column-three">
+
+
                 <div class="info-card-item">
                     <em>均价</em>
                     <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
@@ -165,47 +169,56 @@
                     </p>
                 </div>
             </div>
-            <div></div>
+            <div>
+                <#--<div class="module-header-message">-->
+                    <#--<h3>价格走势</h3>-->
+                <#--</div>-->
+                <div class="echarts-box">
+                    <div class="echarts-content" id="main"></div>
+                </div>
+            </div>
+
         </div>
 
-        <#--<div class="basic-information supply-contrast none">-->
-            <#--<div class="column item-column-two">-->
-                <#--<div class="info-card-item">-->
-                    <#--<em>本月</em>-->
-                    <#--<table>-->
-                        <#--<tr>-->
-                            <#--<td>挂牌出售：</td>-->
-                            <#--<td>34套</td>-->
-                        <#--</tr>-->
-                        <#--<tr>-->
-                            <#--<td>关注用户：</td>-->
-                            <#--<td>230人</td>-->
-                        <#--</tr>-->
-                    <#--</table>-->
-                    <#--<p>供需充足，可选余地大。</p>-->
-                <#--</div>-->
-                <#--<div class="info-card-item">-->
-                    <#--<em>上月</em>-->
-                    <#--<table>-->
-                        <#--<tr>-->
-                            <#--<td>挂牌出售：</td>-->
-                            <#--<td>34套</td>-->
-                        <#--</tr>-->
-                        <#--<tr>-->
-                            <#--<td>成交：</td>-->
-                            <#--<td>23套</td>-->
-                        <#--</tr>-->
-                        <#--<tr>-->
-                            <#--<td>存量：</td>-->
-                            <#--<td>36.57%</td>-->
-                        <#--</tr>-->
-                    <#--</table>-->
-                <#--</div>-->
-            <#--</div>-->
-            <#--<div></div>-->
-        <#--</div>-->
+    <#--<div class="basic-information supply-contrast none">-->
+    <#--<div class="column item-column-two">-->
+    <#--<div class="info-card-item">-->
+    <#--<em>本月</em>-->
+    <#--<table>-->
+    <#--<tr>-->
+    <#--<td>挂牌出售：</td>-->
+    <#--<td>34套</td>-->
+    <#--</tr>-->
+    <#--<tr>-->
+    <#--<td>关注用户：</td>-->
+    <#--<td>230人</td>-->
+    <#--</tr>-->
+    <#--</table>-->
+    <#--<p>供需充足，可选余地大。</p>-->
+    <#--</div>-->
+    <#--<div class="info-card-item">-->
+    <#--<em>上月</em>-->
+    <#--<table>-->
+    <#--<tr>-->
+    <#--<td>挂牌出售：</td>-->
+    <#--<td>34套</td>-->
+    <#--</tr>-->
+    <#--<tr>-->
+    <#--<td>成交：</td>-->
+    <#--<td>23套</td>-->
+    <#--</tr>-->
+    <#--<tr>-->
+    <#--<td>存量：</td>-->
+    <#--<td>36.57%</td>-->
+    <#--</tr>-->
+    <#--</table>-->
+    <#--</div>-->
+    <#--</div>-->
+    <#--<div></div>-->
+    <#--</div>-->
     </section>
 </div>
+
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -216,8 +229,9 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,</#if>
-                <#if village['sumBuilding']?exists>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['abbreviatedAge']?exists>,<em
+                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
                         (${village['sumHousehold']}户)
@@ -540,5 +554,125 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<script>
+    <#assign ptCD0 = tradeline['buildingline']>;
+    <#assign ptCD1 = tradeline['arealine']>;
+    <#assign ptCD2 = tradeline['tradearealine']>;
+    var myChartline = echarts.init(document.getElementById('main'));
+    option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['楼盘价格', '区域价格', '商圈价格']
+        },
+        textStyle: {
+            fontSize: 28
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: [<#list xlist as item >'${item}',</#list>]
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value}'
+            }
+        },
+        series: [
+        <#if (ptCD0?size<12)>
+            {
+                name: '楼盘价格',
+                type: 'scatter',
+                data: [[10, 19]],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                }
+            },
+        <#else> {
+            name: '楼盘价格',
+            type: 'line',
+            data: [<#list ptCD0 as item >${item['price']},</#list>],
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            },
+            markLine: {
+                data: [
+                    {type: 'average', name: '平均值'}
+                ]
+            }
+        },
+        </#if>
+            {
+                name: '区域价格',
+                type: 'line',
+                data: [<#list ptCD1 as item >${item['price']},</#list>],
+                markPoint: {
+                    data: [
+                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'max'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: '最大值'
+                                }
+                            },
+                            type: 'max',
+                            name: '最高点'
+                        }]
+                    ]
+                }
+            },
+            {
+                name: '商圈价格',
+                type: 'line',
+                data: [<#list ptCD2 as item >${item['price']},</#list>],
+                markPoint: {
+                    data: [
+                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'max'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: '最大值'
+                                }
+                            },
+                            type: 'max',
+                            name: '最高点'
+                        }]
+                    ]
+                }
+            }
+        ]
+    };
+    myChartline.setOption(option);
+</script>
 </body>
 </html>

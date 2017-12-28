@@ -1,11 +1,14 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
+import com.toutiao.web.service.PriceTrendService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
@@ -27,6 +30,8 @@ public class PlotConterller {
     private NewHouseService newHouseService;
     @Autowired
     private ProjHouseInfoService projHouseInfoService;
+    @Autowired
+    private PriceTrendService priceTrendService;
 
     //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
@@ -91,6 +96,18 @@ public class PlotConterller {
             Double laty = Double.valueOf(latandlon[1]);
             List nearvillage = plotService.GetNearByhHouseAndDistance(lonx, laty);
             model.addAttribute("nearvillage", nearvillage);
+
+            //走势图
+            PriceTrend priceTrend = new PriceTrend();
+            priceTrend.setBuildingId(village.getId());
+            priceTrend.setPropertyType((short) 0);
+            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(priceTrend);
+            model.addAttribute("tradeline", stringListMap);
+
+            //月份
+            List<String>dateList= DateUtil.oneYearList();
+            model.addAttribute("xlist",dateList);
+
 
             //推荐小区好房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
