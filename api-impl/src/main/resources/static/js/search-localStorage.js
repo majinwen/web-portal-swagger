@@ -1,4 +1,6 @@
+var hrefLink;
 $(function(){
+    hrefLink = $('.type-menu').find('span.current').data('value');
 
     if ($('.type-tab-box').hasClass('none')) {
         $('.searchpage-search-content').addClass('only');
@@ -10,6 +12,7 @@ $(function(){
     $('.searchpage-search-btn').on('click', function () {
         $('.search-page-wrapper').removeClass('active');
     });
+    $('.searchpage-current-item').text($('.type-menu').find('span.current').text());
     $('.searchpage-current-item').on('click', function () {
         $('.type-menu-box').show();
     });
@@ -18,6 +21,8 @@ $(function(){
         $(this).addClass('current').siblings().removeClass('current');
         $('.searchpage-current-item').text($(this).text());
         $('.type-menu-box').hide();
+        hrefLink = $(this).data('value');
+        // console.log(hrefLink);
     });
 
     var hisTime;	// 获取搜索时间数组
@@ -45,7 +50,8 @@ $(function(){
 
         $('.searchpage-history').html('');		// 执行init(),清空之前添加的节点
         for (var i = 0; i < hisItem.length; i++) {
-            $('.searchpage-history').append('<a href="#" class="word-break">' + hisItem[i] + '</a>');
+            var tempLink = hrefLink + hisItem[i];
+            $('.searchpage-history').append('<a href=" '+ tempLink +'" class="word-break">' + hisItem[i] + '</a>');
         }
     }
     
@@ -64,6 +70,7 @@ $(function(){
     }
 
     function changeFn() {
+        var hrefLink = $('.type-menu > span.current').data('value');
 
         if ($(this).val() != null && $.trim($(this).val()) != '') {
             // 匹配数据
@@ -83,7 +90,7 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
-            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
+            location.href = $('.type-menu>span.current').data( "value" ) + $.trim($(this).val())
         }
     }
 
