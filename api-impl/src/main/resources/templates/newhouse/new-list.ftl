@@ -100,7 +100,7 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
+                        <#--<span data-info="4">砖楼</span>-->
                     </dd>
                 </dl>
                 <dl>
@@ -114,12 +114,13 @@
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
-                        <span data-info="1">别墅</span>
-                        <span data-info="2">花园洋房</span>
-                        <span data-info="3">近地铁</span>
-                        <span data-info="4">车位充足</span>
-                        <span data-info="5">低密度</span>
-                        <span data-info="6">高绿化</span>
+                        <span data-info="1">近地铁</span>
+                        <span data-info="7">车位充足</span>
+                        <span data-info="8">低密度</span>
+                        <span data-info="10">优质物业</span>
+                        <span data-info="11">购物方便</span>
+                        <span data-info="12">教育配套</span>
+                        <span data-info="13">医疗配套</span>
                     </dd>
                 </dl>
                 <dl>

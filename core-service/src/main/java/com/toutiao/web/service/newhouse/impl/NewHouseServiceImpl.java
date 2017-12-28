@@ -176,7 +176,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             for(int i=0; i<py.length;i++){
                 BuildingFeature[i] = py[i];
             }
-            booleanQueryBuilder.must(termsQuery("building_feature_id", BuildingFeature));
+            booleanQueryBuilder.must(termsQuery("building_tags_id", BuildingFeature));
 
         }
         //装修
