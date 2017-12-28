@@ -83,7 +83,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>暂无</#if></em></p>
+                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>售价待定</#if></em></p>
             </li>
             <li>
                 <p>
