@@ -201,8 +201,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             //物业类型
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseManagementTypeId().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getPropertyTypeId())) {
+                String[] layoutId = projHouseInfoRequest.getPropertyTypeId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("houseType", layoutId));
             }
             //建筑类型

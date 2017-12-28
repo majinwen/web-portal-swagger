@@ -48,7 +48,7 @@ public class ProjHouseInfoQuery {
      * 房屋类型：普通住宅、经济适用房、公寓、安置房、四合院等（物业类型）
      * （ 1：普通住宅，2：公寓，3：酒店式公寓，4：花园洋房，5：商住楼
      */
-    private String houseManagementTypeId;
+    private String propertyTypeId;
 
     /**
      * 产权性质(1:已购公房,2:商品房,3:空置房,4:使用权房,5:央产,6:经济适用房)（权属）
