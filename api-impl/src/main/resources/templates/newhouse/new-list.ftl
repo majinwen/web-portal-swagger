@@ -162,7 +162,7 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}</em>元/㎡<#else>暂无</#if></p>
+                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>暂无</#if></em></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
@@ -212,59 +212,62 @@
 <script src="${staticurl}/js/main.js?version=123"></script>
 <script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
-
-<#--<script id="newhousepage" type="text/html">-->
-
-    <#--{{each data}}-->
-    <#--<li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">-->
-        <#--<div class="clear">-->
-            <#--<div class="list-item-img-box">-->
-                <#--<img src="&lt;#&ndash;${staticurl}&ndash;&gt;${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">-->
-            <#--</div>-->
-            <#--<div class="list-item-cont">-->
-                <#--<span hidden="hidden">{{$value.building_name_id}}</span>-->
-                <#--<h3 class="cont-block-1">{{$value.building_name}}-->
-                    <#--<em>{{$value.property_type}}</em>-->
-                <#--</h3>-->
-                <#--<p class="cont-block-2"><em class="high-light-red">-->
-                    <#--<%if ($value['activity_desc'] != null){%>-->
-                    <#--{{$value.average_price}}-->
-                    <#--<%}else{%>-->
-                      <#--0-->
-                    <#--<%}%></em>元/㎡</p>-->
-                <#--<p class="cont-block-3">-->
-                    <#--{{$value.district_name}}-->
-                    <#--<%if ($value['house_min_area'] != null) {%>-->
-                    <#--<%if ($value['house_max_area'] != null) {%>-->
-                    <#--/ {{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡-->
-                    <#--<%}%>-->
-                    <#--<%}%>-->
-                <#--</p>-->
-                <#--<div class="cont-block-4 house-labelling gray middle">-->
-                   <#--{{each $value.building_tags}}-->
-                   <#--<span>{{$value}}</span>-->
-                   <#--{{/each}}-->
-                <#--</div>-->
-                <#--<div class="cont-block-sale">-->
-                    <#--<em>{{$value.sale_status_name}}</em>-->
-                <#--</div>-->
-            <#--</div>-->
-        <#--</div>-->
- <#--&lt;#&ndash;   <#if map['activity_desc']?exists>-->
-        <#--<div class="new-active">-->
-            <#--<i class="icon"></i><em>活动：</em>-->
-            <#--<span>${map['activity_desc']}</span>-->
-        <#--</div>-->
-    <#--</#if>&ndash;&gt;-->
-        <#--<%if($value['activity_desc'] != null){%>-->
-        <#--<div class="new-active">-->
-            <#--<i class="icon"></i><em>活动：</em>-->
-            <#--<span>{{$value['activity_desc']}}</span>-->
-        <#--</div>-->
-        <#--<%}%>-->
-    <#--</a></li>-->
-    <#--{{/each}}-->
-<#--</script>-->
-
+<script id="listContent" type="text/html">
+{{each data}}
+<li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
+    <div class="clear">
+        <div class="list-item-img-box">
+            {{if ($value.building_imgs) != ''}}
+                <img src="${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
+            {{else}}
+                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+            {{/if}}
+        </div>
+        <div class="list-item-cont">
+            <span hidden="hidden">{{$value.building_name_id}}</span>
+            <h3 class="cont-block-1">
+                <span>{{$value.building_name}}</span>
+                <em>{{$value.property_type}}</em>
+            </h3>
+            <p class="cont-block-2">
+                <em class="high-light-red">
+                    {{if $value.average_price != null}}
+                        {{if $value.average_price != 0}}
+                            {{$value.average_price}}元/㎡
+                        {{else}}
+                            暂无
+                        {{/if}}
+                    {{else}}
+                        暂无
+                    {{/if}}
+                </em>
+            </p>
+            <p class="cont-block-3">
+                {{$value.district_name}}
+                {{if $value.house_min_area != null}}
+                    {{if $value.house_max_area != null}}
+                        /{{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                    {{/if}}
+                {{/if}}
+            </p>
+            <div class="cont-block-4 house-labelling gray middle">
+                {{each $value.building_tags}}
+                    <span>{{$value}}</span>
+                {{/each}}
+            </div>
+            <div class="cont-block-sale">
+                <em>{{$value.sale_status_name}}</em>
+            </div>
+        </div>
+    </div>
+    {{if $value.activity_desc != null}}
+        <div class="new-active">
+            <i class="icon"></i><em>活动：</em>
+            <span>{{$value.activity_desc}}</span>
+        </div>
+    {{/if}}
+</a></li>
+{{/each}}
+</script>
 </body>
 </html>

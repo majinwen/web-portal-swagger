@@ -142,7 +142,7 @@
     </div>
 </section>
 <section>
-    <ul id="villagelist">
+    <ul id="valueList">
     <#if villageList?exists>
         <#list villageList as plot>
             <li><a class="list-item" href="/villageDetail?id=${plot['id']?c}">
@@ -206,6 +206,7 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
+<#include "../search.ftl">
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
@@ -217,11 +218,10 @@
     </#if>
     </ul>
 </div>
-<#include "../search.ftl">
 
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+<#--<script src="${staticurl}/js/template-web.js"></script>-->
 
 <#--<script id="villagepage" type="text/html">
     {{each data}}
