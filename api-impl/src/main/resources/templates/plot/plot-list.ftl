@@ -221,68 +221,31 @@
 
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
-<#--<script src="${staticurl}/js/template-web.js"></script>-->
-
-<#--<script id="villagepage" type="text/html">
+<script src="${staticurl}/js/template-web.js"></script>
+<script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="/villageDetail?id={{$value.id}}">
+    <li><a class="list-item" href="/villageDetail?id=11112860">
         <div class="clear">
             <div class="list-item-img-box">
-                        <img src="${qiniuimage}/{{$value.photo[0]}}" alt="{{$value.rc}}">
-           <div class="list-item-cont">
+                <img src="http://s1.qn.toutiaofangchan.com/5a230e1e-db21-11e7-98a0-14abc5f0dc77.jpg" alt="宝隆公寓">
+            </div>
+            <div class="list-item-cont">
                 <h3 class="cont-block-1">
-                    <%if ($value['rc'] != null){%>
-                    {{$value.rc}}
-                    <%}else{%>
-                    暂无
-                    <%}%>
-                    <%}%>
-               </h3>
-
-                <p class="cont-block-2">
-                    <%if ($value['abbreviatedAge'] != null){%>
-                    {{$value.abbreviatedAge}}
-                    <%}else{%>
-                       暂无
-                    <%}%>
-                    <%}%>
-                </p>
-            <#if plot['metroWithPlotsDistance']?exists>
-                <#assign map = plot['metroWithPlotsDistance']>
-                <#if plot['key']?exists>
-                    <#if map[plot['key']]?exists>
-                        <#assign split=map[plot['key']]?split("$")/>
-                        <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
-                    <#else>
-                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
-                    </#if>
-                <#else>
-                    <#if plot['tradingArea']?exists>
-                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
-                    </#if>
-                </#if>
-            <#else>
-                <#if plot['tradingArea']?exists>
-                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
-                </#if>
-            </#if>
-                <div class="cont-block-4">
-                <#if plot['label']?exists>
-                    <#assign item =  plot['label']>
-                    <#list item as itemValue>
-                        <#if itemValue?exists>
-                            <span>${itemValue}</span>
-                        </#if>
-                    </#list>
-                </#if>
+                    宝隆公寓</h3>
+                <p class="cont-block-2 plot">2000年建成</p>
+                <p class="cont-block-3 distance"><i class="icon"></i>丰台-科技园区</p>
+                <div class="cont-block-4 house-labelling gray">
+                    <span>近地铁</span>
+                    <span>购物方便</span>
+                    <span>教育配套</span>
                 </div>
                 <div class="cont-block-price plot">
-                    <em>${plot['avgPrice']}元/㎡</em>
+                    <em>46495元/㎡</em>
                 </div>
-            </div>&ndash;&gt;
+            </div>
         </div>
     </a></li>
     {{/each}}
- </script>-->
+ </script>
 </body>
 </html>
