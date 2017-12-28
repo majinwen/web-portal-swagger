@@ -47,9 +47,9 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置：${village['ringRoad']!"暂无"}</p>
-                <p>区域位置：${village['area']!"暂无"}</p>
-                <p>小区地址：${village['address']!"暂无"}</p>
+                <p>环线位置：<#if village['ringRoad']?exists&&village['ringRoad']!=''>${village['ringRoad']}<#else >暂无</#if> </p>
+                <p>区域位置：<#if village['area']?exists&&village['area']!=''>${village['area']}<#else >暂无</#if></p>
+                <p>小区地址：<#if village['address']?exists&&village['address']!=''>${village['address']!"暂无"}<#else>暂无</#if></p>
             </li>
         </ul>
     </section>
@@ -61,19 +61,21 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>建成年代：${village['abbreviatedAge']!"暂无"}</p>
+                <p>建成年代：<#if village['abbreviatedAge']?exists&&village['abbreviatedAge']!=''>${village['abbreviatedAge']}<#else > 暂无</#if></p>
                 <p>建筑类型：<#if village['architectureType']?exists><#list village['architectureType'] as arType>
                         ${arType!""}&nbsp;&nbsp;
                 </#list></#if>
                 </p>
                 <p>产权年限：<#if village['yopr']?exists&&village['yopr']?number gt 0> ${village['yopr']}年<#else>暂无</#if></p>
                 <p>占地面积：<#if village['areaSize']?exists&&village['areaSize']?number gt 0>${village['areaSize']}㎡<#else >暂无</#if></p>
-                <p>建筑面积：<#if village['buildingAreaSize']?exists&&village['buildingAreaSize']?number gt 0 >${village['buildingAreaSize']}㎡<#else>暂无</#if></p>
-                <p>容积率：${village['dimension']}</p>
-                <p>绿化率：${village['avgGreening']}%</p>
-                <p>规划户数：${village['sumBuilding']!"暂无"}栋/${village['sumHousehold']!"暂无"}户</p>
+                <p>建筑面积：<#if village['buildingAreaSize']?exists&&village['buildingAreaSize']?number gt 0 >${village['buildingAreaSize']}㎡<#else> 暂无</#if></p>
+                <p>容积率：<#if village['dimension']?exists&&village['dimension']?number gt 0 >${village['dimension']}<#else >暂无</#if></p>
+                <p>绿化率：<#if village['avgGreening']?exists&&village['avgGreening']?number gt 0>${village['avgGreening']}%<#else >暂无</#if></p>
+                <p>规划户数：<#if village['sumBuilding']?exists&&village['sumBuilding']?number gt 0>${village['sumBuilding']}栋<#else >暂无</#if>
+                    /<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户<#else >暂无</#if></p>
                <#-- <p>规划车位：EEEEEEEE</p>-->
-                <p>车位配比：${village['sumHousehold']!"暂无"}户数/${village['carPositionRatio']!"暂无"}车位数</p>
+                <p>车位配比：<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户数<#else >暂无</#if>
+                    /<#if village['carPositionRatio']?exists>${village['carPositionRatio']}车位数<#else >暂无</#if></p>
             </li>
         </ul>
     </section>

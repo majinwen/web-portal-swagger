@@ -288,7 +288,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                         starProperty_1= list.get(j+1).getStarProperty();
                     }
 
-                    if (starProperty>starProperty_1){
+                    if (starProperty<starProperty_1){
                         tempStarProperty = list.get(j).getStarProperty();
                         list.get(j).setStarProperty(list.get(j+1).getStarProperty());
                         list.get(j+1).setStarProperty(tempStarProperty);
