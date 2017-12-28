@@ -63,13 +63,13 @@ public class PlotConterller {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
 
-        for (int i=0;i<villageList.size();i++) {
-            HashMap<String,Object> itemMap = (HashMap<String, Object>) villageList.get(i);
-            String imginfo= (String) itemMap.get("building_imgs");
-            if (StringUtil.isNotNullString(imginfo)){
-                String [] imgs= imginfo.split(",");
-                itemMap.put("building_imgs",imgs[0]);
-                villageList.set(i,itemMap);
+        for (int i = 0; i < villageList.size(); i++) {
+            HashMap<String, Object> itemMap = (HashMap<String, Object>) villageList.get(i);
+            String imginfo = (String) itemMap.get("building_imgs");
+            if (StringUtil.isNotNullString(imginfo)) {
+                String[] imgs = imginfo.split(",");
+                itemMap.put("building_imgs", imgs[0]);
+                villageList.set(i, itemMap);
             }
         }
 
@@ -81,29 +81,32 @@ public class PlotConterller {
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
-        VillageResponse village = (VillageResponse) villageList.get(0);
-        model.addAttribute("village", village);
+        if (villageList != null && villageList.size() != 0) {
+            VillageResponse village = (VillageResponse) villageList.get(0);
+            model.addAttribute("village", village);
 
-        //附近小区
-        String[] latandlon = village.getLocation().split(",");
-        Double lonx = Double.valueOf(latandlon[0]);
-        Double laty = Double.valueOf(latandlon[1]);
-        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx, laty);
-        model.addAttribute("nearvillage", nearvillage);
+            //附近小区
+            String[] latandlon = village.getLocation().split(",");
+            Double lonx = Double.valueOf(latandlon[0]);
+            Double laty = Double.valueOf(latandlon[1]);
+            List nearvillage = plotService.GetNearByhHouseAndDistance(lonx, laty);
+            model.addAttribute("nearvillage", nearvillage);
 
-        //推荐小区好房
-        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
-        projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
-        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-        model.addAttribute("reViHouse", reViHouse);
+            //推荐小区好房
+            ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+            projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
+            List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+            model.addAttribute("reViHouse", reViHouse);
 
-        newHouseQuery.setSort(0);
-        newHouseQuery.setPageNum(1);
-        newHouseQuery.setPageSize(4);
-        Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        List<Object> newbuildrecomed = (List<Object>) builds.get("data");
-        model.addAttribute("newbuilds", newbuildrecomed);
-        return "plot/plot-detail";
+            newHouseQuery.setSort(0);
+            newHouseQuery.setPageNum(1);
+            newHouseQuery.setPageSize(4);
+            Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
+            List<Object> newbuildrecomed = (List<Object>) builds.get("data");
+            model.addAttribute("newbuilds", newbuildrecomed);
+            return "plot/plot-detail";
+        }
+        return "404";
     }
 
 

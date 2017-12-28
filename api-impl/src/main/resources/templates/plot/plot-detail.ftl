@@ -13,30 +13,30 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if village['photo']?exists>
-            <#list village['photo'] as vpphoto>
-                <#if vpphoto?exists>
-                    <#if vpphoto?? && vpphoto != ''>
-                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                            <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
-                        </li>
-                    <#else >
+            <#if village['photo']?exists>
+                <#list village['photo'] as vpphoto>
+                    <#if vpphoto?exists>
+                        <#if vpphoto?? && vpphoto != ''>
+                            <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                                <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
+                            </li>
+                        <#else >
+                            <li onclick="initphoto(this,0)" class="swiper-slide">
+                                <img src="${staticurl}/images/global/tpzw_banner_image.png"
+                                     data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                            </li>
+                        </#if>
+                    <#else>
                         <li onclick="initphoto(this,0)" class="swiper-slide">
                             <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                 data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                                 data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
                         </li>
                     </#if>
-                <#else>
-                    <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                             data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
-                    </li>
-                </#if>
-            </#list>
-        </#if>
+                </#list>
+            </#if>
         </ul>
         <div class="banner-title">
-            <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
+        <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
             <div class="swiper-pagination pictrue-index"></div>
         </div>
     </div>
@@ -119,7 +119,8 @@
                         <p class="cont-first text-center"><em>
                             <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
                             <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
-                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if></p>
+                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
+                        </p>
                     </div>
                 </a></li>
             </#list>
@@ -395,7 +396,7 @@
                         <span class="expand-price">暂无</span>
                     </#if>
                     </p>
-                    <#--<span class="expand-distance tips">居民用电价格范围为1-4元/度</span>-->
+                <#--<span class="expand-distance tips">居民用电价格范围为1-4元/度</span>-->
                 </li>
                 <li>
                     <p>
@@ -538,5 +539,6 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<#else >
 </body>
 </html>
