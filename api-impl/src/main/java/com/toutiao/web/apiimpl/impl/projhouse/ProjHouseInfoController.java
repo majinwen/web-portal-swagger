@@ -1,6 +1,9 @@
 package com.toutiao.web.apiimpl.impl.projhouse;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
@@ -62,6 +65,9 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+        }else{
+            //跳转到404页
+            return "";
         }
 
         return "esf/esf-detail";
@@ -121,8 +127,6 @@ public class ProjHouseInfoController {
      */
     @RequestMapping("/findProjHouseInfo")
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
-
-
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {

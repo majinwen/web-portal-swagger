@@ -52,14 +52,14 @@
     -->
     <select id="selectByTotal" resultType="java.lang.Double" parameterType="java.lang.Double">
 
-    select total from total_room_ratio where <![CDATA[total<= #{plotTotal}
+     select ratio from total_room_ratio where <![CDATA[total<= #{plotTotal}
         ]]>
     </select>
     <!--TotalRoomRatio selectByTotalAndCategory(@PathVariable("plotTotal")
            Double plotTotal,@PathVariable("categoryId") Integer category_id);-->
 
     <select id="selectByTotalAndCategory" resultType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
-        select * from total_room_ratio where  room=#{category_id} and  <![CDATA[total<= #{plotTotal}]]>
+        select ratio,userPortrayalType from total_room_ratio where  room=#{category_id} and  <![CDATA[total<= #{plotTotal}]]>
     </select>
 
 </mapper>

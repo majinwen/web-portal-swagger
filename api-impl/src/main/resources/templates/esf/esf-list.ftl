@@ -136,7 +136,6 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
                 <dl>
@@ -160,22 +159,33 @@
     </div>
 </section>
 <section>
-    <ul id="esfvalueList"><#if builds?exists>
+    <ul id="esfvalueList">
+    <#if builds?exists>
         <#list builds as map>
             <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${map.houseTitle}</h3>
-                        <p class="cont-block-2"><#if map.buildArea?exists>${map.buildArea}㎡</#if>
-                        / <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
-                        / <#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
-                        / <#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
+                        <p class="cont-block-2">
+                            <#if map.buildArea?exists&&(map.buildArea>0)>
+                                ${map.buildArea}㎡|
+                            </#if>
+                            <#if map.room?exists&&map.hall?exists>
+                                ${map.room}室${map.hall}厅|
+                            </#if>
+                            <#if map.forwardName?exists>
+                                ${map.forwardName}|
+                            </#if>
+                            <#if map.plotName?exists>
+                                ${map.plotName}
+                            </#if>
+                    </p>
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
@@ -185,11 +195,11 @@
                                 </#if >
                             <#else >
                                 <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                    [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                    [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
                         <#else >
                             <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                [${map.houseBusinessName}]<#else></#if></p>
                         </#if>
                         <div class="cont-block-4 house-labelling gray middle esf">
                             <#if map['tagsName']?exists>

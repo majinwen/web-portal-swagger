@@ -201,8 +201,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             //物业类型
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseManagementTypeId().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getPropertyTypeId())) {
+                String[] layoutId = projHouseInfoRequest.getPropertyTypeId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("houseType", layoutId));
             }
             //建筑类型
@@ -235,8 +235,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //权属
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingFeature())) {
-                String[] layoutId = projHouseInfoRequest.getBuildingFeature().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getOwnership())) {
+                String[] layoutId = projHouseInfoRequest.getOwnership().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
             }
@@ -275,9 +275,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
-                //小区坐标
-                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                     //小区坐标
+                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                }
                 //朝向
 //                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
 //                instance.setForwardName(forWard);

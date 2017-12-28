@@ -204,7 +204,11 @@
                     <div class="list-item-cont">
                         <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
                         <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if><em><#if map['property_type']?exists>${map['property_type']}<#else>暂无</#if></em></h3>
-                        <p class="cont-block-2 high-light-red">${map['average_price']!'暂无'}/㎡</p>
+                        <#if (map['average_price']?exists && map['average_price'] > 0)>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                        <#else>
+                            <p class="cont-block-2 high-light-red">暂无</p>
+                        </#if>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             ${map['nearsubway']}
@@ -285,8 +289,11 @@
                     <div class="list-item-cont">
                         <input type="hidden" value="${map['id']}">
                         <h3 class="cont-block-1">${map['rc']}</h3>
-                        <p class="cont-block-2">2008年建成</p>
-                        <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                        <#if map['abbreviatedAge']?exists>
+                            <p class="cont-block-2">${map['abbreviatedAge']}年建成</p>
+                        </#if>
+
+                        <p class="cont-block-3 distance"><i class="icon"></i>${map['area']}-${map['tradingArea']}</p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if (map['label']??)&&(map['label']?size>0)>
                             <#list map['label'] as label>

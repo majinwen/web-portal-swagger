@@ -162,7 +162,7 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
+                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}</em>元/㎡<#else>暂无</#if></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
