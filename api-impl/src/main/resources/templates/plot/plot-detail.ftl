@@ -132,7 +132,7 @@
     <section>
         <div class="module-header-message">
             <h3>市场行情<span class="subtitle">价格走势</span></h3>
-            <div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>
+            <div class="markets-btn"><i class="price-trend-btn current"></i><#--<i class="supply-contrast-btn"></i>--></div>
         </div>
         <div class="basic-information price-trend">
             <div class="column item-column-three">
@@ -167,42 +167,43 @@
             </div>
             <div></div>
         </div>
-        <div class="basic-information supply-contrast none">
-            <div class="column item-column-two">
-                <div class="info-card-item">
-                    <em>本月</em>
-                    <table>
-                        <tr>
-                            <td>挂牌出售：</td>
-                            <td>34套</td>
-                        </tr>
-                        <tr>
-                            <td>关注用户：</td>
-                            <td>230人</td>
-                        </tr>
-                    </table>
-                    <p>供需充足，可选余地大。</p>
-                </div>
-                <div class="info-card-item">
-                    <em>上月</em>
-                    <table>
-                        <tr>
-                            <td>挂牌出售：</td>
-                            <td>34套</td>
-                        </tr>
-                        <tr>
-                            <td>成交：</td>
-                            <td>23套</td>
-                        </tr>
-                        <tr>
-                            <td>存量：</td>
-                            <td>36.57%</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div></div>
-        </div>
+
+        <#--<div class="basic-information supply-contrast none">-->
+            <#--<div class="column item-column-two">-->
+                <#--<div class="info-card-item">-->
+                    <#--<em>本月</em>-->
+                    <#--<table>-->
+                        <#--<tr>-->
+                            <#--<td>挂牌出售：</td>-->
+                            <#--<td>34套</td>-->
+                        <#--</tr>-->
+                        <#--<tr>-->
+                            <#--<td>关注用户：</td>-->
+                            <#--<td>230人</td>-->
+                        <#--</tr>-->
+                    <#--</table>-->
+                    <#--<p>供需充足，可选余地大。</p>-->
+                <#--</div>-->
+                <#--<div class="info-card-item">-->
+                    <#--<em>上月</em>-->
+                    <#--<table>-->
+                        <#--<tr>-->
+                            <#--<td>挂牌出售：</td>-->
+                            <#--<td>34套</td>-->
+                        <#--</tr>-->
+                        <#--<tr>-->
+                            <#--<td>成交：</td>-->
+                            <#--<td>23套</td>-->
+                        <#--</tr>-->
+                        <#--<tr>-->
+                            <#--<td>存量：</td>-->
+                            <#--<td>36.57%</td>-->
+                        <#--</tr>-->
+                    <#--</table>-->
+                <#--</div>-->
+            <#--</div>-->
+            <#--<div></div>-->
+        <#--</div>-->
     </section>
 </div>
 <div class="module-bottom-fill">
