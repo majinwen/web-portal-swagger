@@ -68,6 +68,8 @@
 
                 .info-item-text {
                     display: inline-block;
+                    width: rem(165);
+                    @include text-ellipses;
 
                     p {
                         margin-top: rem(11);

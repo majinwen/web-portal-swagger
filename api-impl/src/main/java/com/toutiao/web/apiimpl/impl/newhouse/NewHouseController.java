@@ -39,7 +39,7 @@ public class NewHouseController {
          newHouseQuery.setPageSize(4);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
-         model.addAttribute("searchType","newhouse");
+//         model.addAttribute("searchType","newhouse");
          return "newhouse/new-index";
     }
 
@@ -61,7 +61,7 @@ public class NewHouseController {
         }else {
             model.addAttribute("sort",0);
         }
-        model.addAttribute("searchType","newhouse");
+//        model.addAttribute("searchType","newhouse");
         return "newhouse/new-list";
     }
 

@@ -2,13 +2,16 @@
     <header class="searchpage-header">
         <div class="searchpage-search-box">
             <div class="type-tab-box none">
-                <p class="searchpage-current-item">二手房</p>
+                <p class="searchpage-current-item"></p>
                 <div class="type-menu-box">
                     <i class="triangle-top"></i>
                     <div class="type-menu">
-                        <span data-value="/newhouse/searchNewHouse?keywords=" <#if searchType=="newhouse">class="current"</#if>>新房</span>
+                        <span data-value="/newhouse/searchNewHouse?keywords=" class="current">新房</span>
+                        <span data-value="/queryBySearchBox?text=">二手房</span>
+                        <span data-value="/findVillageByConditions?rc=">小区</span>
+                        <#--<span data-value="/newhouse/searchNewHouse?keywords=" <#if searchType=="newhouse">class="current"</#if>>新房</span>
                         <span data-value="/queryBySearchBox?text=" <#if searchType=="projhouse">class="current"</#if>>二手房</span>
-                        <span data-value="/findVillageByConditions?rc=" <#if searchType=="plot">class="current"</#if>>小区</span>
+                        <span data-value="/findVillageByConditions?rc=" <#if searchType=="plot">class="current"</#if>>小区</span>-->
                     </div>
                 </div>
             </div>
