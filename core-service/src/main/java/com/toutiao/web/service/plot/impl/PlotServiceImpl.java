@@ -15,6 +15,7 @@ import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -128,7 +129,22 @@ public class PlotServiceImpl implements PlotService {
             }
             //小区名称
             if (villageRequest.getRc() != null) {
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
+//                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
+                AnalyzeResponse response = esClientTools.init().admin().indices()
+                        .prepareAnalyze(villageRequest.getRc())//内容
+                        .setAnalyzer("ik_smart")//指定分词器3`3
+                        .execute().actionGet();//执行
+                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+                for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                    queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.fuzzyQuery("rc", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("tradingArea", analyzeToken.getTerm()));
+
+                    queryBuilder = boolQueryBuilder.should(queryBuilder);
+                }
+
+
             }
             //区域编号
             if (villageRequest.getDistrictId() != null) {

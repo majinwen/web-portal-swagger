@@ -28,12 +28,12 @@
                         <a href="javascript:;" class="refresh-icon"></a>
                     </div>
                     <div class="searchpage-hot-recommend clear">
-                        <a href="#">峨眉时光</a>
-                        <a href="#">西宸原著</a>
-                        <a href="#">一渡龙湾</a>
-                        <a href="#">潮白河孔雀英国宫</a>
-                        <a href="#">融创千章墅</a>
-                        <a href="#">润泽御府</a>
+                        <a href="/newhouse/searchNewHouse?keywords=东亚尚院">东亚尚院</a>
+                        <a href="/newhouse/searchNewHouse?keywords=西宸原著">泰禾长安中心</a>
+                        <a href="/newhouse/searchNewHouse?keywords=一渡龙湾">中科云谷园</a>
+                        <a href="/newhouse/searchNewHouse?keywords=潮白河孔雀英国宫">东港·鑫座</a>
+                        <a href="/newhouse/searchNewHouse?keywords=融创千章墅">中海金钻街</a>
+                        <a href="/newhouse/searchNewHouse?keywords=润泽御府">合景领峰</a>
                     </div>
                 </section>
             </div>
@@ -53,12 +53,12 @@
                         <a href="javascript:;" class="refresh-icon"></a>
                     </div>
                     <div class="searchpage-hot-recommend clear">
-                        <a href="#">峨眉时光1</a>
-                        <a href="#">西宸原著1</a>
-                        <a href="#">一渡龙湾1</a>
-                        <a href="#">潮白河孔雀英国宫1</a>
-                        <a href="#">融创千章墅1</a>
-                        <a href="#">润泽御府1</a>
+                        <a href="/queryBySearchBox?text=西悦雅居">西悦雅居</a>
+                        <a href="/queryBySearchBox?text=盛世景湾"">盛世景湾</a>
+                        <a href="/queryBySearchBox?text=艾力枫社"">艾力枫社</a>
+                        <a href="/queryBySearchBox?text=景熙国际"">景熙国际</a>
+                        <a href="/queryBySearchBox?text=紫光别墅"">紫光别墅</a>
+                        <a href="/queryBySearchBox?text=华夏奥韵"">华夏奥韵</a>
                     </div>
                 </section>
             </div>
@@ -78,12 +78,12 @@
                         <a href="javascript:;" class="refresh-icon"></a>
                     </div>
                     <div class="searchpage-hot-recommend clear">
-                        <a href="#">峨眉时光2</a>
-                        <a href="#">西宸原著2</a>
-                        <a href="#">一渡龙湾2</a>
-                        <a href="#">潮白河孔雀英国宫2</a>
-                        <a href="#">融创千章墅2</a>
-                        <a href="#">润泽御府2</a>
+                        <a href="/findVillageByConditions?rc=华夏奥韵">华夏奥韵</a>
+                        <a href="/findVillageByConditions?rc=英嘉花园">英嘉花园</a>
+                        <a href="/findVillageByConditions?rc=金芳公寓">金芳公寓</a>
+                        <a href="/findVillageByConditions?rc=盛华苑">盛华苑</a>
+                        <a href="/findVillageByConditions?rc=寰太大厦">寰太大厦</a>
+                        <a href="/findVillageByConditions?rc=椿树馆小区">椿树馆小区</a>
                     </div>
                 </section>
             </div>

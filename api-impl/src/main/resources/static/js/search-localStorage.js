@@ -27,13 +27,7 @@ $(function(){
     });
     $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
 
-    if($('#url')=="/findVillageByConditions"){
-        $('#plot').addClass('current').siblings().removeClass('current');
-    } else  if($('#url')=="/findProjHouseInfo"){
-        $('#erhouse').addClass('current').siblings().removeClass('current');
-    }else  if($('#url')=="/newhouse/searchNewHouse"){
-        $('#nhouse').addClass('current').siblings().removeClass('current');
-    }
+
 
 
     var hisTime;	// 获取搜索时间数组
@@ -99,7 +93,18 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
-            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
+            // if($('#url')=="/findVillageByConditions"){
+            //     $('#plot').addClass('current').siblings().removeClass('current');
+            //     location.href='/findVillageByConditions'+$.trim($(this).val())
+            //
+            // } else  if($('#url')=="/findProjHouseInfo"){
+            //     location.href="/queryBySearchBox"+$.trim($(this).val())
+            //     $('#erhouse').addClass('current').siblings().removeClass('current');
+            // }else  if($('#url')=="/newhouse/searchNewHouse"){
+            //     $('#nhouse').addClass('current').siblings().removeClass('current');
+            //     location.href="/newhouse/searchNewHouse"+$.trim($(this).val())
+            // }
+             location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
         }
     }
 
