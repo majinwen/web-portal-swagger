@@ -235,8 +235,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //权属
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingFeature())) {
-                String[] layoutId = projHouseInfoRequest.getBuildingFeature().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getOwnership())) {
+                String[] layoutId = projHouseInfoRequest.getOwnership().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
             }

@@ -142,7 +142,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="buildingFeature">权属</dt>
+                    <dt data-type="ownership">权属</dt>
                     <dd>
                         <span data-info="1">已购公房</span>
                         <span data-info="2">商品房</span>
@@ -177,7 +177,7 @@
                                 <#if map.buildArea?exists&&(map.buildArea>0)>
                                      ${map.buildArea}㎡/
                                 </#if>
-                                <#if map.room?exists&&map.hall?exists>
+                                <#if map.room?exists&&map.hall?exists&&(map.hall>0)&&(map.room>0)>
                                    ${map.room}室${map.hall}厅/
                                 </#if>
                                 <#if map.forwardName?exists>

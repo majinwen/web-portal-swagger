@@ -122,11 +122,16 @@ public class ProjHouseInfoController {
 
     }
 
-
+    /**
+     *
+     * 功能描述：列表
+     * @author zhw
+     * @date 2017/12/27 20:48
+     * @param [projHouseInfoQuery, model]
+     * @return java.lang.String
+     */
     @RequestMapping("/findProjHouseInfo")
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
-
-
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {
