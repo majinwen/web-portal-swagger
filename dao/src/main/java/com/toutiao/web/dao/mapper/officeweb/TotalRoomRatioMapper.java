@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.officeweb;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.TotalRoomRatio;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -12,9 +13,9 @@ public interface TotalRoomRatioMapper extends BaseDao {
 
     int insertSelective(TotalRoomRatio record);
 
-    List<Double> selectByTotal(@PathVariable("plotTotal") Double plotTotal);
+    List<Double> selectByTotal(@Param("plotTotal") Double plotTotal);
 
-    TotalRoomRatio selectByTotalAndCategory(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer category_id);
+    TotalRoomRatio selectByTotalAndCategory(@Param("plotTotal") Double plotTotal, @Param("categoryId") Integer category_id);
 
 
 }
