@@ -444,6 +444,7 @@ function showBusiness(districtid, circleId) {
  * 区域不限
  * */
 function submitPlace(e) {
+    req['pageNum'] = null;
     req['areaId'] = null;
     req['districtId'] = null;
     req['subwayLineId'] = null;
@@ -463,6 +464,7 @@ function submitPlace(e) {
  * */
 function submitDirstrict(districtid, e) {
     if (districtid) {
+        req['pageNum'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
         req['areaId'] = null;
@@ -484,6 +486,7 @@ function submitDirstrict(districtid, e) {
  * */
 function submitBussiness(districtid, areaId, e) {
     if (districtid) {
+        req['pageNum'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
     }
@@ -537,6 +540,7 @@ function showSubway(lineId, stationId) {
  * 地铁不限
  * */
 function submitSubway(e) {
+    req['pageNum'] = null;
     req['districtId'] = null;
     req['areaId'] = null;
     req['subwayLineId'] = null;
@@ -591,6 +595,7 @@ function showStation(lineId, stationId) {
  * */
 function submitSubwayLine(subwayid, e) {
     if (subwayid) {
+        req['pageNum'] = null;
         req['districtId'] = null;
         req['areaId'] = null;
         req['subwayStationId'] = null;
@@ -609,6 +614,7 @@ function submitSubwayLine(subwayid, e) {
  * */
 function submitStation(subwayid, subwayStationId, e) {
     if (subwayid) {
+        req['pageNum'] = null;
         req['districtId'] = null;
         req['areaId'] = null;
     }
@@ -637,6 +643,7 @@ $('.price-list').on('click', 'li', function (e) {
         req['beginPrice']= null;
         req['endPrice']= null;
     }
+    req['pageNum'] = null;
     params = joinParams(req);
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
@@ -656,6 +663,7 @@ $('.age-list').on('click', 'li', function (e) {
     } else if (ageNumber == '') {
         req['age'] = null;
     }
+    req['pageNum'] = null;
     params = joinParams(req);
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
@@ -688,6 +696,7 @@ $('#typeSubmit').on('click', function (e) {
 
     if (layoutText == '不限') {
         tabTextReplace(e, layoutText);
+        req['pageNum'] = null;
         req['layoutId'] = null;
         params = joinParams(req);
         url = BaseUrl + params;
@@ -706,6 +715,7 @@ $('#typeSubmit').on('click', function (e) {
     } else {
         tabTextReplace(e, layoutText);
     }
+    req['pageNum'] = null;
     req['layoutId'] = layoutTextArr.join(',');
     params = joinParams(req);
     url = BaseUrl + params;
@@ -750,6 +760,7 @@ $('#moreSubmit').on('click', function (e) {
         tabTextReplace(e, '更多');
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
+    req['pageNum'] = null;
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
@@ -761,6 +772,7 @@ $('#moreSubmit').on('click', function (e) {
  * */
 $('#moreReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
+    req['pageNum'] = null;
     req['propertyTypeId'] = null;
     req['houseAreaSize'] = null;
     req['elevatorFlag'] = null;
@@ -792,11 +804,11 @@ function pullUpaAction(pageNumber) {
     params = joinParams(paramData);
 
     if (BaseUrl == '/newhouse/searchNewHouse') {
-        url ="/newhouse/pageSearchNewHouse" + params;
+        url = '/newhouse/pageSearchNewHouse' + params;
     } else if (BaseUrl == '/findProjHouseInfo') {
         url = '/esfHousePageSearch' + params;
     } else if (BaseUrl == '/findVillageByConditions'){
-        url ="/villagePage" + params
+        url = '/villagePage' + params
     }
 
     $.ajax({

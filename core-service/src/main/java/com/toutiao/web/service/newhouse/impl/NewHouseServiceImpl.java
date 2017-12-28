@@ -110,7 +110,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
         }
 
         //户型
@@ -166,6 +166,8 @@ public class NewHouseServiceImpl implements NewHouseService{
 //        //销售状态
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
             booleanQueryBuilder.must(termQuery("sale_status_id", newHouseQuery.getSaleType()));
+        }else{
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5}));
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
