@@ -176,44 +176,207 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     @Override
-    public List<IntelligenceFindhouse> intelligenceFindHouseServiceTypeTwo(IntelligenceQuery intelligenceQuery) {
+    public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery) {
         //判断类型
-        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1A){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
 
         }
-        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1B){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
 
         }
-        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_1C){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
 
         }
-        //类型2A
-        if (intelligenceQuery.getUserPortrayalType()==4){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoA(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommendHouse(list);
+            List<IntelligenceFindhouse> finalList = recommend2A(list);
             return finalList;
         }
-        //类型2B
-        if (intelligenceQuery.getUserPortrayalType()==5){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoB(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommendHouse(list);
-            return finalList;
+//            List<IntelligenceFindhouse> finalList = recommendHouse(list);
+//            return finalList;
         }
-        //类型2C
-        if (intelligenceQuery.getUserPortrayalType()==6){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.selectByTypeTwoC(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommendHouse(list);
-            return finalList;
+//            List<IntelligenceFindhouse> finalList = recommendHouse(list);
+//            return finalList;
         }
-        if(intelligenceQuery.getUserPortrayalType()==USERTYPE_3A){
+        if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
 
         }
 
         return null;
+    }
+
+    /**
+     * 功能描述：筛选条件2A
+     * @param
+     * @return
+     * @author zengqingzhou
+     * @date 2017/12/28 16:55
+     */
+    public List<IntelligenceFindhouse> recommend2A(List<IntelligenceFindhouse> list) {
+        List finalList = new ArrayList();
+        Random random = new Random();
+        //小区均价最低的前5%， 随机2个
+        if (null != list && list.size() >= 2) {
+            Collections.sort(list, new Comparator<IntelligenceFindhouse>() {
+                @Override
+                public int compare(IntelligenceFindhouse o1, IntelligenceFindhouse o2) {
+                    Double o1Price = 0.0;
+                    Double o2Price = 0.0;
+                    if (null != o1.getPrice()&&o1.getPrice().doubleValue()>0) {
+                        o1Price = o1.getPrice().doubleValue();
+                    }
+                    if (null != o1.getEsfPrice()&&o1.getEsfPrice().doubleValue()>0) {
+                        o1Price = o1.getEsfPrice().doubleValue();
+                    }
+                    if (null != o2.getPrice()&&o2.getPrice().doubleValue()>0) {
+                        o2Price = o2.getPrice().doubleValue();
+                    }
+                    if (null != o2.getEsfPrice()&&o2.getEsfPrice().doubleValue()>0) {
+                        o2Price = o2.getEsfPrice().doubleValue();
+                    }
+                    if (o1Price > o2Price) {
+                        return 1;
+                    }
+                    if (o1Price == o2Price) {
+                        return 0;
+                    }
+                    return -1;
+                }
+            });
+
+            double number = list.size() * 0.05;
+            int index = random.nextInt((int) Math.ceil(number));
+            finalList.add(list.get(index));
+            Boolean flag = true;
+            int index2 = 0;
+            while (flag){
+                index2 = random.nextInt((int) Math.ceil(number));
+                if (index!=index2){
+                    finalList.add(list.get(index2));
+                    flag = false;
+                }
+            }
+            list.remove(index);
+            if (index>index2){
+                list.remove(index2-1);
+            }else {
+                list.remove(index2);
+            }
+        }
+        //搜索量排行前200，随机1个
+        if (null!=list&&list.size()>=1){
+            int index = random.nextInt(list.size());
+            finalList.add(list.get(index));
+            list.remove(index);
+        }
+        //环线在四环内，随机2个
+        if (null!=list&&list.size()>=2){
+            List listFour = new ArrayList();
+            for (int i = 0;i<list.size();i++){
+                if (list.get(i).getRingRoad()<=4){
+                    listFour.add(list.get(i));
+                }
+            }
+            int index = random.nextInt(listFour.size());
+            finalList.add(listFour.get(index));
+            Boolean flag = true;
+            while (flag){
+                int index2 = random.nextInt(list.size());
+                if (index!=index2){
+                    finalList.add(listFour.get(index2));
+                    flag = false;
+                }
+            }
+        }
+        return finalList;
+    }
+
+    public List<IntelligenceFindhouse> recommend2B(List<IntelligenceFindhouse> list){
+        List finalList = new ArrayList();
+        Random random = new Random();
+        //小区均价最低的前5-20%， 随机2个
+        if (null != list && list.size() >= 2) {
+            Collections.sort(list, new Comparator<IntelligenceFindhouse>() {
+                @Override
+                public int compare(IntelligenceFindhouse o1, IntelligenceFindhouse o2) {
+                    Double o1Price = 0.0;
+                    Double o2Price = 0.0;
+                    if (null != o1.getPrice()&&o1.getPrice().doubleValue()>0) {
+                        o1Price = o1.getPrice().doubleValue();
+                    }
+                    if (null != o1.getEsfPrice()&&o1.getEsfPrice().doubleValue()>0) {
+                        o1Price = o1.getEsfPrice().doubleValue();
+                    }
+                    if (null != o2.getPrice()&&o2.getPrice().doubleValue()>0) {
+                        o2Price = o2.getPrice().doubleValue();
+                    }
+                    if (null != o2.getEsfPrice()&&o2.getEsfPrice().doubleValue()>0) {
+                        o2Price = o2.getEsfPrice().doubleValue();
+                    }
+                    if (o1Price > o2Price) {
+                        return 1;
+                    }
+                    if (o1Price == o2Price) {
+                        return 0;
+                    }
+                    return -1;
+                }
+            });
+
+            double min = list.size() * 0.05;
+            double max = list.size() * 0.2;
+            int index = random.nextInt((int) Math.ceil(max-min))+(int) Math.ceil(min);
+            finalList.add(list.get(index));
+            Boolean flag = true;
+            int index2 = 0;
+            while (flag){
+                index2 = random.nextInt((int) Math.ceil(max-min))+(int) Math.ceil(min);
+                if (index!=index2){
+                    finalList.add(list.get(index2));
+                    flag = false;
+                }
+            }
+            list.remove(index);
+            if (index>index2){
+                list.remove(index2-1);
+            }else {
+                list.remove(index2);
+            }
+        }
+        //搜索量排行前200，随机1个
+        if (null!=list&&list.size()>=1){
+            int index = random.nextInt(list.size());
+            finalList.add(list.get(index));
+            list.remove(index);
+        }
+        //环线在四环内，随机2个
+        if (null!=list&&list.size()>=2){
+            List listFour = new ArrayList();
+            for (int i = 0;i<list.size();i++){
+                if (list.get(i).getRingRoad()<=4){
+                    listFour.add(list.get(i));
+                }
+            }
+            int index = random.nextInt(listFour.size());
+            finalList.add(listFour.get(index));
+            Boolean flag = true;
+            while (flag){
+                int index2 = random.nextInt(list.size());
+                if (index!=index2){
+                    finalList.add(listFour.get(index2));
+                    flag = false;
+                }
+            }
+        }
+        return finalList;
     }
 
     /**
@@ -224,97 +387,96 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @param
      * @return java.util.List<com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse>
      */
-    public List<IntelligenceFindhouse> recommendHouse(List<IntelligenceFindhouse> list){
-        List finalList = new ArrayList();
-        BigDecimal tempPrice = null;
-        Short tempRingRoad = null;
-        Integer tempStarProperty = null;
-        //均价最低
-        if (list.size() > 1){
-            for (int i = 0;i<list.size()-1;i++){
-                for (int j = 0; j <list.size()-1-i;j++){
-
-                    double esfPriceJ = 0.0;
-                    double esfPriceJ_1= 0.0;
-                    if (null!=list.get(j).getEsfPrice()&&list.get(j).getEsfPrice().doubleValue()>0){
-                        esfPriceJ= list.get(j).getEsfPrice().doubleValue();
-                    }
-                    if (null!=list.get(j).getPrice()&&list.get(j).getPrice().doubleValue()>0){
-                        esfPriceJ= list.get(j).getPrice().doubleValue();
-                    }
-                    if (null!=list.get(j+1).getEsfPrice()&&list.get(j+1).getEsfPrice().doubleValue()>0){
-                        esfPriceJ_1= list.get(j+1).getEsfPrice().doubleValue();
-                    }
-                    if (null!=list.get(j+1).getPrice()&&list.get(j+1).getPrice().doubleValue()>0){
-                        esfPriceJ_1= list.get(j+1).getPrice().doubleValue();
-                    }
-
-                    if (esfPriceJ>esfPriceJ_1){
-                        tempPrice = list.get(j).getEsfPrice();
-                        list.get(j).setEsfPrice(list.get(j+1).getEsfPrice());
-                        list.get(j+1).setEsfPrice(tempPrice);
-                    }
-                }
-            }
-
-            finalList.add(list.get(1));
-            finalList.add(list.get(2));
-            list.remove(0);
-            list.remove(0);
-        }
-
-        //环线最小
-        if (list.size()>0){
-            for (int i = 0;i<list.size()-1;i++){
-                for (int j = 0; j <list.size()-1-i;j++){
-
-                    short ringRoad = 10;
-                    short ringRoad_1 = 10;
-                    if (null!=list.get(j).getRingRoad()&&list.get(j).getRingRoad()>0){
-                        ringRoad= list.get(j).getRingRoad();
-                    }
-
-                    if (null!=list.get(j+1).getRingRoad()&&list.get(j+1).getRingRoad()>0){
-                        ringRoad_1= list.get(j+1).getRingRoad();
-                    }
-
-                    if (ringRoad>ringRoad_1){
-                        tempRingRoad = list.get(j).getRingRoad();
-                        list.get(j).setRingRoad(list.get(j+1).getRingRoad());
-                        list.get(j+1).setRingRoad(tempRingRoad);
-                    }
-                }
-            }
-            finalList.add(list.get(1));
-            list.remove(0);
-        }
-
-        //明星楼盘
-        if (list.size()>1){
-            for (int i = 0;i<list.size()-1;i++){
-                for (int j = 0; j <list.size()-1-i;j++){
-
-                    Integer starProperty = 0;
-                    Integer starProperty_1 = 0;
-                    if (null!=list.get(j).getStarProperty()&&list.get(j).getStarProperty()>0){
-                        starProperty= list.get(j).getStarProperty();
-                    }
-
-                    if (null!=list.get(j+1).getStarProperty()&&list.get(j+1).getStarProperty()>0){
-                        starProperty_1= list.get(j+1).getStarProperty();
-                    }
-
-                    if (starProperty<starProperty_1){
-                        tempStarProperty = list.get(j).getStarProperty();
-                        list.get(j).setStarProperty(list.get(j+1).getStarProperty());
-                        list.get(j+1).setStarProperty(tempStarProperty);
-                    }
-                }
-            }
-            finalList.add(list.get(1));
-            finalList.add(list.get(2));
-        }
-    return finalList;
-    }
+//    public List<IntelligenceFindhouse> recommendHouse(List<IntelligenceFindhouse> list){
+//        List finalList = new ArrayList();
+//        BigDecimal tempPrice = null;
+//        Short tempRingRoad = null;
+//        Integer tempStarProperty = null;
+//        //均价最低
+//        if (list.size() > 1){
+//            for (int i = 0;i<list.size()-1;i++){
+//                for (int j = 0; j <list.size()-1-i;j++){
+//
+//                    double esfPriceJ = 0.0;
+//                    double esfPriceJ_1= 0.0;
+//                    if (null!=list.get(j).getEsfPrice()&&list.get(j).getEsfPrice().doubleValue()>0){
+//                        esfPriceJ= list.get(j).getEsfPrice().doubleValue();
+//                    }
+//                    if (null!=list.get(j).getPrice()&&list.get(j).getPrice().doubleValue()>0){
+//                        esfPriceJ= list.get(j).getPrice().doubleValue();
+//                    }
+//                    if (null!=list.get(j+1).getEsfPrice()&&list.get(j+1).getEsfPrice().doubleValue()>0){
+//                        esfPriceJ_1= list.get(j+1).getEsfPrice().doubleValue();
+//                    }
+//                    if (null!=list.get(j+1).getPrice()&&list.get(j+1).getPrice().doubleValue()>0){
+//                        esfPriceJ_1= list.get(j+1).getPrice().doubleValue();
+//                    }
+//
+//                    if (esfPriceJ>esfPriceJ_1){
+//                        tempPrice = list.get(j).getEsfPrice();
+//                        list.get(j).setEsfPrice(list.get(j+1).getEsfPrice());
+//                        list.get(j+1).setEsfPrice(tempPrice);
+//                    }
+//                }
+//            }
+//
+//            finalList.add(list.get(1));
+//            finalList.add(list.get(2));
+//            list.remove(0);
+//            list.remove(0);
+//        }
+//
+//        //环线最小
+//        if (list.size()>0){
+//            for (int i = 0;i<list.size()-1;i++){
+//                for (int j = 0; j <list.size()-1-i;j++){
+//
+//                    short ringRoad = 10;
+//                    short ringRoad_1 = 10;
+//                    if (null!=list.get(j).getRingRoad()&&list.get(j).getRingRoad()>0){
+//                        ringRoad= list.get(j).getRingRoad();
+//                    }
+//
+//                    if (null!=list.get(j+1).getRingRoad()&&list.get(j+1).getRingRoad()>0){
+//                        ringRoad_1= list.get(j+1).getRingRoad();
+//                    }
+//
+//                    if (ringRoad>ringRoad_1){
+//                        tempRingRoad = list.get(j).getRingRoad();
+//                        list.get(j).setRingRoad(list.get(j+1).getRingRoad());
+//                        list.get(j+1).setRingRoad(tempRingRoad);
+//                    }
+//                }
+//            }
+//            finalList.add(list.get(1));
+//            list.remove(0);
+//        }
+//
+//        //明星楼盘
+//        if (list.size()>1){
+//            for (int i = 0;i<list.size()-1;i++){
+//                for (int j = 0; j <list.size()-1-i;j++){
+//
+//                    Integer starProperty = 0;
+//                    Integer starProperty_1 = 0;
+//                    if (null!=list.get(j).getStarProperty()&&list.get(j).getStarProperty()>0){
+//                        starProperty= list.get(j).getStarProperty();
+//                    }
+//
+//                    if (null!=list.get(j+1).getStarProperty()&&list.get(j+1).getStarProperty()>0){
+//                        starProperty_1= list.get(j+1).getStarProperty();
+//                    }
+//
+//                    if (starProperty<starProperty_1){
+//                        tempStarProperty = list.get(j).getStarProperty();
+//                        list.get(j).setStarProperty(list.get(j+1).getStarProperty());
+//                        list.get(j+1).setStarProperty(tempStarProperty);
+//                    }
+//                }
+//            }
+//            finalList.add(list.get(1));
+//        }
+//    return finalList;
+//    }
 
 }
