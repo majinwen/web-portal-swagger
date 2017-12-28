@@ -774,3 +774,44 @@ $('#moreReset').on('click', function () {
     req['buildingTypeId'] = null;
     req['ownership'] = null;
 });
+
+var pageNum = 2;
+$(function () {
+    if ($('#listContent').length > 0) {
+        $(window).scroll(function () {
+            if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+                pullUpaAction(pageNum);
+            }
+        });
+    }
+});
+
+function pullUpaAction(pageNumber) {
+    var paramData = req;
+    paramData['pageNum'] = pageNumber;
+    params = joinParams(paramData);
+
+    if (BaseUrl == '/newhouse/searchNewHouse') {
+        url ="/newhouse/pageSearchNewHouse" + params;
+    } else if (BaseUrl == '/findProjHouseInfo') {
+        url = '/esfHousePageSearch' + params;
+    } else if (BaseUrl == '/findVillageByConditions'){
+        url ="/villagePage" + params
+    }
+
+    $.ajax({
+        type: "post",
+        url: url,
+        async: true,
+        success: function (data) {
+            console.log(data);
+            pageNum += 1;
+            console.log(pageNum);
+            //获取异步调用的数据
+            if (data.code == 'success') {
+                var html = template('listContent',data.data);
+                $('#valueList li:last-child').after(html);
+            }
+        }
+    })
+}

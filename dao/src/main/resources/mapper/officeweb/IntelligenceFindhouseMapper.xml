@@ -152,7 +152,7 @@
         <result column="proj_layout" property="projLayout" jdbcType="VARCHAR"/>
         <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
     </resultMap>
-    <sql id="intelligenceFindHouse" >
+    <sql id="intelligenceFindHouse">
         newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
         heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property
     </sql>
@@ -160,34 +160,31 @@
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
-        <include refid="intelligenceFindHouse" />
+        <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where 1=1
-        ORDER BY  has_subway ,ring_road ,has_lift DESC ,has_market
-        LIMIT
-        10
+        where  <![CDATA[ ring_road<=5 ]]>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
+        LIMIT 200
     </select>
     <select id="selectByTypeTwoB"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
-        <include refid="intelligenceFindHouse" />
+        <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where 1=1
-        ORDER BY ring_road ,park_radio DESC,has_lift DESC ,has_market,propertyfee DESC
-        LIMIT
-        10
+        where <![CDATA[ ring_road <= 4 ]]> AND propertyfee > 1 AND park_radio IS NOT NULL
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 200
     </select>
     <select id="selectByTypeTwoC"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
-        <include refid="intelligenceFindHouse" />
+        <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where 1=1
-        ORDER BY ring_road ,park_radio DESC,has_lift DESC ,has_market,propertyfee DESC
-        LIMIT
-        10
+        where <![CDATA[ ring_road <= 4 ]]> AND propertyfee > 2 AND to_number ( park_radio ,'9999') > 10
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 200
     </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
     insert into intelligence_findhouse (newcode, n_or_e, projname, 
@@ -1228,6 +1225,9 @@
     <![CDATA[
         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
 
+
+
+
         ]]>
     </select>
 
@@ -1242,6 +1242,9 @@
           and layout_range @> {#{categoryId}}
 
 
+
+
+
         ]]>
 
     </select>
@@ -1253,6 +1256,9 @@
     <![CDATA[
          max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
         and layout_range @> {#{categoryId}} and district_id=#{distinctId}
+
+
+
 
         ]]>
 

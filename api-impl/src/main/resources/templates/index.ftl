@@ -30,14 +30,14 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
-                <i class="index-esf-icon"></i><p>二手房</p>
+            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
+                <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="/findVillageByConditions">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
-                <i class="index-new-icon"></i><p>新房</p>
+            <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
+                <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>

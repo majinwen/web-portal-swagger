@@ -45,6 +45,7 @@ $(function(){
 
 
 
+
     var hisTime;	// 获取搜索时间数组
     var hisItem;	// 获取搜索内容数组
 

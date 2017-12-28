@@ -1,11 +1,14 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
+import com.toutiao.web.service.PriceTrendService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
@@ -27,6 +30,8 @@ public class PlotConterller {
     private NewHouseService newHouseService;
     @Autowired
     private ProjHouseInfoService projHouseInfoService;
+    @Autowired
+    private PriceTrendService priceTrendService;
 
     //(查询附近小区和(距离))
     @RequestMapping("/fingNearVillageAndDistance")
@@ -63,18 +68,15 @@ public class PlotConterller {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
 
-  /*      for (int i=0;i<villageList.size();i++) {
-            VillageResponse itemMap = (VillageResponse) villageList.get(i);
-            String key= itemMap.getKey();
-            if (StringUtil.isNotNullString(key)){
-                HashMap<String ,Object> stationsionf = (HashMap<String, Object>) itemMap.getMetroWithPlotsDistance();
-                String stationinfo = (String) stationsionf.get(key);
-                String [] sinfo = stationinfo.split("$");
-                itemMap.setMetroWithPlotsDistance("",sinfo);
-                villageList.set(i,itemMap);
+        for (int i = 0; i < villageList.size(); i++) {
+            HashMap<String, Object> itemMap = (HashMap<String, Object>) villageList.get(i);
+            String imginfo = (String) itemMap.get("building_imgs");
+            if (StringUtil.isNotNullString(imginfo)) {
+                String[] imgs = imginfo.split(",");
+                itemMap.put("building_imgs", imgs[0]);
+                villageList.set(i, itemMap);
             }
         }
-        System.out.println("a");*/
 
         return NashResult.build(villageList);
     }
@@ -84,29 +86,44 @@ public class PlotConterller {
     @RequestMapping("/villageDetail")
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
-        VillageResponse village = (VillageResponse) villageList.get(0);
-        model.addAttribute("village", village);
+        if (villageList != null && villageList.size() != 0) {
+            VillageResponse village = (VillageResponse) villageList.get(0);
+            model.addAttribute("village", village);
 
-        //附近小区
-        String[] latandlon = village.getLocation().split(",");
-        Double lonx = Double.valueOf(latandlon[0]);
-        Double laty = Double.valueOf(latandlon[1]);
-        List nearvillage = plotService.GetNearByhHouseAndDistance(lonx, laty);
-        model.addAttribute("nearvillage", nearvillage);
+            //附近小区
+            String[] latandlon = village.getLocation().split(",");
+            Double lonx = Double.valueOf(latandlon[0]);
+            Double laty = Double.valueOf(latandlon[1]);
+            List nearvillage = plotService.GetNearByhHouseAndDistance(lonx, laty);
+            model.addAttribute("nearvillage", nearvillage);
 
-        //推荐小区好房
-        ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
-        projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
-        List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-        model.addAttribute("reViHouse", reViHouse);
+            //走势图
+            PriceTrend priceTrend = new PriceTrend();
+            priceTrend.setBuildingId(village.getId());
+            priceTrend.setPropertyType((short) 0);
+            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(priceTrend);
+            model.addAttribute("tradeline", stringListMap);
 
-        newHouseQuery.setSort(0);
-        newHouseQuery.setPageNum(1);
-        newHouseQuery.setPageSize(4);
-        Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        List<Object> newbuildrecomed = (List<Object>) builds.get("data");
-        model.addAttribute("newbuilds", newbuildrecomed);
-        return "plot/plot-detail";
+            //月份
+            List<String>dateList= DateUtil.oneYearList();
+            model.addAttribute("xlist",dateList);
+
+
+            //推荐小区好房
+            ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
+            projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
+            List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+            model.addAttribute("reViHouse", reViHouse);
+
+            newHouseQuery.setSort(0);
+            newHouseQuery.setPageNum(1);
+            newHouseQuery.setPageSize(4);
+            Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
+            List<Object> newbuildrecomed = (List<Object>) builds.get("data");
+            model.addAttribute("newbuilds", newbuildrecomed);
+            return "plot/plot-detail";
+        }
+        return "404";
     }
 
 

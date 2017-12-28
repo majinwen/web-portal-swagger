@@ -159,7 +159,7 @@
     </div>
 </section>
 <section>
-    <ul id="esfvalueList">
+    <ul id="valueList">
     <#if builds?exists>
         <#list builds as map>
             <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
@@ -253,6 +253,46 @@
 
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
+<#--<script src="${staticurl}/js/template-web.js"></script>-->
+<#--<script id="listContent" type="text/html">
+    {{each data}}
+    <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
+        <div class="clear">
+            <div class="list-item-img-box">
+                {{if $value.housePhoto != null && $value.housePhoto.length > 0}}
+                    {{each $value.housePhoto as value i}}
+                        <img src="{{value}}" alt="">
+                    {{/each}}
+                {{else}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                {{/if}}
+            </div>
+            <div class="list-item-cont">
+                <h3 class="cont-block-1">新街口西里一区三室二厅二卫</h3>
+                <p class="cont-block-2">
+                    109㎡|
+                    3室2厅|
+                    南北|
+                    新街口西里一区
+                </p>
+                <p class="cont-block-3 distance"><i class="icon"></i>西城
+                    [新街口]</p>
+                <div class="cont-block-4 house-labelling gray middle esf">
+                    <span>近地铁</span>
+                    <span>随时看</span>
+                </div>
+                <div class="cont-block-price">
+                    <em>
+                    </em>
+                    <em>
+                        12元/㎡
+                    </em>
+                </div>
+            </div>
+        </div>
+    </a></li>
+    {{/each}}
+</script>-->
 <script src="${staticurl}/js/template-web.js"></script>
 
 <script id="esfhousepage" type="text/html">

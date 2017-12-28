@@ -132,8 +132,19 @@
             <li>
                 <dl class="module-table-item">
                     <dd class="odd-item">楼层：<span>
-                    <#if houseDetail.floor?exists&& houseDetail.floorNo?exists>${houseDetail.floor}
-                        楼层/${houseDetail.floorNo}层<#else>暂无</#if>
+                    <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.floorNo?exists&&(houseDetail.floorNo!=0))>
+                         ${houseDetail.floor}楼层/${houseDetail.floorNo}层
+                    <#else >
+                        <#if houseDetail.floor?exists&& (houseDetail.floor!='')>
+                            ${houseDetail.floor}楼层
+                        </#if >
+                        <#if houseDetail.floorNo?exists&&(houseDetail.floorNo!=0)>
+                            ${houseDetail.floorNo}层
+                        </#if >
+                        <#if (houseDetail.floorNo??&&houseDetail.floorNo==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
+                           暂无
+                        </#if >
+                    </#if>
                     </span></dd>
                     <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}
                         电梯<#else>

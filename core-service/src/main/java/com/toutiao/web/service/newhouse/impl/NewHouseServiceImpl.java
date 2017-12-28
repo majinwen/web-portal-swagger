@@ -3,7 +3,6 @@ package com.toutiao.web.service.newhouse.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;

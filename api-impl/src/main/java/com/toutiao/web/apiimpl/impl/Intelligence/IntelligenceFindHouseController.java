@@ -118,12 +118,12 @@ public class IntelligenceFindHouseController {
         return NashResult.build(intelligenceFh);
     }
 
-    @RequestMapping("/intelligenceFindHouseTypeTwo")
+    @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery){
+    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
         IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
         intelligenceQuery1.setUserPortrayalType(4);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceTypeTwo(intelligenceQuery1);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
         return null;
     }
     /**
