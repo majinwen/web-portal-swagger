@@ -26,15 +26,12 @@
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li id="district-option">区域</li>
-                    <li id="subway-option">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -73,7 +70,7 @@
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
                 <dl>
-                    <dt data-type="houseManagementTypeId">物业类型</dt>
+                    <dt data-type="propertyTypeId">物业类型</dt>
                     <dd>
                         <span data-info="1">普通住宅</span>
                         <span data-info="2">公寓</span>
@@ -108,7 +105,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseAreaId">面积</dt>
+                    <dt data-type="houseAreaSize">面积</dt>
                     <dd>
                         <span data-info="[0-60]">60以下</span>
                         <span data-info="[60-90]">60-90</span>
@@ -127,10 +124,10 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="elevator">电梯</dt>
+                    <dt data-type="elevatorFlag">电梯</dt>
                     <dd>
-                        <span data-info="1">有</span>
-                        <span data-info="2">无</span>
+                        <span class="only" data-info="1">有</span>
+                        <span class="only" data-info="2">无</span>
                     </dd>
                 </dl>
                 <dl>
@@ -142,7 +139,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="buildingFeature">权属</dt>
+                    <dt data-type="ownership">权属</dt>
                     <dd>
                         <span data-info="1">已购公房</span>
                         <span data-info="2">商品房</span>
@@ -159,10 +156,10 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
-    <ul id="esfvalueList">
-    <#if builds?exists>
+    <ul id="esfvalueList"><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
                 <div class="clear">
@@ -253,9 +250,8 @@
     </ul>
 </div>
 
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 
 <script id="esfhousepage" type="text/html">
@@ -263,6 +259,5 @@
 
 
  </script>
-
 </body>
 </html>

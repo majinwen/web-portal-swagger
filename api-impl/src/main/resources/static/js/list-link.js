@@ -1,7 +1,6 @@
 var req = GetRequest();
 var pageNum = 2;
 $(function () {
-
     /**
      * 下滑翻页
      */
@@ -10,7 +9,6 @@ $(function () {
             showNextPage(pageNum);
         }
     });
-
 
     $('#category-tab').on('click','li', function () {
         var $dom = getDataDom($(this),'panel');
@@ -37,6 +35,7 @@ $(function () {
             $('#subway-option').addClass('current');
             showSubway(req['subwayLineId'], req['subwayStationId']);
         }
+
         if ($('#category-tab').find('.current').length <= 0) {
             $('.global-mark').addClass('none');
             $('body').removeClass('fixed-scroll');
@@ -66,14 +65,14 @@ $(function () {
     if (req['districtId'] || req['areaId']) {
         districtArea(req);
         showDistrict(req['districtId'], req['areaId']);
-    };
+    }
 
     /**
      * 地铁筛选
      */
     if (req['subwayLineId'] || req['subwayStationId']) {
         subway(req);
-    };
+    }
 
     /**
      * 价格筛选
@@ -88,7 +87,7 @@ $(function () {
                 $('li[data-mark="tab-price"]').addClass('choose').find('em').html($(this).html());
             }
         });
-    };
+    }
 
     /**
      * 户型筛选
@@ -113,21 +112,21 @@ $(function () {
             });
         });
 
-    };
+    }
 
     /**
      * 物业类型筛选--多选
      */
     if (req['propertyTypeId']) {
         moreOption('propertyTypeId');
-    };
+    }
 
     /**
      * 面积筛选---多选
      */
     if (req['houseAreaSize']) {
         moreOption('houseAreaSize');
-    };
+    }
 
     /**
      * 电梯筛选
@@ -140,7 +139,7 @@ $(function () {
                 $(this).addClass('current');
             }
         });
-    };
+    }
 
     /**
      * 建筑类型---多选
@@ -148,7 +147,7 @@ $(function () {
     if (req['buildingType']) {
 
         moreOption('buildingType');
-    };
+    }
 
     /**
      * 销售状态筛选---多选
@@ -156,7 +155,7 @@ $(function () {
     if (req['saleType']) {
 
         moreOption('saleType');
-    };
+    }
 
     /**
      * 楼盘特色筛选---多选
@@ -164,14 +163,14 @@ $(function () {
     if (req['buildingFeature']) {
 
         moreOption('buildingFeature');
-    };
+    }
 
     /**
      * 装修标准筛选---多选
      */
     if (req['deliverStyle']) {
         moreOption('deliverStyle');
-    };
+    }
 
     /**
      * 区域商圈处理
@@ -198,7 +197,7 @@ $(function () {
 
             $('li[data-mark="tab-place"]').addClass('choose').find('em').html(_circleName?_circleName:_districtName);
         });
-    };
+    }
 
     /**
      * 地铁线站处理
@@ -225,7 +224,7 @@ $(function () {
 
             $('li[data-mark="tab-place"]').addClass('choose').find('em').html(_subwayStationName?_subwayStationName:_subwayLineName);
         });
-    };
+    }
 
     /**
      * 更多筛选项处理
@@ -286,7 +285,7 @@ function submitBussiness(districtid,areaId,e) {
     $.get(url, function () {
         location.href=url;
     });
-};
+}
 
 //区域不限
 function submitPlace(e) {
@@ -311,15 +310,14 @@ function submitSubwayLine(subwayid,e) {
         req['areaId'] = null;
         req['subwayStationId'] = null;
     }
-   req['subwayLineId']=subwayid
+    req['subwayLineId']=subwayid;
     params = joinParams(req);
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.href = url;
     });
-};
-
+}
 
 /*
  * 提交选中地铁站点
@@ -329,8 +327,8 @@ function submitStation(subwayid, subwayStationId, e) {
         req['districtId'] = null;
         req['areaId'] = null;
     }
-    req['subwayLineId']=subwayid
-    req['subwayStationId']=subwayStationId
+    req['subwayLineId']=subwayid;
+    req['subwayStationId']=subwayStationId;
     params = joinParams(req);
     url = BaseUrl + params;
 
@@ -338,8 +336,7 @@ function submitStation(subwayid, subwayStationId, e) {
     $.get(url, function () {
         location.href = url;
     });
-};
-
+}
 
 //地铁不限
 function submitSubway(e) {
@@ -351,8 +348,7 @@ function submitSubway(e) {
     $.get(url, function () {
         location.href=url;
     });
-};
-
+}
 
 //价格
 $('.price-list').on('click','li', function (e) {
@@ -453,7 +449,7 @@ function GetRequest() {
         }
     }
     return theRequest;
-};
+}
 
 function joinParams(req) {
     var targetUrl = '';
@@ -461,15 +457,14 @@ function joinParams(req) {
         if (req[key]) {
             targetUrl += '&' + key + "=" + req[key];
         }
-    };
+    }
 
     if (targetUrl.length > 1) {
         targetUrl = '?' + targetUrl.substring(1);
-    };
+    }
 
     return targetUrl;
-};
-
+}
 
 /**
  * 列表页分页
@@ -493,7 +488,7 @@ function showNextPage(pageNumn) {
                  //获取异步调用的数据
                  if (data.code == 'success') {
 
-                     console.log(template)
+                     console.log(template);
 
                      var html = template('newhousepage',data.data);
                      $('#valueList li:last-child').after(html);
@@ -514,7 +509,7 @@ function showNextPage(pageNumn) {
                  //获取异步调用的数据
                  if (data.code == 'success') {
 
-                     console.log(template)
+                     console.log(template);
 
                      var html = template('esfhousepage',data.data);
                      $('#esfvalueList li:last-child').after(html);
@@ -533,8 +528,8 @@ function showNextPage(pageNumn) {
                  pageNum+=1;
                  //获取异步调用的数据
                  if (data.code == 'success') {
-                     console.log(pageNum)
-                     console.log(template)
+                     console.log(pageNum);
+                     console.log(template);
 
                      var html = template('villagepage',data.data);
                      $('#villagelist li:last-child').after(html);
@@ -543,9 +538,4 @@ function showNextPage(pageNumn) {
              }
          });
      }
-
-
 }
-
-
-

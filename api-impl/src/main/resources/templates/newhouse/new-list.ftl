@@ -25,15 +25,12 @@
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li id="district-option">区域</li>
-                    <li id="subway-option">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -145,6 +142,7 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
     <ul id="valueList"><#if builds?exists>
@@ -211,10 +209,8 @@
     </#if>
     </ul>
 </div>
-
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js?version=123"></script>
-<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 
 <script id="newhousepage" type="text/html">

@@ -102,12 +102,6 @@ public class ProjHouseInfoController {
 
     /**
      * 功能描述：二手房分页
-     * <p>
-     * //     * @param [projHouseInfoQuery, model]
-     *
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/15 10:59
      */
     @RequestMapping("/esfHousePageSearch")
     @ResponseBody
@@ -119,7 +113,15 @@ public class ProjHouseInfoController {
 
     }
 
-
+    /**
+     * 功能描述：二手房列表
+     * <p>
+     * //     * @param [projHouseInfoQuery, model]
+     *
+     * @return java.lang.String
+     * @author zhw
+     * @date 2017/12/15 10:59
+     */
     @RequestMapping("/findProjHouseInfo")
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 

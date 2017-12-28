@@ -25,15 +25,12 @@
         <li data-mark="tab-age"><span><em>楼龄</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li id="district-option">区域</li>
-                    <li id="subway-option">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -56,12 +53,12 @@
         <div class="filter-item" data-mark="panel-age">
             <div class="age-list">
                 <ul>
-                    <li data-begin-age="" data-end-age="" class="current">不限</li>
-                    <li data-begin-age="0" data-end-age="5">5年内</li>
-                    <li data-begin-age="0" data-end-age="10">10年内</li>
-                    <li data-begin-age="0" data-end-age="15">15年内</li>
-                    <li data-begin-age="0" data-end-age="20">20年内</li>
-                    <li data-begin-age="20" data-end-age="200">20年以上</li>
+                    <li class="current" data-info="">不限</li>
+                    <li data-info="[0-5]">5年内</li>
+                    <li data-info="[0-10]">10年内</li>
+                    <li data-info="[0-15]">15年内</li>
+                    <li data-info="[0-20]">20年内</li>
+                    <li data-info="[20-120]">20年以上</li>
                 </ul>
             </div>
         </div>
@@ -104,6 +101,17 @@
                     </dd>
                 </dl>
                 <dl>
+                    <dt data-type="saleType">销售状态</dt>
+                    <dd>
+                        <span data-info="1">售完</span>
+                        <span data-info="2">在售</span>
+                        <span data-info="3">不在售</span>
+                        <span data-info="4">出租</span>
+                        <span data-info="5">待租</span>
+                        <span data-info="6">待售</span>
+                    </dd>
+                </dl>
+                <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
                         <span data-info="1">别墅</span>
@@ -130,6 +138,7 @@
                 <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
             </div>
         </div>
+    </div>
     </div>
 </section>
 <section>
@@ -210,13 +219,11 @@
 </div>
 <#include "../search.ftl">
 
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/list-link.js"></script>
-<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 
-<script id="villagepage" type="text/html">
+<#--<script id="villagepage" type="text/html">
     {{each data}}
     <li><a class="list-item" href="/villageDetail?id={{$value.id}}">
         <div class="clear">
@@ -272,12 +279,10 @@
                 <div class="cont-block-price plot">
                     <em>${plot['avgPrice']}元/㎡</em>
                 </div>
-            </div>-->
+            </div>&ndash;&gt;
         </div>
     </a></li>
     {{/each}}
-
- </script>
-
+ </script>-->
 </body>
 </html>
