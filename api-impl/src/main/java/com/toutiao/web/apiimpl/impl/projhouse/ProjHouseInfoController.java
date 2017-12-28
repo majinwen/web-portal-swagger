@@ -5,6 +5,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
@@ -65,6 +66,9 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+        }else{
+            //跳转到404页
+            return "";
         }
 
         return "esf/esf-detail";
@@ -102,12 +106,6 @@ public class ProjHouseInfoController {
 
     /**
      * 功能描述：二手房分页
-     * <p>
-     * //     * @param [projHouseInfoQuery, model]
-     *
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/15 10:59
      */
     @RequestMapping("/esfHousePageSearch")
     @ResponseBody
@@ -119,11 +117,17 @@ public class ProjHouseInfoController {
 
     }
 
-
+    /**
+     * 功能描述：二手房列表
+     * <p>
+     * //     * @param [projHouseInfoQuery, model]
+     *
+     * @return java.lang.String
+     * @author zhw
+     * @date 2017/12/15 10:59
+     */
     @RequestMapping("/findProjHouseInfo")
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
-
-
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {
@@ -134,7 +138,7 @@ public class ProjHouseInfoController {
         } else {
             model.addAttribute("sort", 0);
         }
-        model.addAttribute("searchType", "projhouse");
+//        model.addAttribute("searchType", "projhouse");
         return "esf/esf-list";
 
     }
@@ -174,12 +178,12 @@ public class ProjHouseInfoController {
 
             model.addAttribute("builds", queryBySearchBox);
             model.addAttribute("text", text);
-            model.addAttribute("searchType", "projhouse");
+//            model.addAttribute("searchType", "projhouse");
 
         } else {
             model.addAttribute("message", "没有该相应的数据信息");
             model.addAttribute("text", text);
-            model.addAttribute("searchType", "projhouse");
+//            model.addAttribute("searchType", "projhouse");
         }
         return "esf/esf-list";
     }

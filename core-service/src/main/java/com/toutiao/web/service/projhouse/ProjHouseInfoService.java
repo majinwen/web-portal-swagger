@@ -9,14 +9,14 @@ import java.util.Map;
 
 public interface ProjHouseInfoService {
 
-       List queryProjHouseByhouseIdandLocation(String houseId,double lat, double lon);
+    List queryProjHouseByhouseIdandLocation(String houseId, double lat, double lon);
 
-       List queryProjHouseInfo(ProjHouseInfoQuery ProjHouseInfoQuery);
+    List queryProjHouseInfo(ProjHouseInfoQuery ProjHouseInfoQuery);
 
-       Map<String, Object> queryByHouseId(Integer houseId);
+    Map<String, Object> queryByHouseId(Integer houseId);
 
-       List  queryBySearchBox(String text);
+    List queryBySearchBox(String text);
 
-        void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes);
+    void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes);
 
 }

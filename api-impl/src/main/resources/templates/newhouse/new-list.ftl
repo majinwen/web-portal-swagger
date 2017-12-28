@@ -25,15 +25,12 @@
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li id="district-option">区域</li>
-                    <li id="subway-option">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -145,6 +142,7 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
     <ul id="valueList"><#if builds?exists>
@@ -154,9 +152,9 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign imgt = map['building_imgs']?split(",")>
-                            <img src="<#--${staticurl}-->${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
-                        <#else >
-                            <img src="${qiniuimage}/images/esf/esxq_xq_image2@3x.png" alt="${map['building_name']}">
+                            <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -164,7 +162,7 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
+                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}</em>元/㎡<#else>暂无</#if></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
@@ -211,10 +209,8 @@
     </#if>
     </ul>
 </div>
-
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js?version=123"></script>
-<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 
 <script id="newhousepage" type="text/html">

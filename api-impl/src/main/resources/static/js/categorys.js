@@ -4,7 +4,6 @@ var params="";
 var url;
 var submitClickState = false;
 
-
 function getDataDom(attrDom, attrStr) {
     var str = attrDom.attr('data-mark'),
         index = str.indexOf('-'),
@@ -18,7 +17,6 @@ function getDataDom(attrDom, attrStr) {
 $('.place-list').on('click','li', function () {
     $(this).addClass('current').siblings().removeClass('current');
 });
-
 
 // 户型
 $('.type-list').on('click','li', function (e) {
@@ -85,6 +83,7 @@ function showDistrict(districtId, circleId) {
         }
     });
 }
+
 /*
  * 显示商圈，使用circleData json 数据
  * businessData 存储商圈信息
@@ -118,9 +117,7 @@ function showBusiness(districtid, circleId) {
         }
         $('#level3').append(str);
     });
-};
-
-
+}
 
 /*
  * 显示地铁线，获取subway json 数据
@@ -157,6 +154,7 @@ function showSubway(lineId, stationId) {
         $('#level2').append(str);
     })
 }
+
 /*
  * 显示站点，使用subwayData json 数据
  * stationData 存储站点信息
@@ -192,16 +190,8 @@ function showStation(lineId, stationId) {
 
         $('#level3').append(str);
     });
-};
+}
 
-
-/*
- * 地铁不限,更改导航内容
- * */
-/*function submitSubway(e) {
-    tabTextReplace(e,'地铁');
-    location.href=BaseUrl
-}*/
 /*
  * 替换导航内容
  * */
@@ -211,8 +201,8 @@ function tabTextReplace(e,text) {
         tabMarkText = currentDom.parents('.filter-item').attr('data-mark').substring(6),
         tabMarkDom = $('#category-tab').find('li[data-mark="tab-' + tabMarkText +'"]');
     tabMarkDom.attr('class','choose');
-    tabMarkDom.find('em').text('');
-    // tabMarkDom.find('em').text(text);
+    // tabMarkDom.find('em').text('');
+    tabMarkDom.find('em').text(text);
     $('.filter-item').removeClass('active');
     $('.global-mark').addClass('none');
     $('body').removeClass('fixed-scroll');

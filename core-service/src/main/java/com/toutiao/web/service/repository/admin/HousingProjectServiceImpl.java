@@ -25,11 +25,11 @@ public class HousingProjectServiceImpl implements HousingProjectService {
 
 
 
-    @Override
-    public List<ProjInfo> listHousingProject(HousingProjectQuery query) {
-        PageHelper.startPage(2, query.getPageSize());
-        return projInfoMapper.selectProjInfoList(query);
-    }
+//    @Override
+//    public List<ProjInfo> listHousingProject(HousingProjectQuery query) {
+//        PageHelper.startPage(2, query.getPageSize());
+//        return projInfoMapper.selectProjInfoList(query);
+//    }
 
 
 }

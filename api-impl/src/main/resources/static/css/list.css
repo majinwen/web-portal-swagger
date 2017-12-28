@@ -648,6 +648,7 @@ hr {
   .category-box > ul {
     position: relative;
     overflow: hidden;
+    display: -webkit-flex;
     display: flex;
     background-color: #fff;
     border-bottom: 1px solid #ccc;
@@ -722,8 +723,6 @@ hr {
           overflow-y: auto; }
           .category-box .category-cont .filter-item .place-list ul:first-child, .category-box .category-cont .filter-item .price-list ul:first-child, .category-box .category-cont .filter-item .type-list ul:first-child {
             border-left: none; }
-      .category-box .category-cont .filter-item .place-list {
-        min-height: 2.6666666667rem; }
       .category-box .category-cont .filter-item .type-list {
         padding-bottom: 1.88rem;
         box-sizing: border-box; }
@@ -970,7 +969,7 @@ hr {
     .list-item .cont-block-3.distance {
       padding-left: 0.4133333333rem; }
   .list-item.new .cont-block-1 {
-    width: 4.4rem; }
+    max-width: 4.4rem; }
   .list-item.new .new-active {
     clear: both;
     height: 0.64rem;
