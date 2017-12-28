@@ -286,7 +286,7 @@
                         <input type="hidden" value="${map['id']}">
                         <h3 class="cont-block-1">${map['rc']}</h3>
                         <p class="cont-block-2">2008年建成</p>
-                        <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                        <p class="cont-block-3 distance"><i class="icon"></i>${map['area']}-${map['tradingArea']}</p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if (map['label']??)&&(map['label']?size>0)>
                             <#list map['label'] as label>
