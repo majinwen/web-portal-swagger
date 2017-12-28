@@ -11,18 +11,18 @@
 <body>
 <div class="module-bottom-fill">
     <div class="house-type-state">
-        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（${roomcount}）</span>
+        <span  data-id="0"  data-bid="${bid}" class="current">全部（${roomcount}）</span>
     <#if room?exists>
     <#list room as roomnode>
         <#assign roomid=roomnode['room']>
-        <span data-bid="${bid}" <#if tags==roomid>class="current"</#if> data-id="${roomid}">${roomid}居（${roomnode['count']}）</span>
+        <span data-bid="${bid}"  data-id="${roomid}">${roomid}居（${roomnode['count']}）</span>
     </#list>
     </#if>
     </div>
 </div>
-<div class="module-bottom-fill"><#if layoutDetails?exists>
+<div id="all-type" class="module-bottom-fill"><#if layoutDetails?exists>
     <#list layoutDetails as datail>
-        <section>
+        <section class="room${datail['room']}">
         <div class="house-type-header">
             <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['building_area']}㎡</p>
         </div>

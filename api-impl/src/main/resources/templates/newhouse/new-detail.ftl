@@ -153,7 +153,7 @@
         <ul class="tilelist">
             <#list layout as item>
                 <li>
-                    <a href="#">
+                    <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0">
                         <div class="picture-box">
                             <#if item['layout_img']?exists>
                                 <img src="${qiniuimage}/${item['layout_img']}" alt="户型图">
