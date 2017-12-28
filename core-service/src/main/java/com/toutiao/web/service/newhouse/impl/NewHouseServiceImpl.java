@@ -245,7 +245,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
-                            null)
+                             null)
                     .setFrom((pageNum-1)*newHouseQuery.getPageSize())
                     .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
