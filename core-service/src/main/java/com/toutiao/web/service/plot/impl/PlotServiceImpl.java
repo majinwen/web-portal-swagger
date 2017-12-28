@@ -7,12 +7,15 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
+import com.toutiao.web.dao.entity.officeweb.PlotRatio;
+import com.toutiao.web.dao.mapper.officeweb.PlotRatioMapper;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -33,7 +36,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +55,8 @@ public class PlotServiceImpl implements PlotService {
 
     @Autowired
     private ESClientTools esClientTools;
-
+    @Autowired
+    private PlotRatioMapper plotRatioMapper;
 
     @Override
     public List GetNearByhHouseAndDistance(double lat, double lon) {
@@ -111,13 +117,34 @@ public class PlotServiceImpl implements PlotService {
             String key = null;
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //默认查询均格大于零
+            if (villageRequest.getAvgPrice()==null){
+                villageRequest.setAvgPrice("0,10000000");
+            }else {
+                villageRequest.setAvgPrice("0,10000000,"+villageRequest.getAvgPrice());
+            }
             //小区ID
             if (villageRequest.getId() != null) {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
             }
             //小区名称
             if (villageRequest.getRc() != null) {
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
+//                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
+                AnalyzeResponse response = esClientTools.init().admin().indices()
+                        .prepareAnalyze(villageRequest.getRc())//内容
+                        .setAnalyzer("ik_smart")//指定分词器3`3
+                        .execute().actionGet();//执行
+                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+                for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                    queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.fuzzyQuery("rc", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
+                            .should(QueryBuilders.fuzzyQuery("tradingArea", analyzeToken.getTerm()));
+
+                    queryBuilder = boolQueryBuilder.should(queryBuilder);
+                }
+
+
             }
             //区域编号
             if (villageRequest.getDistrictId() != null) {
@@ -176,7 +203,8 @@ public class PlotServiceImpl implements PlotService {
 
             //面积
             if (StringUtil.isNotNullString(villageRequest.getHouseAreaSize())) {
-                String[] houseAreaSize = villageRequest.getHouseAreaSize().split(",");
+                String area = villageRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String[] houseAreaSize = area.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 for (int i = 0; i < houseAreaSize.length; i = i + 2) {
                     if (i + 1 > houseAreaSize.length) {
@@ -188,13 +216,17 @@ public class PlotServiceImpl implements PlotService {
                 }
             }
             //楼龄
-            if (villageRequest.getBeginAge() != null && villageRequest.getBeginAge().length() != 0&&villageRequest.getEndAge()!= null && villageRequest.getEndAge().length() != 0  ) {
+            if (StringUtil.isNotNullString(villageRequest.getAge())) {
+                String age = villageRequest.getAge().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String[] Age = age.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 //                for (int i = 0; i < Age.length; i = i + 2) {
 //                    if (i + 1 > Age.length) {
 //                        break;
 //                    }
-                    BoolQueryBuilder Age1 = booleanQueryBuilder.should(QueryBuilders.rangeQuery("age").gt(villageRequest.getBeginAge()).lte(villageRequest.getEndAge()));
+                    BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
+                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(Age[1]))))
+                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(Age[0])))));
                     queryBuilder = boolQueryBuilder.must(Age1);
 //                }
             }
@@ -237,11 +269,11 @@ public class PlotServiceImpl implements PlotService {
             }
             //排序
             //均价
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("2")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
                 srb.addSort("avgPrice", SortOrder.ASC);
             }
 
-            if (villageRequest.getAvgPrice() != null && villageRequest.getAvgPrice().equals("1")) {
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
 
@@ -268,6 +300,19 @@ public class PlotServiceImpl implements PlotService {
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
                     instance.setKey(key);
+                    if ("商电".equals(instance.getElectricSupply())){
+                        instance.setElectricFee("1.33");
+                    }else {
+                        instance.setElectricFee("0.48");
+                    }
+                    if ("商水".equals(instance.getWaterSupply())){
+                        instance.setWaterFee("6");
+                    }else {
+                        instance.setWaterFee("5");
+                    }
+                    PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                    instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                    instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                     houseList.add(instance);
 //            System.out.println(instance);
                 }

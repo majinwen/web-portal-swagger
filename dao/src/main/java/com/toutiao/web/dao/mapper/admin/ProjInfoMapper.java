@@ -4,7 +4,7 @@ package com.toutiao.web.dao.mapper.admin;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.admin.ProjInfo;
-import com.toutiao.web.domain.query.HousingProjectQuery;
+//import com.toutiao.web.domain.query.HousingProjectQuery;
 
 import java.util.List;
 
@@ -26,6 +26,6 @@ public interface ProjInfoMapper extends BaseDao {
      * @param query
      * @return
      */
-    List<ProjInfo> selectProjInfoList(HousingProjectQuery query);
+    //List<ProjInfo> selectProjInfoList(HousingProjectQuery query);
 
 }

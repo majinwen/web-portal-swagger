@@ -4,6 +4,8 @@ package com.toutiao.web.apiimpl.impl.projhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.RegexUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
@@ -19,10 +21,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 二手房管理
@@ -47,14 +52,18 @@ public class ProjHouseInfoController {
      * @date 2017/12/15 11:06
      */
     @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}")
-    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") Integer houseId) {
+    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
+        //判断传递的二手房id是否是数字
+        if (!RegexUtils.checkIsNum(houseId)) {
+            return "404";
+        }
         //房源详情
-        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(houseId);
-        if (StringTool.isNotEmpty(houseDetails)) {
+        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
+        if (StringTool.isNotBlank(houseDetails)) {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(),Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }
@@ -63,6 +72,9 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+        } else {
+            //跳转到404页
+            return "404";
         }
 
         return "esf/esf-detail";
@@ -70,27 +82,46 @@ public class ProjHouseInfoController {
 
     /**
      * 二手房配套地图
+     *
      * @return
      */
     @RequestMapping("/getProjHouseMapDetail")
-    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model){
+    public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
-
-
+        //判断传递的小区id是否是数字
+        if (!RegexUtils.checkIsNum(projHouseInfoQuery.getNewcode())) {
+            return "404";
+        }
         List list = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
-
-        if (list!=null &&list.size()!=0) {
+        if (list != null && list.size() > 0) {
             ProjHouseInfoResponse build = (ProjHouseInfoResponse) list.get(0);
             build.setLocation(build.getHousePlotLocation());
-
             model.addAttribute("build", build);
+            return "map";
         }
+        ProjHouseInfoResponse build = new ProjHouseInfoResponse();
+        build.setNewcode(Integer.valueOf(projHouseInfoQuery.getNewcode()));
+        build.setLocation("39.913329,116.382001");
+
+        model.addAttribute("build", build);
+
         return "map";
 
     }
 
 
+    /**
+     * 功能描述：二手房分页
+     */
+    @RequestMapping("/esfHousePageSearch")
+    @ResponseBody
+    public NashResult esfHousePageSearch(ProjHouseInfoQuery projHouseInfoQuery) {
 
+        List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+
+        return NashResult.build(builds);
+
+    }
 
     /**
      * 功能描述：二手房列表
@@ -103,8 +134,6 @@ public class ProjHouseInfoController {
      */
     @RequestMapping("/findProjHouseInfo")
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
-
-
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {
@@ -115,10 +144,11 @@ public class ProjHouseInfoController {
         } else {
             model.addAttribute("sort", 0);
         }
-        model.addAttribute("searchType", "projhouse");
+//        model.addAttribute("searchType", "projhouse");
         return "esf/esf-list";
 
     }
+
 
     /**
      * 功能描述：往es服务器中插入数据
@@ -154,12 +184,12 @@ public class ProjHouseInfoController {
 
             model.addAttribute("builds", queryBySearchBox);
             model.addAttribute("text", text);
-            model.addAttribute("searchType", "projhouse");
+//            model.addAttribute("searchType", "projhouse");
 
         } else {
             model.addAttribute("message", "没有该相应的数据信息");
             model.addAttribute("text", text);
-            model.addAttribute("searchType", "projhouse");
+//            model.addAttribute("searchType", "projhouse");
         }
         return "esf/esf-list";
     }

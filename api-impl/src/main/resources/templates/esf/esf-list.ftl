@@ -26,15 +26,12 @@
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -73,7 +70,7 @@
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
                 <dl>
-                    <dt data-type="houseManagementTypeId">物业类型</dt>
+                    <dt data-type="propertyTypeId">物业类型</dt>
                     <dd>
                         <span data-info="1">普通住宅</span>
                         <span data-info="2">公寓</span>
@@ -108,29 +105,29 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseAreaId">面积</dt>
+                    <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
                     <dt data-type="houseYearId">楼龄</dt>
                     <dd>
-                        <span class="only" data-info="0,5">5年内</span>
-                        <span class="only" data-info="0,10">10年内</span>
-                        <span class="only" data-info="0,15">15年内</span>
-                        <span class="only" data-info="0,20">20年内</span>
-                        <span class="only" data-info="20,100">20年以上</span>
+                        <span class="only" data-info="[0-5]">5年内</span>
+                        <span class="only" data-info="[0-10]">10年内</span>
+                        <span class="only" data-info="[0-15]">15年内</span>
+                        <span class="only" data-info="[0-20]">20年内</span>
+                        <span class="only" data-info="[20-120]">20年以上</span>
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="elevator">电梯</dt>
+                    <dt data-type="elevatorFlag">电梯</dt>
                     <dd>
-                        <span data-info="1">有</span>
-                        <span data-info="2">无</span>
+                        <span class="only" data-info="1">有</span>
+                        <span class="only" data-info="2">无</span>
                     </dd>
                 </dl>
                 <dl>
@@ -142,7 +139,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="buildingFeature">权属</dt>
+                    <dt data-type="ownership">权属</dt>
                     <dd>
                         <span data-info="1">已购公房</span>
                         <span data-info="2">商品房</span>
@@ -159,90 +156,85 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
-    <ul>
+    <ul id="valueList">
     <#if builds?exists>
         <#list builds as map>
-            <li>
-                <a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
-                    <div class="clear">
-                        <div class="list-item-img-box">
-                            <#assign item=map['housePhoto']>
-                                <img src="<#if item[0]?exists>${item[0]}</#if>"
-                                     alt="">
-                                <#--<#else >
-                                    <img  src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产">-->
-                        </div>
-                        <div class="list-item-cont">
-                            <h3 class="cont-block-1">${map.houseTitle}</h3>
+            <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <#assign item=map['housePhoto']>
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
+                    </div>
+                    <div class="list-item-cont">
+                        <h3 class="cont-block-1">${map.houseTitle}</h3>
                         <p class="cont-block-2">
                             <#if map.buildArea?exists&&(map.buildArea>0)>
-                                 ${map.buildArea}㎡|
+                                ${map.buildArea}㎡|
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                               ${map.room}室${map.hall}厅|
+                                ${map.room}室${map.hall}厅|
                             </#if>
                             <#if map.forwardName?exists>
-                               ${map.forwardName}|
+                                ${map.forwardName}|
                             </#if>
                             <#if map.plotName?exists>
                                 ${map.plotName}
                             </#if>
-                        </p>
-                            <#if map['subwayDistince']?exists>
-                                <#assign item=map['subwayDistince']>
-                                <#if map['key']?exists>
-                                    <#if item[map['key']]?exists>
-                                        <p class="cont-block-3 distance"><i
-                                                class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
-                                        </p>
-                                    </#if >
-                                <#else >
-                                    <p class="cont-block-3 distance"><i
-                                            class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                        [${map.houseBusinessName}]<#else></#if></p>
-                                </#if>
+                    </p>
+                        <#if map['subwayDistince']?exists>
+                            <#assign item=map['subwayDistince']>
+                            <#if map['key']?exists>
+                                <#if item[map['key']]?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                    </p>
+                                </#if >
                             <#else >
-                                <p class="cont-block-3 distance"><i
-                                        class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
-                            <div class="cont-block-4 house-labelling gray middle">
-                                <#if map['tagsName']?exists>
-                                    <#assign item =map['tagsName']>
-                                    <#list item as itemValue>
-                                        <#if itemValue?exists>
-                                            <span>${itemValue}</span>
-                                        </#if>
-                                    <#else >
-                                    </#list>
+                        <#else >
+                            <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                [${map.houseBusinessName}]<#else></#if></p>
+                        </#if>
+                        <div class="cont-block-4 house-labelling gray middle esf">
+                            <#if map['tagsName']?exists>
+                                <#assign item =map['tagsName']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                        <span>${itemValue}</span>
+                                    </#if>
                                 <#else >
+                                </#list>
+                            <#else >
+                            </#if>
+                        </div>
+                        <div class="cont-block-price">
+                            <em>
+                                <#if map.houseTotalPrices?exists>
+                                    <#if map.houseTotalPrices==0>
+                                    </#if>
+                                <#else>
+                                    ${map.houseTotalPrices}万
                                 </#if>
-                            </div>
-                            <div class="cont-block-price">
-                                <em>
-                                    <#if map.houseTotalPrices?exists>
-                                        <#if map.houseTotalPrices==0>
-                                        </#if>
-                                    <#else>
-                                        ${map.houseTotalPrices}万
+                            </em>
+                            <em>
+                                <#if map.houseUnitCost?exists>
+                                    <#if map.houseUnitCost==0>
                                     </#if>
-                                </em>
-                                <em>
-                                    <#if map.houseUnitCost?exists>
-                                        <#if map.houseUnitCost==0>
-                                        </#if>
-                                        ${map.houseUnitCost}元/㎡
-                                    </#if>
-                                </em>
-                            </div>
+                                    ${map.houseUnitCost}元/㎡
+                                </#if>
+                            </em>
                         </div>
                     </div>
-                </a></li>
+                </div>
+            </a></li>
         </#list>
-    </#if>
-    </ul>
+    </#if></ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -259,7 +251,47 @@
     </ul>
 </div>
 
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<#--<script src="${staticurl}/js/template-web.js"></script>-->
+<#--<script id="listContent" type="text/html">
+    {{each data}}
+    <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
+        <div class="clear">
+            <div class="list-item-img-box">
+                {{if $value.housePhoto != null && $value.housePhoto.length > 0}}
+                    {{each $value.housePhoto as value i}}
+                        <img src="{{value}}" alt="">
+                    {{/each}}
+                {{else}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                {{/if}}
+            </div>
+            <div class="list-item-cont">
+                <h3 class="cont-block-1">新街口西里一区三室二厅二卫</h3>
+                <p class="cont-block-2">
+                    109㎡|
+                    3室2厅|
+                    南北|
+                    新街口西里一区
+                </p>
+                <p class="cont-block-3 distance"><i class="icon"></i>西城
+                    [新街口]</p>
+                <div class="cont-block-4 house-labelling gray middle esf">
+                    <span>近地铁</span>
+                    <span>随时看</span>
+                </div>
+                <div class="cont-block-price">
+                    <em>
+                    </em>
+                    <em>
+                        12元/㎡
+                    </em>
+                </div>
+            </div>
+        </div>
+    </a></li>
+    {{/each}}
+</script>-->
 </body>
 </html>

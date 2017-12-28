@@ -30,14 +30,14 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
-                <i class="index-esf-icon"></i><p>二手房</p>
+            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
+                <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="/findVillageByConditions">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
-                <i class="index-new-icon"></i><p>新房</p>
+            <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
+                <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
@@ -169,13 +169,13 @@
                 </div>
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                 </div>
                 <div class="pr">
@@ -197,13 +197,18 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign item = map['building_imgs']?split(",")>
-                            <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
                         <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if><em><#if map['property_type']?exists>${map['property_type']}<#else>暂无</#if></em></h3>
-                        <p class="cont-block-2 high-light-red">${map['average_price']!'暂无'}/㎡</p>
+                        <#if (map['average_price']?exists && map['average_price'] > 0)>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                        <#else>
+                            <p class="cont-block-2 high-light-red">暂无</p>
+                        </#if>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             ${map['nearsubway']}
@@ -253,13 +258,13 @@
                 </div>
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
                 </div>
                 <div class="pr">
@@ -277,13 +282,18 @@
             <li><a class="list-item" href="/villageDetail?id=${map['id']?c}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${qiniuimage}/${map['photo'][0]!''}" alt="${map['rc']}">
+                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}" alt="${map['rc']}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
                     </div>
                     <div class="list-item-cont">
                         <input type="hidden" value="${map['id']}">
                         <h3 class="cont-block-1">${map['rc']}</h3>
-                        <p class="cont-block-2">2008年建成</p>
-                        <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
+                        <#if map['abbreviatedAge']?exists>
+                            <p class="cont-block-2">${map['abbreviatedAge']}年建成</p>
+                        </#if>
+
+                        <p class="cont-block-3 distance"><i class="icon"></i>${map['area']}-${map['tradingArea']}</p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if (map['label']??)&&(map['label']?size>0)>
                             <#list map['label'] as label>

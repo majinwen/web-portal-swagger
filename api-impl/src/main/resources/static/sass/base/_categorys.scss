@@ -15,6 +15,7 @@ $borderRadiusColor: #999;
     > ul {
         position: relative;
         overflow: hidden;
+        display: -webkit-flex;
         display: flex;
         background-color: $baseWhite;
         border-bottom: 1px solid $borderLineColor;
@@ -109,9 +110,6 @@ $borderRadiusColor: #999;
                         border-left: none;
                     }
                 }
-            }
-            .place-list {
-                min-height: rem(200);
             }
             .type-list {
                 padding-bottom: rem(141);

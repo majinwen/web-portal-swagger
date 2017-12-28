@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 public class MessageSendController {
     @Autowired
     private RedisSession redisSession;
+    @Autowired
+    private SMSUtils smsUtils;
 
     /**
      * 短信发送
@@ -46,7 +48,7 @@ public class MessageSendController {
             }
             String code = StringUtil.randomFourDigits();
             //获取手机号码
-            SendSmsResponse sendSmsResponse = SMSUtils.sendSms(phone, code);
+            SendSmsResponse sendSmsResponse = smsUtils.sendSms(phone, code);
             if (sendSmsResponse.getCode() != null
                     && sendSmsResponse.getCode().equals("OK")) {
                 // 请求成功,将用户的手机号码与短信验证码存入redis缓存中
@@ -55,6 +57,8 @@ public class MessageSendController {
                         RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
                 //记录每次发送一次验证码，缓存中相应的手机号码个数自增长
                 redisSession.incr(phone + RedisNameUtil.separativeSignCount);
+                //设置给手机号登陆次数时间5分钟
+                redisSession.setExpire(phone + RedisNameUtil.separativeSignCount,300);
                 //处理业务后续改一下
                 String phoneCount = redisSession.getValue(phone + RedisNameUtil.separativeSignCount);
                 nashResult = NashResult.build(phoneCount);

@@ -3,7 +3,6 @@ package com.toutiao.web.service.newhouse.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
@@ -105,7 +104,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             keys = newHouseQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if(newHouseQuery.getSubwayLineId()!=null && newHouseQuery.getSubwayStationId()!=0){
+        if(newHouseQuery.getSubwayStationId()!=null && newHouseQuery.getSubwayStationId()!=0){
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseQuery.getSubwayStationId()}));
             keys = keys+"$"+newHouseQuery.getSubwayStationId().toString();
         }
@@ -127,8 +126,9 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         //面积
         if(StringUtil.isNotNullString(newHouseQuery.getHouseAreaSize())){
+            String area = newHouseQuery.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
             BoolQueryBuilder boolQueryBuilder = boolQuery();
-            String[] layoutId = newHouseQuery.getHouseAreaSize().split(",");
+            String[] layoutId = area.split(",");
             for (int i = 0; i < layoutId.length ; i=i+2) {
                 if(i+1>layoutId.length){
                     break;

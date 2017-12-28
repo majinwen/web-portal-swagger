@@ -939,6 +939,7 @@ a.pswp__share--download:hover {
   [data-dpr="3"] .primary-message ul.primary-item > li {
     font-size: 39px; }
   .primary-message ul.primary-item > li ol {
+    display: -webkit-flex;
     display: flex;
     margin: 0 -0.4rem;
     padding: 0.04rem 0; }
@@ -1011,9 +1012,9 @@ a.pswp__share--download:hover {
     display: inline-block;
     margin-bottom: 0.2666666667rem; }
     .module-table-item dd.odd-item {
-      width: 5.2rem; }
+      width: 56%; }
     .module-table-item dd.even-item {
-      width: 3.8666666667rem;
+      width: 41%;
       padding-left: 0.1333333333rem;
       box-sizing: border-box; }
     .module-table-item dd:nth-last-child(2) {
@@ -1161,7 +1162,9 @@ a.pswp__share--download:hover {
     .plot-primary-header p:first-child {
       margin-top: 0; }
   .plot-primary-header .house-labelling {
-    margin-top: 0.48rem; }
+    margin-top: 0.48rem;
+    overflow-x: scroll;
+    text-overflow: clip; }
   .plot-primary-header .plot-primary-map-box {
     position: absolute;
     bottom: 0.7066666667rem;
@@ -1181,8 +1184,11 @@ a.pswp__share--download:hover {
   .expand-content .map-education-box {
     margin-bottom: 0.5333333333rem; }
     .expand-content .map-education-box ul {
+      width: 100%;
       display: flex;
-      justify-content: center; }
+      justify-content: center;
+      white-space: nowrap;
+      overflow-x: scroll; }
       .expand-content .map-education-box ul li {
         position: relative;
         display: inline-block;
@@ -1499,7 +1505,7 @@ a.pswp__share--download:hover {
 .detail-map {
   position: relative;
   display: block;
-  padding: 0.5333333333rem 0; }
+  padding: 0 0 0.5333333333rem; }
   .detail-map img {
     width: 100%;
     height: auto !important; }
@@ -1832,7 +1838,11 @@ a.pswp__share--download:hover {
             .basic-information .column.item-column-two .info-card-item i.item-two-4 {
               background-image: url("/static/images/plot/xfxq_jbxx_icon_kq@3x.png"); } }
       .basic-information .column.item-column-two .info-card-item .info-item-text {
-        display: inline-block; }
+        display: inline-block;
+        width: 2.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
         .basic-information .column.item-column-two .info-card-item .info-item-text p {
           margin-top: 0.1466666667rem;
           margin-bottom: 0.3733333333rem;

@@ -17,32 +17,32 @@ public class IntelligenceQuery {
     /**
      * 首付(起始)
      */
-    private Double beginDownPayment;
+    private Double downPayMent;
 
     /**
      * 月供(起始)
      */
-    private Double beginMonthPayment;
+    private Double monthPayMent;
 
+    //用户填入的页面总价信息
     private Double preconcTotal;
-
     /**
-     * 总价
+     *
      */
-    private Double plotTotal;
+    private Double totalPrice;
     /**
-     * 小区个数
+     * 赛选出来的小区个数
      */
-    private long plotCount;
+    private int plotCount;
     /**
-     * 百分比
+     * 赛选出来的百分比
      */
     private String ratio;
 
     /**
      * 用户选择的户型
      */
-    private Integer categoryId;
+    private Integer layOut;
 
     /**
      * 用户画像类型1,2,3,4,5,6,7
@@ -60,13 +60,24 @@ public class IntelligenceQuery {
     private String schoolTypeName;
 
     /**
-     * 区域的id
+     * 用户传递的区域id
      */
-    private Integer district_Id;
+    private String districtId;
     /**
      * 教育配套标签标记
      */
-    private  int flag=0;
+    private Boolean schoolFlag;
+
+    //医疗配套标签标记
+
+    private Boolean hospitalFlag;
+
+    //是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
+    private Integer hasChild;
+
+    //是否有老人(0-无，1-有)
+    private Integer hasOldman;
+
 
 
 }

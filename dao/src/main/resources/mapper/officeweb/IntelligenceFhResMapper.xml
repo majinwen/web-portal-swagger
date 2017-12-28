@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="fh_result" property="fhResult" jdbcType="OTHER" />
+    <result column="down_payment" property="downPayment" jdbcType="INTEGER" />
+    <result column="month_payment" property="monthPayment" jdbcType="INTEGER" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="total_price" property="totalPrice" jdbcType="INTEGER" />
+    <result column="layout" property="layout" jdbcType="INTEGER" />
+    <result column="has_child" property="hasChild" jdbcType="INTEGER" />
+    <result column="has_oldman" property="hasOldman" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
+    has_child, has_oldman
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from intelligence_fh_res
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--IntelligenceFhRes selectByUserPhone(String userPhone);-->
+  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from intelligence_fh_res
+    where id = #{userPhone,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from intelligence_fh_res
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+    insert into intelligence_fh_res (id, phone, fh_result, 
+      down_payment, month_payment, user_type, 
+      total_price, layout, has_child, 
+      has_oldman)
+    values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{fhResult,jdbcType=OTHER}, 
+      #{downPayment,jdbcType=INTEGER}, #{monthPayment,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
+      #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
+      #{hasOldman,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+    insert into intelligence_fh_res
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="fhResult != null" >
+        fh_result,
+      </if>
+      <if test="downPayment != null" >
+        down_payment,
+      </if>
+      <if test="monthPayment != null" >
+        month_payment,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="layout != null" >
+        layout,
+      </if>
+      <if test="hasChild != null" >
+        has_child,
+      </if>
+      <if test="hasOldman != null" >
+        has_oldman,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fhResult != null" >
+        #{fhResult,jdbcType=OTHER},
+      </if>
+      <if test="downPayment != null" >
+        #{downPayment,jdbcType=INTEGER},
+      </if>
+      <if test="monthPayment != null" >
+        #{monthPayment,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=INTEGER},
+      </if>
+      <if test="layout != null" >
+        #{layout,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null" >
+        #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="hasOldman != null" >
+        #{hasOldman,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+    update intelligence_fh_res
+    <set >
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fhResult != null" >
+        fh_result = #{fhResult,jdbcType=OTHER},
+      </if>
+      <if test="downPayment != null" >
+        down_payment = #{downPayment,jdbcType=INTEGER},
+      </if>
+      <if test="monthPayment != null" >
+        month_payment = #{monthPayment,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        total_price = #{totalPrice,jdbcType=INTEGER},
+      </if>
+      <if test="layout != null" >
+        layout = #{layout,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null" >
+        has_child = #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="hasOldman != null" >
+        has_oldman = #{hasOldman,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+    update intelligence_fh_res
+    set phone = #{phone,jdbcType=VARCHAR},
+      fh_result = #{fhResult,jdbcType=OTHER},
+      down_payment = #{downPayment,jdbcType=INTEGER},
+      month_payment = #{monthPayment,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=INTEGER},
+      layout = #{layout,jdbcType=INTEGER},
+      has_child = #{hasChild,jdbcType=INTEGER},
+      has_oldman = #{hasOldman,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
