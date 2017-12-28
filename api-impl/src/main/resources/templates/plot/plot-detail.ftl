@@ -353,7 +353,7 @@
         </div>
     </section>
 </div>
-<div class="module-bottom-fill">
+<div class="module-bottom-fill" id="hospitalListWrapper">
     <section>
         <div class="module-header-message">
             <h3>医疗配套</h3>
