@@ -246,7 +246,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${village['carPositionRatio']!'暂无'}车位/户</em>
+                        <em>${village['carPositionRatio']!'暂无'}户/车位</em>
                     </div>
                 </div>
             </div>

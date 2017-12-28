@@ -292,8 +292,6 @@ hr {
         width: 0.8rem;
         height: 0.0533333333rem;
         background-color: #e1e1e1; }
-    .type-result-box .results-panel-box #slideContent {
-      display: none; }
     .type-result-box .results-panel-box .results-title {
       position: relative;
       height: 1.0933333333rem;
@@ -381,10 +379,14 @@ hr {
             .type-result-box .results-panel-box .results-panel li i {
               background-image: url("/static/images/map/zbpt_icon_zb_black1@3x.png"); } }
         .type-result-box .results-panel-box .results-panel li p {
+          max-width: 6.1333333333rem;
           vertical-align: middle; }
           .type-result-box .results-panel-box .results-panel li p .content {
             display: block;
-            line-height: 1; }
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; }
             [data-dpr="1"] .type-result-box .results-panel-box .results-panel li p .content {
               font-size: 15px; }
             [data-dpr="2"] .type-result-box .results-panel-box .results-panel li p .content {
