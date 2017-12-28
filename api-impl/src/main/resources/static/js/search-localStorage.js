@@ -1,4 +1,5 @@
 $(function(){
+    var houseTypeChoose = $('.type-menu').find('span.current').index();
 
     if ($('.type-tab-box').hasClass('none')) {
         $('.searchpage-search-content').addClass('only');
@@ -13,12 +14,27 @@ $(function(){
     $('.searchpage-current-item').on('click', function () {
         $('.type-menu-box').show();
     });
+    $('.searchpage-current-item').text($('.type-menu').find('span.current').text());
 
     $('.type-menu').on('click', 'span', function () {
+        houseTypeChoose = $(this).index();
         $(this).addClass('current').siblings().removeClass('current');
         $('.searchpage-current-item').text($(this).text());
+
         $('.type-menu-box').hide();
+        $('#search-container-wrapper').find('.search-container-item').addClass('none');
+        $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
     });
+    $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
+
+    if($('#url')=="/findVillageByConditions"){
+        $('#plot').addClass('current').siblings().removeClass('current');
+    } else  if($('#url')=="/findProjHouseInfo"){
+        $('#erhouse').addClass('current').siblings().removeClass('current');
+    }else  if($('#url')=="/newhouse/searchNewHouse"){
+        $('#nhouse').addClass('current').siblings().removeClass('current');
+    }
+
 
     var hisTime;	// 获取搜索时间数组
     var hisItem;	// 获取搜索内容数组
