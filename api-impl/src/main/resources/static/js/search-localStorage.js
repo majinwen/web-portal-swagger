@@ -93,17 +93,20 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
-            // if($('#url')=="/findVillageByConditions"){
-            //     $('#plot').addClass('current').siblings().removeClass('current');
-            //     location.href='/findVillageByConditions'+$.trim($(this).val())
-            //
-            // } else  if($('#url')=="/findProjHouseInfo"){
-            //     location.href="/queryBySearchBox"+$.trim($(this).val())
-            //     $('#erhouse').addClass('current').siblings().removeClass('current');
-            // }else  if($('#url')=="/newhouse/searchNewHouse"){
-            //     $('#nhouse').addClass('current').siblings().removeClass('current');
-            //     location.href="/newhouse/searchNewHouse"+$.trim($(this).val())
-            // }
+            if($('#url').val()=="/findVillageByConditions"){
+                $('#plot').addClass('current').siblings().removeClass('current');
+                location.href='/findVillageByConditions'+$.trim($(this).val())
+
+            } else  if($('#url').val()=="/findProjHouseInfo"){
+                location.href="/queryBySearchBox"+$.trim($(this).val())
+                $('#erhouse').addClass('current').siblings().removeClass('current');
+            }else  if($('#url').val()=="/newhouse/searchNewHouse"){
+                $('#nhouse').addClass('current').siblings().removeClass('current');
+                location.href="/newhouse/searchNewHouse"+$.trim($(this).val())
+            }else {
+                $('#nhouse').addClass('current').siblings().removeClass('current');
+                location.href="/newhouse/searchNewHouse"+$.trim($(this).val())
+            }
              location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
         }
     }

@@ -53,12 +53,12 @@
                         <a href="javascript:;" class="refresh-icon"></a>
                     </div>
                     <div class="searchpage-hot-recommend clear">
-                        <a href="/queryBySearchBox?text=西悦雅居">西悦雅居</a>
-                        <a href="/queryBySearchBox?text=盛世景湾"">盛世景湾</a>
-                        <a href="/queryBySearchBox?text=艾力枫社"">艾力枫社</a>
-                        <a href="/queryBySearchBox?text=景熙国际"">景熙国际</a>
-                        <a href="/queryBySearchBox?text=紫光别墅"">紫光别墅</a>
-                        <a href="/queryBySearchBox?text=华夏奥韵"">华夏奥韵</a>
+                        <a href="/queryBySearchBox?text=华夏奥韵">华夏奥韵</a>
+                        <a href="/queryBySearchBox?text=英嘉花园">英嘉花园</a>
+                        <a href="/queryBySearchBox?text=金芳公寓">金芳公寓</a>
+                        <a href="/queryBySearchBox?text=盛华苑">盛华苑</a>
+                        <a href="/queryBySearchBox?text=寰太大厦">寰太大厦</a>
+                        <a href="/queryBySearchBox?text=椿树馆小区">椿树馆小区</a>
                     </div>
                 </section>
             </div>
