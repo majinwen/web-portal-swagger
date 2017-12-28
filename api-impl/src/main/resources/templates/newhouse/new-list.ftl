@@ -110,8 +110,8 @@
                         <span data-info="2">在售</span>
                         <span data-info="3">不在售</span>
                         <span data-info="4">出租</span>
-                        <span data-info="4">待租</span>
-                        <span data-info="4">待售</span>
+                        <span data-info="5">待租</span>
+                        <span data-info="6">待售</span>
                     </dd>
                 </dl>
                 <dl>

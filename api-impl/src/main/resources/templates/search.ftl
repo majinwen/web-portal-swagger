@@ -2,7 +2,7 @@
     <header class="searchpage-header">
         <div class="searchpage-search-box">
             <div class="type-tab-box none">
-                <p class="searchpage-current-item"></p>
+                <p class="searchpage-current-item">二手房</p>
                 <div class="type-menu-box">
                     <i class="triangle-top"></i>
                     <div class="type-menu">

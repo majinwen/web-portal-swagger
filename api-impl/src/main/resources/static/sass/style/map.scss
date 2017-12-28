@@ -104,10 +104,6 @@
             }
         }
 
-        #slideContent {
-            display: none;
-        }
-
         .results-title {
             position: relative;
             height: rem(82);
@@ -189,12 +185,14 @@
                 }
 
                 p {
+                    max-width: rem(460);
                     vertical-align: middle;
 
                     .content {
                         display: block;
                         line-height: 1;
                         @include font-dpr(30);
+                        @include text-ellipses;
                     }
                     .line {
                         display: block;

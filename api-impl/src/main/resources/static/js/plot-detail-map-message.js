@@ -152,16 +152,20 @@ function renderDom(data, parentType) {
             $('#shoppintListDom').append(str);
             break;
         case '医疗配套':
-            for (var i = 0; i < data.length; i++) {
-                var index = i + 1;
-                var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
-                str += '<li><p><i class="expand-icon medical-treatment"></i>' +
-                    '<span class=expand-name>' + data[i].name +
-                    '</span></p><span class="expand-distance">' + distances +
-                    '</span></li>';
+            if (data.length <= 0) {
+                $('#hospitalListWrapper').addClass('none');
+            } else {
+                for (var i = 0; i < data.length; i++) {
+                    var index = i + 1;
+                    var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
+                    str += '<li><p><i class="expand-icon medical-treatment"></i>' +
+                        '<span class=expand-name>' + data[i].name +
+                        '</span></p><span class="expand-distance">' + distances +
+                        '</span></li>';
+                }
+                $('#hospitalListDom').empty();
+                $('#hospitalListDom').append(str);
             }
-            $('#hospitalListDom').empty();
-            $('#hospitalListDom').append(str);
             break;
     }
 }
