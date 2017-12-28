@@ -36,7 +36,7 @@
         </#if>
         </ul>
         <div class="banner-title">
-        <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
+            <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
             <div class="swiper-pagination pictrue-index"></div>
         </div>
     </div>
@@ -84,7 +84,6 @@
                 <#list village['label'] as label>
                     <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
                 </#list>
-            <#else><span>暂无</span>
             </#if>
             </div>
         </div>
@@ -390,14 +389,13 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">电费</span>
-                    <#--<#if village['parkingRate']?exists&&village['parkingRate']?number gt 0>-->
                     <#if village['electricFee']?exists>
                         <span class="expand-price">${village['electricFee']}元/度</span>
                     <#else >
                         <span class="expand-price">暂无</span>
                     </#if>
                     </p>
-                <#--<span class="expand-distance tips">居民用电价格范围为1-4元/度</span>-->
+                    <#--<span class="expand-distance tips">居民用电价格范围为1-4元/度</span>-->
                 </li>
                 <li>
                     <p>

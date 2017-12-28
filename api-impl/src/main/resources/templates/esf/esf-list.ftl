@@ -26,15 +26,12 @@
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li id="district-option">区域</li>
-                    <li id="subway-option">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -73,7 +70,7 @@
         <div class="filter-item" data-mark="panel-more">
             <div class="more-list">
                 <dl>
-                    <dt data-type="houseManagementTypeId">物业类型</dt>
+                    <dt data-type="propertyTypeId">物业类型</dt>
                     <dd>
                         <span data-info="1">普通住宅</span>
                         <span data-info="2">公寓</span>
@@ -108,29 +105,29 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="houseAreaId">面积</dt>
+                    <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
                     <dt data-type="houseYearId">楼龄</dt>
                     <dd>
-                        <span class="only" data-info="0,5">5年内</span>
-                        <span class="only" data-info="0,10">10年内</span>
-                        <span class="only" data-info="0,15">15年内</span>
-                        <span class="only" data-info="0,20">20年内</span>
-                        <span class="only" data-info="20,100">20年以上</span>
+                        <span class="only" data-info="[0-5]">5年内</span>
+                        <span class="only" data-info="[0-10]">10年内</span>
+                        <span class="only" data-info="[0-15]">15年内</span>
+                        <span class="only" data-info="[0-20]">20年内</span>
+                        <span class="only" data-info="[20-120]">20年以上</span>
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="elevator">电梯</dt>
+                    <dt data-type="elevatorFlag">电梯</dt>
                     <dd>
-                        <span data-info="1">有</span>
-                        <span data-info="2">无</span>
+                        <span class="only" data-info="1">有</span>
+                        <span class="only" data-info="2">无</span>
                     </dd>
                 </dl>
                 <dl>
@@ -142,7 +139,7 @@
                     </dd>
                 </dl>
                 <dl>
-                    <dt data-type="buildingFeature">权属</dt>
+                    <dt data-type="ownership">权属</dt>
                     <dd>
                         <span data-info="1">已购公房</span>
                         <span data-info="2">商品房</span>
@@ -159,24 +156,36 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
-    <ul><#if builds?exists>
+    <ul id="esfvalueList">
+    <#if builds?exists>
         <#list builds as map>
             <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="<#if map.houseTitle?exists>${map.houseTitle}</#if>">
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">${map.houseTitle}</h3>
-                        <p class="cont-block-2"><#if map.buildArea?exists>${map.buildArea}㎡</#if>
-                        / <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else>暂无</#if>
-                        / <#if map.forwardName?exists>${map.forwardName}<#else>暂无</#if>
-                        / <#if map.plotName?exists>${map.plotName}<#else>暂无</p></#if>
+                        <p class="cont-block-2">
+                            <#if map.buildArea?exists&&(map.buildArea>0)>
+                                ${map.buildArea}㎡|
+                            </#if>
+                            <#if map.room?exists&&map.hall?exists>
+                                ${map.room}室${map.hall}厅|
+                            </#if>
+                            <#if map.forwardName?exists>
+                                ${map.forwardName}|
+                            </#if>
+                            <#if map.plotName?exists>
+                                ${map.plotName}
+                            </#if>
+                    </p>
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
@@ -186,11 +195,11 @@
                                 </#if >
                             <#else >
                                 <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                    [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                    [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
                         <#else >
                             <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                [${map.houseBusinessName}]<#else>暂无</#if></p>
+                                [${map.houseBusinessName}]<#else></#if></p>
                         </#if>
                         <div class="cont-block-4 house-labelling gray middle esf">
                             <#if map['tagsName']?exists>
@@ -242,8 +251,14 @@
     </ul>
 </div>
 
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="esfhousepage" type="text/html">
+
+
+
+ </script>
 </body>
 </html>

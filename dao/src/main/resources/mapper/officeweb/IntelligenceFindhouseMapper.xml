@@ -1186,4 +1186,77 @@
             </if>
         </trim>
     </insert>
+    <!--<sql id="where">-->
+    <!--&lt;!&ndash; ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 &ndash;&gt;-->
+    <!--<where>-->
+    <!--1 = 1-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
+    <!--AND id = #{id}-->
+    <!--</if>-->
+
+
+    <!--</where>-->
+    <!--</sql>-->
+    <!--int queryPlotCount(Double plotTotal);-->
+    <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
+    select count(*) from intelligence_findhouse
+    WHERE
+    <![CDATA[
+        max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
+
+        ]]>
+    </select>
+
+    <!--
+       int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
+    -->
+    <select id="queryPlotCountByCategoryAndPrice" resultType="java.lang.Integer">
+    select count(*) from intelligence_findhouse
+    WHERE
+    <![CDATA[
+         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
+          and layout_range @> {#{categoryId}}
+
+
+        ]]>
+
+    </select>
+    <!--int queryPlotCountByCategoryAndPriceAndDistict(@PathVariable("plotTotal") Double plotTotal,
+      @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);-->
+    <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
+   select count(*) from intelligence_findhouse
+    WHERE
+    <![CDATA[
+         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
+        and layout_range @> {#{categoryId}} and district_id=#{distinctId}
+
+        ]]>
+
+    </select>
+
+
 </mapper>

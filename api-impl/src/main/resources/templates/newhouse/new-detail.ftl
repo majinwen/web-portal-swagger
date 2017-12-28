@@ -155,12 +155,15 @@
                 <li>
                     <a href="#">
                         <div class="picture-box">
-                            <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                            <#if item['layout_img']?exists>
+                                <img src="${qiniuimage}/${item['layout_img']}" alt="户型图">
+                                <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                            </#if>
                             <span class="sale-state">在售</span>
                         </div>
                         <div class="tilelist-content">
                             <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
-                            <h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>
+                            <#--<h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>-->
                             <div class="house-labelling normal small tilelist-tag">
                                 <#if item['layout_tag']??>
                                     <#assign layouttagitem = item['layout_tag']>

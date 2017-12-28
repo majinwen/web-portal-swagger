@@ -25,15 +25,12 @@
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li id="district-option">区域</li>
-                    <li id="subway-option">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -145,9 +142,10 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
-    <ul><#if builds?exists>
+    <ul id="valueList"><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
                 <div class="clear">
@@ -164,7 +162,7 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red">${map['average_price']!0}</em>元/㎡</p>
+                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}</em>元/㎡<#else>暂无</#if></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
@@ -211,9 +209,62 @@
     </#if>
     </ul>
 </div>
-
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js?version=123"></script>
-<script src="${staticurl}/js/list-link.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="newhousepage" type="text/html">
+
+    {{each data}}
+    <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
+        <div class="clear">
+            <div class="list-item-img-box">
+                <img src="<#--${staticurl}-->${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
+            </div>
+            <div class="list-item-cont">
+                <span hidden="hidden">{{$value.building_name_id}}</span>
+                <h3 class="cont-block-1">{{$value.building_name}}
+                    <em>{{$value.property_type}}</em>
+                </h3>
+                <p class="cont-block-2"><em class="high-light-red">
+                    <%if ($value['activity_desc'] != null){%>
+                    {{$value.average_price}}
+                    <%}else{%>
+                      0
+                    <%}%></em>元/㎡</p>
+                <p class="cont-block-3">
+                    {{$value.district_name}}
+                    <%if ($value['house_min_area'] != null) {%>
+                    <%if ($value['house_max_area'] != null) {%>
+                    / {{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                    <%}%>
+                    <%}%>
+                </p>
+                <div class="cont-block-4 house-labelling gray middle">
+                   {{each $value.building_tags}}
+                   <span>{{$value}}</span>
+                   {{/each}}
+                </div>
+                <div class="cont-block-sale">
+                    <em>{{$value.sale_status_name}}</em>
+                </div>
+            </div>
+        </div>
+ <#--   <#if map['activity_desc']?exists>
+        <div class="new-active">
+            <i class="icon"></i><em>活动：</em>
+            <span>${map['activity_desc']}</span>
+        </div>
+    </#if>-->
+        <%if($value['activity_desc'] != null){%>
+        <div class="new-active">
+            <i class="icon"></i><em>活动：</em>
+            <span>{{$value['activity_desc']}}</span>
+        </div>
+        <%}%>
+    </a></li>
+    {{/each}}
+</script>
+
 </body>
 </html>

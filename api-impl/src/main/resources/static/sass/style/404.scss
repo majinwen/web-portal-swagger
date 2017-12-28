@@ -1,0 +1,35 @@
+@import "../base/normalize";
+@import "../base/mixin";
+
+.page-empty {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: 100%;
+    margin-top: rem(-204);
+    text-align: center;
+
+    img {
+        width: rem(165);
+        height: rem(181);
+    }
+
+    p {
+        margin-top: rem(50);
+        color: #666;
+        @include font-dpr(28);
+    }
+
+    a {
+        display: block;
+        width: rem(156);
+        height: rem(52);
+        line-height: rem(50);
+        margin: rem(90) auto 0;
+        color: #0a0724;
+        @include font-dpr(26);
+        border: rem(1) solid #0a0724;
+        -webkit-border-radius: rem(26);
+        border-radius: rem(26);
+    }
+}

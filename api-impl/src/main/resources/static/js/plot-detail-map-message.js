@@ -70,7 +70,6 @@ $(function () {
         success: function (response) {
             if (response.message === 'ok') {
                 if (response.results.length > 0) {
-                    console.log(response.results);
                     var subwayLine = (response.results[0].address).split(';')[0].substring(2);
                     var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
                     $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
