@@ -253,7 +253,6 @@
 
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/list-link.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 
 <script id="esfhousepage" type="text/html">

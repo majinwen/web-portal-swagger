@@ -470,8 +470,8 @@ function joinParams(req) {
  * 列表页分页
  * @param pageNum
  */
-function showNextPage(pageNumn) {
 
+function showNextPage(pageNumn) {
     var paramData = req;
     paramData['pageNum'] = pageNumn;
     params = joinParams(paramData);

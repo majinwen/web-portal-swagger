@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="/newhouse/searchNewHouse">
+    <input id="url" type="hidden"  value="/newhouse/searchNewHouse">
     <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>

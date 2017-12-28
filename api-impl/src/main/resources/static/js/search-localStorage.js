@@ -27,13 +27,22 @@ $(function(){
     });
     $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
 
-    if($('#url')=="/findVillageByConditions"){
+    if(BaseUrl =="/findVillageByConditions"){
         $('#plot').addClass('current').siblings().removeClass('current');
-    } else  if($('#url')=="/findProjHouseInfo"){
+    } else  if(BaseUrl =="/findProjHouseInfo"){
         $('#erhouse').addClass('current').siblings().removeClass('current');
-    }else  if($('#url')=="/newhouse/searchNewHouse"){
+    }else  if(BaseUrl =="/newhouse/searchNewHouse"){
         $('#nhouse').addClass('current').siblings().removeClass('current');
     }
+
+   /* if($('#url').val()=="/findVillageByConditions"){
+        $('#plot').addClass('current').siblings().removeClass('current');
+    } else  if($('#url').val()=="/findProjHouseInfo"){
+        $('#erhouse').addClass('current').siblings().removeClass('current');
+    }else  if($('#url').val()=="/newhouse/searchNewHouse"){
+        $('#nhouse').addClass('current').siblings().removeClass('current');
+    }*/
+
 
 
     var hisTime;	// 获取搜索时间数组
