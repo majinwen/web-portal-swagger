@@ -113,6 +113,13 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchResponse searchresponse = null;
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
+            //关键字搜索
+            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyWord())){
+                booleanQueryBuilder.should(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyWord()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyWord()))
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyWord())));
+            }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", projHouseInfoRequest.getHouseBusinessName()));
@@ -218,8 +225,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
 
             //电梯
-            if (StringTool.isNotEmpty(projHouseInfoRequest.getElevator())) {
-                String[] layoutId = projHouseInfoRequest.getElevator().split(",");
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getElevatorFlag())) {
+                String[] layoutId = projHouseInfoRequest.getElevatorFlag().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("elevator", layoutId));
             }
             //标签(满二，满三，满五)
@@ -414,28 +421,33 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @author zhw
      * @date 2017/12/15 15:07
      */
-    @Override
+    /*@Override
     public List queryBySearchBox(String text) {
         try {
             QueryBuilder queryBuilder = null;
             TransportClient client = esClientTools.init();
-            AnalyzeResponse response = esClientTools.init().admin().indices()
+            *//*AnalyzeResponse response = esClientTools.init().admin().indices()
                     .prepareAnalyze(text)//内容
                     .setAnalyzer("ik_smart")//指定分词器
                     //.setTokenizer("standard")
-                    .execute().actionGet();//执行
-            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+                    .execute().actionGet();//执行*//*
+            *//*List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();*//*
             BoolQueryBuilder ww = QueryBuilders.boolQuery();
-            for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
+            *//*for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
                 queryBuilder = QueryBuilders.boolQuery()
                         .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
                         .should(QueryBuilders.fuzzyQuery("houseBusinessName", analyzeToken.getTerm()))
                         .should(QueryBuilders.fuzzyQuery("plotName", analyzeToken.getTerm()));
                 ww.should(queryBuilder);
-            }
+            }*//*
+            queryBuilder = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery("area", text))
+                    .should(QueryBuilders.matchQuery("houseBusinessName", text))
+                    .should(QueryBuilders.matchQuery("plotName", text));
+            ww.should(queryBuilder);
             SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                     .setQuery(ww)
-                   /* .addSort("houseRank", SortOrder.DESC)*/
+                   *//* .addSort("houseRank", SortOrder.DESC)*//*
                     .setFrom(0)
                     .setSize(10)
                     .execute().actionGet();
@@ -457,7 +469,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             e.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     /**
      * 功能描述：往es中保存数据
@@ -467,7 +479,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @date 2017/12/16 11:10
      * //     * @param [projHouseInfo]
      */
-    @Override
+    /*@Override
     public void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes) {
         TransportClient client = esClientTools.init();
         ProjHouseInfo projHouseInfo = new ProjHouseInfo();
@@ -482,7 +494,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
                 .source(json);
         client.index(indexRequest).actionGet();
-    }
+    }*/
 
 
 }

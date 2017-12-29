@@ -83,19 +83,20 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>暂无</#if></em></p>
+                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>售价待定</#if></em></p>
             </li>
             <li>
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
                            ${build['building_address']!'暂无'}
-                    <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="primary-map-icon"></a>
-                    <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="arrows-right"></a>
+                    <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="primary-map-icon"></a>
+                    <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="arrows-right"></a>
                 </p>
                 <p>
                     交通信息：<#if build['roundstation']?exists>
                         <#assign rounditems = build['roundstation']?split("$")>
-                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${rounditems[2]?number/1000}km</em>
+                        <#assign x = rounditems[2]?number/1000>
+                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${x?string("0.##")}km</em>
                    <#else >暂无
                     </#if>
                 </p>
@@ -132,7 +133,7 @@
     <section>
         <div class="module-header-message">
             <h3>楼盘描述</h3>
-            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
             <dt>开发商：${build['developers']!'暂无'}</dt>
@@ -148,12 +149,12 @@
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
-            <a href="${router_city('/loupan/'+build['building_name_id']+'/huxing?tags=0')}" class="more-arrows">全部户型<i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']+'/huxing.html?tags=0')}" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list layout as item>
                 <li>
-                    <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0">
+                    <a href="${router_city('/loupan/'+build['building_name_id']+'/huxing.html?tags=0')}">
                         <div class="picture-box">
                             <#if item['layout_img']?exists>
                                 <#assign layoutimgs = item['layout_img']?split(",")>
@@ -187,9 +188,9 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="detail-map">
+        <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if build['location']?exists>
                 <#assign locations = build['location']?split(",")>
@@ -217,7 +218,7 @@
     <#if nearbybuild?exists>
     <#list nearbybuild as nearitem>
         <li>
-            <a href="${router_city('/loupan/'+nearitem['building_name_id']?c+'/')}">
+            <a href="${router_city('/loupan/'+nearitem['building_name_id']?c+'.html')}">
                 <div class="picture-box">
                     <#if nearitem['building_imgs']?exists>
                     <#assign imgt = nearitem['building_imgs']?split(",")>

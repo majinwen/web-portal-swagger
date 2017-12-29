@@ -295,5 +295,9 @@ public class ProjHouseInfoResponse {
     private Integer houseHeating;
     //小区坐标
     private String location;
+    /**
+     * 房源标题图片
+     */
+    private String housePhotoTitle;
 
 }

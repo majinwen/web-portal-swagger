@@ -65,7 +65,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
-     * @param model
+     * @param
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/18 18:28
@@ -114,12 +114,19 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
+        intelligenceQuery.setPreconcTotal("450");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
     }
 
-    @RequestMapping("/intelligenceFindHouseByType")
+    /**
+     * 测试
+     *
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
 //        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
@@ -131,6 +138,7 @@ public class IntelligenceFindHouseController {
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         return list;
     }
+
     /**
      * 功能描述：跳转到用户选择户型页面controller
      *

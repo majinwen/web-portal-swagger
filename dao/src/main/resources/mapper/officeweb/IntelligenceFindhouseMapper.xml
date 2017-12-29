@@ -1263,56 +1263,44 @@
 
     <!--</where>-->
     <!--</sql>-->
-    <!--int queryPlotCount(Double plotTotal);-->
-    <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
-    select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-        max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-
-
-
-
-
-
-        ]]>
+    <!--int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);;-->
+    <select id="queryPlotCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from intelligence_findhouse
+        WHERE
+        1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+        </if>
     </select>
 
     <!--
        int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
     -->
-    <select id="queryPlotCountByCategoryAndPrice" resultType="java.lang.Integer">
-    select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-          and layout_range @> {#{categoryId}}
-
-
-
-
-
-
-
-        ]]>
-
+    <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from intelligence_findhouse
+        WHERE 1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null">
+            and layout_range @> ARRAY[#{categoryId}]
+        </if>
     </select>
     <!--int queryPlotCountByCategoryAndPriceAndDistict(@PathVariable("plotTotal") Double plotTotal,
       @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
-   select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-        and layout_range @> {#{categoryId}} and district_id=#{distinctId}
 
-
-
-
-
-
-        ]]>
-
+        select count(*) from intelligence_findhouse
+        WHERE 1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null">
+            and layout_range @> ARRAY[#{categoryId}]
+        </if>
+        <if test="district_id!=null">
+            and district_id=#{distinctId}
+        </if>
     </select>
 
 

@@ -52,7 +52,7 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 11:06
      */
-    @RequestMapping(value = "/{houseId}")
+    @RequestMapping(value = "/{houseId}.html")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
@@ -86,7 +86,7 @@ public class ProjHouseInfoController {
      *
      * @return
      */
-    @RequestMapping("/{newcode}/map") //getProjHouseMapDetail
+    @RequestMapping("/{newcode}/map.html") //getProjHouseMapDetail
     public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
         //判断传递的小区id是否是数字
@@ -109,8 +109,6 @@ public class ProjHouseInfoController {
         return "map";
 
     }
-
-
     /**
      * 功能描述：二手房分页
      */
@@ -123,7 +121,6 @@ public class ProjHouseInfoController {
         return NashResult.build(builds);
 
     }
-
     /**
      * 功能描述：二手房列表
      * <p>
@@ -160,7 +157,7 @@ public class ProjHouseInfoController {
      * @date 2017/12/16 9:46
      * //     * @param [text]
      */
-    @RequestMapping("queryBySearchBox")
+    /*@RequestMapping("queryBySearchBox")
     public String queryHouseInfoBySearchBox(Model model, @RequestParam("text") String text) {
 
         List queryBySearchBox = projHouseInfoService.queryBySearchBox(text);
@@ -177,7 +174,7 @@ public class ProjHouseInfoController {
 //            model.addAttribute("searchType", "projhouse");
         }
         return "esf/esf-list";
-    }
+    }*/
 
 
 }

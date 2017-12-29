@@ -11,7 +11,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/xiaoqu')}">
-    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -145,7 +145,7 @@
     <ul id="valueList">
     <#if villageList?exists>
         <#list villageList as plot>
-            <li><a class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c)}">
+            <li><a class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
@@ -161,27 +161,26 @@
                     <div class="list-item-cont">
                         <h3 class="cont-block-1">
                             <#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></h3>
-                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>
-                            暂无</#if></p>
-                        <#if plot['metroWithPlotsDistance']?exists>
-                            <#assign map = plot['metroWithPlotsDistance']>
-                            <#if plot['key']?exists>
-                                <#if map[plot['key']]?exists>
-                                    <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
+                            <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>暂无</#if></p>
+                            <#if plot['metroWithPlotsDistance']?exists>
+                                <#assign map = plot['metroWithPlotsDistance']>
+                                <#if plot['key']?exists>
+                                    <#if map[plot['key']]?exists>
+                                        <#assign split=map[plot['key']]?split("$")/>
+                                        <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
+                                    <#else>
+                                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
+                                    </#if>
                                 <#else>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
+                                    <#if plot['tradingArea']?exists>
+                                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
+                                    </#if>
                                 </#if>
                             <#else>
                                 <#if plot['tradingArea']?exists>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             </#if>
-                        <#else>
-                            <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
-                            </#if>
-                        </#if>
                         <div class="cont-block-4 house-labelling gray">
                             <#if plot['label']?exists>
                                 <#assign item =  plot['label']>
@@ -218,29 +217,48 @@
     </#if>
     </ul>
 </div>
-
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="/villageDetail?id=11112860">
+    <li><a class="list-item" href="/villageDetail?id={{$value.id}}">
         <div class="clear">
             <div class="list-item-img-box">
-                <img src="http://s1.qn.toutiaofangchan.com/5a230e1e-db21-11e7-98a0-14abc5f0dc77.jpg" alt="宝隆公寓">
+                {{if $value.photo && $value.photo.length > 0}}
+                    <img src="${qiniuimage}/{{$value.photo[0]}}" alt="{{$value.rc}}">
+                {{else}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-1">
-                    宝隆公寓</h3>
-                <p class="cont-block-2 plot">2000年建成</p>
-                <p class="cont-block-3 distance"><i class="icon"></i>丰台-科技园区</p>
+                <h3 class="cont-block-1">{{$value.rc}}</h3>
+                <p class="cont-block-2 plot">{{if $value.abbreviatedAge}}{{$value.abbreviatedAge}}建成{{else}}暂无{{/if}}</p>
+                {{if $value.metroWithPlotsDistance || $value.tradingArea}}
+                    <p class="cont-block-3 distance"><i class="icon"></i>
+                        {{if $value.metroWithPlotsDistance}}
+                            {{if $value.key}}
+                                距离地铁{{$value.metroWithPlotsDistance[$value.key][1]}}[{{$value.metroWithPlotsDistance[$value.key][0]}}] {{$value.metroWithPlotsDistance[$value.key][2]}}m
+                            {{else}}
+                                {{if $value.area}}{{$value.area}}{{else}}暂无{{/if}}-{{if $value.tradingArea}}{{$value.tradingArea}}{{else}}暂无{{/if}}
+                            {{/if}}
+                        {{else if $value.tradingArea}}
+                            {{if $value.area}}{{$value.area}}{{else}}暂无{{/if}}-{{if $value.tradingArea}}{{$value.tradingArea}}{{else}}暂无{{/if}}
+                        {{/if}}
+                    </p>
+                {{else}}
+                    <p class="cont-block-3 distance">暂无</p>
+                {{/if}}
+                {{if $value.label && $value.label.length > 0}}
                 <div class="cont-block-4 house-labelling gray">
-                    <span>近地铁</span>
-                    <span>购物方便</span>
-                    <span>教育配套</span>
+                    {{each $value.label}}
+                        <span>{{$value}}</span>
+                    {{/each}}
                 </div>
+                {{/if}}
                 <div class="cont-block-price plot">
-                    <em>46495元/㎡</em>
+                    <em>{{$value.avgPrice}}元/㎡</em>
                 </div>
             </div>
         </div>

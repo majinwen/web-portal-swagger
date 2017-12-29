@@ -396,7 +396,7 @@ function showOnlyDistrict(districtId) {
         for (var i in districtList) {
 
             if (districtId && districtId == districtList[i].districtId) {
-                str += '<li ' + 'class="current"' + ' onclick="submitDirstrict('+ districtList[i].districtId +',event">'+ districtList[i].name +'</li>';
+                str += '<li ' + 'class="current"' + ' onclick="submitDirstrict('+ districtList[i].districtId +',event)">'+ districtList[i].name +'</li>';
             } else {
                 str += '<li onclick="submitDirstrict('+ districtList[i].districtId +',event)">'+ districtList[i].name +'</li>';
             }
@@ -453,7 +453,7 @@ function submitPlace(e) {
     url = BaseUrl + params;
     tabTextReplace(e, '区域');
     $.get(url, function () {
-        location.href = url;
+        location.replace(url) ;
     })
 }
 
@@ -474,7 +474,7 @@ function submitDirstrict(districtid, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href=url;
+        location.replace(url);
     });
 }
 
@@ -496,7 +496,7 @@ function submitBussiness(districtid, areaId, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href=url;
+        location.replace(url);
     });
 }
 
@@ -549,7 +549,7 @@ function submitSubway(e) {
     url = BaseUrl + params;
     tabTextReplace(e, '地铁');
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 }
 
@@ -605,7 +605,7 @@ function submitSubwayLine(subwayid, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 }
 
@@ -625,7 +625,7 @@ function submitStation(subwayid, subwayStationId, e) {
 
     tabTextReplace(e);
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     });
 }
 
@@ -648,7 +648,7 @@ $('.price-list').on('click', 'li', function (e) {
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -668,7 +668,7 @@ $('.age-list').on('click', 'li', function (e) {
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -701,7 +701,7 @@ $('#typeSubmit').on('click', function (e) {
         params = joinParams(req);
         url = BaseUrl + params;
         $.get(url, function () {
-            location.href = url;
+            location.replace(url);
         });
         return;
     }
@@ -720,7 +720,7 @@ $('#typeSubmit').on('click', function (e) {
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -764,7 +764,7 @@ $('#moreSubmit').on('click', function (e) {
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     });
 });
 /*
@@ -792,7 +792,7 @@ $(function () {
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                pullUpaAction(pageNum);
+                setTimeout(pullUpaAction(pageNum), 1000);
             }
         });
     }
@@ -819,12 +819,12 @@ function pullUpaAction(pageNumber) {
     paramData['pageNum'] = pageNumber;
     params = joinParams(paramData);
 
-    if (BaseUrl == '/newhouse/searchNewHouse') {
-        url ="/newhouse/pageSearchNewHouse" + params;
-    } else if (BaseUrl == '/findProjHouseInfo') {
-        url = '/esfHousePageSearch' + params;
-    } else if (BaseUrl == '/findVillageByConditions'){
-        url ="/villagePage" + params
+    if (BaseUrl.indexOf('/loupan')>0) {
+        url = router_city('/loupan' + params);
+    } else if (BaseUrl.indexOf('/esf')) {
+        url = router_city('/esf' + params);
+    } else if (BaseUrl.indexOf('/xiaoqu')){
+        url = router_city('/xiaoqu') + params
     }
 
     $.ajax({
@@ -834,11 +834,19 @@ function pullUpaAction(pageNumber) {
         async: true,
         dataType:'json',
         success: function (data) {
-            // console.log(data);
-            pageNum += 1;
-            // console.log(pageNum);
-            //获取异步调用的数据
+
             if (data.code == 'success') {
+                pageNum += 1;
+
+                // 二手房列表单价
+                if (BaseUrl == '/findProjHouseInfo') {
+                    var dataCon = data.data.data;
+
+                    for (var i = 0; i < dataCon.length; i++){
+                        var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);
+                        dataCon[i].unitCost = unitCost;
+                    }
+                }
                 var html = template('listContent',data.data);
                 $('#valueList li:last-child').after(html);
             }

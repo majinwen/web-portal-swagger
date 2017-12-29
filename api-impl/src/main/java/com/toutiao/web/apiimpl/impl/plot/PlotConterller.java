@@ -79,7 +79,7 @@ public class PlotConterller {
 
 
     //小区详情页
-    @RequestMapping("/{id}") //villageDetail
+    @RequestMapping("/{id}.html") //villageDetail
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
         if (villageList != null && villageList.size() != 0) {
@@ -94,10 +94,8 @@ public class PlotConterller {
             model.addAttribute("nearvillage", nearvillage);
 
             //走势图
-            PriceTrend priceTrend = new PriceTrend();
-            priceTrend.setBuildingId(village.getId());
-            priceTrend.setPropertyType((short) 0);
-            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(priceTrend);
+
+            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
             model.addAttribute("tradeline", stringListMap);
 
             //月份
@@ -136,7 +134,7 @@ public class PlotConterller {
 //    }
 
     //基本信息
-    @RequestMapping("/{id}/desc")
+    @RequestMapping("/{id}/desc.html")
     public String parameter(VillageRequest villageRequest, Model model) {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
@@ -145,7 +143,7 @@ public class PlotConterller {
     }
 
     //获取小区地图
-    @RequestMapping("/{id}/map")
+    @RequestMapping("/{id}/map.html")
     public String plotMap(VillageRequest villageRequest, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
         VillageResponse village = (VillageResponse) villageList.get(0);
