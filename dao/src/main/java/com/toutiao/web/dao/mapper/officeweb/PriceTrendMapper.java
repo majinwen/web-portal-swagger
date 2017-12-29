@@ -9,4 +9,5 @@ import java.util.List;
 public interface PriceTrendMapper extends BaseDao {
      List<PriceTrend> newhouseTrendList(@Param("buildingId")Integer buildingId, @Param("districtId")Integer districtId, @Param("areaId")Integer areaId);
 
+     List<PriceTrend> searchPriceTrendList(PriceTrend priceTrend);
 }
