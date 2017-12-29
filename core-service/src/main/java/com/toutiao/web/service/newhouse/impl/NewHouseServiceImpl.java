@@ -176,7 +176,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             for(int i=0; i<py.length;i++){
                 BuildingFeature[i] = py[i];
             }
-            booleanQueryBuilder.must(termsQuery("building_feature_id", BuildingFeature));
+            booleanQueryBuilder.must(termsQuery("building_tags_id", BuildingFeature));
 
         }
         //装修
@@ -360,7 +360,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             detailsBuilder.must(QueryBuilders.termQuery("room",tags));
         }
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
-                .setQuery(detailsBuilder)
+                .setQuery(detailsBuilder).setSize(1000)
                 .execute().actionGet();
         SearchHits layouthits = searchresponse1.getHits();
         List<Map<String,Object>> layouts =new ArrayList<>();

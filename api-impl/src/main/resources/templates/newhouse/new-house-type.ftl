@@ -30,10 +30,11 @@
         <div class="house-type-tag">
             <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
             <div class="house-labelling normal">
-                <#if datail['layout_tag']?exists>
+              <#if datail['layout_tag']?exists>
                 <#list datail['layout_tag'] as tag>
-                <span><#if tag?exists>${tag}</#if></span>
-                </#list></#if>
+                   <span><#if tag?exists>${tag}</#if></span>
+                </#list>
+              </#if>
             </div>
         </div>
 
@@ -41,7 +42,7 @@
            <div>
               <#if datail['layout_img']?exists>
                  <#assign layoutimgs = datail['layout_img']?split(",")>
-                    <#list layoutimgs as layoutimg>
+                  <#list layoutimgs as layoutimg>
                          <img src="${qiniuimage}/${layoutimg}" alt="户型图">
                  </#list>
               <#else>
@@ -53,10 +54,14 @@
           <div class="describe-box">
              <div class="describe-header">户型描述</div>
                 <div class="describe-cont">
-                      <#if datail['layout_desc']?exists><p>${datail['layout_desc']}</p><#else><p>暂无描述</p></#if>
-                    <span class="describe-show-btn">>>展开</span>
+                    <#if datail['layout_desc']?exists>
+                        <p>${datail['layout_desc']}</p><span class="describe-show-btn">>>展开</span>
+                    <#else>
+                        <p>暂无描述</p>
+                    </#if>
                 </div>
           </div>
+      </#if>
     </section>
     </#list>
 </#if>
