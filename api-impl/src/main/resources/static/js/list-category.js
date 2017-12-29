@@ -277,7 +277,6 @@ $(function () {
 
             $('dt[data-type="' + optionType + '"]').next('dd').find('span').removeClass('current');
             $.each(moreOptionArray, function (index, item) {
-
                 $('dt[data-type="' + optionType + '"]').next('dd').find('span').each(function () {
                     if (item == $(this).data('info')) {
                         $(this).addClass('current');
@@ -750,6 +749,8 @@ $('#moreSubmit').on('click', function (e) {
                 arr.push($(this).attr('data-info'));
             });
             req[dataType]= arr.join().toString();
+        }else {
+            req[dataType] = null;
         }
     });
 

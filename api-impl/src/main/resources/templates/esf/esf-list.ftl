@@ -293,5 +293,13 @@
     </a></li>
     {{/each}}
 </script>-->
+<script src="${staticurl}/js/template-web.js"></script>
+
+<script id="esfhousepage" type="text/html">
+
+
+
+ </script>
+
 </body>
 </html>

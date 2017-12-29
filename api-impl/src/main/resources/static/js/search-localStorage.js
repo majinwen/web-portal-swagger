@@ -27,6 +27,22 @@ $(function(){
     });
     $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
 
+    if(BaseUrl =="/findVillageByConditions"){
+        $('#plot').addClass('current').siblings().removeClass('current');
+    } else  if(BaseUrl =="/findProjHouseInfo"){
+        $('#erhouse').addClass('current').siblings().removeClass('current');
+    }else  if(BaseUrl =="/newhouse/searchNewHouse"){
+        $('#nhouse').addClass('current').siblings().removeClass('current');
+    }
+
+   /* if($('#url').val()=="/findVillageByConditions"){
+        $('#plot').addClass('current').siblings().removeClass('current');
+    } else  if($('#url').val()=="/findProjHouseInfo"){
+        $('#erhouse').addClass('current').siblings().removeClass('current');
+    }else  if($('#url').val()=="/newhouse/searchNewHouse"){
+        $('#nhouse').addClass('current').siblings().removeClass('current');
+    }*/
+
 
 
 
@@ -55,8 +71,21 @@ $(function(){
 
         $('.searchpage-history').html('');		// 执行init(),清空之前添加的节点
         for (var i = 0; i < hisItem.length; i++) {
-            $('.searchpage-history').append('<a href="#" class="word-break">' + hisItem[i] + '</a>');
+            console.log(BaseUrl)
+            $('.searchpage-history').append('<a href="/#" class="word-break">' + hisItem[i] + '</a>')
         }
+
+      /*  console.log(BaseUrl)
+        if(BaseUrl=="/findVillageByConditions"){
+            $('.searchpage-history').append('<a href="/findVillageByConditions?rc="+hisItem[hisItem.length-1] class="word-break">' + hisItem[hisItem.length-1] + '</a>');
+
+        }else if (BaseUrl=="/newhouse/searchNewHouse"){
+            $('.searchpage-history').append('<a href="/newhouse/searchNewHouse?keywords="+hisItem[hisItem.length-1] class="word-break">' + hisItem[hisItem.length-1] + '</a>')
+        }else if (BaseUrl=="/findProjHouseInfo"){
+            $('.searchpage-history').append('<a href="/queryBySearchBox?text="+hisItem[hisItem.length-1] class="word-break">' + hisItem[hisItem.length-1] + '</a>')
+        }
+*/
+
     }
     
     function sortNumber(a, b) {
@@ -93,21 +122,7 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
-            if($('#url').val()=="/findVillageByConditions"){
-                $('#plot').addClass('current').siblings().removeClass('current');
-                location.href='/findVillageByConditions'+$.trim($(this).val())
-
-            } else  if($('#url').val()=="/findProjHouseInfo"){
-                location.href="/queryBySearchBox"+$.trim($(this).val())
-                $('#erhouse').addClass('current').siblings().removeClass('current');
-            }else  if($('#url').val()=="/newhouse/searchNewHouse"){
-                $('#nhouse').addClass('current').siblings().removeClass('current');
-                location.href="/newhouse/searchNewHouse"+$.trim($(this).val())
-            }else {
-                $('#nhouse').addClass('current').siblings().removeClass('current');
-                location.href="/newhouse/searchNewHouse"+$.trim($(this).val())
-            }
-             location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
+            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
         }
     }
 

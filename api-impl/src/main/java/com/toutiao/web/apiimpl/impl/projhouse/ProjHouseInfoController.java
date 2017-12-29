@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.impl.projhouse;
 
 
+import com.toutiao.web.common.restmodel.NashResult;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.DateUtil;
