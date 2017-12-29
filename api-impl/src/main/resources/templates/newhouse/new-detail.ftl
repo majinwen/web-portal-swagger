@@ -11,6 +11,10 @@
     <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
+<#assign ptCD0 = tradeline['buildingline']>;
+<#assign ptCD1 = tradeline['arealine']>;
+<#assign ptCD2 = tradeline['tradearealine']>;
+<#assign mouthList = tradeline['mouthList']>;
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -199,16 +203,18 @@
         </a>
     </section>
 </div>
+<#if  (mouthList?size>0)>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>价格走势</h3>
         </div>
         <div class="echarts-box">
-            <div class="echarts-content" id="main"></div>
+            <div class="echarts-content" id="newhousetrad"></div>
         </div>
     </section>
 </div>
+</#if>
 <section>
     <div class="module-header-message">
         <h3>看了本楼盘的用户还看了</h3>
@@ -254,12 +260,9 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-    <#assign ptCD0 = tradeline['buildingline']>;
-    <#assign ptCD1 = tradeline['arealine']>;
-    <#assign ptCD2 = tradeline['tradearealine']>;
-    <#assign mouthList = tradeline['mouthList']>;
-    var myChartline = echarts.init(document.getElementById('main'));
+    var myChartline = echarts.init(document.getElementById('newhousetrad'));
     option = {
+        brushLink:null,
         tooltip: {
             trigger: 'axis'
         },
@@ -284,13 +287,13 @@
             {
             name:'楼盘价格',
             type:'line',
-            data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
+            data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
             symbolSize:14,
         },
             {
                 name:'区域价格',
                 type:'line',
-                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
+                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
                 symbolSize:14,
             },
         ]
