@@ -70,19 +70,12 @@ public class NewHouseServiceImpl implements NewHouseService{
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
-            AnalyzeResponse response = esClientTools.init().admin().indices()
-                    .prepareAnalyze(newHouseQuery.getKeywords())//内容
-                    .setAnalyzer("ik_smart")//指定分词器3`3
-                    .execute().actionGet();//执行
-            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
                 queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
-                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
-                        .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
+                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeywords()))
+                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeywords()))
+                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeywords()));
 
-                booleanQueryBuilder.should(queryBuilder);
-            }
+                booleanQueryBuilder.must(queryBuilder);
         }
 
         //城市
@@ -176,7 +169,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             for(int i=0; i<py.length;i++){
                 BuildingFeature[i] = py[i];
             }
-            booleanQueryBuilder.must(termsQuery("building_feature_id", BuildingFeature));
+            booleanQueryBuilder.must(termsQuery("building_tags_id", BuildingFeature));
 
         }
         //装修
@@ -360,7 +353,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             detailsBuilder.must(QueryBuilders.termQuery("room",tags));
         }
         SearchResponse searchresponse1 = client.prepareSearch(newhouseIndex).setTypes(layoutType)
-                .setQuery(detailsBuilder)
+                .setQuery(detailsBuilder).setSize(1000)
                 .execute().actionGet();
         SearchHits layouthits = searchresponse1.getHits();
         List<Map<String,Object>> layouts =new ArrayList<>();

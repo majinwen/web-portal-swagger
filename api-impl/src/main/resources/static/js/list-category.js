@@ -396,7 +396,7 @@ function showOnlyDistrict(districtId) {
         for (var i in districtList) {
 
             if (districtId && districtId == districtList[i].districtId) {
-                str += '<li ' + 'class="current"' + ' onclick="submitDirstrict('+ districtList[i].districtId +',event">'+ districtList[i].name +'</li>';
+                str += '<li ' + 'class="current"' + ' onclick="submitDirstrict('+ districtList[i].districtId +',event)">'+ districtList[i].name +'</li>';
             } else {
                 str += '<li onclick="submitDirstrict('+ districtList[i].districtId +',event)">'+ districtList[i].name +'</li>';
             }
@@ -453,7 +453,7 @@ function submitPlace(e) {
     url = BaseUrl + params;
     tabTextReplace(e, '区域');
     $.get(url, function () {
-        location.href = url;
+        location.replace(url) ;
     })
 }
 
@@ -474,7 +474,7 @@ function submitDirstrict(districtid, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href=url;
+        location.replace(url);
     });
 }
 
@@ -496,7 +496,7 @@ function submitBussiness(districtid, areaId, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href=url;
+        location.replace(url);
     });
 }
 
@@ -549,7 +549,7 @@ function submitSubway(e) {
     url = BaseUrl + params;
     tabTextReplace(e, '地铁');
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 }
 
@@ -605,7 +605,7 @@ function submitSubwayLine(subwayid, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 }
 
@@ -625,7 +625,7 @@ function submitStation(subwayid, subwayStationId, e) {
 
     tabTextReplace(e);
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     });
 }
 
@@ -648,7 +648,7 @@ $('.price-list').on('click', 'li', function (e) {
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -668,7 +668,7 @@ $('.age-list').on('click', 'li', function (e) {
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -701,7 +701,7 @@ $('#typeSubmit').on('click', function (e) {
         params = joinParams(req);
         url = BaseUrl + params;
         $.get(url, function () {
-            location.href = url;
+            location.replace(url);
         });
         return;
     }
@@ -720,7 +720,7 @@ $('#typeSubmit').on('click', function (e) {
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -764,7 +764,7 @@ $('#moreSubmit').on('click', function (e) {
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     });
 });
 /*
@@ -799,15 +799,15 @@ $(function () {
 });
 
 function router_city(urlparam) {
-    urlparam=urlparam||""
-    if(urlparam[0]!='/'){
-        urlparam = '/'+urlparam
+    urlparam = urlparam || ""
+    if(urlparam[0] != '/'){
+        urlparam = '/' + urlparam
     }
     var uri = new URI(window.location.href);
     var segmens = uri.segment();
-    var city="";
+    var city = "";
     if(segmens.length>0){
-        city = "/"+segmens[0]
+        city = "/" + segmens[0]
     }
     return city+urlparam
 }
@@ -819,11 +819,11 @@ function pullUpaAction(pageNumber) {
     paramData['pageNum'] = pageNumber;
     params = joinParams(paramData);
 
-    if (BaseUrl.indexOf('/loupan')>0) {
+    if (BaseUrl.indexOf('/loupan') > 0) {
         url = router_city('/loupan' + params);
-    } else if (BaseUrl.indexOf('/esf')) {
+    } else if (BaseUrl.indexOf('/esf') > 0) {
         url = router_city('/esf' + params);
-    } else if (BaseUrl.indexOf('/xiaoqu')){
+    } else if (BaseUrl.indexOf('/xiaoqu') > 0){
         url = router_city('/xiaoqu') + params
     }
 
@@ -838,7 +838,7 @@ function pullUpaAction(pageNumber) {
                 pageNum += 1;
 
                 // 二手房列表单价
-                if (BaseUrl.indexOf('/esf')) {
+                if (BaseUrl.indexOf('/esf') > 0) {
                     var dataCon = data.data.data;
 
                     for (var i = 0; i < dataCon.length; i++){

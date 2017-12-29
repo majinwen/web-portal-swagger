@@ -1,4 +1,7 @@
 package com.toutiao.web.common.util;
+import lombok.Data;
+import org.springframework.stereotype.Component;
+
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
@@ -17,6 +20,8 @@ import java.util.Map;
  * </pre>
  *
  */
+@Component
+@Data
 public class Ognl {
 	
 	/**
@@ -142,7 +147,7 @@ public class Ognl {
 	
 	/**
 	 * 可以用于判断 Map,Collection,String,Array是否不为空
-	 * @param c
+	 * @param
 	 * @return
 	 */	
 	public static boolean isNotEmpty(Object o) {

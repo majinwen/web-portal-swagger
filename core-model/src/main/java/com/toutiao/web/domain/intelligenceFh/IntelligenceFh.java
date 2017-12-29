@@ -16,15 +16,12 @@ public class IntelligenceFh {
     /**
      * 首付
      */
-    private Double downPayMent;
+    private String downPayMent;
     /**
      * 月供
      */
-    private  Double monthPayMent;
-    /**
-     * 总价
-     */
-    private Double totalPrice;
+    private  String monthPayMent;
+
 
     /**
      * 用户类型(1--自住 刚需,2--自住 改善,3--出租 投资)
@@ -49,7 +46,7 @@ public class IntelligenceFh {
     private Boolean hospitalFlag;
 
     //用户填入的页面总价信息
-    private Double preconcTotal;
+    private String preconcTotal;
 
     /**
      * 户型

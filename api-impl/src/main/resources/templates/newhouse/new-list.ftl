@@ -100,7 +100,7 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
+                        <#--<span data-info="4">砖楼</span>-->
                     </dd>
                 </dl>
                 <dl>
@@ -114,12 +114,13 @@
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
-                        <span data-info="1">别墅</span>
-                        <span data-info="2">花园洋房</span>
-                        <span data-info="3">近地铁</span>
-                        <span data-info="4">车位充足</span>
-                        <span data-info="5">低密度</span>
-                        <span data-info="6">高绿化</span>
+                        <span data-info="1">近地铁</span>
+                        <span data-info="7">车位充足</span>
+                        <span data-info="8">低密度</span>
+                        <span data-info="10">优质物业</span>
+                        <span data-info="11">购物方便</span>
+                        <span data-info="12">教育配套</span>
+                        <span data-info="13">医疗配套</span>
                     </dd>
                 </dl>
                 <dl>
@@ -144,7 +145,7 @@
 <section>
     <ul id="valueList"><#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
@@ -156,14 +157,18 @@
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1"><#if map['building_name']?exists><span class="ellipsis">${map['building_name']}</span><#else>暂无</#if>
-                            <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
+                        <h3 class="cont-block-1">
+                            <span class="ellipsis">${map['building_name']}</span>
+                            <#if map['property_type']?exists>
+                                <em>${map['property_type']}</em>
+                            </#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>暂无</#if></em></p>
+                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>售价待定</#if></em></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
-                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
+                                <#assign x = rounditems[2]?number/1000>
+                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${x?string("0.##")}km
                             <#else>
                                 <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                             </#if>
@@ -172,7 +177,7 @@
                             <#if  map['building_tags']?exists>
                                 <#assign item =  map['building_tags']>
                                 <#list item as itemValue>
-                                    <#if itemValue?exists>
+                                    <#if itemValue?exists && itemValue_index<3>
                                         <span>${itemValue}</span>
                                     </#if>
                                 </#list>
@@ -207,9 +212,7 @@
     </#if>
     </ul>
 </div>
-<script src="${staticurl}/js/main.js?version=123"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+
 <script id="listContent" type="text/html">
 {{each data}}
 <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
@@ -218,7 +221,7 @@
             {{if ($value.building_imgs) != ''}}
                 <img src="${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
             {{else}}
-                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.building_name}}">
             {{/if}}
         </div>
         <div class="list-item-cont">
@@ -232,11 +235,7 @@
                     {{if $value.average_price != null}}
                         {{if $value.average_price != '' && $value.average_price != 0}}
                             {{$value.average_price}}元/㎡
-                        {{else}}
-                            暂无
                         {{/if}}
-                    {{else}}
-                        暂无
                     {{/if}}
                 </em>
             </p>
@@ -249,8 +248,10 @@
                 {{/if}}
             </p>
             <div class="cont-block-4 house-labelling gray middle">
-                {{each $value.building_tags}}
-                    <span>{{$value}}</span>
+                {{each $value.building_tags as tag i}}
+                    {{if i<3}}
+                        <span>{{tag}}</span>
+                    {{/if}}
                 {{/each}}
             </div>
             <div class="cont-block-sale">
@@ -268,4 +269,8 @@
 {{/each}}
 </script>
 </body>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
 </html>

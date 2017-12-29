@@ -8,50 +8,19 @@
     <result column="month" jdbcType="TIMESTAMP" property="month" />
     <result column="price" jdbcType="NUMERIC" property="price" />
   </resultMap>
-  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend">
-    insert into price_trend (building_id, property_type, contrast_d_a,
-      month, price)
-    values (#{buildId,jdbcType=INTEGER}, #{propertyType,jdbcType=SMALLINT}, #{contrastDA,jdbcType=SMALLINT}, 
-      #{month,jdbcType=SMALLINT}, #{price,jdbcType=NUMERIC})
-  </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend">
-    insert into price_trend
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="buildingId != null">
-        building_id,
+  <select id="newhouseTrendList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT * FROM price_trend
+    <where>
+    <if test="buildingId != null" >
+       OR building_id  =#{buildingId}
+    </if>
+    <if test="districtId != null" >
+      OR building_id  =#{districtId}
+    </if>
+      <if test="areaId != null" >
+        OR building_id  =#{areaId}
       </if>
-      <if test="propertyType != null">
-        property_type,
-      </if>
-      <if test="contrastDA != null">
-        contrast_d_a,
-      </if>
-      <if test="month != null">
-        month,
-      </if>
-      <if test="price != null">
-        price,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="buildingId != null">
-        #{buildingId,jdbcType=INTEGER},
-      </if>
-      <if test="propertyType != null">
-        #{propertyType,jdbcType=SMALLINT},
-      </if>
-      <if test="contrastDA != null">
-        #{contrastDA,jdbcType=SMALLINT},
-      </if>
-      <if test="month != null">
-        #{month,jdbcType=SMALLINT},
-      </if>
-      <if test="price != null">
-        #{price,jdbcType=NUMERIC},
-      </if>
-    </trim>
-  </insert>
-  <select id="searchPriceTrendList" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend" resultMap="BaseResultMap">
-           SELECT * FROM price_trend where building_id=#{buildingId,jdbcType=INTEGER} and property_type=#{propertyType,jdbcType=SMALLINT}  and "month" BETWEEN  now() - interval '1 year' AND now() ORDER BY "month"
+    </where>
+    and "month" BETWEEN  now() - interval '1 year' AND now() ORDER BY "month"
   </select>
 </mapper>
