@@ -12,7 +12,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
-    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -162,7 +162,7 @@
     <ul id="valueList">
     <#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item" href="${router_city('/esf/'+map.houseId)}">
+            <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>

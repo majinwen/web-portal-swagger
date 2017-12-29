@@ -52,7 +52,7 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 11:06
      */
-    @RequestMapping(value = "/{houseId}")
+    @RequestMapping(value = "/{houseId}.html")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
@@ -86,7 +86,7 @@ public class ProjHouseInfoController {
      *
      * @return
      */
-    @RequestMapping("/{newcode}/map") //getProjHouseMapDetail
+    @RequestMapping("/{newcode}/map.html") //getProjHouseMapDetail
     public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
         //判断传递的小区id是否是数字
