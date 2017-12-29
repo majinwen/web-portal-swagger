@@ -18,7 +18,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2>${village['rc']!"暂无"}</h2>
-            <p>别名：${village['alias']!"暂无"}</p>
+            <p><#if village['alias']??>别名：${village['alias']}</#if>&nbsp;</p>
             <div class="primary-header-tag house-labelling gray">
                 <#if village['label']?exists>
                      <#assign labels = village['label']>
@@ -96,15 +96,15 @@
         </li>
     </ul>
 </section>
-<div class="detail-contact-wrapper">
+<#--<div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <#--<a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>-->
+            &lt;#&ndash;<a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>&ndash;&gt;
             <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
-</div>
+</div>-->
 
 <script src="${staticurl}/js/main.js"></script>
 </body>

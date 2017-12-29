@@ -6,9 +6,9 @@
                 <div class="type-menu-box">
                     <i class="triangle-top"></i>
                     <div class="type-menu">
-                        <span id = "nhouse" data-value="/newhouse/searchNewHouse?keywords=">新房</span>
+                        <span id = "nhouse" data-value="${router_city('/loupan')}?keywords=">新房</span>
                         <span id ="erhouse" data-value="/queryBySearchBox?text=" class="current">二手房</span>
-                        <span id = "plot" data-value="/findVillageByConditions?rc=">小区</span>
+                        <span id = "plot" data-value="${router_city('/xiaoqu')}?rc=">小区</span>
                     </div>
                 </div>
             </div>
@@ -78,12 +78,12 @@
                         <a href="javascript:;" class="refresh-icon"></a>
                     </div>
                     <div class="searchpage-hot-recommend clear">
-                        <a href="/findVillageByConditions?rc=华夏奥韵">华夏奥韵</a>
-                        <a href="/findVillageByConditions?rc=英嘉花园">英嘉花园</a>
-                        <a href="/findVillageByConditions?rc=金芳公寓">金芳公寓</a>
-                        <a href="/findVillageByConditions?rc=盛华苑">盛华苑</a>
-                        <a href="/findVillageByConditions?rc=寰太大厦">寰太大厦</a>
-                        <a href="/findVillageByConditions?rc=椿树馆小区">椿树馆小区</a>
+                        <a href="/bj/xiaoqu?rc=华夏奥韵">华夏奥韵</a>
+                        <a href="/bj/xiaoqu?rc=英嘉花园">英嘉花园</a>
+                        <a href="/bj/xiaoqu?rc=金芳公寓">金芳公寓</a>
+                        <a href="/bj/xiaoqu?rc=盛华苑">盛华苑</a>
+                        <a href="/bj/xiaoqu?rc=寰太大厦">寰太大厦</a>
+                        <a href="/bj/xiaoqu?rc=椿树馆小区">椿树馆小区</a>
                     </div>
                 </section>
             </div>

@@ -11,18 +11,18 @@
 <body>
 <div class="module-bottom-fill">
     <div class="house-type-state">
-        <span  data-id="0"  data-bid="${bid}" <#if tags==0>class="current"</#if>>全部（${roomcount}）</span>
+        <span  data-id="0"  data-bid="${bid}" class="current">全部（${roomcount}）</span>
     <#if room?exists>
     <#list room as roomnode>
         <#assign roomid=roomnode['room']>
-        <span data-bid="${bid}" <#if tags==roomid>class="current"</#if> data-id="${roomid}">${roomid}居（${roomnode['count']}）</span>
+        <span data-bid="${bid}"  data-id="${roomid}">${roomid}居（${roomnode['count']}）</span>
     </#list>
     </#if>
     </div>
 </div>
-<div class="module-bottom-fill"><#if layoutDetails?exists>
+<div id="all-type" class="module-bottom-fill"><#if layoutDetails?exists>
     <#list layoutDetails as datail>
-        <section>
+        <section class="room${datail['room']}">
         <div class="house-type-header">
             <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['building_area']}㎡</p>
         </div>
@@ -35,30 +35,30 @@
                 </#list></#if>
             </div>
         </div>
+
         <div class="house-type-image">
-            <div>
-                <#if datail['layout_img']?exists>
-                    <img src="${qiniuimage}/${datail['layout_img']}" alt="户型图">
-                <#else><img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
-                </#if>
-                <#--<img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">-->
-                <span class="sale-state">
-                    <#--<#if datail['is_sale']?exists&&datail['is_sale']!'在售'>-->
-                    <#---->
-                    <#--</#if>-->
-                    ${datail['is_sale']!'在售'}
-                </span>
-            </div>
+           <div>
+              <#if datail['layout_img']?exists>
+                 <#assign layoutimgs = datail['layout_img']?split(",")>
+                    <#list layoutimgs as layoutimg>
+                         <img src="${qiniuimage}/${layoutimg}" alt="户型图">
+                 </#list>
+              <#else>
+                         <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
+              </#if>
+                         <span class="sale-state">${datail['is_sale']!'在售'}</span>
+           </div>
         </div>
-        <div class="describe-box">
-            <div class="describe-header">户型描述</div>
-            <div class="describe-cont">
-                <#if datail['layout_desc']?exists>
-                    <p>  ${datail['layout_desc']}</p>
-                  <span class="describe-show-btn">>>展开</span>
-            </#if>
-            </div>
-        </div>
+
+      <#if datail['layout_desc']?exists>
+          <div class="describe-box">
+             <div class="describe-header">户型描述</div>
+                <div class="describe-cont">
+                      <p>  ${datail['layout_desc']}</p>
+                    <span class="describe-show-btn">>>展开</span>
+                </div>
+          </div>
+      </#if>
     </section>
     </#list>
 </#if></div>

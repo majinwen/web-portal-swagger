@@ -18,7 +18,7 @@ $(function () {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
-                    if ((BaseUrl.indexOf('newhouse')) > 0) {
+                    if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                         showOnlyDistrict(req['districtId']);
                     } else {
                         showDistrict(req['districtId'], req['areaId']);
@@ -29,7 +29,7 @@ $(function () {
                 }
             } else {
                 $('#district-option').addClass('current');
-                if ((BaseUrl.indexOf('newhouse')) > 0) {
+                if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                     showOnlyDistrict();
                 } else {
                     showDistrict();
@@ -49,7 +49,7 @@ $(function () {
     $('#level1').on('click', 'li', function () {
         $(this).addClass('current').siblings().removeClass('current');
         if ($(this).attr('id') == 'district-option') {
-            if ((BaseUrl.indexOf('newhouse')) > 0) {
+            if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                 showOnlyDistrict();
             } else {
                 showDistrict();
@@ -277,7 +277,6 @@ $(function () {
 
             $('dt[data-type="' + optionType + '"]').next('dd').find('span').removeClass('current');
             $.each(moreOptionArray, function (index, item) {
-
                 $('dt[data-type="' + optionType + '"]').next('dd').find('span').each(function () {
                     if (item == $(this).data('info')) {
                         $(this).addClass('current');
@@ -750,6 +749,8 @@ $('#moreSubmit').on('click', function (e) {
                 arr.push($(this).attr('data-info'));
             });
             req[dataType]= arr.join().toString();
+        }else {
+            req[dataType] = null;
         }
     });
 
@@ -791,12 +792,27 @@ $(function () {
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                setTimeout(pullUpaAction(pageNum), 1000);
-                // pullUpaAction(pageNum);
+                pullUpaAction(pageNum);
             }
         });
     }
 });
+
+function router_city(urlparam) {
+    urlparam=urlparam||""
+    if(urlparam[0]!='/'){
+        urlparam = '/'+urlparam
+    }
+    var uri = new URI(window.location.href);
+    var segmens = uri.segment();
+    var city="";
+    if(segmens.length>0){
+        city = "/"+segmens[0]
+    }
+    return city+urlparam
+}
+
+
 
 function pullUpaAction(pageNumber) {
     var paramData = req;
@@ -804,33 +820,25 @@ function pullUpaAction(pageNumber) {
     params = joinParams(paramData);
 
     if (BaseUrl == '/newhouse/searchNewHouse') {
-        url = '/newhouse/pageSearchNewHouse' + params;
+        url ="/newhouse/pageSearchNewHouse" + params;
     } else if (BaseUrl == '/findProjHouseInfo') {
         url = '/esfHousePageSearch' + params;
     } else if (BaseUrl == '/findVillageByConditions'){
-        url = '/villagePage' + params
+        url ="/villagePage" + params
     }
 
     $.ajax({
-        type: "post",
+        type: "get",
+        contentType:'application/json',
         url: url,
         async: true,
+        dataType:'json',
         success: function (data) {
-            console.log(data);
-
+            // console.log(data);
+            pageNum += 1;
+            // console.log(pageNum);
             //获取异步调用的数据
             if (data.code == 'success') {
-                pageNum += 1;
-
-                // 二手房列表单价
-                /*if (BaseUrl == '/findProjHouseInfo') {
-                    var dataCon = data.data.data;
-                    for (var i = 0; i < dataCon.length; i++){
-                        var UnitCost = (dataCon[i].houseTotalPrices / dataCon[i].buildArea).toFixed(3) * 1000;
-                    }
-                    console.log(dataCon);
-                }*/
-
                 var html = template('listContent',data.data);
                 $('#valueList li:last-child').after(html);
             }
