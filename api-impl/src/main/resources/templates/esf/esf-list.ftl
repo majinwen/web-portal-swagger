@@ -166,7 +166,7 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseBusinessName}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
@@ -214,21 +214,14 @@
                             </#if>
                         </div>
                         <div class="cont-block-price">
-                            <em>
-                                <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0>
-                                    </#if>
-                                <#else>
-                                    ${map.houseTotalPrices}万
+                            <#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>
+                                <em>${map.houseTotalPrices}万</em>
+                            </#if>
+                            <#if map.houseTotalPrices?exists && map.buildArea?exists>
+                                <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
+                                    <span>${(map.houseTotalPrices / map.buildArea)?number * 10000}元/㎡</span>
                                 </#if>
-                            </em>
-                            <em>
-                                <#if map.houseUnitCost?exists>
-                                    <#if map.houseUnitCost==0>
-                                    </#if>
-                                    ${map.houseUnitCost}元/㎡
-                                </#if>
-                            </em>
+                            </#if>
                         </div>
                     </div>
                 </div>
@@ -253,53 +246,64 @@
 
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
-<#--<script src="${staticurl}/js/template-web.js"></script>-->
-<#--<script id="listContent" type="text/html">
+<script src="${staticurl}/js/template-web.js"></script>
+<script id="listContent" type="text/html">
     {{each data}}
     <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
         <div class="clear">
             <div class="list-item-img-box">
-                {{if $value.housePhoto != null && $value.housePhoto.length > 0}}
-                    {{each $value.housePhoto as value i}}
-                        <img src="{{value}}" alt="">
-                    {{/each}}
+                {{if $value.housePhoto && $value.housePhoto.length > 0}}
+                    <img src="{{$value.housePhoto[0]}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-1">新街口西里一区三室二厅二卫</h3>
+                <h3 class="cont-block-1">{{$value.houseTitle}}</h3>
                 <p class="cont-block-2">
-                    109㎡|
-                    3室2厅|
-                    南北|
-                    新街口西里一区
+                    {{if $value.buildArea && $value.buildArea > 0}}
+                        {{$value.buildArea}}㎡
+                    {{/if}}
+                    {{if $value.room && $value.hall}}
+                        / {{$value.room}}室{{$value.hall}}厅
+                    {{/if}}
+                    {{if $value.forwardName}}
+                        / {{$value.forwardName}}
+                    {{/if}}
+                    {{if $value.plotName}}
+                        / {{$value.plotName}}
+                    {{/if}}
                 </p>
-                <p class="cont-block-3 distance"><i class="icon"></i>西城
-                    [新街口]</p>
+                <p class="cont-block-3 distance">
+                    <i class="icon"></i>
+                    {{if $value.area && $value.houseBusinessName}}
+                        {{$value.area}} [{{$value.houseBusinessName}}]
+                    {{/if}}
+                </p>
                 <div class="cont-block-4 house-labelling gray middle esf">
-                    <span>近地铁</span>
-                    <span>随时看</span>
+                    {{if $value.tagsName}}
+                        {{each $value.tagsName value index}}
+                            <span>{{value}}</span>
+                        {{/each}}
+                    {{/if}}
                 </div>
                 <div class="cont-block-price">
-                    <em>
-                    </em>
-                    <em>
-                        12元/㎡
-                    </em>
+                    {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
+                        <em>{{$value.houseTotalPrices}}万</em>
+                    {{/if}}
+                    {{if $value.houseTotalPrices && $value.buildArea}}
+                        {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
+                            <span>{{$value.unitCost}}元/㎡</span>
+                        {{/if}}
+                    {{/if}}
                 </div>
             </div>
         </div>
     </a></li>
     {{/each}}
-</script>-->
-<script src="${staticurl}/js/template-web.js"></script>
+</script>
+<script>
 
-<script id="esfhousepage" type="text/html">
-
-
-
- </script>
-
+</script>
 </body>
 </html>

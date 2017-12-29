@@ -193,6 +193,7 @@
             </a></li>
         </#list>
     </#if></ul>
+    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
@@ -230,7 +231,7 @@
             <p class="cont-block-2">
                 <em class="high-light-red">
                     {{if $value.average_price != null}}
-                        {{if $value.average_price != 0}}
+                        {{if $value.average_price != '' && $value.average_price != 0}}
                             {{$value.average_price}}元/㎡
                         {{else}}
                             暂无
