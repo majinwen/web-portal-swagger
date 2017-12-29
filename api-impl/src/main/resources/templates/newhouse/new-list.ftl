@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="/newhouse/searchNewHouse">
+    <input id="url" type="hidden" value="${router_city('/loupan')}">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -149,7 +149,7 @@
 <section>
     <ul><#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>

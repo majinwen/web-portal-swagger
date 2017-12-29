@@ -96,14 +96,7 @@ function initphoto(a,i) {
     })).init()
 }
 
-function houseTypeState() {
-    if ($('.house-type-state').length){
-        $('.house-type-state').on('click','span',function () {
-            $(this).addClass('current').siblings().removeClass('current');
-           location.href="/newhouse/getNewHouseLayoutCountByRoom?id="+$(this).data('bid')+"&&tags="+$(this).data('id');
-        });
-    }
-}
+
 
 function textSlider() {
     var scrollDom = $('.text-scroll'),

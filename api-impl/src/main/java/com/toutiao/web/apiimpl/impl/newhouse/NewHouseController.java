@@ -11,13 +11,14 @@ import com.toutiao.web.service.newhouse.NewHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.*;
 
 @Controller
-@RequestMapping("newhouse")
+@RequestMapping("/{citypath}")
 public class NewHouseController {
 
     @Autowired
@@ -29,7 +30,7 @@ public class NewHouseController {
      * 新房首页
      * @return
      */
-    @RequestMapping("/newhouseindex")
+    @RequestMapping("/xinfang")
     public String index(NewHouseQuery newHouseQuery, Model model) {
          newHouseQuery.setSort(0);
          newHouseQuery.setPageNum(1);
@@ -46,7 +47,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/searchNewHouse")
+    @RequestMapping("/loupan")
     public String searchNewHouse(NewHouseQuery newHouseQuery, Model model){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
@@ -79,8 +80,8 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/getNewHouseDetails")
-    public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
+    @RequestMapping("/loupan/{id}")
+    public String getNewHouseDetails(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         PriceTrend priceTrend=new PriceTrend();
         priceTrend.setBuildingId(buildingId);
@@ -122,8 +123,8 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/getNewHouseLayoutCountByRoom")
-    public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
+    @RequestMapping("/loupanhuxing/{loupanid}")
+    public String getNewHouseLayoutCountByRoom(@PathVariable("loupanid") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
         int rs = 0;
@@ -146,8 +147,8 @@ public class NewHouseController {
      * 新房配套地图
      * @return
      */
-    @RequestMapping("/getNewHouseMapDetail")
-    public String getNewHouseMapDetail(@RequestParam("id") Integer buildingId, Model model){
+    @RequestMapping("/loupanmap/{id}")
+    public String getNewHouseMapDetail(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         PriceTrend priceTrend=new PriceTrend();
         priceTrend.setBuildingId(buildingId);

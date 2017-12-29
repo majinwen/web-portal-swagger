@@ -29,13 +29,13 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse ">
+            <div class="banner-nav-item"><a href="${router_city('/loupan')}">
                 <i class="all-buildings"></i><p>全部楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse?saleType=1">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=1')}">
                 <i class="featured-properties"></i><p>在售楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse?saleType=5">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}">
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
             <div class="banner-nav-item"><a href="#">
@@ -139,7 +139,7 @@
             </div>
         </a></li>
     </#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
+        <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
             <div class="clear">
                 <div class="list-item-img-box">
                     <#if map['building_imgs']?exists>

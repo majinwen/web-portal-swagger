@@ -36,7 +36,7 @@
             <div class="banner-nav-item index-nav-item"><a href="/findVillageByConditions">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
+            <div class="banner-nav-item index-nav-item"><a href="/bj/xinfang">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
@@ -192,7 +192,7 @@
                     <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
                 </div>
             </a></li></#if>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>

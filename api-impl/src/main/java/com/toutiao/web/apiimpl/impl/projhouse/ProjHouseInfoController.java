@@ -101,7 +101,7 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 10:59
      */
-    @RequestMapping("/findProjHouseInfo")
+    @RequestMapping("/findProjHouseInfo") //
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
 

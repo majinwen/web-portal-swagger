@@ -90,8 +90,8 @@
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
                            ${build['building_address']!'暂无'}
-                    <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="primary-map-icon"></a>
-                    <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="arrows-right"></a>
+                    <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="primary-map-icon"></a>
+                    <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="arrows-right"></a>
                 </p>
                 <p>
                     交通信息：<#if build['roundstation']?exists>
@@ -149,7 +149,7 @@
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
-            <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0" class="more-arrows">全部户型<i class="arrows-right"></i></a>
+            <a href="${router_city('/loupanhuxing/'+build['building_name_id']+'?tags=0')}" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list layout as item>
@@ -184,9 +184,9 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
+            <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
         </div>
-        <a href="/newhouse/getNewHouseMapDetail?id=${build['building_name_id']?c}" class="detail-map">
+        <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if build['location']?exists>
                 <#assign locations = build['location']?split(",")>
@@ -214,7 +214,7 @@
     <#if nearbybuild?exists>
     <#list nearbybuild as nearitem>
         <li>
-            <a href="/newhouse/getNewHouseDetails?id=${nearitem['building_name_id']?c}">
+            <a href="${router_city('/loupan/'+nearitem['building_name_id']?c+'/')}">
                 <div class="picture-box">
                     <#if nearitem['building_imgs']?exists>
                     <#assign imgt = nearitem['building_imgs']?split(",")>
@@ -368,6 +368,15 @@
         ]
     };
     myChartline.setOption(option);
+
+    function houseTypeState() {
+        if ($('.house-type-state').length){
+            $('.house-type-state').on('click','span',function () {
+                $(this).addClass('current').siblings().removeClass('current');
+                location.href="${router_city('loupanhuxing/')}"+$(this).data('bid')+"?tags="+$(this).data('id');
+            });
+        }
+    }
 </script>
 </body>
 </html>

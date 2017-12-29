@@ -474,7 +474,7 @@
     </div>
     <ul class="tilelist">
     <#list newbuilds as builditem>
-        <li><a href="/newhouse/getNewHouseDetails?id=${builditem['building_name_id']!''}">
+        <li><a href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
             <div class="picture-box">
                 <#assign imglist = builditem['building_imgs']>
                 <#if imglist?exists>
