@@ -274,13 +274,15 @@
                     <#else><a href="#">
                     </#if>
                     <div class="picture-box">
-                        <#if map['housePhotoTitle']?exists>
-                            <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
-                                <img src="${map.housePhotoTitle}" alt="">
+                        <div class="picture-box">
+                            <#if map['housePhotoTitle']?exists>
+                                <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
+                                    <img src="${map.housePhotoTitle}" alt="">
+                                </#if>
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
-                        <#else >
-                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                        </#if>
+                        </div>
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
