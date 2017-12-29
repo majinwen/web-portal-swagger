@@ -25,12 +25,22 @@ $(function () {
 
 function describeAllShow() {
     if ($('.describe-cont').length) {
-        var describeAllContent = $('.describe-cont p').text();
-        $('.describe-cont p').text(describeAllContent.substr(0,56));
-        $('.describe-show-btn').click(function () {
-            $(this).hide();
-            $('.describe-cont p').text(describeAllContent);
+        $('.describe-cont p').each(function () {
+           $(this).data("orig_desc",$(this).text());
+            $(this).text($(this).text().substr(0,56));
+            var p=$(this)
+
+            $(this).siblings('span.describe-show-btn').click(function () {
+                $(this).hide();
+                p.text(p.data("orig_desc"));
+            });
         });
+        // var describeAllContent = $('.describe-cont p').text();
+        // $('.describe-cont p').text(describeAllContent.substr(0,56));
+        // $('.describe-show-btn').click(function () {
+        //     $(this).hide();
+        //     $('.describe-cont p').text(describeAllContent);
+        // });
     }
 }
 

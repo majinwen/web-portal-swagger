@@ -20,7 +20,8 @@
     </#if>
     </div>
 </div>
-<div id="all-type" class="module-bottom-fill"><#if layoutDetails?exists>
+<div id="all-type" class="module-bottom-fill">
+<#if layoutDetails?exists>
     <#list layoutDetails as datail>
         <section class="room${datail['room']}">
         <div class="house-type-header">
@@ -30,9 +31,10 @@
             <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
             <div class="house-labelling normal">
                 <#if datail['layout_tag']?exists>
-                <#list datail['layout_tag'] as tag>
-                  <#if tag?exists> <span>${tag}</span></#if>
-                </#list></#if>
+                    <#list datail['layout_tag'] as tag>
+                        <#if tag?exists> <span>${tag}</span></#if>
+                    </#list>
+                </#if>
             </div>
         </div>
 
@@ -40,7 +42,7 @@
            <div>
               <#if datail['layout_img']?exists>
                  <#assign layoutimgs = datail['layout_img']?split(",")>
-                    <#list layoutimgs as layoutimg>
+                  <#list layoutimgs as layoutimg>
                          <img src="${qiniuimage}/${layoutimg}" alt="户型图">
                  </#list>
               <#else>
@@ -49,16 +51,16 @@
                          <span class="sale-state">${datail['is_sale']!'在售'}</span>
            </div>
         </div>
-
-      <#if datail['layout_desc']?exists>
           <div class="describe-box">
              <div class="describe-header">户型描述</div>
                 <div class="describe-cont">
-                      <p>  ${datail['layout_desc']}</p>
-                    <span class="describe-show-btn">>>展开</span>
+                    <#if datail['layout_desc']?exists>
+                        <p>${datail['layout_desc']}</p><span class="describe-show-btn">>>展开</span>
+                    <#else>
+                        <p>暂无描述</p>
+                    </#if>
                 </div>
           </div>
-      </#if>
     </section>
     </#list>
 </#if></div>
