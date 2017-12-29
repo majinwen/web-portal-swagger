@@ -25,12 +25,22 @@ $(function () {
 
 function describeAllShow() {
     if ($('.describe-cont').length) {
-        var describeAllContent = $('.describe-cont p').text();
-        $('.describe-cont p').text(describeAllContent.substr(0,56));
-        $('.describe-show-btn').click(function () {
-            $(this).hide();
-            $('.describe-cont p').text(describeAllContent);
+        $('.describe-cont p').each(function () {
+           $(this).data("orig_desc",$(this).text());
+            $(this).text($(this).text().substr(0,56));
+            var p=$(this)
+
+            $(this).siblings('span.describe-show-btn').click(function () {
+                $(this).hide();
+                p.text(p.data("orig_desc"));
+            });
         });
+        // var describeAllContent = $('.describe-cont p').text();
+        // $('.describe-cont p').text(describeAllContent.substr(0,56));
+        // $('.describe-show-btn').click(function () {
+        //     $(this).hide();
+        //     $('.describe-cont p').text(describeAllContent);
+        // });
     }
 }
 
@@ -104,7 +114,12 @@ function houseTypeState() {
             $('#all-type').children("section").siblings().hide();
             if($(this).data('id')=="0"){
                 $('#all-type').children("section").siblings().show();
-            }else if ($(this).data('id')=="2"){
+            }else {
+               var roomDom = document.getElementsByClassName("room"+$(this).data('id'));
+               var $roomid = $(roomDom);
+               $roomid.show();
+            }
+            /*else if ($(this).data('id')=="2"){
                 $(".room2").show();
             }else if ($(this).data('id')=="3"){
                 $(".room3").show();
@@ -114,7 +129,7 @@ function houseTypeState() {
                 $(".room5").show();
             }else if ($(this).data('id')=="1"){
                 $(".room1").show();
-            }
+            }*/
 
         });
     }

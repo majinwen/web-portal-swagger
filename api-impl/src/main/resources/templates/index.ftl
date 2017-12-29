@@ -194,7 +194,7 @@
                     <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
                 </div>
             </a></li></#if>
-            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
@@ -281,7 +281,7 @@
             <#elseif map_index==4>
                 <#break>
             </#if>
-            <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c)}">
+            <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}" alt="${map['rc']}">
