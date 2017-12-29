@@ -108,8 +108,6 @@ public class ProjHouseInfoController {
         return "map";
 
     }
-
-
     /**
      * 功能描述：二手房分页
      */
@@ -122,7 +120,6 @@ public class ProjHouseInfoController {
         return NashResult.build(builds);
 
     }
-
     /**
      * 功能描述：二手房列表
      * <p>

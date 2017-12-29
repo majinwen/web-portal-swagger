@@ -17,6 +17,6 @@ public interface ProjHouseInfoService {
 
     /*List queryBySearchBox(String text);*/
 
-    void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes);
+    /*void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes);*/
 
 }

@@ -479,7 +479,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @date 2017/12/16 11:10
      * //     * @param [projHouseInfo]
      */
-    @Override
+    /*@Override
     public void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes) {
         TransportClient client = esClientTools.init();
         ProjHouseInfo projHouseInfo = new ProjHouseInfo();
@@ -494,7 +494,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 .versionType(VersionType.EXTERNAL.versionTypeForReplicationAndRecovery())
                 .source(json);
         client.index(indexRequest).actionGet();
-    }
+    }*/
 
 
 }
