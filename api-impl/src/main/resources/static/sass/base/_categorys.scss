@@ -1,4 +1,3 @@
-$borderLineColor: #ccc;
 $triangleBottomColor: #b1b1b1;
 $borderRadiusColor: #999;
 
@@ -18,7 +17,7 @@ $borderRadiusColor: #999;
         display: -webkit-flex;
         display: flex;
         background-color: $baseWhite;
-        border-bottom: 1px solid $borderLineColor;
+        border-bottom: 1px solid $baseBorderColor;
         z-index: 20;
 
         li {
@@ -103,7 +102,7 @@ $borderRadiusColor: #999;
                     -webkit-flex: 1;
                     flex: 1;
                     max-height: 100%;
-                    border-left: 1px solid $borderLineColor;
+                    border-left: 1px solid $baseBorderColor;
                     overflow-y: auto;
 
                     &:first-child {
@@ -135,8 +134,8 @@ $borderRadiusColor: #999;
                     line-height: rem(80);
                     @include font-dpr(30);
                     color: $baseWhite;
-                    -webkit-border-radius: rem(6);
-                    border-radius: rem(6);
+                    -webkit-border-radius: rem(4);
+                    border-radius: rem(4);
 
                     &.type-submit {
                         width: rem(450);
@@ -164,7 +163,7 @@ $borderRadiusColor: #999;
                 padding-left: rem(30);
                 @include font-dpr(30);
                 line-height: rem(92);
-                border-bottom: 1px solid $borderLineColor;
+                border-bottom: 1px solid $baseBorderColor;
 
                 i {
                     position: absolute;
@@ -199,7 +198,7 @@ $borderRadiusColor: #999;
                     display: flex;
                     flex-wrap: wrap;
                     padding: rem(20) rem(30);
-                    border-bottom: 1px solid $borderLineColor;
+                    border-bottom: 1px solid $baseBorderColor;
 
                     dt {
                         margin-bottom: rem(20);
@@ -221,9 +220,9 @@ $borderRadiusColor: #999;
                             line-height: rem(56);
                             text-align: center;
                             margin: rem(11);
-                            border: rem(1) solid $borderLineColor;
-                            -webkit-border-radius: rem(6);
-                            border-radius: rem(6);
+                            border: rem(1) solid $baseBorderColor;
+                            -webkit-border-radius: rem(4);
+                            border-radius: rem(4);
                             @include box-sizing;
 
                             &.current {

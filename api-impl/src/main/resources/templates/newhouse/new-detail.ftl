@@ -113,8 +113,8 @@
         </ul>
     </section>
 </div>
-<div class="module-bottom-fill">
 <#if build['activity_desc']?exists>
+<div class="module-bottom-fill">
     <div class="active-module-box">
         <a href="tel:1234567" class="active-module-content">
             <p class="active-text"><i class="active-icon"></i><span>最新活动：${build['activity_desc']}</span></p>
@@ -127,8 +127,8 @@
             </div>
         </a>
     </div>
-</#if>
 </div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -144,8 +144,8 @@
         </dl>
     </section>
 </div>
-<div class="module-bottom-fill">
 <#if (layout?exists) && (layout?size>0)>
+<div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
@@ -182,8 +182,8 @@
             </#list>
         </ul>
     </section>
-</#if>
 </div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -255,9 +255,9 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-    <#assign ptCD0 = tradeline['buildingline']>;
-    <#assign ptCD1 = tradeline['arealine']>;
-    <#assign ptCD2 = tradeline['tradearealine']>;
+    <#assign ptCD0 = tradeline['buildingline']>
+    <#assign ptCD1 = tradeline['arealine']>
+    <#assign ptCD2 = tradeline['tradearealine']>
     var myChartline = echarts.init(document.getElementById('main'));
     option = {
         tooltip: {

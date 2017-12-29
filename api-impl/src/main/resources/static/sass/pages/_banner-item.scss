@@ -93,7 +93,7 @@
         position: relative;
         height: rem(34);
         margin-left: rem(150);
-        border-left: 1px solid $borderLineColor;
+        border-left: 1px solid $baseBorderColor;
         overflow: hidden;
 
         ul {
@@ -114,8 +114,8 @@
                     color: $baseRed;
                     vertical-align: top;
                     border: rem(1) solid $baseRed;
-                    -webkit-border-radius: rem(6);
-                            border-radius: rem(6);
+                    -webkit-border-radius: rem(4);
+                            border-radius: rem(4);
                 }
             }
         }

@@ -60,9 +60,8 @@
                 text-align: center;
                 @include font-dpr(30);
                 background-color: $baseRed;
-                -webkit-border-radius: rem(10);
-                -moz-border-radius: rem(10);
-                border-radius: rem(10);
+                -webkit-border-radius: rem(4);
+                border-radius: rem(4);
 
                 &.only {
                     width: 100%;

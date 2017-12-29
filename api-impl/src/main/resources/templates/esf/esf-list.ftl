@@ -159,8 +159,7 @@
     </div>
 </section>
 <section>
-    <ul id="valueList">
-    <#if builds?exists>
+    <#if builds?exists><ul id="valueList">
         <#list builds as map>
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
@@ -173,21 +172,21 @@
                         </#if>
                     </div>
                     <div class="list-item-cont">
-                        <h3 class="cont-block-1">${map.houseTitle}</h3>
+                        <h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>
                         <p class="cont-block-2">
                             <#if map.buildArea?exists&&(map.buildArea>0)>
-                                ${map.buildArea}㎡|
+                                ${map.buildArea}㎡
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                                ${map.room}室${map.hall}厅|
+                                / ${map.room}室${map.hall}厅
                             </#if>
                             <#if map.forwardName?exists>
-                                ${map.forwardName}|
+                                / ${map.forwardName}
                             </#if>
                             <#if map.plotName?exists>
-                                ${map.plotName}
+                                / ${map.plotName}
                             </#if>
-                    </p>
+                        </p>
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
@@ -231,7 +230,7 @@
                 </div>
             </a></li>
         </#list>
-    </#if></ul>
+    </ul></#if>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -306,8 +305,5 @@
     </a></li>
     {{/each}}
 </script>
-<script>
-
- </script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 @import "../base/normalize";
 @import "../base/mixin";
 @import "../base/detail-contact";
-$borderLineColor: #e1e1e1;
 $baseBlack0: #060622;
 
 .house-type-state {
@@ -19,9 +18,8 @@ $baseBlack0: #060622;
         margin-right: rem(15);
         @include font-dpr(24);
         border: 1px solid $baseBlack0;
-        -webkit-border-radius: rem(6);
-        -moz-border-radius: rem(6);
-        border-radius: rem(6);
+        -webkit-border-radius: rem(4);
+        border-radius: rem(4);
 
         &:last-child {
             margin-right: 0;
@@ -37,7 +35,7 @@ $baseBlack0: #060622;
 .house-type-header, .house-type-image {
     padding-left: rem(30);
     padding-right: rem(30);
-    border-top: 1px solid $borderLineColor;
+    border-top: 1px solid $baseBorderColor;
 }
 
 .house-type-header {
@@ -55,7 +53,7 @@ $baseBlack0: #060622;
 
 .house-type-tag {
     padding: rem(30) rem(30) rem(24);
-    border-top: 1px solid $borderLineColor;
+    border-top: 1px solid $baseBorderColor;
 
     p {
         margin-bottom: rem(20);
@@ -88,21 +86,20 @@ $baseBlack0: #060622;
             @include font-dpr(24);
             background-color: $baseRed;
             -webkit-border-radius: rem(27) 0 0 rem(27);
-            -moz-border-radius: rem(27) 0 0 rem(27);
             border-radius: rem(27) 0 0 rem(27);
         }
     }
 }
 
 .describe-box {
-    border-top: 1px solid $borderLineColor;
+    border-top: 1px solid $baseBorderColor;
 
     .describe-header {
         height: rem(90);
         line-height: rem(90);
         padding: 0 rem(30);
         @include font-dpr(30);
-        border-bottom: 1px solid $borderLineColor;
+        border-bottom: 1px solid $baseBorderColor;
     }
 
     .describe-cont {
