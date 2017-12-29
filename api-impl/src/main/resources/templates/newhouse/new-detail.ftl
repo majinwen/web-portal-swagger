@@ -95,7 +95,8 @@
                 <p>
                     交通信息：<#if build['roundstation']?exists>
                         <#assign rounditems = build['roundstation']?split("$")>
-                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${rounditems[2]?number/1000}km</em>
+                        <#assign x = rounditems[2]?number/1000>
+                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${x?string("0.##")}km</em>
                    <#else >暂无
                     </#if>
                 </p>

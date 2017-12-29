@@ -164,7 +164,8 @@
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
-                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
+                                <#assign x = rounditems[2]?number/1000>
+                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${x?string("0.##")}km
                             <#else>
                                 <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                             </#if>
