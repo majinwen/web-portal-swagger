@@ -205,11 +205,11 @@
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                        <h3 class="cont-block-1"><#if map['building_name']?exists>${map['building_name']}<#else>暂无</#if><em><#if map['property_type']?exists>${map['property_type']}<#else>暂无</#if></em></h3>
+                        <h3 class="cont-block-1">
+                            ${map['building_name']}<em><#if map['property_type']?exists>${map['property_type']}</#if></em>
+                        </h3>
                         <#if (map['average_price']?exists && map['average_price'] > 0)>
                             <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
-                        <#else>
-                            <p class="cont-block-2 high-light-red">暂无</p>
                         </#if>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>

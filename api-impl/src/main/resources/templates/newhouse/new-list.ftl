@@ -150,16 +150,25 @@
                         <#if map['building_imgs']?exists>
                             <#assign imgt = map['building_imgs']?split(",")>
                             <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
-                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
                             </#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
-                            <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
+                        <h3 class="cont-block-1">
+                            <span>${map['building_name']}</span>
+                            <#if map['property_type']?exists>
+                                <em>${map['property_type']}</em>
+                            </#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>暂无</#if></em></p>
+                        <p class="cont-block-2">
+                            <em class="high-light-red">
+                                <#if map['average_price']?exists && (map['average_price']>0)>
+                                    ${map['average_price']}元/㎡
+                                </#if>
+                            </em>
+                        </p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
@@ -172,7 +181,7 @@
                             <#if  map['building_tags']?exists>
                                 <#assign item =  map['building_tags']>
                                 <#list item as itemValue>
-                                    <#if itemValue?exists>
+                                    <#if itemValue?exists && itemValue_index<3>
                                         <span>${itemValue}</span>
                                     </#if>
                                 </#list>
@@ -206,9 +215,7 @@
     </#if>
     </ul>
 </div>
-<script src="${staticurl}/js/main.js?version=123"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+
 <script id="listContent" type="text/html">
 {{each data}}
 <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
@@ -217,7 +224,7 @@
             {{if ($value.building_imgs) != ''}}
                 <img src="${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
             {{else}}
-                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.building_name}}">
             {{/if}}
         </div>
         <div class="list-item-cont">
@@ -231,11 +238,7 @@
                     {{if $value.average_price != null}}
                         {{if $value.average_price != 0}}
                             {{$value.average_price}}元/㎡
-                        {{else}}
-                            暂无
                         {{/if}}
-                    {{else}}
-                        暂无
                     {{/if}}
                 </em>
             </p>
@@ -248,8 +251,10 @@
                 {{/if}}
             </p>
             <div class="cont-block-4 house-labelling gray middle">
-                {{each $value.building_tags}}
-                    <span>{{$value}}</span>
+                {{each $value.building_tags as tag i}}
+                    {{if i<3}}
+                        <span>{{tag}}</span>
+                    {{/if}}
                 {{/each}}
             </div>
             <div class="cont-block-sale">
@@ -267,4 +272,8 @@
 {{/each}}
 </script>
 </body>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
 </html>
