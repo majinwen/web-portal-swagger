@@ -814,7 +814,9 @@ function pullUpaAction(pageNumber) {
     $.ajax({
         type: "post",
         url: url,
-        async: true,
+        data: {
+            pageNum: pageNumber
+        },
         success: function (data) {
             console.log(data);
 
