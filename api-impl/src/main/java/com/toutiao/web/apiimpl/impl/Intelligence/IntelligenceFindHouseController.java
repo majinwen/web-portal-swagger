@@ -64,7 +64,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
-     * @param model
+     * @param
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/18 18:28
@@ -130,7 +130,7 @@ public class IntelligenceFindHouseController {
     public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery) {
         /*IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
         intelligenceQuery1.setUserPortrayalType(4);*/
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceTypeTwo(intelligenceQuery);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         return null;
     }
 

@@ -168,9 +168,7 @@
                         <#assign item=map['housePhoto']>
                         <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseBusinessName}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                        <#assign item=map['housePhotoTitle']>
-                        <#if item?? && item != ''><img src="<#if item?exists>${item}</#if>" alt="">
-                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#assign item=map['housePhotoTitle']>
                         </#if>
                     </div>
                     <div class="list-item-cont">
