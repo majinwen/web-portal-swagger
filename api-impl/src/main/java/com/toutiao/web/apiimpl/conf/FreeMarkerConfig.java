@@ -4,6 +4,7 @@ import cn.org.rapid_framework.freemarker.directive.BlockDirective;
 import cn.org.rapid_framework.freemarker.directive.ExtendsDirective;
 import cn.org.rapid_framework.freemarker.directive.OverrideDirective;
 import com.toutiao.web.apiimpl.authentication.GetUserMethod;
+import com.toutiao.web.apiimpl.conf.freemarker.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,8 @@ public class FreeMarkerConfig {
             configuration.setSharedVariable("qiniuimage",qiniuImage);
             configuration.setSharedVariable("staticversion", staticVersion);
             configuration.setSharedVariable("getUser",new GetUserMethod());
+            configuration.setSharedVariable("router_city",new Router());
+
         }
         catch (Exception e){
             logger.error("freemarker 共享变量 staticurl 初始化失败",e);

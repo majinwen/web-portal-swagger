@@ -110,7 +110,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //总价
         if(newHouseQuery.getBeginPrice()!=null && newHouseQuery.getEndPrice()!=0){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseQuery.getBeginPrice()).lte(newHouseQuery.getEndPrice())));
         }
 
         //户型
@@ -166,6 +166,8 @@ public class NewHouseServiceImpl implements NewHouseService{
 //        //销售状态
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
             booleanQueryBuilder.must(termQuery("sale_status_id", newHouseQuery.getSaleType()));
+        }else{
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5}));
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
@@ -245,7 +247,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
-                            null)
+                             null)
                     .setFrom((pageNum-1)*newHouseQuery.getPageSize())
                     .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();

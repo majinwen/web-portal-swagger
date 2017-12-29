@@ -16,15 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/{citypath}/xiaoqu")
 public class PlotConterller {
     @Autowired
     private PlotService plotService;
@@ -35,20 +34,20 @@ public class PlotConterller {
     @Autowired
     private PriceTrendService priceTrendService;
 
-    //(查询附近小区和(距离))
-    @RequestMapping("/fingNearVillageAndDistance")
-    @ResponseBody
-    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
-        List villageList = null;
-        Double lonx = Double.valueOf(lon);
-        Double laty = Double.valueOf(lat);
-        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
-        model.addAttribute("villageList", villageList);
-        return "plot-list";
-    }
+//    //(查询附近小区和(距离))
+//    @RequestMapping("/fingNearVillageAndDistance")
+//    @ResponseBody
+//    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
+//        List villageList = null;
+//        Double lonx = Double.valueOf(lon);
+//        Double laty = Double.valueOf(lat);
+//        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
+//        model.addAttribute("villageList", villageList);
+//        return "plot-list";
+//    }
 
     //根据条件查询小区
-    @RequestMapping("/findVillageByConditions")
+    @RequestMapping("")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         if (villageRequest.getSort() != null) {
             model.addAttribute("sort", Integer.parseInt(villageRequest.getSort()));
@@ -64,33 +63,28 @@ public class PlotConterller {
 
 
     //小区分页
-    @RequestMapping(value = "/villagePage",method = RequestMethod.POST)
+    @RequestMapping(value = {""},produces="application/json") //villagePage
     @ResponseBody
     public NashResult villagePage(VillageRequest villageRequest) {
-        List<VillageResponse> villageList = null;
+        List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
 
-        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
-                for (VillageResponse polt : villageList){
-                    String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
-                    polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
-                }
+        for (int i = 0; i < villageList.size(); i++) {
+            HashMap<String, Object> itemMap = (HashMap<String, Object>) villageList.get(i);
+            String imginfo = (String) itemMap.get("building_imgs");
+            if (StringUtil.isNotNullString(imginfo)) {
+                String[] imgs = imginfo.split(",");
+                itemMap.put("building_imgs", imgs[0]);
+                villageList.set(i, itemMap);
+            }
         }
-//        for (int i = 0; i < villageList.size(); i++) {
-//            HashMap<String, Object> itemMap = (HashMap<String, Object>) villageList.get(i);
-//
-//            String imginfo = (String) itemMap.get("building_imgs");
-//            if (StringUtil.isNotNullString(imginfo)) {
-//                String[] imgs = imginfo.split(",");
-//                itemMap.put("building_imgs", imgs[0]);
-//                villageList.set(i, itemMap);
-//        }
+
         return NashResult.build(villageList);
     }
 
 
     //小区详情页
-    @RequestMapping("/villageDetail")
+    @RequestMapping("/{id}") //villageDetail
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
         if (villageList != null && villageList.size() != 0) {
@@ -134,20 +128,20 @@ public class PlotConterller {
     }
 
 
-    /**
-     * 小区待售页
-     *
-     * @param model
-     * @return
-     */
-    @RequestMapping("/plotSale")
-    public String sale(Model model) {
-        model.addAttribute("user", "asds");
-        return "plot/plot-sale";
-    }
+//    /**
+//     * 小区待售页
+//     *
+//     * @param model
+//     * @return
+//     */
+//    @RequestMapping("/plotSale")
+//    public String sale(Model model) {
+//        model.addAttribute("user", "asds");
+//        return "plot/plot-sale";
+//    }
 
     //基本信息
-    @RequestMapping("/plotParameter")
+    @RequestMapping("/{id}/desc")
     public String parameter(VillageRequest villageRequest, Model model) {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
@@ -156,7 +150,7 @@ public class PlotConterller {
     }
 
     //获取小区地图
-    @RequestMapping("/getPlotMap")
+    @RequestMapping("/{id}/map")
     public String plotMap(VillageRequest villageRequest, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
         VillageResponse village = (VillageResponse) villageList.get(0);

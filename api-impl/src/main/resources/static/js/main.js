@@ -100,7 +100,22 @@ function houseTypeState() {
     if ($('.house-type-state').length){
         $('.house-type-state').on('click','span',function () {
             $(this).addClass('current').siblings().removeClass('current');
-           location.href="/newhouse/getNewHouseLayoutCountByRoom?id="+$(this).data('bid')+"&&tags="+$(this).data('id');
+          /* location.href="/newhouse/getNewHouseLayoutCountByRoom?id="+$(this).data('bid')+"&&tags="+$(this).data('id');*/
+            $('#all-type').children("section").siblings().hide();
+            if($(this).data('id')=="0"){
+                $('#all-type').children("section").siblings().show();
+            }else if ($(this).data('id')=="2"){
+                $(".room2").show();
+            }else if ($(this).data('id')=="3"){
+                $(".room3").show();
+            }else if ($(this).data('id')=="4"){
+                $(".room4").show();
+            }else if ($(this).data('id')=="5"){
+                $(".room5").show();
+            }else if ($(this).data('id')=="1"){
+                $(".room1").show();
+            }
+
         });
     }
 }
@@ -182,7 +197,7 @@ function listSortTab() {
         });
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
-            if(BaseUrl=="/findVillageByConditions"){
+            if(BaseUrl.indexOf("/findVillageByConditions")){
                 location.href=BaseUrl+'?sort='+$(this).val();
             }else {
                 location.href=BaseUrl+'?sort='+$(this).val();
