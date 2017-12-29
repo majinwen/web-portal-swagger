@@ -100,7 +100,7 @@ public class PlotConterller {
 
             //走势图
 
-            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
+            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
             model.addAttribute("tradeline", stringListMap);
 
             //月份

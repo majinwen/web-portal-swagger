@@ -257,6 +257,7 @@
     <#assign ptCD0 = tradeline['buildingline']>;
     <#assign ptCD1 = tradeline['arealine']>;
     <#assign ptCD2 = tradeline['tradearealine']>;
+    <#assign mouthList = tradeline['mouthList']>;
     var myChartline = echarts.init(document.getElementById('main'));
     option = {
         tooltip: {
@@ -271,7 +272,7 @@
         xAxis:  {
             type: 'category',
             boundaryGap: false,
-            data: [<#list xlist as item >'${item}',</#list>]
+            data: [<#list  mouthList as item >'${item}',</#list>]
         },
         yAxis: {
             type: 'value',
