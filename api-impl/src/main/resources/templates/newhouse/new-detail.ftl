@@ -292,12 +292,6 @@
                 data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
                 symbolSize:14,
             },
-            {
-                name:'商圈价格',
-                type:'line',
-                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
-                symbolSize:14,
-            }
         ]
     };
     myChartline.setOption(option);
