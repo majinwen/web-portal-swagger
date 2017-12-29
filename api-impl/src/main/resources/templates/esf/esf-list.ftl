@@ -243,9 +243,6 @@
     </ul>
 </div>
 
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
 <script id="listContent" type="text/html">
     {{each data}}
     <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
@@ -302,4 +299,8 @@
     {{/each}}
 </script>
 </body>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
 </html>
