@@ -280,94 +280,23 @@
             }
         },
         series: [
-        <#if (ptCD0?size<12)>
             {
-                name:'楼盘价格',
-                type:'scatter',
-                data:[[10,19]],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                }
-            },
-        <#else> {
             name:'楼盘价格',
             type:'line',
-            data:[<#list ptCD0 as item >${item['price']},</#list>],
-            markPoint: {
-                data: [
-                    {type: 'max', name: '最大值'},
-                    {type: 'min', name: '最小值'}
-                ]
-            },
-            markLine: {
-                data: [
-                    {type: 'average', name: '平均值'}
-                ]
-            }
+            data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
+            symbolSize:14,
         },
-        </#if>
             {
                 name:'区域价格',
                 type:'line',
-                data:[<#list ptCD1 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
+                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
+                symbolSize:14,
             },
             {
                 name:'商圈价格',
                 type:'line',
-                data:[<#list ptCD2 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
+                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}</#if>,</#list>],
+                symbolSize:14,
             }
         ]
     };

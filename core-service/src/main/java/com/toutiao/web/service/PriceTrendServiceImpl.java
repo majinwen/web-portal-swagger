@@ -39,6 +39,24 @@ public class PriceTrendServiceImpl implements PriceTrendService {
            }
        }
 
+     /*   int p0Count = 0;
+       for (PriceTrend p0item : ptCD0) {
+           if (p0item.getPrice() > 0){
+                p0Count+=1;
+           }else if (){
+
+           }
+       }
+
+       for (PriceTrend p1item : ptCD1) {
+
+       }
+
+       for (PriceTrend p2item : ptCD2) {
+
+       }*/
+
+
       Map<String ,List<PriceTrend>> priceList=new HashMap<>();
       priceList.put("buildingline",ptCD0);
       priceList.put("arealine",ptCD1);

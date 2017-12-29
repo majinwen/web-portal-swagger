@@ -33,6 +33,6 @@ public class PriceTrend {
     /**
      * 金额
      */
-    private BigDecimal price;
+    private Double price;
 
 }
