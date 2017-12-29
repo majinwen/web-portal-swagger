@@ -66,7 +66,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.METERS));
-            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
+            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
             SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
 
             SearchHits hits = searchResponse.getHits();

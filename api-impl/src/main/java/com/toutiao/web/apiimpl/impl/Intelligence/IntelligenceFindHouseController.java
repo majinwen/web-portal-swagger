@@ -106,7 +106,6 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
-        intelligenceQuery.setPreconcTotal("450");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
