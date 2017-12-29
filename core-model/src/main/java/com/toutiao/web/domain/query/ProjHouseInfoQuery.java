@@ -114,6 +114,7 @@ public class ProjHouseInfoQuery {
 
     private Integer houseHeating;
 
+    private String keyWord;
 
 
 

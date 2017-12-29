@@ -175,7 +175,7 @@ public class ProjHouseInfoController {
      * @date 2017/12/16 9:46
      * //     * @param [text]
      */
-    @RequestMapping("queryBySearchBox")
+    /*@RequestMapping("queryBySearchBox")
     public String queryHouseInfoBySearchBox(Model model, @RequestParam("text") String text) {
 
         List queryBySearchBox = projHouseInfoService.queryBySearchBox(text);
@@ -192,7 +192,7 @@ public class ProjHouseInfoController {
             model.addAttribute("searchType", "projhouse");
         }
         return "esf/esf-list";
-    }
+    }*/
 
 
 }

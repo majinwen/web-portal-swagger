@@ -7,7 +7,7 @@
                     <i class="triangle-top"></i>
                     <div class="type-menu">
                         <span data-value="/newhouse/searchNewHouse?keywords=" <#if searchType=="newhouse">class="current"</#if>>新房</span>
-                        <span data-value="/queryBySearchBox?text=" <#if searchType=="projhouse">class="current"</#if>>二手房</span>
+                        <span data-value="/findProjHouseInfo?keyWord=" <#if searchType=="projhouse">class="current"</#if>>二手房</span>
                         <span data-value="/findVillageByConditions?rc=" <#if searchType=="plot">class="current"</#if>>小区</span>
                     </div>
                 </div>

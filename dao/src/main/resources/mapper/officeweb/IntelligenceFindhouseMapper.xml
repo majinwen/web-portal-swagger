@@ -152,7 +152,7 @@
         <result column="proj_layout" property="projLayout" jdbcType="VARCHAR"/>
         <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
     </resultMap>
-    <sql id="intelligenceFindHouse" >
+    <sql id="intelligenceFindHouse">
         newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
         heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property
     </sql>
@@ -160,10 +160,10 @@
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
-        <include refid="intelligenceFindHouse" />
+        <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
         where 1=1
-        ORDER BY  has_subway ,ring_road ,has_lift DESC ,has_market
+        ORDER BY has_subway ,ring_road ,has_lift DESC ,has_market
         LIMIT
         10
     </select>
@@ -171,7 +171,7 @@
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
-        <include refid="intelligenceFindHouse" />
+        <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
         where 1=1
         ORDER BY ring_road ,park_radio DESC,has_lift DESC ,has_market,propertyfee DESC
@@ -182,7 +182,7 @@
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
-        <include refid="intelligenceFindHouse" />
+        <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
         where 1=1
         ORDER BY ring_road ,park_radio DESC,has_lift DESC ,has_market,propertyfee DESC
@@ -1222,37 +1222,43 @@
     <!--</where>-->
     <!--</sql>-->
     <!--int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);;-->
-    <select id="queryPlotCount"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-        max_total_price>=#{plotTotalEnd} and min_total_price <=#{plotTotalFirst}
-
-        ]]>
+    <select id="queryPlotCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from intelligence_findhouse
+        WHERE
+        1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+        </if>
     </select>
 
     <!--
        int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,@Param("categoryId") Integer categoryId);
     -->
     <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-         max_total_price>=#{plotTotalEnd} and min_total_price <=#{plotTotalFirst}
-          and layout_range @> ARRAY[#{categoryId}]
-        ]]>
-
+        select count(*) from intelligence_findhouse
+        WHERE 1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null">
+            and layout_range @> ARRAY[#{categoryId}]
+        </if>
     </select>
     <!--int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,
       @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
-   select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-         max_total_price>=#{plotTotalEnd} and min_total_price <=#{plotTotalFirst}
-        and layout_range @> ARRAY[#{categoryId}] and district_id=#{distinctId}
-        ]]>
 
+        select count(*) from intelligence_findhouse
+        WHERE 1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null">
+            and layout_range @> ARRAY[#{categoryId}]
+        </if>
+        <if test="district_id!=null">
+            and district_id=#{distinctId}
+        </if>
     </select>
 
 

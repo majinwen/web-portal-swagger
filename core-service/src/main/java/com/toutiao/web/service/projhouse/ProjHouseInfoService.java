@@ -15,7 +15,7 @@ public interface ProjHouseInfoService {
 
     Map<String, Object> queryByHouseId(Integer houseId);
 
-    List queryBySearchBox(String text);
+    /*List queryBySearchBox(String text);*/
 
     void saveProjHouseInfo(ProjHouseInfoES projHouseInfoes);
 
