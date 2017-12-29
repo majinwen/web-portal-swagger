@@ -4,16 +4,10 @@ package com.toutiao.web.service.intelligence.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
-import com.toutiao.web.dao.entity.officeweb.TotalListedRatio;
-import com.toutiao.web.dao.entity.officeweb.TotalRoomRatio;
+import com.toutiao.web.dao.entity.officeweb.*;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
-import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper;
-import com.toutiao.web.dao.mapper.officeweb.IntelligenceFindhouseMapper;
-import com.toutiao.web.dao.mapper.officeweb.TotalListedRatioMapper;
-import com.toutiao.web.dao.mapper.officeweb.TotalRoomRatioMapper;
+import com.toutiao.web.dao.mapper.officeweb.*;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
@@ -57,6 +51,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     private TotalRoomRatioMapper totalRoomRatioMapper;
     @Autowired
     private IntelligenceFindhouseMapper intelligenceFindhouseMapper;
+    @Autowired
+    private PriceTrendMapper priceTrendMapper;
 
     @Override
     public IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
@@ -180,15 +176,18 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
-
+            List<IntelligenceFindhouse> finalList = recommend1A(list);
+            return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
-
+            List<IntelligenceFindhouse> finalList = recommend1B(list);
+            return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
-
+            List<IntelligenceFindhouse> finalList = recommend1C(list);
+            return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
@@ -207,9 +206,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
-
+            List<IntelligenceFindhouse> finalList = recommend3A(list);
+            return finalList;
         }
-
         return null;
     }
 
@@ -455,7 +454,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             int index2 = random.nextInt((int) Math.ceil(number));
             finalList.add(list.get(index2));
             list.remove(index2);
-        } else if (null != list && list.size() >= 2){
+        } else if (null != list && list.size() >= 2) {
             int index = random.nextInt(list.size());
             finalList.add(list.get(index));
             list.remove(index);
@@ -492,7 +491,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 int index2 = random.nextInt((int) Math.ceil(number));
                 finalList.add(list.get(index2));
                 list.remove(index2);
-            } else if (null != list && list.size() >= 2){
+            } else if (null != list && list.size() >= 2) {
                 int index = random.nextInt(list.size());
                 finalList.add(list.get(index));
                 list.remove(index);
@@ -639,7 +638,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             finalList.add(list.get(index));
             list.remove(index);
         }
-        //环线在四环内，随机2个
+        //环线在三环内，随机2个
         List listFour = new ArrayList();
         if (null != list && list.size() != 0) {
             for (int i = 0; i < list.size(); i++) {
@@ -665,7 +664,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     /**
-     * 功能描述：筛选条件3
+     * 功能描述：筛选条件3A
      *
      * @param
      * @return
@@ -673,60 +672,46 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @date 2017/12/29 12:50
      */
     public List<IntelligenceFindhouse> recommend3A(List<IntelligenceFindhouse> listHouse) {
+        PriceTrend priceTrend = new PriceTrend();
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
-        //小区均价最低的前20-50%， 随机2个
-        if (null != listHouse && listHouse.size() >= 2) {
+
+        if (null != listHouse && listHouse.size() >= 3) {
             //按价格排序
             list = sortByPrice(listHouse);
-
-            double min = list.size() * 0.2;
-            double max = list.size() * 0.5;
-            if ((int) (Math.ceil(max) - Math.ceil(min)) >= 2) {
-                int index = random.nextInt((int) Math.ceil(max - min)) + (int) Math.ceil(min);
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt((int) Math.ceil(max - min)) + (int) Math.ceil(min);
-                finalList.add(list.get(index2));
-                list.remove(index2);
-            } else {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
-            }
         }
-        //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-        }
-        //环线在四环内，随机2个
-        List listFour = new ArrayList();
-        if (null != list && list.size() != 0) {
-            for (int i = 0; i < list.size(); i++) {
-                if (null != list.get(i).getRingRoad() && list.get(i).getRingRoad() <= 3) {
-                    listFour.add(list.get(i));
+        int priceNumber = 0;
+        int totelPrice = 0;
+        for (int i = 0; i <list.size() ; i++) {
+            priceTrend.setBuildingId(list.get(i).getNewcode());
+            List<PriceTrend> priceTrends = priceTrendMapper.searchPriceTrendList(priceTrend);
+            for (int j = 0; j <priceTrends.size() ; j++) {
+                if (priceTrends.get(i).getPrice().intValue()!=0){
+                    totelPrice += priceTrends.get(i).getPrice().intValue();
+                    priceNumber++;
                 }
             }
+            int avgAreaPrice = totelPrice/priceNumber;
+            if (list.get(i).getPrice().intValue()<avgAreaPrice){
+
+            }
         }
-        if (null != listFour && listFour.size() >= 2) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            finalList.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-        } else if (null != list && list.size() >= 2) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
-        }
+        //按照换手率由高到低排序
+        Collections.sort(list, new Comparator<IntelligenceFindhouse>() {
+            @Override
+            public int compare(IntelligenceFindhouse o1, IntelligenceFindhouse o2) {
+                if (o2.getTurnoverRate().doubleValue() > o1.getTurnoverRate().doubleValue()) {
+                    return 1;
+                }
+
+                if (o2.getTurnoverRate().doubleValue() == o1.getTurnoverRate().doubleValue()) {
+                    return 0;
+                }
+                return -1;
+            }
+        });
+
         return finalList;
     }
 
