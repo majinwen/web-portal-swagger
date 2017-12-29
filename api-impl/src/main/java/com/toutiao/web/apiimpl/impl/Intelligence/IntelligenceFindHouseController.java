@@ -122,14 +122,14 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
-        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(7);
-        intelligenceQuery1.setMinTotalPrice(4500000);
-        intelligenceQuery1.setMaxTotalPrice(5500000);
-        intelligenceQuery1.setDistrictId("105040,105035,105034");
-        intelligenceQuery1.setLayOut(3);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
-        return null;
+//        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+//        intelligenceQuery1.setUserPortrayalType(7);
+//        intelligenceQuery1.setMinTotalPrice(4500000);
+//        intelligenceQuery1.setMaxTotalPrice(5500000);
+//        intelligenceQuery1.setDistrictId("105040,105035,105034");
+//        intelligenceQuery1.setLayOut(3);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        return list;
     }
     /**
      * 功能描述：跳转到用户选择户型页面controller
