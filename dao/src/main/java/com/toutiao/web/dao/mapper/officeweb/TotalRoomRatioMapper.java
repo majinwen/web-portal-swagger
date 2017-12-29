@@ -15,7 +15,7 @@ public interface TotalRoomRatioMapper extends BaseDao {
 
     List<Double> selectByTotal(@Param("plotTotal") Double plotTotal);
 
-    TotalRoomRatio selectByTotalAndCategory(@Param("plotTotal") Double plotTotal, @Param("categoryId") Integer category_id);
+    TotalRoomRatio selectByTotalAndCategory(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd, @Param("categoryId") Integer category_id);
 
 
 }

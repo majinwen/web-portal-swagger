@@ -1221,39 +1221,36 @@
 
     <!--</where>-->
     <!--</sql>-->
-    <!--int queryPlotCount(Double plotTotal);-->
-    <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
+    <!--int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);;-->
+    <select id="queryPlotCount"  parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select count(*) from intelligence_findhouse
     WHERE
     <![CDATA[
-        max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
+        max_total_price>=#{plotTotalEnd} and min_total_price <=#{plotTotalFirst}
 
         ]]>
     </select>
 
     <!--
-       int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
+       int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,@Param("categoryId") Integer categoryId);
     -->
-    <select id="queryPlotCountByCategoryAndPrice" resultType="java.lang.Integer">
+    <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select count(*) from intelligence_findhouse
     WHERE
     <![CDATA[
-         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-          and layout_range @> {#{categoryId}}
-
-
+         max_total_price>=#{plotTotalEnd} and min_total_price <=#{plotTotalFirst}
+          and layout_range @> ARRAY[#{categoryId}]
         ]]>
 
     </select>
-    <!--int queryPlotCountByCategoryAndPriceAndDistict(@PathVariable("plotTotal") Double plotTotal,
+    <!--int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,
       @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
    select count(*) from intelligence_findhouse
     WHERE
     <![CDATA[
-         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-        and layout_range @> {#{categoryId}} and district_id=#{distinctId}
-
+         max_total_price>=#{plotTotalEnd} and min_total_price <=#{plotTotalFirst}
+        and layout_range @> ARRAY[#{categoryId}] and district_id=#{distinctId}
         ]]>
 
     </select>

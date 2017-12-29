@@ -23,13 +23,13 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     int insertSelective(IntelligenceFindhouse record);
 
-    int queryPlotCount(Double plotTotal);
+    int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);
 
-    int queryPlotCountByCategoryAndPrice(@Param("plotTotal") Double plotTotal,@Param("categoryId") Integer categoryId);
+    int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,@Param("categoryId") Integer categoryId);
 
-    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotal") Double plotTotal, @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
+    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd, @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
 
-    List<IntelligenceFindhouse> selectByUserPrice(double totlaPrice);
+    List<IntelligenceFindhouse> selectByUserPrice(String totlaPrice);
 
     List<IntelligenceFindhouse> selectByTypeTwoA(IntelligenceQuery intelligenceQuery);
 

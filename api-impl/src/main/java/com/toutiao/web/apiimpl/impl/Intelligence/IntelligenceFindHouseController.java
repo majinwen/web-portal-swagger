@@ -118,14 +118,21 @@ public class IntelligenceFindHouseController {
         return NashResult.build(intelligenceFh);
     }
 
+    /**
+     * 测试
+     *
+     * @param intelligenceQuery
+     * @return
+     */
     @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery){
-        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(4);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceTypeTwo(intelligenceQuery1);
+    public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery) {
+        /*IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+        intelligenceQuery1.setUserPortrayalType(4);*/
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceTypeTwo(intelligenceQuery);
         return null;
     }
+
     /**
      * 功能描述：跳转到用户选择户型页面controller
      *
@@ -188,8 +195,7 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
         model.addAttribute("intelligenceFh", intelligenceFh);
         //选择非一居的用户，才出现此问题；
-        if(intelligenceFh.getLayOut()==1){
-
+        if (intelligenceFh.getLayOut() == 1) {
             //跳转过渡页，生成画像
             return "";
         }

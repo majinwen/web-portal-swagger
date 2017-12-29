@@ -66,7 +66,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.METERS));
-            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
+            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhotoTitle", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
             SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
 
             SearchHits hits = searchResponse.getHits();
@@ -218,8 +218,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
 
             //电梯
-            if (StringTool.isNotEmpty(projHouseInfoRequest.getElevator())) {
-                String[] layoutId = projHouseInfoRequest.getElevator().split(",");
+            if (StringTool.isNotEmpty(projHouseInfoRequest.getElevatorFlag())) {
+                String[] layoutId = projHouseInfoRequest.getElevatorFlag().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("elevator", layoutId));
             }
             //标签(满二，满三，满五)
