@@ -790,13 +790,13 @@ $('#moreReset').on('click', function () {
 
 var pageNum = 2;
 $(function () {
-    $(document).setAttribute("toutiao_pageScroll_onOroff",true);
+    $(document).data("toutiao_pageScroll_onOroff",true);
     //手机滑动底部触发分页事件
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                if($(document).getAttribute("toutiao_pageScroll_onOroff") == true){
-                    $(document).setAttribute("toutiao_pageScroll_onOroff",false);
+                if($(document).data("toutiao_pageScroll_onOroff") == true){
+                    $(document).data("toutiao_pageScroll_onOroff",false);
                     setTimeout(pullUpaAction(pageNum), 1000);
                 }
             }
@@ -844,7 +844,7 @@ function pullUpaAction(pageNumber) {
 
 
             if (data.code == 'success') {
-                HTMLDocument.setAttribute("toutiao_pageScroll_onOroff",true);
+                $(document).data("toutiao_pageScroll_onOroff",true);
                 pageNum += 1;
                 // 二手房列表单价
                 if (BaseUrl == '/findProjHouseInfo') {
@@ -854,6 +854,7 @@ function pullUpaAction(pageNumber) {
                         dataCon[i].unitCost = unitCost;
                     }
                 }
+                console.log(pageNumber);
                 var html = template('listContent',data.data);
                 $('#valueList li:last-child').after(html);
             }
