@@ -192,11 +192,13 @@
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
                                 <#if item[map['key']]?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                    <p class="cont-block-3 distance"><i class="icon"></i>
+                                        <#assign infoitem=item[map['key']]?split("$")>
+                                        距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
                                     </p>
                                 </#if >
                             <#else >
-                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
                         <#else >
@@ -221,7 +223,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${(map.houseTotalPrices / map.buildArea)?number * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>
