@@ -297,13 +297,13 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (null != listFour && listFour.size() >= 3) {
             int index = random.nextInt(listFour.size());
             finalList.add(listFour.get(index));
-            finalList.remove(index);
+            listFour.remove(index);
             int index2 = random.nextInt(listFour.size());
             finalList.add(listFour.get(index2));
-            finalList.remove(index2);
+            listFour.remove(index2);
             int index3 = random.nextInt(listFour.size());
             finalList.add(listFour.get(index3));
-            finalList.remove(index3);
+            listFour.remove(index3);
         } else if (null != list && list.size() >= 3) {
             int index = random.nextInt(list.size());
             finalList.add(list.get(index));
@@ -312,7 +312,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             finalList.add(list.get(index2));
             list.remove(index2);
             int index3 = random.nextInt(list.size());
-            finalList.add(list.get(index3));
+            list.add(list.get(index3));
         }
         return finalList;
     }
@@ -373,10 +373,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (null != listFour && listFour.size() >= 2) {
             int index = random.nextInt(listFour.size());
             finalList.add(listFour.get(index));
-            finalList.remove(index);
+            listFour.remove(index);
             int index2 = random.nextInt(listFour.size());
             finalList.add(listFour.get(index2));
-            finalList.remove(index2);
+            listFour.remove(index2);
         } else if (null != list && list.size() >= 2) {
             int index = random.nextInt(list.size());
             finalList.add(list.get(index));
@@ -652,7 +652,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             finalList.add(listFour.get(index));
             finalList.remove(index);
             int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
+            finalList.add(listFour.get(index2));
         } else if (null != list && list.size() >= 2) {
             int index = random.nextInt(list.size());
             finalList.add(list.get(index));
@@ -677,28 +677,15 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
 
-        if (null != listHouse && listHouse.size() >= 3) {
-            //按价格排序
-            list = sortByPrice(listHouse);
-        }
-        int priceNumber = 0;
-        int totelPrice = 0;
-        for (int i = 0; i <list.size() ; i++) {
-            priceTrend.setBuildingId(list.get(i).getNewcode());
-            List<PriceTrend> priceTrends = priceTrendMapper.searchPriceTrendList(priceTrend);
-            for (int j = 0; j <priceTrends.size() ; j++) {
-                if (priceTrends.get(i).getPrice().intValue()!=0){
-                    totelPrice += priceTrends.get(i).getPrice().intValue();
-                    priceNumber++;
-                }
+        for (int i = 0; i <listHouse.size() ; i++) {
+            if (null==listHouse.get(i).getTurnoverRate()||listHouse.get(i).getTurnoverRate().intValue()<=0){
+                BigDecimal bigDecimal = new BigDecimal(0);
+                listHouse.get(i).setTurnoverRate(bigDecimal);
             }
-            int avgAreaPrice = totelPrice/priceNumber;
-            if (list.get(i).getPrice().intValue()<avgAreaPrice){
+        }
 
-            }
-        }
         //按照换手率由高到低排序
-        Collections.sort(list, new Comparator<IntelligenceFindhouse>() {
+        Collections.sort(listHouse, new Comparator<IntelligenceFindhouse>() {
             @Override
             public int compare(IntelligenceFindhouse o1, IntelligenceFindhouse o2) {
                 if (o2.getTurnoverRate().doubleValue() > o1.getTurnoverRate().doubleValue()) {
@@ -708,10 +695,63 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 if (o2.getTurnoverRate().doubleValue() == o1.getTurnoverRate().doubleValue()) {
                     return 0;
                 }
-                return -1;
+                return 0;
             }
         });
 
+        if (null != listHouse && listHouse.size() >= 2) {
+            int index = random.nextInt(listHouse.size());
+            finalList.add(listHouse.get(index));
+            listHouse.remove(index);
+            int index2 = random.nextInt(listHouse.size());
+            finalList.add(listHouse.get(index2));
+            listHouse.remove(index2);
+        }
+
+
+        if (null != listHouse && listHouse.size() >= 3) {
+            //按价格排序
+            list = sortByPrice(listHouse);
+        }
+        //楼盘均价价格低于区域均价的90%，随机3个
+        List listFour = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            //计算平均区域价格
+            int priceNumber = 0;
+            int totelPrice = 0;
+            priceTrend.setBuildingId(list.get(i).getNewcode());
+            List<PriceTrend> priceTrends = priceTrendMapper.searchPriceTrendList(priceTrend);
+            for (int j = 0; j < priceTrends.size(); j++) {
+                if (priceTrends.get(j).getPrice().intValue() != 0) {
+                    totelPrice += priceTrends.get(j).getPrice().intValue();
+                    priceNumber++;
+                }
+            }
+            if (totelPrice != 0 && list.get(i).getPrice().doubleValue() < ((totelPrice / priceNumber) * 0.9)) {
+                listFour.add(list.get(i));
+            }
+        }
+        if (listFour.size() >= 3) {
+            int index = random.nextInt(listFour.size());
+            finalList.add(listFour.get(index));
+            listFour.remove(index);
+            int index2 = random.nextInt(listFour.size());
+            finalList.add(listFour.get(index2));
+            listFour.remove(index2);
+            int index3 = random.nextInt(listFour.size());
+            finalList.add(listFour.get(index3));
+            listFour.remove(index3);
+        } else {
+            int index = random.nextInt(list.size());
+            finalList.add(list.get(index));
+            list.remove(index);
+            int index2 = random.nextInt(list.size());
+            finalList.add(list.get(index2));
+            list.remove(index2);
+            int index3 = random.nextInt(list.size());
+            finalList.add(list.get(index3));
+            list.remove(index3);
+        }
         return finalList;
     }
 
