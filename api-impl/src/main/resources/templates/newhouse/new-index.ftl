@@ -109,7 +109,7 @@
 <section>
     <div class="index-module-header">
         <h3>新房推荐</h3>
-        <a href="/newhouse/searchNewHouse" class="more-arrows"><i class="arrows-right"></i></a>
+        <a href="${router_city('/loupan')}" class="more-arrows"><i class="arrows-right"></i></a>
     </div>
     <ul><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>
@@ -152,14 +152,14 @@
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                    <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']!'暂无'}</em></h3>
-                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
+                    <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']}</em></h3>
+                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡<#else>暂无</#if>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                         </p>
                     <div class="cont-block-4 house-labelling gray middle">
                         <#if map['building_tags']?exists>

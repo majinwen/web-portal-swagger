@@ -396,7 +396,7 @@ function showOnlyDistrict(districtId) {
         for (var i in districtList) {
 
             if (districtId && districtId == districtList[i].districtId) {
-                str += '<li ' + 'class="current"' + ' onclick="submitDirstrict('+ districtList[i].districtId +',event">'+ districtList[i].name +'</li>';
+                str += '<li ' + 'class="current"' + ' onclick="submitDirstrict('+ districtList[i].districtId +',event)">'+ districtList[i].name +'</li>';
             } else {
                 str += '<li onclick="submitDirstrict('+ districtList[i].districtId +',event)">'+ districtList[i].name +'</li>';
             }
