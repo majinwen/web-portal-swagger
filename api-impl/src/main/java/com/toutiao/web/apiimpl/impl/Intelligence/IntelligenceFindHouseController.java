@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("ifh")
+@RequestMapping("/{citypath}/findhouse")
 public class IntelligenceFindHouseController {
 
     @Autowired
