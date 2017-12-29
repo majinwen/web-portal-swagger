@@ -303,6 +303,23 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     /**
+     * 功能描述：去重
+     *
+     * @param
+     * @return
+     * @author zengqingzhou
+     * @date 2017/12/29 18:27
+     */
+    public void removeRepetition(List finalList, List list, int number) {
+        Random random = new Random();
+        for (int i = 0; i < number; i++) {
+            int index = random.nextInt(list.size());
+            finalList.add(list.get(index));
+            list.remove(index);
+        }
+    }
+
+    /**
      * 功能描述：筛选条件1A
      *
      * @param
@@ -328,12 +345,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 finalList.add(list.get(index2));
                 list.remove(index2);
             } else {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
+                removeRepetition(finalList, list, 2);
             }
         }
 
@@ -347,24 +359,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         if (null != listFour && listFour.size() >= 3) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            listFour.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index2));
-            listFour.remove(index2);
-            int index3 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index3));
-            listFour.remove(index3);
+            removeRepetition(finalList, listFour, 3);
         } else if (null != list && list.size() >= 3) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
-            list.remove(index2);
-            int index3 = random.nextInt(list.size());
-            list.add(list.get(index3));
+            removeRepetition(finalList, list, 3);
         }
         return finalList;
     }
@@ -397,20 +394,13 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 finalList.add(list.get(index2));
                 list.remove(index2);
             } else {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
+                removeRepetition(finalList, list, 2);
             }
         }
 
         //搜索量前200，随机1个
         if (null != list && list.size() >= 1) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
+            removeRepetition(finalList, list, 1);
         }
 
         //1km内有地铁，随机2个
@@ -423,19 +413,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         if (null != listFour && listFour.size() >= 2) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            listFour.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index2));
-            listFour.remove(index2);
+            removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
-            list.remove(index2);
+            removeRepetition(finalList, list, 2);
         }
         return finalList;
     }
@@ -468,23 +448,22 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 finalList.add(list.get(index2));
                 list.remove(index2);
             } else {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
+                removeRepetition(finalList, list, 2);
             }
         }
 
         //搜索量前200，随机1个
         if (null != list && list.size() >= 1) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
+            removeRepetition(finalList, list, 1);
         }
 
         //换手率最高的前20%，随机2个
+        for (int i = 0; i < list.size(); i++) {
+            if (null == list.get(i).getTurnoverRate() || list.get(i).getTurnoverRate().intValue() <= 0) {
+                BigDecimal bigDecimal = new BigDecimal(0);
+                list.get(i).setTurnoverRate(bigDecimal);
+            }
+        }
         //按照换手率由高到低排序
         Collections.sort(list, new Comparator<IntelligenceFindhouse>() {
             @Override
@@ -507,12 +486,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             finalList.add(list.get(index2));
             list.remove(index2);
         } else if (null != list && list.size() >= 2) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
-            list.remove(index2);
+            removeRepetition(finalList, list, 2);
         }
         return finalList;
     }
@@ -544,19 +518,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 finalList.add(list.get(index2));
                 list.remove(index2);
             } else if (null != list && list.size() >= 2) {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
+                removeRepetition(finalList, list, 2);
             }
         }
         //搜索量前200，随机1个
         if (null != list && list.size() >= 1) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
+            removeRepetition(finalList, list, 1);
         }
         //环线在四环内，随机2个
         List listFour = new ArrayList();
@@ -568,17 +535,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         if (null != listFour && listFour.size() >= 2) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            finalList.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
+            removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
+            removeRepetition(finalList, list, 2);
         }
         return finalList;
     }
@@ -610,19 +569,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 finalList.add(list.get(index2));
                 list.remove(index2);
             } else {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
+                removeRepetition(finalList, list, 2);
             }
         }
         //搜索量前200，随机1个
         if (null != list && list.size() >= 1) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
+            removeRepetition(finalList, list, 1);
         }
         //环线在四环内，随机2个
         List listFour = new ArrayList();
@@ -634,17 +586,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         if (null != listFour && listFour.size() >= 2) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            finalList.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
+            removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
+            removeRepetition(finalList, list, 2);
         }
         return finalList;
     }
@@ -676,19 +620,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 finalList.add(list.get(index2));
                 list.remove(index2);
             } else {
-                int index = random.nextInt(list.size());
-                finalList.add(list.get(index));
-                list.remove(index);
-                int index2 = random.nextInt(list.size());
-                finalList.add(list.get(index2));
-                list.remove(index2);
+                removeRepetition(finalList, list, 2);
             }
         }
         //搜索量前200，随机1个
         if (null != list && list.size() >= 1) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
+            removeRepetition(finalList, list, 1);
         }
         //环线在三环内，随机2个
         List listFour = new ArrayList();
@@ -700,17 +637,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         if (null != listFour && listFour.size() >= 2) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            finalList.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index2));
+            removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
+            removeRepetition(finalList, list, 2);
         }
         return finalList;
     }
@@ -729,8 +658,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
 
-        for (int i = 0; i <listHouse.size() ; i++) {
-            if (null==listHouse.get(i).getTurnoverRate()||listHouse.get(i).getTurnoverRate().intValue()<=0){
+        for (int i = 0; i < listHouse.size(); i++) {
+            if (null == listHouse.get(i).getTurnoverRate() || listHouse.get(i).getTurnoverRate().intValue() <= 0) {
                 BigDecimal bigDecimal = new BigDecimal(0);
                 listHouse.get(i).setTurnoverRate(bigDecimal);
             }
@@ -752,12 +681,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         });
 
         if (null != listHouse && listHouse.size() >= 2) {
-            int index = random.nextInt(listHouse.size());
-            finalList.add(listHouse.get(index));
-            listHouse.remove(index);
-            int index2 = random.nextInt(listHouse.size());
-            finalList.add(listHouse.get(index2));
-            listHouse.remove(index2);
+            removeRepetition(finalList, listHouse, 2);
         }
 
 
@@ -784,25 +708,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         if (listFour.size() >= 3) {
-            int index = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index));
-            listFour.remove(index);
-            int index2 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index2));
-            listFour.remove(index2);
-            int index3 = random.nextInt(listFour.size());
-            finalList.add(listFour.get(index3));
-            listFour.remove(index3);
+            removeRepetition(finalList, listFour, 3);
         } else {
-            int index = random.nextInt(list.size());
-            finalList.add(list.get(index));
-            list.remove(index);
-            int index2 = random.nextInt(list.size());
-            finalList.add(list.get(index2));
-            list.remove(index2);
-            int index3 = random.nextInt(list.size());
-            finalList.add(list.get(index3));
-            list.remove(index3);
+            removeRepetition(finalList, list, 3);
         }
         return finalList;
     }
