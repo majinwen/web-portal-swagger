@@ -165,10 +165,11 @@
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId)}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseBusinessName}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            <#assign item=map['housePhotoTitle']>
+                        <#assign item=map['housePhotoTitle']>
+                        <#if item?? && item != ''>
+                            <img src="${item}" alt="${map.houseBusinessName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -253,8 +254,8 @@
     <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
         <div class="clear">
             <div class="list-item-img-box">
-                {{if $value.housePhoto && $value.housePhoto.length > 0}}
-                    <img src="{{$value.housePhoto[0]}}" alt="{{$value.houseBusinessName}}">
+                {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
+                    <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
