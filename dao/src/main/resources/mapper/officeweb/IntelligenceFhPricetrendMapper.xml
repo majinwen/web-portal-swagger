@@ -2,22 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.toutiao.web.dao.mapper.officeweb.IntelligenceFhPricetrendMapper" >
   <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend" >
-    <result column="total_price_range" property="totalPriceRange" jdbcType="INTEGER" />
+    <result column="min_total_price" property="minTotalPrice" jdbcType="INTEGER" />
     <result column="price" property="price" jdbcType="NUMERIC" />
     <result column="periodic_time" property="periodicTime" jdbcType="TIMESTAMP" />
     <result column="total_price" property="totalPrice" jdbcType="NUMERIC" />
+    <result column="max_total_price" property="maxTotalPrice" jdbcType="INTEGER" />
   </resultMap>
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend" >
-    insert into intelligence_fh_pricetrend (total_price_range, price, periodic_time, 
-      total_price)
-    values (#{totalPriceRange,jdbcType=INTEGER}, #{price,jdbcType=NUMERIC}, #{periodicTime,jdbcType=TIMESTAMP}, 
-      #{totalPrice,jdbcType=NUMERIC})
+    insert into intelligence_fh_pricetrend (min_total_price, price, periodic_time, 
+      total_price, max_total_price)
+    values (#{minTotalPrice,jdbcType=INTEGER}, #{price,jdbcType=NUMERIC}, #{periodicTime,jdbcType=TIMESTAMP}, 
+      #{totalPrice,jdbcType=NUMERIC}, #{maxTotalPrice,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend" >
     insert into intelligence_fh_pricetrend
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="totalPriceRange != null" >
-        total_price_range,
+      <if test="minTotalPrice != null" >
+        min_total_price,
       </if>
       <if test="price != null" >
         price,
@@ -28,10 +29,13 @@
       <if test="totalPrice != null" >
         total_price,
       </if>
+      <if test="maxTotalPrice != null" >
+        max_total_price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="totalPriceRange != null" >
-        #{totalPriceRange,jdbcType=INTEGER},
+      <if test="minTotalPrice != null" >
+        #{minTotalPrice,jdbcType=INTEGER},
       </if>
       <if test="price != null" >
         #{price,jdbcType=NUMERIC},
@@ -41,6 +45,9 @@
       </if>
       <if test="totalPrice != null" >
         #{totalPrice,jdbcType=NUMERIC},
+      </if>
+      <if test="maxTotalPrice != null" >
+        #{maxTotalPrice,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
