@@ -10,8 +10,8 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="/newhouse/searchNewHouse">
-    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <input id="url" type="hidden" value="${router_city('/loupan')}">
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -21,7 +21,7 @@
 <section class="category-box">
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
-        <li data-mark="tab-price"><span><em>总价</em><i></i></span></li>
+        <li data-mark="tab-price"><span><em>均价</em><i></i></span></li>
         <li data-mark="tab-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
@@ -40,12 +40,12 @@
             <div class="price-list">
                 <ul>
                     <li data-begin-price="" data-end-price="" class="current">不限</li>
-                    <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
-                    <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
-                    <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
-                    <li data-begin-price="300.0" data-end-price="350.0">300-350万</li>
-                    <li data-begin-price="350.0" data-end-price="400.0">350-400万</li>
-                    <li data-begin-price="400.0" data-end-price="1000.0">400万以上</li>
+                    <li data-begin-price="0.0" data-end-price="20000.0">20000元/㎡以下</li>
+                    <li data-begin-price="20000.0" data-end-price="30000.0">20000-30000元/㎡</li>
+                    <li data-begin-price="30000.0" data-end-price="40000.0">30000-40000元/㎡</li>
+                    <li data-begin-price="40000.0" data-end-price="60000.0">40000-60000元/㎡</li>
+                    <li data-begin-price="60000.0" data-end-price="80000.0">60000-80000元/㎡</li>
+                    <li data-begin-price="80000.0" data-end-price="800000.0">80000元/㎡以上</li>
                 </ul>
             </div>
         </div>
@@ -106,12 +106,9 @@
                 <dl>
                     <dt data-type="saleType">销售状态</dt>
                     <dd>
-                        <span data-info="1">售完</span>
-                        <span data-info="2">在售</span>
-                        <span data-info="3">不在售</span>
-                        <span data-info="4">出租</span>
-                        <span data-info="5">待租</span>
-                        <span data-info="6">待售</span>
+                        <span data-info="0">售完</span>
+                        <span data-info="1">在售</span>
+                        <span data-info="5">待售</span>
                     </dd>
                 </dl>
                 <dl>
@@ -147,7 +144,7 @@
 <section>
     <ul id="valueList"><#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'/')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>

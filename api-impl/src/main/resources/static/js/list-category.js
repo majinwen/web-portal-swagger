@@ -18,7 +18,7 @@ $(function () {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
-                    if ((BaseUrl.indexOf('newhouse')) > 0) {
+                    if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                         showOnlyDistrict(req['districtId']);
                     } else {
                         showDistrict(req['districtId'], req['areaId']);
@@ -29,7 +29,7 @@ $(function () {
                 }
             } else {
                 $('#district-option').addClass('current');
-                if ((BaseUrl.indexOf('newhouse')) > 0) {
+                if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                     showOnlyDistrict();
                 } else {
                     showDistrict();
@@ -49,7 +49,7 @@ $(function () {
     $('#level1').on('click', 'li', function () {
         $(this).addClass('current').siblings().removeClass('current');
         if ($(this).attr('id') == 'district-option') {
-            if ((BaseUrl.indexOf('newhouse')) > 0) {
+            if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                 showOnlyDistrict();
             } else {
                 showDistrict();
@@ -277,7 +277,6 @@ $(function () {
 
             $('dt[data-type="' + optionType + '"]').next('dd').find('span').removeClass('current');
             $.each(moreOptionArray, function (index, item) {
-
                 $('dt[data-type="' + optionType + '"]').next('dd').find('span').each(function () {
                     if (item == $(this).data('info')) {
                         $(this).addClass('current');
@@ -445,6 +444,7 @@ function showBusiness(districtid, circleId) {
  * 区域不限
  * */
 function submitPlace(e) {
+    req['pageNum'] = null;
     req['areaId'] = null;
     req['districtId'] = null;
     req['subwayLineId'] = null;
@@ -464,6 +464,7 @@ function submitPlace(e) {
  * */
 function submitDirstrict(districtid, e) {
     if (districtid) {
+        req['pageNum'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
         req['areaId'] = null;
@@ -485,6 +486,7 @@ function submitDirstrict(districtid, e) {
  * */
 function submitBussiness(districtid, areaId, e) {
     if (districtid) {
+        req['pageNum'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
     }
@@ -538,6 +540,7 @@ function showSubway(lineId, stationId) {
  * 地铁不限
  * */
 function submitSubway(e) {
+    req['pageNum'] = null;
     req['districtId'] = null;
     req['areaId'] = null;
     req['subwayLineId'] = null;
@@ -592,6 +595,7 @@ function showStation(lineId, stationId) {
  * */
 function submitSubwayLine(subwayid, e) {
     if (subwayid) {
+        req['pageNum'] = null;
         req['districtId'] = null;
         req['areaId'] = null;
         req['subwayStationId'] = null;
@@ -610,6 +614,7 @@ function submitSubwayLine(subwayid, e) {
  * */
 function submitStation(subwayid, subwayStationId, e) {
     if (subwayid) {
+        req['pageNum'] = null;
         req['districtId'] = null;
         req['areaId'] = null;
     }
@@ -638,6 +643,7 @@ $('.price-list').on('click', 'li', function (e) {
         req['beginPrice']= null;
         req['endPrice']= null;
     }
+    req['pageNum'] = null;
     params = joinParams(req);
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
@@ -657,6 +663,7 @@ $('.age-list').on('click', 'li', function (e) {
     } else if (ageNumber == '') {
         req['age'] = null;
     }
+    req['pageNum'] = null;
     params = joinParams(req);
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
@@ -689,6 +696,7 @@ $('#typeSubmit').on('click', function (e) {
 
     if (layoutText == '不限') {
         tabTextReplace(e, layoutText);
+        req['pageNum'] = null;
         req['layoutId'] = null;
         params = joinParams(req);
         url = BaseUrl + params;
@@ -707,6 +715,7 @@ $('#typeSubmit').on('click', function (e) {
     } else {
         tabTextReplace(e, layoutText);
     }
+    req['pageNum'] = null;
     req['layoutId'] = layoutTextArr.join(',');
     params = joinParams(req);
     url = BaseUrl + params;
@@ -740,6 +749,8 @@ $('#moreSubmit').on('click', function (e) {
                 arr.push($(this).attr('data-info'));
             });
             req[dataType]= arr.join().toString();
+        }else {
+            req[dataType] = null;
         }
     });
 
@@ -749,6 +760,7 @@ $('#moreSubmit').on('click', function (e) {
         tabTextReplace(e, '更多');
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
+    req['pageNum'] = null;
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
@@ -760,6 +772,7 @@ $('#moreSubmit').on('click', function (e) {
  * */
 $('#moreReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
+    req['pageNum'] = null;
     req['propertyTypeId'] = null;
     req['houseAreaSize'] = null;
     req['elevatorFlag'] = null;
@@ -785,27 +798,45 @@ $(function () {
     }
 });
 
+function router_city(urlparam) {
+    urlparam=urlparam||""
+    if(urlparam[0]!='/'){
+        urlparam = '/'+urlparam
+    }
+    var uri = new URI(window.location.href);
+    var segmens = uri.segment();
+    var city="";
+    if(segmens.length>0){
+        city = "/"+segmens[0]
+    }
+    return city+urlparam
+}
+
+
+
 function pullUpaAction(pageNumber) {
     var paramData = req;
     paramData['pageNum'] = pageNumber;
     params = joinParams(paramData);
 
-    if (BaseUrl == '/newhouse/searchNewHouse') {
-        url ="/newhouse/pageSearchNewHouse" + params;
-    } else if (BaseUrl == '/findProjHouseInfo') {
-        url = '/esfHousePageSearch' + params;
-    } else if (BaseUrl == '/findVillageByConditions'){
-        url ="/villagePage" + params
+    if (BaseUrl.indexOf('/loupan')>0) {
+        url = router_city('/loupan' + params);
+    } else if (BaseUrl.indexOf('/esf')) {
+        url = router_city('/esf' + params);
+    } else if (BaseUrl.indexOf('/xiaoqu')){
+        url = router_city('/xiaoqu') + params
     }
 
     $.ajax({
-        type: "post",
+        type: "get",
+        contentType:'application/json',
         url: url,
         async: true,
+        dataType:'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             pageNum += 1;
-            console.log(pageNum);
+            // console.log(pageNum);
             //获取异步调用的数据
             if (data.code == 'success') {
                 var html = template('listContent',data.data);
