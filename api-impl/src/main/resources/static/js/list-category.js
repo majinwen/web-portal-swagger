@@ -812,7 +812,7 @@ function router_city(urlparam) {
     return city+urlparam
 }
 
-
+template.defaults.imports.router_city=router_city;
 
 function pullUpaAction(pageNumber) {
     var paramData = req;
@@ -821,9 +821,9 @@ function pullUpaAction(pageNumber) {
 
     if (BaseUrl.indexOf('/loupan')>0) {
         url = router_city('/loupan' + params);
-    } else if (BaseUrl.indexOf('/esf')) {
+    } else if (BaseUrl.indexOf('/esf')>0) {
         url = router_city('/esf' + params);
-    } else if (BaseUrl.indexOf('/xiaoqu')){
+    } else if (BaseUrl.indexOf('/xiaoqu')>0){
         url = router_city('/xiaoqu') + params
     }
 
@@ -839,7 +839,7 @@ function pullUpaAction(pageNumber) {
                 pageNum += 1;
 
                 // 二手房列表单价
-                if (BaseUrl == '/findProjHouseInfo') {
+                if ((BaseUrl.indexOf('/esf')>0)) {
                     var dataCon = data.data.data;
 
                     for (var i = 0; i < dataCon.length; i++){
