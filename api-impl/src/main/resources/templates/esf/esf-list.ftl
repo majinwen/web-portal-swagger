@@ -167,7 +167,7 @@
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
                         <#if item?? && item != ''>
-                            <img src="${item}" alt="${map.houseBusinessName}">
+                                <img src="${item}" alt="${map.houseBusinessName}">
                             <#else >
                                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>

@@ -66,7 +66,7 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}<#else>暂无</#if></h2>
+            <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
             <div class="primary-header-tag house-labelling gray">
             <#assign item =houseDetail['tagsName']>
             <#list item as itemValue>
@@ -202,8 +202,9 @@
                         <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if></span>
                     <em>房屋信息发布人</em>
                 </p>
-                <a href="tel:<#if houseDetail.houseProxyPhone?exists&&houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}<#else>#</#if>"
-                   class="issuer-tel-icon"></a>
+                <#if houseDetail.houseProxyPhone?exists&&houseDetail.houseProxyPhone!=''>
+                     <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
+                </#if>
             </div>
             <div class="describe-cont">
                 <p><#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>${houseDetail.houseDesc}</#if></p>
@@ -274,9 +275,8 @@
                     </#if>
                     <div class="picture-box">
                         <#if map['housePhotoTitle']?exists>
-                            <#assign item=map['housePhotoTitle']>
-                            <#if item??&& item!=''>
-                                <img src="${item}" alt="">
+                            <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
+                                <img src="${map.housePhotoTitle}" alt="">
                             </#if>
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
