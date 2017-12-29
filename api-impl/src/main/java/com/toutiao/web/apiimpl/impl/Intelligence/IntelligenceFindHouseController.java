@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -119,10 +120,14 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery) {
-        /*IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(4);*/
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
+        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+        intelligenceQuery1.setUserPortrayalType(3);
+        intelligenceQuery1.setMinTotalPrice(4500000);
+        intelligenceQuery1.setMaxTotalPrice(5500000);
+        intelligenceQuery1.setDistrictId("105040,105035,105034");
+        intelligenceQuery1.setLayOut(3);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
         return null;
     }
 
@@ -188,7 +193,8 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
         model.addAttribute("intelligenceFh", intelligenceFh);
         //选择非一居的用户，才出现此问题；
-        if (intelligenceFh.getLayOut() == 1) {
+        if(intelligenceFh.getLayOut()==1){
+
             //跳转过渡页，生成画像
             return "";
         }

@@ -110,7 +110,7 @@ public class Login {
             e.printStackTrace();
         }
         //去下一页
-        return "redirect:/index";
+        return "redirect:/";
 
     }
 
@@ -126,7 +126,7 @@ public class Login {
                          @RequestParam(value = "phone", required = true) String phone) throws Exception {
 
         clearCookieAndCache(request, response, phone);
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     /**

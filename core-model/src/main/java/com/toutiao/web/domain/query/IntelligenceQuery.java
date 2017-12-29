@@ -78,6 +78,15 @@ public class IntelligenceQuery {
     //是否有老人(0-无，1-有)
     private Integer hasOldman;
 
+    //测试
+    //最小值
+    private Integer minTotalPrice;
+
+    //最大值
+    private Integer maxTotalPrice;
+
+
+
 
 
 }

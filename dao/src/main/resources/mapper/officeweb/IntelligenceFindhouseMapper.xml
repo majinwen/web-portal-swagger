@@ -154,41 +154,75 @@
     </resultMap>
     <sql id="intelligenceFindHouse">
         newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
-        heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property
+        heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property,has_subway
     </sql>
-    <select id="selectByTypeTwoA"
+    <select id="queryByUserType1A"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where 1=1
-        ORDER BY has_subway ,ring_road ,has_lift DESC ,has_market
-        LIMIT
-        10
-        where  <![CDATA[ ring_road<=5 ]]>
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
+    </select>
+    <select id="queryByUserType1B"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC
+    </select>
+    <select id="queryByUserType1C"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
-        LIMIT 200
     </select>
-    <select id="selectByTypeTwoB"
+    <select id="queryByUserType2A"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where <![CDATA[ ring_road <= 4 ]]> AND propertyfee > 1 AND park_radio IS NOT NULL
-        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
-        LIMIT 200
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
     </select>
-    <select id="selectByTypeTwoC"
+    <select id="queryByUserType2B"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where <![CDATA[ ring_road <= 4 ]]> AND propertyfee > 2 AND to_number ( park_radio ,'9999') > 10
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
-        LIMIT 200
+    </select>
+    <select id="queryByUserType2C"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+    </select>
+    <select id="queryByUserType3A"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        where
+        <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
     </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
     insert into intelligence_findhouse (newcode, n_or_e, projname, 
