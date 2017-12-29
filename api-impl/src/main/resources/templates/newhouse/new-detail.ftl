@@ -156,7 +156,8 @@
                     <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0">
                         <div class="picture-box">
                             <#if item['layout_img']?exists>
-                                <img src="${qiniuimage}/${item['layout_img']}" alt="户型图">
+                                <#assign layoutimgs = item['layout_img']?split(",")>
+                                <img src="${qiniuimage}/${layoutimgs[0]}" alt="户型图">
                                 <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
                             </#if>
                             <span class="sale-state">在售</span>

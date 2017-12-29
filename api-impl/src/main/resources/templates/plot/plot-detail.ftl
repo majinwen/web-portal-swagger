@@ -83,7 +83,7 @@
             <div class="house-labelling gray">
             <#if village['label']?exists>
                 <#list village['label'] as label>
-                    <#if label?exists><span>${label}</span><#else><span>暂无</span></#if>
+                    <#if label?exists><span>${label}</span></#if>
                 </#list>
             </#if>
             </div>
@@ -174,7 +174,7 @@
                     <#--<h3>价格走势</h3>-->
                 <#--</div>-->
                 <div class="echarts-box">
-                    <div class="echarts-content" id="main"></div>
+                    <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
                 </div>
             </div>
 
@@ -558,7 +558,7 @@
     <#assign ptCD0 = tradeline['buildingline']>;
     <#assign ptCD1 = tradeline['arealine']>;
     <#assign ptCD2 = tradeline['tradearealine']>;
-    var myChartline = echarts.init(document.getElementById('main'));
+    var myChartline = echarts.init(document.getElementById('village-price-trade'));
     option = {
         tooltip: {
             trigger: 'axis'
