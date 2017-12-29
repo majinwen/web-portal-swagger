@@ -13,6 +13,7 @@ import com.toutiao.web.service.newhouse.NewHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.*;
 
 @Controller
-@RequestMapping("newhouse")
+@RequestMapping("/{citypath}")
 public class NewHouseController {
 
     @Autowired
@@ -32,7 +33,7 @@ public class NewHouseController {
      * 新房首页
      * @return
      */
-    @RequestMapping("/newhouseindex")
+    @RequestMapping("/xinfang")
     public String index(NewHouseQuery newHouseQuery, Model model) {
          newHouseQuery.setSort(0);
          newHouseQuery.setPageNum(1);
@@ -49,7 +50,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/searchNewHouse")
+    @RequestMapping("/loupan")
     public String searchNewHouse(NewHouseQuery newHouseQuery, Model model){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
@@ -65,7 +66,7 @@ public class NewHouseController {
         return "newhouse/new-list";
     }
 
-    @RequestMapping("/pageSearchNewHouse")
+    @RequestMapping(value = "/loupan",produces="application/json")
     @ResponseBody
     public NashResult searchNewHouse(NewHouseQuery newHouseQuery){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
@@ -104,8 +105,8 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/getNewHouseDetails")
-    public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
+    @RequestMapping("/loupan/{id}")
+    public String getNewHouseDetails(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         List<String>dateList= DateUtil.oneYearList();
 
@@ -126,20 +127,20 @@ public class NewHouseController {
 
     }
 
-    /**
-     * 楼盘户型详情
-     * @param buildingId
-     * @param tags
-     * @param model
-     * @return
-     */
-    @RequestMapping("/getNewHouseLayoutDetails")
-    public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
-        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
-        model.addAttribute("layoutDetails", details.get("layouts"));
-        return "";
-
-    }
+//    /**
+//     * 楼盘户型详情
+//     * @param buildingId
+//     * @param tags
+//     * @param model
+//     * @return
+//     */
+//    @RequestMapping("/getNewHouseLayoutDetails")
+//    public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
+//        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+//        model.addAttribute("layoutDetails", details.get("layouts"));
+//        return "";
+//
+//    }
 
     /**
      * 根据楼盘计算不同户型数量
@@ -147,8 +148,8 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/getNewHouseLayoutCountByRoom")
-    public String getNewHouseLayoutCountByRoom(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
+    @RequestMapping("/loupan/{loupanid}/huxing")
+    public String getNewHouseLayoutCountByRoom(@PathVariable("loupanid") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
         int rs = 0;
@@ -171,8 +172,8 @@ public class NewHouseController {
      * 新房配套地图
      * @return
      */
-    @RequestMapping("/getNewHouseMapDetail")
-    public String getNewHouseMapDetail(@RequestParam("id") Integer buildingId, Model model){
+    @RequestMapping("/loupan/{id}/map")
+    public String getNewHouseMapDetail(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
 
         String detailBuild = (String) details.get("build");
@@ -189,8 +190,8 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/getNewHouseDiscript")
-    public String getNewHouseDiscript(@RequestParam("id") Integer buildingId, Model model){
+    @RequestMapping("/loupan/{id}/desc")
+    public String getNewHouseDiscript(@PathVariable("id") Integer buildingId, Model model){
         List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         model.addAttribute("discript",discripts);
         return "newhouse/new-parameter";

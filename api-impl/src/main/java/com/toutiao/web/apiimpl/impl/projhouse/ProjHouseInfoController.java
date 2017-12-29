@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * 二手房管理
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping("/{citypath}/esf")
 public class ProjHouseInfoController {
 
     @Autowired
@@ -52,7 +52,7 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 11:06
      */
-    @RequestMapping(value = "/queryByHouseIdandLocation/{houseId}")
+    @RequestMapping(value = "/{houseId}")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
@@ -86,7 +86,7 @@ public class ProjHouseInfoController {
      *
      * @return
      */
-    @RequestMapping("/getProjHouseMapDetail")
+    @RequestMapping("/{newcode}/map") //getProjHouseMapDetail
     public String getNewHouseMapDetail(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
 
         //判断传递的小区id是否是数字
@@ -114,7 +114,7 @@ public class ProjHouseInfoController {
     /**
      * 功能描述：二手房分页
      */
-    @RequestMapping("/esfHousePageSearch")
+    @RequestMapping(value = {""},produces="application/json")
     @ResponseBody
     public NashResult esfHousePageSearch(ProjHouseInfoQuery projHouseInfoQuery) {
 
@@ -133,7 +133,7 @@ public class ProjHouseInfoController {
      * @author zhw
      * @date 2017/12/15 10:59
      */
-    @RequestMapping("/findProjHouseInfo")
+    @RequestMapping("") //
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
@@ -151,22 +151,6 @@ public class ProjHouseInfoController {
     }
 
 
-    /**
-     * 功能描述：往es服务器中插入数据
-     *
-     * @param [ProjHouseInfo]
-     * @return com.toutiao.web.common.restmodel.NashResult
-     * @author zhw
-     * @date 2017/12/15 18:30
-     */
-//    @RequestMapping("/saveProjHouseInfoToEs")
-//    public NashResult saveProjHouseInfoToEs(ProjHouseInfo projHouseInfo) {
-//        boolean b = projHouseInfoService.saveProjHouseInfo(projHouseInfo);
-//        if (b) {
-//            return NashResult.build("保存成功！");
-//        }
-//        return NashResult.Fail("保存失败！");
-//    }
 
     /**
      * 功能描述：通过索搜框查找相应的数据

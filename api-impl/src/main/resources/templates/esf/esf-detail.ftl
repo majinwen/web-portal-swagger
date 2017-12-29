@@ -173,8 +173,8 @@
                 <p>
                     交通信息：${houseDetail.traffic}
                     <em class="primary-distance"></em>
-                    <a href="/getProjHouseMapDetail?newcode=${houseDetail.newcode}" class="primary-map-icon"></a>
-                    <a href="/getProjHouseMapDetail?newcode=${houseDetail.newcode}" class="arrows-right"></a>
+                    <a href="${router_city('/esf/'+houseDetail.newcode+'/map')}" class="primary-map-icon"></a>
+                    <a href="${router_city('/esf/'+houseDetail.newcode+'/map')}" class="arrows-right"></a>
                 </p>
             </li></#if>
         </ul>
@@ -213,10 +213,10 @@
         <#if houseDetail.newcode?exists>
             <div class="module-header-message">
                 <h3>小区信息</h3>
-                <a href="/villageDetail?id=${houseDetail.newcode}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+                <a href="${router_city('/xiaoqu/'+houseDetail.newcode)}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
             </div>
         <ul class="tilelist row">
-        <li><a href="/villageDetail?id=${houseDetail.newcode}">
+        <li><a href="${router_city('/xiaoqu/'+houseDetail.newcode)}">
         </#if>
         <div class="picture-box">
             <#assign item=houseDetail['plotPhoto']>
@@ -237,7 +237,7 @@
         <#if houseDetail.newcode?exists>
             <div class="module-header-message">
                 <h3>配套地图</h3>
-                <a href="/getProjHouseMapDetail?newcode=${houseDetail.newcode}" class="more-arrows"><i
+                <a href="${router_city('/esf/'+houseDetail.newcode+'/map')}" class="more-arrows"><i
                         class="arrows-right"></i></a>
             </div>
         </#if>
@@ -263,7 +263,7 @@
         <ul class="tilelist">
             <#list plot as map>
                 <li>
-                    <#if map.houseId?exists><a href="/queryByHouseIdandLocation/${map.houseId}">
+                    <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId)}">
                     <#else><a href="#">
                     </#if>
                     <div class="picture-box">
@@ -302,7 +302,7 @@
         <#list plotList as plotInfo>
             <li>
                 <#if plotInfo['id']?exists>
-                <a href="/villageDetail?id=${plotInfo['id']}">
+                <a href="${router_city('/xiaoqu/'+plotInfo['id'])}">
                 <#else >
                 <a href="#">
                 </#if>

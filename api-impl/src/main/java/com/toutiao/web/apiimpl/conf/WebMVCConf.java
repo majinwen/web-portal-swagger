@@ -1,7 +1,6 @@
 package com.toutiao.web.apiimpl.conf;
 
 import com.toutiao.web.apiimpl.conf.interceptor.LoginInterceptor;
-import com.toutiao.web.apiimpl.conf.resolvers.MoneyArgumentResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -23,7 +22,6 @@ public class WebMVCConf extends WebMvcConfigurerAdapter {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);
-        argumentResolvers.add(new MoneyArgumentResolver());
     }
 
 //    @Override

@@ -212,7 +212,7 @@ function listSortTab() {
         });
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
-            if(BaseUrl=="/findVillageByConditions"){
+            if(BaseUrl.indexOf("/findVillageByConditions")){
                 location.href=BaseUrl+'?sort='+$(this).val();
             }else {
                 location.href=BaseUrl+'?sort='+$(this).val();
