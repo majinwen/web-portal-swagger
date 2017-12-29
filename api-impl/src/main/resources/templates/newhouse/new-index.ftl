@@ -187,20 +187,13 @@
     </#if>
     </ul>
 </section>
-<div class="new-index-pull-down">
+<a href="${router_city('/loupan')}" class="new-index-pull-down">
     <p>想查看更多房源，跟我来！</p><img src="${staticurl}/images/newindex/sy_xf_icon_xl.png" alt="查看更多房源">
-</div>
+</a>
 <#include "../user.ftl">
 <#include "../search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script>
-    $(window).scroll(function () {
-        if ($(document).scrollTop() > $(document).height() - $(window).height()) {
-            location.href = '/newhouse/searchNewHouse'
-        }
-    })
-</script>
 </body>
 </html>
