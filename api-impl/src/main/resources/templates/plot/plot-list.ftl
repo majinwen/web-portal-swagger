@@ -10,7 +10,7 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="/findVillageByConditions">
+    <input id="url" type="hidden" value="${router_city('/xiaoqu')}">
     <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -145,7 +145,7 @@
     <ul id="valueList">
     <#if villageList?exists>
         <#list villageList as plot>
-            <li><a class="list-item" href="/villageDetail?id=${plot['id']?c}">
+            <li><a class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c)}">
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
