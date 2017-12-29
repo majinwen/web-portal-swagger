@@ -107,16 +107,16 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseDetails")
     public String getNewHouseDetails(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
-        PriceTrend priceTrend=new PriceTrend();
-        priceTrend.setBuildingId(buildingId);
-        priceTrend.setPropertyType((short)1);
-
-        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
-
         List<String>dateList= DateUtil.oneYearList();
 
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);
+        Integer discId = build.getInteger("district_id");
+        Integer areaId = null;
+        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
+
+
+
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
@@ -174,13 +174,6 @@ public class NewHouseController {
     @RequestMapping("/getNewHouseMapDetail")
     public String getNewHouseMapDetail(@RequestParam("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
-        PriceTrend priceTrend=new PriceTrend();
-        priceTrend.setBuildingId(buildingId);
-        priceTrend.setPropertyType((short)1);
-
-        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(priceTrend);
-
-        List<String>dateList= DateUtil.oneYearList();
 
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);

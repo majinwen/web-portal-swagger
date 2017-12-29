@@ -98,10 +98,8 @@ public class PlotConterller {
             model.addAttribute("nearvillage", nearvillage);
 
             //走势图
-            PriceTrend priceTrend = new PriceTrend();
-            priceTrend.setBuildingId(village.getId());
-            priceTrend.setPropertyType((short) 0);
-            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(priceTrend);
+
+            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
             model.addAttribute("tradeline", stringListMap);
 
             //月份
