@@ -11,7 +11,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden" value="/findVillageByConditions">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -25,15 +25,12 @@
         <li data-mark="tab-age"><span><em>楼龄</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
-    <div class="global-mark none"></div>
+    <div class="global-mark none">
     <div class="category-cont">
         <!-- 区域 -->
         <div class="filter-item" data-mark="panel-place">
             <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1">
-                    <li onclick="showDistrict()">区域</li>
-                    <li onclick="showSubway()">地铁</li>
-                </ul>
+                <ul id="level1" class="nav" data-mark="level1"></ul>
                 <ul id="level2" class="guide none" data-mark="level2"></ul>
                 <ul id="level3" class="cont none" data-mark="level3"></ul>
             </div>
@@ -56,12 +53,12 @@
         <div class="filter-item" data-mark="panel-age">
             <div class="age-list">
                 <ul>
-                    <li data-begin-age="" data-end-age="" class="current">不限</li>
-                    <li data-begin-age="0" data-end-age="5">5年内</li>
-                    <li data-begin-age="0" data-end-age="10">10年内</li>
-                    <li data-begin-age="0" data-end-age="15">15年内</li>
-                    <li data-begin-age="0" data-end-age="20">20年内</li>
-                    <li data-begin-age="20" data-end-age="200">20年以上</li>
+                    <li class="current" data-info="">不限</li>
+                    <li data-info="[0-5]">5年内</li>
+                    <li data-info="[0-10]">10年内</li>
+                    <li data-info="[0-15]">15年内</li>
+                    <li data-info="[0-20]">20年内</li>
+                    <li data-info="[20-120]">20年以上</li>
                 </ul>
             </div>
         </div>
@@ -81,10 +78,10 @@
                 <dl>
                     <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="0,60">60以下</span>
-                        <span data-info="60,90">60-90</span>
-                        <span data-info="90,120">90-120</span>
-                        <span data-info="120,1000">120以上</span>
+                        <span data-info="[0-60]">60以下</span>
+                        <span data-info="[60-90]">60-90</span>
+                        <span data-info="[90-120]">90-120</span>
+                        <span data-info="[120-1000]">120以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -103,17 +100,17 @@
                         <span data-info="4">砖楼</span>
                     </dd>
                 </dl>
-                <#--<dl>-->
-                    <#--<dt data-type="saleType">销售状态</dt>-->
-                    <#--<dd>-->
-                        <#--<span data-info="1">售完</span>-->
-                        <#--<span data-info="2">在售</span>-->
-                        <#--<span data-info="3">不在售</span>-->
-                        <#--<span data-info="4">出租</span>-->
-                        <#--<span data-info="4">待租</span>-->
-                        <#--<span data-info="4">待售</span>-->
-                    <#--</dd>-->
-                <#--</dl>-->
+                <dl>
+                    <dt data-type="saleType">销售状态</dt>
+                    <dd>
+                        <span data-info="1">售完</span>
+                        <span data-info="2">在售</span>
+                        <span data-info="3">不在售</span>
+                        <span data-info="4">出租</span>
+                        <span data-info="5">待租</span>
+                        <span data-info="6">待售</span>
+                    </dd>
+                </dl>
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
@@ -142,9 +139,10 @@
             </div>
         </div>
     </div>
+    </div>
 </section>
 <section>
-    <ul>
+    <ul id="valueList">
     <#if villageList?exists>
         <#list villageList as plot>
             <li><a class="list-item" href="/villageDetail?id=${plot['id']?c}">
@@ -155,7 +153,7 @@
                                 <#assign photo = plot['photo']>
                                 <#if photo[0]?exists>
                                     <img src="${qiniuimage}/${photo[0]}" alt="${plot['rc']}">
-                                <#else><img src="${staticurl}/" alt="暂无">
+                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无">
                                 </#if>
                             </#if>
                         </div>
@@ -170,21 +168,21 @@
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
                                     <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
                                 <#else>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             <#else>
                                 <#if plot['tradingArea']?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
                             </#if>
                         <#else>
                             <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                             </#if>
                         </#if>
-                        <div class="cont-block-4">
+                        <div class="cont-block-4 house-labelling gray">
                             <#if plot['label']?exists>
                                 <#assign item =  plot['label']>
                                 <#list item as itemValue>
@@ -208,6 +206,7 @@
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
+<#include "../search.ftl">
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
@@ -219,9 +218,71 @@
     </#if>
     </ul>
 </div>
-<#include "../search.ftl">
 
-<script src="${staticurl}/js/categorys.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<#--<script src="${staticurl}/js/template-web.js"></script>-->
+
+<#--<script id="villagepage" type="text/html">
+    {{each data}}
+    <li><a class="list-item" href="/villageDetail?id={{$value.id}}">
+        <div class="clear">
+            <div class="list-item-img-box">
+                        <img src="${qiniuimage}/{{$value.photo[0]}}" alt="{{$value.rc}}">
+           <div class="list-item-cont">
+                <h3 class="cont-block-1">
+                    <%if ($value['rc'] != null){%>
+                    {{$value.rc}}
+                    <%}else{%>
+                    暂无
+                    <%}%>
+                    <%}%>
+               </h3>
+
+                <p class="cont-block-2">
+                    <%if ($value['abbreviatedAge'] != null){%>
+                    {{$value.abbreviatedAge}}
+                    <%}else{%>
+                       暂无
+                    <%}%>
+                    <%}%>
+                </p>
+            <#if plot['metroWithPlotsDistance']?exists>
+                <#assign map = plot['metroWithPlotsDistance']>
+                <#if plot['key']?exists>
+                    <#if map[plot['key']]?exists>
+                        <#assign split=map[plot['key']]?split("$")/>
+                        <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}]${split[2]}m</p>
+                    <#else>
+                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                    </#if>
+                <#else>
+                    <#if plot['tradingArea']?exists>
+                        <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                    </#if>
+                </#if>
+            <#else>
+                <#if plot['tradingArea']?exists>
+                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['tradingArea']}</p>
+                </#if>
+            </#if>
+                <div class="cont-block-4">
+                <#if plot['label']?exists>
+                    <#assign item =  plot['label']>
+                    <#list item as itemValue>
+                        <#if itemValue?exists>
+                            <span>${itemValue}</span>
+                        </#if>
+                    </#list>
+                </#if>
+                </div>
+                <div class="cont-block-price plot">
+                    <em>${plot['avgPrice']}元/㎡</em>
+                </div>
+            </div>&ndash;&gt;
+        </div>
+    </a></li>
+    {{/each}}
+ </script>-->
 </body>
 </html>

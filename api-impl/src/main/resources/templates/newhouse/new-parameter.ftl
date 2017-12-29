@@ -15,7 +15,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2> ${discript['building_name']!'暂无'}</h2>
-            <p>别名：${discript['building_nickname']!'暂无'}</p>
+            <p><#if discript['building_nickname']??>别名：${discript['building_nickname']}</#if></p>
             <div class="primary-header-tag">
                 <#if discript['building_tags']?exists&&(discript['building_tags']?size>0)>
                     <#assign tags = discript['building_tags']>
@@ -117,9 +117,9 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>
-            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+            <#--<a href="#" class="contact-share"><i></i>分享</a>
+            <a href="#" class="contact-collect"><i></i>收藏</a>-->
+            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
 </div>

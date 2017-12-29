@@ -11,7 +11,8 @@
 </head>
 <body>
 <header class="main-top-header">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <input id="url" type="hidden"  value="/newhouse/searchNewHouse">
+    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="中骏·西山天璟">
@@ -117,7 +118,7 @@
         <li><a class="list-item new" href="#">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <img src="${staticurl}/images/esf/esf_list_image1@3x.png" alt="中骏·西山天璟">
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                 </div>
                 <div class="list-item-cont">
                     <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
@@ -144,7 +145,9 @@
                 <div class="list-item-img-box">
                     <#if map['building_imgs']?exists>
                     <#assign item = map['building_imgs']?split(",")>
-                      <img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                    <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
+                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    </#if>
                     </#if>
                 </div>
                 <div class="list-item-cont">

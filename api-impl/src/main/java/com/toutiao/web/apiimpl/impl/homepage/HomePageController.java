@@ -41,7 +41,7 @@ public class HomePageController {
         model.addAttribute("villageList", villageList);
         model.addAttribute("newbuilds",builds);
         model.addAttribute("user","asds");
-        model.addAttribute("searchType","projhouse");
+//        model.addAttribute("searchType","projhouse");
         return "index";
     }
 }

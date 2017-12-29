@@ -26,7 +26,7 @@ $(function () {
 function describeAllShow() {
     if ($('.describe-cont').length) {
         var describeAllContent = $('.describe-cont p').text();
-        $('.describe-cont p').text(describeAllContent.substr(0,59));
+        $('.describe-cont p').text(describeAllContent.substr(0,56));
         $('.describe-show-btn').click(function () {
             $(this).hide();
             $('.describe-cont p').text(describeAllContent);
@@ -96,7 +96,29 @@ function initphoto(a,i) {
     })).init()
 }
 
+function houseTypeState() {
+    if ($('.house-type-state').length){
+        $('.house-type-state').on('click','span',function () {
+            $(this).addClass('current').siblings().removeClass('current');
+          /* location.href="/newhouse/getNewHouseLayoutCountByRoom?id="+$(this).data('bid')+"&&tags="+$(this).data('id');*/
+            $('#all-type').children("section").siblings().hide();
+            if($(this).data('id')=="0"){
+                $('#all-type').children("section").siblings().show();
+            }else if ($(this).data('id')=="2"){
+                $(".room2").show();
+            }else if ($(this).data('id')=="3"){
+                $(".room3").show();
+            }else if ($(this).data('id')=="4"){
+                $(".room4").show();
+            }else if ($(this).data('id')=="5"){
+                $(".room5").show();
+            }else if ($(this).data('id')=="1"){
+                $(".room1").show();
+            }
 
+        });
+    }
+}
 
 function textSlider() {
     var scrollDom = $('.text-scroll'),
@@ -143,10 +165,8 @@ function moduleExpand() {
     $('.expand-btn').on('click', function () {
         $(this).toggleClass('expand');
         if ($(this).hasClass('expand')) {
-            $(this).find('em').text('收起');
             $(this).parent().next('.expand-content').slideDown();
         } else {
-            $(this).find('em').text('展开');
             $(this).parent().next('.expand-content').slideUp();
         }
     });
@@ -178,9 +198,9 @@ function listSortTab() {
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
             if(BaseUrl=="/findVillageByConditions"){
-                location.replace(BaseUrl+'?avgPrice='+$(this).val());
+                location.href=BaseUrl+'?sort='+$(this).val();
             }else {
-                location.replace(BaseUrl+'?sort='+$(this).val());
+                location.href=BaseUrl+'?sort='+$(this).val();
             }
             $('.sort-content-box').slideUp();
         })

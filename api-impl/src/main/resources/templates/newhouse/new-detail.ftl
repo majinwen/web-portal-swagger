@@ -17,9 +17,15 @@
             <#if build['building_imgs']?exists>
             <#list build['building_imgs']?split(",") as item>
             <#if item?exists>
-            <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${staticurl}/images/esf/esxq_banner1.png" alt="${build['building_name']}">
-            </li>
+                <#if item?? && item!= ''>
+                    <li onclick="initphoto(this,${item_index})" class="swiper-slide">
+                        <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${qiniuimage}/<#if item?exists>${item}</#if>" alt="${build['building_name']}">
+                    </li>
+                <#else >
+                    <li onclick="initphoto(this,0)" class="swiper-slide">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                    </li>
+                </#if>
             </#if>
             </#list>
             </#if>
@@ -66,20 +72,13 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
-        <#if build['building_nickname']?exists><p>别名：${build['building_nickname']}</p></#if>
+            <#if build['building_nickname']?exists><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag">
-            <#--<#assign tags = build['building_tags']>-->
-            <#--<#list tags as item>-->
-             <#--<#if item?exists><span>${item}</span></#if>-->
-            <#--</#list>-->
-
             <#if (build['building_tags']?exists)&&(build['building_tags']?size>0)>
                 <#list build['building_tags'] as item>
                     <#if item?exists><span>${item}</span></#if>
                 </#list>
             </#if>
-
-
             </div>
         </div>
         <ul class="primary-item">
@@ -96,9 +95,9 @@
                 <p>
                     交通信息：<#if build['roundstation']?exists>
                         <#assign rounditems = build['roundstation']?split("$")>
-                          距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
+                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${rounditems[2]?number/1000}km</em>
                    <#else >暂无
-                    </#if> <#--1.0km<em class="primary-distance">0.6km</em>-->
+                    </#if>
                 </p>
             </li>
             <li>
@@ -133,7 +132,7 @@
     <section>
         <div class="module-header-message">
             <h3>楼盘描述</h3>
-            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']?c}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
+            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']?c}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
             <dt>开发商：${build['developers']!'暂无'}</dt>
@@ -154,14 +153,18 @@
         <ul class="tilelist">
             <#list layout as item>
                 <li>
-                    <a href="#">
+                    <a href="/newhouse/getNewHouseLayoutCountByRoom?id=${build['building_name_id']}&&tags=0">
                         <div class="picture-box">
-                            <img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                            <#if item['layout_img']?exists>
+                                <#assign layoutimgs = item['layout_img']?split(",")>
+                                <img src="${qiniuimage}/${layoutimgs[0]}" alt="户型图">
+                                <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                            </#if>
                             <span class="sale-state">在售</span>
                         </div>
                         <div class="tilelist-content">
                             <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
-                            <h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>
+                            <#--<h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>-->
                             <div class="house-labelling normal small tilelist-tag">
                                 <#if item['layout_tag']??>
                                     <#assign layouttagitem = item['layout_tag']>
@@ -178,13 +181,13 @@
             </#list>
         </ul>
     </section>
-        </#if>
+</#if>
 </div>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="more-arrows">配套详情<i class="arrows-right"></i></a>
+            <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="detail-map">
             <i class="map-marker-icon"></i>
@@ -218,9 +221,10 @@
                 <div class="picture-box">
                     <#if nearitem['building_imgs']?exists>
                     <#assign imgt = nearitem['building_imgs']?split(",")>
-                        <img src="${qiniuimage}/${imgt[0]}" width="332" height="249" alt="${nearitem['building_name']!'暂无'}">
-                  </#if>
-
+                        <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${nearitem['building_name']}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
+                    </#if>
                 </div>
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无'}</p>
@@ -236,9 +240,9 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="#" class="contact-share"><i></i>分享</a>
-            <a href="#" class="contact-collect"><i></i>收藏</a>
-            <a href="tel:1234789" class="contact-telephone-counseling">咨询售楼处</a>
+            <#--<a href="#" class="contact-share"><i></i>分享</a>-->
+            <#--<a href="#" class="contact-collect"><i></i>收藏</a>-->
+            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
 </div>
@@ -368,15 +372,6 @@
         ]
     };
     myChartline.setOption(option);
-
-    function houseTypeState() {
-        if ($('.house-type-state').length){
-            $('.house-type-state').on('click','span',function () {
-                $(this).addClass('current').siblings().removeClass('current');
-                location.href="${router_city('loupanhuxing/')}"+$(this).data('bid')+"?tags="+$(this).data('id');
-            });
-        }
-    }
 </script>
 </body>
 </html>

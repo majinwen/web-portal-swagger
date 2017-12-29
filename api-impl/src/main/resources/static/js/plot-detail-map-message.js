@@ -1,9 +1,10 @@
 $(function () {
-    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
-    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&tag=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交车站&tag=公交车站&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁站&tag=地铁站&location=' + locationnumber + '&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+
     $.ajax({
         type: 'GET',
         url: educationUrl,
@@ -11,7 +12,7 @@ $(function () {
         success: function (response) {
             if (response.message === 'ok') {
                 $('.map-message-btn').find('li.parent-child').addClass('current');
-                renderDom(response.results, '教育配套');
+                renderDom(response.results, '教育培训');
             }
         },
         error: function (err) {
@@ -51,9 +52,11 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                var lineNumber = (response.results[0].address).split(';').length;
-                $('#busStation').text(response.results[0].name);
-                $('#busStationNumber').text(lineNumber + '条线路')
+                if (response.results.length > 0){
+                    var lineNumber = (response.results[0].address).split(';').length;
+                    $('#busStation').text(response.results[0].name);
+                    $('#busStationNumber').text(lineNumber + '条线路')
+                }
             }
         },
         error: function (err) {
@@ -66,11 +69,12 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                console.log(response.results);
-                var subwayLine = (response.results[0].address).split(';')[0].substring(2);
-                var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
-                $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
-                $('#subwayDistance').text(subwayDistance);
+                if (response.results.length > 0) {
+                    var subwayLine = (response.results[0].address).split(';')[0].substring(2);
+                    var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
+                    $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
+                    $('#subwayDistance').text(subwayDistance);
+                }
             }
         },
         error: function (err) {
@@ -81,15 +85,15 @@ $(function () {
 
 $('.map-message-btn').on('click', 'li', function () {
     $(this).addClass('current').siblings().removeClass('current');
-    var text = $(this).text();
+    var text = $(this).attr('data-type');
     var parentText = $(this).parent().attr('data-type');
 
-    if (parentText == '教育配套') {
+    if (parentText == '教育培训') {
         $(this).removeClass('choose');
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
     }
-    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&location=39.915,116.404&radius=3000&scope=2&page_size=5&distance&output=json&ak=57b4dbd0d142e9649ed54160b45ecb1f';
+    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&tag=' + text + '&location=' + locationnumber + '&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     $.ajax({
         type: 'GET',
         url: url,
@@ -108,7 +112,7 @@ function renderDom(data, parentType) {
     var str = '';
     var star;
     switch (parentType) {
-        case '教育配套':
+        case '教育培训':
             for (var i = 0; i < data.length; i++) {
                 var index = i + 1;
                 var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
@@ -148,16 +152,20 @@ function renderDom(data, parentType) {
             $('#shoppintListDom').append(str);
             break;
         case '医疗配套':
-            for (var i = 0; i < data.length; i++) {
-                var index = i + 1;
-                var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
-                str += '<li><p><i class="expand-icon medical-treatment"></i>' +
-                    '<span class=expand-name>' + data[i].name +
-                    '</span></p><span class="expand-distance">' + distances +
-                    '</span></li>';
+            if (data.length <= 0) {
+                $('#hospitalListWrapper').addClass('none');
+            } else {
+                for (var i = 0; i < data.length; i++) {
+                    var index = i + 1;
+                    var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
+                    str += '<li><p><i class="expand-icon medical-treatment"></i>' +
+                        '<span class=expand-name>' + data[i].name +
+                        '</span></p><span class="expand-distance">' + distances +
+                        '</span></li>';
+                }
+                $('#hospitalListDom').empty();
+                $('#hospitalListDom').append(str);
             }
-            $('#hospitalListDom').empty();
-            $('#hospitalListDom').append(str);
             break;
     }
 }

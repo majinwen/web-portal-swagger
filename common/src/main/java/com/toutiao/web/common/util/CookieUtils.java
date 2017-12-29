@@ -53,6 +53,40 @@ public class CookieUtils {
             }
         }
     }
+    /**
+     *
+     * 功能描述：解析cookie获取用户信息
+     * @author zhw
+     * @date 2017/12/26 13:59
+     * @param [request, cookieName]
+     * @return java.lang.String
+     */
+    public static String validCookieValue1(HttpServletRequest request, String cookieName) {
+
+        cookieName = cookieName.trim();
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+
+                if (c.getName().equals(cookieName)) {
+                    try {
+                        //用户信息解密
+                        String str = Com35Aes.decrypt(Com35Aes.KEYCODE, c.getValue());
+                        if (str != null) {
+                            //截取电话号码
+                            String[] strings = str.split(RedisNameUtil.separativeSign);
+                            return strings[0];
+                        }else{
+                            return null;
+                        }
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      *

@@ -3,7 +3,9 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.PriceTrendService;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
@@ -37,7 +40,7 @@ public class NewHouseController {
          newHouseQuery.setPageSize(4);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
-         model.addAttribute("searchType","newhouse");
+//         model.addAttribute("searchType","newhouse");
          return "newhouse/new-index";
     }
 
@@ -59,8 +62,30 @@ public class NewHouseController {
         }else {
             model.addAttribute("sort",0);
         }
-        model.addAttribute("searchType","newhouse");
+//        model.addAttribute("searchType","newhouse");
         return "newhouse/new-list";
+    }
+
+    @RequestMapping("/pageSearchNewHouse")
+    @ResponseBody
+    public NashResult searchNewHouse(NewHouseQuery newHouseQuery){
+        Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
+        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) builds.get("data");
+
+        for (int i=0;i<build.size();i++) {
+            HashMap<String,Object> itemMap = build.get(i);
+            String imginfo= (String) itemMap.get("building_imgs");
+              if (StringUtil.isNotNullString(imginfo)){
+                 String [] imgs= imginfo.split(",");
+                 itemMap.put("building_imgs",imgs[0]);
+                  build.set(i,itemMap);
+              }
+        }
+
+
+
+        NashResult.build(build);
+        return NashResult.build(build);
     }
 
 //    /**

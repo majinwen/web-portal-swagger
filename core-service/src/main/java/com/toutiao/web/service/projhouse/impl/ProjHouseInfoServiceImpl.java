@@ -85,7 +85,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     buildinglist.remove(instance);
                 }
             }
-            return buildinglist;
+            if(buildinglist!=null&&buildinglist.size()>0){
+                return buildinglist;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -164,8 +167,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //面积
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
+                String area = projHouseInfoRequest.getHouseAreaId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getHouseAreaId().split(",");
+                String[] layoutId = area.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
@@ -176,8 +180,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //楼龄
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseYearId())) {
+                String houseyear = projHouseInfoRequest.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                String[] layoutId = projHouseInfoRequest.getHouseYearId().split(",");
+                String[] layoutId = houseyear.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
                     if (i + 1 > layoutId.length) {
                         break;
@@ -196,8 +201,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             //物业类型
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseManagementTypeId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseManagementTypeId().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getPropertyTypeId())) {
+                String[] layoutId = projHouseInfoRequest.getPropertyTypeId().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("houseType", layoutId));
             }
             //建筑类型
@@ -230,11 +235,13 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //权属
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getBuildingFeature())) {
-                String[] layoutId = projHouseInfoRequest.getBuildingFeature().split(",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getOwnership())) {
+                String[] layoutId = projHouseInfoRequest.getOwnership().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
             }
+            //去未删除的房源信息
+           /* booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));*/
             /**
              * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
              */
@@ -270,9 +277,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
-                //小区坐标
-                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                     //小区坐标
+                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                }
                 //朝向
 //                String forWard = ForWardMap.getForWard(String.valueOf(instance.getForward()));
 //                instance.setForwardName(forWard);
@@ -308,7 +317,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                }
                 houseList.add(instance);
             }
-            return houseList;
+            if (houseList!=null&&houseList.size()>0){
+                return houseList;
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -322,7 +333,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     /**
      * 功能描述：通过二手房id查找房源信息
      *
-     * @param [houseId]
+     * @param
      * @return java.util.Map<java.lang.String,java.lang.Object>
      * @author zhw
      * @date 2017/12/15 11:50
@@ -379,9 +390,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 houseList.add(instance);
             }
             result = new HashMap<>();
-            result.put("data_house", houseList.get(0));
-            result.put("total_house", hits.getTotalHits());
-            return result;
+            if (houseList!=null&&houseList.size()>0){
+                result.put("data_house",houseList.get(0) );
+                result.put("total_house", hits.getTotalHits());
+                return result;
+            }
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -437,7 +450,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 houseList.add(instance);
             }
-            return houseList;
+            if (houseList!=null&&houseList.size()>0){
+                return houseList;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

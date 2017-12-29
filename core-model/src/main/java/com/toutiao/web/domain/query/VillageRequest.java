@@ -30,8 +30,6 @@ public class VillageRequest {
     private String endPrice;  //结束价格
     private String abbreviatedAge;  //建成年代
     private String age;  //楼龄
-    private String beginAge;  //楼龄
-    private String endAge;  //楼龄
     private String areaSize;  //面积
     private String houseAreaSize;  //二手房面积
     private String sumBuilding;  //总栋数
@@ -40,7 +38,7 @@ public class VillageRequest {
     private Double liftDoorRadio;  //户均电梯
     private String elevator;  //电梯配备
     private String elevatorFlag;  //电梯配备查询ID
-    private Double carPositionRatio;  //车位配比
+    private String carPositionRatio;  //车位配比
     private String parkingRate;  //停车费
     private String desc;  //小区详情介绍
     private String characteristic;  //小区特色
