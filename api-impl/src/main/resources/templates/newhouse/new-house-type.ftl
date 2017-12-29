@@ -37,28 +37,26 @@
         </div>
 
         <div class="house-type-image">
-           <div>
-              <#if datail['layout_img']?exists>
-                 <#assign layoutimgs = datail['layout_img']?split(",")>
-                    <#list layoutimgs as layoutimg>
-                         <img src="${qiniuimage}/${layoutimg}" alt="户型图">
-                 </#list>
-              <#else>
-                         <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
-              </#if>
-                         <span class="sale-state">${datail['is_sale']!'在售'}</span>
+            <div><#if datail['layout_img']?exists>
+                <#assign layoutimgs = datail['layout_img']?split(",")>
+                <#list layoutimgs as layoutimg>
+                    <img src="${qiniuimage}/${layoutimg}" alt="户型图">
+                </#list>
+            <#else>
+                <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
+            </#if>
+                <span class="sale-state">${datail['is_sale']!'在售'}</span>
            </div>
         </div>
-
-      <#if datail['layout_desc']?exists>
-          <div class="describe-box">
-             <div class="describe-header">户型描述</div>
+        <#if datail['layout_desc']?exists>
+            <div class="describe-box">
+                <div class="describe-header">户型描述</div>
                 <div class="describe-cont">
-                      <p>  ${datail['layout_desc']}</p>
+                    <p>  ${datail['layout_desc']}</p>
                     <span class="describe-show-btn">>>展开</span>
                 </div>
-          </div>
-      </#if>
+            </div>
+        </#if>
     </section>
     </#list>
 </#if></div>

@@ -23,14 +23,12 @@
                         </li>
                     <#else >
                         <li onclick="initphoto(this,0)" class="swiper-slide">
-                            <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                 data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                         </li>
                     </#if>
                 <#else>
                     <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                             data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                     </li>
                 </#if>
             </#list>
@@ -88,47 +86,9 @@
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map')}" class="plot-primary-map-box"><img
-                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
-<#if (reViHouse?exists) && (reViHouse?size>0)>
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
-                    class="arrows-right"></i></a>
-        </div>
-        <ul class="tilelist">
-            <#list reViHouse as reitem>
-                <#if reitem_index==4>
-                    <#break >
-                </#if>
-                <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)}">
-                    <div class="picture-box">
-                        <#if reitem['housePhoto']?exists>
-                            <#assign photoitem=reitem['housePhoto']>
-                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            </#if>
-                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
-                        </#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
-                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
-                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
-                        </p>
-                    </div>
-                </a></li>
-            </#list>
-        </ul>
-    </section>
-</div>
-</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -138,8 +98,6 @@
         </div>
         <div class="basic-information price-trend">
             <div class="column item-column-three">
-
-
                 <div class="info-card-item">
                     <em>均价</em>
                     <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
@@ -170,55 +128,49 @@
                 </div>
             </div>
             <div>
-                <#--<div class="module-header-message">-->
-                    <#--<h3>价格走势</h3>-->
-                <#--</div>-->
                 <div class="echarts-box">
-                    <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
+                    <div class="echarts-content" id="village-price-trade"></div>
                 </div>
             </div>
-
         </div>
-
-    <#--<div class="basic-information supply-contrast none">-->
-    <#--<div class="column item-column-two">-->
-    <#--<div class="info-card-item">-->
-    <#--<em>本月</em>-->
-    <#--<table>-->
-    <#--<tr>-->
-    <#--<td>挂牌出售：</td>-->
-    <#--<td>34套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>关注用户：</td>-->
-    <#--<td>230人</td>-->
-    <#--</tr>-->
-    <#--</table>-->
-    <#--<p>供需充足，可选余地大。</p>-->
-    <#--</div>-->
-    <#--<div class="info-card-item">-->
-    <#--<em>上月</em>-->
-    <#--<table>-->
-    <#--<tr>-->
-    <#--<td>挂牌出售：</td>-->
-    <#--<td>34套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>成交：</td>-->
-    <#--<td>23套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>存量：</td>-->
-    <#--<td>36.57%</td>-->
-    <#--</tr>-->
-    <#--</table>-->
-    <#--</div>-->
-    <#--</div>-->
-    <#--<div></div>-->
-    <#--</div>-->
     </section>
 </div>
-
+<#if (reViHouse?exists) && (reViHouse?size>0)>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>推荐小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+        </div>
+        <ul class="tilelist">
+            <#list reViHouse as reitem>
+                <#if reitem_index==4>
+                    <#break >
+                </#if>
+                <#assign itemLocation=reitem['housePlotLocation']>
+                <li><a href="${router_city('/esf/'+reitem.houseId)}">
+                    <div class="picture-box">
+                        <#if reitem['housePhoto']?exists>
+                            <#assign photoitem=reitem['housePhoto']>
+                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
+                        </#if>
+                    </div>
+                    <div class="tilelist-content">
+                        <p class="cont-first text-center"><em>
+                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
+                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
+                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
+                        </p>
+                    </div>
+                </a></li>
+            </#list>
+        </ul>
+    </section>
+</div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -376,8 +328,7 @@
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <ul class="result-data-expand" id="hospitalListDom">
-            </ul>
+            <ul class="result-data-expand" id="hospitalListDom"></ul>
         </div>
     </section>
 </div>

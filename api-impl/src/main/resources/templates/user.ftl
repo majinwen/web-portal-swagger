@@ -19,7 +19,7 @@
         <ul class="side-nav-item item-my">
             <#--<li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>-->
             <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
-            <li><a id="out_login" href="#"><i class="icon-report"></i><span>注销</span></a></li>
+            <li><a id="out_login" href="#"><i class="icon-exit"></i><span>注销</span></a></li>
         </ul>
     </div>
     <div class="side-house-intelligent">

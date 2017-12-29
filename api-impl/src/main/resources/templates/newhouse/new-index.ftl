@@ -65,42 +65,42 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
                     <div class="topic-item-content">
-                        <h5>五环亦庄线</h5>
-                        <p>200万买3居</p>
+                        <h5>万科楼盘</h5>
+                        <p>品牌房企集中亮相</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="万科楼盘">
                 </a></div>
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587898856414222/">
                     <div class="topic-item-content">
-                        <h5>品牌促销</h5>
-                        <p>谁说便宜没好货</p>
+                        <h5>豪宅10万起</h5>
+                        <p>解密北京豪宅楼盘</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image2.jpg" alt="豪宅10万起">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587903362775054/">
                     <div class="topic-item-content">
-                        <h5>精装现房</h5>
-                        <p>不用装修不用等</p>
+                        <h5>90平小三居</h5>
+                        <p>改善族买房标配</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image3.jpg" alt="90平小三居">
                 </a></div>
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
                     <div class="topic-item-content">
-                        <h5>地铁沿线</h5>
-                        <p>给你最美的距离</p>
+                        <h5>新发预售证</h5>
+                        <p>入市新盘全掌握</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="新发预售证">
                 </a></div>
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587895837527054/">
                     <div class="topic-item-content">
-                        <h5>家有二宝</h5>
-                        <p>通透三居配套全</p>
+                        <h5>下一站南五环</h5>
+                        <p>南五环热门楼盘盘点</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image5.jpg" alt="下一站南五环">
                 </a></div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                 </div>
                 <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
+                    <h3 class="cont-block-1"><span class="ellipsis">中骏·西山天璟</span><em>别墅</em></h3>
                     <p class="cont-block-2 high-light-red">68000元/㎡</p>
                     <p class="cont-block-3">东城/88㎡—526㎡</p>
                     <div class="cont-block-4 house-labelling gray middle">
@@ -152,7 +152,7 @@
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                    <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']!'暂无'}</em></h3>
+                    <h3 class="cont-block-1"><span class="ellipsis">${map['building_name']}</span><em>${map['property_type']!'暂无'}</em></h3>
                     <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>

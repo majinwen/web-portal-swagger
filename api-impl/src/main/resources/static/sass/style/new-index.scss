@@ -23,7 +23,7 @@
     height: rem(90);
     line-height: rem(90);
     @include font-dpr(32);
-    border-bottom: 1px solid $borderLineColor;
+    border-bottom: 1px solid $baseBorderColor;
 
     .more-arrows {
         position: absolute;

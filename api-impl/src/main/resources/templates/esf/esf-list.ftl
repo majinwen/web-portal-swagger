@@ -159,8 +159,7 @@
     </div>
 </section>
 <section>
-    <ul id="valueList">
-    <#if builds?exists>
+    <#if builds?exists><ul id="valueList">
         <#list builds as map>
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId)}">
                 <div class="clear">
@@ -171,7 +170,7 @@
                         </#if>
                     </div>
                     <div class="list-item-cont">
-                        <h3 class="cont-block-1">${map.houseTitle}</h3>
+                        <h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>
                         <p class="cont-block-2">
                             <#if map.buildArea?exists&&(map.buildArea>0)>
                                 ${map.buildArea}㎡
@@ -227,7 +226,7 @@
                 </div>
             </a></li>
         </#list>
-    </#if></ul>
+    </ul></#if>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -301,9 +300,6 @@
         </div>
     </a></li>
     {{/each}}
-</script>
-<script>
-
 </script>
 </body>
 </html>
