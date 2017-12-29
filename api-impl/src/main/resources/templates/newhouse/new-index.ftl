@@ -194,5 +194,12 @@
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+    $(window).scroll(function () {
+        if ($(document).scrollTop() > $(document).height() - $(window).height()) {
+            location.href = '/newhouse/searchNewHouse'
+        }
+    })
+</script>
 </body>
 </html>
