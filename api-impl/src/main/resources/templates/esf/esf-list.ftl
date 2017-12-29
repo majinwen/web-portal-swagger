@@ -166,7 +166,7 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseBusinessName}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
@@ -252,10 +252,8 @@
     <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
         <div class="clear">
             <div class="list-item-img-box">
-                {{if $value.housePhoto != null && $value.housePhoto.length > 0}}
-                    {{each $value.housePhoto as value i}}
-                        <img src="{{value}}" alt="">
-                    {{/each}}
+                {{if $value.housePhoto && $value.housePhoto.length > 0}}
+                    <img src="{{$value.housePhoto[0]}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
@@ -284,7 +282,7 @@
                 </p>
                 <div class="cont-block-4 house-labelling gray middle esf">
                     {{if $value.tagsName}}
-                        {{each $value.tagsName as value}}
+                        {{each $value.tagsName value index}}
                             <span>{{value}}</span>
                         {{/each}}
                     {{/if}}
@@ -295,7 +293,7 @@
                     {{/if}}
                     {{if $value.houseTotalPrices && $value.buildArea}}
                         {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
-                            <span>{{$value.houseTotalPrices/$value.buildArea}}元/㎡</span>
+                            <span>{{$value.unitCost}}元/㎡</span>
                         {{/if}}
                     {{/if}}
                 </div>
@@ -303,6 +301,9 @@
         </div>
     </a></li>
     {{/each}}
+</script>
+<script>
+
 </script>
 </body>
 </html>

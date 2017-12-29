@@ -792,7 +792,6 @@ $(function () {
         $(window).scroll(function () {
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
                 setTimeout(pullUpaAction(pageNum), 1000);
-                // pullUpaAction(pageNum);
             }
         });
     }
@@ -818,21 +817,19 @@ function pullUpaAction(pageNumber) {
             pageNum: pageNumber
         },
         success: function (data) {
-            console.log(data);
 
-            //获取异步调用的数据
             if (data.code == 'success') {
                 pageNum += 1;
 
                 // 二手房列表单价
-                /*if (BaseUrl == '/findProjHouseInfo') {
+                if (BaseUrl == '/findProjHouseInfo') {
                     var dataCon = data.data.data;
-                    for (var i = 0; i < dataCon.length; i++){
-                        var UnitCost = (dataCon[i].houseTotalPrices / dataCon[i].buildArea).toFixed(3) * 1000;
-                    }
-                    console.log(dataCon);
-                }*/
 
+                    for (var i = 0; i < dataCon.length; i++){
+                        var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);
+                        dataCon[i].unitCost = unitCost;
+                    }
+                }
                 var html = template('listContent',data.data);
                 $('#valueList li:last-child').after(html);
             }
