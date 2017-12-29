@@ -453,7 +453,7 @@ function submitPlace(e) {
     url = BaseUrl + params;
     tabTextReplace(e, '区域');
     $.get(url, function () {
-        location.href = url;
+        location.replace(url) ;
     })
 }
 
@@ -474,7 +474,7 @@ function submitDirstrict(districtid, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href=url;
+        location.replace(url);
     });
 }
 
@@ -496,7 +496,7 @@ function submitBussiness(districtid, areaId, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href=url;
+        location.replace(url);
     });
 }
 
@@ -549,7 +549,7 @@ function submitSubway(e) {
     url = BaseUrl + params;
     tabTextReplace(e, '地铁');
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 }
 
@@ -605,7 +605,7 @@ function submitSubwayLine(subwayid, e) {
     url = BaseUrl + params;
     tabTextReplace(e);
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 }
 
@@ -625,7 +625,7 @@ function submitStation(subwayid, subwayStationId, e) {
 
     tabTextReplace(e);
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     });
 }
 
@@ -648,7 +648,7 @@ $('.price-list').on('click', 'li', function (e) {
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -668,7 +668,7 @@ $('.age-list').on('click', 'li', function (e) {
     url = BaseUrl + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -701,7 +701,7 @@ $('#typeSubmit').on('click', function (e) {
         params = joinParams(req);
         url = BaseUrl + params;
         $.get(url, function () {
-            location.href = url;
+            location.replace(url);
         });
         return;
     }
@@ -720,7 +720,7 @@ $('#typeSubmit').on('click', function (e) {
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     })
 });
 
@@ -764,7 +764,7 @@ $('#moreSubmit').on('click', function (e) {
     params = joinParams(req);
     url = BaseUrl + params;
     $.get(url, function () {
-        location.href = url;
+        location.replace(url);
     });
 });
 /*

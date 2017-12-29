@@ -22,8 +22,8 @@ public class PriceTrendServiceImpl implements PriceTrendService {
     @Autowired
     private PriceTrendMapper priceTrendMapper;
 
-   public Map<String,List<PriceTrend>> priceTrendList(PriceTrend priceTrend){
-       List<PriceTrend> priceTrendList = priceTrendMapper.searchPriceTrendList(priceTrend);
+   public Map<String,List<PriceTrend>> priceTrendList(Integer buildingId,Integer districtId,Integer areaId){
+       List<PriceTrend> priceTrendList = priceTrendMapper.newhouseTrendList(buildingId,districtId,areaId);
 
        //
        List<PriceTrend> ptCD0 =new ArrayList<>();

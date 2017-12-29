@@ -114,7 +114,12 @@ function houseTypeState() {
             $('#all-type').children("section").siblings().hide();
             if($(this).data('id')=="0"){
                 $('#all-type').children("section").siblings().show();
-            }else if ($(this).data('id')=="2"){
+            }else {
+               var roomDom = document.getElementsByClassName("room"+$(this).data('id'));
+               var $roomid = $(roomDom);
+               $roomid.show();
+            }
+            /*else if ($(this).data('id')=="2"){
                 $(".room2").show();
             }else if ($(this).data('id')=="3"){
                 $(".room3").show();
@@ -124,7 +129,7 @@ function houseTypeState() {
                 $(".room5").show();
             }else if ($(this).data('id')=="1"){
                 $(".room1").show();
-            }
+            }*/
 
         });
     }

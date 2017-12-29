@@ -30,11 +30,11 @@
         <div class="house-type-tag">
             <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
             <div class="house-labelling normal">
-                <#if datail['layout_tag']?exists>
-                    <#list datail['layout_tag'] as tag>
-                        <#if tag?exists> <span>${tag}</span></#if>
-                    </#list>
-                </#if>
+              <#if datail['layout_tag']?exists>
+                <#list datail['layout_tag'] as tag>
+                   <span><#if tag?exists>${tag}</#if></span>
+                </#list>
+              </#if>
             </div>
         </div>
 
@@ -61,9 +61,11 @@
                     </#if>
                 </div>
           </div>
+
     </section>
     </#list>
-</#if></div>
+</#if>
+</div>
 <p class="bottom-tips">以上是全部户型</p>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
