@@ -224,7 +224,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="/villageDetail?id={{$value.id}}">
+    <li><a class="list-item" href="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.photo && $value.photo.length > 0}}
