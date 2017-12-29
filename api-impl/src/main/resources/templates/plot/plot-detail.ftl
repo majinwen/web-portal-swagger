@@ -23,14 +23,12 @@
                         </li>
                     <#else >
                         <li onclick="initphoto(this,0)" class="swiper-slide">
-                            <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                 data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                         </li>
                     </#if>
                 <#else>
                     <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                             data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                     </li>
                 </#if>
             </#list>
@@ -88,8 +86,53 @@
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img
-                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>市场行情<span class="subtitle">价格走势</span></h3>
+            <div class="markets-btn"><i class="price-trend-btn current"></i><#--<i class="supply-contrast-btn"></i>-->
+            </div>
+        </div>
+        <div class="basic-information price-trend">
+            <div class="column item-column-three">
+                <div class="info-card-item">
+                    <em>均价</em>
+                    <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
+                </div>
+                <div class="info-card-item">
+                    <em>环比上月</em>
+                    <p class="green">
+                    <#if village['huanbi']?exists&&(village['huanbi'] gt 0)>
+                        ↑ ${(village['huanbi']?abs)?string.percent}
+                    <#elseif village['huanbi']?exists&&village['huanbi'] lt 0>
+                        ↓ ${(village['huanbi']?abs)?string.percent}
+                    <#else>
+                        暂无
+                    </#if>
+                    </p>
+                </div>
+                <div class="info-card-item">
+                    <em>同比去年</em>
+                    <p class="green">
+                    <#if village['tongbi']?exists&&(village['tongbi'] gt 0)>
+                        ↑ ${(village['tongbi']?abs)?string.percent}
+                    <#elseif village['tongbi']?exists&&village['tongbi'] lt 0>
+                        ↓ ${(village['tongbi']?abs)?string.percent}
+                    <#else>
+                        暂无
+                    </#if>
+                    </p>
+                </div>
+            </div>
+            <div>
+                <div class="echarts-box">
+                    <div class="echarts-content" id="village-price-trade"></div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 <#if (reViHouse?exists) && (reViHouse?size>0)>
@@ -97,8 +140,7 @@
     <section>
         <div class="module-header-message">
             <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
-                    class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -132,96 +174,6 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>市场行情<span class="subtitle">价格走势</span></h3>
-            <div class="markets-btn"><i class="price-trend-btn current"></i><#--<i class="supply-contrast-btn"></i>-->
-            </div>
-        </div>
-        <div class="basic-information price-trend">
-            <div class="column item-column-three">
-
-
-                <div class="info-card-item">
-                    <em>均价</em>
-                    <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
-                </div>
-                <div class="info-card-item">
-                    <em>环比上月</em>
-                    <p class="green">
-                    <#if village['huanbi']?exists&&(village['huanbi'] gt 0)>
-                        ↑ ${(village['huanbi']?abs)?string.percent}
-                    <#elseif village['huanbi']?exists&&village['huanbi'] lt 0>
-                        ↓ ${(village['huanbi']?abs)?string.percent}
-                    <#else>
-                        暂无
-                    </#if>
-                    </p>
-                </div>
-                <div class="info-card-item">
-                    <em>同比去年</em>
-                    <p class="green">
-                    <#if village['tongbi']?exists&&(village['tongbi'] gt 0)>
-                        ↑ ${(village['tongbi']?abs)?string.percent}
-                    <#elseif village['tongbi']?exists&&village['tongbi'] lt 0>
-                        ↓ ${(village['tongbi']?abs)?string.percent}
-                    <#else>
-                        暂无
-                    </#if>
-                    </p>
-                </div>
-            </div>
-            <div>
-                <#--<div class="module-header-message">-->
-                    <#--<h3>价格走势</h3>-->
-                <#--</div>-->
-                <div class="echarts-box">
-                    <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
-                </div>
-            </div>
-
-        </div>
-
-    <#--<div class="basic-information supply-contrast none">-->
-    <#--<div class="column item-column-two">-->
-    <#--<div class="info-card-item">-->
-    <#--<em>本月</em>-->
-    <#--<table>-->
-    <#--<tr>-->
-    <#--<td>挂牌出售：</td>-->
-    <#--<td>34套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>关注用户：</td>-->
-    <#--<td>230人</td>-->
-    <#--</tr>-->
-    <#--</table>-->
-    <#--<p>供需充足，可选余地大。</p>-->
-    <#--</div>-->
-    <#--<div class="info-card-item">-->
-    <#--<em>上月</em>-->
-    <#--<table>-->
-    <#--<tr>-->
-    <#--<td>挂牌出售：</td>-->
-    <#--<td>34套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>成交：</td>-->
-    <#--<td>23套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>存量：</td>-->
-    <#--<td>36.57%</td>-->
-    <#--</tr>-->
-    <#--</table>-->
-    <#--</div>-->
-    <#--</div>-->
-    <#--<div></div>-->
-    <#--</div>-->
-    </section>
-</div>
-
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
             <h3>基本信息</h3>
             <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
@@ -229,8 +181,7 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>,<em
-                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['abbreviatedAge']?exists>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
                 <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
@@ -376,8 +327,7 @@
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <ul class="result-data-expand" id="hospitalListDom">
-            </ul>
+            <ul class="result-data-expand" id="hospitalListDom"></ul>
         </div>
     </section>
 </div>
@@ -461,11 +411,9 @@
             <i class="map-marker-icon"></i>
         <#if village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
         <#else>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
         </#if>
         </a>
     </section>
@@ -475,8 +423,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i
-                    class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -555,9 +502,9 @@
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
-    <#assign ptCD0 = tradeline['buildingline']>;
-    <#assign ptCD1 = tradeline['arealine']>;
-    <#assign ptCD2 = tradeline['tradearealine']>;
+    <#assign ptCD0 = tradeline['buildingline']>
+    <#assign ptCD1 = tradeline['arealine']>
+    <#assign ptCD2 = tradeline['tradearealine']>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
     option = {
         tooltip: {
