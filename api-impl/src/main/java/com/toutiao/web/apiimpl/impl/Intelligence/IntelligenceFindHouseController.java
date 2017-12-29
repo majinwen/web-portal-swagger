@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -122,7 +123,11 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
         IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(4);
+        intelligenceQuery1.setUserPortrayalType(6);
+        intelligenceQuery1.setMinTotalPrice(4500000);
+        intelligenceQuery1.setMaxTotalPrice(5500000);
+        intelligenceQuery1.setDistrictId("105040,105035,105034");
+        intelligenceQuery1.setLayOut(3);
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
         return null;
     }

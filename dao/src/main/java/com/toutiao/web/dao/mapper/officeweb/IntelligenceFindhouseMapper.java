@@ -31,11 +31,9 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     List<IntelligenceFindhouse> selectByUserPrice(double totlaPrice);
 
-    List<IntelligenceFindhouse> selectByTypeTwoA(IntelligenceQuery intelligenceQuery);
 
-    List<IntelligenceFindhouse> selectByTypeTwoB(IntelligenceQuery intelligenceQuery);
 
-    List<IntelligenceFindhouse> selectByTypeTwoC(IntelligenceQuery intelligenceQuery);
+
 
     /**
      * 根据用户画像1 A匹配
@@ -55,6 +53,27 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
      * @return
      */
     List<IntelligenceFindhouse> queryByUserType1C(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 A匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2A(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 B匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2B(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 C匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2C(IntelligenceQuery intelligenceQuery);
 
     /**
      * 根据用户画像3 A匹配
