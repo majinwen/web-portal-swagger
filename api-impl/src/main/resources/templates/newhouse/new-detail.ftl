@@ -89,8 +89,8 @@
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
                            ${build['building_address']!'暂无'}
-                    <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="primary-map-icon"></a>
-                    <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="arrows-right"></a>
+                    <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="primary-map-icon"></a>
+                    <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="arrows-right"></a>
                 </p>
                 <p>
                     交通信息：<#if build['roundstation']?exists>
@@ -132,7 +132,7 @@
     <section>
         <div class="module-header-message">
             <h3>楼盘描述</h3>
-            <a href="/newhouse/getNewHouseDiscript?id=${build['building_name_id']?c}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
             <dt>开发商：${build['developers']!'暂无'}</dt>
@@ -148,7 +148,7 @@
     <section>
         <div class="module-header-message">
             <h3>户型信息</h3>
-            <a href="${router_city('/loupanhuxing/'+build['building_name_id']+'?tags=0')}" class="more-arrows">全部户型<i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']+'/huxing?tags=0')}" class="more-arrows">全部户型<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list layout as item>
@@ -187,9 +187,9 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a href="${router_city('/loupanmap/'+build['building_name_id']?c)}" class="detail-map">
+        <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if build['location']?exists>
                 <#assign locations = build['location']?split(",")>

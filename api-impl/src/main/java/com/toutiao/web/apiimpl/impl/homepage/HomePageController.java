@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/{citypath}")
+@RequestMapping("/")
 public class HomePageController {
 
 
@@ -24,13 +24,16 @@ public class HomePageController {
     @Autowired
     private PlotService plotService;
 
-
+    @RequestMapping(value={""})
+    public String index(){
+        return "redirect:/bj";
+    }
     /**
      * 大首页
      * @param model
      * @return
      */
-    @RequestMapping(value={""})
+    @RequestMapping(value={"{citypath}"})
     public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
         NewHouseQuery newHouseQuery=new NewHouseQuery();
         newHouseQuery.setSort(0);

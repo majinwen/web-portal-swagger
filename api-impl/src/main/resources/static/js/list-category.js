@@ -18,7 +18,7 @@ $(function () {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
-                    if ((BaseUrl.indexOf('newhouse')) > 0) {
+                    if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                         showOnlyDistrict(req['districtId']);
                     } else {
                         showDistrict(req['districtId'], req['areaId']);
@@ -29,7 +29,7 @@ $(function () {
                 }
             } else {
                 $('#district-option').addClass('current');
-                if ((BaseUrl.indexOf('newhouse')) > 0) {
+                if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                     showOnlyDistrict();
                 } else {
                     showDistrict();
@@ -49,7 +49,7 @@ $(function () {
     $('#level1').on('click', 'li', function () {
         $(this).addClass('current').siblings().removeClass('current');
         if ($(this).attr('id') == 'district-option') {
-            if ((BaseUrl.indexOf('newhouse')) > 0) {
+            if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
                 showOnlyDistrict();
             } else {
                 showDistrict();
@@ -798,27 +798,45 @@ $(function () {
     }
 });
 
+function router_city(urlparam) {
+    urlparam=urlparam||""
+    if(urlparam[0]!='/'){
+        urlparam = '/'+urlparam
+    }
+    var uri = new URI(window.location.href);
+    var segmens = uri.segment();
+    var city="";
+    if(segmens.length>0){
+        city = "/"+segmens[0]
+    }
+    return city+urlparam
+}
+
+
+
 function pullUpaAction(pageNumber) {
     var paramData = req;
     paramData['pageNum'] = pageNumber;
     params = joinParams(paramData);
 
-    if (BaseUrl == '/newhouse/searchNewHouse') {
-        url = '/newhouse/pageSearchNewHouse' + params;
-    } else if (BaseUrl == '/findProjHouseInfo') {
-        url = '/esfHousePageSearch' + params;
-    } else if (BaseUrl == '/findVillageByConditions'){
-        url = '/villagePage' + params
+    if (BaseUrl.indexOf('/loupan')>0) {
+        url = router_city('/loupan' + params);
+    } else if (BaseUrl.indexOf('/esf')) {
+        url = router_city('/esf' + params);
+    } else if (BaseUrl.indexOf('/xiaoqu')){
+        url = router_city('/xiaoqu') + params
     }
 
     $.ajax({
-        type: "post",
+        type: "get",
+        contentType:'application/json',
         url: url,
         async: true,
+        dataType:'json',
         success: function (data) {
-            console.log(data);
+            // console.log(data);
             pageNum += 1;
-            console.log(pageNum);
+            // console.log(pageNum);
             //获取异步调用的数据
             if (data.code == 'success') {
                 var html = template('listContent',data.data);

@@ -28,16 +28,17 @@
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
+            <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a href="/newhouse/newhouseindex">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xinfang')}">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
 
-            <div class="banner-nav-item index-nav-item"><a href="/findVillageByConditions">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xiaoqu')}">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/findProjHouseInfo">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/esf')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a href="#">
@@ -280,7 +281,7 @@
             <#elseif map_index==4>
                 <#break>
             </#if>
-            <li><a class="list-item" href="/villageDetail?id=${map['id']?c}">
+            <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c)}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}" alt="${map['rc']}">

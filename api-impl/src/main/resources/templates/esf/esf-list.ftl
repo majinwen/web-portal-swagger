@@ -11,7 +11,7 @@
 <#setting url_escaping_charset="UTF-8">
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="/findProjHouseInfo">
+    <input id="url" type="hidden" value="${router_city('/esf')}">
     <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -162,7 +162,7 @@
     <ul id="valueList">
     <#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item" href="/queryByHouseIdandLocation/${map.houseId}">
+            <li><a class="list-item" href="${router_city('/esf/'+map.houseId)}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>

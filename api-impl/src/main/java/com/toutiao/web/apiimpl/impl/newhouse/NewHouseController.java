@@ -66,7 +66,7 @@ public class NewHouseController {
         return "newhouse/new-list";
     }
 
-    @RequestMapping("/pageSearchNewHouse")
+    @RequestMapping(value = "/loupan",produces="application/json")
     @ResponseBody
     public NashResult searchNewHouse(NewHouseQuery newHouseQuery){
         Map<String,Object> builds =  newHouseService.getNewHouse(newHouseQuery);
@@ -127,20 +127,20 @@ public class NewHouseController {
 
     }
 
-    /**
-     * 楼盘户型详情
-     * @param buildingId
-     * @param tags
-     * @param model
-     * @return
-     */
-    @RequestMapping("/getNewHouseLayoutDetails")
-    public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
-        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
-        model.addAttribute("layoutDetails", details.get("layouts"));
-        return "";
-
-    }
+//    /**
+//     * 楼盘户型详情
+//     * @param buildingId
+//     * @param tags
+//     * @param model
+//     * @return
+//     */
+//    @RequestMapping("/getNewHouseLayoutDetails")
+//    public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
+//        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+//        model.addAttribute("layoutDetails", details.get("layouts"));
+//        return "";
+//
+//    }
 
     /**
      * 根据楼盘计算不同户型数量
@@ -148,7 +148,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/loupanhuxing/{loupanid}")
+    @RequestMapping("/loupan/{loupanid}/huxing")
     public String getNewHouseLayoutCountByRoom(@PathVariable("loupanid") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -172,7 +172,7 @@ public class NewHouseController {
      * 新房配套地图
      * @return
      */
-    @RequestMapping("/loupanmap/{id}")
+    @RequestMapping("/loupan/{id}/map")
     public String getNewHouseMapDetail(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         PriceTrend priceTrend=new PriceTrend();
@@ -197,8 +197,8 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/getNewHouseDiscript")
-    public String getNewHouseDiscript(@RequestParam("id") Integer buildingId, Model model){
+    @RequestMapping("/loupan/{id}/desc")
+    public String getNewHouseDiscript(@PathVariable("id") Integer buildingId, Model model){
         List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         model.addAttribute("discript",discripts);
         return "newhouse/new-parameter";
