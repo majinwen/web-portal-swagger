@@ -100,7 +100,7 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
+                        <#--<span data-info="4">砖楼</span>-->
                     </dd>
                 </dl>
                 <dl>
@@ -114,12 +114,13 @@
                 <dl>
                     <dt data-type="buildingFeature">楼盘特色</dt>
                     <dd>
-                        <span data-info="1">别墅</span>
-                        <span data-info="2">花园洋房</span>
-                        <span data-info="3">近地铁</span>
-                        <span data-info="4">车位充足</span>
-                        <span data-info="5">低密度</span>
-                        <span data-info="6">高绿化</span>
+                        <span data-info="1">近地铁</span>
+                        <span data-info="7">车位充足</span>
+                        <span data-info="8">低密度</span>
+                        <span data-info="10">优质物业</span>
+                        <span data-info="11">购物方便</span>
+                        <span data-info="12">教育配套</span>
+                        <span data-info="13">医疗配套</span>
                     </dd>
                 </dl>
                 <dl>
@@ -159,11 +160,12 @@
                         <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
                             <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>暂无</#if></em></p>
+                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>售价待定</#if></em></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                             <#assign rounditems = map['nearsubway']?split("$")>
-                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
+                                <#assign x = rounditems[2]?number/1000>
+                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${x?string("0.##")}km
                             <#else>
                                 <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                             </#if>
@@ -192,6 +194,7 @@
             </a></li>
         </#list>
     </#if></ul>
+    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
@@ -229,7 +232,7 @@
             <p class="cont-block-2">
                 <em class="high-light-red">
                     {{if $value.average_price != null}}
-                        {{if $value.average_price != 0}}
+                        {{if $value.average_price != '' && $value.average_price != 0}}
                             {{$value.average_price}}元/㎡
                         {{else}}
                             暂无

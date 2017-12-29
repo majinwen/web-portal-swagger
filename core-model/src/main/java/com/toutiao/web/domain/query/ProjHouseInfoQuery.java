@@ -109,11 +109,12 @@ public class ProjHouseInfoQuery {
      */
     private double lon;
     //电梯(有 无)
-    private String elevator;
+    private String elevatorFlag;
 
 
     private Integer houseHeating;
 
+    private String keyWord;
 
 
 

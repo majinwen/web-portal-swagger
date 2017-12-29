@@ -7,7 +7,7 @@
                     <i class="triangle-top"></i>
                     <div class="type-menu">
                         <span id = "nhouse" data-value="${router_city('/loupan')}?keywords=">新房</span>
-                        <span id ="erhouse" data-value="/queryBySearchBox?text=" class="current">二手房</span>
+                        <span id ="erhouse" data-value="/findProjHouseInfo?keyWord=" class="current">二手房</span>
                         <span id = "plot" data-value="${router_city('/xiaoqu')}?rc=">小区</span>
                     </div>
                 </div>

@@ -27,135 +27,135 @@
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none">
-    <div class="category-cont">
-        <!-- 区域 -->
-        <div class="filter-item" data-mark="panel-place">
-            <div class="place-list">
-                <ul id="level1" class="nav" data-mark="level1"></ul>
-                <ul id="level2" class="guide none" data-mark="level2"></ul>
-                <ul id="level3" class="cont none" data-mark="level3"></ul>
+        <div class="category-cont">
+            <!-- 区域 -->
+            <div class="filter-item" data-mark="panel-place">
+                <div class="place-list">
+                    <ul id="level1" class="nav" data-mark="level1"></ul>
+                    <ul id="level2" class="guide none" data-mark="level2"></ul>
+                    <ul id="level3" class="cont none" data-mark="level3"></ul>
+                </div>
             </div>
-        </div>
-        <!-- 价格 -->
-        <div class="filter-item" data-mark="panel-price">
-            <div class="price-list">
-                <ul>
-                    <li data-begin-price="" data-end-price="" class="current">不限</li>
-                    <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
-                    <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
-                    <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
-                    <li data-begin-price="300.0" data-end-price="350.0">300-350万</li>
-                    <li data-begin-price="350.0" data-end-price="400.0">350-400万</li>
-                    <li data-begin-price="400.0" data-end-price="1000.0">400万以上</li>
-                </ul>
+            <!-- 价格 -->
+            <div class="filter-item" data-mark="panel-price">
+                <div class="price-list">
+                    <ul>
+                        <li data-begin-price="" data-end-price="" class="current">不限</li>
+                        <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
+                        <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
+                        <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
+                        <li data-begin-price="300.0" data-end-price="350.0">300-350万</li>
+                        <li data-begin-price="350.0" data-end-price="400.0">350-400万</li>
+                        <li data-begin-price="400.0" data-end-price="1000.0">400万以上</li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <!-- 户型 -->
-        <div class="filter-item" data-mark="panel-type">
-            <div class="type-list">
-                <ul>
-                    <li class="current" data-type="0">不限</li>
-                    <li data-type="1">一居 <i></i></li>
-                    <li data-type="2">二居 <i></i></li>
-                    <li data-type="3">三居 <i></i></li>
-                    <li data-type="4">四居 <i></i></li>
-                    <li data-type="5">五居及五居以上 <i></i></li>
-                </ul>
+            <!-- 户型 -->
+            <div class="filter-item" data-mark="panel-type">
+                <div class="type-list">
+                    <ul>
+                        <li class="current" data-type="0">不限</li>
+                        <li data-type="1">一居 <i></i></li>
+                        <li data-type="2">二居 <i></i></li>
+                        <li data-type="3">三居 <i></i></li>
+                        <li data-type="4">四居 <i></i></li>
+                        <li data-type="5">五居及五居以上 <i></i></li>
+                    </ul>
+                    <div class="submit-wrapper">
+                        <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
+                    </div>
+                </div>
+            </div>
+            <!-- 更多 -->
+            <div class="filter-item" data-mark="panel-more">
+                <div class="more-list">
+                    <dl>
+                        <dt data-type="propertyTypeId">物业类型</dt>
+                        <dd>
+                            <span data-info="1">普通住宅</span>
+                            <span data-info="2">公寓</span>
+                            <span data-info="3">酒店式公寓</span>
+                            <span data-info="4">花园洋房</span>
+                            <span data-info="5">商住楼</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="houseOrientationId">朝向</dt>
+                        <dd>
+                            <span data-info="1">东</span>
+                            <span data-info="2">西</span>
+                            <span data-info="3">南</span>
+                            <span data-info="4">北</span>
+                            <span data-info="5">东南</span>
+                            <span data-info="6">西南</span>
+                            <span data-info="7">东北</span>
+                            <span data-info="8">西北</span>
+                            <span data-info="9">东西</span>
+                            <span data-info="10">南北</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="houseLabelId">标签</dt>
+                        <dd>
+                            <span data-info="1">近地铁</span>
+                            <span data-info="4">随时看</span>
+                            <span data-info="8">满二年</span>
+                            <span data-info="16">满五年</span>
+                            <span data-info="32">近公园</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="houseAreaSize">面积</dt>
+                        <dd>
+                            <span data-info="[0-60]">60以下</span>
+                            <span data-info="[60-90]">60-90</span>
+                            <span data-info="[90-120]">90-120</span>
+                            <span data-info="[120-1000]">120以上</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="houseYearId">楼龄</dt>
+                        <dd>
+                            <span class="only" data-info="[0-5]">5年内</span>
+                            <span class="only" data-info="[0-10]">10年内</span>
+                            <span class="only" data-info="[0-15]">15年内</span>
+                            <span class="only" data-info="[0-20]">20年内</span>
+                            <span class="only" data-info="[20-120]">20年以上</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="elevatorFlag">电梯</dt>
+                        <dd>
+                            <span class="only" data-info="1">有</span>
+                            <span class="only" data-info="2">无</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="buildingTypeId">建筑类型</dt>
+                        <dd>
+                            <span data-info="1">板楼</span>
+                            <span data-info="2">塔楼</span>
+                            <span data-info="3">板塔结合</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt data-type="ownership">权属</dt>
+                        <dd>
+                            <span data-info="1">已购公房</span>
+                            <span data-info="2">商品房</span>
+                            <span data-info="3">空置房</span>
+                            <span data-info="4">使用权房</span>
+                            <span data-info="5">央产</span>
+                            <span data-info="6">经济适用房</span>
+                        </dd>
+                    </dl>
+                </div>
                 <div class="submit-wrapper">
-                    <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
+                    <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
+                    <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
                 </div>
             </div>
         </div>
-        <!-- 更多 -->
-        <div class="filter-item" data-mark="panel-more">
-            <div class="more-list">
-                <dl>
-                    <dt data-type="propertyTypeId">物业类型</dt>
-                    <dd>
-                        <span data-info="1">普通住宅</span>
-                        <span data-info="2">公寓</span>
-                        <span data-info="3">酒店式公寓</span>
-                        <span data-info="4">花园洋房</span>
-                        <span data-info="5">商住楼</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseOrientationId">朝向</dt>
-                    <dd>
-                        <span data-info="1">东</span>
-                        <span data-info="2">西</span>
-                        <span data-info="3">南</span>
-                        <span data-info="4">北</span>
-                        <span data-info="5">东南</span>
-                        <span data-info="6">西南</span>
-                        <span data-info="7">东北</span>
-                        <span data-info="8">西北</span>
-                        <span data-info="9">东西</span>
-                        <span data-info="10">南北</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseLabelId">标签</dt>
-                    <dd>
-                        <span data-info="1">近地铁</span>
-                        <span data-info="4">随时看</span>
-                        <span data-info="8">满二年</span>
-                        <span data-info="16">满五年</span>
-                        <span data-info="32">近公园</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseAreaSize">面积</dt>
-                    <dd>
-                        <span data-info="[0-60]">60以下</span>
-                        <span data-info="[60-90]">60-90</span>
-                        <span data-info="[90-120]">90-120</span>
-                        <span data-info="[120-1000]">120以上</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="houseYearId">楼龄</dt>
-                    <dd>
-                        <span class="only" data-info="[0-5]">5年内</span>
-                        <span class="only" data-info="[0-10]">10年内</span>
-                        <span class="only" data-info="[0-15]">15年内</span>
-                        <span class="only" data-info="[0-20]">20年内</span>
-                        <span class="only" data-info="[20-120]">20年以上</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="elevatorFlag">电梯</dt>
-                    <dd>
-                        <span class="only" data-info="1">有</span>
-                        <span class="only" data-info="2">无</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="buildingTypeId">建筑类型</dt>
-                    <dd>
-                        <span data-info="1">板楼</span>
-                        <span data-info="2">塔楼</span>
-                        <span data-info="3">板塔结合</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt data-type="ownership">权属</dt>
-                    <dd>
-                        <span data-info="1">已购公房</span>
-                        <span data-info="2">商品房</span>
-                        <span data-info="3">空置房</span>
-                        <span data-info="4">使用权房</span>
-                        <span data-info="5">央产</span>
-                        <span data-info="6">经济适用房</span>
-                    </dd>
-                </dl>
-            </div>
-            <div class="submit-wrapper">
-                <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
-                <a href="javascript:;" class="operation-button more-submit" id="moreSubmit">确定</a>
-            </div>
-        </div>
-    </div>
     </div>
 </section>
 <section>
@@ -166,8 +166,9 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="">
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseBusinessName}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#assign item=map['housePhotoTitle']>
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -214,21 +215,14 @@
                             </#if>
                         </div>
                         <div class="cont-block-price">
-                            <em>
-                                <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0>
-                                    </#if>
-                                <#else>
-                                    ${map.houseTotalPrices}万
+                            <#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>
+                                <em>${map.houseTotalPrices}万</em>
+                            </#if>
+                            <#if map.houseTotalPrices?exists && map.buildArea?exists>
+                                <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
+                                    <span>${(map.houseTotalPrices / map.buildArea)?number * 10000}元/㎡</span>
                                 </#if>
-                            </em>
-                            <em>
-                                <#if map.houseUnitCost?exists>
-                                    <#if map.houseUnitCost==0>
-                                    </#if>
-                                    ${map.houseUnitCost}元/㎡
-                                </#if>
-                            </em>
+                            </#if>
                         </div>
                     </div>
                 </div>
@@ -253,53 +247,64 @@
 
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
-<#--<script src="${staticurl}/js/template-web.js"></script>-->
-<#--<script id="listContent" type="text/html">
+<script src="${staticurl}/js/template-web.js"></script>
+<script id="listContent" type="text/html">
     {{each data}}
     <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
         <div class="clear">
             <div class="list-item-img-box">
-                {{if $value.housePhoto != null && $value.housePhoto.length > 0}}
-                    {{each $value.housePhoto as value i}}
-                        <img src="{{value}}" alt="">
-                    {{/each}}
+                {{if $value.housePhoto && $value.housePhoto.length > 0}}
+                    <img src="{{$value.housePhoto[0]}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-1">新街口西里一区三室二厅二卫</h3>
+                <h3 class="cont-block-1">{{$value.houseTitle}}</h3>
                 <p class="cont-block-2">
-                    109㎡|
-                    3室2厅|
-                    南北|
-                    新街口西里一区
+                    {{if $value.buildArea && $value.buildArea > 0}}
+                        {{$value.buildArea}}㎡
+                    {{/if}}
+                    {{if $value.room && $value.hall}}
+                        / {{$value.room}}室{{$value.hall}}厅
+                    {{/if}}
+                    {{if $value.forwardName}}
+                        / {{$value.forwardName}}
+                    {{/if}}
+                    {{if $value.plotName}}
+                        / {{$value.plotName}}
+                    {{/if}}
                 </p>
-                <p class="cont-block-3 distance"><i class="icon"></i>西城
-                    [新街口]</p>
+                <p class="cont-block-3 distance">
+                    <i class="icon"></i>
+                    {{if $value.area && $value.houseBusinessName}}
+                        {{$value.area}} [{{$value.houseBusinessName}}]
+                    {{/if}}
+                </p>
                 <div class="cont-block-4 house-labelling gray middle esf">
-                    <span>近地铁</span>
-                    <span>随时看</span>
+                    {{if $value.tagsName}}
+                        {{each $value.tagsName value index}}
+                            <span>{{value}}</span>
+                        {{/each}}
+                    {{/if}}
                 </div>
                 <div class="cont-block-price">
-                    <em>
-                    </em>
-                    <em>
-                        12元/㎡
-                    </em>
+                    {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
+                        <em>{{$value.houseTotalPrices}}万</em>
+                    {{/if}}
+                    {{if $value.houseTotalPrices && $value.buildArea}}
+                        {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
+                            <span>{{$value.unitCost}}元/㎡</span>
+                        {{/if}}
+                    {{/if}}
                 </div>
             </div>
         </div>
     </a></li>
     {{/each}}
-</script>-->
-<script src="${staticurl}/js/template-web.js"></script>
-
-<script id="esfhousepage" type="text/html">
-
-
+</script>
+<script>
 
  </script>
-
 </body>
 </html>

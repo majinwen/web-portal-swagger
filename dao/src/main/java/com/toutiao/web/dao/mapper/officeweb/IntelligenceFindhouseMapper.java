@@ -23,19 +23,17 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     int insertSelective(IntelligenceFindhouse record);
 
-    int queryPlotCount(Double plotTotal);
+    int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);
 
-    int queryPlotCountByCategoryAndPrice(@Param("plotTotal") Double plotTotal,@Param("categoryId") Integer categoryId);
+    int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,@Param("categoryId") Integer categoryId);
 
-    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotal") Double plotTotal, @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
+    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd, @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
 
-    List<IntelligenceFindhouse> selectByUserPrice(double totlaPrice);
+    List<IntelligenceFindhouse> selectByUserPrice(String totlaPrice);
 
-    List<IntelligenceFindhouse> selectByTypeTwoA(IntelligenceQuery intelligenceQuery);
 
-    List<IntelligenceFindhouse> selectByTypeTwoB(IntelligenceQuery intelligenceQuery);
 
-    List<IntelligenceFindhouse> selectByTypeTwoC(IntelligenceQuery intelligenceQuery);
+
 
     /**
      * 根据用户画像1 A匹配
@@ -55,6 +53,27 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
      * @return
      */
     List<IntelligenceFindhouse> queryByUserType1C(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 A匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2A(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 B匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2B(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 C匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2C(IntelligenceQuery intelligenceQuery);
 
     /**
      * 根据用户画像3 A匹配

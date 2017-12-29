@@ -83,7 +83,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>暂无</#if></em></p>
+                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>售价待定</#if></em></p>
             </li>
             <li>
                 <p>
@@ -95,7 +95,8 @@
                 <p>
                     交通信息：<#if build['roundstation']?exists>
                         <#assign rounditems = build['roundstation']?split("$")>
-                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${rounditems[2]?number/1000}km</em>
+                        <#assign x = rounditems[2]?number/1000>
+                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${x?string("0.##")}km</em>
                    <#else >暂无
                     </#if>
                 </p>

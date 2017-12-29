@@ -113,8 +113,9 @@
             </li>
             <li>
                 <p>单价：
-                <#if houseDetail.houseUnitCost?exists>
-                ${houseDetail.houseUnitCost}元/㎡
+                <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
+                          &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
+                   ${(houseDetail.houseTotalPrices / houseDetail.buildArea)?number *10000}元/㎡
                 <#else>
                     暂无
                 </#if>
@@ -133,16 +134,16 @@
                 <dl class="module-table-item">
                     <dd class="odd-item">楼层：<span>
                     <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.floorNo?exists&&(houseDetail.floorNo!=0))>
-                         ${houseDetail.floor}楼层/${houseDetail.floorNo}层
+                    ${houseDetail.floor}楼层/${houseDetail.floorNo}层
                     <#else >
                         <#if houseDetail.floor?exists&& (houseDetail.floor!='')>
-                            ${houseDetail.floor}楼层
+                        ${houseDetail.floor}楼层
                         </#if >
                         <#if houseDetail.floorNo?exists&&(houseDetail.floorNo!=0)>
-                            ${houseDetail.floorNo}层
+                        ${houseDetail.floorNo}层
                         </#if >
                         <#if (houseDetail.floorNo??&&houseDetail.floorNo==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
-                           暂无
+                            暂无
                         </#if >
                     </#if>
                     </span></dd>
@@ -188,8 +189,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon"
-                     <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}"</#if> alt="">
+                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if> >
                 <p>
                     <span><#if houseDetail.ofCompany?exists>【${houseDetail.ofCompany}】<#else>
                         暂无</#if><#if houseDetail.houseProxyName?exists>${houseDetail.houseProxyName}<#else>
@@ -220,11 +220,11 @@
         </#if>
         <div class="picture-box">
             <#assign item=houseDetail['plotPhoto']>
-            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"></#if>
+            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
         </div>
         <div class="tilelist-content">
-            <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else>暂无</#if></h4>
-            <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else>暂无</#if></p>
+            <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if></h4>
+            <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else></#if></p>
         </div>
     </a></li>
     </ul>
@@ -267,11 +267,13 @@
                     <#else><a href="#">
                     </#if>
                     <div class="picture-box">
-                        <#if map['housePhoto']?exists>
-                            <#assign item=map['housePhoto']>
-                            <#if item[0]?exists><img src="${item[0]}" alt="">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#if map['housePhotoTitle']?exists>
+                            <#assign item=map['housePhotoTitle']>
+                            <#if item?exists>
+                                <img src="${item}" alt="">
                             </#if>
+                        <#else >
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="tilelist-content">
@@ -310,7 +312,8 @@
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
                         <#if plotImage[0]?exists><img src="${qiniuimage}/${plotImage[0]}" alt="">
-                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#else >
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if >
                     </#if>
                 </div>
