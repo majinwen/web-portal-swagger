@@ -113,19 +113,27 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
+        intelligenceQuery.setPreconcTotal("450");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
     }
 
-    @RequestMapping("/intelligenceFindHouseByType")
+    /**
+     * 测试
+     *
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
-        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(4);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
+    public List<IntelligenceFindhouse> intelligenceFindHouseTypeTwo(IntelligenceQuery intelligenceQuery) {
+        /*IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+        intelligenceQuery1.setUserPortrayalType(4);*/
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceTypeTwo(intelligenceQuery);
         return null;
     }
+
     /**
      * 功能描述：跳转到用户选择户型页面controller
      *
@@ -188,8 +196,7 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
         model.addAttribute("intelligenceFh", intelligenceFh);
         //选择非一居的用户，才出现此问题；
-        if(intelligenceFh.getLayOut()==1){
-
+        if (intelligenceFh.getLayOut() == 1) {
             //跳转过渡页，生成画像
             return "";
         }

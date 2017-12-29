@@ -9,7 +9,7 @@ public class TotalRoomRatio {
 
     private Integer room;
 
-    private BigDecimal ratio;
+    private Double ratio;
 
     /**
      * 用户画像类型1,2,3,4,5,6,7
