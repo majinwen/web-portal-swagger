@@ -68,7 +68,7 @@ $textGrayColor: #888;
         }
     }
 
-    .cont-block-2, .cont-block-3 {
+    .cont-block-1, .cont-block-2, .cont-block-3 {
         @include text-ellipses;
     }
 

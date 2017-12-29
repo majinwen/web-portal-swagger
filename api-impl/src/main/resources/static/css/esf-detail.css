@@ -859,14 +859,16 @@ a.pswp__share--download:hover {
       [data-dpr="3"] .carousel-swiper .banner-title div {
         font-size: 30px; }
       .carousel-swiper .banner-title div.banner-house-number {
-        -webkit-border-radius: 0.0533333333rem;
-        border-radius: 0.0533333333rem; }
+        -webkit-border-radius: 0.08rem;
+        -moz-border-radius: 0.08rem;
+        border-radius: 0.08rem; }
       .carousel-swiper .banner-title div.pictrue-index {
         position: relative;
         bottom: 0;
         width: auto;
         float: right;
         -webkit-border-radius: 0.2133333333rem;
+        -moz-border-radius: 0.2133333333rem;
         border-radius: 0.2133333333rem; }
   .carousel-swiper img {
     width: 100%; }

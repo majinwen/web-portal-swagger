@@ -709,7 +709,7 @@ hr {
       .list-item .list-item-cont .cont-block-price.plot {
         top: 0.5866666667rem;
         bottom: auto; }
-  .list-item .cont-block-2, .list-item .cont-block-3 {
+  .list-item .cont-block-1, .list-item .cont-block-2, .list-item .cont-block-3 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }

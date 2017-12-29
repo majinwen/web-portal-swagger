@@ -24,16 +24,18 @@
             background-color: rgba(95,103,137,0.8);
             
             &.banner-house-number {
-                -webkit-border-radius: rem(4);
-                border-radius: rem(4);
+                -webkit-border-radius: rem(6);
+                -moz-border-radius: rem(6);
+                border-radius: rem(6);
             }
-            
+
             &.pictrue-index {
                 position: relative;
                 bottom: 0;
                 width: auto;
                 float: right;
                 -webkit-border-radius: rem(16);
+                -moz-border-radius: rem(16);
                 border-radius: rem(16);
             }
         }

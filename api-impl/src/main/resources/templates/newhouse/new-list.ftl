@@ -248,7 +248,7 @@
                 {{/if}}
             </p>
             <div class="cont-block-4 house-labelling gray middle">
-                {{each $value.building_tags as tag i}}
+                {{each $value.building_tags tag i}}
                     {{if i<3}}
                         <span>{{tag}}</span>
                     {{/if}}
