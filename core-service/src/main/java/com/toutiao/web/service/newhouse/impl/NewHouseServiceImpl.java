@@ -70,19 +70,12 @@ public class NewHouseServiceImpl implements NewHouseService{
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
-            AnalyzeResponse response = esClientTools.init().admin().indices()
-                    .prepareAnalyze(newHouseQuery.getKeywords())//内容
-                    .setAnalyzer("ik_smart")//指定分词器3`3
-                    .execute().actionGet();//执行
-            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-            for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
                 queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.fuzzyQuery("building_name", analyzeToken.getTerm()))
-                        .should(QueryBuilders.fuzzyQuery("area_name", analyzeToken.getTerm()))
-                        .should(QueryBuilders.fuzzyQuery("district_name", analyzeToken.getTerm()));
+                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeywords()))
+                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeywords()))
+                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeywords()));
 
-                booleanQueryBuilder.should(queryBuilder);
-            }
+                booleanQueryBuilder.must(queryBuilder);
         }
 
         //城市

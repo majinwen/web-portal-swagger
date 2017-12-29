@@ -18,7 +18,7 @@ public class TotalListedRatio {
     /**
      * 比率
      */
-    private BigDecimal ratio;
+    private Double ratio;
 
 
 }

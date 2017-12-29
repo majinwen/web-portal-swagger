@@ -105,7 +105,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/loupan/{id}")
+    @RequestMapping("/loupan/{id}.html")
     public String getNewHouseDetails(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
         List<String>dateList= DateUtil.oneYearList();
@@ -146,7 +146,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/loupan/{loupanid}/huxing")
+    @RequestMapping("/loupan/{loupanid}/huxing.html")
     public String getNewHouseLayoutCountByRoom(@PathVariable("loupanid") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
@@ -170,7 +170,7 @@ public class NewHouseController {
      * 新房配套地图
      * @return
      */
-    @RequestMapping("/loupan/{id}/map")
+    @RequestMapping("/loupan/{id}/map.html")
     public String getNewHouseMapDetail(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
 
@@ -188,7 +188,7 @@ public class NewHouseController {
      * @param model
      * @return
      */
-    @RequestMapping("/loupan/{id}/desc")
+    @RequestMapping("/loupan/{id}/desc.html")
     public String getNewHouseDiscript(@PathVariable("id") Integer buildingId, Model model){
         List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         model.addAttribute("discript",discripts);

@@ -17,19 +17,19 @@ public class IntelligenceQuery {
     /**
      * 首付(起始)
      */
-    private Double downPayMent;
+    private String downPayMent;
 
     /**
      * 月供(起始)
      */
-    private Double monthPayMent;
+    private String monthPayMent;
 
     //用户填入的页面总价信息
-    private Double preconcTotal;
+    private String preconcTotal;
     /**
      *
      */
-    private Double totalPrice;
+    private String totalPrice;
     /**
      * 赛选出来的小区个数
      */
@@ -77,6 +77,15 @@ public class IntelligenceQuery {
 
     //是否有老人(0-无，1-有)
     private Integer hasOldman;
+
+    //测试
+    //最小值
+    private Integer minTotalPrice;
+
+    //最大值
+    private Integer maxTotalPrice;
+
+
 
 
 

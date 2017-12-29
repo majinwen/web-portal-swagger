@@ -92,7 +92,7 @@
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map')}" class="plot-primary-map-box"><img
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img
                 src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
@@ -189,7 +189,7 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息</h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/desc')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
@@ -421,9 +421,9 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/map')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map')}" class="detail-map">
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
         <#if village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
@@ -457,7 +457,7 @@
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
-            <li><a href="${router_city('/xiaoqu/'+nearviitem['id']?c)}">
+            <li><a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
@@ -487,7 +487,7 @@
     </div>
     <ul class="tilelist">
     <#list newbuilds as builditem>
-        <li><a href="${router_city('/loupan/'+builditem['building_name_id']?c+'/')}">
+        <li><a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">
             <div class="picture-box">
                 <#assign imglist = builditem['building_imgs']>
                 <#if imglist?exists >

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +65,7 @@ public class IntelligenceFindHouseController {
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
-     * @param model
+     * @param
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/18 18:28
@@ -113,19 +114,31 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
+        intelligenceQuery.setPreconcTotal("450");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
     }
 
-    @RequestMapping("/intelligenceFindHouseByType")
+    /**
+     * 测试
+     *
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
         IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(4);
+        intelligenceQuery1.setUserPortrayalType(3);
+        intelligenceQuery1.setMinTotalPrice(4500000);
+        intelligenceQuery1.setMaxTotalPrice(5500000);
+        intelligenceQuery1.setDistrictId("105040,105035,105034");
+        intelligenceQuery1.setLayOut(3);
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
         return null;
     }
+
     /**
      * 功能描述：跳转到用户选择户型页面controller
      *

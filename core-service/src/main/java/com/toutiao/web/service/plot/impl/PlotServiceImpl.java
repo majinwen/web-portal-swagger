@@ -118,11 +118,11 @@ public class PlotServiceImpl implements PlotService {
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //默认查询均格大于零
-            if (villageRequest.getAvgPrice()==null){
-                villageRequest.setAvgPrice("0,10000000");
-            }else {
-                villageRequest.setAvgPrice("0,10000000,"+villageRequest.getAvgPrice());
-            }
+//            if (villageRequest.getAvgPrice()==null){
+//                villageRequest.setAvgPrice("0,10000000");
+//            }else {
+//                villageRequest.setAvgPrice("0,10000000,"+villageRequest.getAvgPrice());
+//            }
             //小区ID
             if (villageRequest.getId() != null) {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
