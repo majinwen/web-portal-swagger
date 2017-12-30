@@ -309,8 +309,19 @@ function GetRequest() {
     return theRequest;
 }
 
-function joinParams(req) {
+/**
+ * 拼接参数
+ * @param req
+ * @param sortFlag 非排序时排序置空
+ * @returns {string}
+ */
+function joinParams(req, sortFlag) {
     var targetUrl = '';
+
+    if (!sortFlag) {
+        req['sort'] = null;
+    }
+
     for (var key in req) {
         if (req[key]) {
             targetUrl += '&' + key + "=" + req[key];
@@ -786,6 +797,31 @@ $('#moreReset').on('click', function () {
     req['ownership'] = null;
 });
 
+/**
+ * 排序
+ */
+function listSortTab() {
+
+    if ($('.sort-icon').length > 0) {
+        $('.sort-icon').on('click', function () {
+            $('.sort-content-box').slideDown();
+        });
+        $('.sort-mask').on('click', function () {
+            $('.sort-content-box').slideUp();
+        });
+        $('.sort-content').on('click', 'li', function () {
+            $(this).addClass('current').siblings().removeClass('current');
+
+            req['sort'] = $(this).val();
+            var _optionParams = joinParams(req, true);
+
+            location.href=_localHref + _optionParams;
+
+            $('.sort-content-box').slideUp();
+        })
+    }
+}
+
 var pageNum = 2;
 $(function () {
     $(document).data("toutiao_pageScroll_onOroff",true);
@@ -815,14 +851,17 @@ function router_city(urlparam) {
         city = "/" + segmens[0]
     }
     return city+urlparam
-}
+};
 
-
-
+/**
+ * 下拉分页
+ * @param pageNumber
+ */
 function pullUpAction(pageNumber) {
     var paramData = req;
     paramData['pageNum'] = pageNumber;
-    params = joinParams(paramData);
+    //sortFlag为true，保证排序
+    params = joinParams(paramData, true);
 
     if (_localHref.indexOf('/loupan') > 0) {
         url = router_city('/loupan' + params);

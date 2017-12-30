@@ -191,7 +191,7 @@ function moduleExpand() {
             $(this).parent().next('.expand-content').slideUp();
         }
     });
-}
+};
 
 function marketsState() {
     $('.price-trend-btn').on('click', function () {
@@ -206,24 +206,4 @@ function marketsState() {
         $('.supply-contrast').removeClass('none');
         $('.price-trend').addClass('none');
     })
-}
-
-function listSortTab() {
-    if ($('.sort-icon').length > 0) {
-        $('.sort-icon').on('click', function () {
-            $('.sort-content-box').slideDown();
-        });
-        $('.sort-mask').on('click', function () {
-            $('.sort-content-box').slideUp();
-        });
-        $('.sort-content').on('click', 'li', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-            if(_localHref.indexOf("/findVillageByConditions")){
-                location.href=_localHref + '?sort='+$(this).val();
-            }else {
-                location.href=_localHref + '?sort='+$(this).val();
-            }
-            $('.sort-content-box').slideUp();
-        })
-    }
-}
+};

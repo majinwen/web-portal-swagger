@@ -159,7 +159,7 @@
                     </#if>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></span></h3>
-                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>暂无</#if></p>
+                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
