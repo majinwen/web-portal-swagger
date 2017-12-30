@@ -29,7 +29,6 @@
                 <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
             </li>
         </#if>
-
         </ul>
         <div class="banner-title">
         <#--<div class="banner-house-number">房源编号：${build['building_name']}</div>-->
@@ -193,7 +192,6 @@
                 <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
                     ,${village['buildingStructure']}
                 </#if>
-
                 </div>
             </div>
             <div class="column item-column-two">

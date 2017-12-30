@@ -5,6 +5,12 @@ import lombok.Data;
 //(查找范围的数组字段，按照顺序赋值就可以)
 @Data
 public class VillageRequest {
+
+    /**
+     * 搜索关键词
+     */
+    private String keyword;
+
     private Integer id; //序号
     private String rc;  //小区名称/楼盘名称
     private String alias;  //别名

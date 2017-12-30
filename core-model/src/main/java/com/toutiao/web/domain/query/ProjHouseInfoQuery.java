@@ -114,8 +114,8 @@ public class ProjHouseInfoQuery {
 
     private Integer houseHeating;
 
-    private String keyWord;
-
-
-
+    /**
+     * 搜索关键词
+     */
+    private String keyword;
 }

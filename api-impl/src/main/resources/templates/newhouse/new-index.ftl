@@ -114,42 +114,42 @@
     <ul><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>
     <#list builds as map>
-    <#if map_index==2>
-        <li><a class="list-item new" href="#">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">
-                        <span class="ellipsis">中骏·西山天璟</span>
-                        <em>别墅</em>
-                    </h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
+        <#if map_index==2>
+            <li><a class="list-item new" href="#">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                     </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
+                    <div class="list-item-cont">
+                        <h3 class="cont-block-1">
+                            <span class="ellipsis">中骏·西山天璟</span>
+                            <em>别墅</em>
+                        </h3>
+                        <p class="cont-block-2 high-light-red">68000元/㎡</p>
+                        <p class="cont-block-3">东城/88㎡—526㎡</p>
+                        <div class="cont-block-4 house-labelling gray middle">
+                            <span>复式</span>
+                            <span>五证齐全</span>
+                            <span>花园洋房</span>
+                        </div>
+                        <div class="cont-block-sale">
+                            <em>在售</em>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
-    </#if>
+                <div class="new-active">
+                    <i class="icon"></i><em>活动：</em>
+                    <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
+                </div>
+            </a></li>
+        </#if>
         <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
             <div class="clear">
                 <div class="list-item-img-box">
                     <#if map['building_imgs']?exists>
                     <#assign item = map['building_imgs']?split(",")>
-                    <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
-                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
+                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
                     </#if>
                     </#if>
                 </div>
@@ -159,7 +159,13 @@
                         <span class="ellipsis">${map['building_name']}</span>
                         <em>${map['property_type']}</em>
                     </h3>
-                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡</#if></p>
+                    <p class="cont-block-2 high-light-red">
+                        <#if map['average_price']?exists && map['average_price'] gt 0>
+                            ${map['average_price']}/㎡
+                        <#else>
+                            售价待定
+                        </#if>
+                    </p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
                         ${map['nearsubway']}
@@ -173,9 +179,7 @@
                             <#list item as itemValue>
                                 <span>${itemValue}</span>
                             </#list>
-                            <#else><span>暂无</span>
                         </#if>
-
                     </div>
                     <div class="cont-block-sale">
                         <em>${map['sale_status_name']}</em>

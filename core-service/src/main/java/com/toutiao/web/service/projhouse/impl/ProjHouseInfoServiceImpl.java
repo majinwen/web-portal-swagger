@@ -114,11 +114,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
             //关键字搜索
-            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyWord())){
+            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
                 booleanQueryBuilder.should(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyWord()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyWord()))
-                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyWord())));
+                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
