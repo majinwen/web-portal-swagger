@@ -165,7 +165,7 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
-                        <#if item?? && item?size>0><img src="${item}" alt="${map.houseTitle}">
+                        <#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
                         </#if>
                     </div>
