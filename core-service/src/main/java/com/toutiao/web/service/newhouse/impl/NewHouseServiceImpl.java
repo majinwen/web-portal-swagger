@@ -141,6 +141,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                 propertyType[i] = py[i];
             }
             booleanQueryBuilder.must(termsQuery("property_type_id",propertyType));
+        }else{
+            booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
         }
 
         //电梯

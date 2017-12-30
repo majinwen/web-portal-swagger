@@ -77,7 +77,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
-            <#if build['building_nickname']?exists><p>别名：${build['building_nickname']}</p></#if>
+            <#if build['building_nickname']??><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag">
             <#if (build['building_tags']?exists)&&(build['building_tags']?size>0)>
                 <#list build['building_tags'] as item>
@@ -180,7 +180,7 @@
                     <div class="info-item-text">
                         <p>人均绿化</p>
                                 <#if build['virescencerate']??>
-                                    <em>${build['virescencerate']}平方米</em>
+                                    <em>${build['virescencerate']?string("#.####")}平方米</em>
                                 <#else >
                                     <em>暂无</em>
                                 </#if>
@@ -199,7 +199,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <#if build['park_radio']??><em>${build['park_radio']}户/车位</em><#else><em>暂无</em></#if>
+                        <#if build['park_radio']?exists && build['park_radio']!=''><em>${build['park_radio']}户/车位</em><#else><em>暂无</em></#if>
                     </div>
                 </div>
             </div>
@@ -327,10 +327,10 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">水费</span>
-                    <#if (build['waterSupply']?exists) && build['waterSupply'] == "商水">
-                        <span class="expand-price">6/吨</span>
+                    <#if (build['water_supply']?exists) && build['water_supply'] == "商水">
+                        <span class="expand-price">6元/吨</span>
                     <#else >
-                        <span class="expand-price">5/吨</span>
+                        <span class="expand-price">5元/吨</span>
                     </#if>
                     </p>
                 <#--<span class="expand-distance tips">居民用水价格范围为1-4元/吨</span>-->
@@ -339,10 +339,10 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">电费</span>
-                    <#if (build['electricSupply']?exists) && build['electricSupply'] == "商水">
-                        <span class="expand-price">1.33/度</span>
+                    <#if (build['electric_supply']?exists) && build['electric_supply'] == "商电">
+                        <span class="expand-price">1.33元/度</span>
                     <#else >
-                        <span class="expand-price">0.48/度</span>
+                        <span class="expand-price">0.48元/度</span>
                     </#if>
                     </p>
                 </li>
