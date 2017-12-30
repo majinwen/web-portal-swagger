@@ -974,17 +974,3 @@ function pullUpAction(callback) {
         }
     });
 };
-
-function router_city(urlparam) {
-    urlparam = urlparam || ""
-    if(urlparam[0] != '/'){
-        urlparam = '/' + urlparam
-    }
-    var uri = new URI(window.location.href);
-    var segmens = uri.segment();
-    var city = "";
-    if(segmens.length>0){
-        city = "/" + segmens[0]
-    }
-    return city+urlparam
-};

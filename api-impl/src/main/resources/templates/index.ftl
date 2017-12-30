@@ -327,6 +327,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
