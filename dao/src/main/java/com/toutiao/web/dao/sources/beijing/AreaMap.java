@@ -170,7 +170,7 @@ public class AreaMap {
         areaMap.put("1538", "三元桥");
         areaMap.put("1539", "看丹桥");
         areaMap.put("1540", "工体");
-        areaMap.put("1541", "cbd");
+        areaMap.put("1541", "CBD");
         areaMap.put("1542", "土桥");
         areaMap.put("1543", "望京");
         areaMap.put("1544", "定福庄");
