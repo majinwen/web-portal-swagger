@@ -114,7 +114,7 @@
             <li>
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
-                          &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
+                &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
                 ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
                 <#else>
                     暂无
@@ -163,16 +163,17 @@
                     </dd>
                     <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无</#if></em>
                     </dd>
-                    <#if houseDetail.plotName?exists&&houseDetail.plotName!=''>
-                        <dt>小区：
-                            <em>
-                                ${houseDetail.plotName}
-                                <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''> [${houseDetail.area}
-                                 -${houseDetail.houseBusinessName}]<#else></#if>
-                            </em>
-                        </dt>
-                    </#if>
-                   <#if houseDetail.updateTime?exists&&houseDetail.updateTime!=''><dt>更新时间：${houseDetail.updateTime}</dt></#if>
+                <#if houseDetail.plotName?exists&&houseDetail.plotName!=''>
+                    <dt>小区：
+                        <em>
+                        ${houseDetail.plotName}
+                            <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''> [${houseDetail.area}
+                                -${houseDetail.houseBusinessName}]<#else></#if>
+                        </em>
+                    </dt>
+                </#if>
+                <#if houseDetail.updateTime?exists&&houseDetail.updateTime!=''>
+                    <dt>更新时间：${houseDetail.updateTime}</dt></#if>
                 </dl>
             </li>
         <#if houseDetail.traffic?exists>
@@ -195,7 +196,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if> >
+                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
@@ -203,13 +204,15 @@
                     <em>房屋信息发布人</em>
                 </p>
                 <#if houseDetail.houseProxyPhone?exists&&houseDetail.houseProxyPhone!=''>
-                     <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
+                    <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
                 </#if>
             </div>
-            <div class="describe-cont">
-                <p><#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>${houseDetail.houseDesc}</#if></p>
-                <span class="describe-show-btn">>>展开</span>
-            </div>
+            <#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>
+                <div class="describe-cont">
+                    <p>${houseDetail.houseDesc}</p>
+                    <span class="describe-show-btn">>>展开</span>
+                </div>
+            </#if>
         </div>
     </section>
 </div>

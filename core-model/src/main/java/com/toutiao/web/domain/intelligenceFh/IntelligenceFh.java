@@ -21,7 +21,14 @@ public class IntelligenceFh {
      * 月供
      */
     private  String monthPayMent;
-
+    /**
+     * 上浮总价
+     */
+    private  Double plotTotalFirst ;
+    /**
+     *下浮总价
+     */
+    private Double plotTotalEnd ;
 
     /**
      * 用户类型(1--自住 刚需,2--自住 改善,3--出租 投资)

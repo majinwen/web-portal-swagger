@@ -102,8 +102,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
                 totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.0000").format(totalPriceRate)) * 100).append("%").toString();
+                intelligenceFh.setRatio(totalRate);
+            } else {
+                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.0000").format(0)) * 100).append("%").toString());
             }
-            intelligenceFh.setRatio(totalRate);
             intelligenceFh.setPlotCount(plotCount);
             return intelligenceFh;
         } catch (Exception e) {
@@ -141,6 +143,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
                 plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
+            //数量这边有可能需要需改？？？？？？？？？？？？？？？？？？？？？？
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
 
@@ -152,13 +155,53 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 intelligenceFh.setHospitalFlag(1);
             }
             //获取相对应的比率
-            //比率
-            List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
-            if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
-                //用户画像类型
-                intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
-                //用户比率
-                intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+            Integer layOut = intelligenceFh.getLayOut();
+            if (StringTool.isNotBlank(layOut) && layOut == 6) {
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+                if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
+                    if (roomRatio.size() > 1) {
+                        Double plotRatio = null;
+                        for (TotalRoomRatio ratio : roomRatio) {
+                            plotRatio += ratio.getRatio();
+                        }
+                        //用户比率
+                        intelligenceFh.setRatio(plotRatio + "%");
+                    }
+                    //用户比率
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                    //用户画像类型
+                    intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
+
+                } else {
+                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
+                        //用户画像类型
+                        intelligenceFh.setUserPortrayalType(4);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
+                        intelligenceFh.setUserPortrayalType(1);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                }
+            } else {
+                //比率
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+                if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
+                    //用户画像类型
+                    intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
+                    //用户比率
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                } else {
+                    if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
+                        //用户画像类型
+                        intelligenceFh.setUserPortrayalType(4);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                    if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
+                        intelligenceFh.setUserPortrayalType(1);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                }
             }
             //小区数量
             intelligenceFh.setPlotCount(count);
@@ -207,11 +250,14 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
                 plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
+            //保存上下浮动数
+            intelligenceFh.setPlotTotalFirst(plotTotalFirst);
+            intelligenceFh.setPlotTotalEnd(plotTotalEnd);
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");
             for (int i = 0; i < split.length; i++) {
                 //通过总价和户型查询小区数量
-                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), split[i]);
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
                 count += count1;
             }
             //保存查询的小区数量

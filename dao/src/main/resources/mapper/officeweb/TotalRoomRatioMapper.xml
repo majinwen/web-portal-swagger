@@ -48,7 +48,7 @@
        List<Double> selectByTotal(@PathVariable("plotTotal") Double plotTotal);
     -->
     <select id="selectByTotal" resultType="java.lang.Double">
-         select ratio from total_room_ratio
+        select ratio from total_room_ratio
         <where>
             <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
                 and <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
@@ -61,6 +61,18 @@
         <where>
             <if test="categoryId!=null">
                 room=#{categoryId}
+            </if>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
+        ORDER BY total DESC
+    </select>
+    <select id="selectByTotalAndCategory1" resultMap="BaseResultMap">
+        select * from total_room_ratio
+        <where>
+            <if test="categoryId!=null">
+                <![CDATA[ room >=#{categoryId}]]>
             </if>
             <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
                 and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
