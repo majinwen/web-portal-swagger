@@ -1,9 +1,28 @@
 $(function(){
+    if(_localHref.indexOf('xiaoqu')>0){
+        $('#plot').addClass('current').siblings().removeClass('current');
+
+        $('.search-container-item').addClass('none');
+        $('#search-plot').removeClass('none');
+    } else if(_localHref.indexOf('esf')>0){
+        $('#erhouse').addClass('current').siblings().removeClass('current');
+        $('.search-container-item').addClass('none');
+        $('#search-erhouse').removeClass('none');
+    }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0){
+        $('#nhouse').addClass('current').siblings().removeClass('current');
+        $('.search-container-item').addClass('none');
+        $('#search-newhouse').removeClass('none');
+    }
+
     var houseTypeChoose = $('.type-menu').find('span.current').index();
 
     if ($('.type-tab-box').hasClass('none')) {
         $('.searchpage-search-content').addClass('only');
     }
+
+    /**
+     * 各列表页搜索框获取焦点
+     */
     $('.search-link').on('focus', function () {
         $('.search-page-wrapper').addClass('active');
         $('.key-words').focus();
@@ -26,19 +45,6 @@ $(function(){
         $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
     });
     $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
-
-    if(BaseUrl.indexOf('xiaoqu')>0){
-        $('#plot').addClass('current').siblings().removeClass('current');
-    } else  if(BaseUrl =="/esf"){
-        $('#erhouse').addClass('current').siblings().removeClass('current');
-    }else  if(BaseUrl =="/loupan"){
-        $('#nhouse').addClass('current').siblings().removeClass('current');
-    }
-
-
-
-
-
 
     var hisTime;	// 获取搜索时间数组
     var hisItem;	// 获取搜索内容数组
@@ -65,12 +71,8 @@ $(function(){
 
         $('.searchpage-history').html('');		// 执行init(),清空之前添加的节点
         for (var i = 0; i < hisItem.length; i++) {
-            console.log(BaseUrl)
             $('.searchpage-history').append('<a href="/#" class="word-break">' + hisItem[i] + '</a>')
         }
-
-
-
     }
     
     function sortNumber(a, b) {
@@ -107,8 +109,9 @@ $(function(){
                 localStorage.setItem(time, value);
             }
             init();
-            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
         }
+
+        location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val());
     }
 
     $('.clear-icon').on('click', function () {

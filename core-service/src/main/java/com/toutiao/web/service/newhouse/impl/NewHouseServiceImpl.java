@@ -69,11 +69,11 @@ public class NewHouseServiceImpl implements NewHouseService{
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
-        if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
+        if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
                 queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeywords()))
-                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeywords()))
-                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeywords()));
+                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()));
 
                 booleanQueryBuilder.must(queryBuilder);
         }
