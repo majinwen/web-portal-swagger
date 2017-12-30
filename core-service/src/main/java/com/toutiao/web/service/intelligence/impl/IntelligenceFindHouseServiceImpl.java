@@ -64,24 +64,24 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //复制信息
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
             //初始化
-            Integer plotTotalFirst = null;
-            Integer plotTotalEnd = null;
-            String plotTotal = null;
+            Double plotTotalFirst = null;
+            Double plotTotalEnd = null;
+            String  plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
             }
             //获取用户类型
             String userType = intelligenceFh.getUserType();
@@ -122,24 +122,24 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //复制对象信息
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
             //初始化
-            Integer plotTotalFirst = null;
-            Integer plotTotalEnd = null;
-            String plotTotal = null;
+            Double plotTotalFirst = null;
+            Double plotTotalEnd = null;
+            String  plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
             }
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
@@ -188,24 +188,24 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
 
             //初始化
-            Integer plotTotalFirst = null;
-            Integer plotTotalEnd = null;
-            String plotTotal = null;
+            Double plotTotalFirst = null;
+            Double plotTotalEnd = null;
+            String  plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
             }
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");

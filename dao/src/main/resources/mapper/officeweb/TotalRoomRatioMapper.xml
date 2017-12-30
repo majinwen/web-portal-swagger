@@ -45,33 +45,28 @@
         </trim>
     </insert>
     <!--
-
        List<Double> selectByTotal(@PathVariable("plotTotal") Double plotTotal);
-
-
     -->
     <select id="selectByTotal" resultType="java.lang.Double">
          select ratio from total_room_ratio
-         1=1
-         where
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            <![CDATA[total<= #{plotTotalEnd}]]> and <![CDATA[total >= #{plotTotalFirst}]]>
-        </if>
+        <where>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[total>= #{plotTotalFirst} and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
     </select>
-    <!--TotalRoomRatio selectByTotalAndCategory(@Param("plotTotalFirst")String plotTotalFirst,@Param("plotTotalEnd")String plotTotalEnd, @Param("categoryId") Integer category_id);-->
-
+    <!--TotalRoomRatio selectByTotalAndCategory(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd, @Param("categoryId") Integer category_id);-->
     <select id="selectByTotalAndCategory" resultType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
         select ratio,user_portrayal_type from total_room_ratio
         where
-        1=1
         <if test="categoryId!=null">
             room=#{categoryId}
-
         </if>
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
-        </if>
-
+        <where>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[total>= #{plotTotalFirst} and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
     </select>
 
 </mapper>

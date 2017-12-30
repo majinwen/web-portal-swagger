@@ -127,7 +127,6 @@
     function valideteCode() {
         var code = $("#image_code").val();
         if (code != '') {
-            // 检查会员级别名称是否存在
             $.ajax({
                 type: "post",
                 url: "/code/getCode",

@@ -19,6 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -79,13 +82,10 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping(value = "/xuanzeleixing.html")
+    @RequestMapping(value = "/xuanzeleixing")
     @ResponseBody
-    public NashResult goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
-        /*//将数据传递到页面
-        model.addAttribute("userType", userType);
-        //去价格页面*/
-        return NashResult.build(userType);
+    public NashResult xuanZeLeiXing(@RequestParam(value = "userType", required = true) String userType) {
+       return NashResult.build(userType);
     }
 
     /**
@@ -99,12 +99,7 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/goCheckPrice")
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-        //判断页面传递所需的参数是否为空
-        if (StringTool.isBlank(intelligenceQuery.getDownPayMent())
-                || StringTool.isBlank(intelligenceQuery.getMonthPayMent())
-                || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
-            return NashResult.Fail("message", "请选择首付/月供/");
-        }
+        intelligenceQuery.setPreconcTotal("400");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);

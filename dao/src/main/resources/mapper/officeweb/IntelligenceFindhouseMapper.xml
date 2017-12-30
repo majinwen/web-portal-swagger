@@ -1256,24 +1256,23 @@
 
     <!--</where>-->
     <!--</sql>-->
-    <!--int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);;-->
-    <select id="queryPlotCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    <!--int queryPlotCount(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);;-->
+    <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
         select count(*) from intelligence_findhouse
         WHERE
         1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+            and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>
         </if>
     </select>
-
     <!--
        int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
     -->
-    <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Double" resultType="java.lang.Integer">
         select count(*) from intelligence_findhouse
         WHERE 1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+            and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>
         </if>
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}]
@@ -1286,7 +1285,7 @@
         select count(*) from intelligence_findhouse
         WHERE 1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[total<= #{plotTotalEnd} and total >= #{plotTotalFirst}]]>
+            and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>
         </if>
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}]
