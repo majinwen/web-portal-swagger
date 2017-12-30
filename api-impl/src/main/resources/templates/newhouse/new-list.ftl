@@ -158,7 +158,7 @@
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
                         <h3 class="cont-block-1">
-                            <span>${map['building_name']}</span>
+                            <span class="ellipsis">${map['building_name']}</span>
                             <#if map['property_type']?exists>
                                 <em>${map['property_type']}</em>
                             </#if>
@@ -227,7 +227,7 @@
         <div class="list-item-cont">
             <span hidden="hidden">{{$value.building_name_id}}</span>
             <h3 class="cont-block-1">
-                <span>{{$value.building_name}}</span>
+                <span class="ellipsis">{{$value.building_name}}</span>
                 <em>{{$value.property_type}}</em>
             </h3>
             <p class="cont-block-2">
@@ -248,7 +248,7 @@
                 {{/if}}
             </p>
             <div class="cont-block-4 house-labelling gray middle">
-                {{each $value.building_tags as tag i}}
+                {{each $value.building_tags tag i}}
                     {{if i<3}}
                         <span>{{tag}}</span>
                     {{/if}}
