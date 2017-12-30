@@ -1243,21 +1243,22 @@
             and layout_range @> ARRAY[#{categoryId}]
         </if>
     </select>
-    <!--int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,
-                                                   @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);-->
+    <!--int queryPlotCountByCategoryAndPriceAndDistict(Map map);-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
 
         select count(*) from intelligence_findhouse
-        WHERE
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>
-        </if>
-        <if test="categoryId!=null">
-            and layout_range @> ARRAY[#{categoryId}]
-        </if>
-        <if test="district_id!=null">
-            and district_id=#{distinctId}
-        </if>
+        <where>
+            1=1
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>
+            </if>
+            <if test="layOut!=null">
+                and layout_range @> ARRAY[#{layOut}]
+            </if>
+            <if test="distictId!=null">
+                and district_id=#{distictId}
+            </if>
+        </where>
     </select>
 
 

@@ -207,11 +207,14 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
                 plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
+            //保存上下浮动数
+            intelligenceFh.setPlotTotalFirst(plotTotalFirst);
+            intelligenceFh.setPlotTotalEnd(plotTotalEnd);
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");
             for (int i = 0; i < split.length; i++) {
                 //通过总价和户型查询小区数量
-                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), split[i]);
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
                 count += count1;
             }
             //保存查询的小区数量
