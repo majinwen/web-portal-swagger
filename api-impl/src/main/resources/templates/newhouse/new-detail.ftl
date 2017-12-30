@@ -327,13 +327,11 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">水费</span>
-                    <#--<#if village['waterFee']?exists>
-                        <span class="expand-price">${village['waterFee']}元/吨</span>
+                    <#if (build['waterSupply']?exists) && build['waterSupply'] == "商水">
+                        <span class="expand-price">6/吨</span>
                     <#else >
-                        <span class="expand-price">暂无</span>
-                    </#if>-->
-                        <span class="expand-price">22元/吨</span>
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">5/吨</span>
+                    </#if>
                     </p>
                 <#--<span class="expand-distance tips">居民用水价格范围为1-4元/吨</span>-->
                 </li>
@@ -341,16 +339,14 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">电费</span>
-                  <#--  <#if village['electricFee']?exists>
-                        <span class="expand-price">${village['electricFee']}元/度</span>
+                    <#if (build['electricSupply']?exists) && build['electricSupply'] == "商水">
+                        <span class="expand-price">1.33/度</span>
                     <#else >
-                        <span class="expand-price">暂无</span>
-                    </#if>-->
-                        <span class="expand-price">2元/度</span>
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">0.48/度</span>
+                    </#if>
                     </p>
-                <#--<span class="expand-distance tips">居民用电价格范围为1-4元/度</span>-->
                 </li>
+
                 <li>
                     <p>
                         <i class="expand-icon living-cost"></i>
@@ -366,10 +362,10 @@
                     <#else >
                         <span class="expand-price">暂无</span>
                     </#if>-->
-                        <span class="expand-price">
-                               22元/㎡·月
-                              <span class="expand-price">暂无</span>
-                    </p>
+                        <#if (build['propertyfee']?exists)>
+                            <span class="expand-price">${build['propertyfee']}元/㎡·月</p>
+                        <#else>暂无
+                        </#if>
                 </li>
                 <li>
                     <p>
@@ -386,10 +382,11 @@
                     <#else >
                         <span class="expand-price">暂无</span>
                     </#if>-->
-                        <span class="expand-price">
-                           2 元/月
-                            <span class="expand-price">暂无</span>
-                    </p>
+
+                        <#if (build['car_rent_price']?exists)>
+                            <span class="expand-price">${build['car_rent_price']}元/月</p>
+                        <#else>暂无
+                        </#if>
                 </li>
             </ul>
         </div>
