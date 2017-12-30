@@ -128,10 +128,10 @@ public class PlotServiceImpl implements PlotService {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
             }
             //小区名称
-            if (villageRequest.getRc() != null) {
+            if (null != villageRequest.getKeyword()) {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
                 AnalyzeResponse response = esClientTools.init().admin().indices()
-                        .prepareAnalyze(villageRequest.getRc())//内容
+                        .prepareAnalyze(villageRequest.getKeyword())//内容
                         .setAnalyzer("ik_smart")//指定分词器3`3
                         .execute().actionGet();//执行
                 List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();

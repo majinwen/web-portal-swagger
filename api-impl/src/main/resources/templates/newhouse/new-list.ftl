@@ -14,9 +14,9 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
-    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
 </header>
 <section class="category-box">
     <ul id="category-tab">
@@ -151,8 +151,10 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign imgt = map['building_imgs']?split(",")>
-                            <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
-                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#if imgt[0]?? && imgt[0] != ''>
+                                <img src="${qiniuimage}/${imgt[0]}-tt400x300" alt="${map['building_name']}">
+                            <#else>
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
                             </#if>
                         </#if>
                     </div>
@@ -167,11 +169,21 @@
                         <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>售价待定</#if></em></p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
-                            <#assign rounditems = map['nearsubway']?split("$")>
-                                <#assign x = rounditems[2]?number/1000>
-                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${x?string("0.##")}km
+                                <#assign rounditems = map['nearsubway']?split("$")>
+                                <#if rounditems[2]?number gt 1000>
+                                    <#assign x = rounditems[2]?number/1000>
+                                    距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.##")}km
+                                <#else>
+                                    距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                                </#if>
+
                             <#else>
-                                <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
+                                <#if map['district_name']?exists>
+                                    ${map['district_name']}
+                                </#if>
+                                <#if map['house_min_area']?exists&&map['house_max_area']?exists>
+                                    /${map['house_min_area']}㎡—${map['house_max_area']}㎡
+                                </#if>
                             </#if>
                         </p>
                         <div class="cont-block-4 house-labelling gray middle">
