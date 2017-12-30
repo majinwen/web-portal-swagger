@@ -5,19 +5,20 @@
     <result column="building_id" jdbcType="INTEGER" property="buildingId" />
     <result column="property_type" jdbcType="SMALLINT" property="propertyType" />
     <result column="contrast_d_a" jdbcType="SMALLINT" property="contrastDA" />
-    <result column="month" jdbcType="TIMESTAMP" property="month" />
     <result column="price" jdbcType="NUMERIC" property="price" />
+    <result column="month" jdbcType="TIMESTAMP" property="month" />
+    <result column="building_name" jdbcType="VARCHAR" property="buildingName" />
   </resultMap>
   <select id="newhouseTrendList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT * FROM price_trend
     <where>
-    <if test="buildingId != null" >
+    <if test="buildingId != null">
        OR building_id  =#{buildingId}
     </if>
-    <if test="districtId != null" >
+    <if test="districtId != null">
       OR building_id  =#{districtId}
     </if>
-      <if test="areaId != null" >
+      <if test="areaId != null">
         OR building_id  =#{areaId}
       </if>
     </where>

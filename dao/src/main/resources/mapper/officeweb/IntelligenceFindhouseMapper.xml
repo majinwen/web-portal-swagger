@@ -164,6 +164,7 @@
         from intelligence_findhouse
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
+        LIMIT 100
     </select>
     <select id="queryByUserType1B"
             resultMap="BaseResultMap"
@@ -174,6 +175,7 @@
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC
+        LIMIT 100
     </select>
     <select id="queryByUserType1C"
             resultMap="BaseResultMap"
@@ -184,6 +186,7 @@
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
+        LIMIT 100
     </select>
     <select id="queryByUserType2A"
             resultMap="BaseResultMap"
@@ -194,6 +197,7 @@
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
+        LIMIT 100
     </select>
     <select id="queryByUserType2B"
             resultMap="BaseResultMap"
@@ -204,6 +208,7 @@
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 100
     </select>
     <select id="queryByUserType2C"
             resultMap="BaseResultMap"
@@ -214,6 +219,7 @@
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 100
     </select>
     <select id="queryByUserType3A"
             resultMap="BaseResultMap"
@@ -223,6 +229,7 @@
         from intelligence_findhouse
         where
         <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
+        LIMIT 100
     </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
     insert into intelligence_findhouse (newcode, n_or_e, projname, 

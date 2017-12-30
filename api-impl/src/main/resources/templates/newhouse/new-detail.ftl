@@ -11,6 +11,10 @@
     <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
+<#assign ptCD0 = tradeline['buildingline']>
+<#assign ptCD1 = tradeline['arealine']>
+<#assign ptCD2 = tradeline['tradearealine']>
+<#assign mouthList = tradeline['mouthList']>
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -19,11 +23,11 @@
             <#if item?exists>
                 <#if item?? && item!= ''>
                     <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/<#if item?exists>${item}</#if>" data-src="${qiniuimage}/<#if item?exists>${item}</#if>" alt="${build['building_name']}">
+                        <img src="${qiniuimage}/${item}-tt1200x640" data-src="${qiniuimage}/${item}-tt1200x640" alt="${build['building_name']}">
                     </li>
                 <#else >
                     <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="${build['building_name']}">
                     </li>
                 </#if>
             </#if>
@@ -83,7 +87,13 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>售价待定</#if></em></p>
+                <p>均价：<em class="high-light-red">
+                <#if build['average_price']?exists && build['average_price'] gt 0>
+                    ${build['average_price']}元/㎡
+                <#else>
+                    售价待定
+                </#if>
+                </em></p>
             </li>
             <li>
                 <p>
@@ -93,11 +103,14 @@
                     <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：<#if build['roundstation']?exists>
+                    <#if build['roundstation']?exists>
                         <#assign rounditems = build['roundstation']?split("$")>
-                        <#assign x = rounditems[2]?number/1000>
-                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${x?string("0.##")}km</em>
-                   <#else >暂无
+                        <#if rounditems[2]?number gt 1000>
+                            <#assign x = rounditems[2]?number/1000>
+                            交通信息：距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
+                        <#else>
+                            交通信息：距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                        </#if>
                     </#if>
                 </p>
             </li>
@@ -139,7 +152,7 @@
             <dt>开发商：${build['developers']!'暂无'}</dt>
             <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无'}</span></dd>
             <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无'}</em></dd>
-            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists>${build['building_life']}年<#else>暂无</#if></em></dd>
+            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists && build['building_life'] gt 0>${build['building_life']}年<#else>暂无</#if></em></dd>
             <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
         </dl>
     </section>
@@ -200,16 +213,18 @@
         </a>
     </section>
 </div>
+<#if  (mouthList?size>0)>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>价格走势</h3>
         </div>
         <div class="echarts-box">
-            <div class="echarts-content" id="main"></div>
+            <div class="echarts-content" id="newhousetrad"></div>
         </div>
     </section>
 </div>
+</#if>
 <section>
     <div class="module-header-message">
         <h3>看了本楼盘的用户还看了</h3>
@@ -255,11 +270,9 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-    <#assign ptCD0 = tradeline['buildingline']>
-    <#assign ptCD1 = tradeline['arealine']>
-    <#assign ptCD2 = tradeline['tradearealine']>
-    var myChartline = echarts.init(document.getElementById('main'));
+    var myChartline = echarts.init(document.getElementById('newhousetrad'));
     option = {
+        brushLink:null,
         tooltip: {
             trigger: 'axis'
         },
@@ -272,7 +285,7 @@
         xAxis:  {
             type: 'category',
             boundaryGap: false,
-            data: [<#list xlist as item >'${item}',</#list>]
+            data: [<#list  mouthList as item >'${item}',</#list>]
         },
         yAxis: {
             type: 'value',
@@ -281,95 +294,18 @@
             }
         },
         series: [
-        <#if (ptCD0?size<12)>
             {
-                name:'楼盘价格',
-                type:'scatter',
-                data:[[10,19]],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                }
-            },
-        <#else> {
             name:'楼盘价格',
             type:'line',
-            data:[<#list ptCD0 as item >${item['price']},</#list>],
-            markPoint: {
-                data: [
-                    {type: 'max', name: '最大值'},
-                    {type: 'min', name: '最小值'}
-                ]
-            },
-            markLine: {
-                data: [
-                    {type: 'average', name: '平均值'}
-                ]
-            }
+            data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+            symbolSize:14,
         },
-        </#if>
             {
                 name:'区域价格',
                 type:'line',
-                data:[<#list ptCD1 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
+                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:14,
             },
-            {
-                name:'商圈价格',
-                type:'line',
-                data:[<#list ptCD2 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
-            }
         ]
     };
     myChartline.setOption(option);

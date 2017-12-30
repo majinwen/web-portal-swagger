@@ -15,9 +15,9 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
-    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
 </header>
 <section class="category-box">
     <ul id="category-tab">
@@ -164,11 +164,9 @@
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item=map['housePhotoTitle']>
-                        <#if item?? && item != ''>
-                                <img src="${item}" alt="${map.houseBusinessName}">
-                            <#else >
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#assign item=map['housePhoto']>
+                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseTitle}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -190,13 +188,19 @@
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
+
                                 <#if item[map['key']]?exists>
                                     <p class="cont-block-3 distance"><i class="icon"></i>
-                                        <#assign infoitem=item[map['key']]?split("$")>
-                                        距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                        <#assign rounditems=item[map['key']]?split("$")>
+                                        <#if rounditems[2]?number gt 1000>
+                                            <#assign x = rounditems[2]?number/1000>
+                                            距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
+                                        <#else>
+                                            距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                                        </#if>
                                     </p>
-                                </#if >
-                            <#else >
+                                </#if>
+                            <#else>
                                 <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
@@ -276,8 +280,13 @@
                 </p>
                 <p class="cont-block-3 distance">
                     <i class="icon"></i>
-                    {{if $value.area && $value.houseBusinessName}}
-                        {{$value.area}} [{{$value.houseBusinessName}}]
+
+                    {{if $value.subwayDesc}}
+                        {{$value.subwayDesc}}
+                    {{else}}
+                        {{if $value.area && $value.houseBusinessName}}
+                            {{$value.area}} [{{$value.houseBusinessName}}]
+                        {{/if}}
                     {{/if}}
                 </p>
                 <div class="cont-block-4 house-labelling gray middle esf">
