@@ -164,8 +164,8 @@
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseTitle}">
+                        <#assign item=map['housePhotoTitle']>
+                        <#if item?? && item?size>0><img src="${item}" alt="${map.houseTitle}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
                         </#if>
                     </div>
