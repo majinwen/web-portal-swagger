@@ -88,6 +88,7 @@ $textGrayColor: #888;
             height: rem(28);
             line-height: rem(26);
             padding: 0 rem(12);
+            margin-left: rem(5);
             @include font-dpr(20);
             color: #999;
             border: rem(1) solid $borderRadiusColor;

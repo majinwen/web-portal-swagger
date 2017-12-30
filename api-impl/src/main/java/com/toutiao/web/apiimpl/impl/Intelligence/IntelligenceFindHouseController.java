@@ -74,8 +74,6 @@ public class IntelligenceFindHouseController {
         model.addAttribute("fhrd",fhrd);
         return "";
     }
-
-
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
@@ -84,10 +82,9 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping("/goCheckType")
-    public String goCheckType() {
-
-        return "";
+    @RequestMapping("/qidong")
+    public String goToStartRobot() {
+        return "intelligent-find";
     }
 
     /**
@@ -98,17 +95,13 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping("/checkUserType")
-    public String goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
-
-        //判断是否选择类型
-        if (StringTool.isBlank(userType)) {
-            model.addAttribute("message", "请选择类型！");
-        }
-        //将数据传递到页面
+    @RequestMapping("/xuanzeleixing")
+    @ResponseBody
+    public NashResult goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
+        /*//将数据传递到页面
         model.addAttribute("userType", userType);
-        //去价格页面
-        return "";
+        //去价格页面*/
+        return NashResult.build(userType);
     }
 
     /**
@@ -128,7 +121,6 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
-        intelligenceQuery.setPreconcTotal("450");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
@@ -143,14 +135,14 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
-//        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-//        intelligenceQuery1.setUserPortrayalType(7);
-//        intelligenceQuery1.setMinTotalPrice(4500000);
-//        intelligenceQuery1.setMaxTotalPrice(5500000);
-//        intelligenceQuery1.setDistrictId("105040,105035,105034");
-//        intelligenceQuery1.setLayOut(3);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        return list;
+        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+        intelligenceQuery1.setUserPortrayalType(3);
+        intelligenceQuery1.setMinTotalPrice(4500000);
+        intelligenceQuery1.setMaxTotalPrice(5500000);
+        intelligenceQuery1.setDistrictId("105040,105035,105034");
+        intelligenceQuery1.setLayOut(3);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
+        return null;
     }
 
     /**
