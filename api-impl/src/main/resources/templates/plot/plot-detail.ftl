@@ -553,6 +553,13 @@
                    type:'line',
                    data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
                    symbolSize:10,
+                   itemStyle:{
+                       normal:{
+                           lineStyle:{
+                               width:4,
+                           },
+                       },
+                   },
                },
             </#if>
             {
@@ -560,12 +567,26 @@
                 type:'line',
                 data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
                 symbolSize:10,
+                itemStyle:{
+                    normal:{
+                        lineStyle:{
+                            width:4,
+                        },
+                    },
+                },
             },
             {
                 name:'${village['商圈']!''}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
                 symbolSize:10,
+                itemStyle:{
+                       normal:{
+                           lineStyle:{
+                                width:4,
+                           },
+                       },
+                },
             },
         ]
     };
