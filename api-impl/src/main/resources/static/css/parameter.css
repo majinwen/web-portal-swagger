@@ -205,7 +205,7 @@ hr {
 .primary-message .primary-header {
   position: relative;
   padding: 0.5333333333rem 0.4rem;
-  border-bottom: 1px solid #e1e1e1; }
+  border-bottom: 1px solid #e8e8e8; }
   [data-dpr="1"] .primary-message .primary-header h2 {
     font-size: 20px; }
   [data-dpr="2"] .primary-message .primary-header h2 {
@@ -224,7 +224,6 @@ hr {
     color: #fb3939;
     border: 1px solid #fb3939;
     -webkit-border-radius: 0.0533333333rem;
-    -moz-border-radius: 0.0533333333rem;
     border-radius: 0.0533333333rem; }
     [data-dpr="1"] .primary-message .primary-header h2 .sale-state {
       font-size: 10px; }
@@ -260,7 +259,7 @@ hr {
 .primary-message ul.primary-item > li {
   padding: 0.2666666667rem 0.4rem;
   line-height: 0.6266666667rem;
-  border-bottom: 1px solid #e1e1e1; }
+  border-bottom: 1px solid #e8e8e8; }
   [data-dpr="1"] .primary-message ul.primary-item > li {
     font-size: 13px; }
   [data-dpr="2"] .primary-message ul.primary-item > li {
@@ -276,7 +275,7 @@ hr {
       -webkit-flex: 1;
       flex: 1;
       text-align: center;
-      border-left: 1px solid #e1e1e1; }
+      border-left: 1px solid #e8e8e8; }
       .primary-message ul.primary-item > li ol li span {
         display: block; }
       .primary-message ul.primary-item > li ol li em {
@@ -360,7 +359,7 @@ hr {
   height: 1.52rem;
   line-height: 1.52rem;
   padding: 0 0.4rem;
-  border-bottom: 1px solid #e1e1e1; }
+  border-bottom: 1px solid #e8e8e8; }
   [data-dpr="1"] .module-header-message {
     font-size: 15px; }
   [data-dpr="2"] .module-header-message {
@@ -724,7 +723,7 @@ hr {
     .expand-content .result-data-expand li {
       height: 1.3333333333rem;
       line-height: 1.3333333333rem;
-      border-bottom: 0.0133333333rem solid #ccc; }
+      border-bottom: 0.0133333333rem solid #e8e8e8; }
       [data-dpr="1"] .expand-content .result-data-expand li {
         font-size: 13px; }
       [data-dpr="2"] .expand-content .result-data-expand li {
@@ -927,9 +926,8 @@ hr {
         line-height: 0.9066666667rem;
         text-align: center;
         background-color: #fb3939;
-        -webkit-border-radius: 0.1333333333rem;
-        -moz-border-radius: 0.1333333333rem;
-        border-radius: 0.1333333333rem; }
+        -webkit-border-radius: 0.0533333333rem;
+        border-radius: 0.0533333333rem; }
         [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
           font-size: 15px; }
         [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
@@ -953,7 +951,7 @@ hr {
   .primary-table th {
     padding: 0.4666666667rem 0.4rem;
     white-space: nowrap;
-    border-bottom: 1px solid #e1e1e1; }
+    border-bottom: 1px solid #e8e8e8; }
   .primary-table tr td {
     padding: 0.2rem 0.4rem;
     vertical-align: top; }

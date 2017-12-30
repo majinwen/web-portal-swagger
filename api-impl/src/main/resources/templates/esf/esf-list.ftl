@@ -159,8 +159,7 @@
     </div>
 </section>
 <section>
-    <ul id="valueList">
-    <#if builds?exists>
+    <#if builds?exists><ul id="valueList">
         <#list builds as map>
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
@@ -171,30 +170,32 @@
                         </#if>
                     </div>
                     <div class="list-item-cont">
-                        <h3 class="cont-block-1">${map.houseTitle}</h3>
+                        <h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>
                         <p class="cont-block-2">
                             <#if map.buildArea?exists&&(map.buildArea>0)>
-                                ${map.buildArea}㎡|
+                                ${map.buildArea}㎡
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                                ${map.room}室${map.hall}厅|
+                                / ${map.room}室${map.hall}厅
                             </#if>
                             <#if map.forwardName?exists>
-                                ${map.forwardName}|
+                                / ${map.forwardName}
                             </#if>
                             <#if map.plotName?exists>
-                                ${map.plotName}
+                                / ${map.plotName}
                             </#if>
-                    </p>
+                        </p>
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
                                 <#if item[map['key']]?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                    <p class="cont-block-3 distance"><i class="icon"></i>
+                                        <#assign infoitem=item[map['key']]?split("$")>
+                                        距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
                                     </p>
                                 </#if>
                             <#else >
-                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
                         <#else >
@@ -219,7 +220,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${(map.houseTotalPrices / map.buildArea)?number * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>
@@ -227,7 +228,7 @@
                 </div>
             </a></li>
         </#list>
-    </#if></ul>
+    </ul></#if>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -244,22 +245,19 @@
     </ul>
 </div>
 
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
+    <li><a class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
         <div class="clear">
             <div class="list-item-img-box">
-                {{if $value.housePhoto && $value.housePhoto.length > 0}}
-                    <img src="{{$value.housePhoto[0]}}" alt="{{$value.houseBusinessName}}">
+                {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
+                    <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-1">{{$value.houseTitle}}</h3>
+                <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
                 <p class="cont-block-2">
                     {{if $value.buildArea && $value.buildArea > 0}}
                         {{$value.buildArea}}㎡
@@ -302,8 +300,9 @@
     </a></li>
     {{/each}}
 </script>
-<script>
-
- </script>
 </body>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
 </html>

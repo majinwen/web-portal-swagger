@@ -11,6 +11,10 @@
     <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
+<#assign ptCD0 = tradeline['buildingline']>
+<#assign ptCD1 = tradeline['arealine']>
+<#assign ptCD2 = tradeline['tradearealine']>
+<#assign mouthList = tradeline['mouthList']>
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -23,14 +27,12 @@
                         </li>
                     <#else >
                         <li onclick="initphoto(this,0)" class="swiper-slide">
-                            <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                 data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                         </li>
                     </#if>
                 <#else>
                     <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                             data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                     </li>
                 </#if>
             </#list>
@@ -88,47 +90,9 @@
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img
-                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
-<#if (reViHouse?exists) && (reViHouse?size>0)>
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
-                    class="arrows-right"></i></a>
-        </div>
-        <ul class="tilelist">
-            <#list reViHouse as reitem>
-                <#if reitem_index==4>
-                    <#break >
-                </#if>
-                <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)}">
-                    <div class="picture-box">
-                        <#if reitem['housePhoto']?exists>
-                            <#assign photoitem=reitem['housePhoto']>
-                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            </#if>
-                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
-                        </#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
-                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
-                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
-                        </p>
-                    </div>
-                </a></li>
-            </#list>
-        </ul>
-    </section>
-</div>
-</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -138,8 +102,6 @@
         </div>
         <div class="basic-information price-trend">
             <div class="column item-column-three">
-
-
                 <div class="info-card-item">
                     <em>均价</em>
                     <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
@@ -173,52 +135,51 @@
                 <#--<div class="module-header-message">-->
                     <#--<h3>价格走势</h3>-->
                 <#--</div>-->
-                <div class="echarts-box">
-                    <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
-                </div>
+                <#if  (mouthList?size>0)>
+                    <div class="echarts-box">
+                        <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
+                    </div>
+                </#if>
             </div>
-
         </div>
-
-    <#--<div class="basic-information supply-contrast none">-->
-    <#--<div class="column item-column-two">-->
-    <#--<div class="info-card-item">-->
-    <#--<em>本月</em>-->
-    <#--<table>-->
-    <#--<tr>-->
-    <#--<td>挂牌出售：</td>-->
-    <#--<td>34套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>关注用户：</td>-->
-    <#--<td>230人</td>-->
-    <#--</tr>-->
-    <#--</table>-->
-    <#--<p>供需充足，可选余地大。</p>-->
-    <#--</div>-->
-    <#--<div class="info-card-item">-->
-    <#--<em>上月</em>-->
-    <#--<table>-->
-    <#--<tr>-->
-    <#--<td>挂牌出售：</td>-->
-    <#--<td>34套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>成交：</td>-->
-    <#--<td>23套</td>-->
-    <#--</tr>-->
-    <#--<tr>-->
-    <#--<td>存量：</td>-->
-    <#--<td>36.57%</td>-->
-    <#--</tr>-->
-    <#--</table>-->
-    <#--</div>-->
-    <#--</div>-->
-    <#--<div></div>-->
-    <#--</div>-->
     </section>
 </div>
-
+<#if (reViHouse?exists) && (reViHouse?size>0)>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>推荐小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+        </div>
+        <ul class="tilelist">
+            <#list reViHouse as reitem>
+                <#if reitem_index==4>
+                    <#break >
+                </#if>
+                <#assign itemLocation=reitem['housePlotLocation']>
+                <li><a href="${router_city('/esf/'+reitem.houseId)}">
+                    <div class="picture-box">
+                        <#if reitem['housePhoto']?exists>
+                            <#assign photoitem=reitem['housePhoto']>
+                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
+                        </#if>
+                    </div>
+                    <div class="tilelist-content">
+                        <p class="cont-first text-center"><em>
+                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
+                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
+                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
+                        </p>
+                    </div>
+                </a></li>
+            </#list>
+        </ul>
+    </section>
+</div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -229,8 +190,7 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>,<em
-                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['abbreviatedAge']?exists>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
                 <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
@@ -376,8 +336,7 @@
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <ul class="result-data-expand" id="hospitalListDom">
-            </ul>
+            <ul class="result-data-expand" id="hospitalListDom"></ul>
         </div>
     </section>
 </div>
@@ -461,11 +420,9 @@
             <i class="map-marker-icon"></i>
         <#if village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
         <#else>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
         </#if>
         </a>
     </section>
@@ -475,8 +432,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i
-                    class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -555,24 +511,22 @@
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
-    <#assign ptCD0 = tradeline['buildingline']>;
-    <#assign ptCD1 = tradeline['arealine']>;
-    <#assign ptCD2 = tradeline['tradearealine']>;
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
     option = {
+        brushLink:null,
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data: ['楼盘价格', '区域价格', '商圈价格']
+            data:['楼盘价格','区域价格','商圈价格']
         },
         textStyle: {
             fontSize: 28
         },
-        xAxis: {
+        xAxis:  {
             type: 'category',
             boundaryGap: false,
-            data: [<#list xlist as item >'${item}',</#list>]
+            data: [<#list  mouthList as item >'${item}',</#list>]
         },
         yAxis: {
             type: 'value',
@@ -581,98 +535,29 @@
             }
         },
         series: [
-        <#if (ptCD0?size<12)>
             {
-                name: '楼盘价格',
-                type: 'scatter',
-                data: [[10, 19]],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                }
-            },
-        <#else> {
-            name: '楼盘价格',
-            type: 'line',
-            data: [<#list ptCD0 as item >${item['price']},</#list>],
-            markPoint: {
-                data: [
-                    {type: 'max', name: '最大值'},
-                    {type: 'min', name: '最小值'}
-                ]
-            },
-            markLine: {
-                data: [
-                    {type: 'average', name: '平均值'}
-                ]
-            }
-        },
-        </#if>
-            {
-                name: '区域价格',
-                type: 'line',
-                data: [<#list ptCD1 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
+                name:'楼盘价格',
+                type:'line',
+                data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:14,
             },
             {
-                name: '商圈价格',
-                type: 'line',
-                data: [<#list ptCD2 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
-            }
+                name:'区域价格',
+                type:'line',
+                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:14,
+            },
+            {
+                name:'商圈价格',
+                type:'line',
+                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:14,
+            },
         ]
     };
-    myChartline.setOption(option);
+    <#if  (mouthList?size>0)>
+        myChartline.setOption(option);
+    </#if>
 </script>
 </body>
 </html>

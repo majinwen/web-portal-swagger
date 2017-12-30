@@ -66,19 +66,14 @@ public class PlotConterller {
     @RequestMapping(value = {""},produces="application/json") //villagePage
     @ResponseBody
     public NashResult villagePage(VillageRequest villageRequest) {
-        List villageList = null;
+        List<VillageResponse> villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
-
-        for (int i = 0; i < villageList.size(); i++) {
-            HashMap<String, Object> itemMap = (HashMap<String, Object>) villageList.get(i);
-            String imginfo = (String) itemMap.get("building_imgs");
-            if (StringUtil.isNotNullString(imginfo)) {
-                String[] imgs = imginfo.split(",");
-                itemMap.put("building_imgs", imgs[0]);
-                villageList.set(i, itemMap);
+        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
+            for (VillageResponse polt : villageList){
+                String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
+                polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
             }
         }
-
         return NashResult.build(villageList);
     }
 
@@ -100,7 +95,7 @@ public class PlotConterller {
 
             //走势图
 
-            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
+            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
             model.addAttribute("tradeline", stringListMap);
 
             //月份

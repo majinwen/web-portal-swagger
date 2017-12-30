@@ -249,8 +249,8 @@ p {
         color: #fff;
         text-align: center;
         background-color: #090723;
-        -webkit-border-radius: 0.1333333333rem;
-        border-radius: 0.1333333333rem; }
+        -webkit-border-radius: 0.0533333333rem;
+        border-radius: 0.0533333333rem; }
         [data-dpr="1"] .login-form .input-phone .code-btn-box .code-btn {
           font-size: 14px; }
         [data-dpr="2"] .login-form .input-phone .code-btn-box .code-btn {
@@ -264,7 +264,7 @@ p {
     padding: 0.2933333333rem 0.1466666667rem;
     width: 100%;
     color: #3a3a3a;
-    border-bottom: 0.0133333333rem solid #ccc;
+    border-bottom: 0.0133333333rem solid #e8e8e8;
     box-sizing: border-box; }
     [data-dpr="1"] .login-form input {
       font-size: 13px; }
@@ -284,8 +284,8 @@ p {
     text-align: center;
     color: #fff;
     background-color: #090723;
-    -webkit-border-radius: 0.1333333333rem;
-    border-radius: 0.1333333333rem; }
+    -webkit-border-radius: 0.0533333333rem;
+    border-radius: 0.0533333333rem; }
     [data-dpr="1"] .login-form .submit-btn {
       font-size: 15px; }
     [data-dpr="2"] .login-form .submit-btn {

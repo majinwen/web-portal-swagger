@@ -43,8 +43,8 @@ p {
                 color: $baseWhite;
                 text-align: center;
                 background-color: #090723;
-                -webkit-border-radius: rem(10);
-                border-radius: rem(10);
+                -webkit-border-radius: rem(4);
+                border-radius: rem(4);
 
                 &.disabled {
                     background-color: #d3d2d7;
@@ -59,7 +59,7 @@ p {
         padding: rem(22) rem(11);
         width: 100%;
         color: $baseBlack;
-        border-bottom: rem(1) solid $borderLineColor;
+        border-bottom: rem(1) solid $baseBorderColor;
         @include box-sizing;
 
         &::-webkit-input-placeholder {
@@ -80,8 +80,8 @@ p {
         color: $baseWhite;
         @include font-dpr(30);
         background-color: #090723;
-        -webkit-border-radius: rem(10);
-        border-radius: rem(10);
+        -webkit-border-radius: rem(4);
+        border-radius: rem(4);
     }
 }
 .code-text-tips {

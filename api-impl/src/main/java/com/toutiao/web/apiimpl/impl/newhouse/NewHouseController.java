@@ -114,15 +114,13 @@ public class NewHouseController {
         JSONObject build=JSON.parseObject(detailBuild);
         Integer discId = build.getInteger("district_id");
         Integer areaId = null;
-        Map<String ,List<PriceTrend>> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
-
+        Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
 
 
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
         model.addAttribute("tradeline",priceTrendList);
-        model.addAttribute("xlist",dateList);
         return "newhouse/new-detail";
 
     }
