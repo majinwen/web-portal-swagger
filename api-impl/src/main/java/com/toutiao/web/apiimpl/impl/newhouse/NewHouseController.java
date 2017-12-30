@@ -107,10 +107,13 @@ public class NewHouseController {
 
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);
-        Integer discId = build.getInteger("district_id");
+        Integer discId = null;
+       if ( build.getInteger("district_id")!=null){
+           discId = build.getInteger("district_id");
+       }
+
         Integer areaId = null;
         Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
-
 
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));

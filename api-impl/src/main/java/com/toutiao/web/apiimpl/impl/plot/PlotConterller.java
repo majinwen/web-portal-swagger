@@ -2,8 +2,6 @@ package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
-import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -18,7 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -94,14 +91,20 @@ public class PlotConterller {
             model.addAttribute("nearvillage", nearvillage);
 
             //走势图
+            Integer discId=null;
+            String sdiscId = village.getAreaId();
+            if (sdiscId != null){
+                discId = Integer.parseInt(sdiscId);
+            }
 
-            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
+            Integer areaId=null;
+            String sareaId = village.getTradingAreaId();
+            if (sareaId != null){
+                areaId = Integer.parseInt(sareaId);
+            }
+
+            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
             model.addAttribute("tradeline", stringListMap);
-
-            //月份
-            List<String>dateList= DateUtil.oneYearList();
-            model.addAttribute("xlist",dateList);
-
 
             //推荐小区好房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
