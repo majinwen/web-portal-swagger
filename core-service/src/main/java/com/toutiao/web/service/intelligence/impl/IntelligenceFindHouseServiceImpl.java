@@ -225,6 +225,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
     @Override
     public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery) {
+        //搜索量前200
+        List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
+
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
@@ -233,27 +236,27 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1B(list);
+            List<IntelligenceFindhouse> finalList = recommend1B(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1C(list);
+            List<IntelligenceFindhouse> finalList = recommend1C(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2A(list);
+            List<IntelligenceFindhouse> finalList = recommend2A(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2B(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2B(list);
+            List<IntelligenceFindhouse> finalList = recommend2B(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2C(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2C(list);
+            List<IntelligenceFindhouse> finalList = recommend2C(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
@@ -375,7 +378,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend1B(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend1B(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -399,8 +402,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
 
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
 
         //1km内有地铁，随机2个
@@ -429,7 +432,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend1C(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend1C(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -453,8 +456,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
 
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
 
         //换手率最高的前20%，随机2个
@@ -500,7 +503,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend2A(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend2A(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -522,8 +525,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
         //环线在四环内，随机2个
         List listFour = new ArrayList();
@@ -550,7 +553,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend2B(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend2B(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -573,8 +576,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
         //环线在四环内，随机2个
         List listFour = new ArrayList();
@@ -601,7 +604,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/29 12:50
      */
-    public List<IntelligenceFindhouse> recommend2C(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend2C(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -624,8 +627,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
         //环线在三环内，随机2个
         List listFour = new ArrayList();

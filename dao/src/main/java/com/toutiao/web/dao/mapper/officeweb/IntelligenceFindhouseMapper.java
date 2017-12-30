@@ -81,4 +81,11 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
      * @return
      */
     List<IntelligenceFindhouse> queryByUserType3A(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 搜索量前200
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByStarProperty(IntelligenceQuery intelligenceQuery);
 }
