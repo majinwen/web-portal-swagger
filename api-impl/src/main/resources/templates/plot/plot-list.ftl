@@ -14,7 +14,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="中骏·西山天璟" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -151,7 +151,7 @@
                             <#if plot['photo']?exists>
                                 <#assign photo = plot['photo']>
                                 <#if photo[0]?exists>
-                                    <img src="${qiniuimage}/${photo[0]}" alt="${plot['rc']}">
+                                    <img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">
                                 <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无">
                                 </#if>
                             </#if>
@@ -159,13 +159,21 @@
                     </#if>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无</#if></span></h3>
-                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成<#else>暂无</#if></p>
+                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
                                     <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
+                                    <p class="cont-block-3 distance">
+                                        <i class="icon"></i>
+                                        <#if split[2]?number gt 1000>
+                                            <#assign x = split[2]?number/1000>
+                                            距离${split[1]}[${split[0]}] ${x?string("#.#")}km
+                                        <#else>
+                                            距离${split[1]}[${split[0]}] ${split[2]}m
+                                        </#if>
+                                    </p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
@@ -221,7 +229,7 @@
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.photo && $value.photo.length > 0}}
-                    <img src="${qiniuimage}/{{$value.photo[0]}}" alt="{{$value.rc}}">
+                    <img src="${qiniuimage}/{{$value.photo[0]}}-tt400x300" alt="{{$value.rc}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
@@ -231,12 +239,8 @@
                 <p class="cont-block-2 plot">{{if $value.abbreviatedAge}}{{$value.abbreviatedAge}}建成{{else}}暂无{{/if}}</p>
                 {{if $value.metroWithPlotsDistance || $value.tradingArea}}
                     <p class="cont-block-3 distance"><i class="icon"></i>
-                        {{if $value.metroWithPlotsDistance}}
-                            {{if $value.key}}
-                                距离地铁{{$value.metroWithPlotsDistance[$value.key][1]}}[{{$value.metroWithPlotsDistance[$value.key][0]}}] {{$value.metroWithPlotsDistance[$value.key][2]}}m
-                            {{else}}
-                                {{if $value.area}}{{$value.area}}{{else}}暂无{{/if}}-{{if $value.tradingArea}}{{$value.tradingArea}}{{else}}暂无{{/if}}
-                            {{/if}}
+                        {{if $value.subwayDesc}}
+                            {{$value.subwayDesc}}
                         {{else if $value.tradingArea}}
                             {{if $value.area}}{{$value.area}}{{else}}暂无{{/if}}-{{if $value.tradingArea}}{{$value.tradingArea}}{{else}}暂无{{/if}}
                         {{/if}}

@@ -23,7 +23,7 @@
                 <#if vpphoto?exists>
                     <#if vpphoto?? && vpphoto != ''>
                         <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                            <img src="${qiniuimage}/${vpphoto}" data-src="${qiniuimage}/${vpphoto}" alt="">
+                            <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}-tt1200x640" alt="">
                         </li>
                     <#else >
                         <li onclick="initphoto(this,0)" class="swiper-slide">

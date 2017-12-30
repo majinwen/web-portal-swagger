@@ -1,4 +1,3 @@
-var BaseUrl = $('#url').val();
 var params = '';
 var url;
 var submitClickState = false;
@@ -7,6 +6,9 @@ $(function () {
     var disStr = '<li id="district-option">区域</li>';
     var subStr = '<li id="subway-option">地铁</li>';
     $('#level1').append(disStr+subStr);
+
+    //列表页排序切换
+    listSortTab();
 
     $('#category-tab').on('click', 'li', function () {
         var $dom = getDataDom($(this),'panel');
@@ -18,7 +20,7 @@ $(function () {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
-                    if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
+                    if ((_localHref.indexOf('/xingfang')) > 0 || (_localHref.indexOf('/loupan')) > 0) {
                         showOnlyDistrict(req['districtId']);
                     } else {
                         showDistrict(req['districtId'], req['areaId']);
@@ -29,7 +31,7 @@ $(function () {
                 }
             } else {
                 $('#district-option').addClass('current');
-                if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
+                if ((_localHref.indexOf('/xingfang')) > 0 || (_localHref.indexOf('/loupan')) > 0) {
                     showOnlyDistrict();
                 } else {
                     showDistrict();
@@ -49,7 +51,7 @@ $(function () {
     $('#level1').on('click', 'li', function () {
         $(this).addClass('current').siblings().removeClass('current');
         if ($(this).attr('id') == 'district-option') {
-            if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
+            if ((_localHref.indexOf('/xingfang')) > 0 || (_localHref.indexOf('/loupan')) > 0) {
                 showOnlyDistrict();
             } else {
                 showDistrict();
@@ -310,8 +312,19 @@ function GetRequest() {
     return theRequest;
 }
 
-function joinParams(req) {
+/**
+ * 拼接参数
+ * @param req
+ * @param sortFlag 非排序时排序置空
+ * @returns {string}
+ */
+function joinParams(req, sortFlag) {
     var targetUrl = '';
+
+    if (!sortFlag) {
+        req['sort'] = null;
+    }
+
     for (var key in req) {
         if (req[key]) {
             targetUrl += '&' + key + "=" + req[key];
@@ -450,7 +463,7 @@ function submitPlace(e) {
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, '区域');
     $.get(url, function () {
         location.replace(url) ;
@@ -471,7 +484,7 @@ function submitDirstrict(districtid, e) {
     }
     req['districtId'] = districtid;
     var params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.replace(url);
@@ -493,7 +506,7 @@ function submitBussiness(districtid, areaId, e) {
     req['districtId'] = districtid;
     req['areaId'] = areaId;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.replace(url);
@@ -546,7 +559,7 @@ function submitSubway(e) {
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, '地铁');
     $.get(url, function () {
         location.replace(url);
@@ -602,7 +615,7 @@ function submitSubwayLine(subwayid, e) {
     }
     req['subwayLineId'] = subwayid;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.replace(url);
@@ -621,7 +634,7 @@ function submitStation(subwayid, subwayStationId, e) {
     req['subwayLineId']=subwayid;
     req['subwayStationId']=subwayStationId;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
 
     tabTextReplace(e);
     $.get(url, function () {
@@ -645,7 +658,7 @@ $('.price-list').on('click', 'li', function (e) {
     }
     req['pageNum'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
         location.replace(url);
@@ -665,7 +678,7 @@ $('.age-list').on('click', 'li', function (e) {
     }
     req['pageNum'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
         location.replace(url);
@@ -699,7 +712,7 @@ $('#typeSubmit').on('click', function (e) {
         req['pageNum'] = null;
         req['layoutId'] = null;
         params = joinParams(req);
-        url = BaseUrl + params;
+        url = _localHref + params;
         $.get(url, function () {
             location.replace(url);
         });
@@ -718,7 +731,7 @@ $('#typeSubmit').on('click', function (e) {
     req['pageNum'] = null;
     req['layoutId'] = layoutTextArr.join(',');
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     $.get(url, function () {
         location.replace(url);
     })
@@ -762,7 +775,7 @@ $('#moreSubmit').on('click', function (e) {
     }
     req['pageNum'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     $.get(url, function () {
         location.replace(url);
     });
@@ -787,16 +800,42 @@ $('#moreReset').on('click', function () {
     req['ownership'] = null;
 });
 
+/**
+ * 排序
+ */
+function listSortTab() {
+
+    if ($('.sort-icon').length > 0) {
+        $('.sort-icon').on('click', function () {
+            $('.sort-content-box').slideDown();
+        });
+        $('.sort-mask').on('click', function () {
+            $('.sort-content-box').slideUp();
+        });
+        $('.sort-content').on('click', 'li', function () {
+            $(this).addClass('current').siblings().removeClass('current');
+
+            req['sort'] = $(this).val();
+            var _optionParams = joinParams(req, true);
+
+            location.href=_localHref + _optionParams;
+
+            $('.sort-content-box').slideUp();
+        })
+    }
+}
+
 var pageNum = 2;
 $(function () {
     $(document).data("toutiao_pageScroll_onOroff",true);
     //手机滑动底部触发分页事件
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
+
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
                 if($(document).data("toutiao_pageScroll_onOroff") == true){
                     $(document).data("toutiao_pageScroll_onOroff",false);
-                    setTimeout(pullUpaAction(pageNum), 1000);
+                    setTimeout(pullUpAction(pageNum), 1000);
                 }
             }
         });
@@ -815,22 +854,28 @@ function router_city(urlparam) {
         city = "/" + segmens[0]
     }
     return city+urlparam
-}
+};
 
-
-
-function pullUpaAction(pageNumber) {
+/**
+ * 下拉分页
+ * @param pageNumber
+ */
+function pullUpAction(pageNumber) {
     var paramData = req;
     paramData['pageNum'] = pageNumber;
-    params = joinParams(paramData);
+    //sortFlag为true，保证排序
+    params = joinParams(paramData, true);
 
-    if (BaseUrl.indexOf('/loupan') > 0) {
+    if (_localHref.indexOf('/loupan') > 0) {
         url = router_city('/loupan' + params);
-    } else if (BaseUrl.indexOf('/esf') > 0) {
+    } else if (_localHref.indexOf('/esf') > 0) {
         url = router_city('/esf' + params);
-    } else if (BaseUrl.indexOf('/xiaoqu') > 0){
-        url = router_city('/xiaoqu') + params
+    } else if (_localHref.indexOf('/xiaoqu') > 0){
+        url = router_city('/xiaoqu') + params;
     }
+
+    var loadHtml = "<div class='tip-box' id='load-div'>努力加载中...</div>";
+    $('#valueList li:last-child').append(loadHtml);
 
     $.ajax({
         type: "get",
@@ -840,20 +885,95 @@ function pullUpaAction(pageNumber) {
         dataType:'json',
         success: function (data) {
             if (data.code == 'success') {
-                $(document).data("toutiao_pageScroll_onOroff",true);
+                $(document).data("toutiao_pageScroll_onOroff", true);
                 pageNum += 1;
-                // 二手房列表单价
-                if (BaseUrl.indexOf('/esf') > 0) {
-                    var dataCon = data.data.data;
-                    for (var i = 0; i < dataCon.length; i++){
-                        var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);
-                        dataCon[i].unitCost = unitCost;
-                    }
+
+                var dataCon = data.data.data;
+                for (var i = 0; i < dataCon.length; i++) {
+
+                    if (_localHref.indexOf('loupan') > 0) {
+                        //组织地铁描述信息
+                        if (dataCon[i]['nearsubway']) {
+                            var _subwayArray = dataCon[i]['nearsubway'].split('$');
+                            if (_subwayArray.length > 2) {
+                                var _subwayDesc;
+
+                                var _distance = parseInt(_subwayArray[2]);
+                                if (_distance > 1000) {
+                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + parseFloat(_tempDistance) + "km";
+                                } else {
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + _distance + "m";
+                                }
+                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                            }
+                        }
+                    };
+
+                    // 二手房列表单价
+                    if (_localHref.indexOf('/esf') > 0) {
+                        var _buildArea = dataCon[i].buildArea;
+
+                        if (null != _buildArea && _buildArea > 0) {
+                            var unitCost = parseInt((dataCon[i].houseTotalPrices / _buildArea) * 10000);
+                            dataCon[i].unitCost = unitCost;
+
+                            dataCon[i]['buildArea'] = _buildArea.toFixed(0);
+                        }
+
+                        //组织地铁描述信息
+                        var _subwayObj = dataCon[i]['subwayDistince'];
+                        var _key = dataCon[i]['key'];
+                        if (_subwayObj && _key) {
+                            var _subwayArray = _subwayObj[_key].split('$');
+                            if (_subwayArray.length > 2) {
+                                var _subwayDesc;
+
+                                var _distance = parseInt(_subwayArray[2]);
+                                if (_distance > 1000) {
+                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + parseFloat(_tempDistance) + "km";
+                                } else {
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + _distance + "m";
+                                }
+                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                            }
+                        };
+                    };
+
+                    if (_localHref.indexOf('xiaoqu') > 0) {
+
+                        //组织地铁描述信息
+                        var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
+                        var _key = dataCon[i]['key'];
+                        if (_subwayObj && _key) {
+                            var _subwayArray = _subwayObj[_key];
+                            if (_subwayArray.length > 2) {
+                                var _subwayDesc;
+
+                                var _distance = parseInt(_subwayArray[2]);
+                                if (_distance > 1000) {
+                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + parseFloat(_tempDistance) + "km";
+                                } else {
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + _distance + "m";
+                                }
+                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                            }
+                        };
+                    };
                 }
-                console.log(pageNumber);
-                var html = template('listContent',data.data);
+
+                var html = template('listContent', data.data);
+                $("#load-div").remove();
                 $('#valueList li:last-child').after(html);
             }
         }
-    })
-}
+    });
+};
