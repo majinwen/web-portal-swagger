@@ -132,15 +132,17 @@ public class IntelligenceFindHouseController {
      * @param intelligenceQuery
      * @return
      */
-    @RequestMapping("/intelligenceFindHouseTypeTwo")
+    @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
         IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(3);
+        intelligenceQuery1.setUserPortrayalType(1);
         intelligenceQuery1.setMinTotalPrice(4500000);
         intelligenceQuery1.setMaxTotalPrice(5500000);
         intelligenceQuery1.setDistrictId("105040,105035,105034");
         intelligenceQuery1.setLayOut(3);
+        intelligenceQuery1.setHospital("1");
+        intelligenceQuery1.setSchool("KG");
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
         return null;
     }

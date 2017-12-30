@@ -85,6 +85,12 @@ public class IntelligenceQuery {
     //最大值
     private Integer maxTotalPrice;
 
+    //学校
+    private String school;
+
+    //医院
+    private String hospital;
+
 
 
 
