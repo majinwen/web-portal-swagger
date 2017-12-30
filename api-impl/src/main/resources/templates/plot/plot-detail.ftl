@@ -517,7 +517,7 @@
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
-           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['商圈']!''}价格']
+           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格']
         },
         xAxis:  {
             type: 'category',
@@ -562,7 +562,7 @@
                 symbolSize:10,
             },
             {
-                name:'${village['商圈']!''}价格',
+                name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
                 symbolSize:10,
