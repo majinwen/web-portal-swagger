@@ -387,11 +387,7 @@
                         <span class="expand-type">停车费</span>
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
-                            <#if village['parkingRate']?number gt 0>
                             ${village['parkingRate']}元/月
-                            <#else >
-                                暂无
-                            </#if>
                         </span>
                     <#else >
                         <span class="expand-price">暂无</span>
