@@ -194,11 +194,11 @@ public class PlotServiceImpl implements PlotService {
                 }
             }
 
-            //总价
+            //列表页均价搜索
             String beginPrice = villageRequest.getBeginPrice();
             String endPrice = villageRequest.getEndPrice();
             if (beginPrice != null && beginPrice.length() != 0 &&!beginPrice.equals("undefined")&&!endPrice.equals("undefined")&& endPrice != null && endPrice.length() != 0) {
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("sumPrice").gt(Double.valueOf(beginPrice)).lte(Double.valueOf(endPrice)));
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(Double.valueOf(beginPrice)).lte(Double.valueOf(endPrice)));
             }
 
             //面积
