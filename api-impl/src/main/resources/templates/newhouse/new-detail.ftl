@@ -11,6 +11,10 @@
     <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
+<#assign ptCD0 = tradeline['buildingline']>;
+<#assign ptCD1 = tradeline['arealine']>;
+<#assign ptCD2 = tradeline['tradearealine']>;
+<#assign mouthList = tradeline['mouthList']>;
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -200,16 +204,18 @@
         </a>
     </section>
 </div>
+<#if  (mouthList?size>0)>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>价格走势</h3>
         </div>
         <div class="echarts-box">
-            <div class="echarts-content" id="main"></div>
+            <div class="echarts-content" id="newhousetrad"></div>
         </div>
     </section>
 </div>
+</#if>
 <section>
     <div class="module-header-message">
         <h3>看了本楼盘的用户还看了</h3>
@@ -255,11 +261,9 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
-    <#assign ptCD0 = tradeline['buildingline']>;
-    <#assign ptCD1 = tradeline['arealine']>;
-    <#assign ptCD2 = tradeline['tradearealine']>;
-    var myChartline = echarts.init(document.getElementById('main'));
+    var myChartline = echarts.init(document.getElementById('newhousetrad'));
     option = {
+        brushLink:null,
         tooltip: {
             trigger: 'axis'
         },
@@ -272,7 +276,7 @@
         xAxis:  {
             type: 'category',
             boundaryGap: false,
-            data: [<#list xlist as item >'${item}',</#list>]
+            data: [<#list  mouthList as item >'${item}',</#list>]
         },
         yAxis: {
             type: 'value',
@@ -281,95 +285,18 @@
             }
         },
         series: [
-        <#if (ptCD0?size<12)>
             {
-                name:'楼盘价格',
-                type:'scatter',
-                data:[[10,19]],
-                markPoint: {
-                    data: [
-                        {type: 'max', name: '最大值'},
-                        {type: 'min', name: '最小值'}
-                    ]
-                }
-            },
-        <#else> {
             name:'楼盘价格',
             type:'line',
-            data:[<#list ptCD0 as item >${item['price']},</#list>],
-            markPoint: {
-                data: [
-                    {type: 'max', name: '最大值'},
-                    {type: 'min', name: '最小值'}
-                ]
-            },
-            markLine: {
-                data: [
-                    {type: 'average', name: '平均值'}
-                ]
-            }
+            data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+            symbolSize:14,
         },
-        </#if>
             {
                 name:'区域价格',
                 type:'line',
-                data:[<#list ptCD1 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
+                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:14,
             },
-            {
-                name:'商圈价格',
-                type:'line',
-                data:[<#list ptCD2 as item >${item['price']},</#list>],
-                markPoint: {
-                    data: [
-                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
-                    ]
-                },
-                markLine: {
-                    data: [
-                        {type: 'average', name: '平均值'},
-                        [{
-                            symbol: 'none',
-                            x: '90%',
-                            yAxis: 'max'
-                        }, {
-                            symbol: 'circle',
-                            label: {
-                                normal: {
-                                    position: 'start',
-                                    formatter: '最大值'
-                                }
-                            },
-                            type: 'max',
-                            name: '最高点'
-                        }]
-                    ]
-                }
-            }
         ]
     };
     myChartline.setOption(option);

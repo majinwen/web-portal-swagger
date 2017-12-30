@@ -61,7 +61,6 @@
                     </#if>
                 </div>
           </div>
-
     </section>
     </#list>
 </#if>
