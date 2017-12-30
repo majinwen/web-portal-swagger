@@ -166,7 +166,10 @@
             <#if map_index==3>
             <li><a class="list-item new new-ad-item" href="#">
                 <div class="list-item-cont-ad">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
+                    <h3 class="cont-block-1">
+                        <span>中骏·西山天璟</span>
+                        <em>别墅</em>
+                    </h3>
                     <p class="cont-block-3">东城/88㎡—526㎡</p>
                 </div>
                 <div class="clear">
@@ -206,7 +209,8 @@
                     <div class="list-item-cont">
                         <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
                         <h3 class="cont-block-1">
-                            ${map['building_name']}<em><#if map['property_type']?exists>${map['property_type']}</#if></em>
+                            <span class="ellipsis">${map['building_name']}</span>
+                            <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
                         </h3>
                         <#if (map['average_price']?exists && map['average_price'] > 0)>
                             <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>

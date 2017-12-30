@@ -249,7 +249,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
+    <li><a class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
