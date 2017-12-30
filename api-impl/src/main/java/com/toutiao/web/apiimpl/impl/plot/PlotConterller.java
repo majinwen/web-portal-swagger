@@ -94,8 +94,15 @@ public class PlotConterller {
             model.addAttribute("nearvillage", nearvillage);
 
             //走势图
-
-            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
+            Integer areaId = null;
+            Integer tradingAreaId = null;
+            if (null != village.getAreaId()){
+                areaId = Integer.parseInt(village.getAreaId());
+            }
+            if (null != village.getTradingAreaId()){
+                tradingAreaId = Integer.parseInt(village.getTradingAreaId());
+            }
+            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),areaId,tradingAreaId);
             model.addAttribute("tradeline", stringListMap);
 
             //月份

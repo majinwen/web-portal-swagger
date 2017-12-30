@@ -136,7 +136,7 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
         IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(1);
+        intelligenceQuery1.setUserPortrayalType(7);
         intelligenceQuery1.setMinTotalPrice(4500000);
         intelligenceQuery1.setMaxTotalPrice(5500000);
         intelligenceQuery1.setDistrictId("105040,105035,105034");

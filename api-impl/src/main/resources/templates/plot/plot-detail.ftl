@@ -130,7 +130,7 @@
                 <#--</div>-->
                 <#if  (mouthList?size>0)>
                     <div class="echarts-box">
-                        <div class="echarts-content" id="village-price-trade" style="height: 500px"></div>
+                        <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
                     </div>
                 </#if>
             </div>
@@ -183,7 +183,7 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?size gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
                 <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>

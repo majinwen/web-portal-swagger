@@ -653,13 +653,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @date 2017/12/29 12:50
      */
     public List<IntelligenceFindhouse> recommend3A(List<IntelligenceFindhouse> listHouse) {
-        PriceTrend priceTrend = new PriceTrend();
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
 
         for (int i = 0; i < listHouse.size(); i++) {
-            if (null == listHouse.get(i).getTurnoverRate() || listHouse.get(i).getTurnoverRate().intValue() <= 0) {
+            if (null == listHouse.get(i).getTurnoverRate()) {
                 BigDecimal bigDecimal = new BigDecimal(0);
                 listHouse.get(i).setTurnoverRate(bigDecimal);
             }
@@ -676,7 +675,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 if (o2.getTurnoverRate().doubleValue() == o1.getTurnoverRate().doubleValue()) {
                     return 0;
                 }
-                return 0;
+                return -1;
             }
         });
 
@@ -695,16 +694,25 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //计算平均区域价格
             int priceNumber = 0;
             int totelPrice = 0;
-            priceTrend.setBuildingId(list.get(i).getNewcode());
-            List<PriceTrend> priceTrends = priceTrendMapper.searchPriceTrendList(priceTrend);
+            List<PriceTrend> priceTrends = priceTrendMapper.newhouseTrendList(list.get(i).getNewcode(),null,null);
             for (int j = 0; j < priceTrends.size(); j++) {
                 if (priceTrends.get(j).getPrice().intValue() != 0) {
                     totelPrice += priceTrends.get(j).getPrice().intValue();
                     priceNumber++;
                 }
             }
-            if (totelPrice != 0 && list.get(i).getPrice().doubleValue() < ((totelPrice / priceNumber) * 0.9)) {
-                listFour.add(list.get(i));
+            if (totelPrice != 0 ) {
+                double areaAvgprive = (totelPrice / priceNumber) * 0.9;
+                Double price = 0.0;
+                if (null !=list.get(i).getPrice()){
+                    price = list.get(i).getPrice().doubleValue();
+                }
+                if (null !=list.get(i).getEsfPrice()){
+                    price = list.get(i).getEsfPrice().doubleValue();
+                }
+                if ((null !=list.get(i).getPrice()||null !=list.get(i).getEsfPrice()) && (price<areaAvgprive)){
+                    listFour.add(list.get(i));
+                }
             }
         }
         if (listFour.size() >= 3) {
