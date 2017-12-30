@@ -7,6 +7,9 @@ $(function () {
     var subStr = '<li id="subway-option">地铁</li>';
     $('#level1').append(disStr+subStr);
 
+    //列表页排序切换
+    listSortTab();
+
     $('#category-tab').on('click', 'li', function () {
         var $dom = getDataDom($(this),'panel');
         $(this).toggleClass('current').toggleClass('choose').siblings().removeClass('current');
@@ -826,38 +829,34 @@ var pageNum = 2;
 $(function () {
     $(document).data("toutiao_pageScroll_onOroff",true);
     //手机滑动底部触发分页事件
-    if ($('#listContent').length > 0) {
-        $(window).scroll(function () {
+    $(window).scroll(function () {
 
-            if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                if($(document).data("toutiao_pageScroll_onOroff") == true){
-                    $(document).data("toutiao_pageScroll_onOroff",false);
-                    setTimeout(pullUpAction(pageNum), 1000);
-                }
+        if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+            if($(document).data("toutiao_pageScroll_onOroff") == true){
+                $(document).data("toutiao_pageScroll_onOroff",false);
+                setTimeout(pullUpAction(pageNum), 1000);
             }
-        });
-    }
-});
+        }
+    });
 
-function router_city(urlparam) {
-    urlparam = urlparam || ""
-    if(urlparam[0] != '/'){
-        urlparam = '/' + urlparam
-    }
-    var uri = new URI(window.location.href);
-    var segmens = uri.segment();
-    var city = "";
-    if(segmens.length>0){
-        city = "/" + segmens[0]
-    }
-    return city+urlparam
-};
+    //加载内容填充不满屏幕
+    // if ($(document).height() <= $(window).height()) {
+    //     $('#pullUp').hide();
+    // }
+});
 
 /**
  * 下拉分页
  * @param pageNumber
  */
+var loadingFlag = false;
 function pullUpAction(pageNumber) {
+
+    if (loadingFlag) {
+        return;
+    }
+    loadingFlag = true;
+
     var paramData = req;
     paramData['pageNum'] = pageNumber;
     //sortFlag为true，保证排序
@@ -970,7 +969,25 @@ function pullUpAction(pageNumber) {
                 var html = template('listContent', data.data);
                 $("#load-div").remove();
                 $('#valueList li:last-child').after(html);
+
+                if (data.data.length > 0) {
+                    loadingFlag = false;
+                }
             }
         }
     });
+};
+
+function router_city(urlparam) {
+    urlparam = urlparam || ""
+    if(urlparam[0] != '/'){
+        urlparam = '/' + urlparam
+    }
+    var uri = new URI(window.location.href);
+    var segmens = uri.segment();
+    var city = "";
+    if(segmens.length>0){
+        city = "/" + segmens[0]
+    }
+    return city+urlparam
 };

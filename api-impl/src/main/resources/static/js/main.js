@@ -25,8 +25,6 @@ $(function () {
     moduleExpand();         // 小区详情模块状态
 
     marketsState();         // 小区市场详情切换
-
-    listSortTab();          // 列表页排序切换
 });
 
 function describeAllShow() {
