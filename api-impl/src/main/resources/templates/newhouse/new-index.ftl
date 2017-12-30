@@ -121,7 +121,10 @@
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
                 </div>
                 <div class="list-item-cont">
-                    <h3 class="cont-block-1"><span class="ellipsis">中骏·西山天璟</span><em>别墅</em></h3>
+                    <h3 class="cont-block-1">
+                        <span class="ellipsis">中骏·西山天璟</span>
+                        <em>别墅</em>
+                    </h3>
                     <p class="cont-block-2 high-light-red">68000元/㎡</p>
                     <p class="cont-block-3">东城/88㎡—526㎡</p>
                     <div class="cont-block-4 house-labelling gray middle">
@@ -152,7 +155,10 @@
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                    <h3 class="cont-block-1"><span class="ellipsis">${map['building_name']}</span><em>${map['property_type']}</em></h3>
+                    <h3 class="cont-block-1">
+                        <span class="ellipsis">${map['building_name']}</span>
+                        <em>${map['property_type']}</em>
+                    </h3>
                     <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡</#if></p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
