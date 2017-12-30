@@ -5,7 +5,7 @@
     .elastics-stack-content {
         padding-top: rem(30);
         padding-bottom: rem(40);
-        border-bottom: rem(1) solid $borderLineColor;
+        border-bottom: rem(1) solid $baseBorderColor;
 
         .elastics-stack {
             position: relative;
@@ -23,7 +23,7 @@
                 z-index: 1;
                 width: rem(630);
                 height: rem(190);
-                padding: rem(16) rem(13) rem(14) rem(30);
+                padding: rem(15) rem(15) rem(15) rem(30);
                 cursor: pointer;
                 opacity: 0;
                 overflow: hidden;
@@ -38,16 +38,28 @@
                 @include box-sizing;
 
                 &.bgtype-1 {
-                    color: #99622d;
                     background-color: #f4f0e5;
+                    color: #99622d;
+                    a {
+                        display: block;
+                        color: #99622d;
+                    }
                 }
                 &.bgtype-2 {
-                    color: #4c8477;
                     background-color: #d1e2e1;
+                    color: #4c8477;
+                    a {
+                        display: block;
+                        color: #4c8477;
+                    }
                 }
                 &.bgtype-3 {
-                    color: #704b70;
                     background-color: #e5dde7;
+                    color: #704b70;
+                    a {
+                        display: block;
+                        color: #704b70;
+                    }
                 }
 
                 &.animate {
@@ -79,7 +91,7 @@
                     float: right;
                     width: rem(280);
                     height: rem(160);
-                    padding: rem(6);
+                    padding: rem(5);
                     background-color: #fff;
                     @include box-sizing;
                 }

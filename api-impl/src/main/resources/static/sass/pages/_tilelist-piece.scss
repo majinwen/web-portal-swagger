@@ -10,12 +10,12 @@
     li {
         display: inline-block;
         width: rem(221);
-        margin-right: rem(30);
+        margin-right: rem(25);
         
         .picture-box {
             position: relative;
-            width: rem(221);
-            height: rem(166);
+            width: rem(220);
+            height: rem(165);
             overflow: hidden;
             text-align: center;
             
@@ -37,7 +37,6 @@
                 @include font-dpr(20);
                 background-color: $baseRed;
                 -webkit-border-radius: 0 rem(17) rem(17) 0;
-                -moz-border-radius: 0 rem(17) rem(17) 0;
                 border-radius: 0 rem(17) rem(17) 0;
             }
 
@@ -55,7 +54,7 @@
             }
         }
         .tilelist-content {
-            width: rem(221);
+            width: rem(220);
             @include font-dpr(24);
             color: $baseBlack;
             

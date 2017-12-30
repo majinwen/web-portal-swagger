@@ -66,6 +66,9 @@
                     &.icon-report {
                         @include bg-image('../images/global/grcl_icon_wdbg');
                     }
+                    &.icon-exit {
+                        @include bg-image('../images/global/grcl_icon_exit');
+                    }
                 }
 
                 &.current, &:hover {
@@ -84,7 +87,7 @@
 
             &.item-my {
                 padding-top: rem(9);
-                border-top: 1px solid $borderLineColor;
+                border-top: 1px solid $baseBorderColor;
 
                 li {
                     line-height: 1;

@@ -31,17 +31,17 @@
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xinfang')}">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xinfang/')}">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
 
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xiaoqu')}">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xiaoqu/')}">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/esf')}">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/esf/')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="#">
+            <div class="banner-nav-item index-nav-item"><a href="/ifh/qidong">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -65,24 +65,24 @@
             <ul id="elastics-stack" class="elastics-stack">
                 <li class="bgtype-1">
                     <div>
-                        <h4>11月销量榜</h4>
-                        <p>大家都在看这4个商圈</p>
+                        <h4>2018纯新盘</h4>
+                        <p>北京全新楼盘抢先看</p>
                     </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image@3x.png" alt="">
+                    <img src="${staticurl}/images/index/dsy_ts_image1.jpg" alt="2018纯新盘">
                 </li>
                 <li class="bgtype-2">
                     <div>
-                        <h4>11月销量榜</h4>
-                        <p>大家都在看这4个商圈</p>
+                        <h4>海淀热门房源</h4>
+                        <p>看看大家关注哪里的房</p>
                     </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image@3x.png" alt="">
-                </li>
+                    <img src="${staticurl}/images/index/dsy_ts_image2.jpg" alt="海淀热门房源">
+                </a></li>
                 <li class="bgtype-3">
                     <div>
-                        <h4>11月销量榜</h4>
-                        <p>大家都在看这4个商圈</p>
+                        <h4>200万电梯房</h4>
+                        <p>少花钱多办事上下自由</p>
                     </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image@3x.png" alt=""></li>
+                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
                 </li>
             </ul>
         </div>
@@ -93,35 +93,35 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="#">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
                     <div class="topic-item-content">
-                        <h5>热门优选房集合</h5>
-                        <p>热门区域推荐</p>
+                        <h5>新开通地铁旁楼盘</h5>
+                        <p>地铁盘推荐 </p>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1@3x.png" alt="热门优选房集合">
+                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="地铁盘推荐">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="#">
+                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseLabelId=16')}">
                     <div class="topic-item-content">
-                        <h5>新上房源专区</h5>
-                        <p>每日集结</p>
+                        <h5>满五税少房推荐</h5>
+                        <p>每日热推</p>
                     </div>
-                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2@3x.png" alt="新上房源专区">
+                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="每日热推">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="#">
+                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?beginPrice=350.0&endPrice=400.0&districtId=105037')}">
                     <div class="topic-item-content">
-                        <h5>改善三居室</h5>
-                        <p>全家幸福住</p>
+                        <h5>西城区400万房源</h5>
+                        <p>热点专区</p>
                     </div>
-                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3@3x.png" alt="改善三居室">
+                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="热点专区">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="#">
+                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseYearId=[0-5]')}">
                     <div class="topic-item-content">
-                        <h5>高端大气豪宅</h5>
-                        <p>低密度舒适宜居</p>
+                        <h5>5年内楼龄房源</h5>
+                        <p>品质小区</p>
                     </div>
-                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4@3x.png" alt="高端大气豪宅">
+                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="品质小区">
                 </a></div>
             </div>
         </div>
@@ -163,10 +163,13 @@
     <ul><#if newbuilds?exists>
         <#assign builds = newbuilds['data']>
         <#list builds as map>
-            <#if map_index==1>
+            <#if map_index==3>
             <li><a class="list-item new new-ad-item" href="#">
                 <div class="list-item-cont-ad">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
+                    <h3 class="cont-block-1">
+                        <span>中骏·西山天璟</span>
+                        <em>别墅</em>
+                    </h3>
                     <p class="cont-block-3">东城/88㎡—526㎡</p>
                 </div>
                 <div class="clear">
@@ -206,7 +209,8 @@
                     <div class="list-item-cont">
                         <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
                         <h3 class="cont-block-1">
-                            ${map['building_name']}<em><#if map['property_type']?exists>${map['property_type']}</#if></em>
+                            <span class="ellipsis">${map['building_name']}</span>
+                            <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
                         </h3>
                         <#if (map['average_price']?exists && map['average_price'] > 0)>
                             <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>

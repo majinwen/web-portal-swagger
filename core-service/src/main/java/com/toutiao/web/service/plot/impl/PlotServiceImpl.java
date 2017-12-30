@@ -283,11 +283,11 @@ public class PlotServiceImpl implements PlotService {
                 villageRequest.setSize(10);
             }
             // 当前页
-            if (villageRequest.getPage() == null || villageRequest.getPage() < 1) {
-                villageRequest.setPage(1);
+            if (villageRequest.getPageNum() == null || villageRequest.getPageNum() < 1) {
+                villageRequest.setPageNum(1);
             }
 
-            int rows = (villageRequest.getPage() - 1) * villageRequest.getSize();
+            int rows = (villageRequest.getPageNum() - 1) * villageRequest.getSize();
             Integer size = villageRequest.getSize();
             srb.setFrom(rows).setSize(size);
             SearchResponse response = srb.setQuery(queryBuilder).execute().actionGet();
