@@ -165,15 +165,15 @@
             <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
-            <div class="column item-only-one">
-                <div class="info-card-item">
-                ${build['building_name']!'暂无'}<em class="high-light-red">${build['finishdate']!'暂无'}</em>年建成住宅,共<em class="high-light-red">${build['build_count']!'暂无'}栋</em>
-                    (${build['totaldoor']!'暂无'}户)
-                    <#if build['building_type']?exists>
-                        ,${build['building_type']}
-                    </#if>
-                </div>
-            </div>
+            <#--<div class="column item-only-one">-->
+                <#--<div class="info-card-item">-->
+                <#--${build['building_name']!'暂无'}<em class="high-light-red">${build['finishdate']!'暂无'}</em>年建成住宅,共<em class="high-light-red">${build['build_count']!'暂无'}栋</em>-->
+                    <#--(${build['totaldoor']!'暂无'}户)-->
+                    <#--<#if build['building_type']?exists>-->
+                        <#--,${build['building_type']}-->
+                    <#--</#if>-->
+                <#--</div>-->
+            <#--</div>-->
             <div class="column item-column-two">
                 <div class="info-card-item">
                     <i class="item-two-1"></i>
