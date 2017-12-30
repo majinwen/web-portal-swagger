@@ -219,8 +219,7 @@
     </#if></ul>
     <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
-<#include "../user.ftl">
-<#include "../search.ftl">
+
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
@@ -232,6 +231,9 @@
     </#if>
     </ul>
 </div>
+
+<#include "../user.ftl">
+<#include "../search.ftl">
 
 <script id="listContent" type="text/html">
 {{each data}}
@@ -261,10 +263,16 @@
                 </em>
             </p>
             <p class="cont-block-3">
-                {{$value.district_name}}
-                {{if $value.house_min_area != null}}
-                    {{if $value.house_max_area != null}}
-                        /{{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                {{if $value.nearsubway}}
+                    {{if $value.subwayDesc}}
+                        {{$value.subwayDesc}}
+                    {{/if}}
+                {{else}}
+                    {{$value.district_name}}
+                    {{if $value.house_min_area != null}}
+                        {{if $value.house_max_area != null}}
+                            /{{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </p>
@@ -289,6 +297,7 @@
 </a></li>
 {{/each}}
 </script>
+
 </body>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>

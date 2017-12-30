@@ -111,7 +111,6 @@
                         <#else>
                             交通信息：距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
                         </#if>
-
                     </#if>
                 </p>
             </li>

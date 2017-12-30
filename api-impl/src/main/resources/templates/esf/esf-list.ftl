@@ -194,9 +194,9 @@
                                         <#assign rounditems=item[map['key']]?split("$")>
                                         <#if rounditems[2]?number gt 1000>
                                             <#assign x = rounditems[2]?number/1000>
-                                            距离地铁${rounditems[1]}[${rounditems[0]}]${x?string("#.#")}km
+                                            距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
                                         <#else>
-                                            距离地铁${rounditems[1]}[${rounditems[0]}]${rounditems[2]}m
+                                            距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
                                         </#if>
                                     </p>
                                 </#if>
@@ -280,8 +280,13 @@
                 </p>
                 <p class="cont-block-3 distance">
                     <i class="icon"></i>
-                    {{if $value.area && $value.houseBusinessName}}
-                        {{$value.area}} [{{$value.houseBusinessName}}]
+
+                    {{if $value.subwayDesc}}
+                        {{$value.subwayDesc}}
+                    {{else}}
+                        {{if $value.area && $value.houseBusinessName}}
+                            {{$value.area}} [{{$value.houseBusinessName}}]
+                        {{/if}}
                     {{/if}}
                 </p>
                 <div class="cont-block-4 house-labelling gray middle esf">

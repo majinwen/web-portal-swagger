@@ -793,9 +793,6 @@ $(function () {
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
 
-            console.log("$(document).scrollTop()" + $(document).scrollTop());
-            console.log("$(document).height()" + $(document).height());
-            console.log("$(window).height()" + $(window).height());
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
                 if($(document).data("toutiao_pageScroll_onOroff") == true){
                     $(document).data("toutiao_pageScroll_onOroff",false);
@@ -832,8 +829,11 @@ function pullUpAction(pageNumber) {
     } else if (_localHref.indexOf('/esf') > 0) {
         url = router_city('/esf' + params);
     } else if (_localHref.indexOf('/xiaoqu') > 0){
-        url = router_city('/xiaoqu') + params
+        url = router_city('/xiaoqu') + params;
     }
+
+    var loadHtml = "<div class='tip-box' id='load-div'>努力加载中...</div>";
+    $('#valueList li:last-child').append(loadHtml);
 
     $.ajax({
         type: "get",
@@ -843,20 +843,95 @@ function pullUpAction(pageNumber) {
         dataType:'json',
         success: function (data) {
             if (data.code == 'success') {
-                $(document).data("toutiao_pageScroll_onOroff",true);
+                $(document).data("toutiao_pageScroll_onOroff", true);
                 pageNum += 1;
-                // 二手房列表单价
-                if (_localHref.indexOf('/esf') > 0) {
-                    var dataCon = data.data.data;
-                    for (var i = 0; i < dataCon.length; i++){
-                        var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);
-                        dataCon[i].unitCost = unitCost;
-                    }
+
+                var dataCon = data.data.data;
+                for (var i = 0; i < dataCon.length; i++) {
+
+                    if (_localHref.indexOf('loupan') > 0) {
+                        //组织地铁描述信息
+                        if (dataCon[i]['nearsubway']) {
+                            var _subwayArray = dataCon[i]['nearsubway'].split('$');
+                            if (_subwayArray.length > 2) {
+                                var _subwayDesc;
+
+                                var _distance = parseInt(_subwayArray[2]);
+                                if (_distance > 1000) {
+                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + parseFloat(_tempDistance) + "km";
+                                } else {
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + _distance + "m";
+                                }
+                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                            }
+                        }
+                    };
+
+                    // 二手房列表单价
+                    if (_localHref.indexOf('/esf') > 0) {
+                        var _buildArea = dataCon[i].buildArea;
+
+                        if (null != _buildArea && _buildArea > 0) {
+                            var unitCost = parseInt((dataCon[i].houseTotalPrices / _buildArea) * 10000);
+                            dataCon[i].unitCost = unitCost;
+
+                            dataCon[i]['buildArea'] = _buildArea.toFixed(0);
+                        }
+
+                        //组织地铁描述信息
+                        var _subwayObj = dataCon[i]['subwayDistince'];
+                        var _key = dataCon[i]['key'];
+                        if (_subwayObj && _key) {
+                            var _subwayArray = _subwayObj[_key].split('$');
+                            if (_subwayArray.length > 2) {
+                                var _subwayDesc;
+
+                                var _distance = parseInt(_subwayArray[2]);
+                                if (_distance > 1000) {
+                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + parseFloat(_tempDistance) + "km";
+                                } else {
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + _distance + "m";
+                                }
+                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                            }
+                        };
+                    };
+
+                    if (_localHref.indexOf('xiaoqu') > 0) {
+
+                        //组织地铁描述信息
+                        var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
+                        var _key = dataCon[i]['key'];
+                        if (_subwayObj && _key) {
+                            var _subwayArray = _subwayObj[_key];
+                            if (_subwayArray.length > 2) {
+                                var _subwayDesc;
+
+                                var _distance = parseInt(_subwayArray[2]);
+                                if (_distance > 1000) {
+                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + parseFloat(_tempDistance) + "km";
+                                } else {
+                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                        + _distance + "m";
+                                }
+                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                            }
+                        };
+                    };
                 }
-                console.log(pageNumber);
-                var html = template('listContent',data.data);
+
+                var html = template('listContent', data.data);
+                $("#load-div").remove();
                 $('#valueList li:last-child').after(html);
             }
         }
-    })
-}
+    });
+};

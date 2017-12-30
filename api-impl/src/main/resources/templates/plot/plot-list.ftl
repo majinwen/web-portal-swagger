@@ -169,9 +169,9 @@
                                         <i class="icon"></i>
                                         <#if split[2]?number gt 1000>
                                             <#assign x = split[2]?number/1000>
-                                            距离地铁${split[1]}[${split[0]}] ${x?string("#.#")}km
+                                            距离${split[1]}[${split[0]}] ${x?string("#.#")}km
                                         <#else>
-                                            距离地铁${split[1]}[${split[0]}] ${split[2]}m
+                                            距离${split[1]}[${split[0]}] ${split[2]}m
                                         </#if>
                                     </p>
                                 <#else>
@@ -239,12 +239,8 @@
                 <p class="cont-block-2 plot">{{if $value.abbreviatedAge}}{{$value.abbreviatedAge}}建成{{else}}暂无{{/if}}</p>
                 {{if $value.metroWithPlotsDistance || $value.tradingArea}}
                     <p class="cont-block-3 distance"><i class="icon"></i>
-                        {{if $value.metroWithPlotsDistance}}
-                            {{if $value.key}}
-                                距离地铁{{$value.metroWithPlotsDistance[$value.key][1]}}[{{$value.metroWithPlotsDistance[$value.key][0]}}] {{$value.metroWithPlotsDistance[$value.key][2]}}m
-                            {{else}}
-                                {{if $value.area}}{{$value.area}}{{else}}暂无{{/if}}-{{if $value.tradingArea}}{{$value.tradingArea}}{{else}}暂无{{/if}}
-                            {{/if}}
+                        {{if $value.subwayDesc}}
+                            {{$value.subwayDesc}}
                         {{else if $value.tradingArea}}
                             {{if $value.area}}{{$value.area}}{{else}}暂无{{/if}}-{{if $value.tradingArea}}{{$value.tradingArea}}{{else}}暂无{{/if}}
                         {{/if}}
