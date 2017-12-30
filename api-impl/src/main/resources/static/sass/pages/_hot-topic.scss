@@ -11,8 +11,11 @@
             position: relative;
             -webkit-flex: 1;
             flex: 1;
-            width: auto;
+            width: 0;
             margin: rem(16) rem(9);
+            -webkit-border-radius: rem(4);
+            border-radius: rem(4);
+            overflow: hidden;
 
             .topic-item-content {
                 position: absolute;
@@ -25,9 +28,6 @@
                 @include font-dpr(22);
                 background-color: rgba(69, 73, 95, 0.5);
                 @include box-sizing;
-                -webkit-border-radius: rem(6);
-                -moz-border-radius: rem(6);
-                border-radius: rem(6);
 
                 h5 {
                     display: block;
@@ -88,12 +88,20 @@
                     left: 50%;
 
                     &.item-1 {
-                        width: rem(116);
-                        margin-left: rem(-58);
+                        width: rem(148);
+                        margin-left: rem(-74);
                     }
-                    &.item-2, &.item-3, &.item-4 {
+                    &.item-2 {
+                        width: rem(146);
+                        margin-left: rem(-73);
+                    }
+                    &.item-3 {
                         width: rem(170);
                         margin-left: rem(-85);
+                    }
+                    &.item-4 {
+                        width: rem(116);
+                        margin-left: rem(-58);
                     }
                 }
             }

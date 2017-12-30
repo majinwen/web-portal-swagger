@@ -787,7 +787,6 @@ $('#moreReset').on('click', function () {
     req['ownership'] = null;
 });
 
-
 var pageNum = 2;
 $(function () {
     $(document).data("toutiao_pageScroll_onOroff",true);
@@ -802,19 +801,18 @@ $(function () {
             }
         });
     }
-
 });
 
 function router_city(urlparam) {
-    urlparam=urlparam||""
-    if(urlparam[0]!='/'){
-        urlparam = '/'+urlparam
+    urlparam = urlparam || ""
+    if(urlparam[0] != '/'){
+        urlparam = '/' + urlparam
     }
     var uri = new URI(window.location.href);
     var segmens = uri.segment();
-    var city="";
+    var city = "";
     if(segmens.length>0){
-        city = "/"+segmens[0]
+        city = "/" + segmens[0]
     }
     return city+urlparam
 }
@@ -826,11 +824,11 @@ function pullUpaAction(pageNumber) {
     paramData['pageNum'] = pageNumber;
     params = joinParams(paramData);
 
-    if (BaseUrl.indexOf('/loupan')>0) {
+    if (BaseUrl.indexOf('/loupan') > 0) {
         url = router_city('/loupan' + params);
-    } else if (BaseUrl.indexOf('/esf')) {
+    } else if (BaseUrl.indexOf('/esf') > 0) {
         url = router_city('/esf' + params);
-    } else if (BaseUrl.indexOf('/xiaoqu')){
+    } else if (BaseUrl.indexOf('/xiaoqu') > 0){
         url = router_city('/xiaoqu') + params
     }
 
@@ -841,13 +839,11 @@ function pullUpaAction(pageNumber) {
         async: true,
         dataType:'json',
         success: function (data) {
-
-
             if (data.code == 'success') {
                 $(document).data("toutiao_pageScroll_onOroff",true);
                 pageNum += 1;
                 // 二手房列表单价
-                if (BaseUrl == '/findProjHouseInfo') {
+                if (BaseUrl.indexOf('/esf') > 0) {
                     var dataCon = data.data.data;
                     for (var i = 0; i < dataCon.length; i++){
                         var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);

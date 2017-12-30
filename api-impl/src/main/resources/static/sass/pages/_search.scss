@@ -17,6 +17,7 @@
         height: rem(64);
         line-height: rem(64);
         background-color: $baseWhite;
+        -webkit-border-radius: rem(4);
         border-radius: rem(4);
 
         .type-tab-box {
@@ -32,7 +33,7 @@
                 line-height: 1;
                 padding-right: rem(48);
                 text-align: center;
-                border-right: rem(1) solid #e1e1e1;
+                border-right: rem(1) solid $baseBorderColor;
 
                 &:after {
                     content: '';
@@ -42,7 +43,7 @@
                     width: 0;
                     height: 0;
                     margin-top: rem(-4);
-                    border-top: rem(9) solid #e1e1e1;
+                    border-top: rem(9) solid $baseBorderColor;
                     border-left: rem(9) solid transparent;
                     border-right: rem(9) solid transparent;
                 }
@@ -72,13 +73,13 @@
                     background-color: $baseWhite;
                     -webkit-box-shadow: 0 rem(3) rem(16) 0 rgba(0, 0, 0, 0.35);
                     box-shadow: 0 rem(3) rem(16) 0 rgba(0, 0, 0, 0.35);
-                    -webkit-border-radius: rem(6);
-                    border-radius: rem(6);
+                    -webkit-border-radius: rem(4);
+                    border-radius: rem(4);
 
                     span {
                         display: block;
                         line-height: rem(80);
-                        border-bottom: rem(1) solid $borderLineColor;
+                        border-bottom: rem(1) solid $baseBorderColor;
 
                         &.current {
                             color: $baseRed;
@@ -143,7 +144,7 @@
     line-height: rem(90);
     padding: 0 rem(30);
     @include font-dpr(30);
-    border-bottom: rem(1) solid $borderLineColor;
+    border-bottom: rem(1) solid $baseBorderColor;
 
     a {
         position: absolute;
@@ -172,7 +173,8 @@
         line-height: 1;
         padding: 13px 30px;
         margin: 0 20px 20px 0;
-        border-radius: 10px;
+        -webkit-border-radius: rem(4);
+        border-radius: rem(4);
         background-color:  #f2f2f2;
 
         &:last-child {

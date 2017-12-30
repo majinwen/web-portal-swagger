@@ -11,10 +11,10 @@
     <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
-<#assign ptCD0 = tradeline['buildingline']>;
-<#assign ptCD1 = tradeline['arealine']>;
-<#assign ptCD2 = tradeline['tradearealine']>;
-<#assign mouthList = tradeline['mouthList']>;
+<#assign ptCD0 = tradeline['buildingline']>
+<#assign ptCD1 = tradeline['arealine']>
+<#assign ptCD2 = tradeline['tradearealine']>
+<#assign mouthList = tradeline['mouthList']>
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -27,14 +27,12 @@
                         </li>
                     <#else >
                         <li onclick="initphoto(this,0)" class="swiper-slide">
-                            <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                                 data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                         </li>
                     </#if>
                 <#else>
                     <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                             data-src="${staticurl}/images/global/tpzw_banner_image.png/" alt="拍摄中">
+                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                     </li>
                 </#if>
             </#list>
@@ -92,47 +90,9 @@
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img
-                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
-<#if (reViHouse?exists) && (reViHouse?size>0)>
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
-                    class="arrows-right"></i></a>
-        </div>
-        <ul class="tilelist">
-            <#list reViHouse as reitem>
-                <#if reitem_index==4>
-                    <#break >
-                </#if>
-                <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)}">
-                    <div class="picture-box">
-                        <#if reitem['housePhoto']?exists>
-                            <#assign photoitem=reitem['housePhoto']>
-                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            </#if>
-                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
-                        </#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
-                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
-                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
-                        </p>
-                    </div>
-                </a></li>
-            </#list>
-        </ul>
-    </section>
-</div>
-</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -184,7 +144,42 @@
         </div>
     </section>
 </div>
-
+<#if (reViHouse?exists) && (reViHouse?size>0)>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>推荐小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+        </div>
+        <ul class="tilelist">
+            <#list reViHouse as reitem>
+                <#if reitem_index==4>
+                    <#break >
+                </#if>
+                <#assign itemLocation=reitem['housePlotLocation']>
+                <li><a href="${router_city('/esf/'+reitem.houseId)}">
+                    <div class="picture-box">
+                        <#if reitem['housePhoto']?exists>
+                            <#assign photoitem=reitem['housePhoto']>
+                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
+                        </#if>
+                    </div>
+                    <div class="tilelist-content">
+                        <p class="cont-first text-center"><em>
+                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
+                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
+                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
+                        </p>
+                    </div>
+                </a></li>
+            </#list>
+        </ul>
+    </section>
+</div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -195,8 +190,7 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>,<em
-                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['abbreviatedAge']?exists>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
                 <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
@@ -342,8 +336,7 @@
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <ul class="result-data-expand" id="hospitalListDom">
-            </ul>
+            <ul class="result-data-expand" id="hospitalListDom"></ul>
         </div>
     </section>
 </div>
@@ -427,11 +420,9 @@
             <i class="map-marker-icon"></i>
         <#if village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
         <#else>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
         </#if>
         </a>
     </section>
@@ -441,8 +432,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i
-                    class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>

@@ -5,7 +5,7 @@ $textGrayColor: #888;
     padding: rem(42) 0;
     margin: 0 rem(30);
     color: $baseBlack;
-    border-bottom: 1px solid $borderLineColor;
+    border-bottom: 1px solid $baseBorderColor;
     @include box-sizing;
 
     .list-item-img-box {
@@ -77,17 +77,23 @@ $textGrayColor: #888;
         line-height: rem(32);
         @include font-dpr(28);
 
+        .ellipsis {
+            display: inline-block;
+            max-width: rem(188);
+            @include text-ellipses;
+        }
+
         em {
             display: inline-block;
             height: rem(28);
             line-height: rem(26);
             padding: 0 rem(12);
+            margin-left: rem(5);
             @include font-dpr(20);
-            margin-left: rem(20);
             color: #999;
             border: rem(1) solid $borderRadiusColor;
-            -webkit-border-radius: rem(6);
-                    border-radius: rem(6);
+            -webkit-border-radius: rem(4);
+                    border-radius: rem(4);
             @include box-sizing;
             vertical-align: top;
         }
@@ -169,7 +175,6 @@ $textGrayColor: #888;
             color: $baseWhite;
             background-color: $baseGreen;
             -webkit-border-radius: rem(22) 0 0 rem(22);
-            -moz-border-radius: rem(22) 0 0 rem(22);
             border-radius: rem(22) 0 0 rem(22);
         }
     }
@@ -238,7 +243,7 @@ $textGrayColor: #888;
             p {
                 @include font-dpr(28);
                 color: #666;
-                border-bottom: rem(1) solid $borderLineColor;
+                border-bottom: rem(1) solid $baseBorderColor;
             }
 
             &.current {

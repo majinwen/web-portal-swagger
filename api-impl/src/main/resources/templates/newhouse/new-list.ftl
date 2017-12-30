@@ -158,7 +158,7 @@
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
                         <h3 class="cont-block-1">
-                            <span>${map['building_name']}</span>
+                            <span class="ellipsis">${map['building_name']}</span>
                             <#if map['property_type']?exists>
                                 <em>${map['property_type']}</em>
                             </#if>
@@ -197,7 +197,7 @@
             </a></li>
         </#list>
     </#if></ul>
-   <#-- <p class="tip-box">有新上房源，我们会及时通知您哦！</p>-->
+    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
@@ -215,7 +215,8 @@
 
 <script id="listContent" type="text/html">
 {{each data}}
-<li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
+<li><a class="list-item new" href="${router_city('/loupan/'+'{{$value.building_name_id}}'+'.html')}">
+
     <div class="clear">
         <div class="list-item-img-box">
             {{if ($value.building_imgs) != ''}}
@@ -227,7 +228,7 @@
         <div class="list-item-cont">
             <span hidden="hidden">{{$value.building_name_id}}</span>
             <h3 class="cont-block-1">
-                <span>{{$value.building_name}}</span>
+                <span class="ellipsis">{{$value.building_name}}</span>
                 <em>{{$value.property_type}}</em>
             </h3>
             <p class="cont-block-2">
@@ -248,7 +249,7 @@
                 {{/if}}
             </p>
             <div class="cont-block-4 house-labelling gray middle">
-                {{each $value.building_tags as tag i}}
+                {{each $value.building_tags tag i}}
                     {{if i<3}}
                         <span>{{tag}}</span>
                     {{/if}}
