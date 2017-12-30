@@ -144,7 +144,7 @@
                     url: "/ifh/xuanzeleixing",
                     data: userTypeUrl,
                     success: function(data){
-                        alert(data.data);
+                        alert(data.data+"这是啥玩意！！！");
                     }
                 });
             }
