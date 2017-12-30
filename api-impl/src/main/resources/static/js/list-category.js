@@ -825,18 +825,13 @@ function listSortTab() {
     }
 }
 
-var pageNum = 2;
 $(function () {
     $(document).data("toutiao_pageScroll_onOroff",true);
     //手机滑动底部触发分页事件
-    $(window).scroll(function () {
-
+     $(window).scroll(function () {
         if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-            if($(document).data("toutiao_pageScroll_onOroff") == true){
-                $(document).data("toutiao_pageScroll_onOroff",false);
-                setTimeout(pullUpAction(pageNum), 1000);
-            }
-        }
+            pullUpAction(function () {});
+        };
     });
 
     //加载内容填充不满屏幕
@@ -849,8 +844,9 @@ $(function () {
  * 下拉分页
  * @param pageNumber
  */
+var pageNum = 2;
 var loadingFlag = false;
-function pullUpAction(pageNumber) {
+function pullUpAction(callback) {
 
     if (loadingFlag) {
         return;
@@ -858,7 +854,7 @@ function pullUpAction(pageNumber) {
     loadingFlag = true;
 
     var paramData = req;
-    paramData['pageNum'] = pageNumber;
+    paramData['pageNum'] = pageNum;
     //sortFlag为true，保证排序
     params = joinParams(paramData, true);
 
@@ -881,8 +877,6 @@ function pullUpAction(pageNumber) {
         dataType:'json',
         success: function (data) {
             if (data.code == 'success') {
-                $(document).data("toutiao_pageScroll_onOroff", true);
-                pageNum += 1;
 
                 var dataCon = data.data.data;
                 for (var i = 0; i < dataCon.length; i++) {
@@ -970,9 +964,12 @@ function pullUpAction(pageNumber) {
                 $("#load-div").remove();
                 $('#valueList li:last-child').after(html);
 
-                if (data.data.length > 0) {
+                pageNum++;
+
+                if (dataCon.length > 0) {
                     loadingFlag = false;
                 }
+                callback();
             }
         }
     });
