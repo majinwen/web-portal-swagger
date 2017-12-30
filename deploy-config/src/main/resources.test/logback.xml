@@ -63,21 +63,13 @@
         </encoder>
     </appender>
 
-    <logger name="com.nashwork.corebiz" level="DEBUG">
-        <appender-ref ref="SQL"/>
-    </logger>
-    <logger name="com.nashwork.corebiz" level="DEBUG">
-        <appender-ref ref="apollo"/>
-    </logger>
-    <logger name="org.springframework.web" level="DEBUG"/>
+
+    <logger name="org.springframework.web" level="WARN"/>
     <logger name="dao" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="SQL"/>
     </logger>
-    <logger name="com.nashwork.corebiz.appollo.namitasks" additivity="true">
-        <level value="ERROR"/>
-        <appender-ref ref="TASK"/>
-    </logger>
+
     <!-- 日志级别 -->
     <root>
         <level value="INFO"/>

@@ -100,6 +100,7 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
         intelligenceQuery.setPreconcTotal("400");
+        intelligenceQuery.setUserType("1");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
@@ -163,7 +164,9 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/userCheckCategoryPage")
     @ResponseBody
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-
+        intelligenceQuery.setPreconcTotal("400");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setLayOut(3);
         //根据户型与总价条件赛选条件
         IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
 
@@ -207,7 +210,10 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/queryPlotCountByDistrict")
     public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-
+        intelligenceQuery.setPreconcTotal("400");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setLayOut(3);
+        intelligenceQuery.setDistrictId("105046");
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
         model.addAttribute("intelligenceFh", intelligenceFh);
@@ -230,8 +236,8 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
         //若用户选择“无小孩”或“18岁以上”，则去掉页面3中的教育配套标签；
         if ("0".equalsIgnoreCase(intelligenceFh.getUserType()) || "5".equalsIgnoreCase(intelligenceFh.getUserType())) {
-            intelligenceFh.setSchoolFlag(false);
-            intelligenceFh.setHospitalFlag(false);
+            intelligenceFh.setSchoolFlag(0);
+            intelligenceFh.setHospitalFlag(0);
         }
         model.addAttribute("intelligenceFh", intelligenceFh);
         //过渡页vs封面

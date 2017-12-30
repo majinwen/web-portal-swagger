@@ -27,13 +27,10 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);
 
-    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd, @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
+    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,
+                                                   @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
 
     List<IntelligenceFindhouse> selectByUserPrice(String totlaPrice);
-
-
-
-
 
     /**
      * 根据用户画像1 A匹配

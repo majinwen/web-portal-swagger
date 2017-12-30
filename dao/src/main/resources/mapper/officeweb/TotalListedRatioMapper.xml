@@ -42,7 +42,7 @@
         SELECT sum(ratio) from total_listed_ratio
         <where>
             <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[total>= #{plotTotalFirst} and total <= #{plotTotalEnd}]]>
+                and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
             </if>
         </where>
     </select>

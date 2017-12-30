@@ -5,7 +5,7 @@
         <result column="total" jdbcType="NUMERIC" property="total"/>
         <result column="room" jdbcType="INTEGER" property="room"/>
         <result column="ratio" jdbcType="NUMERIC" property="ratio"/>
-        <result column="user_portrayal_type" jdbcType="INTEGER" property="userType"/>
+        <result column="user_portrayal_type" jdbcType="INTEGER" property="userPortrayalType"/>
     </resultMap>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
     insert into total_room_ratio (total, room, ratio, 
@@ -39,7 +39,7 @@
             <if test="ratio != null">
                 #{ratio,jdbcType=NUMERIC},
             </if>
-            <if test="userType != null">
+            <if test="userPortrayalType != null">
                 #{userPortrayalType,jdbcType=INTEGER},
             </if>
         </trim>
@@ -51,22 +51,22 @@
          select ratio from total_room_ratio
         <where>
             <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[total>= #{plotTotalFirst} and total <= #{plotTotalEnd}]]>
+                and <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
             </if>
         </where>
     </select>
     <!--TotalRoomRatio selectByTotalAndCategory(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd, @Param("categoryId") Integer category_id);-->
-    <select id="selectByTotalAndCategory" resultType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
-        select ratio,user_portrayal_type from total_room_ratio
-        where
-        <if test="categoryId!=null">
-            room=#{categoryId}
-        </if>
+    <select id="selectByTotalAndCategory" resultMap="BaseResultMap">
+        select * from total_room_ratio
         <where>
+            <if test="categoryId!=null">
+                room=#{categoryId}
+            </if>
             <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[total>= #{plotTotalFirst} and total <= #{plotTotalEnd}]]>
+                and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
             </if>
         </where>
+        ORDER BY total DESC
     </select>
 
 </mapper>

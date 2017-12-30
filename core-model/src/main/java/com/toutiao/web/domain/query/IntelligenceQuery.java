@@ -66,11 +66,11 @@ public class IntelligenceQuery {
     /**
      * 教育配套标签标记
      */
-    private Boolean schoolFlag;
+    private String schoolFlag;
 
     //医疗配套标签标记
 
-    private Boolean hospitalFlag;
+    private String hospitalFlag;
 
     //是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
     private Integer hasChild;

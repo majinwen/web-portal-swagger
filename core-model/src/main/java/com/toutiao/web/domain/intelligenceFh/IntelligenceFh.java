@@ -37,13 +37,13 @@ public class IntelligenceFh {
      */
     private Integer userPortrayalType;
     /**
-     * 教育配套标签标记(有true,无false)
+     * 教育配套标签标记(有1,无0)
      */
-    private Boolean schoolFlag;
+    private Integer schoolFlag;
 
-    //医疗配套标签标记(有true,无false)
+    //医疗配套标签标记(有1,无0)
 
-    private Boolean hospitalFlag;
+    private Integer hospitalFlag;
 
     //用户填入的页面总价信息
     private String preconcTotal;

@@ -66,22 +66,22 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //初始化
             Double plotTotalFirst = null;
             Double plotTotalEnd = null;
-            String  plotTotal = null;
+            String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
-                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
-                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //获取用户类型
             String userType = intelligenceFh.getUserType();
@@ -124,22 +124,22 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //初始化
             Double plotTotalFirst = null;
             Double plotTotalEnd = null;
-            String  plotTotal = null;
+            String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
-                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
-                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
@@ -147,18 +147,18 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
             if (StringTool.isNotBlank(intelligenceFh.getLayOut()) && intelligenceFh.getLayOut() >= 3) {
                 //教育配套
-                intelligenceFh.setSchoolFlag(true);
+                intelligenceFh.setSchoolFlag(1);
                 //医院配套
-                intelligenceFh.setHospitalFlag(true);
+                intelligenceFh.setHospitalFlag(1);
             }
             //获取相对应的比率
             //比率
-            TotalRoomRatio roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
-            if (StringTool.isNotBlank(roomRatio)) {
+            List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+            if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
                 //用户画像类型
-                intelligenceFh.setUserPortrayalType(roomRatio.getUserPortrayalType());
+                intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
                 //用户比率
-                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.0000").format(roomRatio.getRatio())) * 100).append("%").toString());
+                intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
             }
             //小区数量
             intelligenceFh.setPlotCount(count);
@@ -190,29 +190,29 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //初始化
             Double plotTotalFirst = null;
             Double plotTotalEnd = null;
-            String  plotTotal = null;
+            String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
-                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst =(Double.valueOf(plotTotal)-(Double.valueOf(plotTotal)*0.1))*10000;
-                plotTotalEnd = (Double.valueOf(plotTotal)+(Double.valueOf(plotTotal)*0.1))*10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");
             for (int i = 0; i < split.length; i++) {
                 //通过总价和户型查询小区数量
-                count += intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(
-                        plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), split[i]);
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), split[i]);
+                count += count1;
             }
             //保存查询的小区数量
             intelligenceFh.setPlotCount(count);
@@ -729,8 +729,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
 
-        for (int i = 0; i <listHouse.size() ; i++) {
-            if (null==listHouse.get(i).getTurnoverRate()||listHouse.get(i).getTurnoverRate().intValue()<=0){
+        for (int i = 0; i < listHouse.size(); i++) {
+            if (null == listHouse.get(i).getTurnoverRate() || listHouse.get(i).getTurnoverRate().intValue() <= 0) {
                 BigDecimal bigDecimal = new BigDecimal(0);
                 listHouse.get(i).setTurnoverRate(bigDecimal);
             }
