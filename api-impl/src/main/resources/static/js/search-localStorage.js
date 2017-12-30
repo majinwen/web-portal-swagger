@@ -1,6 +1,4 @@
 $(function(){
-    var _localHref = window.location.pathname;
-
     if(_localHref.indexOf('xiaoqu')>0){
         $('#plot').addClass('current').siblings().removeClass('current');
 

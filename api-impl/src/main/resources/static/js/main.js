@@ -1,3 +1,9 @@
+/**
+ * 当前URL路径
+ * @type {string}
+ * @private
+ */
+var _localHref = window.location.pathname;
 
 var uu = $('#url');
 var BaseUrl=uu.val();
@@ -212,10 +218,10 @@ function listSortTab() {
         });
         $('.sort-content').on('click', 'li', function () {
             $(this).addClass('current').siblings().removeClass('current');
-            if(BaseUrl.indexOf("/findVillageByConditions")){
-                location.href=BaseUrl+'?sort='+$(this).val();
+            if(_localHref.indexOf("/findVillageByConditions")){
+                location.href=_localHref + '?sort='+$(this).val();
             }else {
-                location.href=BaseUrl+'?sort='+$(this).val();
+                location.href=_localHref + '?sort='+$(this).val();
             }
             $('.sort-content-box').slideUp();
         })

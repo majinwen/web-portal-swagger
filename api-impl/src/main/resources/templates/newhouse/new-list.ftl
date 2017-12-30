@@ -10,7 +10,6 @@
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden" value="${router_city('/loupan')}">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
@@ -166,7 +165,15 @@
                                 <em>${map['property_type']}</em>
                             </#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>售价待定</#if></em></p>
+                        <p class="cont-block-2">
+                            <em class="high-light-red">
+                                <#if map['average_price']?exists && (map['average_price']>0)>
+                                    ${map['average_price']}元/㎡
+                                <#else>
+                                    售价待定
+                                </#if>
+                            </em>
+                        </p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
                                 <#assign rounditems = map['nearsubway']?split("$")>
@@ -246,10 +253,10 @@
             </h3>
             <p class="cont-block-2">
                 <em class="high-light-red">
-                    {{if $value.average_price != null}}
-                        {{if $value.average_price != '' && $value.average_price != 0}}
-                            {{$value.average_price}}元/㎡
-                        {{/if}}
+                    {{if $value.average_price != null && $value.average_price > 0}}
+                        {{$value.average_price}}元/㎡
+                    {{else}}
+                        售价待定
                     {{/if}}
                 </em>
             </p>

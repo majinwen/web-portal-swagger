@@ -1,4 +1,3 @@
-var BaseUrl = $('#url').val();
 var params = '';
 var url;
 var submitClickState = false;
@@ -18,7 +17,7 @@ $(function () {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
-                    if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
+                    if ((_localHref.indexOf('/xingfang')) > 0 || (_localHref.indexOf('/loupan')) > 0) {
                         showOnlyDistrict(req['districtId']);
                     } else {
                         showDistrict(req['districtId'], req['areaId']);
@@ -29,7 +28,7 @@ $(function () {
                 }
             } else {
                 $('#district-option').addClass('current');
-                if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
+                if ((_localHref.indexOf('/xingfang')) > 0 || (_localHref.indexOf('/loupan')) > 0) {
                     showOnlyDistrict();
                 } else {
                     showDistrict();
@@ -49,7 +48,7 @@ $(function () {
     $('#level1').on('click', 'li', function () {
         $(this).addClass('current').siblings().removeClass('current');
         if ($(this).attr('id') == 'district-option') {
-            if ((BaseUrl.indexOf('/xingfang')) > 0 || (BaseUrl.indexOf('/loupan')) > 0) {
+            if ((_localHref.indexOf('/xingfang')) > 0 || (_localHref.indexOf('/loupan')) > 0) {
                 showOnlyDistrict();
             } else {
                 showDistrict();
@@ -450,7 +449,7 @@ function submitPlace(e) {
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, '区域');
     $.get(url, function () {
         location.replace(url) ;
@@ -471,7 +470,7 @@ function submitDirstrict(districtid, e) {
     }
     req['districtId'] = districtid;
     var params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.replace(url);
@@ -493,7 +492,7 @@ function submitBussiness(districtid, areaId, e) {
     req['districtId'] = districtid;
     req['areaId'] = areaId;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.replace(url);
@@ -546,7 +545,7 @@ function submitSubway(e) {
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, '地铁');
     $.get(url, function () {
         location.replace(url);
@@ -602,7 +601,7 @@ function submitSubwayLine(subwayid, e) {
     }
     req['subwayLineId'] = subwayid;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e);
     $.get(url, function () {
         location.replace(url);
@@ -621,7 +620,7 @@ function submitStation(subwayid, subwayStationId, e) {
     req['subwayLineId']=subwayid;
     req['subwayStationId']=subwayStationId;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
 
     tabTextReplace(e);
     $.get(url, function () {
@@ -645,7 +644,7 @@ $('.price-list').on('click', 'li', function (e) {
     }
     req['pageNum'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
         location.replace(url);
@@ -665,7 +664,7 @@ $('.age-list').on('click', 'li', function (e) {
     }
     req['pageNum'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     tabTextReplace(e, $(this).text());
     $.get(url, function () {
         location.replace(url);
@@ -699,7 +698,7 @@ $('#typeSubmit').on('click', function (e) {
         req['pageNum'] = null;
         req['layoutId'] = null;
         params = joinParams(req);
-        url = BaseUrl + params;
+        url = _localHref + params;
         $.get(url, function () {
             location.replace(url);
         });
@@ -718,7 +717,7 @@ $('#typeSubmit').on('click', function (e) {
     req['pageNum'] = null;
     req['layoutId'] = layoutTextArr.join(',');
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     $.get(url, function () {
         location.replace(url);
     })
@@ -762,7 +761,7 @@ $('#moreSubmit').on('click', function (e) {
     }
     req['pageNum'] = null;
     params = joinParams(req);
-    url = BaseUrl + params;
+    url = _localHref + params;
     $.get(url, function () {
         location.replace(url);
     });
@@ -793,10 +792,14 @@ $(function () {
     //手机滑动底部触发分页事件
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
+
+            console.log("$(document).scrollTop()" + $(document).scrollTop());
+            console.log("$(document).height()" + $(document).height());
+            console.log("$(window).height()" + $(window).height());
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
                 if($(document).data("toutiao_pageScroll_onOroff") == true){
                     $(document).data("toutiao_pageScroll_onOroff",false);
-                    setTimeout(pullUpaAction(pageNum), 1000);
+                    setTimeout(pullUpAction(pageNum), 1000);
                 }
             }
         });
@@ -819,16 +822,16 @@ function router_city(urlparam) {
 
 
 
-function pullUpaAction(pageNumber) {
+function pullUpAction(pageNumber) {
     var paramData = req;
     paramData['pageNum'] = pageNumber;
     params = joinParams(paramData);
 
-    if (BaseUrl.indexOf('/loupan') > 0) {
+    if (_localHref.indexOf('/loupan') > 0) {
         url = router_city('/loupan' + params);
-    } else if (BaseUrl.indexOf('/esf') > 0) {
+    } else if (_localHref.indexOf('/esf') > 0) {
         url = router_city('/esf' + params);
-    } else if (BaseUrl.indexOf('/xiaoqu') > 0){
+    } else if (_localHref.indexOf('/xiaoqu') > 0){
         url = router_city('/xiaoqu') + params
     }
 
@@ -843,7 +846,7 @@ function pullUpaAction(pageNumber) {
                 $(document).data("toutiao_pageScroll_onOroff",true);
                 pageNum += 1;
                 // 二手房列表单价
-                if (BaseUrl.indexOf('/esf') > 0) {
+                if (_localHref.indexOf('/esf') > 0) {
                     var dataCon = data.data.data;
                     for (var i = 0; i < dataCon.length; i++){
                         var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);
