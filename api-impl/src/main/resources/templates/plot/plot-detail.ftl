@@ -81,7 +81,7 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-            <p>${village['trafficInformation']!'暂无'}</p>
+            <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
             <#if village['label']?exists>
                 <#list village['label'] as label>
@@ -206,7 +206,7 @@
                 <div class="info-card-item">
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
-                        <p>人均绿化</p>
+                        <p>绿化率</p>
                     <#if village['avgGreening']?exists>
                         <#if village['avgGreening']?number gt 0>
                             <em>${village['avgGreening']}平方米</em>
@@ -270,7 +270,6 @@
                     <i class="item-three-3"></i>
                     <em>自驾</em>
                     <p>${village['ringRoadName']!'暂无'}</p>
-
                     <span>
                     <#if village['ringRoadDistance']?exists>
                     <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
@@ -513,15 +512,12 @@
 <script>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
     option = {
-        brushLink:null,
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data:['楼盘价格','区域价格','商圈价格']
-        },
-        textStyle: {
-            fontSize: 28
+          /*  data:['楼盘价格','区域价格','商圈价格']*/
+           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['商圈']!''}价格']
         },
         xAxis:  {
             type: 'category',
@@ -535,23 +531,41 @@
             }
         },
         series: [
+            <#if (ptCD0?size==0)>
+                {
+                    name: '${village['rc']!'小区'}价格',
+                    type: 'scatter',
+                    coordinateSystem:'cartesian2d',
+                    data:[
+                         <#list mouthList as item >
+                            <#if (item_index == mouthList?size-1)>
+                            ${village['avgPrice']},
+                            <#else>
+                                NaN,
+                            </#if>
+                         </#list>
+                    ],
+                    symbolSize:25,
+                },
+           <#else>
+               {
+                   name:'${village['rc']!'小区'}价格',
+                   type:'line',
+                   data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                   symbolSize:10,
+               },
+            </#if>
             {
-                name:'楼盘价格',
-                type:'line',
-                data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
-            },
-            {
-                name:'区域价格',
+                name:'${village['area']!'区域'}价格',
                 type:'line',
                 data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
+                symbolSize:10,
             },
             {
-                name:'商圈价格',
+                name:'${village['商圈']!''}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
+                symbolSize:10,
             },
         ]
     };
