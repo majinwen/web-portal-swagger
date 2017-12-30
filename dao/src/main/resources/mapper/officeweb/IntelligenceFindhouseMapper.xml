@@ -156,6 +156,24 @@
         newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
         heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property,has_subway
     </sql>
+    <select id="queryByStarProperty"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <where>
+            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId}) AND star_property IS NOT NULL ]]>
+            <if test="school != null">
+                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
+            </if>
+            <if test="hospital != null">
+                AND <![CDATA[  has_medical = ${hospital} ]]>
+            </if>
+        </where>
+        ORDER BY star_property DESC
+        LIMIT 200
+    </select>
     <select id="queryByUserType1A"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
