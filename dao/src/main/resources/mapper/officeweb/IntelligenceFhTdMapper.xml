@@ -51,4 +51,12 @@
       </if>
     </trim>
   </insert>
+
+  <select id="queryTd" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT * FROM intelligence_fh_td
+    WHERE 1=1
+    <if test="totalPrice!=null">
+      AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
+    </if>
+  </select>
 </mapper>

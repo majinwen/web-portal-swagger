@@ -4,12 +4,16 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
+import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
+import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,11 @@ public class IntelligenceFindHouseController {
     private IntelligenceFindHouseService intelligenceFindHouseService;
     @Autowired
     private IntelligenceFhResService intelligenceFhResService;
+    @Autowired
+    private IntelligenceFhTdService intelligenceFhTdService;
+    @Autowired
+    private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
+
 
     /**
      * 功能描述：查找我的报告
@@ -58,6 +67,11 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
+        Integer totalPrice = 500;
+        List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
+        model.addAttribute("fhpt",fhpt);
+        model.addAttribute("fhrd",fhrd);
         return "";
     }
 
