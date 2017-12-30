@@ -259,7 +259,7 @@
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-1">{{$value.houseTitle}}</h3>
+                <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
                 <p class="cont-block-2">
                     {{if $value.buildArea && $value.buildArea > 0}}
                         {{$value.buildArea}}㎡
