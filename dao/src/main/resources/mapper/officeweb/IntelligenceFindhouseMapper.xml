@@ -167,7 +167,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
@@ -184,7 +184,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
@@ -202,7 +202,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
@@ -220,7 +220,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
@@ -238,7 +238,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
@@ -256,7 +256,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
@@ -274,7 +274,7 @@
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
-            <if test="hospital">
+            <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
