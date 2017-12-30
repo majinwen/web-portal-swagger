@@ -217,7 +217,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="/villageDetail/xiaoqu/{{$value.id}}.html">
+    <li><a class="list-item" href="${router_city('/xiaoqu/{{$value.id}}.html')}">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.photo && $value.photo.length > 0}}
@@ -227,7 +227,7 @@
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-1">{{$value.rc}}</h3>
+                <h3 class="cont-block-1"><span>{{$value.rc}}</span></h3>
                 <p class="cont-block-2 plot">{{if $value.abbreviatedAge}}{{$value.abbreviatedAge}}建成{{else}}暂无{{/if}}</p>
                 {{if $value.metroWithPlotsDistance || $value.tradingArea}}
                     <p class="cont-block-3 distance"><i class="icon"></i>
