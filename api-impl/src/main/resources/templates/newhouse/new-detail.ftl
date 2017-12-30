@@ -87,7 +87,13 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>均价：<em class="high-light-red"><#if build['average_price']?exists>${build['average_price']}元/㎡<#else>售价待定</#if></em></p>
+                <p>均价：<em class="high-light-red">
+                <#if build['average_price']?exists && build['average_price'] gt 0>
+                    ${build['average_price']}元/㎡
+                <#else>
+                    售价待定
+                </#if>
+                </em></p>
             </li>
             <li>
                 <p>
@@ -97,11 +103,15 @@
                     <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="arrows-right"></a>
                 </p>
                 <p>
-                    交通信息：<#if build['roundstation']?exists>
+                    <#if build['roundstation']?exists>
                         <#assign rounditems = build['roundstation']?split("$")>
-                        <#assign x = rounditems[2]?number/1000>
-                    距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] <em>${x?string("0.##")}km</em>
-                   <#else >暂无
+                        <#if rounditems[2]?number gt 1000>
+                            <#assign x = rounditems[2]?number/1000>
+                            交通信息：距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
+                        <#else>
+                            交通信息：距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                        </#if>
+
                     </#if>
                 </p>
             </li>
@@ -143,7 +153,7 @@
             <dt>开发商：${build['developers']!'暂无'}</dt>
             <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无'}</span></dd>
             <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无'}</em></dd>
-            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists>${build['building_life']}年<#else>暂无</#if></em></dd>
+            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists && build['building_life'] gt 0>${build['building_life']}年<#else>暂无</#if></em></dd>
             <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
         </dl>
     </section>

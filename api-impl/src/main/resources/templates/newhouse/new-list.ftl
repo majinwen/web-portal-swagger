@@ -179,7 +179,7 @@
                                 <#assign rounditems = map['nearsubway']?split("$")>
                                 <#if rounditems[2]?number gt 1000>
                                     <#assign x = rounditems[2]?number/1000>
-                                    距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.##")}km
+                                    距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
                                 <#else>
                                     距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
                                 </#if>
@@ -240,7 +240,7 @@
     <div class="clear">
         <div class="list-item-img-box">
             {{if ($value.building_imgs) != ''}}
-                <img src="${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
+                <img src="${qiniuimage}/{{$value.building_imgs}}-tt400x300" alt="{{$value.building_name}}">
             {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.building_name}}">
             {{/if}}

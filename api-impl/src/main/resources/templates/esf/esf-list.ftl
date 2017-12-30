@@ -188,13 +188,19 @@
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
+
                                 <#if item[map['key']]?exists>
                                     <p class="cont-block-3 distance"><i class="icon"></i>
-                                        <#assign infoitem=item[map['key']]?split("$")>
-                                        距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                        <#assign rounditems=item[map['key']]?split("$")>
+                                        <#if rounditems[2]?number gt 1000>
+                                            <#assign x = rounditems[2]?number/1000>
+                                            距离地铁${rounditems[1]}[${rounditems[0]}]${x?string("#.#")}km
+                                        <#else>
+                                            距离地铁${rounditems[1]}[${rounditems[0]}]${rounditems[2]}m
+                                        </#if>
                                     </p>
                                 </#if>
-                            <#else >
+                            <#else>
                                 <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>

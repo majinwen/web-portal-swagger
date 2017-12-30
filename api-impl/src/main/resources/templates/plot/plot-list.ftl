@@ -165,7 +165,15 @@
                             <#if plot['key']?exists>
                                 <#if map[plot['key']]?exists>
                                     <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>距离地铁${split[1]}[${split[0]}] ${split[2]}m</p>
+                                    <p class="cont-block-3 distance">
+                                        <i class="icon"></i>
+                                        <#if split[2]?number gt 1000>
+                                            <#assign x = split[2]?number/1000>
+                                            距离地铁${split[1]}[${split[0]}] ${x?string("#.#")}km
+                                        <#else>
+                                            距离地铁${split[1]}[${split[0]}] ${split[2]}m
+                                        </#if>
+                                    </p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无'}-${plot['tradingArea']!'暂无'}</p>
                                 </#if>
