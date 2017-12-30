@@ -199,8 +199,8 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign item = map['building_imgs']?split(",")>
-                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
-                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}"></#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -284,7 +284,7 @@
             <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}" alt="${map['rc']}">
+                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}-tt400x300" alt="${map['rc']}">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>

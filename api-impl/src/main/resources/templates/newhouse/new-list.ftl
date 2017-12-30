@@ -73,9 +73,10 @@
                     <dd>
                         <span data-info="1">住宅</span>
                         <span data-info="2">别墅</span>
-                        <span data-info="3">写字楼</span>
+
+                        <#--<span data-info="3">写字楼</span>
                         <span data-info="4">商铺</span>
-                        <span data-info="5">底商</span>
+                        <span data-info="5">底商</span>-->
                     </dd>
                 </dl>
                 <dl>
