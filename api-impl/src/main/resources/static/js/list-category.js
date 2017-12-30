@@ -789,10 +789,15 @@ $('#moreReset').on('click', function () {
 
 var pageNum = 2;
 $(function () {
+    $(document).data("toutiao_pageScroll_onOroff",true);
+    //手机滑动底部触发分页事件
     if ($('#listContent').length > 0) {
         $(window).scroll(function () {
             if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                setTimeout(pullUpaAction(pageNum), 1000);
+                if($(document).data("toutiao_pageScroll_onOroff") == true){
+                    $(document).data("toutiao_pageScroll_onOroff",false);
+                    setTimeout(pullUpaAction(pageNum), 1000);
+                }
             }
         });
     }
@@ -835,17 +840,17 @@ function pullUpaAction(pageNumber) {
         dataType:'json',
         success: function (data) {
             if (data.code == 'success') {
+                $(document).data("toutiao_pageScroll_onOroff",true);
                 pageNum += 1;
-
                 // 二手房列表单价
                 if (BaseUrl.indexOf('/esf') > 0) {
                     var dataCon = data.data.data;
-
                     for (var i = 0; i < dataCon.length; i++){
                         var unitCost = parseInt((dataCon[i].houseTotalPrices / dataCon[i].buildArea) * 10000);
                         dataCon[i].unitCost = unitCost;
                     }
                 }
+                console.log(pageNumber);
                 var html = template('listContent',data.data);
                 $('#valueList li:last-child').after(html);
             }

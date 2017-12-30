@@ -4,12 +4,16 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
+import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
+import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +30,18 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/ifh")
+@RequestMapping("/{citypath}/findhouse")
 public class IntelligenceFindHouseController {
 
     @Autowired
     private IntelligenceFindHouseService intelligenceFindHouseService;
     @Autowired
     private IntelligenceFhResService intelligenceFhResService;
+    @Autowired
+    private IntelligenceFhTdService intelligenceFhTdService;
+    @Autowired
+    private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
+
 
     /**
      * 功能描述：查找我的报告
@@ -58,6 +67,11 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
+        Integer totalPrice = 500;
+        List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
+        model.addAttribute("fhpt",fhpt);
+        model.addAttribute("fhrd",fhrd);
         return "";
     }
     /**
@@ -121,14 +135,14 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/intelligenceFindHouseTypeTwo")
     @ResponseBody
     public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
-//        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-//        intelligenceQuery1.setUserPortrayalType(7);
-//        intelligenceQuery1.setMinTotalPrice(4500000);
-//        intelligenceQuery1.setMaxTotalPrice(5500000);
-//        intelligenceQuery1.setDistrictId("105040,105035,105034");
-//        intelligenceQuery1.setLayOut(3);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        return list;
+        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
+        intelligenceQuery1.setUserPortrayalType(3);
+        intelligenceQuery1.setMinTotalPrice(4500000);
+        intelligenceQuery1.setMaxTotalPrice(5500000);
+        intelligenceQuery1.setDistrictId("105040,105035,105034");
+        intelligenceQuery1.setLayOut(3);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
+        return null;
     }
 
     /**

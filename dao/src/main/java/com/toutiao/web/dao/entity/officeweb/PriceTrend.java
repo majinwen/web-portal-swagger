@@ -1,10 +1,8 @@
 package com.toutiao.web.dao.entity.officeweb;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.math.BigDecimal;
-
 import java.util.Date;
 
 @Data
@@ -20,19 +18,23 @@ public class PriceTrend {
     private Short propertyType;
 
     /**
-     * 价格对比对象0-楼盘价格，1-区域，2-圈商
+     * 价格对比对象0-小区，1-区域，2-商圈
      */
     private Short contrastDA;
-
-    /**
-     * 月份
-     */
-    @JSONField(format = "yyyy-MM-dd")
-    private Date month;
 
     /**
      * 金额
      */
     private BigDecimal price;
+
+    /**
+     * 月份
+     */
+    private Date month;
+
+    /**
+     * 小区名称
+     */
+    private String buildingName;
 
 }

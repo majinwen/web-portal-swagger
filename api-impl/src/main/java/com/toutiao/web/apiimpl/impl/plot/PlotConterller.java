@@ -63,15 +63,15 @@ public class PlotConterller {
 
 
     //小区分页
-    @RequestMapping(value = {""}, produces = "application/json") //villagePage
+    @RequestMapping(value = {""},produces="application/json") //villagePage
     @ResponseBody
     public NashResult villagePage(VillageRequest villageRequest) {
         List<VillageResponse> villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
-        if (null != villageList && villageList.size() != 0 && villageList.get(0).getKey() != null) {
-            for (VillageResponse polt : villageList) {
+        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
+            for (VillageResponse polt : villageList){
                 String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
-                polt.getMetroWithPlotsDistance().put(polt.getKey(), str);
+                polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
             }
         }
         return NashResult.build(villageList);
@@ -94,12 +94,13 @@ public class PlotConterller {
             model.addAttribute("nearvillage", nearvillage);
 
             //走势图
-            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(village.getId(), Integer.parseInt(village.getAreaId()), Integer.parseInt(village.getTradingAreaId()));
+
+            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),Integer.parseInt(village.getAreaId()),Integer.parseInt(village.getTradingAreaId()));
             model.addAttribute("tradeline", stringListMap);
 
             //月份
-            List<String> dateList = DateUtil.oneYearList();
-            model.addAttribute("xlist", dateList);
+            List<String>dateList= DateUtil.oneYearList();
+            model.addAttribute("xlist",dateList);
 
 
             //推荐小区好房

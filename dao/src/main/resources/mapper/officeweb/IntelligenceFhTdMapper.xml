@@ -2,22 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.toutiao.web.dao.mapper.officeweb.IntelligenceFhTdMapper" >
   <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd" >
-    <result column="total_price_range" property="totalPriceRange" jdbcType="INTEGER" />
+    <result column="min_total_price" property="minTotalPrice" jdbcType="INTEGER" />
     <result column="target_sd" property="targetSd" jdbcType="NUMERIC" />
     <result column="periodic_time" property="periodicTime" jdbcType="TIMESTAMP" />
     <result column="all_sd" property="allSd" jdbcType="NUMERIC" />
+    <result column="max_total_price" property="maxTotalPrice" jdbcType="INTEGER" />
   </resultMap>
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd" >
-    insert into intelligence_fh_td (total_price_range, target_sd, periodic_time, 
-      all_sd)
-    values (#{totalPriceRange,jdbcType=INTEGER}, #{targetSd,jdbcType=NUMERIC}, #{periodicTime,jdbcType=TIMESTAMP}, 
-      #{allSd,jdbcType=NUMERIC})
+    insert into intelligence_fh_td (min_total_price, target_sd, periodic_time, 
+      all_sd, max_total_price)
+    values (#{minTotalPrice,jdbcType=INTEGER}, #{targetSd,jdbcType=NUMERIC}, #{periodicTime,jdbcType=TIMESTAMP}, 
+      #{allSd,jdbcType=NUMERIC}, #{maxTotalPrice,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd" >
     insert into intelligence_fh_td
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="totalPriceRange != null" >
-        total_price_range,
+      <if test="minTotalPrice != null" >
+        min_total_price,
       </if>
       <if test="targetSd != null" >
         target_sd,
@@ -28,10 +29,13 @@
       <if test="allSd != null" >
         all_sd,
       </if>
+      <if test="maxTotalPrice != null" >
+        max_total_price,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="totalPriceRange != null" >
-        #{totalPriceRange,jdbcType=INTEGER},
+      <if test="minTotalPrice != null" >
+        #{minTotalPrice,jdbcType=INTEGER},
       </if>
       <if test="targetSd != null" >
         #{targetSd,jdbcType=NUMERIC},
@@ -42,6 +46,17 @@
       <if test="allSd != null" >
         #{allSd,jdbcType=NUMERIC},
       </if>
+      <if test="maxTotalPrice != null" >
+        #{maxTotalPrice,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
+
+  <select id="queryTd" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT * FROM intelligence_fh_td
+    WHERE 1=1
+    <if test="totalPrice!=null">
+      AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
+    </if>
+  </select>
 </mapper>
