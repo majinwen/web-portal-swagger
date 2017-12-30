@@ -130,7 +130,7 @@
                 <#--</div>-->
                 <#if  (mouthList?size>0)>
                     <div class="echarts-box">
-                        <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
+                        <div class="echarts-content" id="village-price-trade" style="height: 500px"></div>
                     </div>
                 </#if>
             </div>
