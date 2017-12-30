@@ -394,11 +394,11 @@
                         <span class="expand-type">停车费</span>
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
-                            <#if village['parkingRate']?number gt 0>
-                            ${village['parkingRate']}元/月
-                            <#else >
-                                暂无
-                            </#if>
+                                <#if village['parkingRate']??>
+                                ${village['parkingRate']}元/月
+                                <#else >
+                                    暂无
+                                </#if>
                         </span>
                     <#else >
                         <span class="expand-price">暂无</span>
@@ -538,7 +538,7 @@
                     coordinateSystem:'cartesian2d',
                     data:[
                          <#list mouthList as item >
-                            <#if (item_index == mouthList?size-1)>
+                            <#if (item_index == (mouthList?size-1))>
                             ${village['avgPrice']},
                             <#else>
                                 NaN,
@@ -576,7 +576,7 @@
                 },
             },
             {
-                name:'${village['tradingArea']!''}价格',
+                name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
                 symbolSize:10,
