@@ -7,6 +7,9 @@ $(function () {
     var subStr = '<li id="subway-option">地铁</li>';
     $('#level1').append(disStr+subStr);
 
+    //列表页排序切换
+    listSortTab();
+
     $('#category-tab').on('click', 'li', function () {
         var $dom = getDataDom($(this),'panel');
         $(this).toggleClass('current').toggleClass('choose').siblings().removeClass('current');
