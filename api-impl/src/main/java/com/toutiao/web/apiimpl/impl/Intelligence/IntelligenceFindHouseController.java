@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("ifh")
+@RequestMapping("/ifh")
 public class IntelligenceFindHouseController {
 
     @Autowired
@@ -60,8 +60,6 @@ public class IntelligenceFindHouseController {
         //跳转到报告页
         return "";
     }
-
-
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
@@ -70,10 +68,9 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping("/goCheckType")
-    public String goCheckType() {
-
-        return "";
+    @RequestMapping("/qidong")
+    public String goToStartRobot() {
+        return "intelligent-find";
     }
 
     /**
@@ -84,17 +81,13 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping("/checkUserType")
-    public String goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
-
-        //判断是否选择类型
-        if (StringTool.isBlank(userType)) {
-            model.addAttribute("message", "请选择类型！");
-        }
-        //将数据传递到页面
+    @RequestMapping("/xuanzeleixing")
+    @ResponseBody
+    public NashResult goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
+        /*//将数据传递到页面
         model.addAttribute("userType", userType);
-        //去价格页面
-        return "";
+        //去价格页面*/
+        return NashResult.build(userType);
     }
 
     /**
@@ -114,7 +107,6 @@ public class IntelligenceFindHouseController {
                 || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
             return NashResult.Fail("message", "请选择首付/月供/");
         }
-        intelligenceQuery.setPreconcTotal("450");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);

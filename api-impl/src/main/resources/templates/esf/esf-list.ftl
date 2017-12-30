@@ -164,9 +164,11 @@
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#assign item=map['housePhoto']>
-                        <#if item[0]?? && item[0] != ''><img src="<#if item[0]?exists>${item[0]}</#if>" alt="${map.houseBusinessName}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#assign item=map['housePhotoTitle']>
+                        <#if item?? && item != ''>
+                                <img src="${item}" alt="${map.houseBusinessName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -189,11 +191,13 @@
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
                                 <#if item[map['key']]?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i><#assign infoitem=item[map['key']]?split("$")>距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
+                                    <p class="cont-block-3 distance"><i class="icon"></i>
+                                        <#assign infoitem=item[map['key']]?split("$")>
+                                        距离地铁${infoitem[1]}[${infoitem[0]}]${infoitem[2]}m
                                     </p>
                                 </#if >
                             <#else >
-                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
                                     [${map.houseBusinessName}]<#else></#if></p>
                             </#if>
                         <#else >
@@ -218,7 +222,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${(map.houseTotalPrices / map.buildArea)?number * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>
@@ -248,8 +252,8 @@
     <li><a class="list-item" href="/queryByHouseIdandLocation/{{$value.houseBusinessNameId}}">
         <div class="clear">
             <div class="list-item-img-box">
-                {{if $value.housePhoto && $value.housePhoto.length > 0}}
-                    <img src="{{$value.housePhoto[0]}}" alt="{{$value.houseBusinessName}}">
+                {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
+                    <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
