@@ -13,12 +13,10 @@ import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/ifh")
+@RequestMapping("/{citypath}/findhouse")
 public class IntelligenceFindHouseController {
 
     @Autowired
@@ -68,7 +66,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping("/qidong")
+    @RequestMapping(value ="")
     public String goToStartRobot() {
         return "intelligent-find";
     }
@@ -81,7 +79,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping("/xuanzeleixing")
+    @RequestMapping(value = "/xuanzeleixing.html")
     @ResponseBody
     public NashResult goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
         /*//将数据传递到页面
