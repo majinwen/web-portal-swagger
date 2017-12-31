@@ -508,7 +508,11 @@
     </#if>
     option = {
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            position: function (point, params, dom, rect, size) {
+                // 固定在顶部
+                return [point[0], '10%'];
+            },
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
@@ -523,7 +527,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}'
-            }
+            },
         },
         series: [
             <#if (ptCD0?size==0)>
