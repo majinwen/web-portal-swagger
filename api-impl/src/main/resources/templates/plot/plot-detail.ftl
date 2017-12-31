@@ -77,7 +77,9 @@
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
-                    <#if label?exists><span>${label}</span></#if>
+                    <#--<#if label_index lt 3>-->
+                        <#if label?exists><span>${label}</span></#if>
+                    <#--</#if>-->
                 </#list>
             </#if>
             </div>
@@ -96,7 +98,7 @@
             <div class="column item-column-three">
                 <div class="info-card-item">
                     <em>均价</em>
-                    <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无</#if></p>
+                    <p><#if village['avgPrice']?exists>${village['avgPrice']}元/㎡<#else>暂无数据</#if></p>
                 </div>
                 <div class="info-card-item">
                     <em>环比上月</em>
@@ -106,7 +108,7 @@
                     <#elseif village['huanbi']?exists&&village['huanbi'] lt 0>
                         ↓ ${(village['huanbi']?abs)?string.percent}
                     <#else>
-                        暂无
+                        暂无数据
                     </#if>
                     </p>
                 </div>
@@ -118,20 +120,20 @@
                     <#elseif village['tongbi']?exists&&village['tongbi'] lt 0>
                         ↓ ${(village['tongbi']?abs)?string.percent}
                     <#else>
-                        暂无
+                        暂无数据
                     </#if>
                     </p>
                 </div>
             </div>
             <div>
-                <#--<div class="module-header-message">-->
-                    <#--<h3>价格走势</h3>-->
-                <#--</div>-->
-                <#if  (mouthList?size>0)>
-                    <div class="echarts-box">
-                        <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
-                    </div>
-                </#if>
+            <#--<div class="module-header-message">-->
+            <#--<h3>价格走势</h3>-->
+            <#--</div>-->
+            <#if  (mouthList?size>0)>
+                <div class="echarts-box">
+                    <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
+                </div>
+            </#if>
             </div>
         </div>
     </section>
@@ -203,10 +205,10 @@
                         <#if village['avgGreening']?number gt 0>
                             <em>${village['avgGreening']}平方米</em>
                         <#else >
-                            <em>暂无</em>
+                            <em>暂无数据</em>
                         </#if>
                     <#else >
-                        <em>暂无</em>
+                        <em>暂无数据</em>
                     </#if>
                     </div>
                 </div>
@@ -214,7 +216,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${village['carPositionRatio']!'暂无'}户/车位</em>
+                        <em>${village['carPositionRatio']!'暂无数据'}户/车位</em>
                     </div>
                 </div>
             </div>
@@ -223,14 +225,14 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>户均电梯</p>
-                        <em>${village['liftDoorRadio']!'暂无'}</em>
+                        <em>${village['liftDoorRadio']!'暂无数据'}</em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-4"></i>
                     <div class="info-item-text">
                         <p>空气质量</p>
-                        <em>${village['airQuality']!'暂无'}</em>
+                        <em>${village['airQuality']!'暂无数据'}</em>
                     </div>
                 </div>
             </div>
@@ -248,31 +250,31 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                    <p id="busStation">暂无</p>
-                    <span id="busStationNumber">暂无</span>
+                    <p id="busStation">暂无数据</p>
+                    <span id="busStationNumber">暂无数据</span>
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
-                    <p id="subwayLine">暂无</p>
-                    <span id="subwayDistance">暂无</span>
+                    <p id="subwayLine">暂无数据</p>
+                    <span id="subwayDistance">暂无数据</span>
                 </div>
             </#if>
                 <div class="info-card-item">
                     <i class="item-three-3"></i>
                     <em>自驾</em>
-                    <p>${village['ringRoadName']!'暂无'}</p>
+                    <p>${village['ringRoadName']!'暂无数据'}</p>
                     <span>
                     <#if village['ringRoadDistance']?exists>
                     <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
                     <#--${(village['ringRoadDistance']/1000)?string('#.#')}km-->
                     <#--<#else >-->
-                    <#--暂无-->
+                    <#--暂无数据-->
                     <#--</#if>-->
                         <#if village['ringRoadDistance']?number gt 0>
                         ${(village['ringRoadDistance']/1000)?string('#.#')}km
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                     </#if>
                     </span>
@@ -303,7 +305,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物<span class="subtitle">新世界丽樽生活圈</span></h3>
+            <h3>休闲购物<span class="subtitle"></span></h3>
         </div>
         <div class="expand-content content-visible">
             <div class="map-shopping-box">
@@ -346,7 +348,7 @@
                     <#if village['waterFee']?exists>
                         <span class="expand-price">${village['waterFee']}元/吨</span>
                     <#else >
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">暂无数据</span>
                     </#if>
                     </p>
                 <#--<span class="expand-distance tips">居民用水价格范围为1-4元/吨</span>-->
@@ -358,7 +360,7 @@
                     <#if village['electricFee']?exists>
                         <span class="expand-price">${village['electricFee']}元/度</span>
                     <#else >
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">暂无数据</span>
                     </#if>
                     </p>
                 <#--<span class="expand-distance tips">居民用电价格范围为1-4元/度</span>-->
@@ -372,11 +374,11 @@
                             <#if village['propertyFee']?number gt 0>
                             ${village['propertyFee']}元/㎡·月
                             <#else >
-                                暂无
+                                暂无数据
                             </#if>
                         </span>
                     <#else >
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">暂无数据</span>
                     </#if>
                     </p>
                 </li>
@@ -386,14 +388,14 @@
                         <span class="expand-type">停车费</span>
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
-                                <#if village['parkingRate']??>
-                                ${village['parkingRate']}元/月
-                                <#else >
-                                    暂无
-                                </#if>
+                            <#if village['parkingRate']??>
+                            ${village['parkingRate']}元/月
+                            <#else >
+                                暂无数据
+                            </#if>
                         </span>
                     <#else >
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">暂无数据</span>
                     </#if>
                     </p>
                 </li>
@@ -484,10 +486,10 @@
                     <#if builditem['average_price']?number gt 0>
                         <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
                     <#else >
-                        <p class="cont-last">均价：<em>暂无</em></p>
+                        <p class="cont-last">均价：<em>暂无数据</em></p>
                     </#if>
                 <#else >
-                    <p class="cont-last">均价：<em>暂无</em></p>
+                    <p class="cont-last">均价：<em>暂无数据</em></p>
                 </#if>
             </div>
         </a></li>
@@ -503,16 +505,18 @@
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
+    <#if  (mouthList?size>0)>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
+    </#if>
     option = {
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-          /*  data:['楼盘价格','区域价格','商圈价格']*/
-           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格']
+            /*  data:['楼盘价格','区域价格','商圈价格']*/
+            data: ['${village['rc']!'小区'}价格', '${village['area']!'区域'}价格', '${village['tradingArea']!'商圈'}价格']
         },
-        xAxis:  {
+        xAxis: {
             type: 'category',
             boundaryGap: false,
             data: [<#list  mouthList as item >'${item}',</#list>]
@@ -524,67 +528,66 @@
             }
         },
         series: [
-            <#if (ptCD0?size==0)>
-                {
-                    name: '${village['rc']!'小区'}价格',
-                    type: 'scatter',
-                    coordinateSystem:'cartesian2d',
-                    data:[
-                         <#list mouthList as item >
-                            <#if (item_index == (mouthList?size-1))>
-                            ${village['avgPrice']},
-                            <#else>
-                                NaN,
-                            </#if>
-                         </#list>
-                    ],
-                    symbolSize:25,
-                },
-           <#else>
-               {
-                   name:'${village['rc']!'小区'}价格',
-                   type:'line',
-                   data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                   symbolSize:10,
-                   itemStyle:{
-                       normal:{
-                           lineStyle:{
-                               width:4,
-                           },
-                       },
-                   },
-               },
-            </#if>
+        <#if (ptCD0?size==0)>
             {
-                name:'${village['area']!'区域'}价格',
-                type:'line',
-                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:10,
-                itemStyle:{
-                    normal:{
-                        lineStyle:{
-                            width:4,
+                name: '${village['rc']!'小区'}价格',
+                type: 'scatter',
+                coordinateSystem: 'cartesian2d',
+                data: [
+                    <#list mouthList as item >
+                        <#if (item_index == (mouthList?size-1))>
+                        ${village['avgPrice']},
+                        <#else>
+                            NaN,
+                        </#if>
+                    </#list>],
+                symbolSize: 25,
+            },
+        <#else>
+            {
+                name: '${village['rc']!'小区'}价格',
+                type: 'line',
+                data: [<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize: 10,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 4,
+                        },
+                    },
+                },
+            },
+        </#if>
+            {
+                name: '${village['area']!'区域'}价格',
+                type: 'line',
+                data: [<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize: 10,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 4,
                         },
                     },
                 },
             },
             {
-                name:'${village['tradingArea']!'商圈'}价格',
-                type:'line',
-                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:10,
-                itemStyle:{
-                       normal:{
-                           lineStyle:{
-                                width:4,
-                           },
-                       },
+                name: '${village['tradingArea']!'商圈'}价格',
+                type: 'line',
+                data: [<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize: 10,
+                itemStyle: {
+                    normal: {
+                        lineStyle: {
+                            width: 4,
+                        },
+                    },
                 },
             },
         ]
     };
     <#if  (mouthList?size>0)>
-        myChartline.setOption(option);
+    myChartline.setOption(option);
     </#if>
 </script>
 </body>

@@ -66,7 +66,7 @@ public class VillageEntity {
     private String ringRoadDistance;  //详情环线距离
     private String is_approve;  //审批状态（0-未发布，1-已发布）
     private Integer plotScore;  //小区分数
-
+    private Integer is_del;  //是否下架(0未下架，1下架)
 
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
