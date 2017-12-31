@@ -129,7 +129,7 @@
                 <#--</div>-->
                 <#if  (mouthList?size>0)>
                     <div class="echarts-box">
-                        <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
+                        <div class="echarts-content" id="village-price-trade" ></div>
                     </div>
                 </#if>
             </div>
@@ -503,10 +503,16 @@
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
+    <#if  (mouthList?size>0)>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
+    </#if>
     option = {
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            position: function (point, params, dom, rect, size) {
+                // 固定在顶部
+                return [point[0], '10%'];
+            },
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
@@ -521,7 +527,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}'
-            }
+            },
         },
         series: [
             <#if (ptCD0?size==0)>
