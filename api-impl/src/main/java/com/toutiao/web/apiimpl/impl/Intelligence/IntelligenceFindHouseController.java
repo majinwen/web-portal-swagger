@@ -268,7 +268,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/27 15:17
      */
-    @RequestMapping("/showUserPortrayal")
+    /*@RequestMapping("/showUserPortrayal")
     public String showUserPortrayal(IntelligenceQuery intelligenceQuery, Model model) {
 
         Integer userPortrayalType = intelligenceQuery.getUserPortrayalType();
@@ -279,7 +279,17 @@ public class IntelligenceFindHouseController {
         }
 
 
-        return "";
+        return "intelligent-report";
+    }*/
+
+    /**
+     * 功能描述：报告页
+     *
+     * @param model
+     */
+    @RequestMapping("/showUserPortrayal")
+    public String showUserPortrayal(Model model) {
+        return "intelligent-report";
     }
 
 

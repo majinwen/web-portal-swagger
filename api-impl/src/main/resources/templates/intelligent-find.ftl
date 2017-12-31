@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
+    <script>
+        (function(h,k){var p=h.document;var b=p.documentElement;var m=p.querySelector('meta[name="viewport"]');var e=p.querySelector('meta[name="flexible"]');var q=0;var d=0;var f;var j=k.flexible||(k.flexible={});if(m){console.warn("将根据已有的meta标签来设置缩放比例");var g=m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);if(g){d=parseFloat(g[1]);q=parseInt(1/d)}}else{if(e){var i=e.getAttribute("content");if(i){var c=i.match(/initial\-dpr=([\d\.]+)/);var o=i.match(/maximum\-dpr=([\d\.]+)/);if(c){q=parseFloat(c[1]);d=parseFloat((1/q).toFixed(2))}if(o){q=parseFloat(o[1]);d=parseFloat((1/q).toFixed(2))}}}}if(!q&&!d){var n=h.devicePixelRatio;if(n>=3&&(!q||q>=3)){q=3}else{if(n>=2&&(!q||q>=2)){q=2}else{q=1}}d=1/q}b.setAttribute("data-dpr",q);if(!m){m=p.createElement("meta");m.setAttribute("name","viewport");m.setAttribute("content","initial-scale="+d+", maximum-scale="+d+", minimum-scale="+d+", user-scalable=no");if(b.firstElementChild){b.firstElementChild.appendChild(m)}else{var a=p.createElement("div");a.appendChild(m);p.write(a.innerHTML)}}function l(){var r=b.getBoundingClientRect().width;if(r/q>540){r=540*q}var s=r/10;b.style.fontSize=s+"px";j.rem=h.rem=s}h.addEventListener("resize",function(){clearTimeout(f);f=setTimeout(l,300)},false);h.addEventListener("pageshow",function(r){if(r.persisted){clearTimeout(f);f=setTimeout(l,300)}},false);if(p.readyState==="complete"){p.body.style.fontSize=12*q+"px"}else{p.addEventListener("DOMContentLoaded",function(r){p.body.style.fontSize=12*q+"px"},false)}l();j.dpr=h.dpr=q;j.refreshRem=l})(window,window["lib"]||(window["lib"]={}));
+    </script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
@@ -283,30 +285,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="start-btn none">
+                    <p>启动</p>
+                </div>
             </div>
         </div>
     </div>
     <div class="section page4">
         <div class="bgbox bg4">
             <div class="page-content">
-                <div class="user-header-box">
-                    <div class="user-line-triangle"></div>
-                    <img src="/static/images/intelligent/user-header.png" alt="用户头像">
+                <div class="text-content">
+                    <p>数据多</p>
+                    <p>房源多</p>
+                    <p>用户样本多</p>
+                    <p>处理速度快</p>
+                    <p>技术</p>
+                    <p>技术</p>
                 </div>
-                <div class="word-cont">
-                    <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
-                    <ol>
-                        <li>-    尽量离交通站近，睡多一点</li>
-                        <li>-    餐饮便利，到家能吃口热饭</li>
-                        <li>-    有休闲地儿，周末看场大片</li>
-                    </ol>
-                </div>
-                <button type="button" class="button">开始体验</button>
+                <a href="${router_city('/findhouse/showUserPortrayal')}" class="button">打开报告</a>
             </div>
         </div>
-    </div>
-    <div class="section page5">
-        5
     </div>
 </div>
 
@@ -316,7 +314,7 @@
             fitToSection: true,
             resize: false,
             onLeave: function (index, nextIndex, direction) {
-                if (nextIndex == 4) {
+                if (nextIndex == 3) {
                     $.fn.fullpage.setAllowScrolling(true, 'down');
                 }
             }
@@ -339,6 +337,25 @@
                 $.fn.fullpage.moveSectionDown();
             });
         }
+        // 提交选中用户类型
+        $('#userTypeSubmit').on('click', function () {
+            if ($('.choose-wrapper').find('.current').length > 0){
+                var params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
+                var userTypeUrl = 'userType=' + params;
+                $.fn.fullpage.moveSectionDown();
+                console.log(userTypeUrl);
+                $.ajax({
+                    type: "GET",
+                    url: "${router_city('/findhouse/xuanzeleixing')}",
+                    data: userTypeUrl,
+                    success: function(data){
+//                        alert(data.data+"这是啥玩意！！！");
+                    }
+                });
+                $('.result-begin').addClass('none');
+                $('.result-container').removeClass('none');
+            }
+        });
 
         // 切换预算
         $('.price-tab').on('click', 'span', function () {
@@ -427,6 +444,8 @@
             })*/
             $('.result-begin').addClass('none');
             $('.result-container').removeClass('none');
+            $('.start-btn').removeClass('none');
+            $.fn.fullpage.setAllowScrolling(true, 'down');
         });
 
         // 选择区域
@@ -454,26 +473,6 @@
                 $('.result-container').removeClass('none');
             }
         });
-
-        // 提交选中用户类型
-        $('#userTypeSubmit').on('click', function () {
-            if ($('.choose-wrapper').find('.current').length > 0){
-                var params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
-                var userTypeUrl = 'userType=' + params;
-                $.fn.fullpage.moveSectionDown();
-                console.log(userTypeUrl);
-                $.ajax({
-                    type: "GET",
-                    url: "${router_city('/findhouse/xuanzeleixing')}",
-                    data: userTypeUrl,
-                    success: function(data){
-//                        alert(data.data+"这是啥玩意！！！");
-                    }
-                });
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
-            }
-        })
     })
 </script>
 </body>
