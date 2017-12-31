@@ -3,8 +3,6 @@
  * @type {string}
  * @private
  */
-var _localHref = window.location.pathname;
-
 var uu = $('#url');
 var BaseUrl=uu.val();
 $(function () {
