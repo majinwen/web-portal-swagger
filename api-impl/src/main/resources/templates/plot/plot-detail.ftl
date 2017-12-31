@@ -507,6 +507,11 @@
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
     </#if>
     option = {
+    /*    title:{
+            textStyle:{
+                fontSize:50
+            }
+        },*/
         tooltip: {
             trigger: 'axis',
             position: function (point, params, dom, rect, size) {
@@ -523,12 +528,15 @@
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
-           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格']
+           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
+            textStyle:{
+                fontSize:25
+            }
         },
         xAxis:  {
             type: 'category',
             boundaryGap: false,
-            data: [<#list  mouthList as item >'${item}',</#list>]
+            data: [<#list  mouthList as item >'${item}',</#list>],
         },
         yAxis: {
             type: 'value',
