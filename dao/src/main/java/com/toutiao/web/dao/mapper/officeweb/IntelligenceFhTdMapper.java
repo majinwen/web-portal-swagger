@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.officeweb;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,4 +18,11 @@ public interface IntelligenceFhTdMapper extends BaseDao {
      * @return
      */
     List<IntelligenceFhTd> queryTd(@Param("totalPrice")Integer totalPrice);
+
+    /**
+     * 根据总价获取目标市场供需走势占比
+     * @param totalPrice
+     * @return
+     */
+    IntelligenceFhTdRatio queryTdRatio(@Param("totalPrice")Integer totalPrice);
 }

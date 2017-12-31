@@ -56,21 +56,21 @@ public class IntelligenceFindHouseController {
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
-        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-        if (StringTool.isNotBlank(usePhone)) {
-            //查询用户是否有报告数据
-            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
-            if (StringTool.isNotBlank(userReport)) {
-                model.addAttribute("userReport", userReport);
-            }
-            model.addAttribute("message", "没有报告记录！");
-        } else {
-            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
-        }
+//        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+//        if (StringTool.isNotBlank(usePhone)) {
+//            //查询用户是否有报告数据
+//            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
+//            if (StringTool.isNotBlank(userReport)) {
+//                model.addAttribute("userReport", userReport);
+//            }
+//            model.addAttribute("message", "没有报告记录！");
+//        } else {
+//            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+//        }
         //跳转到报告页
         Integer totalPrice = 500;
-        List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
-        List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
+        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        Map<String,Object> fhrd = intelligenceFhTdService.queryTd(totalPrice);
         model.addAttribute("fhpt",fhpt);
         model.addAttribute("fhrd",fhrd);
         return "";

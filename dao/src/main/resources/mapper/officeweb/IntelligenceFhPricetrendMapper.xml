@@ -8,6 +8,14 @@
     <result column="total_price" property="totalPrice" jdbcType="NUMERIC" />
     <result column="max_total_price" property="maxTotalPrice" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="CountRatioBaseResultMap" type="com.toutiao.web.domain.intelligenceFh.IntelligenceFhPtRatio" >
+    <result column="minprice" property="minprice" jdbcType="NUMERIC" />
+    <result column="maxprice" property="maxprice" jdbcType="NUMERIC" />
+    <result column="avgprice" property="avgprice" jdbcType="NUMERIC" />
+    <result column="avgtotalprice" property="avgtotalprice" jdbcType="NUMERIC" />
+    <result column="maxtotalprice" property="maxtotalprice" jdbcType="NUMERIC" />
+  </resultMap>
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend" >
     insert into intelligence_fh_pricetrend (min_total_price, price, periodic_time, 
       total_price, max_total_price)
@@ -59,4 +67,33 @@
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
     </if>
   </select>
+
+
+  <select id="queryPriceTrendRatio" parameterType="java.lang.Integer" resultMap="CountRatioBaseResultMap">
+    SELECT
+    <![CDATA[
+    "min"(price) as minprice,
+    "max"(price) as maxprice,
+    "avg"(price) as avgprice,
+    "avg"(total_price) as avgtotalprice,
+    "max"(total_price) as maxtotalprice
+    ]]>
+    from intelligence_fh_pricetrend
+    WHERE 1=1
+    <if test="totalPrice!=null">
+      AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
+    </if>
+    and periodic_time BETWEEN  now() - interval '13 month' AND now()
+  </select>
+
+  <select id="queryLowPriceTrend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT * FROM intelligence_fh_pricetrend
+    WHERE 1=1
+    <if test="totalPrice!=null">
+      AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
+    </if>
+    and periodic_time BETWEEN  now() - interval '13 month' AND now()
+    ORDER BY periodic_time asc
+  </select>
+
 </mapper>

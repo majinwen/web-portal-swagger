@@ -1,9 +1,7 @@
 package com.toutiao.web.service.intelligence;
 
 
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
-
-import java.util.List;
+import java.util.Map;
 
 /**
  * 智能找房-价格区间走势
@@ -17,7 +15,7 @@ public interface IntelligenceFhPricetrendService {
      * @param totalPrice
      * @return
      */
-    List<IntelligenceFhPricetrend> queryPriceTrend(Integer totalPrice);
+    Map<String,Object> queryPriceTrend(Integer totalPrice);
 
 
 }
