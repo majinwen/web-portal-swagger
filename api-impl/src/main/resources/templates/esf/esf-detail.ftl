@@ -240,7 +240,7 @@
             <#assign item=houseDetail['plotPhoto']>
             <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
         </div>
-        <div class="tilelist-content">
+        <div id="tilePlotDesc" class="tilelist-content">
             <h4>
                 <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
             </h4>
@@ -253,7 +253,7 @@
                 </#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
-                        (${village['sumHousehold']}户),
+                        (${village['sumHousehold']}户)
                     </#if>
                 </#if>
                 <#if (village['sumBuilding']?exists&&(village['sumBuilding']!=''))||(village['sumHousehold']?exists&&village['sumHousehold']?number gt 0)>,</#if>
@@ -385,5 +385,14 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+    $(function(){
+        var text = $("tilePlotDesc").find("p").text();
+          if(text.indexOf(",")==0){
+             var s = text.
+              $("tilePlotDesc").find("p").html(text);
+          }
+    })
+</script>
 </body>
 </html>
