@@ -302,7 +302,7 @@
                     <p>技术</p>
                     <p>技术</p>
                 </div>
-                <a href="${router_city('/findhouse/showUserPortrayal')}" class="button">打开报告</a>
+                <a id="button_report" href="${router_city('/findhouse/showUserPortrayal')}" class="button">打开报告</a>
             </div>
         </div>
     </div>
@@ -384,10 +384,11 @@
                             userPortrayalType = data.data.userPortrayalType = 7;
                             priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
                             console.log(priceAnduserTppeUrl);
-                            //跳转到用户画像页面
+                            //跳转到过渡页
                             //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
+                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?'"+priceAnduserTppeUrl+")}");
                         }
                     }
 
@@ -421,6 +422,7 @@
                             //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
+                            $(".section page4").find("a").attr("href","${router_city('/findhouse/showUserPortrayal')}");
                         }
                     }
 
@@ -484,7 +486,10 @@
                         //此处要判断是否是一居用户
                         if(data.data.layOut==1){
                             //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
-
+                            //将医疗配套和学校配套还原成默认状态
+                            //直接跳转到过渡页
+                            $('.start-btn').removeClass('none');
+                            $.fn.fullpage.setAllowScrolling(true, 'down');
                         }
 
                     }

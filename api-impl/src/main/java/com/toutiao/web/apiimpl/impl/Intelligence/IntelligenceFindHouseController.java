@@ -147,8 +147,8 @@ public class IntelligenceFindHouseController {
         plotTotalEnd = (Double.valueOf(preconcTotal) + (Double.valueOf(preconcTotal) * 0.1)) * 10000;
         intelligenceQuery.setMaxTotalPrice(plotTotalEnd);
         intelligenceQuery.setMinTotalPrice(plotTotalFirst);
-        intelligenceQuery.setSchoolFlag(1);
-        intelligenceQuery.setHospitalFlag(1);
+        intelligenceQuery.setHasChild(1);
+        intelligenceQuery.setHasOldman(1);
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         model.addAttribute("list",list);
         return "intelligent-report";
@@ -244,7 +244,7 @@ public class IntelligenceFindHouseController {
      * @param model
      */
     @RequestMapping("/showUserPortrayal")
-    public String showUserPortrayal(Model model) {
+    public String showUserPortrayal(Model model,IntelligenceQuery intelligenceQuery) {
         return "intelligent-report";
     }
 
