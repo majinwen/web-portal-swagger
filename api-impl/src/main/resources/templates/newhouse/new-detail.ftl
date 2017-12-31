@@ -10,6 +10,7 @@
     <title>新房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <#--<#assign ptCD0 = tradeline['buildingline']>-->
@@ -362,7 +363,7 @@
                     <#else >
                         <span class="expand-price">暂无数据</span>
                     </#if>-->
-                        <#if (build['propertyfee']?exists)>
+                        <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
                             <span class="expand-price">${build['propertyfee']}元/㎡·月</p>
                         <#else>暂无数据
                         </#if>
@@ -383,7 +384,7 @@
                         <span class="expand-price">暂无数据</span>
                     </#if>-->
 
-                        <#if (build['car_rent_price']?exists)>
+                        <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
                             <span class="expand-price">${build['car_rent_price']}元/月</p>
                         <#else>暂无数据
                         </#if>
@@ -481,7 +482,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}元/㎡<#else >暂无数据</#if></em></h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']}元/㎡<#else >暂无数据</#if></em></h4>
                 </div>
             </a>
         </li>

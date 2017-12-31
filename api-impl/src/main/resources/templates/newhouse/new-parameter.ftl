@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>新房参数</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <#assign discript = discript[0]>
@@ -81,7 +82,7 @@
             <li>
                 <p>物业类型：<#if discript['property_type']?exists&&discript['property_type']!=''>${discript['property_type']}<#else>暂无数据</#if></p>
                 <p>物业公司：<#if discript['propertymanage']?exists&&discript['propertymanage']!=''>${discript['propertymanage']}<#else>暂无数据</#if></p>
-                <p>物业费：<#if discript['propertyfee']?exists&&discript['propertyfee']?number gt 0>${discript['propertyfee']}<#else>暂无数据</#if></p>
+                <p>物业费：<#if discript['propertyfee']?exists&&discript['propertyfee']?number gt 0>${discript['propertyfee']}元/㎡·月<#else>暂无数据</#if></p>
                 <p>供暖：<#if discript['heating_type']?exists && discript['heating_type'] == 0>未知
 
                                 <#if discript['heating_type']?exists && discript['heating_type'] == 1>

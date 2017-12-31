@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
     <title>二手房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="carousel-box">
@@ -251,7 +252,7 @@
                         class="arrows-right"></i></a>
             </div>
         </#if>
-        <a href="${router_city('/esf/'+houseDetail.newcode+'/map')}" class="detail-map">
+        <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"

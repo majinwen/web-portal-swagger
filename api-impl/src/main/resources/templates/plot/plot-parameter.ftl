@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>小区参数</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="module-bottom-fill"></div>

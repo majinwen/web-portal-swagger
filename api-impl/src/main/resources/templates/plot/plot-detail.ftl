@@ -9,6 +9,7 @@
     <title>小区详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <#assign ptCD0 = tradeline['buildingline']>
@@ -158,14 +159,15 @@
                             <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
                             <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
-                            <#if reitem['houseArea']?exists><p class="bottom-text">${reitem['houseArea']}㎡</p></#if>
+                            <#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>
                         </#if>
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first text-center"><em>
                             <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
-                            <#if reitem['houseOrientation']?exists&&reitem['houseOrientation']?number gt 0>${'/'+reitem.houseOrientation}</#if>
-                            <#if reitem['houseType']?exists&&reitem['houseType']?number gt 0>${'/'+reitem.houseType+'室'}</#if>
+                            <#if reitem['forwardName']?exists>${'/'+reitem.forwardName}</#if>
+                            <#if reitem['room']?exists&&reitem['room']?number gt 0>${'/'+reitem.room+'室'}</#if>
+                            <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${'/'+reitem.hall+'厅'}</#if>
                         </p>
                     </div>
                 </a></li>
