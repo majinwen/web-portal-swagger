@@ -65,9 +65,9 @@
         <ul class="primary-item">
             <li>
                 <p>建成年代：<#if village['abbreviatedAge']?exists&&village['abbreviatedAge']!=''>${village['abbreviatedAge']}<#else > 暂无数据</#if></p>
-                <p>建筑类型：<#if village['architectureType']?exists><#list village['architectureType'] as arType>
+                <p>建筑类型：<#if village['architectureType']?exists&&village['architectureType']?size gt 0><#list village['architectureType'] as arType>
                         ${arType!""}&nbsp;&nbsp;
-                </#list></#if>
+                </#list><#else >暂无数据</#if>
                 </p>
                 <p>产权年限：<#if village['yopr']?exists&&village['yopr']?number gt 0> ${village['yopr']}年<#else>暂无数据</#if></p>
                 <p>占地面积：<#if village['areaSize']?exists&&village['areaSize']?number gt 0>${village['areaSize']}㎡<#else >暂无数据</#if></p>

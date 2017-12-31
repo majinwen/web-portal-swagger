@@ -32,7 +32,7 @@ public class VillageEntity {
     private String areaSize;  //面积
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
-    private Double avgGreening;  //户均绿化率
+    private Double avgGreening;  //户均绿化
     private Double liftDoorRadio;  //梯户比
     private String elevator;  //电梯配备 (1-有，2-无)
     private String carPositionRatio;  //车位配比

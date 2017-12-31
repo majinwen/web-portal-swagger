@@ -202,7 +202,7 @@
                 <div class="info-card-item">
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
-                        <p>绿化率</p>
+                        <p>户均绿化</p>
                     <#if village['avgGreening']?exists>
                         <#if village['avgGreening']?number gt 0>
                             <em>${village['avgGreening']}平方米</em>
