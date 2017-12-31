@@ -34,6 +34,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
@@ -115,7 +117,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             String key = null;
             //关键字搜索
             if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
-                booleanQueryBuilder.should(QueryBuilders.boolQuery()
+                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
                         .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
