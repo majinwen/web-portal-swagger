@@ -318,11 +318,11 @@ function GetRequest() {
  * @param sortFlag 非排序时排序置空
  * @returns {string}
  */
-function joinParams(req, sortFlag) {
+function joinParams(req, noPageFlag) {
     var targetUrl = '';
 
-    if (!sortFlag) {
-        req['sort'] = null;
+    if (noPageFlag) {
+        req['pageNum'] = null;
     }
 
     for (var key in req) {
@@ -826,13 +826,21 @@ function listSortTab() {
 }
 
 $(function () {
-    $(document).data("toutiao_pageScroll_onOroff",true);
     //手机滑动底部触发分页事件
      $(window).scroll(function () {
-        if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-            pullUpAction(function () {});
-        };
-    });
+         // var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+         //
+         // if (Math.ceil(scrollTop) >= $(document).height() - $(window).height()) {
+         //     pullUpAction(function () {});
+         // };
+
+         var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;
+         var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
+         var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
+         if(a+b>=c){
+             pullUpAction(function () {});
+         }
+     });
 
     //加载内容填充不满屏幕
     // if ($(document).height() <= $(window).height()) {
@@ -856,7 +864,7 @@ function pullUpAction(callback) {
     var paramData = req;
     paramData['pageNum'] = pageNum;
     //sortFlag为true，保证排序
-    params = joinParams(paramData, true);
+    params = joinParams(paramData);
 
     if (_localHref.indexOf('/loupan') > 0) {
         url = router_city('/loupan' + params);
