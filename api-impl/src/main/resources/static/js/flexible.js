@@ -33,15 +33,12 @@
 
     if (!dpr && !scale) {
         var devicePixelRatio = win.devicePixelRatio;
-        var width = docEl.getBoundingClientRect().width;
-        if (devicePixelRatio > 2 && (!dpr || dpr >2)) {
+        if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
             dpr = 3;
+        } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
+            dpr = 2;
         } else {
-            if (devicePixelRatio > 1 && (!dpr || dpr > 1)) {
-                dpr = 2;
-            } else {
-                dpr = 1;
-            }
+            dpr = 1;
         }
         scale = 1 / dpr;
     }

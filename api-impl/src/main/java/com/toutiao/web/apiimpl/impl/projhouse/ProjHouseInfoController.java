@@ -63,6 +63,10 @@ public class ProjHouseInfoController {
         if (StringTool.isNotBlank(houseDetails)) {
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
+            VillageRequest villageRequest = new VillageRequest();
+            villageRequest.setId(data_house.getNewcode());
+            List village = plotService.findVillageByConditions(villageRequest);
+            model.addAttribute("village",village.get(0));
             //附近好房
             List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {

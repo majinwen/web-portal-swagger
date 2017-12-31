@@ -135,6 +135,14 @@
                     <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
                 </div>
             </#if>
+                <#--<div class="module-header-message">-->
+                    <#--<h3>价格走势</h3>-->
+                <#--</div>-->
+                <#if  (mouthList?size>0)>
+                    <div class="echarts-box">
+                        <div class="echarts-content" id="village-price-trade"></div>
+                    </div>
+                </#if>
             </div>
         </div>
     </section>
