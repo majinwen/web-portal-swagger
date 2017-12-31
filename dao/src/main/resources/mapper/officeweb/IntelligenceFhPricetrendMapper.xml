@@ -66,6 +66,8 @@
     <if test="totalPrice!=null">
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
     </if>
+    and periodic_time BETWEEN  now() - interval '13 month' AND now()
+    ORDER BY periodic_time DESC
   </select>
 
 
