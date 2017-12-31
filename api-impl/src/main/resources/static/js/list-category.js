@@ -866,7 +866,7 @@ function pullUpAction() {
                     if (data.code == 'success') {
                         pageNum++;
 
-                        var dataCon = data.data.data;
+                        var dataCon = data.data.data || [];
                         for (var i = 0; i < dataCon.length; i++) {
 
                             if (_localHref.indexOf('loupan') > 0) {
