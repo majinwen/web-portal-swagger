@@ -273,6 +273,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
     @Override
     public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery) {
+
+        //初始化数据
+        IntelligenceQuery intelligenceQuery1 = init(intelligenceQuery);
+
         //搜索量前200
         List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
 
@@ -312,6 +316,17 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             List<IntelligenceFindhouse> finalList = recommend3A(list);
             return finalList;
         }
+        return null;
+    }
+    /**
+     *
+     * 功能描述：初始化数据
+     * @author zengqingzhou
+     * @date 2017/12/31 23:00
+     * @param
+     * @return
+     */
+    public IntelligenceQuery init(IntelligenceQuery intelligenceQuery){
         return null;
     }
 
