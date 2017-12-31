@@ -66,11 +66,11 @@ public class IntelligenceQuery {
     /**
      * 教育配套标签标记
      */
-    private Boolean schoolFlag;
+    private Integer  schoolFlag=0;
 
     //医疗配套标签标记
 
-    private Boolean hospitalFlag;
+    private Integer  hospitalFlag=0;
 
     //是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
     private Integer hasChild;
@@ -80,10 +80,10 @@ public class IntelligenceQuery {
 
     //测试
     //最小值
-    private Integer minTotalPrice;
+    private Double minTotalPrice;
 
     //最大值
-    private Integer maxTotalPrice;
+    private Double maxTotalPrice;
 
     //学校
     private String school;

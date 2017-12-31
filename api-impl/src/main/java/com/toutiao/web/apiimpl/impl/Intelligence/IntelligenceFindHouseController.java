@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.impl.Intelligence;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
@@ -56,17 +57,17 @@ public class IntelligenceFindHouseController {
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
-//        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-//        if (StringTool.isNotBlank(usePhone)) {
-//            //查询用户是否有报告数据
-//            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
-//            if (StringTool.isNotBlank(userReport)) {
-//                model.addAttribute("userReport", userReport);
-//            }
-//            model.addAttribute("message", "没有报告记录！");
-//        } else {
-//            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
-//        }
+        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        if (StringTool.isNotBlank(usePhone)) {
+            //查询用户是否有报告数据
+            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
+            if (StringTool.isNotBlank(userReport)) {
+                model.addAttribute("userReport", userReport);
+            }
+            model.addAttribute("message", "没有报告记录！");
+        } else {
+            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+        }
         //跳转到报告页
         Integer totalPrice = 500;
         Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
@@ -75,6 +76,7 @@ public class IntelligenceFindHouseController {
         model.addAttribute("fhrd",fhrd);
         return "";
     }
+
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
@@ -83,7 +85,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping(value ="")
+    @RequestMapping(value = "")
     public String goToStartRobot() {
         return "intelligent-find";
     }
@@ -99,11 +101,12 @@ public class IntelligenceFindHouseController {
     @RequestMapping(value = "/xuanzeleixing")
     @ResponseBody
     public NashResult xuanZeLeiXing(@RequestParam(value = "userType", required = true) String userType) {
-       return NashResult.build(userType);
+        return NashResult.build(userType);
     }
 
+
     /**
-     * 功能描述：异步根据首付与月付获取小区数量与相应的比率
+     * 功能描述：异步根据价钱获取小区数量与相应的比率
      *
      * @param intelligenceQuery
      * @return com.toutiao.web.common.restmodel.NashResult
@@ -113,8 +116,9 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/goCheckPrice")
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-        intelligenceQuery.setPreconcTotal("400");
-        intelligenceQuery.setUserType("1");
+
+        String[] split = intelligenceQuery.getPreconcTotal().split("万");
+        intelligenceQuery.setPreconcTotal(split[0]);
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
@@ -128,45 +132,26 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
-        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(7);
-        intelligenceQuery1.setMinTotalPrice(4500000);
-        intelligenceQuery1.setMaxTotalPrice(5500000);
-        intelligenceQuery1.setDistrictId("105040,105035,105034");
-        intelligenceQuery1.setLayOut(3);
-        intelligenceQuery1.setHospital("1");
-        intelligenceQuery1.setSchool("KG");
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
-        return null;
-    }
-
-    /**
-     * 功能描述：跳转到用户选择户型页面controller
-     *
-     * @param intelligenceQuery
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 20:40
-     */
-    @RequestMapping("/queryUserCheckCategory")
-    public String userCheckCategory(IntelligenceQuery intelligenceQuery, Model model) {
-
-        //复制数据信息
-        IntelligenceFh intelligenceFh = new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-        if ("3".equals(intelligenceFh.getUserType())) {
-            //将第七种画像附给当前用户
-            intelligenceFh.setUserPortrayalType(7);
-            model.addAttribute("intelligenceFh", intelligenceFh);
-            //直接生成报表
-            //调用接口
-
-            return "";
-        }
-        model.addAttribute("intelligenceFh", intelligenceFh);
-        //户型页面
-        return "";
+    public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery,Model model) {
+        Double plotTotalFirst = null;
+        Double plotTotalEnd = null;
+        intelligenceQuery.setPreconcTotal("450");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setUserPortrayalType(5);
+        intelligenceQuery.setLayOut(3);
+        intelligenceQuery.setDistrictId("105037");
+        intelligenceQuery.setSchoolFlag(1);
+        intelligenceQuery.setHospitalFlag(1);
+        String preconcTotal = intelligenceQuery.getPreconcTotal();
+        plotTotalFirst = (Double.valueOf(preconcTotal) - (Double.valueOf(preconcTotal) * 0.1)) * 10000;
+        plotTotalEnd = (Double.valueOf(preconcTotal) + (Double.valueOf(preconcTotal) * 0.1)) * 10000;
+        intelligenceQuery.setMaxTotalPrice(plotTotalEnd);
+        intelligenceQuery.setMinTotalPrice(plotTotalFirst);
+        intelligenceQuery.setSchoolFlag(1);
+        intelligenceQuery.setHospitalFlag(1);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        model.addAttribute("list",list);
+        return "intelligent-report";
     }
 
     /**
@@ -180,44 +165,17 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/userCheckCategoryPage")
     @ResponseBody
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-        intelligenceQuery.setPreconcTotal("400");
-        intelligenceQuery.setUserType("1");
-        intelligenceQuery.setLayOut(3);
+        String[] split = intelligenceQuery.getPreconcTotal().split("万");
+        intelligenceQuery.setPreconcTotal(split[0]);
         //根据户型与总价条件赛选条件
         IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
 
         return NashResult.build(IntelligenceFh);
     }
 
-    /**
-     * 功能描述：用户选择区域页面
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 21:42
-     */
-    //选择区域
-    @RequestMapping("/chooseDistinct")
-    public String checkDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-        //复制数据信息
-        IntelligenceFh intelligenceFh = new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-        model.addAttribute("intelligenceFh", intelligenceFh);
-        //选择非一居的用户，才出现此问题；
-        if(intelligenceFh.getLayOut()==1){
-
-            //跳转过渡页，生成画像
-            return "";
-        }
-
-
-        //去家庭页面选择小孩和老人
-        return "";
-    }
 
     /**
-     * 功能描述：家庭页面
+     * 功能描述：区域筛选小区数量
      *
      * @param intelligenceQuery
      * @return com.toutiao.web.common.restmodel.NashResult
@@ -225,16 +183,14 @@ public class IntelligenceFindHouseController {
      * @date 2017/12/26 21:45
      */
     @RequestMapping("/queryPlotCountByDistrict")
-    public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-        intelligenceQuery.setPreconcTotal("400");
-        intelligenceQuery.setUserType("1");
-        intelligenceQuery.setLayOut(3);
-        intelligenceQuery.setDistrictId("105046");
+    @ResponseBody
+    public NashResult queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
+        String[] split = intelligenceQuery.getPreconcTotal().split("万");
+        intelligenceQuery.setPreconcTotal(split[0]);
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
-        model.addAttribute("intelligenceFh", intelligenceFh);
         //报告生成页
-        return "";
+        return NashResult.build(intelligenceFh);
     }
 
     /**
@@ -268,7 +224,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/27 15:17
      */
-    @RequestMapping("/showUserPortrayal")
+    /*@RequestMapping("/showUserPortrayal")
     public String showUserPortrayal(IntelligenceQuery intelligenceQuery, Model model) {
 
         Integer userPortrayalType = intelligenceQuery.getUserPortrayalType();
@@ -279,7 +235,17 @@ public class IntelligenceFindHouseController {
         }
 
 
-        return "";
+        return "intelligent-report";
+    }*/
+
+    /**
+     * 功能描述：报告页
+     *
+     * @param model
+     */
+    @RequestMapping("/showUserPortrayal")
+    public String showUserPortrayal(Model model) {
+        return "intelligent-report";
     }
 
 

@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
+    <script>
+        (function(h,k){var p=h.document;var b=p.documentElement;var m=p.querySelector('meta[name="viewport"]');var e=p.querySelector('meta[name="flexible"]');var q=0;var d=0;var f;var j=k.flexible||(k.flexible={});if(m){console.warn("将根据已有的meta标签来设置缩放比例");var g=m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);if(g){d=parseFloat(g[1]);q=parseInt(1/d)}}else{if(e){var i=e.getAttribute("content");if(i){var c=i.match(/initial\-dpr=([\d\.]+)/);var o=i.match(/maximum\-dpr=([\d\.]+)/);if(c){q=parseFloat(c[1]);d=parseFloat((1/q).toFixed(2))}if(o){q=parseFloat(o[1]);d=parseFloat((1/q).toFixed(2))}}}}if(!q&&!d){var n=h.devicePixelRatio;if(n>=3&&(!q||q>=3)){q=3}else{if(n>=2&&(!q||q>=2)){q=2}else{q=1}}d=1/q}b.setAttribute("data-dpr",q);if(!m){m=p.createElement("meta");m.setAttribute("name","viewport");m.setAttribute("content","initial-scale="+d+", maximum-scale="+d+", minimum-scale="+d+", user-scalable=no");if(b.firstElementChild){b.firstElementChild.appendChild(m)}else{var a=p.createElement("div");a.appendChild(m);p.write(a.innerHTML)}}function l(){var r=b.getBoundingClientRect().width;if(r/q>540){r=540*q}var s=r/10;b.style.fontSize=s+"px";j.rem=h.rem=s}h.addEventListener("resize",function(){clearTimeout(f);f=setTimeout(l,300)},false);h.addEventListener("pageshow",function(r){if(r.persisted){clearTimeout(f);f=setTimeout(l,300)}},false);if(p.readyState==="complete"){p.body.style.fontSize=12*q+"px"}else{p.addEventListener("DOMContentLoaded",function(r){p.body.style.fontSize=12*q+"px"},false)}l();j.dpr=h.dpr=q;j.refreshRem=l})(window,window["lib"]||(window["lib"]={}));
+    </script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
@@ -139,8 +141,8 @@
                             <p>开启智能找房之旅</p>
                         </div>
                         <div class="result-container none">
-                            <p>为您匹配了<em class="high-light-red">234</em>个小区</p>
-                            <p>有<em class="high-light-red">37%</em>的用户和您的需求相同</p>
+                            <p id="plot_Count">为您匹配了<em class="high-light-red"></em>个小区</p>
+                            <p id="plot_Ratio">有<em class="high-light-red"></em>的用户和您的需求相同</p>
                         </div>
                     </div>
                 </div>
@@ -274,7 +276,7 @@
                                 <label>老人</label>
                                 <ul class="choose-radio" id="oldMan">
                                     <li data-old-man='0' class="current"><i></i><span>无</span></li>
-                                    <li data-old-man='1' ><i></i><span>有</span></li>
+                                    <li data-old-man='1'><i></i><span>有</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -283,30 +285,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="start-btn none">
+                    <p>启动</p>
+                </div>
             </div>
         </div>
     </div>
     <div class="section page4">
         <div class="bgbox bg4">
             <div class="page-content">
-                <div class="user-header-box">
-                    <div class="user-line-triangle"></div>
-                    <img src="/static/images/intelligent/user-header.png" alt="用户头像">
+                <div class="text-content">
+                    <p>数据多</p>
+                    <p>房源多</p>
+                    <p>用户样本多</p>
+                    <p>处理速度快</p>
+                    <p>技术</p>
+                    <p>技术</p>
                 </div>
-                <div class="word-cont">
-                    <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
-                    <ol>
-                        <li>-    尽量离交通站近，睡多一点</li>
-                        <li>-    餐饮便利，到家能吃口热饭</li>
-                        <li>-    有休闲地儿，周末看场大片</li>
-                    </ol>
-                </div>
-                <button type="button" class="button">开始体验</button>
+                <a href="${router_city('/findhouse/showUserPortrayal')}" class="button">打开报告</a>
             </div>
         </div>
-    </div>
-    <div class="section page5">
-        5
     </div>
 </div>
 
@@ -314,12 +312,7 @@
     $(function () {
         $('#superContainer').fullpage({
             fitToSection: true,
-            resize: false,
-            onLeave: function (index, nextIndex, direction) {
-                if (nextIndex == 4) {
-                    $.fn.fullpage.setAllowScrolling(true, 'down');
-                }
-            }
+            resize: false
         });
 
         $.fn.fullpage.setAllowScrolling(false, 'up, down');
@@ -334,11 +327,26 @@
             $(this).addClass('current');
         });
 
-        if ($('.choose-wrapper').find('.current').length > 0){
+        if ($('.choose-wrapper').find('.current').length > 0) {
             $('.button').on('click', function () {
                 $.fn.fullpage.moveSectionDown();
             });
         }
+        // 提交选中用户类型
+        var params;
+        $('#userTypeSubmit').on('click', function () {
+            if ($('.choose-wrapper').find('.current').length > 0){
+                 params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
+                var userTypeUrl = 'userType=' + params;
+                $.fn.fullpage.moveSectionDown();
+                console.log(userTypeUrl);
+                $.ajax({
+                    type: "GET",
+                    url: "${router_city('/findhouse/xuanzeleixing')}",
+                    data: userTypeUrl
+                });
+            }
+        });
 
         // 切换预算
         $('.price-tab').on('click', 'span', function () {
@@ -352,19 +360,38 @@
             }
         });
         // 提交预算
+        var priceAnduserTppeUrl;
+        var userPortrayalType;
         $('#submitPrice').on('click', function () {
             if ($('.total-price').hasClass('current')) {
                 $(this).parents('.layer').addClass('none');
                 var price = $('.total-conent').find('.slide-text').text();
-                console.log('总价=' + price);
-                /*$.ajax({
+                priceAnduserTppeUrl = 'userType=' + params + '&preconcTotal=' + price;
+                console.log(priceAnduserTppeUrl);
+                $.ajax({
                     type: 'GET',
-                    url: '',
-                    data: layOut,
+                    url: '${router_city('/findhouse/goCheckPrice')}',
+                    data: priceAnduserTppeUrl,
                     success: function (data) {
-                        console.log(data);
+                        console.log(data.data);
+                        $('#plot_Count').find('em').html(data.data.plotCount);
+                        $('#plot_Ratio').find('em').html(data.data.ratio);
+                        params = data.data.userType;
+                        console.log(params);
+                        //用户类型是第三类
+                        if (params == 3) {
+                            ////将第七种画像附给当前用户userPortrayalType
+                            userPortrayalType = data.data.userPortrayalType = 7;
+                            priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
+                            console.log(priceAnduserTppeUrl);
+                            //跳转到用户画像页面
+                            //为实现
+                            $('.start-btn').removeClass('none');
+                            $.fn.fullpage.setAllowScrolling(true, 'down');
+                        }
                     }
-                });*/
+
+                });
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
                 return
@@ -372,15 +399,32 @@
                 $(this).parents('.layer').addClass('none');
                 var downPrice = $('.down-slide').find('.slide-text').text();
                 var monthPrce = $('.month-slide').find('.slide-text').text();
+                priceAnduserTppeUrl = 'userType=' + params + '&downPayMent=' + downPrice + '&monthPayMent=' + monthPrce;
                 console.log('首付=' + downPrice, '月供=' + monthPrce);
-                /*$.ajax({
+                $.ajax({
                     type: 'GET',
-                    url: '',
-                    data: layOut,
+                    url: '${router_city('/findhouse/goCheckPrice')}',
+                    data: priceAnduserTppeUrl,
                     success: function (data) {
-                        console.log(data);
+                        console.log(data.data);
+                        $("#plot_Count").find("em").html(data.data.plotCount);
+                        $("#plot_Ratio").find("em").html(data.data.ratio);
+                        params = data.data.userType;
+                        console(params);
+                        //用户类型是第三类
+                        if (params == 3) {
+                            ////将第七种画像附给当前用户userPortrayalType
+                            userPortrayalType = data.data.userPortrayalType = 7;
+                            priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
+                            console.log(priceAnduserTppeUrl);
+                            //跳转到用户画像页面
+                            //为实现
+                            $('.start-btn').removeClass('none');
+                            $.fn.fullpage.setAllowScrolling(true, 'down');
+                        }
                     }
-                })*/
+
+                });
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
             }
@@ -391,42 +435,29 @@
             $(this).addClass('current').siblings().removeClass('current');
         });
         // 提交户型
-        $('#submitHouseType').on('click', function() {
+        var next2;
+        $('#submitHouseType').on('click', function () {
             $(this).parents('.layer').addClass('none');
             var params = $('#layOut').find('li.current').data('layout');
-            var layOut = 'layOut=' + params;
-            console.log(layOut);
-            /*$.ajax({
+            var layOut = '&layOut=' + params;
+            next2 = priceAnduserTppeUrl + layOut;
+            $.ajax({
                 type: 'GET',
-                url: '',
-                data: layOut,
+                url: '${router_city('/findhouse/userCheckCategoryPage')}',
+                data: next2,
                 success: function (data) {
-                    console.log(data);
-                }
-            })*/
-        });
+                    console.log(data.data);
+                    $("#plot_Count").find("em").html(data.data.plotCount);
+                    $("#plot_Ratio").find("em").html(data.data.ratio);
+                    params = data.data.userType;
+                    next2 += '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' +data.data.ratio;
+                    console.log(next2);
+                    //区域数组
+                    console.log(data.data.distictList);
+                    //没写完
 
-        // 选择家庭结构
-        $('#family-box').on('click', 'li', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-        });
-        // 提交选中家庭结构内容
-        $('#submitFamily').on('click', function () {
-            $(this).parents('.layer').addClass('none');
-            var childParams = $('#hasChild').find('li.current').data('child');
-            var oldManParams = $('#oldMan').find('li.current').data('old-man');
-            var familyStructureUrl = 'hasChild=' + childParams + '&oldMan=' + oldManParams;
-            console.log(familyStructureUrl);
-            /*$.ajax({
-                type: 'GET',
-                url: '',
-                data: layOut,
-                success: function (data) {
-                    console.log(data);
                 }
-            })*/
-            $('.result-begin').addClass('none');
-            $('.result-container').removeClass('none');
+            })
         });
 
         // 选择区域
@@ -438,42 +469,56 @@
             }
         });
         // 提交选中区域
+        var next4;
         $('#submitArea').on('click', function () {
             if ($('.area-content').find('li.current').length == 3) {
                 $(this).parents('.layer').addClass('none');
+                next4 += next2 + '&districtId=' + '106013';
                 console.log(1);
-                /*$.ajax({
+                $.ajax({
                     type: 'GET',
-                    url: '',
-                    data: layOut,
+                    url: '${router_city('/findhouse/queryPlotCountByDistrict')}',
+                    data: next4,
                     success: function (data) {
                         console.log(data);
-                    }
-                })*/
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
-            }
-        });
+                        //此处要判断是否是一居用户
+                        if(data.data.layOut==1){
+                            //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
 
-        // 提交选中用户类型
-        $('#userTypeSubmit').on('click', function () {
-            if ($('.choose-wrapper').find('.current').length > 0){
-                var params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
-                var userTypeUrl = 'userType=' + params;
-                $.fn.fullpage.moveSectionDown();
-                console.log(userTypeUrl);
-                $.ajax({
-                    type: "GET",
-                    url: "${router_city('/findhouse/xuanzeleixing')}",
-                    data: userTypeUrl,
-                    success: function(data){
-//                        alert(data.data+"这是啥玩意！！！");
+                        }
+
                     }
                 });
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
             }
-        })
+        });
+
+        // 选择家庭结构
+        $('#family-box').on('click', 'li', function () {
+            $(this).addClass('current').siblings().removeClass('current');
+        });
+        // 提交选中家庭结构内容
+        var next3;
+        $('#submitFamily').on('click', function () {
+            $(this).parents('.layer').addClass('none');
+            $('.result-begin').addClass('none');
+            $('.result-container').removeClass('none');
+            var childParams = $('#hasChild').find('li.current').data('child');
+            var oldManParams = $('#oldMan').find('li.current').data('old-man');
+            var familyStructureUrl = '&hasChild=' + childParams + '&oldMan=' + oldManParams;
+            next3 = next4 + familyStructureUrl;
+            $('.start-btn').removeClass('none');
+            $.fn.fullpage.setAllowScrolling(true, 'down');
+            /*$.ajax({
+                type: 'GET',
+                url: '',
+                data: layOut,
+                success: function (data) {
+                    console.log(data);
+                }
+            })*/
+        });
     })
 </script>
 </body>
