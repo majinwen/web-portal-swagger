@@ -85,7 +85,7 @@
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
                         ${houseDetail.houseTotalPrices}万
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                         </em>
                     </li>
@@ -95,7 +95,7 @@
 
                         ${houseDetail.room}室${houseDetail.hall}厅
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                         </em>
                     </li>
@@ -105,7 +105,7 @@
                         <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>
                         ${houseDetail.buildArea}㎡
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                         </em>
                     </li>
@@ -117,7 +117,7 @@
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
                 ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
                 <#else>
-                    暂无
+                    暂无数据
                 </#if>
                 </p>
             </li>
@@ -126,7 +126,7 @@
                 <#if houseDetail.houseBudget?exists>
                 ${houseDetail.houseBudget}元/㎡
                 <#else>
-                    暂无
+                    暂无数据
                 </#if>
                 </p>
             </li>
@@ -143,13 +143,13 @@
                         ${houseDetail.floorNo}层
                         </#if >
                         <#if (houseDetail.floorNo??&&houseDetail.floorNo==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
-                            暂无
+                            暂无数据
                         </#if >
                     </#if>
                     </span></dd>
                     <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}
                         电梯<#else>
-                        暂无</#if></em></dd>
+                        暂无数据</#if></em></dd>
                     <dd class="odd-item">类别：
                     <#if houseDetail.houseTypeName?exists&& (houseDetail.houseTypeName !='')>
                         <em>${houseDetail.houseTypeName}</em>
@@ -157,11 +157,11 @@
                         <#if houseDetail.buildCategoryName?exists && (houseDetail.buildCategoryName!='') >
                             <em>${houseDetail.buildCategoryName}</em>
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                     </#if>
                     </dd>
-                    <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无</#if></em>
+                    <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无数据</#if></em>
                     </dd>
                 <#if houseDetail.plotName?exists&&houseDetail.plotName!=''>
                     <dt>小区：
