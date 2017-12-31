@@ -167,8 +167,16 @@
                     <dt>小区：
                         <em>
                         ${houseDetail.plotName}
-                            <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''> [${houseDetail.area}
-                                -${houseDetail.houseBusinessName}]<#else></#if>
+                            <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
+                                [${houseDetail.area} - ${houseDetail.houseBusinessName}]
+                            <#else >
+                                <#if houseDetail.area?exists&&houseDetail.area!=''>
+                                    [${houseDetail.area}]
+                                </#if>
+                                <#if houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
+                                    [${houseDetail.houseBusinessName}]
+                                </#if>
+                            </#if>
                         </em>
                     </dt>
                 </#if>
@@ -233,8 +241,29 @@
             <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
         </div>
         <div class="tilelist-content">
-            <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if></h4>
-            <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else></#if></p>
+            <h4>
+                <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
+            </h4>
+            <p>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
+                </#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>
+                   共<em class="high-light-red">${village['sumBuilding']}</em>栋
+                </#if>
+                <#if village['sumHousehold']?exists>
+                    <#if village['sumHousehold']?number gt 0>
+                        (${village['sumHousehold']}户),
+                    </#if>
+                </#if>
+                <#if (village['sumBuilding']?exists&&(village['sumBuilding']!=''))||(village['sumHousehold']?exists&&village['sumHousehold']?number gt 0)>,</#if>
+                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
+                       ${village['buildingStructure']}
+                </#if>
+                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
+                        ${village['avgPrice']}元/㎡
+                </#if>
+            </p>
         </div>
     </a></li>
     </ul>
