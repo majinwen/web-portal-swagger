@@ -513,6 +513,13 @@
                 // 固定在顶部
                 return [point[0], '10%'];
             },
+           toolbox:{
+                 feature:{
+                     dataZoom:{
+                         show : true
+                     }
+                 }
+           }
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
@@ -529,6 +536,24 @@
                 formatter: '{value}'
             },
         },
+    /*  缩放
+     dataZoom: [
+            {
+                type: 'slider',
+                show: true,
+                xAxisIndex: [0],
+                start: 1,
+                end: 80
+            }
+            {
+                type: 'slider',
+                show: true,
+                yAxisIndex: [0],
+                left: '93%',
+                start: 29,
+                end: 36
+            },
+        ],*/
         series: [
             <#if (ptCD0?size==0)>
                 {
