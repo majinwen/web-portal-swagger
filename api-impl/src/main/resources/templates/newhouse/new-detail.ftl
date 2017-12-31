@@ -99,7 +99,7 @@
             <li>
                 <p>
                     地址：<#if build['district_name']?exists>[${build['district_name']}]</#if>
-                           ${build['building_address']!'暂无'}
+                           ${build['building_address']!'暂无数据'}
                     <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="primary-map-icon"></a>
                     <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="arrows-right"></a>
                 </p>
@@ -116,8 +116,8 @@
                 </p>
             </li>
             <li>
-                <p>最新开盘：${build['opened_time']!'暂无'}</p>
-                <p>交房时间：${build['deliver_time']!'暂无'}</p>
+                <p>最新开盘：${build['opened_time']!'暂无数据'}</p>
+                <p>交房时间：${build['deliver_time']!'暂无数据'}</p>
                 <p>售楼许可证：
                 <#if (build['sell_licence']?exists)&&(build['sell_licence']?size>0)>
                   <#assign item = build['sell_licence'] >
@@ -182,7 +182,7 @@
                                 <#if (build['virescencerate']?? && build['virescencerate']>0)>
                                     <em>${build['virescencerate']?string("#.####")}平方米</em>
                                 <#else >
-                                    <em>暂无</em>
+                                    <em>暂无数据</em>
                                 </#if>
                    <#-- <#if build['virescencerate']?exists>
                         <#if village['avgGreening']?number gt 0>
@@ -199,7 +199,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <#if build['park_radio']?exists && build['park_radio']!=''><em>${build['park_radio']}户/车位</em><#else><em>暂无</em></#if>
+                        <#if build['park_radio']?exists && build['park_radio']!=''><em>${build['park_radio']}户/车位</em><#else><em>暂无数据</em></#if>
                     </div>
                 </div>
             </div>
@@ -215,7 +215,7 @@
                     <i class="item-two-4"></i>
                     <div class="info-item-text">
                         <p>空气质量</p>
-                        <em>${build['air_quality']!'暂无'}</em>
+                        <em>${build['air_quality']!'暂无数据'}</em>
                     </div>
                 </div>
             </div>
@@ -233,20 +233,20 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                    <p id="busStation">暂无</p>
-                    <span id="busStationNumber">暂无</span>
+                    <p id="busStation">暂无数据</p>
+                    <span id="busStationNumber">暂无数据</span>
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
-                    <p id="subwayLine">暂无</p>
-                    <span id="subwayDistance">暂无</span>
+                    <p id="subwayLine">暂无数据</p>
+                    <span id="subwayDistance">暂无数据</span>
                 </div>
 
                 <div class="info-card-item">
                     <i class="item-three-3"></i>
                     <em>自驾</em>
-                    <p>${build['ringRoadName']!"暂无"}</p>
+                    <p>${build['ringRoadName']!"暂无数据"}</p>
                     <span>2km</span>
                    <#-- <#if village['ringRoadDistance']?exists>-->
                     <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
@@ -364,7 +364,7 @@
                     </#if>-->
                         <#if (build['propertyfee']?exists)>
                             <span class="expand-price">${build['propertyfee']}元/㎡·月</p>
-                        <#else>暂无
+                        <#else>暂无数据
                         </#if>
                 </li>
                 <li>
@@ -385,7 +385,7 @@
 
                         <#if (build['car_rent_price']?exists)>
                             <span class="expand-price">${build['car_rent_price']}元/月</p>
-                        <#else>暂无
+                        <#else>暂无数据
                         </#if>
                 </li>
             </ul>
@@ -479,9 +479,9 @@
                     </#if>
                 </div>
                 <div class="tilelist-content">
-                    <p class="cont-first">${nearitem['building_name']!'暂无'}</p>
-                    <p class="cont-center"><span>${nearitem['district_name']!'暂无'}</span><span>${nearitem['area_name']!'暂无'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}元/㎡<#else >暂无</#if></em></h4>
+                    <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
+                    <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}元/㎡<#else >暂无数据</#if></em></h4>
                 </div>
             </a>
         </li>
