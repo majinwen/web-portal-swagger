@@ -71,10 +71,11 @@ public class IntelligenceFindHouseController {
         Integer totalPrice = 500;
         List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
         List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
-        model.addAttribute("fhpt",fhpt);
-        model.addAttribute("fhrd",fhrd);
+        model.addAttribute("fhpt", fhpt);
+        model.addAttribute("fhrd", fhrd);
         return "";
     }
+
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
@@ -83,9 +84,23 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping(value ="")
+    @RequestMapping(value = "")
     public String goToStartRobot() {
         return "intelligent-find";
+    }
+
+    /**
+     * 功能描述：判断选择的类型，进行跳转
+     *
+     * @param userType, model
+     * @return java.lang.String
+     * @author zhw
+     * @date 2017/12/18 18:44
+     */
+    @RequestMapping(value = "/xuanzeleixing")
+    @ResponseBody
+    public NashResult xuanZeLeiXing(@RequestParam(value = "userType", required = true) String userType) {
+        return NashResult.build(userType);
     }
 
 
@@ -116,7 +131,7 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
+    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery) {
         IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
         /*intelligenceQuery1.setUserPortrayalType(7);
         intelligenceQuery1.setMinTotalPrice(4500000);
@@ -148,32 +163,6 @@ public class IntelligenceFindHouseController {
         return NashResult.build(IntelligenceFh);
     }
 
-    /**
-     * 功能描述：用户选择区域页面
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 21:42
-     */
-    //选择区域
-   /* @RequestMapping("/chooseDistinct")
-    public String checkDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-        //复制数据信息
-        IntelligenceFh intelligenceFh = new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-        model.addAttribute("intelligenceFh", intelligenceFh);
-        //选择非一居的用户，才出现此问题；
-        if(intelligenceFh.getLayOut()==1){
-
-            //跳转过渡页，生成画像
-            return "";
-        }
-
-
-        //去家庭页面选择小孩和老人
-        return "";
-    }*/
 
     /**
      * 功能描述：区域筛选小区数量
@@ -191,7 +180,7 @@ public class IntelligenceFindHouseController {
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
         //报告生成页
-        return  NashResult.build(intelligenceFh);
+        return NashResult.build(intelligenceFh);
     }
 
     /**

@@ -140,7 +140,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //上下浮动10%
             plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
             plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
-            //数量这边有可能需要需改？？？？？？？？？？？？？？？？？？？？？？
+
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
             //获取该小区所在区域的id

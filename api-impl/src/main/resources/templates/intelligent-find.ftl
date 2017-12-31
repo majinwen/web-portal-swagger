@@ -312,12 +312,7 @@
     $(function () {
         $('#superContainer').fullpage({
             fitToSection: true,
-            resize: false,
-            onLeave: function (index, nextIndex, direction) {
-                if (nextIndex == 3) {
-                    $.fn.fullpage.setAllowScrolling(true, 'down');
-                }
-            }
+            resize: false
         });
 
         $.fn.fullpage.setAllowScrolling(false, 'up, down');
@@ -338,34 +333,18 @@
             });
         }
         // 提交选中用户类型
+        var params;
         $('#userTypeSubmit').on('click', function () {
             if ($('.choose-wrapper').find('.current').length > 0){
-                var params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
+                 params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
                 var userTypeUrl = 'userType=' + params;
                 $.fn.fullpage.moveSectionDown();
                 console.log(userTypeUrl);
                 $.ajax({
                     type: "GET",
                     url: "${router_city('/findhouse/xuanzeleixing')}",
-                    data: userTypeUrl,
-                    success: function(data){
-//                        alert(data.data+"这是啥玩意！！！");
-                    }
+                    data: userTypeUrl
                 });
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
-            }
-        });
-        // 提交选中用户类型
-        var params;
-        $('#userTypeSubmit').on('click', function () {
-            if ($('.choose-wrapper').find('.current').length > 0) {
-                params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
-                var userTypeUrl = 'userType=' + params;
-                $.fn.fullpage.moveSectionDown();
-                console.log(userTypeUrl);
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
             }
         });
 
@@ -407,6 +386,8 @@
                             console.log(priceAnduserTppeUrl);
                             //跳转到用户画像页面
                             //为实现
+                            $('.start-btn').removeClass('none');
+                            $.fn.fullpage.setAllowScrolling(true, 'down');
                         }
                     }
 
@@ -438,6 +419,8 @@
                             console.log(priceAnduserTppeUrl);
                             //跳转到用户画像页面
                             //为实现
+                            $('.start-btn').removeClass('none');
+                            $.fn.fullpage.setAllowScrolling(true, 'down');
                         }
                     }
 
@@ -519,12 +502,14 @@
         var next3;
         $('#submitFamily').on('click', function () {
             $(this).parents('.layer').addClass('none');
+            $('.result-begin').addClass('none');
+            $('.result-container').removeClass('none');
             var childParams = $('#hasChild').find('li.current').data('child');
             var oldManParams = $('#oldMan').find('li.current').data('old-man');
             var familyStructureUrl = '&hasChild=' + childParams + '&oldMan=' + oldManParams;
             next3 = next4 + familyStructureUrl;
-            console.log(familyStructureUrl);
-            //直接到过度页面
+            $('.start-btn').removeClass('none');
+            $.fn.fullpage.setAllowScrolling(true, 'down');
             /*$.ajax({
                 type: 'GET',
                 url: '',
@@ -533,8 +518,6 @@
                     console.log(data);
                 }
             })*/
-            $('.result-begin').addClass('none');
-            $('.result-container').removeClass('none');
         });
     })
 </script>
