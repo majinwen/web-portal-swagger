@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#--<style type="text/css">
+        body {height: auto;}
+        html {height: auto;}
+    </style>-->
 </head>
 <body>
 <header class="main-top-header">
@@ -142,7 +147,7 @@
     </div>
     </div>
 </section>
-<section>
+<section id="result-section">
     <ul id="valueList"><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
@@ -217,7 +222,7 @@
             </a></li>
         </#list>
     </#if></ul>
-    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
+    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 
 <div class="sort-icon"></div>
@@ -301,6 +306,7 @@
 </body>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/dropload.min.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 </html>
