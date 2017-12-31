@@ -18,24 +18,16 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if village['photo']?exists>
+        <#if village['photo']?exists&&(village['photo']?size gt 0)>
             <#list village['photo'] as vpphoto>
-                <#if vpphoto?exists>
-                    <#if vpphoto?? && vpphoto != ''>
-                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                            <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}-tt1200x640" alt="">
-                        </li>
-                    <#else >
-                        <li onclick="initphoto(this,0)" class="swiper-slide">
-                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-                        </li>
-                    </#if>
-                <#else>
-                    <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-                    </li>
-                </#if>
+                <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                    <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}" alt="">
+                </li>
             </#list>
+        <#else>
+            <li onclick="initphoto(this,0)" class="swiper-slide">
+                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
+            </li>
         </#if>
         </ul>
         <div class="banner-title">
@@ -81,9 +73,9 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-            <p>${village['trafficInformation']!'暂无'}</p>
+            <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
-            <#if village['label']?exists>
+            <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
                     <#if label?exists><span>${label}</span></#if>
                 </#list>
@@ -157,7 +149,7 @@
                     <#break >
                 </#if>
                 <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)}">
+                <li><a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
                     <div class="picture-box">
                         <#if reitem['housePhoto']?exists>
                             <#assign photoitem=reitem['housePhoto']>
@@ -190,15 +182,15 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
-                <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
                         (${village['sumHousehold']}户)
                     </#if>
-                    <#if village['buildingStructure']?exists>
-                        ,${village['buildingStructure']}
-                    </#if>
+                </#if>
+                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
+                    ,${village['buildingStructure']}
                 </#if>
                 </div>
             </div>
@@ -206,7 +198,7 @@
                 <div class="info-card-item">
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
-                        <p>人均绿化</p>
+                        <p>绿化率</p>
                     <#if village['avgGreening']?exists>
                         <#if village['avgGreening']?number gt 0>
                             <em>${village['avgGreening']}平方米</em>
@@ -270,7 +262,6 @@
                     <i class="item-three-3"></i>
                     <em>自驾</em>
                     <p>${village['ringRoadName']!'暂无'}</p>
-
                     <span>
                     <#if village['ringRoadDistance']?exists>
                     <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
@@ -395,11 +386,11 @@
                         <span class="expand-type">停车费</span>
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
-                            <#if village['parkingRate']?number gt 0>
-                            ${village['parkingRate']}元/月
-                            <#else >
-                                暂无
-                            </#if>
+                                <#if village['parkingRate']??>
+                                ${village['parkingRate']}元/月
+                                <#else >
+                                    暂无
+                                </#if>
                         </span>
                     <#else >
                         <span class="expand-price">暂无</span>
@@ -514,15 +505,12 @@
 <script>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
     option = {
-        brushLink:null,
         tooltip: {
             trigger: 'axis'
         },
         legend: {
-            data:['楼盘价格','区域价格','商圈价格']
-        },
-        textStyle: {
-            fontSize: 28
+          /*  data:['楼盘价格','区域价格','商圈价格']*/
+           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格']
         },
         xAxis:  {
             type: 'category',
@@ -536,23 +524,62 @@
             }
         },
         series: [
+            <#if (ptCD0?size==0)>
+                {
+                    name: '${village['rc']!'小区'}价格',
+                    type: 'scatter',
+                    coordinateSystem:'cartesian2d',
+                    data:[
+                         <#list mouthList as item >
+                            <#if (item_index == (mouthList?size-1))>
+                            ${village['avgPrice']},
+                            <#else>
+                                NaN,
+                            </#if>
+                         </#list>
+                    ],
+                    symbolSize:25,
+                },
+           <#else>
+               {
+                   name:'${village['rc']!'小区'}价格',
+                   type:'line',
+                   data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                   symbolSize:10,
+                   itemStyle:{
+                       normal:{
+                           lineStyle:{
+                               width:4,
+                           },
+                       },
+                   },
+               },
+            </#if>
             {
-                name:'楼盘价格',
-                type:'line',
-                data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
-            },
-            {
-                name:'区域价格',
+                name:'${village['area']!'区域'}价格',
                 type:'line',
                 data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
+                symbolSize:10,
+                itemStyle:{
+                    normal:{
+                        lineStyle:{
+                            width:4,
+                        },
+                    },
+                },
             },
             {
-                name:'商圈价格',
+                name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
+                symbolSize:10,
+                itemStyle:{
+                       normal:{
+                           lineStyle:{
+                                width:4,
+                           },
+                       },
+                },
             },
         ]
     };

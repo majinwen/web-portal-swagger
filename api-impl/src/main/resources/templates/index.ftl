@@ -41,7 +41,7 @@
             <div class="banner-nav-item index-nav-item"><a href="${router_city('/esf/')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/findhouse/qidong')}">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/findhouse/')}">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>

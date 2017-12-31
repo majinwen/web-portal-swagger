@@ -464,7 +464,7 @@
                 console.log(userTypeUrl);
                 $.ajax({
                     type: "GET",
-                    url: "/ifh/xuanzeleixing",
+                    url: "${router_city('/findhouse/xuanzeleixing')}",
                     data: userTypeUrl,
                     success: function(data){
 //                        alert(data.data+"这是啥玩意！！！");

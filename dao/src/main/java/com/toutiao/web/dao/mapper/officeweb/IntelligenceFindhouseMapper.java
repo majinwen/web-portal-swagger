@@ -23,17 +23,15 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     int insertSelective(IntelligenceFindhouse record);
 
-    int queryPlotCount(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);
+    int queryPlotCount(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);
 
-    int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd,@Param("categoryId") Integer categoryId);
+    int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);
+    List queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);
 
-    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd, @Param("categoryId")Integer categoryId, @Param("distinctId")String distinctId);
+    int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,
+                                                   @Param("layOut")Integer layOut, @Param("distictId")Integer distictId);
 
     List<IntelligenceFindhouse> selectByUserPrice(String totlaPrice);
-
-
-
-
 
     /**
      * 根据用户画像1 A匹配
@@ -81,4 +79,11 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
      * @return
      */
     List<IntelligenceFindhouse> queryByUserType3A(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 搜索量前200
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByStarProperty(IntelligenceQuery intelligenceQuery);
 }

@@ -15,5 +15,5 @@ public interface TotalListedRatioMapper extends BaseDao {
 
     int insertSelective(TotalListedRatio record);
 
-    Double selectByTotalPrice(@Param("plotTotalFirst")Integer plotTotalFirst,@Param("plotTotalEnd")Integer plotTotalEnd);
+    Double selectByTotalPrice(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);
 }

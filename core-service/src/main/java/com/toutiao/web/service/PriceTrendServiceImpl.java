@@ -23,7 +23,6 @@ public class PriceTrendServiceImpl implements PriceTrendService {
    public Map<String,Object> priceTrendList(Integer buildingId,Integer districtId,Integer areaId){
        List<PriceTrend> priceTrendList = priceTrendMapper.newhouseTrendList(buildingId,districtId,areaId);
 
-
        List<PriceTrend> ptCD0 =new ArrayList<>();
        List<PriceTrend> ptCD1 =new  ArrayList<>();
        List<PriceTrend> ptCD2 =new  ArrayList<>();
@@ -36,6 +35,8 @@ public class PriceTrendServiceImpl implements PriceTrendService {
                ptCD2.add(ptitem);
            }
        }
+
+
        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
        List<String> timeList = new LinkedList<>();
        if (ptCD0.size()>ptCD1.size() && ptCD0.size()>ptCD2.size()) {

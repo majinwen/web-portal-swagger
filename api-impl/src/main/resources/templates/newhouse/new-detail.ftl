@@ -6,15 +6,16 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
+    <link rel="stylesheet" href="${staticurl}/css/plot-detail.css">
     <title>新房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
 </head>
 <body>
-<#assign ptCD0 = tradeline['buildingline']>
-<#assign ptCD1 = tradeline['arealine']>
-<#assign ptCD2 = tradeline['tradearealine']>
-<#assign mouthList = tradeline['mouthList']>
+<#--<#assign ptCD0 = tradeline['buildingline']>-->
+<#--<#assign ptCD1 = tradeline['arealine']>-->
+<#--<#assign ptCD2 = tradeline['tradearealine']>-->
+<#--<#assign mouthList = tradeline['mouthList']>-->
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -76,7 +77,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
-            <#if build['building_nickname']?exists><p>别名：${build['building_nickname']}</p></#if>
+            <#if build['building_nickname']??&&(build['building_nickname']!='')><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag">
             <#if (build['building_tags']?exists)&&(build['building_tags']?size>0)>
                 <#list build['building_tags'] as item>
@@ -142,7 +143,7 @@
     </div>
 </div>
 </#if>
-<div class="module-bottom-fill">
+<#--<div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>楼盘描述</h3>
@@ -156,7 +157,242 @@
             <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
         </dl>
     </section>
+</div>-->
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>楼盘描述</h3>
+            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+        </div>
+        <div class="basic-information">
+            <#--<div class="column item-only-one">-->
+                <#--<div class="info-card-item">-->
+                <#--${build['building_name']!'暂无'}<em class="high-light-red">${build['finishdate']!'暂无'}</em>年建成住宅,共<em class="high-light-red">${build['build_count']!'暂无'}栋</em>-->
+                    <#--(${build['totaldoor']!'暂无'}户)-->
+                    <#--<#if build['building_type']?exists>-->
+                        <#--,${build['building_type']}-->
+                    <#--</#if>-->
+                <#--</div>-->
+            <#--</div>-->
+            <div class="column item-column-two">
+                <div class="info-card-item">
+                    <i class="item-two-1"></i>
+                    <div class="info-item-text">
+                        <p>人均绿化</p>
+                                <#if build['virescencerate']??>
+                                    <em>${build['virescencerate']?string("#.####")}平方米</em>
+                                <#else >
+                                    <em>暂无</em>
+                                </#if>
+                   <#-- <#if build['virescencerate']?exists>
+                        <#if village['avgGreening']?number gt 0>
+                            <em>${village['avgGreening']}平方米</em>
+                        <#else >
+                            <em>暂无</em>
+                        </#if>
+                    <#else >
+                        <em>暂无</em>
+                    </#if>-->
+                    </div>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-two-2"></i>
+                    <div class="info-item-text">
+                        <p>车位配比</p>
+                        <#if build['park_radio']?exists && build['park_radio']!=''><em>${build['park_radio']}户/车位</em><#else><em>暂无</em></#if>
+                    </div>
+                </div>
+            </div>
+            <div class="column item-column-two">
+                <div class="info-card-item">
+                    <i class="item-two-3"></i>
+                    <div class="info-item-text">
+                        <p>户均电梯</p>
+                        <em>22</em>
+                    </div>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-two-4"></i>
+                    <div class="info-item-text">
+                        <p>空气质量</p>
+                        <em>${build['air_quality']!'暂无'}</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>交通信息</h3>
+        </div>
+        <div class="basic-information">
+            <div class="column item-column-three">
+
+                <div class="info-card-item">
+                    <i class="item-three-1"></i>
+                    <em>公交</em>
+                    <p id="busStation">暂无</p>
+                    <span id="busStationNumber">暂无</span>
+                </div>
+                <div class="info-card-item">
+                    <i class="item-three-2"></i>
+                    <em>地铁</em>
+                    <p id="subwayLine">暂无</p>
+                    <span id="subwayDistance">暂无</span>
+                </div>
+
+                <div class="info-card-item">
+                    <i class="item-three-3"></i>
+                    <em>自驾</em>
+                    <p>${build['ringRoadName']!"暂无"}</p>
+                    <span>2km</span>
+                   <#-- <#if village['ringRoadDistance']?exists>-->
+                    <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
+                    <#--${(village['ringRoadDistance']/1000)?string('#.#')}km-->
+                    <#--<#else >-->
+                    <#--暂无-->
+                    <#--</#if>-->
+                       <#-- <#if village['ringRoadDistance']?number gt 0>
+                        ${(village['ringRoadDistance']/1000)?string('#.#')}km
+                        <#else>
+                            暂无
+                        </#if>
+                    </#if>-->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
+        </div>
+        <div class="expand-content content-visible">
+            <div class="map-education-box">
+                <ul class="map-message-btn clear" data-type="教育培训">
+                    <li class="parent-child" data-type="亲子教育"><i></i><span>亲子</span></li>
+                    <li class="kindergarten" data-type="幼儿园"><i></i><span>幼儿园</span></li>
+                    <li class="primary-school" data-type="小学"><i></i><span>小学</span></li>
+                    <li class="middle-school" data-type="中学"><i></i><span>中学</span></li>
+                    <li class="university" data-type="高等院校"><i></i><span>大学</span></li>
+                </ul>
+            </div>
+            <ul class="result-data-expand" id="educationListDom"></ul>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>休闲购物<span class="subtitle">新世界丽樽生活圈</span></h3>
+        </div>
+        <div class="expand-content content-visible">
+            <div class="map-shopping-box">
+                <ul class="map-message-btn" data-type="休闲购物">
+                    <li class="vegetable-market" data-type="菜市场"><span>菜市场</span><i></i></li>
+                    <li class="supermarket" data-type="超市"><span>超市</span><i></i></li>
+                    <li class="shopping-mall" data-type="商场"><span>商场</span><i></i></li>
+                    <li class="dining-room" data-type="餐厅"><span>餐厅</span><i></i></li>
+                    <li class="fitness" data-type="健身中心"><span>健身</span><i></i></li>
+                </ul>
+                <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
+            </div>
+            <ul class="result-data-expand height-type" id="shoppintListDom"></ul>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill" id="hospitalListWrapper">
+    <section>
+        <div class="module-header-message">
+            <h3>医疗配套</h3>
+            <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+        </div>
+        <div class="expand-content">
+            <ul class="result-data-expand" id="hospitalListDom"></ul>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>生活成本</h3>
+            <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+        </div>
+        <div class="expand-content">
+            <ul class="result-data-expand">
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">水费</span>
+                    <#if (build['water_supply']?exists) && build['water_supply'] == "商水">
+                        <span class="expand-price">6元/吨</span>
+                    <#else >
+                        <span class="expand-price">5元/吨</span>
+                    </#if>
+                    </p>
+                <#--<span class="expand-distance tips">居民用水价格范围为1-4元/吨</span>-->
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">电费</span>
+                    <#if (build['electric_supply']?exists) && build['electric_supply'] == "商电">
+                        <span class="expand-price">1.33元/度</span>
+                    <#else >
+                        <span class="expand-price">0.48元/度</span>
+                    </#if>
+                    </p>
+                </li>
+
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">物业费</span>
+                 <#--   <#if village['propertyFee']?exists>
+                        <span class="expand-price">
+                            <#if village['propertyFee']?number gt 0>
+                            ${village['propertyFee']}元/㎡·月
+                            <#else >
+                                暂无
+                            </#if>
+                        </span>
+                    <#else >
+                        <span class="expand-price">暂无</span>
+                    </#if>-->
+                        <#if (build['propertyfee']?exists)>
+                            <span class="expand-price">${build['propertyfee']}元/㎡·月</p>
+                        <#else>暂无
+                        </#if>
+                </li>
+                <li>
+                    <p>
+                        <i class="expand-icon living-cost"></i>
+                        <span class="expand-type">停车费</span>
+                   <#-- <#if village['parkingRate']?exists&&village['parkingRate']!=''>
+                        <span class="expand-price">
+                            <#if village['parkingRate']?number gt 0>
+                            ${village['parkingRate']}元/月
+                            <#else >
+                                暂无
+                            </#if>
+                        </span>
+                    <#else >
+                        <span class="expand-price">暂无</span>
+                    </#if>-->
+
+                        <#if (build['car_rent_price']?exists)>
+                            <span class="expand-price">${build['car_rent_price']}元/月</p>
+                        <#else>暂无
+                        </#if>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
 <#if (layout?exists) && (layout?size>0)>
 <div class="module-bottom-fill">
     <section>
@@ -213,7 +449,7 @@
         </a>
     </section>
 </div>
-<#if  (mouthList?size>0)>
+<#--<#if  (mouthList?size>0)>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -224,7 +460,7 @@
         </div>
     </section>
 </div>
-</#if>
+</#if>-->
 <section>
     <div class="module-header-message">
         <h3>看了本楼盘的用户还看了</h3>
@@ -252,17 +488,18 @@
     </#list>
     </#if>
     </ul>
+    <script>
+        var locationnumber = '${build['location']}';
+        var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
+    </script>
 </section>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <#--<a href="#" class="contact-share"><i></i>分享</a>-->
-            <#--<a href="#" class="contact-collect"><i></i>收藏</a>-->
             <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
 </div>
-
 
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
@@ -270,7 +507,8 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script>
+<script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<#--<script>
     var myChartline = echarts.init(document.getElementById('newhousetrad'));
     option = {
         brushLink:null,
@@ -310,6 +548,6 @@
         ]
     };
     myChartline.setOption(option);
-</script>
+</script>-->
 </body>
 </html>

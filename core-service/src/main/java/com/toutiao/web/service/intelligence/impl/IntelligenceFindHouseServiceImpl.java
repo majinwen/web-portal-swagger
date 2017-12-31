@@ -64,8 +64,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //复制信息
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
             //初始化
-            Integer plotTotalFirst = null;
-            Integer plotTotalEnd = null;
+            Double plotTotalFirst = null;
+            Double plotTotalEnd = null;
             String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
@@ -73,15 +73,15 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //获取用户类型
             String userType = intelligenceFh.getUserType();
@@ -102,8 +102,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
                 totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.0000").format(totalPriceRate)) * 100).append("%").toString();
+                intelligenceFh.setRatio(totalRate);
+            } else {
+                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.0000").format(0)) * 100).append("%").toString());
             }
-            intelligenceFh.setRatio(totalRate);
             intelligenceFh.setPlotCount(plotCount);
             return intelligenceFh;
         } catch (Exception e) {
@@ -122,8 +124,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //复制对象信息
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
             //初始化
-            Integer plotTotalFirst = null;
-            Integer plotTotalEnd = null;
+            Double plotTotalFirst = null;
+            Double plotTotalEnd = null;
             String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
@@ -131,34 +133,77 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
+            //数量这边有可能需要需改？？？？？？？？？？？？？？？？？？？？？？
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
-
+            //获取该小区所在区域的id
+            List<String> list = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+            intelligenceFh.setDistictList(list);
             //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
             if (StringTool.isNotBlank(intelligenceFh.getLayOut()) && intelligenceFh.getLayOut() >= 3) {
                 //教育配套
-                intelligenceFh.setSchoolFlag(true);
+                intelligenceFh.setSchoolFlag(1);
                 //医院配套
-                intelligenceFh.setHospitalFlag(true);
+                intelligenceFh.setHospitalFlag(1);
             }
             //获取相对应的比率
-            //比率
-            TotalRoomRatio roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
-            if (StringTool.isNotBlank(roomRatio)) {
-                //用户画像类型
-                intelligenceFh.setUserPortrayalType(roomRatio.getUserPortrayalType());
-                //用户比率
-                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.0000").format(roomRatio.getRatio())) * 100).append("%").toString());
+            Integer layOut = intelligenceFh.getLayOut();
+            if (StringTool.isNotBlank(layOut) && layOut == 6) {
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+                if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
+                    if (roomRatio.size() > 1) {
+                        Double plotRatio = null;
+                        for (TotalRoomRatio ratio : roomRatio) {
+                            plotRatio += ratio.getRatio();
+                        }
+                        //用户比率
+                        intelligenceFh.setRatio(plotRatio + "%");
+                    }
+                    //用户比率
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                    //用户画像类型
+                    intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
+
+                } else {
+                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
+                        //用户画像类型
+                        intelligenceFh.setUserPortrayalType(4);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
+                        intelligenceFh.setUserPortrayalType(1);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                }
+            } else {
+                //比率
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+                if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
+                    //用户画像类型
+                    intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
+                    //用户比率
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                } else {
+                    if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
+                        //用户画像类型
+                        intelligenceFh.setUserPortrayalType(4);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                    if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
+                        intelligenceFh.setUserPortrayalType(1);
+                        intelligenceFh.setRatio(0.5 + "%");
+                    }
+                }
             }
             //小区数量
             intelligenceFh.setPlotCount(count);
@@ -188,8 +233,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
 
             //初始化
-            Integer plotTotalFirst = null;
-            Integer plotTotalEnd = null;
+            Double plotTotalFirst = null;
+            Double plotTotalEnd = null;
             String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
@@ -197,22 +242,25 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
                 plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
                 plotTotal = intelligenceFh.getPreconcTotal();
                 //上下浮动10%
-                plotTotalFirst = (Integer.valueOf(plotTotal) - 10) * 10000;
-                plotTotalEnd = (Integer.valueOf(plotTotal) + 10) * 10000;
+                plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+                plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
             }
+            //保存上下浮动数
+            intelligenceFh.setPlotTotalFirst(plotTotalFirst);
+            intelligenceFh.setPlotTotalEnd(plotTotalEnd);
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");
             for (int i = 0; i < split.length; i++) {
                 //通过总价和户型查询小区数量
-                count += intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(
-                        plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), split[i]);
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
+                count += count1;
             }
             //保存查询的小区数量
             intelligenceFh.setPlotCount(count);
@@ -225,6 +273,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
     @Override
     public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery) {
+        //搜索量前200
+        List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
+
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
@@ -233,27 +284,27 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1B(list);
+            List<IntelligenceFindhouse> finalList = recommend1B(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1C(list);
+            List<IntelligenceFindhouse> finalList = recommend1C(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2A(list);
+            List<IntelligenceFindhouse> finalList = recommend2A(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2B(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2B(list);
+            List<IntelligenceFindhouse> finalList = recommend2B(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2C(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2C(list);
+            List<IntelligenceFindhouse> finalList = recommend2C(list,starPropertyList);
             return finalList;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
@@ -375,7 +426,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend1B(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend1B(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -399,8 +450,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
 
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
 
         //1km内有地铁，随机2个
@@ -429,7 +480,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend1C(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend1C(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -453,8 +504,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
 
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
 
         //换手率最高的前20%，随机2个
@@ -500,7 +551,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend2A(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend2A(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -522,8 +573,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
         //环线在四环内，随机2个
         List listFour = new ArrayList();
@@ -550,7 +601,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/28 16:55
      */
-    public List<IntelligenceFindhouse> recommend2B(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend2B(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -573,8 +624,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
         //环线在四环内，随机2个
         List listFour = new ArrayList();
@@ -601,7 +652,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2017/12/29 12:50
      */
-    public List<IntelligenceFindhouse> recommend2C(List<IntelligenceFindhouse> listHouse) {
+    public List<IntelligenceFindhouse> recommend2C(List<IntelligenceFindhouse> listHouse,List<IntelligenceFindhouse> starPropertyList) {
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
@@ -624,8 +675,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
         //搜索量前200，随机1个
-        if (null != list && list.size() >= 1) {
-            removeRepetition(finalList, list, 1);
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetition(finalList, starPropertyList, 1);
         }
         //环线在三环内，随机2个
         List listFour = new ArrayList();
@@ -653,13 +704,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @date 2017/12/29 12:50
      */
     public List<IntelligenceFindhouse> recommend3A(List<IntelligenceFindhouse> listHouse) {
-        PriceTrend priceTrend = new PriceTrend();
         List finalList = new ArrayList();
         Random random = new Random();
         List<IntelligenceFindhouse> list = null;
 
         for (int i = 0; i < listHouse.size(); i++) {
-            if (null == listHouse.get(i).getTurnoverRate() || listHouse.get(i).getTurnoverRate().intValue() <= 0) {
+            if (null == listHouse.get(i).getTurnoverRate()) {
                 BigDecimal bigDecimal = new BigDecimal(0);
                 listHouse.get(i).setTurnoverRate(bigDecimal);
             }
@@ -676,7 +726,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 if (o2.getTurnoverRate().doubleValue() == o1.getTurnoverRate().doubleValue()) {
                     return 0;
                 }
-                return 0;
+                return -1;
             }
         });
 
@@ -695,16 +745,25 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //计算平均区域价格
             int priceNumber = 0;
             int totelPrice = 0;
-            priceTrend.setBuildingId(list.get(i).getNewcode());
-            List<PriceTrend> priceTrends = priceTrendMapper.searchPriceTrendList(priceTrend);
+            List<PriceTrend> priceTrends = priceTrendMapper.newhouseTrendList(list.get(i).getNewcode(),null,null);
             for (int j = 0; j < priceTrends.size(); j++) {
                 if (priceTrends.get(j).getPrice().intValue() != 0) {
                     totelPrice += priceTrends.get(j).getPrice().intValue();
                     priceNumber++;
                 }
             }
-            if (totelPrice != 0 && list.get(i).getPrice().doubleValue() < ((totelPrice / priceNumber) * 0.9)) {
-                listFour.add(list.get(i));
+            if (totelPrice != 0 ) {
+                double areaAvgprive = (totelPrice / priceNumber) * 0.9;
+                Double price = 0.0;
+                if (null !=list.get(i).getPrice()){
+                    price = list.get(i).getPrice().doubleValue();
+                }
+                if (null !=list.get(i).getEsfPrice()){
+                    price = list.get(i).getEsfPrice().doubleValue();
+                }
+                if ((null !=list.get(i).getPrice()||null !=list.get(i).getEsfPrice()) && (price<areaAvgprive)){
+                    listFour.add(list.get(i));
+                }
             }
         }
         if (listFour.size() >= 3) {
