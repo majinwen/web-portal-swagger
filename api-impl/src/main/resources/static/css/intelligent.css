@@ -486,9 +486,11 @@ hr {
   width: 1.6266666667rem;
   height: 1.6266666667rem;
   line-height: 1.6266666667rem;
+  margin: 1.3333333333rem auto;
   text-align: center;
   -webkit-border-radius: 50%;
-  border-radius: 50%; }
+  border-radius: 50%;
+  border: 0.0133333333rem solid #0a0724; }
   [data-dpr="1"] .page3 .page-content .list-item li {
     font-size: 18px; }
   [data-dpr="2"] .page3 .page-content .list-item li {

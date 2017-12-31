@@ -331,10 +331,12 @@ $inteColorRed: #e42929;
                 width: rem(122);
                 height: rem(122);
                 line-height: rem(122);
+                margin: rem(100) auto;
                 text-align: center;
                 @include font-dpr(36);
                 -webkit-border-radius: 50%;
                 border-radius: 50%;
+                border: rem(1) solid $inteBlack;
             }
         }
 

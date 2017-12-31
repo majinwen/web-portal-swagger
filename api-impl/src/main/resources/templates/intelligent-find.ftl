@@ -74,7 +74,7 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1">
+    <div class="section page1 active">
         <div class="bgbox bg1">
             <div class="page-content">
                 <h1>智能找房</h1>
@@ -129,7 +129,7 @@
             </div>
         </div>
     </div>
-    <div class="section page3 active">
+    <div class="section page3">
         <div class="bgbox bg3">
             <div class="page-content">
                 <div class="result-text">
