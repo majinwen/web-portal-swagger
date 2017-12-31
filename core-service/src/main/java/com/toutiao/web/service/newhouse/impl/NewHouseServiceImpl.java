@@ -141,6 +141,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                 propertyType[i] = py[i];
             }
             booleanQueryBuilder.must(termsQuery("property_type_id",propertyType));
+        }else{
+            booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
         }
 
         //电梯
@@ -226,7 +228,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==0){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
@@ -236,7 +238,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.DESC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},

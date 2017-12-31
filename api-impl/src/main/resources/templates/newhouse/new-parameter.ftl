@@ -15,7 +15,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2> ${discript['building_name']!'暂无'}</h2>
-            <p><#if discript['building_nickname']??>别名：${discript['building_nickname']}</#if></p>
+            <#if discript['building_nickname']??&&(discript['building_nickname']!='')><p>别名：${discript['building_nickname']}</p></#if>
             <div class="primary-header-tag">
                 <#if discript['building_tags']?exists&&(discript['building_tags']?size>0)>
                     <#assign tags = discript['building_tags']>
@@ -64,10 +64,10 @@
                 <p>占地面积：<#if discript['ground_area']?exists>${discript['ground_area']}㎡<#else>暂无</#if></p>
                 <p>建筑面积：<#if discript['purpose_area']?exists>${discript['purpose_area']}㎡<#else>暂无</#if></p>
                 <p>容积率：<#if discript['dimension']?exists>${discript['dimension']}<#else>暂无</#if></p>
-                <p>绿化率：<#if discript['virescencerate']?exists>${discript['virescencerate']}%<#else>暂无</#if></p>
+                <p>绿化率：<#if discript['virescencerate']?exists>${discript['virescencerate']?string("#.##")}%<#else>暂无</#if></p>
                 <p>规划户数：<#if discript['totaldoor']?exists>${discript['totaldoor']}<#else>暂无</#if></p>
                 <p>规划车位：<#if discript['park_space']?exists>${discript['park_space']}<#else>暂无</#if></p>
-                <p>车位配比：<#if discript['park_radio']?exists>${discript['park_radio']}<#else>暂无</#if></p>
+                <p>车位配比：<#if discript['park_radio']?exists && discript['park_radio']!="">${discript['park_radio']}<#else>暂无</#if></p>
             </li>
         </ul>
     </section>
@@ -82,10 +82,20 @@
                 <p>物业类型：<#if discript['property_type']?exists>${discript['property_type']}<#else>暂无</#if></p>
                 <p>物业公司：<#if discript['propertymanage']?exists>${discript['propertymanage']}<#else>暂无</#if></p>
                 <p>物业费：<#if discript['propertyfee']?exists>${discript['propertyfee']}<#else>暂无</#if></p>
-                <p>供暖：<#if discript['heating_type']?exists>${discript['heating_type']}<#else>暂无</#if></p>
-                <p>供水：暂无</p>
-                <p>供电：暂无</p>
-                <p>燃气：暂无</p>
+                <p>供暖：<#if discript['heating_type']?exists && discript['heating_type'] == 0>未知
+
+                                <#if discript['heating_type']?exists && discript['heating_type'] == 1>
+                                    集中供暖
+                                </#if>
+
+                            <#if discript['heating_type']?exists && discript['heating_type'] == 2>
+                                自供暖
+                            </#if>
+                <#else>
+                                暂无</#if></p>
+                <p>供水：<#if discript['water_supply']?exists>${discript['water_supply']}<#else>暂无</#if></p>
+                <p>供电：<#if discript['electric_supply']?exists>${discript['electric_supply']}<#else>暂无</#if></p>
+                <#--<p>燃气：<#if discript['heating_type']?exists>${discript['heating_type']}<#else>暂无</#if></p>-->
             </li>
         </ul>
     </section>

@@ -248,7 +248,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //去未删除的房源信息
-           /* booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));*/
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
             /**
              * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
              */

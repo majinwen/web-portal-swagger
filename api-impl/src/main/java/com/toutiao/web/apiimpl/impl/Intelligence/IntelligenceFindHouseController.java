@@ -17,14 +17,15 @@ import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping("/qidong")
+    @RequestMapping(value ="")
     public String goToStartRobot() {
         return "intelligent-find";
     }
@@ -95,13 +96,10 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping("/xuanzeleixing")
+    @RequestMapping(value = "/xuanzeleixing")
     @ResponseBody
-    public NashResult goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
-        /*//将数据传递到页面
-        model.addAttribute("userType", userType);
-        //去价格页面*/
-        return NashResult.build(userType);
+    public NashResult xuanZeLeiXing(@RequestParam(value = "userType", required = true) String userType) {
+       return NashResult.build(userType);
     }
 
     /**
@@ -115,12 +113,8 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/goCheckPrice")
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-        //判断页面传递所需的参数是否为空
-        if (StringTool.isBlank(intelligenceQuery.getDownPayMent())
-                || StringTool.isBlank(intelligenceQuery.getMonthPayMent())
-                || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
-            return NashResult.Fail("message", "请选择首付/月供/");
-        }
+        intelligenceQuery.setPreconcTotal("400");
+        intelligenceQuery.setUserType("1");
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
@@ -186,7 +180,9 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/userCheckCategoryPage")
     @ResponseBody
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-
+        intelligenceQuery.setPreconcTotal("400");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setLayOut(3);
         //根据户型与总价条件赛选条件
         IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
 
@@ -230,7 +226,10 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/queryPlotCountByDistrict")
     public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-
+        intelligenceQuery.setPreconcTotal("400");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setLayOut(3);
+        intelligenceQuery.setDistrictId("105046");
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
         model.addAttribute("intelligenceFh", intelligenceFh);
@@ -253,8 +252,8 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
         //若用户选择“无小孩”或“18岁以上”，则去掉页面3中的教育配套标签；
         if ("0".equalsIgnoreCase(intelligenceFh.getUserType()) || "5".equalsIgnoreCase(intelligenceFh.getUserType())) {
-            intelligenceFh.setSchoolFlag(false);
-            intelligenceFh.setHospitalFlag(false);
+            intelligenceFh.setSchoolFlag(0);
+            intelligenceFh.setHospitalFlag(0);
         }
         model.addAttribute("intelligenceFh", intelligenceFh);
         //过渡页vs封面
