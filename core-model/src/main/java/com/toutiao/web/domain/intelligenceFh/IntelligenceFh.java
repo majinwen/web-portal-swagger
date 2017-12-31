@@ -23,14 +23,6 @@ public class IntelligenceFh {
      * 月供
      */
     private  String monthPayMent;
-    /**
-     * 上浮总价
-     */
-    private  Double plotTotalFirst ;
-    /**
-     *下浮总价
-     */
-    private Double plotTotalEnd ;
 
     /**
      * 用户类型(1--自住 刚需,2--自住 改善,3--出租 投资)
@@ -48,11 +40,11 @@ public class IntelligenceFh {
     /**
      * 教育配套标签标记(有1,无0)
      */
-    private Integer schoolFlag;
+    private Integer schoolFlag=0;
 
     //医疗配套标签标记(有1,无0)
 
-    private Integer hospitalFlag;
+    private Integer hospitalFlag=0;
 
     //用户填入的页面总价信息
     private String preconcTotal;

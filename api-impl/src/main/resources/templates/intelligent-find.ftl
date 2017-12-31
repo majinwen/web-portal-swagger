@@ -141,8 +141,8 @@
                             <p>开启智能找房之旅</p>
                         </div>
                         <div class="result-container none">
-                            <p>为您匹配了<em class="high-light-red">234</em>个小区</p>
-                            <p>有<em class="high-light-red">37%</em>的用户和您的需求相同</p>
+                            <p id="plot_Count">为您匹配了<em class="high-light-red"></em>个小区</p>
+                            <p id="plot_Ratio">有<em class="high-light-red"></em>的用户和您的需求相同</p>
                         </div>
                     </div>
                 </div>
@@ -276,7 +276,7 @@
                                 <label>老人</label>
                                 <ul class="choose-radio" id="oldMan">
                                     <li data-old-man='0' class="current"><i></i><span>无</span></li>
-                                    <li data-old-man='1' ><i></i><span>有</span></li>
+                                    <li data-old-man='1'><i></i><span>有</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -332,7 +332,7 @@
             $(this).addClass('current');
         });
 
-        if ($('.choose-wrapper').find('.current').length > 0){
+        if ($('.choose-wrapper').find('.current').length > 0) {
             $('.button').on('click', function () {
                 $.fn.fullpage.moveSectionDown();
             });
@@ -356,6 +356,18 @@
                 $('.result-container').removeClass('none');
             }
         });
+        // 提交选中用户类型
+        var params;
+        $('#userTypeSubmit').on('click', function () {
+            if ($('.choose-wrapper').find('.current').length > 0) {
+                params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
+                var userTypeUrl = 'userType=' + params;
+                $.fn.fullpage.moveSectionDown();
+                console.log(userTypeUrl);
+                $('.result-begin').addClass('none');
+                $('.result-container').removeClass('none');
+            }
+        })
 
         // 切换预算
         $('.price-tab').on('click', 'span', function () {
@@ -369,19 +381,36 @@
             }
         });
         // 提交预算
+        var priceAnduserTppeUrl;
+        var userPortrayalType;
         $('#submitPrice').on('click', function () {
             if ($('.total-price').hasClass('current')) {
                 $(this).parents('.layer').addClass('none');
                 var price = $('.total-conent').find('.slide-text').text();
-                console.log('总价=' + price);
-                /*$.ajax({
+                priceAnduserTppeUrl = 'userType=' + params + '&preconcTotal=' + price;
+                console.log(priceAnduserTppeUrl);
+                $.ajax({
                     type: 'GET',
-                    url: '',
-                    data: layOut,
+                    url: '${router_city('/findhouse/goCheckPrice')}',
+                    data: priceAnduserTppeUrl,
                     success: function (data) {
-                        console.log(data);
+                        console.log(data.data);
+                        $("#plot_Count").find("em").html(data.data.plotCount);
+                        $("#plot_Ratio").find("em").html(data.data.ratio);
+                        params = data.data.userType;
+                        console.log(params);
+                        //用户类型是第三类
+                        if (params == 3) {
+                            ////将第七种画像附给当前用户userPortrayalType
+                            userPortrayalType = data.data.userPortrayalType = 7;
+                            priceAnduserTppeUrl += "&userPortrayalType=" + userPortrayalType
+                            console.log(priceAnduserTppeUrl);
+                            //跳转到用户画像页面
+                            //为实现
+                        }
                     }
-                });*/
+
+                });
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
                 return
@@ -389,15 +418,30 @@
                 $(this).parents('.layer').addClass('none');
                 var downPrice = $('.down-slide').find('.slide-text').text();
                 var monthPrce = $('.month-slide').find('.slide-text').text();
+                priceAnduserTppeUrl = 'userType=' + params + '&downPayMent=' + downPrice + '&monthPayMent=' + monthPrce;
                 console.log('首付=' + downPrice, '月供=' + monthPrce);
-                /*$.ajax({
+                $.ajax({
                     type: 'GET',
-                    url: '',
-                    data: layOut,
+                    url: '${router_city('/findhouse/goCheckPrice')}',
+                    data: priceAnduserTppeUrl,
                     success: function (data) {
-                        console.log(data);
+                        console.log(data.data);
+                        $("#plot_Count").find("em").html(data.data.plotCount);
+                        $("#plot_Ratio").find("em").html(data.data.ratio);
+                        params = data.data.userType;
+                        console(params);
+                        //用户类型是第三类
+                        if (params == 3) {
+                            ////将第七种画像附给当前用户userPortrayalType
+                            userPortrayalType = data.data.userPortrayalType = 7;
+                            priceAnduserTppeUrl += "&userPortrayalType=" + userPortrayalType
+                            console.log(priceAnduserTppeUrl);
+                            //跳转到用户画像页面
+                            //为实现
+                        }
                     }
-                })*/
+
+                });
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
             }
@@ -408,44 +452,29 @@
             $(this).addClass('current').siblings().removeClass('current');
         });
         // 提交户型
-        $('#submitHouseType').on('click', function() {
+        var next2;
+        $('#submitHouseType').on('click', function () {
             $(this).parents('.layer').addClass('none');
             var params = $('#layOut').find('li.current').data('layout');
-            var layOut = 'layOut=' + params;
-            console.log(layOut);
-            /*$.ajax({
+            var layOut = '&layOut=' + params;
+            next2 = priceAnduserTppeUrl + layOut;
+            $.ajax({
                 type: 'GET',
-                url: '',
-                data: layOut,
+                url: '${router_city('/findhouse/userCheckCategoryPage')}',
+                data: next2,
                 success: function (data) {
-                    console.log(data);
-                }
-            })*/
-        });
+                    console.log(data.data);
+                    $("#plot_Count").find("em").html(data.data.plotCount);
+                    $("#plot_Ratio").find("em").html(data.data.ratio);
+                    params = data.data.userType;
+                    next2 += "&hospitalFlag=" + data.data.hospitalFlag + "&schoolFlag=" + data.data.schoolFlag+"&ratio="+data.data.ratio;
+                    console.log(next2)
+                    //区域数组
+                    console.log(data.data.distictList)
+                    //没写完
 
-        // 选择家庭结构
-        $('#family-box').on('click', 'li', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-        });
-        // 提交选中家庭结构内容
-        $('#submitFamily').on('click', function () {
-            $(this).parents('.layer').addClass('none');
-            var childParams = $('#hasChild').find('li.current').data('child');
-            var oldManParams = $('#oldMan').find('li.current').data('old-man');
-            var familyStructureUrl = 'hasChild=' + childParams + '&oldMan=' + oldManParams;
-            console.log(familyStructureUrl);
-            /*$.ajax({
-                type: 'GET',
-                url: '',
-                data: layOut,
-                success: function (data) {
-                    console.log(data);
                 }
-            })*/
-            $('.result-begin').addClass('none');
-            $('.result-container').removeClass('none');
-            $('.start-btn').removeClass('none');
-            $.fn.fullpage.setAllowScrolling(true, 'down');
+            })
         });
 
         // 选择区域
@@ -457,22 +486,58 @@
             }
         });
         // 提交选中区域
+        var next4;
         $('#submitArea').on('click', function () {
             if ($('.area-content').find('li.current').length == 3) {
                 $(this).parents('.layer').addClass('none');
+                next4+=next2+"&districtId="+"106013";
                 console.log(1);
-                /*$.ajax({
+                $.ajax({
                     type: 'GET',
-                    url: '',
-                    data: layOut,
+                    url: '${router_city('/findhouse/queryPlotCountByDistrict')}',
+                    data: next4,
                     success: function (data) {
                         console.log(data);
+                        //此处要判断是否是一居用户
+                        if(data.data.layOut==1){
+                            //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
+
+                        }
+
                     }
-                })*/
+                })
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
             }
         });
+
+        // 选择家庭结构
+        $('#family-box').on('click', 'li', function () {
+            $(this).addClass('current').siblings().removeClass('current');
+        });
+        // 提交选中家庭结构内容
+        var next3;
+        $('#submitFamily').on('click', function () {
+            $(this).parents('.layer').addClass('none');
+            var childParams = $('#hasChild').find('li.current').data('child');
+            var oldManParams = $('#oldMan').find('li.current').data('old-man');
+            var familyStructureUrl = '&hasChild=' + childParams + '&oldMan=' + oldManParams;
+            next3 = next4 + familyStructureUrl;
+            console.log(familyStructureUrl);
+            //直接到过度页面
+            /*$.ajax({
+                type: 'GET',
+                url: '',
+                data: layOut,
+                success: function (data) {
+                    console.log(data);
+                }
+            })*/
+            $('.result-begin').addClass('none');
+            $('.result-container').removeClass('none');
+        });
+
+
     })
 </script>
 </body>
