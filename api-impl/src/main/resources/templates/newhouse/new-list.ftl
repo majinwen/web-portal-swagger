@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#--<style type="text/css">
+        body {height: auto;}
+        html {height: auto;}
+    </style>-->
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>

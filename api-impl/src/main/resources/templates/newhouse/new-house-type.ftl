@@ -42,7 +42,7 @@
             <div><#if datail['layout_img']?exists>
                 <#assign layoutimgs = datail['layout_img']?split(",")>
                 <#list layoutimgs as layoutimg>
-                    <img src="${qiniuimage}/${layoutimg}" alt="户型图">
+                    <img src="${qiniuimage}/${layoutimg}-ttw800" alt="户型图">
                 </#list>
             <#else>
                 <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">

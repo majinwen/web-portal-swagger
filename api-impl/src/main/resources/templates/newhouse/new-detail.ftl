@@ -408,8 +408,8 @@
                         <div class="picture-box">
                             <#if item['layout_img']?exists>
                                 <#assign layoutimgs = item['layout_img']?split(",")>
-                                <img src="${qiniuimage}/${layoutimgs[0]}" alt="户型图">
-                                <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="户型图">
+                                <img src="${qiniuimage}/${layoutimgs[0]}-tt400x300" alt="${build['building_name']}">
+                                <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="${build['building_name']}">
                             </#if>
                             <span class="sale-state">在售</span>
                         </div>
