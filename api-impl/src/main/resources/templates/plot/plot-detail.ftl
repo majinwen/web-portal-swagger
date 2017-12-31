@@ -18,24 +18,16 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if village['photo']?exists>
+        <#if village['photo']?exists&&(village['photo']?size gt 0)>
             <#list village['photo'] as vpphoto>
-                <#if vpphoto?exists>
-                    <#if vpphoto?? && vpphoto != ''>
-                        <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                            <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}-tt1200x640" alt="">
-                        </li>
-                    <#else >
-                        <li onclick="initphoto(this,0)" class="swiper-slide">
-                            <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-                        </li>
-                    </#if>
-                <#else>
-                    <li onclick="initphoto(this,0)" class="swiper-slide">
-                        <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-                    </li>
-                </#if>
+                <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
+                    <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}" alt="">
+                </li>
             </#list>
+        <#else>
+            <li onclick="initphoto(this,0)" class="swiper-slide">
+                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
+            </li>
         </#if>
         </ul>
         <div class="banner-title">
@@ -83,7 +75,7 @@
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
             <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
-            <#if village['label']?exists>
+            <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
                     <#if label?exists><span>${label}</span></#if>
                 </#list>
@@ -157,7 +149,7 @@
                     <#break >
                 </#if>
                 <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)}">
+                <li><a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
                     <div class="picture-box">
                         <#if reitem['housePhoto']?exists>
                             <#assign photoitem=reitem['housePhoto']>
@@ -190,15 +182,15 @@
             <div class="column item-only-one">
                 <div class="info-card-item">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
-                <#if village['sumBuilding']?exists>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
                         (${village['sumHousehold']}户)
                     </#if>
-                    <#if village['buildingStructure']?exists>
-                        ,${village['buildingStructure']}
-                    </#if>
+                </#if>
+                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
+                    ,${village['buildingStructure']}
                 </#if>
                 </div>
             </div>
