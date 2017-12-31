@@ -14,6 +14,7 @@ import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -267,6 +268,11 @@ public class PlotServiceImpl implements PlotService {
                 String[] HeatingMode = heatingMode.split(",");
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
+
+            //小区默认排序
+            //级别从小到大  分数由小到大  先发布后发布
+            srb.addSort("level",SortOrder.ASC).addSort("plotScore",SortOrder.DESC).addSort("is_approve",SortOrder.DESC);
+
             //排序
             //均价
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {

@@ -65,6 +65,7 @@ public class VillageEntity {
     private String ringRoadName;  //详情环线
     private String ringRoadDistance;  //详情环线距离
     private String is_approve;  //审批状态（0-未发布，1-已发布）
+    private Integer plotScore;  //小区分数
 
 
 //    private Double pm;  //pm2.5

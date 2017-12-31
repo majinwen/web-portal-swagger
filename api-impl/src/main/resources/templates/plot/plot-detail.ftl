@@ -73,7 +73,7 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
-            <p>${village['trafficInformation']!'暂无'}</p>
+            <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
