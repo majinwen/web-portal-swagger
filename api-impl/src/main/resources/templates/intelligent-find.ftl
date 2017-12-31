@@ -388,7 +388,7 @@
                             //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?'"+priceAnduserTppeUrl+")}");
+                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
                         }
                     }
 
@@ -422,7 +422,7 @@
                             //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $(".section page4").find("a").attr("href","${router_city('/findhouse/showUserPortrayal')}");
+                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
                         }
                     }
 
@@ -490,6 +490,7 @@
                             //直接跳转到过渡页
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
+                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + next4);
                         }
 
                     }
@@ -515,6 +516,7 @@
             next3 = next4 + familyStructureUrl;
             $('.start-btn').removeClass('none');
             $.fn.fullpage.setAllowScrolling(true, 'down');
+            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + next3);
             /*$.ajax({
                 type: 'GET',
                 url: '',
