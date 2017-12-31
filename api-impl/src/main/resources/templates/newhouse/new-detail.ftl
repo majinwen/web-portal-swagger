@@ -77,7 +77,7 @@
     <section class="primary-message">
         <div class="primary-header">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
-            <#if build['building_nickname']??><p>别名：${build['building_nickname']}</p></#if>
+            <#if build['building_nickname']??&&(build['building_nickname']!='')><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag">
             <#if (build['building_tags']?exists)&&(build['building_tags']?size>0)>
                 <#list build['building_tags'] as item>
