@@ -42,7 +42,7 @@ public class ESClientTools {
         if(client == null){
             if (client == null){
                 try {
-                    client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
+                    client = new PreBuiltXPackTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
                             InetAddress.getByName(esServerIps), Integer.valueOf(esServerPort)));
 
                 } catch (UnknownHostException e) {

@@ -179,7 +179,7 @@
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                                <#if build['virescencerate']??>
+                                <#if (build['virescencerate']?? && build['virescencerate']>0)>
                                     <em>${build['virescencerate']?string("#.####")}平方米</em>
                                 <#else >
                                     <em>暂无</em>
