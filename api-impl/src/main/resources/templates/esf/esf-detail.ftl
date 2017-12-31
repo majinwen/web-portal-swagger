@@ -389,8 +389,8 @@
     $(function(){
         var text = $("tilePlotDesc").find("p").text();
           if(text.indexOf(",")==0){
-             var s = text.
-              $("tilePlotDesc").find("p").html(text);
+             var s = text.substring(1);
+              $("tilePlotDesc").find("p").html(s);
           }
     })
 </script>
