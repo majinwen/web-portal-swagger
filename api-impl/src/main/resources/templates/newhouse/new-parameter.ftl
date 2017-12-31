@@ -133,6 +133,7 @@
         </div>
     </section>
 </div>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
