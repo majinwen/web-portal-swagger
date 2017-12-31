@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by 18710 on 2017/12/14.
@@ -22,10 +20,10 @@ public class PriceTrendServiceImpl implements PriceTrendService {
     @Autowired
     private PriceTrendMapper priceTrendMapper;
 
-   public Map<String,List<PriceTrend>> priceTrendList(Integer buildingId,Integer districtId,Integer areaId){
+   public Map<String,Object> priceTrendList(Integer buildingId,Integer districtId,Integer areaId){
        List<PriceTrend> priceTrendList = priceTrendMapper.newhouseTrendList(buildingId,districtId,areaId);
 
-       //
+
        List<PriceTrend> ptCD0 =new ArrayList<>();
        List<PriceTrend> ptCD1 =new  ArrayList<>();
        List<PriceTrend> ptCD2 =new  ArrayList<>();
@@ -38,11 +36,30 @@ public class PriceTrendServiceImpl implements PriceTrendService {
                ptCD2.add(ptitem);
            }
        }
+       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+       List<String> timeList = new LinkedList<>();
+       if (ptCD0.size()>ptCD1.size() && ptCD0.size()>ptCD2.size()) {
+           for (PriceTrend pitem : ptCD0) {
+               String dateString = formatter.format(pitem.getMonth());
+               timeList.add(dateString);
+           }
+       }else if (ptCD1.size()>ptCD0.size() && ptCD1.size()>ptCD2.size()){
+           for (PriceTrend pitem : ptCD1) {
+               String dateString = formatter.format(pitem.getMonth());
+               timeList.add(dateString);
+           }
+       }else if (ptCD2.size()>ptCD1.size() && ptCD2.size()>ptCD0.size()){
+           for (PriceTrend pitem : ptCD2) {
+               String dateString = formatter.format(pitem.getMonth());
+               timeList.add(dateString);
+           }
+       }
 
-      Map<String ,List<PriceTrend>> priceList=new HashMap<>();
+      Map<String ,Object> priceList=new HashMap<>();
       priceList.put("buildingline",ptCD0);
       priceList.put("arealine",ptCD1);
       priceList.put("tradearealine",ptCD2);
+      priceList.put("mouthList",timeList);
 
  /*     List<Map<String ,List<PriceTrend>>> list=new ArrayList<>();
         list.add(priceList);*/

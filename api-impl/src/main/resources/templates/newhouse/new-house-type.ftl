@@ -49,19 +49,20 @@
                 <span class="sale-state">${datail['is_sale']!'在售'}</span>
            </div>
         </div>
-        <div class="describe-box">
-            <div class="describe-header">户型描述</div>
-            <div class="describe-cont">
-                <#if datail['layout_desc']?exists>
-                    <p>${datail['layout_desc']}</p><span class="describe-show-btn">>>展开</span>
-                <#else>
-                    <p>暂无描述</p>
-                </#if>
-            </div>
-        </div>
+          <div class="describe-box">
+             <div class="describe-header">户型描述</div>
+                <div class="describe-cont">
+                    <#if datail['layout_desc']?exists>
+                        <p>${datail['layout_desc']}</p><span class="describe-show-btn">>>展开</span>
+                    <#else>
+                        <p>暂无描述</p>
+                    </#if>
+                </div>
+          </div>
     </section>
     </#list>
-</#if></div>
+</#if>
+</div>
 <p class="bottom-tips">以上是全部户型</p>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
@@ -72,7 +73,7 @@
         </div>
     </section>
 </div>
-
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

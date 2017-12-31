@@ -128,10 +128,10 @@ public class PlotServiceImpl implements PlotService {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
             }
             //小区名称
-            if (villageRequest.getRc() != null) {
+            if (null != villageRequest.getKeyword()) {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
                 AnalyzeResponse response = esClientTools.init().admin().indices()
-                        .prepareAnalyze(villageRequest.getRc())//内容
+                        .prepareAnalyze(villageRequest.getKeyword())//内容
                         .setAnalyzer("ik_smart")//指定分词器3`3
                         .execute().actionGet();//执行
                 List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
@@ -283,11 +283,11 @@ public class PlotServiceImpl implements PlotService {
                 villageRequest.setSize(10);
             }
             // 当前页
-            if (villageRequest.getPage() == null || villageRequest.getPage() < 1) {
-                villageRequest.setPage(1);
+            if (villageRequest.getPageNum() == null || villageRequest.getPageNum() < 1) {
+                villageRequest.setPageNum(1);
             }
 
-            int rows = (villageRequest.getPage() - 1) * villageRequest.getSize();
+            int rows = (villageRequest.getPageNum() - 1) * villageRequest.getSize();
             Integer size = villageRequest.getSize();
             srb.setFrom(rows).setSize(size);
             SearchResponse response = srb.setQuery(queryBuilder).execute().actionGet();

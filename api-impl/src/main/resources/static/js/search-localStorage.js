@@ -1,10 +1,30 @@
 $(function(){
+    if(_localHref.indexOf('xiaoqu')>0){
+        $('#plot').addClass('current').siblings().removeClass('current');
+
+        $('.search-container-item').addClass('none');
+        $('#search-plot').removeClass('none');
+    } else if(_localHref.indexOf('esf')>0){
+        $('#erhouse').addClass('current').siblings().removeClass('current');
+        $('.search-container-item').addClass('none');
+        $('#search-erhouse').removeClass('none');
+    }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0){
+        $('#nhouse').addClass('current').siblings().removeClass('current');
+        $('.search-container-item').addClass('none');
+        $('#search-newhouse').removeClass('none');
+    }
+
     var houseTypeChoose = $('.type-menu').find('span.current').index();
 
     if ($('.type-tab-box').hasClass('none')) {
         $('.searchpage-search-content').addClass('only');
     }
+
+    /**
+     * 各列表页搜索框获取焦点
+     */
     $('.search-link').on('focus', function () {
+        init();
         $('.search-page-wrapper').addClass('active');
         $('.key-words').focus();
     });
@@ -24,53 +44,48 @@ $(function(){
         $('.type-menu-box').hide();
         $('#search-container-wrapper').find('.search-container-item').addClass('none');
         $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
+
+        init();
     });
     $('#search-container-wrapper').find('.search-container-item').eq(houseTypeChoose).removeClass('none');
 
-    if(BaseUrl.indexOf('xiaoqu')>0){
-        $('#plot').addClass('current').siblings().removeClass('current');
-    } else  if(BaseUrl =="/esf"){
-        $('#erhouse').addClass('current').siblings().removeClass('current');
-    }else  if(BaseUrl =="/loupan"){
-        $('#nhouse').addClass('current').siblings().removeClass('current');
-    }
-
-
-
-
-
-
-    var hisTime;	// 获取搜索时间数组
-    var hisItem;	// 获取搜索内容数组
-
     function init() {
-        hisTime = [];	// 时间数组置空
-        hisItem = [];	// 内容数组置空
 
-        for (var i = 0; i < localStorage.length; i++) {	// 数据去重
-            if (!isNaN(localStorage.key(i))) {
-                hisTime.push(localStorage.key(i));
+        $('.searchpage-history').html('');
+
+        if(_localHref.indexOf('xiaoqu')>0 || $('#plot').hasClass('current')){
+
+            var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
+
+            var start = (plotStorageArray.length-5)>0?(plotStorageArray.length-5):0;
+            var end = plotStorageArray.length;
+            for (var i=start;i<end;i++) {
+                var _history = plotStorageArray.pop();
+                $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?keyword=' + _history ) + '" class="word-break">' + _history + '</a>')
+            }
+
+        } else if(_localHref.indexOf('esf')>0 || $('#erhouse').hasClass('current')){
+
+            var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
+
+            var start = (esfStorageArray.length-5)>0?(esfStorageArray.length-5):0;
+            var end = esfStorageArray.length;
+            for (var i=start; i<end; i++) {
+                var _history = esfStorageArray.pop();
+                $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + _history ) + '" class="word-break">' + _history + '</a>')
+            }
+
+        }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0 || $('#nhouse').hasClass('current')){
+
+            var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
+
+            var start = (newHouseStorageArray.length-5)>0?(newHouseStorageArray.length-5):0;
+            var end = newHouseStorageArray.length;
+            for (var i=start; i<end; i++) {
+                var _history = newHouseStorageArray.pop();
+                $('.searchpage-history').append('<a href="' + router_city('/loupan?keyword=' + _history ) + '" class="word-break">' + _history + '</a>')
             }
         }
-
-        if (hisTime.length > 0) {
-            hisTime.sort(sortNumber);		// 排序
-            if (hisTime.length > 7) {
-                hisTime.length = 7;
-            }
-            for (var y = 0; y < hisTime.length; y++) {
-                localStorage.getItem(hisTime[y]).trim() && hisItem.push(localStorage.getItem(hisTime[y]));
-            }
-        }
-
-        $('.searchpage-history').html('');		// 执行init(),清空之前添加的节点
-        for (var i = 0; i < hisItem.length; i++) {
-            console.log(BaseUrl)
-            $('.searchpage-history').append('<a href="/#" class="word-break">' + hisItem[i] + '</a>')
-        }
-
-
-
     }
     
     function sortNumber(a, b) {
@@ -93,28 +108,36 @@ $(function(){
             // 匹配数据
 
             // localStorage
-            var value = $('.key-words').val();
-            var time = (new Date()).getTime();
+            var _keyword = $('.key-words').val();
 
-            if ($.inArray(value, hisItem) >= 0) {
-                for (var j = 0; j < localStorage.length; j++) {
-                    if (value == localStorage.getItem(localStorage.key(j))) {
-                        localStorage.removeItem(localStorage.key(j))
-                    }
-                }
-                localStorage.setItem(time, value);
-            } else {
-                localStorage.setItem(time, value);
+            var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
+            var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
+            var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
+
+            if(_localHref.indexOf('xiaoqu')>0 || $('#plot').hasClass('current')){
+
+                plotStorageArray.push(_keyword);
+                localStorage.setItem('plot', JSON.stringify(plotStorageArray));
+            } else if(_localHref.indexOf('esf')>0 || $('#erhouse').hasClass('current')){
+                
+                esfStorageArray.push(_keyword);
+                localStorage.setItem('esf', JSON.stringify(esfStorageArray));
+            }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0 || $('#nhouse').hasClass('current')){
+
+                newHouseStorageArray.push(_keyword);
+                localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
             }
-            init();
-            location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val())
+
         }
+
+        location.href=$('.type-menu>span.current').data( "value" )+$.trim($(this).val());
     }
 
+    /**
+     * 清除历史记录
+     */
     $('.clear-icon').on('click', function () {
-        for (var f = 0; f < hisTime.length; f++) {
-            localStorage.removeItem(hisTime[f]);
-        }
+        localStorage.clear();
         init();
     });
     $('.searchpage-history').on('click', '.word-break', function () {

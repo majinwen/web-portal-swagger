@@ -248,7 +248,7 @@
                         class="arrows-right"></i></a>
             </div>
         </#if>
-        <a href="#" class="detail-map">
+        <a href="${router_city('/esf/'+houseDetail.newcode+'/map')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
@@ -351,6 +351,7 @@
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
