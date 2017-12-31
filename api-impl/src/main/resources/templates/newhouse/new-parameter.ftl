@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>新房参数</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <#assign discript = discript[0]>
@@ -14,7 +15,7 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header">
-            <h2> ${discript['building_name']!'暂无'}</h2>
+            <h2> ${discript['building_name']!'暂无数据'}</h2>
             <#if discript['building_nickname']??&&(discript['building_nickname']!='')><p>别名：${discript['building_nickname']}</p></#if>
             <div class="primary-header-tag">
                 <#if discript['building_tags']?exists&&(discript['building_tags']?size>0)>

@@ -12,6 +12,7 @@
         body {height: auto;}
         html {height: auto;}
     </style>-->
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header">

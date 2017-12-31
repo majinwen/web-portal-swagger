@@ -10,6 +10,7 @@
     <title>新房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <#--<#assign ptCD0 = tradeline['buildingline']>-->
@@ -179,7 +180,7 @@
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                                <#if (build['virescencerate']?? && build['virescencerate']>0)>
+                                <#if build['virescencerate']??&&build['virescencerate']?number gt 0>
                                     <em>${build['virescencerate']?string("#.####")}平方米</em>
                                 <#else >
                                     <em>暂无数据</em>
@@ -188,10 +189,10 @@
                         <#if village['avgGreening']?number gt 0>
                             <em>${village['avgGreening']}平方米</em>
                         <#else >
-                            <em>暂无</em>
+                            <em>暂无数据</em>
                         </#if>
                     <#else >
-                        <em>暂无</em>
+                        <em>暂无数据</em>
                     </#if>-->
                     </div>
                 </div>
@@ -208,7 +209,7 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>户均电梯</p>
-                        <em>22</em>
+                        <em>${build['lift_door_radio']!'暂无数据'}</em>
                     </div>
                 </div>
                 <div class="info-card-item">
@@ -252,12 +253,12 @@
                     <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
                     <#--${(village['ringRoadDistance']/1000)?string('#.#')}km-->
                     <#--<#else >-->
-                    <#--暂无-->
+                    <#--暂无数据-->
                     <#--</#if>-->
                        <#-- <#if village['ringRoadDistance']?number gt 0>
                         ${(village['ringRoadDistance']/1000)?string('#.#')}km
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                     </#if>-->
                 </div>
@@ -356,13 +357,13 @@
                             <#if village['propertyFee']?number gt 0>
                             ${village['propertyFee']}元/㎡·月
                             <#else >
-                                暂无
+                                暂无数据
                             </#if>
                         </span>
                     <#else >
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">暂无数据</span>
                     </#if>-->
-                        <#if (build['propertyfee']?exists)>
+                        <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
                             <span class="expand-price">${build['propertyfee']}元/㎡·月</p>
                         <#else>暂无数据
                         </#if>
@@ -376,14 +377,14 @@
                             <#if village['parkingRate']?number gt 0>
                             ${village['parkingRate']}元/月
                             <#else >
-                                暂无
+                                暂无数据
                             </#if>
                         </span>
                     <#else >
-                        <span class="expand-price">暂无</span>
+                        <span class="expand-price">暂无数据</span>
                     </#if>-->
 
-                        <#if (build['car_rent_price']?exists)>
+                        <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
                             <span class="expand-price">${build['car_rent_price']}元/月</p>
                         <#else>暂无数据
                         </#if>
@@ -413,8 +414,8 @@
                             <span class="sale-state">在售</span>
                         </div>
                         <div class="tilelist-content">
-                            <p class="cont-first"><span>${item['room']!'暂无'}室${item['hall']!'暂无'}厅${item['toilet']!'暂无'}卫</span><span>${item['building_area']!'暂无'}㎡</span></p>
-                            <#--<h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无'}</h4>-->
+                            <p class="cont-first"><span>${item['room']!'暂无数据'}室${item['hall']!'暂无数据'}厅${item['toilet']!'暂无数据'}卫</span><span>${item['building_area']!'暂无数据'}㎡</span></p>
+                            <#--<h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无数据'}</h4>-->
                             <div class="house-labelling normal small tilelist-tag">
                                 <#if item['layout_tag']??>
                                     <#assign layouttagitem = item['layout_tag']>
@@ -481,7 +482,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists>${nearitem['average_price']}元/㎡<#else >暂无数据</#if></em></h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']}元/㎡<#else >暂无数据</#if></em></h4>
                 </div>
             </a>
         </li>

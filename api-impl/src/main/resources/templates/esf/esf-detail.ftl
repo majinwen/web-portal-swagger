@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
     <title>二手房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="carousel-box">

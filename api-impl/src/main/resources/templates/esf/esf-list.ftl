@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>二手房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>

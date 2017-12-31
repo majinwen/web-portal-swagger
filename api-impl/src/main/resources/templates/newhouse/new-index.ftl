@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房首页</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header">

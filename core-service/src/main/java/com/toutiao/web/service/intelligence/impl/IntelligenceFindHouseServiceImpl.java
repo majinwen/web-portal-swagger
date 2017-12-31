@@ -266,7 +266,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     @Override
-    public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery) {
+    public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
+
+        //初始化数据
+        IntelligenceQuery intelligenceQuery = init(IntelligenceQuery);
+
         //搜索量前200
         List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
 
@@ -307,6 +311,27 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             return finalList;
         }
         return null;
+    }
+    /**
+     *
+     * 功能描述：初始化数据
+     * @author zengqingzhou
+     * @date 2017/12/31 23:00
+     * @param
+     * @return
+     */
+    public IntelligenceQuery init(IntelligenceQuery intelligenceQuery){
+        if (null!=intelligenceQuery.getTotalPrice()){
+            Integer totalPrice = Integer.valueOf(intelligenceQuery.getTotalPrice());
+            intelligenceQuery.setMaxTotalPrice(totalPrice*1.1);
+            intelligenceQuery.setMinTotalPrice(totalPrice*0.9);
+        }
+        if (null==intelligenceQuery.getTotalPrice()){
+            Integer totalPrice = Integer.valueOf(intelligenceQuery.getDownPayMent() + Integer.valueOf(intelligenceQuery.getMonthPayMent()) * 12 * 30);
+            intelligenceQuery.setMaxTotalPrice(totalPrice*1.1);
+            intelligenceQuery.setMinTotalPrice(totalPrice*0.9);
+        }
+        return intelligenceQuery;
     }
 
     /**
