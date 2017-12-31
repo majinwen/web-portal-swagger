@@ -2,6 +2,8 @@ package com.toutiao.web.domain.intelligenceFh;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class IntelligenceFh {
 
@@ -80,5 +82,10 @@ public class IntelligenceFh {
      * 用户传递的区域id
      */
     private String districtId;
+
+    /**
+     * 区域集合
+     */
+    private List<String> distictList;
 
 }

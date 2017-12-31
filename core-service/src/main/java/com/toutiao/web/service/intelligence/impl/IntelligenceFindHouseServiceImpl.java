@@ -146,7 +146,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //数量这边有可能需要需改？？？？？？？？？？？？？？？？？？？？？？
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
-
+            //获取该小区所在区域的id
+            List<String> list = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+            intelligenceFh.setDistictList(list);
             //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
             if (StringTool.isNotBlank(intelligenceFh.getLayOut()) && intelligenceFh.getLayOut() >= 3) {
                 //教育配套
