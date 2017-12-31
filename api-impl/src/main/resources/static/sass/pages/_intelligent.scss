@@ -260,6 +260,84 @@ $inteColorRed: #e42929;
             background-color: #f7f6f6;
             color: $inteBlack;
             @include box-sizing;
+
+            .result-content {
+                position: relative;
+                width: rem(460);
+                height: rem(99);
+                margin: 0 auto;
+                background-color: #f7f3f3;
+
+                &:before, &:after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    width: rem(24);
+                    height: rem(24);
+                    border-left: rem(1) solid $inteColorRed;
+                }
+                &:before {
+                    top: 0;
+                    border-top: rem(1) solid $inteColorRed;
+                }
+                &:after {
+                    bottom: 0;
+                    border-bottom: rem(1) solid $inteColorRed;
+                }
+
+                .result-line {
+                    &:before, &:after {
+                        content: '';
+                        position: absolute;
+                        right: 0;
+                        width: rem(24);
+                        height: rem(24);
+                        border-right: rem(1) solid $inteColorRed;
+                    }
+
+                    &:before {
+                        top: 0;
+                        border-top: rem(1) solid $inteColorRed;
+                    }
+                    &:after {
+                        bottom: 0;
+                        border-bottom: rem(1) solid $inteColorRed;
+                    }
+                }
+
+                .result-begin {
+                    p {
+                        line-height: rem(99);
+                        @include font-dpr(36);
+                    }
+                }
+                .result-container {
+                    padding: rem(12) 0;
+
+                    p {
+                        @include font-dpr(26);
+
+                        &:last-child {
+                            margin-top: rem(15);
+                        }
+                    }
+                }
+            }
+        }
+
+        .list-item {
+            li {
+                position: relative;
+                width: rem(122);
+                height: rem(122);
+                line-height: rem(122);
+                margin: rem(100) auto;
+                text-align: center;
+                @include font-dpr(36);
+                -webkit-border-radius: 50%;
+                border-radius: 50%;
+                border: rem(1) solid $inteBlack;
+            }
         }
 
         .layer {

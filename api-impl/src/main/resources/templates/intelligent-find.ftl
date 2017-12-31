@@ -9,22 +9,6 @@
     <title>筛选</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
-    <style>
-        .list-item {
-            width: 100%;
-        }
-        .list-item li {
-            width: 2rem;
-            height: 2rem;
-            border: 1px solid;
-            margin: 1rem auto;
-            display: block;
-            line-height: 2rem;
-            text-align: center;
-            -webkit-border-radius: 50%;
-            border-radius: 50%;
-        }
-    </style>
     <script>
         $(function () {
             $('.list-item').on('click', 'li', function () {
@@ -90,7 +74,7 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1">
+    <div class="section page1 active">
         <div class="bgbox bg1">
             <div class="page-content">
                 <h1>智能找房</h1>
@@ -145,12 +129,20 @@
             </div>
         </div>
     </div>
-    <div class="section page3 active">
+    <div class="section page3">
         <div class="bgbox bg3">
             <div class="page-content">
                 <div class="result-text">
-                    <p>为您匹配了<em class="high-light-red">234</em>个小区</p>
-                    <p>有<em class="high-light-red">37%</em>的用户和您的需求相同</p>
+                    <div class="result-content">
+                        <div class="result-line"></div>
+                        <div class="result-begin">
+                            <p>开启智能找房之旅</p>
+                        </div>
+                        <div class="result-container none">
+                            <p>为您匹配了<em class="high-light-red">234</em>个小区</p>
+                            <p>有<em class="high-light-red">37%</em>的用户和您的需求相同</p>
+                        </div>
+                    </div>
                 </div>
                 <ul class="list-item">
                     <li>预算</li>
@@ -373,7 +365,8 @@
                         console.log(data);
                     }
                 });*/
-
+                $('.result-begin').addClass('none');
+                $('.result-container').removeClass('none');
                 return
             } else {
                 $(this).parents('.layer').addClass('none');
@@ -388,9 +381,10 @@
                         console.log(data);
                     }
                 })*/
+                $('.result-begin').addClass('none');
+                $('.result-container').removeClass('none');
             }
         });
-
 
         // 选择户型
         $('.content-list').on('click', 'li', function () {
@@ -431,6 +425,8 @@
                     console.log(data);
                 }
             })*/
+            $('.result-begin').addClass('none');
+            $('.result-container').removeClass('none');
         });
 
         // 选择区域
@@ -454,10 +450,10 @@
                         console.log(data);
                     }
                 })*/
+                $('.result-begin').addClass('none');
+                $('.result-container').removeClass('none');
             }
         });
-
-
 
         // 提交选中用户类型
         $('#userTypeSubmit').on('click', function () {
@@ -474,6 +470,8 @@
 //                        alert(data.data+"这是啥玩意！！！");
                     }
                 });
+                $('.result-begin').addClass('none');
+                $('.result-container').removeClass('none');
             }
         })
     })

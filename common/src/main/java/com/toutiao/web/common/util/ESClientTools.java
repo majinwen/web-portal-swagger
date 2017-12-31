@@ -20,6 +20,7 @@ public class ESClientTools {
 
     public ESClientTools(@Value("${es.cluster.name}")String esClusterName,@Value("${es.xpack.user}")String esXpackUser){
         settings = Settings.builder().put("cluster.name", esClusterName)
+//                .put("xpack.security.user",esXpackUser)
                 .build();
     }
 
