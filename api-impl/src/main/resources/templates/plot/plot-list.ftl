@@ -70,9 +70,9 @@
                     <dd>
                         <span data-info="1">住宅</span>
                         <span data-info="2">别墅</span>
-                        <span data-info="3">写字楼</span>
+                        <#--<span data-info="3">写字楼</span>
                         <span data-info="4">商铺</span>
-                        <span data-info="5">底商</span>
+                        <span data-info="5">底商</span>-->
                     </dd>
                 </dl>
                 <dl>
@@ -97,7 +97,7 @@
                         <span data-info="1">板楼</span>
                         <span data-info="2">塔楼</span>
                         <span data-info="3">板塔结合</span>
-                        <span data-info="4">砖楼</span>
+                        <#--<span data-info="4">砖楼</span>-->
                     </dd>
                 </dl>
                 <dl>
@@ -105,9 +105,9 @@
                     <dd>
                         <span data-info="1">售完</span>
                         <span data-info="2">在售</span>
-                        <span data-info="3">不在售</span>
+                        <#--<span data-info="3">不在售</span>
                         <span data-info="4">出租</span>
-                        <span data-info="5">待租</span>
+                        <span data-info="5">待租</span>-->
                         <span data-info="6">待售</span>
                     </dd>
                 </dl>

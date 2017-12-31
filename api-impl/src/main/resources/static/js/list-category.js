@@ -825,44 +825,36 @@ function listSortTab() {
     }
 }
 
-var pageNum = 2;
 $(function () {
     $(document).data("toutiao_pageScroll_onOroff",true);
     //手机滑动底部触发分页事件
-    if ($('#listContent').length > 0) {
-        $(window).scroll(function () {
+     $(window).scroll(function () {
+        if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
+            pullUpAction(function () {});
+        };
+    });
 
-            if ($(document).scrollTop() >= $(document).height() - $(window).height()) {
-                if($(document).data("toutiao_pageScroll_onOroff") == true){
-                    $(document).data("toutiao_pageScroll_onOroff",false);
-                    setTimeout(pullUpAction(pageNum), 1000);
-                }
-            }
-        });
-    }
+    //加载内容填充不满屏幕
+    // if ($(document).height() <= $(window).height()) {
+    //     $('#pullUp').hide();
+    // }
 });
-
-function router_city(urlparam) {
-    urlparam = urlparam || ""
-    if(urlparam[0] != '/'){
-        urlparam = '/' + urlparam
-    }
-    var uri = new URI(window.location.href);
-    var segmens = uri.segment();
-    var city = "";
-    if(segmens.length>0){
-        city = "/" + segmens[0]
-    }
-    return city+urlparam
-};
 
 /**
  * 下拉分页
  * @param pageNumber
  */
-function pullUpAction(pageNumber) {
+var pageNum = 2;
+var loadingFlag = false;
+function pullUpAction(callback) {
+
+    if (loadingFlag) {
+        return;
+    }
+    loadingFlag = true;
+
     var paramData = req;
-    paramData['pageNum'] = pageNumber;
+    paramData['pageNum'] = pageNum;
     //sortFlag为true，保证排序
     params = joinParams(paramData, true);
 
@@ -885,8 +877,6 @@ function pullUpAction(pageNumber) {
         dataType:'json',
         success: function (data) {
             if (data.code == 'success') {
-                $(document).data("toutiao_pageScroll_onOroff", true);
-                pageNum += 1;
 
                 var dataCon = data.data.data;
                 for (var i = 0; i < dataCon.length; i++) {
@@ -973,6 +963,13 @@ function pullUpAction(pageNumber) {
                 var html = template('listContent', data.data);
                 $("#load-div").remove();
                 $('#valueList li:last-child').after(html);
+
+                pageNum++;
+
+                if (dataCon.length > 0) {
+                    loadingFlag = false;
+                }
+                callback();
             }
         }
     });

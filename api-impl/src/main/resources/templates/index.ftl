@@ -289,7 +289,7 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}-tt400x300" alt="${map['rc']}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['rc']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -308,7 +308,12 @@
                             </#if>
                         </div>
                         <div class="cont-block-price plot">
-                            <em>${map['avgPrice']}元/㎡</em>
+                            <#if map['avgPrice']?? && map['avgPrice'] gt 0>
+                                <em>${map['avgPrice']}元/㎡</em>
+                            <#else>
+                                <em>售价待定</em>
+                            </#if>
+
                         </div>
                     </div>
                 </div>
@@ -322,6 +327,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
