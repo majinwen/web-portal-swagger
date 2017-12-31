@@ -53,6 +53,9 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Value("${distance}")
     private Double distance;
 
+    private static final Integer IS_DEL = 0;//新房未下架
+    private static final Integer IS_APPROVE = 1;//新房未下架
+
     /**
      * 根绝新房筛选新房
      * @param newHouseQuery
@@ -131,8 +134,6 @@ public class NewHouseServiceImpl implements NewHouseService{
             }
         }
 
-
-        ///================================
         //物业类型
         if(StringUtil.isNotNullString(newHouseQuery.getPropertyTypeId())){
             String[] py = newHouseQuery.getPropertyTypeId().split(",");
@@ -158,7 +159,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             }
             booleanQueryBuilder.must(termsQuery("building_type_id", BuildingType));
         }
-//        //销售状态
+        //销售状态
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
             booleanQueryBuilder.must(termQuery("sale_status_id", newHouseQuery.getSaleType()));
         }else{
@@ -178,6 +179,11 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){
             booleanQueryBuilder.must(termsQuery("redecorate_type_id", new String[]{newHouseQuery.getDeliverStyle()}));
         }
+//        //房源未下架
+//        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+//        //房源已发布
+//        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+
 
         int pageNum = 1;
 
