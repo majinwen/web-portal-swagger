@@ -80,10 +80,10 @@ public class IntelligenceQuery {
 
     //测试
     //最小值
-    private Integer minTotalPrice;
+    private Double minTotalPrice;
 
     //最大值
-    private Integer maxTotalPrice;
+    private Double maxTotalPrice;
 
     //学校
     private String school;
