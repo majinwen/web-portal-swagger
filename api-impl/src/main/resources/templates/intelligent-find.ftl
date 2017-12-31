@@ -367,7 +367,7 @@
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
             }
-        })
+        });
 
         // 切换预算
         $('.price-tab').on('click', 'span', function () {
@@ -395,15 +395,15 @@
                     data: priceAnduserTppeUrl,
                     success: function (data) {
                         console.log(data.data);
-                        $("#plot_Count").find("em").html(data.data.plotCount);
-                        $("#plot_Ratio").find("em").html(data.data.ratio);
+                        $('#plot_Count').find('em').html(data.data.plotCount);
+                        $('#plot_Ratio').find('em').html(data.data.ratio);
                         params = data.data.userType;
                         console.log(params);
                         //用户类型是第三类
                         if (params == 3) {
                             ////将第七种画像附给当前用户userPortrayalType
                             userPortrayalType = data.data.userPortrayalType = 7;
-                            priceAnduserTppeUrl += "&userPortrayalType=" + userPortrayalType
+                            priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
                             console.log(priceAnduserTppeUrl);
                             //跳转到用户画像页面
                             //为实现
@@ -434,7 +434,7 @@
                         if (params == 3) {
                             ////将第七种画像附给当前用户userPortrayalType
                             userPortrayalType = data.data.userPortrayalType = 7;
-                            priceAnduserTppeUrl += "&userPortrayalType=" + userPortrayalType
+                            priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
                             console.log(priceAnduserTppeUrl);
                             //跳转到用户画像页面
                             //为实现
@@ -467,10 +467,10 @@
                     $("#plot_Count").find("em").html(data.data.plotCount);
                     $("#plot_Ratio").find("em").html(data.data.ratio);
                     params = data.data.userType;
-                    next2 += "&hospitalFlag=" + data.data.hospitalFlag + "&schoolFlag=" + data.data.schoolFlag+"&ratio="+data.data.ratio;
-                    console.log(next2)
+                    next2 += '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' +data.data.ratio;
+                    console.log(next2);
                     //区域数组
-                    console.log(data.data.distictList)
+                    console.log(data.data.distictList);
                     //没写完
 
                 }
@@ -490,7 +490,7 @@
         $('#submitArea').on('click', function () {
             if ($('.area-content').find('li.current').length == 3) {
                 $(this).parents('.layer').addClass('none');
-                next4+=next2+"&districtId="+"106013";
+                next4 += next2 + '&districtId=' + '106013';
                 console.log(1);
                 $.ajax({
                     type: 'GET',
@@ -505,7 +505,7 @@
                         }
 
                     }
-                })
+                });
                 $('.result-begin').addClass('none');
                 $('.result-container').removeClass('none');
             }
@@ -536,8 +536,6 @@
             $('.result-begin').addClass('none');
             $('.result-container').removeClass('none');
         });
-
-
     })
 </script>
 </body>
