@@ -131,13 +131,15 @@ function renderDom(data, parentType) {
                 var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
                 if (data[i].detail_info.overall_rating != undefined) {
                     star = Math.round(data[i].detail_info.overall_rating);
-                    for (var j=0; j< 5; j++){
-                        if (j < star) {
-                            starStr += '<i class="red-star"></i>';
-                        } else {
-                            starStr += '<i class="star-icon"></i>';
+                    console.log(star);
+                    if (star > 0) {
+                        for (var j = 0; j < 5; j++){
+                            if (j < star) {
+                                starStr += '<i class="red-star"></i>';
+                            } else {
+                                starStr += '<i class="star-icon"></i>';
+                            }
                         }
-
                     }
                     str += '<li><p><i class="expand-icon expand-radius">' + index + '</i>' +
                         '<span class=expand-name><em>' + data[i].name +
@@ -146,14 +148,8 @@ function renderDom(data, parentType) {
                         '</span></li>';
 
                 } else {
-                    var _defaultStar = '';
-                    for (var k=0; k<5; k++) {
-                        _defaultStar += '<i class="star-icon"></i>';
-                    }
-
                     str += '<li><p><i class="expand-icon expand-radius">' + index + '</i>' +
-                        '<span class=expand-name><em>' + data[i].name +
-                        '</em><em class="star-box">' + _defaultStar + '</em>' +
+                        '<span class=expand-name><em>' + data[i].name + '</em>' +
                         '</span></p><span class="expand-distance">' + distances +
                         '</span></li>';
                 }
