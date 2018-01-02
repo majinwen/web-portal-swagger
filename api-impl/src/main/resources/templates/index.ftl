@@ -101,7 +101,7 @@
                     </div>
                     <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="地铁盘推荐">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseLabelId=16')}">
+                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseLabelId=6')}">
                     <div class="topic-item-content">
                         <h5>满五税少房推荐</h5>
                         <p>每日热推</p>
