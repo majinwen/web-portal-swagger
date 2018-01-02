@@ -386,7 +386,6 @@
                     url: '${router_city('/findhouse/goCheckPrice')}',
                     data: priceAnduserTppeUrl,
                     success: function (data) {
-                        console.log(data.data);
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         var ratio = new Number(data.data.ratio);
                         $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
@@ -396,9 +395,6 @@
                             ////将第七种画像附给当前用户userPortrayalType
                             userPortrayalType = data.data.userPortrayalType = 7;
                             priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
-                            console.log(priceAnduserTppeUrl);
-                            //跳转到过渡页
-                            //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
                             $("#button_report").attr("href", "${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
@@ -429,9 +425,6 @@
                             ////将第七种画像附给当前用户userPortrayalType
                             userPortrayalType = data.data.userPortrayalType = 7;
                             priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
-                            console.log(priceAnduserTppeUrl);
-                            //跳转到用户画像页面
-                            //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
                             $("#button_report").attr("href", "${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
@@ -461,13 +454,11 @@
                 url: '${router_city('/findhouse/userCheckCategoryPage')}',
                 data: next2,
                 success: function (data) {
-                    console.log(data.data);
                     $("#plot_Count").find("em").html(data.data.plotCount);
                     var ratio = new Number(data.data.ratio);
                     $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                     params = data.data.userType;
-                    prevParams = next2 + '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
-                    console.log('next2begin=' + next2);
+                    prevParams = next2 +'&userPortrayalType=' + data.data.userPortrayalType+ '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
                     //区域数组
                     var str = "";
                     if (data.data.distictInfo != null) {
@@ -521,10 +512,6 @@
                         //此处要判断是否是一居用户
                         if (data.data.layOut == 1) {
                             //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
-                            //将医疗配套和学校配套还原成默认状态
-                            var schoolFlag = data.data.schoolFlag = 0
-                            var hospitalFlag = data.data.hospitalFlag = 0
-                            next4 += "&schoolFlag=" + schoolFlag + "&hospitalFlag=" + hospitalFlag;
                             //直接跳转到过渡页
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
@@ -550,7 +537,7 @@
             $('.result-container').removeClass('none');
             var childParams = $('#hasChild').find('li.current').data('child');
             var oldManParams = $('#oldMan').find('li.current').data('old-man');
-            var familyStructureUrl = '&hasChild=' + childParams + '&oldMan=' + oldManParams;
+            var familyStructureUrl = '&hasChild=' + childParams + '&hasOldman=' + oldManParams;
             next3 = next4 + familyStructureUrl;
             $('.start-btn').removeClass('none');
             $.fn.fullpage.setAllowScrolling(true, 'down');

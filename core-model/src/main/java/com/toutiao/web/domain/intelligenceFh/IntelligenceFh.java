@@ -57,7 +57,7 @@ public class IntelligenceFh {
     /**
      * 是否有老人(0-无，1-有)
      */
-    private Integer hasOldMan;
+    private Integer hasOldman;
     /**
      * 是否有小孩（0-（无、10+岁） ，1-（0-3岁），2-（4-10岁））
      */
