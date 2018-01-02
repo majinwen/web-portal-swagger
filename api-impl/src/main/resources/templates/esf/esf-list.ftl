@@ -102,10 +102,10 @@
                         <dt data-type="houseLabelId">标签</dt>
                         <dd>
                             <span data-info="1">近地铁</span>
-                            <span data-info="4">随时看</span>
-                            <span data-info="8">满二年</span>
-                            <span data-info="16">满五年</span>
-                            <span data-info="32">近公园</span>
+                            <span data-info="3">随时看</span>
+                            <span data-info="5">满二年</span>
+                            <span data-info="4">满五年</span>
+                            <span data-info="2">近公园</span>
                         </dd>
                     </dl>
                     <dl>
