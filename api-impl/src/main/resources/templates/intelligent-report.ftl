@@ -321,9 +321,6 @@
         </div>
     </div>
 </div>
-<#list list as li>
-     ${li}
-</#list>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
 <script>

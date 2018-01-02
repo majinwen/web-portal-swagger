@@ -320,10 +320,12 @@
                         <p class="cont-first">
                             <em>
                                 <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0></#if>
-                                <#else>${map.houseTotalPrices}万/
+                                    <#if map.houseTotalPrices==0>
+                                    </#if>
+                                <#else>
+                                ${map.houseTotalPrices}万
                                 </#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
                                 <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
                             </em>
                         </p>

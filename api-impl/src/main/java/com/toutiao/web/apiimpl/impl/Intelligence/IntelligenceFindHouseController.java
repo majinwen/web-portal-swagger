@@ -74,7 +74,7 @@ public class IntelligenceFindHouseController {
         List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
         model.addAttribute("fhpt", fhpt);
         model.addAttribute("fhrd", fhrd);
-        return "";
+        return "intelligent-report";
     }
 
     /**
@@ -201,7 +201,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/27 12:33
      */
-    @RequestMapping("/goCreateReport")
+    /*@RequestMapping("/goCreateReport")
     public String goCreateMyReport(IntelligenceQuery intelligenceQuery, Model model) {
         //复制数据信息
         IntelligenceFh intelligenceFh = new IntelligenceFh();
@@ -214,7 +214,7 @@ public class IntelligenceFindHouseController {
         model.addAttribute("intelligenceFh", intelligenceFh);
         //过渡页vs封面
         return "";
-    }
+    }*/
 
     /**
      * 功能描述：报告页-用户画像
@@ -245,6 +245,15 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showUserPortrayal")
     public String showUserPortrayal(Model model,IntelligenceQuery intelligenceQuery) {
+
+        IntelligenceFh intelligenceFh=new IntelligenceFh();
+        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
+
+        //调用生成报告页展示数据接口
+
+
+
+
         return "intelligent-report";
     }
 
