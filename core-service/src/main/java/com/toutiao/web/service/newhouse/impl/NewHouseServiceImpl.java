@@ -52,7 +52,7 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Value("${distance}")
     private Double distance;
 
-    private static final Integer IS_DEL = 0;//新房未下架
+    private static final Integer IS_DEL = 0;//新房未删除
     private static final Integer IS_APPROVE = 1;//新房未下架
 
     /**
@@ -183,6 +183,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
 
 
         int pageNum = 1;
