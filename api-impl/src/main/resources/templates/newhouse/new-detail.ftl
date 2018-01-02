@@ -151,11 +151,11 @@
             <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <dl class="module-table-item">
-            <dt>开发商：${build['developers']!'暂无数据'}</dt>
-            <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无数据'}</span></dd>
-            <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无数据'}</em></dd>
-            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists && build['building_life'] gt 0>${build['building_life']}年<#else>暂无数据</#if></em></dd>
-            <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无数据'}</em></dd>
+            <dt>开发商：${build['developers']!'暂无'}</dt>
+            <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无'}</span></dd>
+            <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无'}</em></dd>
+            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists && build['building_life'] gt 0>${build['building_life']}年<#else>暂无</#if></em></dd>
+            <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
         </dl>
     </section>
 </div>-->
@@ -168,8 +168,8 @@
         <div class="basic-information">
             <#--<div class="column item-only-one">-->
                 <#--<div class="info-card-item">-->
-                <#--${build['building_name']!'暂无数据'}<em class="high-light-red">${build['finishdate']!'暂无数据'}</em>年建成住宅,共<em class="high-light-red">${build['build_count']!'暂无数据'}栋</em>-->
-                    <#--(${build['totaldoor']!'暂无数据'}户)-->
+                <#--${build['building_name']!'暂无'}<em class="high-light-red">${build['finishdate']!'暂无'}</em>年建成住宅,共<em class="high-light-red">${build['build_count']!'暂无'}栋</em>-->
+                    <#--(${build['totaldoor']!'暂无'}户)-->
                     <#--<#if build['building_type']?exists>-->
                         <#--,${build['building_type']}-->
                     <#--</#if>-->

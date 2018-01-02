@@ -8,6 +8,14 @@
     <result column="all_sd" property="allSd" jdbcType="NUMERIC" />
     <result column="max_total_price" property="maxTotalPrice" jdbcType="INTEGER" />
   </resultMap>
+
+  <resultMap id="CountRatioResultMap" type="com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio" >
+    <result column="minVolume" property="minVolume" jdbcType="INTEGER" />
+    <result column="maxVolume" property="maxVolume" jdbcType="INTEGER" />
+    <result column="sumTargetSd" property="sumTargetSd" jdbcType="INTEGER" />
+    <result column="sumAllSd" property="sumAllSd" jdbcType="INTEGER" />
+  </resultMap>
+
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd" >
     insert into intelligence_fh_td (min_total_price, target_sd, periodic_time, 
       all_sd, max_total_price)
@@ -58,5 +66,22 @@
     <if test="totalPrice!=null">
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
     </if>
+     and periodic_time BETWEEN  now() - interval '13 month' AND now()
+  </select>
+
+  <select id="queryTdRatio" parameterType="java.lang.Integer" resultMap="CountRatioResultMap">
+    SELECT
+    <![CDATA[
+    "min" ( target_sd ) AS minVolume,
+    "max" ( target_sd ) AS maxVolume,
+    "sum"(target_sd) AS sumTargetSd,
+    "sum"(all_sd) AS sumAllSd
+    ]]>
+    FROM intelligence_fh_td
+    WHERE 1=1
+    <if test="totalPrice!=null">
+      AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
+    </if>
+    and periodic_time BETWEEN  now() - interval '13 month' AND now()
   </select>
 </mapper>

@@ -154,9 +154,11 @@
                     <em>环比上月</em>
                     <p class="green">
                     <#if village['huanbi']?exists&&(village['huanbi'] gt 0)>
-                        ↑ ${(village['huanbi']?abs)?string.percent}
+                        <#assign x = village['huanbi']?abs * 100>
+                        ↑ ${x?string("#.##")}%
                     <#elseif village['huanbi']?exists&&village['huanbi'] lt 0>
-                        ↓ ${(village['huanbi']?abs)?string.percent}
+                        <#assign x = village['huanbi']?abs * 100>
+                        ↓ ${x?string("#.##")}%
                     <#else>
                         暂无数据
                     </#if>
@@ -166,9 +168,11 @@
                     <em>同比去年</em>
                     <p class="green">
                     <#if village['tongbi']?exists&&(village['tongbi'] gt 0)>
-                        ↑ ${(village['tongbi']?abs)?string.percent}
+                        <#assign x = village['tongbi']?abs * 100>
+                        ↑ ${x?string("#.##")}%
                     <#elseif village['tongbi']?exists&&village['tongbi'] lt 0>
-                        ↓ ${(village['tongbi']?abs)?string.percent}
+                        <#assign x = village['tongbi']?abs * 100>
+                        ↓ ${x?string("#.##")}%
                     <#else>
                         暂无数据
                     </#if>
@@ -533,7 +537,11 @@
     </#if>
     option = {
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            position: function (point, params, dom, rect, size) {
+                // 固定在顶部
+                return [point[0], '10%'];
+            },
         },
         legend: {
             /*  data:['楼盘价格','区域价格','商圈价格']*/
@@ -548,7 +556,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}'
-            }
+            },
         },
         series: [
         <#if (ptCD0?size==0)>

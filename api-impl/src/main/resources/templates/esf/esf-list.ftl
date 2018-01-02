@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>二手房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
@@ -16,7 +17,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+        <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
 </header>
@@ -164,7 +165,7 @@
         </div>
     </div>
 </section>
-<section>
+<section id="result-section">
     <#if builds?exists><ul id="valueList">
         <#list builds as map>
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
@@ -241,7 +242,7 @@
             </a></li>
         </#list>
     </ul></#if>
-    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
+    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
@@ -320,6 +321,7 @@
 </body>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/dropload.min.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 </html>

@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.impl.Intelligence;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
@@ -68,11 +69,6 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
-        Integer totalPrice = 500;
-        List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
-        List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
-        model.addAttribute("fhpt", fhpt);
-        model.addAttribute("fhrd", fhrd);
         return "";
     }
 
@@ -131,17 +127,26 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery) {
-        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        /*intelligenceQuery1.setUserPortrayalType(7);
-        intelligenceQuery1.setMinTotalPrice(4500000);
-        intelligenceQuery1.setMaxTotalPrice(5500000);*/
-        intelligenceQuery1.setDistrictId("105040,105035,105034");
-        intelligenceQuery1.setLayOut(3);
-        intelligenceQuery1.setHospital("1");
-        intelligenceQuery1.setSchool("KG");
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
-        return null;
+    public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery,Model model) {
+        Double plotTotalFirst = null;
+        Double plotTotalEnd = null;
+        intelligenceQuery.setPreconcTotal("450");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setUserPortrayalType(5);
+        intelligenceQuery.setLayOut(3);
+        intelligenceQuery.setDistrictId("105037");
+        intelligenceQuery.setSchoolFlag(1);
+        intelligenceQuery.setHospitalFlag(1);
+        String preconcTotal = intelligenceQuery.getPreconcTotal();
+        plotTotalFirst = (Double.valueOf(preconcTotal) - (Double.valueOf(preconcTotal) * 0.1)) * 10000;
+        plotTotalEnd = (Double.valueOf(preconcTotal) + (Double.valueOf(preconcTotal) * 0.1)) * 10000;
+        intelligenceQuery.setMaxTotalPrice(plotTotalEnd);
+        intelligenceQuery.setMinTotalPrice(plotTotalFirst);
+        intelligenceQuery.setHasChild(1);
+        intelligenceQuery.setHasOldman(1);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        model.addAttribute("list",list);
+        return "intelligent-report";
     }
 
     /**
@@ -191,7 +196,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/27 12:33
      */
-    @RequestMapping("/goCreateReport")
+    /*@RequestMapping("/goCreateReport")
     public String goCreateMyReport(IntelligenceQuery intelligenceQuery, Model model) {
         //复制数据信息
         IntelligenceFh intelligenceFh = new IntelligenceFh();
@@ -204,7 +209,7 @@ public class IntelligenceFindHouseController {
         model.addAttribute("intelligenceFh", intelligenceFh);
         //过渡页vs封面
         return "";
-    }
+    }*/
 
     /**
      * 功能描述：报告页-用户画像
@@ -234,8 +239,47 @@ public class IntelligenceFindHouseController {
      * @param model
      */
     @RequestMapping("/showUserPortrayal")
-    public String showUserPortrayal(Model model) {
+    public String showUserPortrayal(Model model,IntelligenceQuery intelligenceQuery) {
+
+        IntelligenceFh intelligenceFh=new IntelligenceFh();
+        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
+
+        //调用生成报告页展示数据接口
+
+
+
+
         return "intelligent-report";
+    }
+
+    /**
+     * 报告页价格趋势
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/queryPt")
+    @ResponseBody
+    public NashResult queryPt(IntelligenceQuery intelligenceQuery) {
+
+        Integer totalPrice = 500;
+//        Integer totalPrice = intelligenceQuery.getPreconcTotal();
+        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        return NashResult.build(fhpt);
+    }
+
+    /**
+     * 报告页供需趋势
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/queryTd")
+    @ResponseBody
+    public NashResult queryTd(IntelligenceQuery intelligenceQuery) {
+
+        Integer totalPrice = 500;
+//        Integer totalPrice = intelligenceQuery.getPreconcTotal();
+        Map<String,Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
+        return NashResult.build(fhtp);
     }
 
 

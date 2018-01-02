@@ -1,9 +1,6 @@
 package com.toutiao.web.service.intelligence;
 
-
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
-
-import java.util.List;
+import java.util.Map;
 
 /**
  *  智能找房目标市场供需走势
@@ -19,5 +16,5 @@ public interface IntelligenceFhTdService {
      * @param totalPrice
      * @return
      */
-    List<IntelligenceFhTd> queryTd(Integer totalPrice);
+    Map<String,Object> queryTd(Integer totalPrice);
 }
