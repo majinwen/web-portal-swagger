@@ -46,9 +46,11 @@
                         <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                         <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                         <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
-                        <li data-begin-price="300.0" data-end-price="350.0">300-350万</li>
-                        <li data-begin-price="350.0" data-end-price="400.0">350-400万</li>
-                        <li data-begin-price="400.0" data-end-price="1000.0">400万以上</li>
+                        <li data-begin-price="300.0" data-end-price="400.0">300-400万</li>
+                        <li data-begin-price="400.0" data-end-price="500.0">400-500万</li>
+                        <li data-begin-price="500.0" data-end-price="800.0">500-800万</li>
+                        <li data-begin-price="800.0" data-end-price="1000.0">800-1000万</li>
+                        <li data-begin-price="1000.0" data-end-price="100000000.0">1000万以上</li>
                     </ul>
                 </div>
             </div>
@@ -109,10 +111,13 @@
                     <dl>
                         <dt data-type="houseAreaSize">面积</dt>
                         <dd>
-                            <span data-info="[0-60]">60以下</span>
-                            <span data-info="[60-90]">60-90</span>
-                            <span data-info="[90-120]">90-120</span>
-                            <span data-info="[120-1000]">120以上</span>
+                            <span data-info="[0-60]">60平以下</span>
+                            <span data-info="[60-90]">60-90平</span>
+                            <span data-info="[90-110]">90-110平</span>
+                            <span data-info="[110-130]">110-130平</span>
+                            <span data-info="[130-150]">130-150平</span>
+                            <span data-info="[150-200]">150-200平</span>
+                            <span data-info="[200-10000]">200平以上</span>
                         </dd>
                     </dl>
                     <dl>
