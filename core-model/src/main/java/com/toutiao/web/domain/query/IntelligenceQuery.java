@@ -37,7 +37,7 @@ public class IntelligenceQuery {
     /**
      * 赛选出来的百分比
      */
-    private String ratio;
+    private Double ratio;
 
     /**
      * 用户选择的户型

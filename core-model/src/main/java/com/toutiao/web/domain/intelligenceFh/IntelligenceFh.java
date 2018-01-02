@@ -69,7 +69,7 @@ public class IntelligenceFh {
     /**
      * 用户与历史数据百分比
      */
-    private String ratio;
+    private Double ratio;
 
     /**
      * 用户传递的区域id
