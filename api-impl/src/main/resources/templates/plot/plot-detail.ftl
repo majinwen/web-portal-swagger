@@ -82,7 +82,10 @@
                     ${'['+village['tradingArea']+']'}
                 </#if>
             </#if>
-            ${village['address']!''}</p>
+            <#if village['address']?exists&&village['address']!=''>
+            <#assign split = village['address']?split('-')>
+            <#if split?size gt 1>${split[1]}<#else >
+            ${village['address']!''}</#if></#if></p>
             <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>

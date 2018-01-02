@@ -102,14 +102,19 @@ $('.map-message-btn').on('click', 'li', function () {
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
     }
-    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&tag=' + text + '&location=' + locationnumber + '&radius=1000&radius_limit=true&scope=2&page_size=5&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var url = 'http://api.map.baidu.com/place/v2/search?query=' + text + '&tag=' + text + '&location=' + locationnumber + '&radius=3000&radius_limit=true&scope=2&page_size=20&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     $.ajax({
         type: 'GET',
         url: url,
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                renderDom(response.results, parentText);
+                var array = response.results;
+                array.sort(function(a,b){
+                    return a.detail_info.distance-b.detail_info.distance;
+                })
+                var arr = array.slice(0,5)
+                renderDom(arr, parentText);
             }
         },
         error: function (err) {
