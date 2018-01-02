@@ -42,17 +42,20 @@ public class PriceTrendServiceImpl implements PriceTrendService {
        if (ptCD0.size()>ptCD1.size() && ptCD0.size()>ptCD2.size()) {
            for (PriceTrend pitem : ptCD0) {
                String dateString = formatter.format(pitem.getMonth());
-               timeList.add(dateString);
+               String dateStringFin = dateString.substring(5,7);
+               timeList.add(dateStringFin);
            }
        }else if (ptCD1.size()>ptCD0.size() && ptCD1.size()>ptCD2.size()){
            for (PriceTrend pitem : ptCD1) {
                String dateString = formatter.format(pitem.getMonth());
-               timeList.add(dateString);
+               String dateStringFin = dateString.substring(0,7);
+               timeList.add(dateStringFin);
            }
        }else if (ptCD2.size()>ptCD1.size() && ptCD2.size()>ptCD0.size()){
            for (PriceTrend pitem : ptCD2) {
                String dateString = formatter.format(pitem.getMonth());
-               timeList.add(dateString);
+               String dateStringFin = dateString.substring(0,7);
+               timeList.add(dateStringFin);
            }
        }
 

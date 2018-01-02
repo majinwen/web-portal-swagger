@@ -540,7 +540,10 @@
                          show : true
                      }
                  }
-           }
+           },
+            textStyle:{
+                fontSize:30
+            },
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
@@ -549,96 +552,106 @@
                 fontSize:25
             }
         },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: [<#list  mouthList as item >'${item}',</#list>]
-        },
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {
+                    alignWithLabel: true,
+                },
+                data: [<#list  mouthList as item >'${item}',</#list>],
+                axisLabel: {
+                    fontSize:26,
+                   // interval:0
+                }
+            }
+        ],
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '{value}'
+                formatter: '{value}',
+                fontSize:28
             },
+            scale:true
         },
-    /*  缩放
-     dataZoom: [
-            {
+    /*  缩放*/
+   /*  dataZoom: [
+          /!*  {
                 type: 'slider',
                 show: true,
                 xAxisIndex: [0],
                 start: 1,
                 end: 80
-            }
-            {
+            },*!/
+           {
                 type: 'slider',
                 show: true,
                 yAxisIndex: [0],
                 left: '93%',
-                start: 29,
-                end: 36
-            },
+                start: 1,
+                end: 50
+            }
         ],*/
         series: [
-        <#if (ptCD0?size==0)>
+            <#if (ptCD0?size==0)>
+                {
+                    name: '${village['rc']!'小区'}价格',
+                    type: 'scatter',
+                    coordinateSystem:'cartesian2d',
+                    data:[ <#list mouthList as item >
+                            <#if (item_index == (mouthList?size-1))>
+                            ${village['avgPrice']},
+                            <#else>
+                                NaN,
+                            </#if>
+                         </#list>
+                    ],
+                    symbolSize:25,
+                },
+           <#else>
+               {
+                   name:'${village['rc']!'小区'}价格',
+                   type:'line',
+                   data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                   symbolSize:10,
+                   itemStyle:{
+                       normal:{
+                           lineStyle:{
+                               width:4,
+                           },
+                       },
+                   },
+               },
+            </#if>
             {
-                name: '${village['rc']!'小区'}价格',
-                type: 'scatter',
-                coordinateSystem: 'cartesian2d',
-                data: [
-                    <#list mouthList as item >
-                        <#if (item_index == (mouthList?size-1))>
-                        ${village['avgPrice']},
-                        <#else>
-                            NaN,
-                        </#if>
-                    </#list>],
-                symbolSize: 25,
-            },
-        <#else>
-            {
-                name: '${village['rc']!'小区'}价格',
-                type: 'line',
-                data: [<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize: 10,
-                itemStyle: {
-                    normal: {
-                        lineStyle: {
-                            width: 4,
+                name:'${village['area']!'区域'}价格',
+                type:'line',
+                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:10,
+                itemStyle:{
+                    normal:{
+                        lineStyle:{
+                            width:4,
                         },
                     },
                 },
             },
-        </#if>
             {
-                name: '${village['area']!'区域'}价格',
-                type: 'line',
-                data: [<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize: 10,
-                itemStyle: {
-                    normal: {
-                        lineStyle: {
-                            width: 4,
-                        },
-                    },
-                },
-            },
-            {
-                name: '${village['tradingArea']!'商圈'}价格',
-                type: 'line',
-                data: [<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize: 10,
-                itemStyle: {
-                    normal: {
-                        lineStyle: {
-                            width: 4,
-                        },
-                    },
+                name:'${village['tradingArea']!'商圈'}价格',
+                type:'line',
+                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                symbolSize:10,
+                itemStyle:{
+                       normal:{
+                           lineStyle:{
+                                width:4,
+                           },
+                       },
                 },
             },
         ]
     };
     <#if  (mouthList?size>0)>
-    myChartline.setOption(option);
+        myChartline.setOption(option);
     </#if>
 </script>
 <script>
