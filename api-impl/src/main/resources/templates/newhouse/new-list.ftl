@@ -246,7 +246,7 @@
 
 <script id="listContent" type="text/html">
 {{each data}}
-<li><a class="list-item new" href="${router_city('/loupan/'+'{{$value.building_name_id}}'+'.html')}">
+<li><a class="list-item new" href="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>">
 
     <div class="clear">
         <div class="list-item-img-box">
