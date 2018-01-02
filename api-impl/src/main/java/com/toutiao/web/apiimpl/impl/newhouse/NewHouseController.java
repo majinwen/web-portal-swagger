@@ -35,8 +35,8 @@ public class NewHouseController {
     @RequestMapping("/xinfang")
     public String index(NewHouseQuery newHouseQuery, Model model) {
          newHouseQuery.setSort(0);
-         newHouseQuery.setPageNum(1);
-         newHouseQuery.setPageSize(4);
+//         newHouseQuery.setPageNum(1);
+//         newHouseQuery.setPageSize(5);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
          return "newhouse/new-index";
