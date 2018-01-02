@@ -11,7 +11,8 @@
     <title>报告页</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
-    <script src="/static/js/modernizr.custom.js"></script>
+    <script src="${staticurl}/js/modernizr.custom.js"></script>
+    <script src="${staticurl}/js/echarts.min.js"></script>
 </head>
 <body>
 <div id="superContainer">
@@ -56,10 +57,6 @@
                     <li>
                         <span class="contrast-mark type-dark-green">跌</span>
                         <p>目标市场 最高跌幅为<em class="inte-color-red">7%</em>，低于北京市场均价跌幅</p>
-                    </li>
-                    <li>
-                        <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交价为<em class="inte-color-red">1034万/套</em>，比北京市场高出<em class="inte-color-red">387万/套</em></p>
                     </li>
                 </ul>
             </div>

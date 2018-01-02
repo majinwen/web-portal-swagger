@@ -596,10 +596,18 @@
                                 width: rem(25);
                                 height: rem(23);
                                 margin-right: rem(3);
-                                @include bg-image('/static/images/plot/xqxq_icon_star');
                                 -webkit-background-size: contain;
                                 background-size: contain;
+
+                                &.star-icon {
+                                    @include bg-image('/static/images/plot/xqxq_icon_star');
+                                }
+
+                                &.red-star {
+                                    @include bg-image('/static/images/plot/xqxq_icon_star_red');
+                                }
                             }
+
                         }
                     }
                 }

@@ -270,8 +270,14 @@ public class PlotServiceImpl implements PlotService {
             }
 
             //小区默认排序
-            //级别从小到大  分数由小到大  先发布后发布
-            srb.addSort("level",SortOrder.ASC).addSort("plotScore",SortOrder.DESC).addSort("is_approve",SortOrder.DESC);
+            //先发布后发布 级别从小到大  分数由大到小
+            srb.addSort("is_approve",SortOrder.DESC).addSort("level",SortOrder.ASC).addSort("plotScore",SortOrder.DESC);
+
+            //级别为1-4
+//            Integer level = villageRequest.getLevel();
+//            if (level != 0&&!level.equals("undefined")) {
+//                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("level").gt(0).lte(4));
+//            }
 
             //排序
             //均价
@@ -316,6 +322,16 @@ public class PlotServiceImpl implements PlotService {
                     }else {
                         instance.setWaterFee("5");
                     }
+                    if ("0".equals(instance.getHeatingMode())){
+                        instance.setHeatingMode("未知");
+                    }
+                    if ("1".equals(instance.getHeatingMode())){
+                        instance.setHeatingMode("集中供暖");
+                    }
+                    if ("2".equals(instance.getHeatingMode())){
+                        instance.setHeatingMode("自供暖");
+                    }
+
                     PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
                     instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                     instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));

@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>二手房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
@@ -15,7 +17,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+        <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
 </header>
@@ -44,9 +46,11 @@
                         <li data-begin-price="0.0" data-end-price="200.0">200万以下</li>
                         <li data-begin-price="200.0" data-end-price="250.0">200-250万</li>
                         <li data-begin-price="250.0" data-end-price="300.0">250-300万</li>
-                        <li data-begin-price="300.0" data-end-price="350.0">300-350万</li>
-                        <li data-begin-price="350.0" data-end-price="400.0">350-400万</li>
-                        <li data-begin-price="400.0" data-end-price="1000.0">400万以上</li>
+                        <li data-begin-price="300.0" data-end-price="400.0">300-400万</li>
+                        <li data-begin-price="400.0" data-end-price="500.0">400-500万</li>
+                        <li data-begin-price="500.0" data-end-price="800.0">500-800万</li>
+                        <li data-begin-price="800.0" data-end-price="1000.0">800-1000万</li>
+                        <li data-begin-price="1000.0" data-end-price="100000000.0">1000万以上</li>
                     </ul>
                 </div>
             </div>
@@ -107,10 +111,13 @@
                     <dl>
                         <dt data-type="houseAreaSize">面积</dt>
                         <dd>
-                            <span data-info="[0-60]">60以下</span>
-                            <span data-info="[60-90]">60-90</span>
-                            <span data-info="[90-120]">90-120</span>
-                            <span data-info="[120-1000]">120以上</span>
+                            <span data-info="[0-60]">60平以下</span>
+                            <span data-info="[60-90]">60-90平</span>
+                            <span data-info="[90-110]">90-110平</span>
+                            <span data-info="[110-130]">110-130平</span>
+                            <span data-info="[130-150]">130-150平</span>
+                            <span data-info="[150-200]">150-200平</span>
+                            <span data-info="[200-10000]">200平以上</span>
                         </dd>
                     </dl>
                     <dl>
@@ -158,7 +165,7 @@
         </div>
     </div>
 </section>
-<section>
+<section id="result-section">
     <#if builds?exists><ul id="valueList">
         <#list builds as map>
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
@@ -235,7 +242,7 @@
             </a></li>
         </#list>
     </ul></#if>
-    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
+    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
@@ -314,6 +321,7 @@
 </body>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/dropload.min.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 </html>

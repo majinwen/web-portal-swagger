@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
     <title>二手房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="carousel-box">
@@ -133,16 +134,16 @@
             <li>
                 <dl class="module-table-item">
                     <dd class="odd-item">楼层：<span>
-                    <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.floorNo?exists&&(houseDetail.floorNo!=0))>
-                    ${houseDetail.floor}楼层/${houseDetail.floorNo}层
+                    <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0))>
+                    ${houseDetail.floor}楼层/${houseDetail.totalFloor}层
                     <#else >
                         <#if houseDetail.floor?exists&& (houseDetail.floor!='')>
                         ${houseDetail.floor}楼层
                         </#if >
-                        <#if houseDetail.floorNo?exists&&(houseDetail.floorNo!=0)>
-                        ${houseDetail.floorNo}层
+                        <#if houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0)>
+                        ${houseDetail.totalFloor}层
                         </#if >
-                        <#if (houseDetail.floorNo??&&houseDetail.floorNo==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
+                        <#if (houseDetail.totalFloor??&&houseDetail.totalFloor==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
                             暂无数据
                         </#if >
                     </#if>

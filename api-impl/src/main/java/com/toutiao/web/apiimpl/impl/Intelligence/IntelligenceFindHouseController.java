@@ -69,12 +69,7 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
-        Integer totalPrice = 500;
-        List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
-        List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
-        model.addAttribute("fhpt", fhpt);
-        model.addAttribute("fhrd", fhrd);
-        return "intelligent-report";
+        return "";
     }
 
     /**
@@ -255,6 +250,36 @@ public class IntelligenceFindHouseController {
 
 
         return "intelligent-report";
+    }
+
+    /**
+     * 报告页价格趋势
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/queryPt")
+    @ResponseBody
+    public NashResult queryPt(IntelligenceQuery intelligenceQuery) {
+
+        Integer totalPrice = 500;
+//        Integer totalPrice = intelligenceQuery.getPreconcTotal();
+        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        return NashResult.build(fhpt);
+    }
+
+    /**
+     * 报告页供需趋势
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping("/queryTd")
+    @ResponseBody
+    public NashResult queryTd(IntelligenceQuery intelligenceQuery) {
+
+        Integer totalPrice = 500;
+//        Integer totalPrice = intelligenceQuery.getPreconcTotal();
+        Map<String,Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
+        return NashResult.build(fhtp);
     }
 
 

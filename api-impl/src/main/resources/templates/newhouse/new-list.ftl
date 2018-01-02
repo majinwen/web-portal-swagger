@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#--<style type="text/css">
+        body {height: auto;}
+        html {height: auto;}
+    </style>-->
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+        <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
 </header>
@@ -39,12 +45,12 @@
             <div class="price-list">
                 <ul>
                     <li data-begin-price="" data-end-price="" class="current">不限</li>
-                    <li data-begin-price="0.0" data-end-price="20000.0">20000元/㎡以下</li>
-                    <li data-begin-price="20000.0" data-end-price="30000.0">20000-30000元/㎡</li>
-                    <li data-begin-price="30000.0" data-end-price="40000.0">30000-40000元/㎡</li>
-                    <li data-begin-price="40000.0" data-end-price="60000.0">40000-60000元/㎡</li>
-                    <li data-begin-price="60000.0" data-end-price="80000.0">60000-80000元/㎡</li>
-                    <li data-begin-price="80000.0" data-end-price="800000.0">80000元/㎡以上</li>
+                    <li data-begin-price="0.0" data-end-price="20000.0">2万元以下</li>
+                    <li data-begin-price="20000.0" data-end-price="30000.0">2-3万元</li>
+                    <li data-begin-price="30000.0" data-end-price="40000.0">3-4万元</li>
+                    <li data-begin-price="40000.0" data-end-price="60000.0">4-6万元</li>
+                    <li data-begin-price="60000.0" data-end-price="80000.0">6-8万元</li>
+                    <li data-begin-price="80000.0" data-end-price="800000.0">8万元以上</li>
                 </ul>
             </div>
         </div>
@@ -81,10 +87,13 @@
                 <dl>
                     <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="[0-60]">60以下</span>
-                        <span data-info="[60-90]">60-90</span>
-                        <span data-info="[90-120]">90-120</span>
-                        <span data-info="[120-1000]">120以上</span>
+                        <span data-info="[0-60]">60平以下</span>
+                        <span data-info="[60-90]">60-90平</span>
+                        <span data-info="[90-110]">90-110平</span>
+                        <span data-info="[110-130]">110-130平</span>
+                        <span data-info="[130-150]">130-150平</span>
+                        <span data-info="[150-200]">150-200平</span>
+                        <span data-info="[200-10000]">200平以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -142,7 +151,7 @@
     </div>
     </div>
 </section>
-<section>
+<section id="result-section">
     <ul id="valueList"><#if builds?exists>
         <#list builds as map>
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
@@ -217,7 +226,7 @@
             </a></li>
         </#list>
     </#if></ul>
-    <p class="tip-box">有新上房源，我们会及时通知您哦！</p>
+    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 
 <div class="sort-icon"></div>
@@ -301,6 +310,7 @@
 </body>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/dropload.min.js"></script>
 <script src="${staticurl}/js/list-category.js"></script>
 <script src="${staticurl}/js/template-web.js"></script>
 </html>

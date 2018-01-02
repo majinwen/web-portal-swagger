@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房首页</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header">
@@ -15,7 +16,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
