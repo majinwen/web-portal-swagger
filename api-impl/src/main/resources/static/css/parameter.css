@@ -311,9 +311,9 @@ hr {
     .primary-message ul.primary-item > li p .arrows-right {
       position: absolute;
       top: 0;
-      right: 0;
+      right: -0.2rem;
       display: block;
-      width: 0.2266666667rem;
+      width: 0.6266666667rem;
       height: 0.6266666667rem;
       background-image: url("/static/images/global/arrows_right_icon.png");
       background-repeat: no-repeat;
@@ -414,7 +414,7 @@ hr {
   .module-header-message .more-arrows {
     position: absolute;
     top: 0;
-    right: 0.4rem;
+    right: 0.2rem;
     color: #999; }
     [data-dpr="1"] .module-header-message .more-arrows {
       font-size: 12px; }
@@ -430,7 +430,7 @@ hr {
       background-position: center; }
     .module-header-message .more-arrows .arrows-right {
       top: -0.0533333333rem;
-      width: 0.2266666667rem;
+      width: 0.6266666667rem;
       height: 1.52rem;
       background-image: url("/static/images/global/arrows_right_icon.png");
       background-repeat: no-repeat; }

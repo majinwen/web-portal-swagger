@@ -110,9 +110,9 @@
                 .arrows-right {
                     position: absolute;
                     top: 0;
-                    right: 0;
+                    right: rem(-15);
                     display: block;
-                    width: rem(17);
+                    width: rem(47);
                     height: rem(47);
                     @include bg-image('/static/images/global/arrows_right_icon');
                     background-position: center;
@@ -211,7 +211,7 @@
     .more-arrows {
         position: absolute;
         top: 0;
-        right: rem(30);
+        right: rem(15);
         @include font-dpr(24);
         color: #999;
 
@@ -225,7 +225,7 @@
         
         .arrows-right {
             top: rem(-4);
-            width: rem(17);
+            width: rem(47);
             height: rem(114);
             @include bg-image('/static/images/global/arrows_right_icon');
         }
