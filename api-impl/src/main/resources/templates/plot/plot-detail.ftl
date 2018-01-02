@@ -9,7 +9,7 @@
     <title>小区详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
-    <#include "../StatisticsHeader.ftl">
+<#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <#assign ptCD0 = tradeline['buildingline']>
@@ -27,7 +27,8 @@
             </#list>
         <#else>
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
+                <img src="${staticurl}/images/global/tpzw_banner_image.png"
+                     data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
             </li>
         </#if>
         </ul>
@@ -73,19 +74,28 @@
     <section class="plot-primary-header">
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
-            <p>[${village['area']!''}-${village['tradingArea']!''}] ${village['address']!''}</p>
+            <p>${'['+village['area']!''}
+            <#if village['area']?exists&&village['area']!=''>
+                ${'-'+village['tradingArea']!''+']'}
+            <#else>
+                <#if village['tradingArea']?exists&&village['tradingArea']!=''>
+                    ${'['+village['tradingArea']!''+']'}
+                </#if>
+            </#if>
+            ${village['address']!''}</p>
             <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
-                    <#--<#if label_index lt 3>-->
-                        <#if label?exists><span>${label}</span></#if>
-                    <#--</#if>-->
+                <#--<#if label_index lt 3>-->
+                    <#if label?exists><span>${label}</span></#if>
+                <#--</#if>-->
                 </#list>
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img
+                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -136,17 +146,10 @@
             <#--</div>-->
             <#if  (mouthList?size>0)>
                 <div class="echarts-box">
-                    <div class="echarts-content" id="village-price-trade" style="height: 800px"></div>
+                    <div class="echarts-content" id="village-price-trade"></div>
                 </div>
             </#if>
-                <#--<div class="module-header-message">-->
-                    <#--<h3>价格走势</h3>-->
-                <#--</div>-->
-                <#if  (mouthList?size>0)>
-                    <div class="echarts-box">
-                        <div class="echarts-content" id="village-price-trade"></div>
-                    </div>
-                </#if>
+
             </div>
         </div>
     </section>
@@ -156,7 +159,8 @@
     <section>
         <div class="module-header-message">
             <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
+                    class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -192,14 +196,17 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息</h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i
+                    class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
                 <div class="info-card-item" id="base-info">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em
+                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em
+                        class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
                         (${village['sumHousehold']}户)
@@ -421,15 +428,18 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i
+                    class="arrows-right"></i></a>
         </div>
         <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
         <#if village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16"
+                 alt="">
         <#else>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
+                 alt="">
         </#if>
         </a>
     </section>
@@ -439,7 +449,8 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i
+                    class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -609,13 +620,13 @@
     </#if>
 </script>
 <script>
-$(function () {
-   var _divContent = $('#base-info').html();
-   if (_divContent.indexOf(',') == 0) {
-       _divContent = _divContent.substring(1);
-       $('#base-info').html(_divContent);
-   }
-});
+    $(function () {
+        var _divContent = $('#base-info').html();
+        if (_divContent.indexOf(',') == 0) {
+            _divContent = _divContent.substring(1);
+            $('#base-info').html(_divContent);
+        }
+    });
 </script>
 </body>
 </html>

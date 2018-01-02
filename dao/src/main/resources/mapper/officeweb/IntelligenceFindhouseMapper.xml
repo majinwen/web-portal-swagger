@@ -1317,16 +1317,17 @@
             and layout_range @> ARRAY[#{categoryId}]
         </if>
     </select>
-    <!--List queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);-->
-    <select id="queryPlotCountByCategoryAndPrice1" parameterType="java.lang.Double" resultType="java.lang.String">
-        select DISTINCT district_id from intelligence_findhouse
+    <!--DistictInfo queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);-->
+    <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
+        select DISTINCT district_id  as districtId ,district_name as districtName from intelligence_findhouse
         WHERE 1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
             and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>
         </if>
         <if test="categoryId!=null">
-            and layout_range @> ARRAY[#{categoryId}]
+            and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
         </if>
+
     </select>
     <!--int queryPlotCountByCategoryAndPriceAndDistict(Map map);-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">

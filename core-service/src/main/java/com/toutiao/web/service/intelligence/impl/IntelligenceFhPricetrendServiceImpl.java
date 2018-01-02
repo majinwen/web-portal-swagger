@@ -34,58 +34,46 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
     public Map<String,Object> queryPriceTrend(Integer totalPrice) {
 
         List<IntelligenceFhPricetrend> lists = intelligenceFhPricetrendMapper.queryPriceTrend(totalPrice);
-
+        IntelligenceFhPtRatio intelligenceFhPtRatio = intelligenceFhPricetrendMapper.queryPriceTrendRatio(totalPrice);
         Map<String,Object> result = new HashMap<>();
         Double[] price = new Double[12];
         Double[] totalprice = new Double[12];
+        MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
+        Double[] ratio = new Double[lists.size()-1];
+
         if(lists.size()> 0){
+            ok:
             for(int i=0;i<lists.size();i++){
+                if(ratio.length == i){
+                    break ok;
+                }
                 price[i] = lists.get(i).getPrice().doubleValue();
-                totalprice[i] = lists.get(i).getTotalPrice().doubleValue();
+                ratio[i] = (lists.get(i).getPrice().subtract(lists.get(i+1).getPrice()))
+                        .divide(lists.get(i+1).getPrice(),mc).multiply(new BigDecimal(100)).doubleValue();
             }
+            Double max=ratio[0];
+            Double min=ratio[0];
+            for(int i=0; i<ratio.length;i++){
+                if(ratio[i]>max) max=ratio[i];
+            }
+            for(int j = 0; j<ratio.length;j++){
+                if(ratio[j]<min)min=ratio[j];
+            }
+            result.put("minTarget",min);
+            result.put("maxTarget",max);
         }
+        //目标市场
+        Double cityAvgRatio11 = intelligenceFhPtRatio.getMaxtotalprice().divide(new BigDecimal(12),mc)
+                .divide(intelligenceFhPtRatio.getMaxtotalprice(),mc).multiply(new BigDecimal(100)).doubleValue();
 
 
-
-
-
-//        IntelligenceFhPtRatio intelligenceFhPtRatio = intelligenceFhPricetrendMapper.queryPriceTrendRatio(totalPrice);
-//
-//        List<IntelligenceFhPricetrend> lowlists = intelligenceFhPricetrendMapper.queryLowPriceTrend(totalPrice);
-//        BigDecimal rowfalg = null;
-//        MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
-//        if(lowlists.size() > 0){
-//            rowfalg =  lowlists.get(0).getPrice();
-//        }
-//        //目标市场
-//        BigDecimal cityAvgRatio = intelligenceFhPtRatio.getAvgtotalprice()
-//                .divide(intelligenceFhPtRatio.getMaxtotalprice(),mc).multiply(new BigDecimal(100));
-//
-//        //最高涨幅
-//        BigDecimal maxratio =  (intelligenceFhPtRatio.getMaxprice().subtract(rowfalg))
-//                .divide(rowfalg,mc).multiply(new BigDecimal(100));
-//
-//        if(maxratio.compareTo(cityAvgRatio)==-1){
-//            intelligenceFhPtRatio.setRowfalg(1);
-//        }else {
-//            intelligenceFhPtRatio.setRowfalg(0);
-//        }
-//        intelligenceFhPtRatio.setMaxRatio(maxratio.setScale(2, BigDecimal.ROUND_HALF_UP)+"%");
-//
-//        //最高跌幅
-//        BigDecimal minratio = (intelligenceFhPtRatio.getMaxprice().subtract(intelligenceFhPtRatio.getMinprice()))
-//                .divide(intelligenceFhPtRatio.getMaxprice(),mc).multiply(new BigDecimal(100));
-//
-//        if(minratio.compareTo(cityAvgRatio)==-1){
-//            intelligenceFhPtRatio.setLowfalg(1);
-//        }else {
-//            intelligenceFhPtRatio.setLowfalg(0);
-//        }
-//        intelligenceFhPtRatio.setMinRatio(minratio.setScale(2, BigDecimal.ROUND_HALF_UP)+"%");
-//        Map<String,Object> result = new HashMap<>();
-//        result.put("ratio",intelligenceFhPtRatio);
-//        result.put("trend",lists);
-
+        result.put("target",cityAvgRatio11);
+        result.put("ptlists",lists);
         return result;
     }
+
+
+
+
+
 }

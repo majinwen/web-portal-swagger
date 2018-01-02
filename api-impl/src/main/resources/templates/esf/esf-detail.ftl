@@ -134,16 +134,16 @@
             <li>
                 <dl class="module-table-item">
                     <dd class="odd-item">楼层：<span>
-                    <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.floorNo?exists&&(houseDetail.floorNo!=0))>
-                    ${houseDetail.floor}楼层/${houseDetail.floorNo}层
+                    <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0))>
+                    ${houseDetail.floor}楼层/${houseDetail.totalFloor}层
                     <#else >
                         <#if houseDetail.floor?exists&& (houseDetail.floor!='')>
                         ${houseDetail.floor}楼层
                         </#if >
-                        <#if houseDetail.floorNo?exists&&(houseDetail.floorNo!=0)>
-                        ${houseDetail.floorNo}层
+                        <#if houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0)>
+                        ${houseDetail.totalFloor}层
                         </#if >
-                        <#if (houseDetail.floorNo??&&houseDetail.floorNo==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
+                        <#if (houseDetail.totalFloor??&&houseDetail.totalFloor==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
                             暂无数据
                         </#if >
                     </#if>
@@ -321,10 +321,12 @@
                         <p class="cont-first">
                             <em>
                                 <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0></#if>
-                                <#else>${map.houseTotalPrices}万/
+                                    <#if map.houseTotalPrices==0>
+                                    </#if>
+                                <#else>
+                                ${map.houseTotalPrices}万
                                 </#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
                                 <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
                             </em>
                         </p>

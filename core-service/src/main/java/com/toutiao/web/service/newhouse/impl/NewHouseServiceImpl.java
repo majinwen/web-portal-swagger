@@ -7,7 +7,6 @@ import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -53,7 +52,7 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Value("${distance}")
     private Double distance;
 
-    private static final Integer IS_DEL = 0;//新房未下架
+    private static final Integer IS_DEL = 0;//新房未删除
     private static final Integer IS_APPROVE = 1;//新房未下架
 
     /**
@@ -74,11 +73,13 @@ public class NewHouseServiceImpl implements NewHouseService{
         QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
                 queryBuilder = QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).boost(2))
                         .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()));
 
                 booleanQueryBuilder.must(queryBuilder);
+        //    booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()))).boost(2);
         }
 
         //城市
@@ -179,10 +180,10 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){
             booleanQueryBuilder.must(termsQuery("redecorate_type_id", new String[]{newHouseQuery.getDeliverStyle()}));
         }
-//        //房源未下架
-//        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
-//        //房源已发布
-//        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+
+        //房源已发布
+        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
 
 
         int pageNum = 1;
@@ -243,15 +244,27 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .setSize(newHouseQuery.getPageSize())
                     .execute().actionGet();
         }else {
-            searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.DESC).addSort("building_sort",SortOrder.DESC).setFetchSource(
-                            new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
-                                    "location","house_min_area","house_max_area","nearbysubway"},
-                             null)
-                    .setFrom((pageNum-1)*newHouseQuery.getPageSize())
-                    .setSize(newHouseQuery.getPageSize())
-                    .execute().actionGet();
+//            if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
+//                searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+//                        .setQuery(booleanQueryBuilder).setFetchSource(
+//                                new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+//                                        "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+//                                        "location","house_min_area","house_max_area","nearbysubway"},
+//                                null)
+//                        .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+//                        .setSize(newHouseQuery.getPageSize())
+//                        .execute().actionGet();
+//            }else{
+                searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+                        .setQuery(booleanQueryBuilder) .addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
+                                new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+                                        "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
+                                        "location","house_min_area","house_max_area","nearbysubway"},
+                                null)
+                        .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                        .setSize(newHouseQuery.getPageSize())
+                        .execute().actionGet();
+//            }
         }
 
         SearchHits hits = searchresponse.getHits();
