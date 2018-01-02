@@ -8,6 +8,7 @@ import com.toutiao.web.dao.entity.officeweb.*;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
 import com.toutiao.web.dao.mapper.officeweb.*;
+import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
@@ -99,10 +100,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             String totalRate = null;
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
-                totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(totalPriceRate)) * 100).append("%").toString();
-                intelligenceFh.setRatio(totalRate);
+                totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(totalPriceRate)) * 100).toString();
+                intelligenceFh.setRatio(Double.valueOf(totalRate));
             } else {
-                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).append("%").toString());
+                intelligenceFh.setRatio(Double.valueOf(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString()));
             }
             intelligenceFh.setPlotCount(plotCount);
             return intelligenceFh;
@@ -143,9 +144,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
             //通过总价和户型查询小区数量
             Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
-            //获取该小区所在区域的id
-            List<String> list = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
-            intelligenceFh.setDistictList(list);
+            //获取该小区所在区域的信息
+            List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+            intelligenceFh.setDistictInfo(distictInfo);
             //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
             if (StringTool.isNotBlank(intelligenceFh.getLayOut()) && intelligenceFh.getLayOut() >= 3) {
                 //教育配套
@@ -164,10 +165,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                             plotRatio += ratio.getRatio();
                         }
                         //用户比率
-                        intelligenceFh.setRatio(plotRatio + "%");
+                        intelligenceFh.setRatio(plotRatio);
                     }
                     //用户比率
-                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio());
                     //用户画像类型
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
 
@@ -175,11 +176,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
                         //用户画像类型
                         intelligenceFh.setUserPortrayalType(4);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5);
                     }
                     if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
                         intelligenceFh.setUserPortrayalType(1);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5);
                     }
                 }
             } else {
@@ -189,16 +190,16 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     //用户画像类型
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
                     //用户比率
-                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio());
                 } else {
                     if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
                         //用户画像类型
                         intelligenceFh.setUserPortrayalType(4);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5);
                     }
                     if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
                         intelligenceFh.setUserPortrayalType(1);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5);
                     }
                 }
             }

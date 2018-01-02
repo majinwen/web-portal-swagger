@@ -42,13 +42,12 @@
                 <div class="price-list">
                     <ul>
                         <li data-begin-price="" data-end-price="" class="current">不限</li>
-                        <li data-begin-price="0.0" data-end-price="20000.0">20000元以下</li>
-                        <li data-begin-price="20000.0" data-end-price="30000.0">20000-30000元</li>
-                        <li data-begin-price="30000.0" data-end-price="40000.0">30000-40000元</li>
-                        <li data-begin-price="40000.0" data-end-price="50000.0">40000-50000元</li>
-                        <li data-begin-price="50000.0" data-end-price="60000.0">50000-60000元</li>
-                        <li data-begin-price="60000.0" data-end-price="80000.0">60000-80000元</li>
-                        <li data-begin-price="80000.0" data-end-price="2000000000.0">80000元以上</li>
+                        <li data-begin-price="0.0" data-end-price="20000.0">2万元以下</li>
+                        <li data-begin-price="20000.0" data-end-price="30000.0">2-3万元</li>
+                        <li data-begin-price="30000.0" data-end-price="40000.0">3-4万元</li>
+                        <li data-begin-price="40000.0" data-end-price="60000.0">4-6万元</li>
+                        <li data-begin-price="60000.0" data-end-price="80000.0">6-8万元</li>
+                        <li data-begin-price="80000.0" data-end-price="2000000000.0">8万元以上</li>
                     </ul>
                 </div>
             </div>
@@ -81,10 +80,13 @@
                     <dl>
                         <dt data-type="houseAreaSize">面积</dt>
                         <dd>
-                            <span data-info="[0-60]">60以下</span>
-                            <span data-info="[60-90]">60-90</span>
-                            <span data-info="[90-120]">90-120</span>
-                            <span data-info="[120-1000]">120以上</span>
+                            <span data-info="[0-60]">60平以下</span>
+                            <span data-info="[60-90]">60-90平</span>
+                            <span data-info="[90-110]">90-110平</span>
+                            <span data-info="[110-130]">110-130平</span>
+                            <span data-info="[130-150]">130-150平</span>
+                            <span data-info="[150-200]">150-200平</span>
+                            <span data-info="[200-10000]">200平以上</span>
                         </dd>
                     </dl>
                     <dl>
@@ -179,8 +181,15 @@
                                         </#if>
                                     </p>
                                 <#else>
-                                    <p class="cont-block-3 distance"><i
-                                            class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>
+                                        ${plot['area']!''}
+                                        <#if plot['area']?exists&&plot['area']!=''>
+                                        ${'-'+plot['tradingArea']!''}
+                                        <#else>
+                                            <#if plot['tradingArea']?exists&&plot['tradingArea']!=''>
+                                            ${plot['tradingArea']!''}
+                                            </#if>
+                                        </#if>
                                 </#if>
                             <#else>
                                 <#if plot['tradingArea']?exists>

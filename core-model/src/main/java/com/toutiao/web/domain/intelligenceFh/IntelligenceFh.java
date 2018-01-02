@@ -3,6 +3,7 @@ package com.toutiao.web.domain.intelligenceFh;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class IntelligenceFh {
@@ -56,7 +57,7 @@ public class IntelligenceFh {
     /**
      * 是否有老人(0-无，1-有)
      */
-    private Integer hasOldMan;
+    private Integer hasOldman;
     /**
      * 是否有小孩（0-（无、10+岁） ，1-（0-3岁），2-（4-10岁））
      */
@@ -68,7 +69,7 @@ public class IntelligenceFh {
     /**
      * 用户与历史数据百分比
      */
-    private String ratio;
+    private Double ratio;
 
     /**
      * 用户传递的区域id
@@ -78,6 +79,6 @@ public class IntelligenceFh {
     /**
      * 区域集合
      */
-    private List<String> distictList;
+    private List<DistictInfo> distictInfo;
 
 }

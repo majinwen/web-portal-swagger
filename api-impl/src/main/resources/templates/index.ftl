@@ -25,7 +25,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/index/dsy_banner.jpg" alt="年末特惠">
+                    <img src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -164,40 +164,43 @@
     <ul><#if newbuilds?exists>
         <#assign builds = newbuilds['data']>
         <#list builds as map>
-            <#if map_index==3>
-            <li><a class="list-item new new-ad-item" href="#">
-                <div class="list-item-cont-ad">
-                    <h3 class="cont-block-1">
-                        <span>中骏·西山天璟</span>
-                        <em>别墅</em>
-                    </h3>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                </div>
-                <div class="clear">
-                    <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                    </div>
-                    <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                    </div>
-                    <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                    </div>
-                </div>
-                <div class="pr">
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                </div>
+            <#--<#if map_index==3>-->
+            <#--<li><a class="list-item new new-ad-item" href="#">-->
+                <#--<div class="list-item-cont-ad">-->
+                    <#--<h3 class="cont-block-1">-->
+                        <#--<span>中骏·西山天璟</span>-->
+                        <#--<em>别墅</em>-->
+                    <#--</h3>-->
+                    <#--<p class="cont-block-3">东城/88㎡—526㎡</p>-->
+                <#--</div>-->
+                <#--<div class="clear">-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                <#--</div>-->
+                <#--<div class="pr">-->
+                    <#--<div class="cont-block-4 house-labelling gray middle">-->
+                        <#--<span>复式</span>-->
+                        <#--<span>五证齐全</span>-->
+                        <#--<span>花园洋房</span>-->
+                    <#--</div>-->
+                    <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
+                <#--</div>-->
 
-                <div class="new-active">
-                    <i class="icon"></i><em>活动：</em>
-                    <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-                </div>
-            </a></li></#if>
+                <#--<div class="new-active">-->
+                    <#--<i class="icon"></i><em>活动：</em>-->
+                    <#--<span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>-->
+                <#--</div>-->
+            <#--</a></li></#if>-->
+            <#if map_index==5>
+                <#break>
+            </#if>
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
@@ -256,34 +259,37 @@
     </div>
     <ul><#if villageList?exists>
         <#list villageList as map>
-            <#if map_index==3>
-            <li><a class="list-item new new-ad-item" href="#">
-                <div class="list-item-cont-ad">
-                    <h3 class="cont-block-1">新龙城</h3>
-                    <p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>
-                    <p class="cont-block-2">2008年建成</p>
-                </div>
-                <div class="clear">
-                    <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                    </div>
-                    <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                    </div>
-                    <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                    </div>
-                </div>
-                <div class="pr">
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                </div>
-            </a></li>
-            <#elseif map_index==4>
+            <#--<#if map_index==3>-->
+            <#--<li><a class="list-item new new-ad-item" href="#">-->
+                <#--<div class="list-item-cont-ad">-->
+                    <#--<h3 class="cont-block-1">新龙城</h3>-->
+                    <#--<p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>-->
+                    <#--<p class="cont-block-2">2008年建成</p>-->
+                <#--</div>-->
+                <#--<div class="clear">-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                <#--</div>-->
+                <#--<div class="pr">-->
+                    <#--<div class="cont-block-4 house-labelling gray middle">-->
+                        <#--<span>复式</span>-->
+                        <#--<span>五证齐全</span>-->
+                        <#--<span>花园洋房</span>-->
+                    <#--</div>-->
+                    <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
+                <#--</div>-->
+            <#--</a></li>-->
+            <#--<#elseif map_index==4>-->
+                <#--<#break>-->
+            <#--</#if>-->
+            <#if map_index==5>
                 <#break>
             </#if>
             <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
@@ -332,7 +338,7 @@
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
-    new  ElastiStack(document.getElementById('elastics-stack'));
+    new ElastiStack(document.getElementById('elastics-stack'));
 </script>
 </body>
 </html>

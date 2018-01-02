@@ -11,68 +11,6 @@
     <title>筛选</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
-    <script>
-        $(function () {
-            $('.list-item').on('click', 'li', function () {
-                var index = $(this).index() + 1;
-                $('.layer' + index).removeClass('none');
-            });
-            $('.layer').click(function () {
-                $('.layer').addClass('none');
-            });
-            $('.layer-content').click(function (e) {
-                e.stopPropagation();
-            });
-            $('.month-slide').on('touchstart', '.slider-thumb', function (evt) {
-               slide($(this), evt, '')
-            });
-            $('.down-slide').on('touchstart', '.slider-thumb', function (evt) {
-                slide($(this), evt, '万')
-            });
-            $('.total-slide').on('touchstart', '.slider-thumb', function (evt) {
-                slide($(this), evt, '万')
-            });
-
-            /*
-            * 滑块滑动
-            *
-            * @params ele 当前dom
-            * @params evt event 对象
-            * @params cm 单位
-            * */
-            function slide(ele, evt, cm) {
-                var thisDom = ele;
-                var oldX = evt.originalEvent.targetTouches[0].pageX;
-                var trackWidth = thisDom.parent().width();
-                var left = parseInt(thisDom.css('left'));
-                var sildeColor = thisDom.prevAll('.slide-color');
-                var slideText = thisDom.parent().prevAll('.slide-text');
-                var price = thisDom.next().children('em').text() - thisDom.prev().children('em').text();
-
-                $(document).on('touchmove', function (evt) {
-                    var newX = evt.originalEvent.targetTouches[0].pageX - oldX;
-                    thisDom.css('left', left + newX + "px");
-                    sildeColor.css('width', left + newX + "px");
-                    slideText.css('left', left + newX + "px");
-                    if ( parseInt(thisDom.css('left')) < 0) {
-                        thisDom.css('left', 0);
-                        slideText.css('left', 0);
-                        sildeColor.css('width', 0)
-                    }
-                    if (parseInt(thisDom.css('left')) > trackWidth) {
-                        thisDom.css('left', trackWidth + "px");
-                        slideText.css('left', trackWidth + "px");
-                        sildeColor.css('width', trackWidth + "px")
-                    }
-                    slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price) + cm)
-                });
-                $(document).on('touchend', function (evt) {
-                    $(document).unbind('touchmove');
-                    $(document).unbind('touchstart')
-                })
-            }
-        })
-    </script>
 </head>
 <body>
 <div id="superContainer">
@@ -141,16 +79,28 @@
                             <p>开启智能找房之旅</p>
                         </div>
                         <div class="result-container none">
-                            <p id="plot_Count">为您匹配了<em class="high-light-red"></em>个小区</p>
-                            <p id="plot_Ratio">有<em class="high-light-red"></em>的用户和您的需求相同</p>
+                            <p id="plot_Count">为您匹配了<em class="high-light-red">0</em>个小区</p>
+                            <p id="plot_Ratio">有<em class="high-light-red">0%</em>的用户和您的需求相同</p>
                         </div>
                     </div>
                 </div>
                 <ul class="list-item">
-                    <li>预算</li>
-                    <li>户型</li>
-                    <li>区域</li>
-                    <li>家庭</li>
+                    <li class="current">
+                        <div class="trangle-animate"></div>
+                        <p>预算</p>
+                    </li>
+                    <li>
+                        <div class="trangle-animate"></div>
+                        <p>户型</p>
+                    </li>
+                    <li>
+                        <div class="trangle-animate"></div>
+                        <p>区域</p>
+                    </li>
+                    <li>
+                        <div class="trangle-animate"></div>
+                        <p>家庭</p>
+                    </li>
                 </ul>
                 <div class="layer layer1 none">
                     <div class="layer-content">
@@ -231,27 +181,41 @@
                             <p>选择您的意向区域</p>
                             <div class="area-tips">
                                 <span>意向区域不能点么</span>
-                                <button>修改预算</button>
+                                <button class="modify-reset">修改预算</button>
                             </div>
                         </div>
-                        <ul class="area-content clear">
-                            <li class="optional">东城</li>
-                            <li class="optional">西城</li>
-                            <li class="optional">海淀</li>
-                            <li class="disabled">朝阳</li>
-                            <li class="disabled">丰台</li>
-                            <li class="disabled">门头沟</li>
-                            <li class="optional">石景山</li>
-                            <li class="optional">房山</li>
-                            <li class="optional">顺义</li>
-                            <li class="optional">通州</li>
-                            <li class="optional">昌平</li>
-                            <li class="optional">大兴</li>
-                            <li class="optional">怀柔</li>
-                            <li class="optional">平谷</li>
-                            <li class="optional">延庆</li>
-                            <li class="optional">密云</li>
-                            <li class="optional">北京周边</li>
+                        <ul id="option_distict" class="area-content clear">
+                            <li class="disabled" data-value="105041">石景山</li>
+                            <li class="disabled" data-value="105045">顺义</li>
+                            <li class="disabled" data-value="105043">大兴</li>
+                            <li class="disabled" data-value="105034">海淀</li>
+                            <li class="disabled" data-value="105035">朝阳</li>
+                            <li class="disabled" data-value="105036">东城</li>
+                            <li class="disabled" data-value="105037">西城</li>
+                            <li class="disabled" data-value="105040">丰台</li>
+                            <li class="disabled" data-value="105046">昌平</li>
+                            <li class="disabled" data-value="105047">密云</li>
+                            <li class="disabled" data-value="105048">怀柔</li>
+                            <li class="disabled" data-value="105049">延庆</li>
+                            <li class="disabled" data-value="105050">平谷</li>
+                            <li class="disabled" data-value="105051">门头沟</li>
+                            <li class="disabled" data-value="105044">通州</li>
+                            <li class="disabled" data-value="105042">房山</li>
+                            <li class="disabled" data-value="106013">北京周边</li>
+                            <li class="disabled" data-value="106022">武清</li>
+                            <li class="disabled" data-value="106023">燕郊</li>
+                            <li class="disabled" data-value="106024">香河</li>
+                            <li class="disabled" data-value="106025">大厂</li>
+                            <li class="disabled" data-value="106026">固安</li>
+                            <li class="disabled" data-value="106027">永清</li>
+                            <li class="disabled" data-value="106028">廊坊</li>
+                            <li class="disabled" data-value="106029">霸州</li>
+                            <li class="disabled" data-value="106030">涿州</li>
+                            <li class="disabled" data-value="106031">涞水</li>
+                            <li class="disabled" data-value="106032">怀来</li>
+                            <li class="disabled" data-value="106033">崇礼</li>
+                            <li class="disabled" data-value="106034">秦皇岛</li>
+                            <li class="disabled" data-value="106035">天津</li>
                         </ul>
                         <div class="layer-footer">
                             <button type="button" class="button" id="submitArea">确定</button>
@@ -307,224 +271,7 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(function () {
-        $('#superContainer').fullpage({
-            fitToSection: true,
-            resize: false
-        });
-
-        $.fn.fullpage.setAllowScrolling(false, 'up, down');
-
-        $('.begin').on('click', function () {
-            $.fn.fullpage.moveSectionDown();
-        });
-
-        // 用户类型选择
-        $('.choose-wrapper').on('click', '.choose-item-box', function () {
-            $('.choose-wrapper').find('.choose-item-box').removeClass('current');
-            $(this).addClass('current');
-        });
-
-        if ($('.choose-wrapper').find('.current').length > 0) {
-            $('.button').on('click', function () {
-                $.fn.fullpage.moveSectionDown();
-            });
-        }
-        // 提交选中用户类型
-        var params;
-        $('#userTypeSubmit').on('click', function () {
-            if ($('.choose-wrapper').find('.current').length > 0){
-                 params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
-                var userTypeUrl = 'userType=' + params;
-                $.fn.fullpage.moveSectionDown();
-                console.log(userTypeUrl);
-                $.ajax({
-                    type: "GET",
-                    url: "${router_city('/findhouse/xuanzeleixing')}",
-                    data: userTypeUrl
-                });
-            }
-        });
-
-        // 切换预算
-        $('.price-tab').on('click', 'span', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-            if ($('.total-price').hasClass('current')) {
-                $('.total-conent').removeClass('none');
-                $('.month-content').addClass('none');
-            } else if ($('.month-price').hasClass('current')) {
-                $('.total-conent').addClass('none');
-                $('.month-content').removeClass('none');
-            }
-        });
-        // 提交预算
-        var priceAnduserTppeUrl;
-        var userPortrayalType;
-        $('#submitPrice').on('click', function () {
-            if ($('.total-price').hasClass('current')) {
-                $(this).parents('.layer').addClass('none');
-                var price = $('.total-conent').find('.slide-text').text();
-                priceAnduserTppeUrl = 'userType=' + params + '&preconcTotal=' + price;
-                console.log(priceAnduserTppeUrl);
-                $.ajax({
-                    type: 'GET',
-                    url: '${router_city('/findhouse/goCheckPrice')}',
-                    data: priceAnduserTppeUrl,
-                    success: function (data) {
-                        console.log(data.data);
-                        $('#plot_Count').find('em').html(data.data.plotCount);
-                        $('#plot_Ratio').find('em').html(data.data.ratio);
-                        params = data.data.userType;
-                        console.log(params);
-                        //用户类型是第三类
-                        if (params == 3) {
-                            ////将第七种画像附给当前用户userPortrayalType
-                            userPortrayalType = data.data.userPortrayalType = 7;
-                            priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
-                            console.log(priceAnduserTppeUrl);
-                            //跳转到过渡页
-                            //为实现
-                            $('.start-btn').removeClass('none');
-                            $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?'"+priceAnduserTppeUrl+")}");
-                        }
-                    }
-
-                });
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
-                return
-            } else {
-                $(this).parents('.layer').addClass('none');
-                var downPrice = $('.down-slide').find('.slide-text').text();
-                var monthPrce = $('.month-slide').find('.slide-text').text();
-                priceAnduserTppeUrl = 'userType=' + params + '&downPayMent=' + downPrice + '&monthPayMent=' + monthPrce;
-                console.log('首付=' + downPrice, '月供=' + monthPrce);
-                $.ajax({
-                    type: 'GET',
-                    url: '${router_city('/findhouse/goCheckPrice')}',
-                    data: priceAnduserTppeUrl,
-                    success: function (data) {
-                        console.log(data.data);
-                        $("#plot_Count").find("em").html(data.data.plotCount);
-                        $("#plot_Ratio").find("em").html(data.data.ratio);
-                        params = data.data.userType;
-                        console(params);
-                        //用户类型是第三类
-                        if (params == 3) {
-                            ////将第七种画像附给当前用户userPortrayalType
-                            userPortrayalType = data.data.userPortrayalType = 7;
-                            priceAnduserTppeUrl += '&userPortrayalType=' + userPortrayalType;
-                            console.log(priceAnduserTppeUrl);
-                            //跳转到用户画像页面
-                            //为实现
-                            $('.start-btn').removeClass('none');
-                            $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $(".section page4").find("a").attr("href","${router_city('/findhouse/showUserPortrayal')}");
-                        }
-                    }
-
-                });
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
-            }
-        });
-
-        // 选择户型
-        $('.content-list').on('click', 'li', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-        });
-        // 提交户型
-        var next2;
-        $('#submitHouseType').on('click', function () {
-            $(this).parents('.layer').addClass('none');
-            var params = $('#layOut').find('li.current').data('layout');
-            var layOut = '&layOut=' + params;
-            next2 = priceAnduserTppeUrl + layOut;
-            $.ajax({
-                type: 'GET',
-                url: '${router_city('/findhouse/userCheckCategoryPage')}',
-                data: next2,
-                success: function (data) {
-                    console.log(data.data);
-                    $("#plot_Count").find("em").html(data.data.plotCount);
-                    $("#plot_Ratio").find("em").html(data.data.ratio);
-                    params = data.data.userType;
-                    next2 += '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' +data.data.ratio;
-                    console.log(next2);
-                    //区域数组
-                    console.log(data.data.distictList);
-                    //没写完
-
-                }
-            })
-        });
-
-        // 选择区域
-        $('.area-content').on('click', 'li.optional', function () {
-            $(this).addClass('current').removeClass('optional');
-            var currentChoose = $('.area-content').find('li.current').length;
-            if (currentChoose > 2) {
-                $('.area-content').find('li:not(.current)').removeClass('optional').addClass('disabled')
-            }
-        });
-        // 提交选中区域
-        var next4;
-        $('#submitArea').on('click', function () {
-            if ($('.area-content').find('li.current').length == 3) {
-                $(this).parents('.layer').addClass('none');
-                next4 += next2 + '&districtId=' + '106013';
-                console.log(1);
-                $.ajax({
-                    type: 'GET',
-                    url: '${router_city('/findhouse/queryPlotCountByDistrict')}',
-                    data: next4,
-                    success: function (data) {
-                        console.log(data);
-                        //此处要判断是否是一居用户
-                        if(data.data.layOut==1){
-                            //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
-                            //将医疗配套和学校配套还原成默认状态
-                            //直接跳转到过渡页
-                            $('.start-btn').removeClass('none');
-                            $.fn.fullpage.setAllowScrolling(true, 'down');
-                        }
-
-                    }
-                });
-                $('.result-begin').addClass('none');
-                $('.result-container').removeClass('none');
-            }
-        });
-
-        // 选择家庭结构
-        $('#family-box').on('click', 'li', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-        });
-        // 提交选中家庭结构内容
-        var next3;
-        $('#submitFamily').on('click', function () {
-            $(this).parents('.layer').addClass('none');
-            $('.result-begin').addClass('none');
-            $('.result-container').removeClass('none');
-            var childParams = $('#hasChild').find('li.current').data('child');
-            var oldManParams = $('#oldMan').find('li.current').data('old-man');
-            var familyStructureUrl = '&hasChild=' + childParams + '&oldMan=' + oldManParams;
-            next3 = next4 + familyStructureUrl;
-            $('.start-btn').removeClass('none');
-            $.fn.fullpage.setAllowScrolling(true, 'down');
-            /*$.ajax({
-                type: 'GET',
-                url: '',
-                data: layOut,
-                success: function (data) {
-                    console.log(data);
-                }
-            })*/
-        });
-    })
-</script>
+<script src="/static/js/URI.min.js"></script>
+<script src="${staticurl}/js/intelligent-find.js"></script>
 </body>
 </html>

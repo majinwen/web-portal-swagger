@@ -331,14 +331,149 @@ $inteColorRed: #e42929;
                 width: rem(122);
                 height: rem(122);
                 line-height: rem(122);
-                margin: rem(100) auto;
+                margin: rem(106) auto;
                 text-align: center;
                 @include font-dpr(36);
                 -webkit-border-radius: 50%;
                 border-radius: 50%;
-                border: rem(1) solid $inteBlack;
+                opacity: 0.4;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    top: rem(-106);
+                    left: 50%;
+                    width: rem(18);
+                    height: rem(106);
+                    @include bg-image('/static/images/intelligent/znzf_line');
+                    -webkit-background-size: contain;
+                    background-size: contain;
+                }
+
+                p {
+                    position: relative;
+                    @include bg-image('/static/images/intelligent/list_item_big');
+                    -webkit-background-size: contain;
+                    background-size: contain;
+
+                    &:before, &:after {
+                        content: '';
+                        position: absolute;
+                    }
+                    &:before {
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        @include bg-image('/static/images/intelligent/item_big_roud');
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                    }
+                    &:after {
+                        top: 50%;
+                        left: 50%;
+                        width: rem(108);
+                        height: rem(106);
+                        margin: rem(-53) rem(-54);
+                        @include bg-image('/static/images/intelligent/list_item_small');
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                    }
+                }
+
+                &.choose-end, &.current {
+                    opacity: 1;
+
+                    &:before {
+                        content: none;
+                    }
+                }
+
+                &.current {
+                    .trangle-animate {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+
+                        &:before, &:after {
+                            content: '';
+                            position: absolute;
+                            top: 50%;
+                            width: rem(24);
+                            height: rem(24);
+                            margin-top: rem(-12);
+                        }
+                        &:before {
+                            left: rem(-40);
+                            @include bg-image('/static/images/intelligent/znzf_icon_left');
+                            -webkit-animation: lineLeft 4s infinite;
+                            animation: lineLeft 4s infinite;
+                        }
+                        &:after {
+                            right: rem(-40);
+                            @include bg-image('/static/images/intelligent/znzf_icon_right');
+                            -webkit-animation: lineRight 4s infinite;
+                            animation: lineRight 4s infinite;
+                        }
+                    }
+
+                    p {
+                        &:before {
+                            -webkit-animation: roundRight 4s infinite;
+                            animation: roundRight 4s infinite;
+                        }
+                        &:after {
+                            -webkit-animation: roundLeft 4s infinite;
+                            animation: roundLeft 4s infinite;
+                        }
+                    }
+                }
             }
         }
+        @keyframes lineLeft {
+              0% {  left: rem(-40);  }
+             50% {  left: rem(-60);  }
+            100% {  left: rem(-40);  }
+        }
+        @-webkit-keyframes lineLeft {
+              0% {  left: rem(-40);  }
+             50% {  left: rem(-60);  }
+            100% {  left: rem(-40);  }
+        }
+        @keyframes lineRight {
+              0% {  right: rem(-40);  }
+             50% {  right: rem(-60);  }
+            100% {  right: rem(-40);  }
+        }
+        @-webkit-keyframes lineRight {
+              0% {  right: rem(-40);  }
+             50% {  right: rem(-60);  }
+            100% {  right: rem(-40);  }
+        }
+        @keyframes roundRight {
+              0% {  transform: rotate(0deg);  }
+             50% {  transform: rotate(45deg);  }
+            100% {  transform: rotate(0deg);  }
+        }
+        @-webkit-keyframes roundRight {
+              0% {  -webkit-transform: rotate(0deg);  }
+             50% {  -webkit-transform: rotate(45deg);  }
+            100% {  -webkit-transform: rotate(0deg);  }
+        }
+        @keyframes roundLeft {
+            0% {  transform: rotate(0deg);  }
+            50% {  transform: rotate(-45deg);  }
+            100% {  transform: rotate(0deg);  }
+        }
+        @-webkit-keyframes roundLeft {
+            0% {  -webkit-transform: rotate(0deg);  }
+            50% {  -webkit-transform: rotate(-45deg);  }
+            100% {  -webkit-transform: rotate(0deg);  }
+        }
+
+
 
         .layer {
             position: absolute;
@@ -353,7 +488,7 @@ $inteColorRed: #e42929;
                 left: 0;
                 bottom: 0;
                 width: 100%;
-                height: rem(500);
+                min-height: rem(500);
                 padding: 0 rem(30);
                 background-color: #fff;
                 @include box-sizing;
@@ -440,7 +575,7 @@ $inteColorRed: #e42929;
                             width: rem(100);
                             height: rem(36);
                             line-height: rem(36);
-                            margin-left: rem(-34);
+                            margin-left: rem(-50);
                             margin-bottom: rem(27);
                             color: $baseWhite;
                             text-align: center;
@@ -492,15 +627,12 @@ $inteColorRed: #e42929;
                                 position: absolute;
                                 top: 50%;
                                 display: block;
-                                width: rem(28);
-                                height: rem(28);
-                                margin: rem(-14) 0;
-                                border: 1px solid grey;
-                                -webkit-border-radius: 50%;
-                                border-radius: 50%;
-                                -webkit-box-shadow: 0 rem(1) rem(3) rgba(0, 0, 0, 0.2);
-                                box-shadow: 0 rem(1) rem(3) rgba(0, 0, 0, 0.2);
-                                background: linear-gradient(#fafafa, #f6f6f6) repeat scroll 0 0 #fff;
+                                width: rem(50);
+                                height: rem(50);
+                                margin: rem(-20) rem(-25);
+                                @include bg-image('/static/images/intelligent/radio-line-mark');
+                                -webkit-background-size: contain;
+                                background-size: contain;
                             }
                         }
                     }
@@ -566,15 +698,14 @@ $inteColorRed: #e42929;
 
                         &.current {
                             &:after {
-                                bottom: rem(-11);
-                                width: rem(34);
-                                height: rem(34);
-                                margin-left: rem(-17);
-                                -webkit-border-radius: 50%;
-                                border-radius: 50%;
-                                -webkit-box-shadow: 0 rem(1) rem(3) rgba(0, 0, 0, 0.2);
-                                box-shadow: 0 rem(1) rem(3) rgba(0, 0, 0, 0.2);
-                                background: linear-gradient(#fafafa, #f6f6f6) repeat scroll 0 0 #fff;
+                                bottom: rem(-25);
+                                width: rem(50);
+                                height: rem(50);
+                                margin-left: rem(-25);
+                                background-color: transparent;
+                                @include bg-image('/static/images/intelligent/radio-line-mark');
+                                -webkit-background-size: contain;
+                                background-size: contain;
                             }
 
                             span {
@@ -600,7 +731,7 @@ $inteColorRed: #e42929;
                 }
 
                 .area-content {
-                    margin: rem(25) rem(-15);
+                    margin: rem(25) rem(-15) rem(136);
 
                     li {
                         display: block;
@@ -619,6 +750,7 @@ $inteColorRed: #e42929;
 
                         &.current {
                             color: $baseWhite;
+                            border-color: $inteColorRed;
                             background-color: $inteColorRed;
                         }
                     }

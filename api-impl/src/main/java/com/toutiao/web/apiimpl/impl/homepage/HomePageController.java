@@ -37,8 +37,8 @@ public class HomePageController {
     public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
         NewHouseQuery newHouseQuery=new NewHouseQuery();
         newHouseQuery.setSort(0);
-        newHouseQuery.setPageNum(1);
-        newHouseQuery.setPageSize(4);
+//        newHouseQuery.setPageNum(1);
+//        newHouseQuery.setPageSize(5);
         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
         List villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);
