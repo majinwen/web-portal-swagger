@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
@@ -243,26 +243,16 @@
             <h4>
                 <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
             </h4>
-            <p>
+            <h3>
                 <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
-                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
+                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</br>
                 </#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>
-                   共<em class="high-light-red">${village['sumBuilding']}</em>栋
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋
                 </#if>
-                <#if village['sumHousehold']?exists>
-                    <#if village['sumHousehold']?number gt 0>
-                        (${village['sumHousehold']}户)
-                    </#if>
-                </#if>
-                <#if (village['sumBuilding']?exists&&(village['sumBuilding']!=''))||(village['sumHousehold']?exists&&village['sumHousehold']?number gt 0)>,</#if>
-                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
-                       ${village['buildingStructure']}
-                </#if>
-                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                        ${village['avgPrice']}元/㎡
-                </#if>
-            </p>
+                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if></br>
+                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>${village['buildingStructure']}</#if>
+                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>均价${village['avgPrice']}元/㎡</#if>
+            </h3>
         </div>
     </a></li>
     </ul>

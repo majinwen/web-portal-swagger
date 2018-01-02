@@ -388,7 +388,7 @@
                     success: function (data) {
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         var ratio = new Number(data.data.ratio);
-                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(2)==0.00?"0":ratio.toFixed(2) + '%');
                         params = data.data.userType;
                         //用户类型是第三类
                         if (params == 3) {
@@ -418,7 +418,7 @@
                     success: function (data) {
                         $("#plot_Count").find("em").html(data.data.plotCount);
                         var ratio = new Number(data.data.ratio);
-                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(2)==0.00?"0":ratio.toFixed(2) + '%');
                         params = data.data.userType;
                         //用户类型是第三类
                         if (params == 3) {
@@ -456,7 +456,7 @@
                 success: function (data) {
                     $("#plot_Count").find("em").html(data.data.plotCount);
                     var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(2)==0.00?"0":ratio.toFixed(2) + '%');
                     params = data.data.userType;
                     prevParams = next2 +'&userPortrayalType=' + data.data.userPortrayalType+ '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
                     //区域数组
