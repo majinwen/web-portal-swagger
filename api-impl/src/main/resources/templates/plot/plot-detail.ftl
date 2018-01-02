@@ -75,11 +75,11 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p>${'['+village['area']!''}
-            <#if village['area']?exists&&village['area']!=''>
-                ${'-'+village['tradingArea']!''+']'}
+                <#if village['area']?exists&&village['area']!=''>
+            ${'-'+village['tradingArea']!''+']'}
             <#else>
                 <#if village['tradingArea']?exists&&village['tradingArea']!=''>
-                    ${'['+village['tradingArea']!''+']'}
+                ${'['+village['tradingArea']!''+']'}
                 </#if>
             </#if>
             ${village['address']!''}</p>
@@ -98,6 +98,45 @@
                 src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
+<#if (reViHouse?exists) && (reViHouse?size>0)>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>推荐小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
+                    class="arrows-right"></i></a>
+        </div>
+        <ul class="tilelist">
+            <#list reViHouse as reitem>
+                <#if reitem_index==4>
+                    <#break >
+                </#if>
+                <#assign itemLocation=reitem['housePlotLocation']>
+                <li><a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
+                    <div class="picture-box">
+                        <#if reitem['housePhoto']?exists>
+                            <#assign photoitem=reitem['housePhoto']>
+                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                        <#--<#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>-->
+                        </#if>
+                    </div>
+                    <div class="tilelist-content">
+                        <p class="cont-first text-center"><em>
+                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
+                        <#--<#if reitem['forwardName']?exists>${reitem.forwardName}</#if>-->
+                        <#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>
+                        <#if reitem['room']?exists&&reitem['room']?number gt 0>${reitem.room+'室'}</#if>
+                        <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${reitem.hall+'厅'}</#if>
+                        </p>
+                    </div>
+                </a></li>
+            </#list>
+        </ul>
+    </section>
+</div>
+</#if>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -150,44 +189,7 @@
         </div>
     </section>
 </div>
-<#if (reViHouse?exists) && (reViHouse?size>0)>
-<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i
-                    class="arrows-right"></i></a>
-        </div>
-        <ul class="tilelist">
-            <#list reViHouse as reitem>
-                <#if reitem_index==4>
-                    <#break >
-                </#if>
-                <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
-                    <div class="picture-box">
-                        <#if reitem['housePhoto']?exists>
-                            <#assign photoitem=reitem['housePhoto']>
-                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            </#if>
-                            <#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>
-                        </#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
-                            <#if reitem['forwardName']?exists>${'/'+reitem.forwardName}</#if>
-                            <#if reitem['room']?exists&&reitem['room']?number gt 0>${'/'+reitem.room+'室'}</#if>
-                            <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${'/'+reitem.hall+'厅'}</#if>
-                        </p>
-                    </div>
-                </a></li>
-            </#list>
-        </ul>
-    </section>
-</div>
-</#if>
+
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
