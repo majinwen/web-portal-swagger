@@ -1,6 +1,6 @@
 $(function () {
-    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location='+ locationnumber +'&radius=3000&radius_limit=true&scope=2&page_size=5&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location='+ locationnumber +'&radius=3000&radius_limit=true&scope=2&page_size=5&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location='+ locationnumber +'&radius=3000&radius_limit=true&scope=2&page_size=20&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location='+ locationnumber +'&radius=3000&radius_limit=true&scope=2&page_size=20&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&tag=医院&location='+ locationnumber +'&radius=3000&radius_limit=true&scope=2&page_size=3&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交车站&tag=公交车站&location='+ locationnumber +'&radius=3000&scope=2&page_size=20&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁站&tag=地铁站&location=' + locationnumber + '&radius=3000&scope=2&page_size=20&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
@@ -11,8 +11,13 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
+                var array = response.results;
+                array.sort(function(a,b){
+                    return a.detail_info.distance-b.detail_info.distance;
+                })
+                var arr = array.slice(0,5)
                 $('.map-message-btn').find('li.parent-child').addClass('current');
-                renderDom(response.results, '教育培训');
+                renderDom(arr, '教育培训');
             }
         },
         error: function (err) {
@@ -25,8 +30,13 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
+                var array = response.results;
+                array.sort(function(a,b){
+                    return a.detail_info.distance-b.detail_info.distance;
+                })
+                var arr = array.slice(0,5)
                 $('.map-message-btn').find('li.vegetable-market').addClass('current');
-                renderDom(response.results, '休闲购物');
+                renderDom(arr, '休闲购物');
             }
         },
         error: function (err) {
@@ -39,7 +49,12 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                renderDom(response.results, '医疗配套');
+                var array = response.results;
+                array.sort(function(a,b){
+                    return a.detail_info.distance-b.detail_info.distance;
+                })
+                var arr = array.slice(0,5)
+                renderDom(arr, '医疗配套');
             }
         },
         error: function (err) {
@@ -57,8 +72,9 @@ $(function () {
                     array.sort(function(a,b){
                         return a.detail_info.distance-b.detail_info.distance;
                     })
-                    var lineNumber = (response.results[0].address).split(';').length;
-                    $('#busStation').text(response.results[0].name);
+                    var arr = array.slice(0,5)
+                    var lineNumber = (arr[0].address).split(';').length;
+                    $('#busStation').text(arr[0].name);
                     $('#busStationNumber').text(lineNumber + '条线路')
                 }
             }
@@ -78,10 +94,11 @@ $(function () {
                     array.sort(function(a,b){
                         return a.detail_info.distance-b.detail_info.distance;
                     })
+                    var arr = array.slice(0,5)
                     // console.log(array)
-                    var subwayLine = (response.results[0].address).split(';')[0].substring(2);
-                    var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
-                    $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
+                    var subwayLine = (arr[0].address).split(';')[0].substring(2);
+                    var subwayDistance = (((arr[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
+                    $('#subwayLine').text(arr[0].name　+'['+　subwayLine+']');
                     $('#subwayDistance').text(subwayDistance);
                 }
             }
