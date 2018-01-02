@@ -126,7 +126,7 @@
                         <p class="cont-first text-center"><em>
                             <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
                         <#--<#if reitem['forwardName']?exists>${reitem.forwardName}</#if>-->
-                        <#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>
+                        <#if reitem['buildArea']?exists><#--<p class="bottom-text">-->${reitem['buildArea']}㎡<#--</p>--></#if>
                         <#if reitem['room']?exists&&reitem['room']?number gt 0>${reitem.room+'室'}</#if>
                         <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${reitem.hall+'厅'}</#if>
                         </p>
@@ -222,7 +222,7 @@
                         <p>户均绿化</p>
                     <#if village['avgGreening']?exists>
                         <#if village['avgGreening']?number gt 0>
-                            <em>${village['avgGreening']}平方米</em>
+                            <em>${village['avgGreening']/100}平方米</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>
