@@ -6,7 +6,8 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/index.css">
-    <title>大首页</title>
+    <meta name="description" content="头条上也能找房子，推荐你看看">
+    <title>头条房产</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="/static/js/modernizr.custom.js"></script>
 </head>
@@ -15,7 +16,7 @@
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -41,7 +42,7 @@
             <div class="banner-nav-item index-nav-item"><a href="${router_city('/esf/')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="/ifh/qidong">
+            <div class="banner-nav-item index-nav-item"><a href="${router_city('/findhouse/')}">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -202,8 +203,8 @@
                     <div class="list-item-img-box">
                         <#if map['building_imgs']?exists>
                             <#assign item = map['building_imgs']?split(",")>
-                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
-                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}"></#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -288,8 +289,8 @@
             <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}" alt="${map['rc']}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}-tt400x300" alt="${map['rc']}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['rc']}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -308,7 +309,12 @@
                             </#if>
                         </div>
                         <div class="cont-block-price plot">
-                            <em>${map['avgPrice']}元/㎡</em>
+                            <#if map['avgPrice']?? && map['avgPrice'] gt 0>
+                                <em>${map['avgPrice']}元/㎡</em>
+                            <#else>
+                                <em>售价待定</em>
+                            </#if>
+
                         </div>
                     </div>
                 </div>
@@ -322,6 +328,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');

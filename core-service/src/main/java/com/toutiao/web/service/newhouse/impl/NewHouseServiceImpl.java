@@ -53,6 +53,9 @@ public class NewHouseServiceImpl implements NewHouseService{
     @Value("${distance}")
     private Double distance;
 
+    private static final Integer IS_DEL = 0;//新房未下架
+    private static final Integer IS_APPROVE = 1;//新房未下架
+
     /**
      * 根绝新房筛选新房
      * @param newHouseQuery
@@ -69,11 +72,11 @@ public class NewHouseServiceImpl implements NewHouseService{
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
-        if(StringUtil.isNotNullString(newHouseQuery.getKeywords())){
+        if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
                 queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeywords()))
-                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeywords()))
-                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeywords()));
+                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()));
 
                 booleanQueryBuilder.must(queryBuilder);
         }
@@ -131,8 +134,6 @@ public class NewHouseServiceImpl implements NewHouseService{
             }
         }
 
-
-        ///================================
         //物业类型
         if(StringUtil.isNotNullString(newHouseQuery.getPropertyTypeId())){
             String[] py = newHouseQuery.getPropertyTypeId().split(",");
@@ -141,6 +142,8 @@ public class NewHouseServiceImpl implements NewHouseService{
                 propertyType[i] = py[i];
             }
             booleanQueryBuilder.must(termsQuery("property_type_id",propertyType));
+        }else{
+            booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
         }
 
         //电梯
@@ -156,7 +159,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             }
             booleanQueryBuilder.must(termsQuery("building_type_id", BuildingType));
         }
-//        //销售状态
+        //销售状态
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
             booleanQueryBuilder.must(termQuery("sale_status_id", newHouseQuery.getSaleType()));
         }else{
@@ -176,6 +179,11 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){
             booleanQueryBuilder.must(termsQuery("redecorate_type_id", new String[]{newHouseQuery.getDeliverStyle()}));
         }
+//        //房源未下架
+//        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+//        //房源已发布
+//        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+
 
         int pageNum = 1;
 
@@ -226,7 +234,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==0){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},
@@ -236,7 +244,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.DESC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_imgs","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway"},

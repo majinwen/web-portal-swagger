@@ -14,6 +14,7 @@ import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -128,10 +129,10 @@ public class PlotServiceImpl implements PlotService {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
             }
             //小区名称
-            if (villageRequest.getRc() != null) {
+            if (null != villageRequest.getKeyword()) {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
                 AnalyzeResponse response = esClientTools.init().admin().indices()
-                        .prepareAnalyze(villageRequest.getRc())//内容
+                        .prepareAnalyze(villageRequest.getKeyword())//内容
                         .setAnalyzer("ik_smart")//指定分词器3`3
                         .execute().actionGet();//执行
                 List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
@@ -194,11 +195,11 @@ public class PlotServiceImpl implements PlotService {
                 }
             }
 
-            //总价
+            //列表页均价搜索
             String beginPrice = villageRequest.getBeginPrice();
             String endPrice = villageRequest.getEndPrice();
             if (beginPrice != null && beginPrice.length() != 0 &&!beginPrice.equals("undefined")&&!endPrice.equals("undefined")&& endPrice != null && endPrice.length() != 0) {
-                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("sumPrice").gt(Double.valueOf(beginPrice)).lte(Double.valueOf(endPrice)));
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(Double.valueOf(beginPrice)).lte(Double.valueOf(endPrice)));
             }
 
             //面积
@@ -267,6 +268,17 @@ public class PlotServiceImpl implements PlotService {
                 String[] HeatingMode = heatingMode.split(",");
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
+
+            //小区默认排序
+            //先发布后发布 级别从小到大  分数由大到小
+            srb.addSort("is_approve",SortOrder.DESC).addSort("level",SortOrder.ASC).addSort("plotScore",SortOrder.DESC);
+
+            //级别为1-4
+//            Integer level = villageRequest.getLevel();
+//            if (level != 0&&!level.equals("undefined")) {
+//                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("level").gt(0).lte(4));
+//            }
+
             //排序
             //均价
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
@@ -310,6 +322,16 @@ public class PlotServiceImpl implements PlotService {
                     }else {
                         instance.setWaterFee("5");
                     }
+                    if ("0".equals(instance.getHeatingMode())){
+                        instance.setHeatingMode("未知");
+                    }
+                    if ("1".equals(instance.getHeatingMode())){
+                        instance.setHeatingMode("集中供暖");
+                    }
+                    if ("2".equals(instance.getHeatingMode())){
+                        instance.setHeatingMode("自供暖");
+                    }
+
                     PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
                     instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                     instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));

@@ -9,7 +9,7 @@ public class NewHouseQuery {
     /**
      * 关键字
      */
-    private String keywords;
+    private String keyword;
     /**
      * 城市id
      */

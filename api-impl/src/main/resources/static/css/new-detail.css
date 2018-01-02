@@ -1490,16 +1490,26 @@ a.pswp__share--download:hover {
           width: 0.3333333333rem;
           height: 0.3066666667rem;
           margin-right: 0.04rem;
-          background-image: url("/static/images/plot/xqxq_icon_star.png");
-          background-repeat: no-repeat;
           -webkit-background-size: contain;
           background-size: contain; }
-          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-            .expand-content .result-data-expand.height-type li .expand-name em.star-box i {
-              background-image: url("/static/images/plot/xqxq_icon_star@2x.png"); } }
-          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-            .expand-content .result-data-expand.height-type li .expand-name em.star-box i {
-              background-image: url("/static/images/plot/xqxq_icon_star@3x.png"); } }
+          .expand-content .result-data-expand.height-type li .expand-name em.star-box i.star-icon {
+            background-image: url("/static/images/plot/xqxq_icon_star.png");
+            background-repeat: no-repeat; }
+            @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+              .expand-content .result-data-expand.height-type li .expand-name em.star-box i.star-icon {
+                background-image: url("/static/images/plot/xqxq_icon_star@2x.png"); } }
+            @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+              .expand-content .result-data-expand.height-type li .expand-name em.star-box i.star-icon {
+                background-image: url("/static/images/plot/xqxq_icon_star@3x.png"); } }
+          .expand-content .result-data-expand.height-type li .expand-name em.star-box i.red-star {
+            background-image: url("/static/images/plot/xqxq_icon_star_red.png");
+            background-repeat: no-repeat; }
+            @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+              .expand-content .result-data-expand.height-type li .expand-name em.star-box i.red-star {
+                background-image: url("/static/images/plot/xqxq_icon_star_red@2x.png"); } }
+            @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+              .expand-content .result-data-expand.height-type li .expand-name em.star-box i.red-star {
+                background-image: url("/static/images/plot/xqxq_icon_star_red@3x.png"); } }
 
 .detail-map {
   position: relative;

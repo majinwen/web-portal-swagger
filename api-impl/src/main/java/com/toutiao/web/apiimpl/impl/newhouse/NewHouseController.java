@@ -4,11 +4,8 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
-import com.toutiao.web.service.PriceTrendService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +17,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
+/**
+ * 头条新房
+ *
+ */
 @Controller
 @RequestMapping("/{citypath}")
 public class NewHouseController {
 
     @Autowired
     private NewHouseService newHouseService;
-    @Autowired
-    private PriceTrendService priceTrendService;
 
     /**
      * 新房首页
@@ -40,7 +39,6 @@ public class NewHouseController {
          newHouseQuery.setPageSize(4);
          Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
          model.addAttribute("newbuilds",builds);
-//         model.addAttribute("searchType","newhouse");
          return "newhouse/new-index";
     }
 
@@ -62,7 +60,6 @@ public class NewHouseController {
         }else {
             model.addAttribute("sort",0);
         }
-//        model.addAttribute("searchType","newhouse");
         return "newhouse/new-list";
     }
 
@@ -81,23 +78,10 @@ public class NewHouseController {
                   build.set(i,itemMap);
               }
         }
-
-
-
         NashResult.build(build);
         return NashResult.build(build);
     }
 
-//    /**
-//     * 搜索新房
-//     *
-//     * */
-//    @RequestMapping("/searchNewHouseByKey")
-//    public String searchNewHouseByKey(NewHouseQuery newHouseQuery, Model model){
-//        ArrayList<HashMap<String,Object>> build= (ArrayList<HashMap<String, Object>>) newHouseService.searchNewHouse(newHouseQuery);
-//        model.addAttribute("builds",build);
-//        return "newhouse/new-list";
-//    }
 
     /**
      * 楼盘详情信息
@@ -108,37 +92,24 @@ public class NewHouseController {
     @RequestMapping("/loupan/{id}.html")
     public String getNewHouseDetails(@PathVariable("id") Integer buildingId, Model model){
         Map<String,Object> details = newHouseService.getNewHouseDetails(buildingId);
-        List<String>dateList= DateUtil.oneYearList();
+//        List<String>dateList= DateUtil.oneYearList();
 
         String detailBuild = (String) details.get("build");
         JSONObject build=JSON.parseObject(detailBuild);
-        Integer discId = build.getInteger("district_id");
-        Integer areaId = null;
-        Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
-
-
+//        Integer discId = null;
+//       if ( build.getInteger("district_id")!=null){
+//           discId = build.getInteger("district_id");
+//       }
+//
+//        Integer areaId = null;
+//        Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
-        model.addAttribute("tradeline",priceTrendList);
+//        model.addAttribute("tradeline",priceTrendList);
         return "newhouse/new-detail";
 
     }
-
-//    /**
-//     * 楼盘户型详情
-//     * @param buildingId
-//     * @param tags
-//     * @param model
-//     * @return
-//     */
-//    @RequestMapping("/getNewHouseLayoutDetails")
-//    public String getNewHouseLayoutDetails(@RequestParam("id") Integer buildingId,@RequestParam("tags") Integer tags, Model model){
-//        Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
-//        model.addAttribute("layoutDetails", details.get("layouts"));
-//        return "";
-//
-//    }
 
     /**
      * 根据楼盘计算不同户型数量

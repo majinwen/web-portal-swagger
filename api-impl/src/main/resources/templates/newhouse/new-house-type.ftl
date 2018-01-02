@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${staticurl}/css/house-type.css">
     <title>户型详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="module-bottom-fill">
@@ -41,7 +42,7 @@
             <div><#if datail['layout_img']?exists>
                 <#assign layoutimgs = datail['layout_img']?split(",")>
                 <#list layoutimgs as layoutimg>
-                    <img src="${qiniuimage}/${layoutimg}" alt="户型图">
+                    <img src="${qiniuimage}/${layoutimg}-ttw800" alt="户型图">
                 </#list>
             <#else>
                 <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
@@ -73,7 +74,7 @@
         </div>
     </section>
 </div>
-
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

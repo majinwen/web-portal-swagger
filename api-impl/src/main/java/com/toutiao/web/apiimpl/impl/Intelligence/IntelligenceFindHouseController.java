@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.impl.Intelligence;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
@@ -17,14 +18,15 @@ import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,12 +70,13 @@ public class IntelligenceFindHouseController {
         }
         //跳转到报告页
         Integer totalPrice = 500;
-        List<IntelligenceFhPricetrend> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
-        List<IntelligenceFhTd> fhrd = intelligenceFhTdService.queryTd(totalPrice);
+        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        Map<String,Object> fhrd = intelligenceFhTdService.queryTd(totalPrice);
         model.addAttribute("fhpt",fhpt);
         model.addAttribute("fhrd",fhrd);
         return "";
     }
+
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
@@ -82,7 +85,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:28
      */
-    @RequestMapping("/qidong")
+    @RequestMapping(value = "")
     public String goToStartRobot() {
         return "intelligent-find";
     }
@@ -95,17 +98,15 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/18 18:44
      */
-    @RequestMapping("/xuanzeleixing")
+    @RequestMapping(value = "/xuanzeleixing")
     @ResponseBody
-    public NashResult goCheckPrice(@RequestParam(value = "userType", required = true) String userType, Model model) {
-        /*//将数据传递到页面
-        model.addAttribute("userType", userType);
-        //去价格页面*/
+    public NashResult xuanZeLeiXing(@RequestParam(value = "userType", required = true) String userType) {
         return NashResult.build(userType);
     }
 
+
     /**
-     * 功能描述：异步根据首付与月付获取小区数量与相应的比率
+     * 功能描述：异步根据价钱获取小区数量与相应的比率
      *
      * @param intelligenceQuery
      * @return com.toutiao.web.common.restmodel.NashResult
@@ -115,12 +116,9 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/goCheckPrice")
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-        //判断页面传递所需的参数是否为空
-        if (StringTool.isBlank(intelligenceQuery.getDownPayMent())
-                || StringTool.isBlank(intelligenceQuery.getMonthPayMent())
-                || StringTool.isBlank(intelligenceQuery.getPreconcTotal())) {
-            return NashResult.Fail("message", "请选择首付/月供/");
-        }
+
+        String[] split = intelligenceQuery.getPreconcTotal().split("万");
+        intelligenceQuery.setPreconcTotal(split[0]);
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
@@ -132,45 +130,28 @@ public class IntelligenceFindHouseController {
      * @param intelligenceQuery
      * @return
      */
-    @RequestMapping("/intelligenceFindHouseTypeTwo")
+    @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
-    public List<IntelligenceFindhouse> intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery){
-        IntelligenceQuery intelligenceQuery1 = new IntelligenceQuery();
-        intelligenceQuery1.setUserPortrayalType(3);
-        intelligenceQuery1.setMinTotalPrice(4500000);
-        intelligenceQuery1.setMaxTotalPrice(5500000);
-        intelligenceQuery1.setDistrictId("105040,105035,105034");
-        intelligenceQuery1.setLayOut(3);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery1);
-        return null;
-    }
-
-    /**
-     * 功能描述：跳转到用户选择户型页面controller
-     *
-     * @param intelligenceQuery
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 20:40
-     */
-    @RequestMapping("/queryUserCheckCategory")
-    public String userCheckCategory(IntelligenceQuery intelligenceQuery, Model model) {
-
-        //复制数据信息
-        IntelligenceFh intelligenceFh = new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-        if ("3".equals(intelligenceFh.getUserType())) {
-            //将第七种画像附给当前用户
-            intelligenceFh.setUserPortrayalType(7);
-            model.addAttribute("intelligenceFh", intelligenceFh);
-            //直接生成报表
-            //调用接口
-
-            return "";
-        }
-        model.addAttribute("intelligenceFh", intelligenceFh);
-        //户型页面
-        return "";
+    public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery,Model model) {
+        Double plotTotalFirst = null;
+        Double plotTotalEnd = null;
+        intelligenceQuery.setPreconcTotal("450");
+        intelligenceQuery.setUserType("1");
+        intelligenceQuery.setUserPortrayalType(5);
+        intelligenceQuery.setLayOut(3);
+        intelligenceQuery.setDistrictId("105037");
+        intelligenceQuery.setSchoolFlag(1);
+        intelligenceQuery.setHospitalFlag(1);
+        String preconcTotal = intelligenceQuery.getPreconcTotal();
+        plotTotalFirst = (Double.valueOf(preconcTotal) - (Double.valueOf(preconcTotal) * 0.1)) * 10000;
+        plotTotalEnd = (Double.valueOf(preconcTotal) + (Double.valueOf(preconcTotal) * 0.1)) * 10000;
+        intelligenceQuery.setMaxTotalPrice(plotTotalEnd);
+        intelligenceQuery.setMinTotalPrice(plotTotalFirst);
+        intelligenceQuery.setHasChild(1);
+        intelligenceQuery.setHasOldman(1);
+        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        model.addAttribute("list",list);
+        return "intelligent-report";
     }
 
     /**
@@ -184,42 +165,17 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/userCheckCategoryPage")
     @ResponseBody
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-
+        String[] split = intelligenceQuery.getPreconcTotal().split("万");
+        intelligenceQuery.setPreconcTotal(split[0]);
         //根据户型与总价条件赛选条件
         IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
 
         return NashResult.build(IntelligenceFh);
     }
 
-    /**
-     * 功能描述：用户选择区域页面
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 21:42
-     */
-    //选择区域
-    @RequestMapping("/chooseDistinct")
-    public String checkDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-        //复制数据信息
-        IntelligenceFh intelligenceFh = new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-        model.addAttribute("intelligenceFh", intelligenceFh);
-        //选择非一居的用户，才出现此问题；
-        if(intelligenceFh.getLayOut()==1){
-
-            //跳转过渡页，生成画像
-            return "";
-        }
-
-
-        //去家庭页面选择小孩和老人
-        return "";
-    }
 
     /**
-     * 功能描述：家庭页面
+     * 功能描述：区域筛选小区数量
      *
      * @param intelligenceQuery
      * @return com.toutiao.web.common.restmodel.NashResult
@@ -227,13 +183,14 @@ public class IntelligenceFindHouseController {
      * @date 2017/12/26 21:45
      */
     @RequestMapping("/queryPlotCountByDistrict")
-    public String queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-
+    @ResponseBody
+    public NashResult queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
+        String[] split = intelligenceQuery.getPreconcTotal().split("万");
+        intelligenceQuery.setPreconcTotal(split[0]);
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
-        model.addAttribute("intelligenceFh", intelligenceFh);
         //报告生成页
-        return "";
+        return NashResult.build(intelligenceFh);
     }
 
     /**
@@ -251,8 +208,8 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
         //若用户选择“无小孩”或“18岁以上”，则去掉页面3中的教育配套标签；
         if ("0".equalsIgnoreCase(intelligenceFh.getUserType()) || "5".equalsIgnoreCase(intelligenceFh.getUserType())) {
-            intelligenceFh.setSchoolFlag(false);
-            intelligenceFh.setHospitalFlag(false);
+            intelligenceFh.setSchoolFlag(0);
+            intelligenceFh.setHospitalFlag(0);
         }
         model.addAttribute("intelligenceFh", intelligenceFh);
         //过渡页vs封面
@@ -267,7 +224,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/27 15:17
      */
-    @RequestMapping("/showUserPortrayal")
+    /*@RequestMapping("/showUserPortrayal")
     public String showUserPortrayal(IntelligenceQuery intelligenceQuery, Model model) {
 
         Integer userPortrayalType = intelligenceQuery.getUserPortrayalType();
@@ -278,7 +235,17 @@ public class IntelligenceFindHouseController {
         }
 
 
-        return "";
+        return "intelligent-report";
+    }*/
+
+    /**
+     * 功能描述：报告页
+     *
+     * @param model
+     */
+    @RequestMapping("/showUserPortrayal")
+    public String showUserPortrayal(Model model,IntelligenceQuery intelligenceQuery) {
+        return "intelligent-report";
     }
 
 

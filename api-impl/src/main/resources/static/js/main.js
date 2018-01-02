@@ -1,4 +1,8 @@
-
+/**
+ * 当前URL路径
+ * @type {string}
+ * @private
+ */
 var uu = $('#url');
 var BaseUrl=uu.val();
 $(function () {
@@ -19,8 +23,6 @@ $(function () {
     moduleExpand();         // 小区详情模块状态
 
     marketsState();         // 小区市场详情切换
-
-    listSortTab();          // 列表页排序切换
 });
 
 function describeAllShow() {
@@ -185,7 +187,7 @@ function moduleExpand() {
             $(this).parent().next('.expand-content').slideUp();
         }
     });
-}
+};
 
 function marketsState() {
     $('.price-trend-btn').on('click', function () {
@@ -200,24 +202,18 @@ function marketsState() {
         $('.supply-contrast').removeClass('none');
         $('.price-trend').addClass('none');
     })
-}
+};
 
-function listSortTab() {
-    if ($('.sort-icon').length > 0) {
-        $('.sort-icon').on('click', function () {
-            $('.sort-content-box').slideDown();
-        });
-        $('.sort-mask').on('click', function () {
-            $('.sort-content-box').slideUp();
-        });
-        $('.sort-content').on('click', 'li', function () {
-            $(this).addClass('current').siblings().removeClass('current');
-            if(BaseUrl.indexOf("/findVillageByConditions")){
-                location.href=BaseUrl+'?sort='+$(this).val();
-            }else {
-                location.href=BaseUrl+'?sort='+$(this).val();
-            }
-            $('.sort-content-box').slideUp();
-        })
+function router_city(urlparam) {
+    urlparam = urlparam || ""
+    if(urlparam[0] != '/'){
+        urlparam = '/' + urlparam
     }
-}
+    var uri = new URI(window.location.href);
+    var segmens = uri.segment();
+    var city = "";
+    if(segmens.length>0){
+        city = "/" + segmens[0]
+    }
+    return city+urlparam
+};

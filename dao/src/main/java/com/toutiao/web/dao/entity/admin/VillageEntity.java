@@ -32,7 +32,7 @@ public class VillageEntity {
     private String areaSize;  //面积
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
-    private Double avgGreening;  //户均绿化率
+    private Double avgGreening;  //户均绿化
     private Double liftDoorRadio;  //梯户比
     private String elevator;  //电梯配备 (1-有，2-无)
     private String carPositionRatio;  //车位配比
@@ -64,7 +64,9 @@ public class VillageEntity {
     private String decorationType;  //装修标准
     private String ringRoadName;  //详情环线
     private String ringRoadDistance;  //详情环线距离
-
+    private String is_approve;  //审批状态（0-未发布，1-已发布）
+    private Integer plotScore;  //小区分数
+    private Integer is_del;  //是否下架(0未下架，1下架)
 
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数

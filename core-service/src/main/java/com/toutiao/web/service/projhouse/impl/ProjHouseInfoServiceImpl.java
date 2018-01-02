@@ -34,6 +34,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
@@ -114,11 +116,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
             //关键字搜索
-            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyWord())){
-                booleanQueryBuilder.should(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyWord()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyWord()))
-                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyWord())));
+            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
+                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
@@ -248,7 +250,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //去未删除的房源信息
-           /* booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));*/
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
             /**
              * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
              */

@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
     <title>二手房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="carousel-box">
@@ -85,7 +86,7 @@
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
                         ${houseDetail.houseTotalPrices}万
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                         </em>
                     </li>
@@ -95,7 +96,7 @@
 
                         ${houseDetail.room}室${houseDetail.hall}厅
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                         </em>
                     </li>
@@ -105,7 +106,7 @@
                         <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>
                         ${houseDetail.buildArea}㎡
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                         </em>
                     </li>
@@ -114,10 +115,10 @@
             <li>
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
-                          &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
+                &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
                 ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
                 <#else>
-                    暂无
+                    暂无数据
                 </#if>
                 </p>
             </li>
@@ -126,7 +127,7 @@
                 <#if houseDetail.houseBudget?exists>
                 ${houseDetail.houseBudget}元/㎡
                 <#else>
-                    暂无
+                    暂无数据
                 </#if>
                 </p>
             </li>
@@ -143,13 +144,13 @@
                         ${houseDetail.floorNo}层
                         </#if >
                         <#if (houseDetail.floorNo??&&houseDetail.floorNo==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
-                            暂无
+                            暂无数据
                         </#if >
                     </#if>
                     </span></dd>
                     <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}
                         电梯<#else>
-                        暂无</#if></em></dd>
+                        暂无数据</#if></em></dd>
                     <dd class="odd-item">类别：
                     <#if houseDetail.houseTypeName?exists&& (houseDetail.houseTypeName !='')>
                         <em>${houseDetail.houseTypeName}</em>
@@ -157,22 +158,31 @@
                         <#if houseDetail.buildCategoryName?exists && (houseDetail.buildCategoryName!='') >
                             <em>${houseDetail.buildCategoryName}</em>
                         <#else>
-                            暂无
+                            暂无数据
                         </#if>
                     </#if>
                     </dd>
-                    <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无</#if></em>
+                    <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无数据</#if></em>
                     </dd>
-                    <#if houseDetail.plotName?exists&&houseDetail.plotName!=''>
-                        <dt>小区：
-                            <em>
-                                ${houseDetail.plotName}
-                                <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''> [${houseDetail.area}
-                                 -${houseDetail.houseBusinessName}]<#else></#if>
-                            </em>
-                        </dt>
-                    </#if>
-                   <#if houseDetail.updateTime?exists&&houseDetail.updateTime!=''><dt>更新时间：${houseDetail.updateTime}</dt></#if>
+                <#if houseDetail.plotName?exists&&houseDetail.plotName!=''>
+                    <dt>小区：
+                        <em>
+                        ${houseDetail.plotName}
+                            <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
+                                [${houseDetail.area} - ${houseDetail.houseBusinessName}]
+                            <#else >
+                                <#if houseDetail.area?exists&&houseDetail.area!=''>
+                                    [${houseDetail.area}]
+                                </#if>
+                                <#if houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
+                                    [${houseDetail.houseBusinessName}]
+                                </#if>
+                            </#if>
+                        </em>
+                    </dt>
+                </#if>
+                <#if houseDetail.updateTime?exists&&houseDetail.updateTime!=''>
+                    <dt>更新时间：${houseDetail.updateTime}</dt></#if>
                 </dl>
             </li>
         <#if houseDetail.traffic?exists>
@@ -195,7 +205,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if> >
+                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
@@ -203,13 +213,15 @@
                     <em>房屋信息发布人</em>
                 </p>
                 <#if houseDetail.houseProxyPhone?exists&&houseDetail.houseProxyPhone!=''>
-                     <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
+                    <a href="tel:${houseDetail.houseProxyPhone}" class="issuer-tel-icon"></a>
                 </#if>
             </div>
-            <div class="describe-cont">
-                <p><#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>${houseDetail.houseDesc}</#if></p>
-                <span class="describe-show-btn">>>展开</span>
-            </div>
+            <#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>
+                <div class="describe-cont">
+                    <p>${houseDetail.houseDesc}</p>
+                    <span class="describe-show-btn">>>展开</span>
+                </div>
+            </#if>
         </div>
     </section>
 </div>
@@ -229,9 +241,30 @@
             <#assign item=houseDetail['plotPhoto']>
             <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
         </div>
-        <div class="tilelist-content">
-            <h4><#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if></h4>
-            <p><#if houseDetail.plotdesc?exists>${houseDetail.plotdesc}<#else></#if></p>
+        <div id="tilePlotDesc" class="tilelist-content">
+            <h4>
+                <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
+            </h4>
+            <p>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
+                </#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>
+                   共<em class="high-light-red">${village['sumBuilding']}</em>栋
+                </#if>
+                <#if village['sumHousehold']?exists>
+                    <#if village['sumHousehold']?number gt 0>
+                        (${village['sumHousehold']}户)
+                    </#if>
+                </#if>
+                <#if (village['sumBuilding']?exists&&(village['sumBuilding']!=''))||(village['sumHousehold']?exists&&village['sumHousehold']?number gt 0)>,</#if>
+                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
+                       ${village['buildingStructure']}
+                </#if>
+                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
+                        ${village['avgPrice']}元/㎡
+                </#if>
+            </p>
         </div>
     </a></li>
     </ul>
@@ -248,7 +281,7 @@
                         class="arrows-right"></i></a>
             </div>
         </#if>
-        <a href="#" class="detail-map">
+        <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
@@ -351,6 +384,16 @@
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
+<script>
+    $(function(){
+        var text = $("tilePlotDesc").find("p").text();
+          if(text.indexOf(",")==0){
+             var s = text.substring(1);
+              $("tilePlotDesc").find("p").html(s);
+          }
+    })
+</script>
 </body>
 </html>
