@@ -3,6 +3,7 @@ package com.toutiao.web.domain.intelligenceFh;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class IntelligenceFh {
@@ -78,6 +79,6 @@ public class IntelligenceFh {
     /**
      * 区域集合
      */
-    private List<String> distictList;
+    private List<DistictInfo> distictInfo;
 
 }

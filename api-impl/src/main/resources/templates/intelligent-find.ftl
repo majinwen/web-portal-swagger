@@ -3,7 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        (function(h,k){var p=h.document;var b=p.documentElement;var m=p.querySelector('meta[name="viewport"]');var e=p.querySelector('meta[name="flexible"]');var q=0;var d=0;var f;var j=k.flexible||(k.flexible={});if(m){console.warn("将根据已有的meta标签来设置缩放比例");var g=m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);if(g){d=parseFloat(g[1]);q=parseInt(1/d)}}else{if(e){var i=e.getAttribute("content");if(i){var c=i.match(/initial\-dpr=([\d\.]+)/);var o=i.match(/maximum\-dpr=([\d\.]+)/);if(c){q=parseFloat(c[1]);d=parseFloat((1/q).toFixed(2))}if(o){q=parseFloat(o[1]);d=parseFloat((1/q).toFixed(2))}}}}if(!q&&!d){var n=h.devicePixelRatio;if(n>=3&&(!q||q>=3)){q=3}else{if(n>=2&&(!q||q>=2)){q=2}else{q=1}}d=1/q}b.setAttribute("data-dpr",q);if(!m){m=p.createElement("meta");m.setAttribute("name","viewport");m.setAttribute("content","initial-scale="+d+", maximum-scale="+d+", minimum-scale="+d+", user-scalable=no");if(b.firstElementChild){b.firstElementChild.appendChild(m)}else{var a=p.createElement("div");a.appendChild(m);p.write(a.innerHTML)}}function l(){var r=b.getBoundingClientRect().width;if(r/q>540){r=540*q}var s=r/10;b.style.fontSize=s+"px";j.rem=h.rem=s}h.addEventListener("resize",function(){clearTimeout(f);f=setTimeout(l,300)},false);h.addEventListener("pageshow",function(r){if(r.persisted){clearTimeout(f);f=setTimeout(l,300)}},false);if(p.readyState==="complete"){p.body.style.fontSize=12*q+"px"}else{p.addEventListener("DOMContentLoaded",function(r){p.body.style.fontSize=12*q+"px"},false)}l();j.dpr=h.dpr=q;j.refreshRem=l})(window,window["lib"]||(window["lib"]={}));
+        (function (h, k) {
+            var p = h.document;
+            var b = p.documentElement;
+            var m = p.querySelector('meta[name="viewport"]');
+            var e = p.querySelector('meta[name="flexible"]');
+            var q = 0;
+            var d = 0;
+            var f;
+            var j = k.flexible || (k.flexible = {});
+            if (m) {
+                console.warn("将根据已有的meta标签来设置缩放比例");
+                var g = m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
+                if (g) {
+                    d = parseFloat(g[1]);
+                    q = parseInt(1 / d)
+                }
+            } else {
+                if (e) {
+                    var i = e.getAttribute("content");
+                    if (i) {
+                        var c = i.match(/initial\-dpr=([\d\.]+)/);
+                        var o = i.match(/maximum\-dpr=([\d\.]+)/);
+                        if (c) {
+                            q = parseFloat(c[1]);
+                            d = parseFloat((1 / q).toFixed(2))
+                        }
+                        if (o) {
+                            q = parseFloat(o[1]);
+                            d = parseFloat((1 / q).toFixed(2))
+                        }
+                    }
+                }
+            }
+            if (!q && !d) {
+                var n = h.devicePixelRatio;
+                if (n >= 3 && (!q || q >= 3)) {
+                    q = 3
+                } else {
+                    if (n >= 2 && (!q || q >= 2)) {
+                        q = 2
+                    } else {
+                        q = 1
+                    }
+                }
+                d = 1 / q
+            }
+            b.setAttribute("data-dpr", q);
+            if (!m) {
+                m = p.createElement("meta");
+                m.setAttribute("name", "viewport");
+                m.setAttribute("content", "initial-scale=" + d + ", maximum-scale=" + d + ", minimum-scale=" + d + ", user-scalable=no");
+                if (b.firstElementChild) {
+                    b.firstElementChild.appendChild(m)
+                } else {
+                    var a = p.createElement("div");
+                    a.appendChild(m);
+                    p.write(a.innerHTML)
+                }
+            }
+
+            function l() {
+                var r = b.getBoundingClientRect().width;
+                if (r / q > 540) {
+                    r = 540 * q
+                }
+                var s = r / 10;
+                b.style.fontSize = s + "px";
+                j.rem = h.rem = s
+            }
+
+            h.addEventListener("resize", function () {
+                clearTimeout(f);
+                f = setTimeout(l, 300)
+            }, false);
+            h.addEventListener("pageshow", function (r) {
+                if (r.persisted) {
+                    clearTimeout(f);
+                    f = setTimeout(l, 300)
+                }
+            }, false);
+            if (p.readyState === "complete") {
+                p.body.style.fontSize = 12 * q + "px"
+            } else {
+                p.addEventListener("DOMContentLoaded", function (r) {
+                    p.body.style.fontSize = 12 * q + "px"
+                }, false)
+            }
+            l();
+            j.dpr = h.dpr = q;
+            j.refreshRem = l
+        })(window, window["lib"] || (window["lib"] = {}));
     </script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
@@ -24,7 +114,7 @@
                 e.stopPropagation();
             });
             $('.month-slide').on('touchstart', '.slider-thumb', function (evt) {
-               slide($(this), evt, '')
+                slide($(this), evt, '')
             });
             $('.down-slide').on('touchstart', '.slider-thumb', function (evt) {
                 slide($(this), evt, '万')
@@ -54,7 +144,7 @@
                     thisDom.css('left', left + newX + "px");
                     sildeColor.css('width', left + newX + "px");
                     slideText.css('left', left + newX + "px");
-                    if ( parseInt(thisDom.css('left')) < 0) {
+                    if (parseInt(thisDom.css('left')) < 0) {
                         thisDom.css('left', 0);
                         slideText.css('left', 0);
                         sildeColor.css('width', 0)
@@ -141,8 +231,8 @@
                             <p>开启智能找房之旅</p>
                         </div>
                         <div class="result-container none">
-                            <p id="plot_Count">为您匹配了<em class="high-light-red"></em>个小区</p>
-                            <p id="plot_Ratio">有<em class="high-light-red"></em>的用户和您的需求相同</p>
+                            <p id="plot_Count">为您匹配了<em class="high-light-red">0</em>个小区</p>
+                            <p id="plot_Ratio">有<em class="high-light-red">0%</em>的用户和您的需求相同</p>
                         </div>
                     </div>
                 </div>
@@ -234,24 +324,25 @@
                                 <button>修改预算</button>
                             </div>
                         </div>
-                        <ul class="area-content clear">
-                            <li class="optional">东城</li>
-                            <li class="optional">西城</li>
-                            <li class="optional">海淀</li>
-                            <li class="disabled">朝阳</li>
-                            <li class="disabled">丰台</li>
-                            <li class="disabled">门头沟</li>
-                            <li class="optional">石景山</li>
-                            <li class="optional">房山</li>
-                            <li class="optional">顺义</li>
-                            <li class="optional">通州</li>
-                            <li class="optional">昌平</li>
-                            <li class="optional">大兴</li>
-                            <li class="optional">怀柔</li>
-                            <li class="optional">平谷</li>
-                            <li class="optional">延庆</li>
-                            <li class="optional">密云</li>
-                            <li class="optional">北京周边</li>
+                        <ul id="option_distict" class="area-content clear">
+                            <li class="disabled" data-value="">东城</li>
+                            <li class="disabled" data-value="">东城</li>
+                            <li class="disabled" data-value="">西城</li>
+                            <li class="disabled" data-value="">海淀</li>
+                            <li class="disabled" data-value="">朝阳</li>
+                            <li class="disabled" data-value="">丰台</li>
+                            <li class="disabled" data-value="">门头沟</li>
+                            <li class="disabled" data-value="">石景山</li>
+                            <li class="disabled" data-value="">房山</li>
+                            <li class="disabled" data-value="">顺义</li>
+                            <li class="disabled" data-value="">通州</li>
+                            <li class="disabled" data-value="">昌平</li>
+                            <li class="disabled" data-value="">大兴</li>
+                            <li class="disabled" data-value="">怀柔</li>
+                            <li class="disabled" data-value="">平谷</li>
+                            <li class="disabled" data-value="">延庆</li>
+                            <li class="disabled" data-value="">密云</li>
+                            <li class="disabled" data-value="">北京周边</li>
                         </ul>
                         <div class="layer-footer">
                             <button type="button" class="button" id="submitArea">确定</button>
@@ -335,8 +426,8 @@
         // 提交选中用户类型
         var params;
         $('#userTypeSubmit').on('click', function () {
-            if ($('.choose-wrapper').find('.current').length > 0){
-                 params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
+            if ($('.choose-wrapper').find('.current').length > 0) {
+                params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
                 var userTypeUrl = 'userType=' + params;
                 $.fn.fullpage.moveSectionDown();
                 console.log(userTypeUrl);
@@ -388,7 +479,7 @@
                             //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
+                            $("#button_report").attr("href", "${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
                         }
                     }
 
@@ -422,7 +513,7 @@
                             //为实现
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
+                            $("#button_report").attr("href", "${router_city('/findhouse/showUserPortrayal?')}" + priceAnduserTppeUrl);
                         }
                     }
 
@@ -452,12 +543,20 @@
                     $("#plot_Count").find("em").html(data.data.plotCount);
                     $("#plot_Ratio").find("em").html(data.data.ratio);
                     params = data.data.userType;
-                    next2 += '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' +data.data.ratio;
+                    next2 += '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
                     console.log(next2);
                     //区域数组
-                    console.log(data.data.distictList);
-                    //没写完
+                    console.log(data.data.distictInfo);
+                    var str = "";
 
+                    // .removeClass('disabled').addClass('optional')
+                    if (data.data.distictInfo != null) {
+                        $(data.data.distictInfo).each(function (index, item) {
+                            str += "<li class=\"optional\" data-value=\"" + item.districtId + "\">"+item.districtName+"</li>";
+                        });
+                        $("#option_distict").html(str);
+                        console.log(str);
+                    }
                 }
             })
         });
@@ -475,8 +574,13 @@
         $('#submitArea').on('click', function () {
             if ($('.area-content').find('li.current').length == 3) {
                 $(this).parents('.layer').addClass('none');
-                next4 += next2 + '&districtId=' + '106013';
-                console.log(1);
+                var currentOptinos = $('#option_distict').find('li.current');
+                var districtIdStr = [];
+                for (var i = 0; i < currentOptinos.length; i++) {
+                    districtIdStr.push($(currentOptinos[i]).data('value'));
+                }
+                next4 += next2 + '&districtId=' + districtIdStr.join();
+                console.log(next4)
                 $.ajax({
                     type: 'GET',
                     url: '${router_city('/findhouse/queryPlotCountByDistrict')}',
@@ -484,13 +588,16 @@
                     success: function (data) {
                         console.log(data);
                         //此处要判断是否是一居用户
-                        if(data.data.layOut==1){
+                        if (data.data.layOut == 1) {
                             //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
                             //将医疗配套和学校配套还原成默认状态
+                            var schoolFlag = data.data.schoolFlag = 0
+                            var hospitalFlag = data.data.hospitalFlag = 0
+                            next4 += "&schoolFlag=" + schoolFlag + "&hospitalFlag=" + hospitalFlag;
                             //直接跳转到过渡页
                             $('.start-btn').removeClass('none');
                             $.fn.fullpage.setAllowScrolling(true, 'down');
-                            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + next4);
+                            $("#button_report").attr("href", "${router_city('/findhouse/showUserPortrayal?')}" + next4);
                         }
 
                     }
@@ -516,15 +623,7 @@
             next3 = next4 + familyStructureUrl;
             $('.start-btn').removeClass('none');
             $.fn.fullpage.setAllowScrolling(true, 'down');
-            $("#button_report").attr("href","${router_city('/findhouse/showUserPortrayal?')}" + next3);
-            /*$.ajax({
-                type: 'GET',
-                url: '',
-                data: layOut,
-                success: function (data) {
-                    console.log(data);
-                }
-            })*/
+            $("#button_report").attr("href", "${router_city('/findhouse/showUserPortrayal?')}" + next3);
         });
     })
 </script>

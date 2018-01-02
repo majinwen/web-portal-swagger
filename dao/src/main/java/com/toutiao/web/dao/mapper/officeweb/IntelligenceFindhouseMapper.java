@@ -2,12 +2,14 @@ package com.toutiao.web.dao.mapper.officeweb;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
+import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,7 +28,7 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
     int queryPlotCount(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);
 
     int queryPlotCountByCategoryAndPrice(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);
-    List queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);
+    List<DistictInfo> queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst, @Param("plotTotalEnd")Double plotTotalEnd, @Param("categoryId") Integer categoryId);
 
     int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,
                                                    @Param("layOut")Integer layOut, @Param("distictId")Integer distictId);
