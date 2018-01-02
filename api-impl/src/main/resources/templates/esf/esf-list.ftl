@@ -195,7 +195,6 @@
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
-
                                 <#if item[map['key']]?exists>
                                     <p class="cont-block-3 distance"><i class="icon"></i>
                                         <#assign rounditems=item[map['key']]?split("$")>
@@ -208,12 +207,10 @@
                                     </p>
                                 </#if>
                             <#else>
-                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
-                                    [${map.houseBusinessName}]<#else></#if></p>
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>
                             </#if>
                         <#else >
-                            <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}
-                                [${map.houseBusinessName}]<#else></#if></p>
+                            <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>
                         </#if>
                         <div class="cont-block-4 house-labelling gray middle esf">
                             <#if map['tagsName']?exists>
@@ -292,7 +289,7 @@
                         {{$value.subwayDesc}}
                     {{else}}
                         {{if $value.area && $value.houseBusinessName}}
-                            {{$value.area}} [{{$value.houseBusinessName}}]
+                            {{$value.area}}-{{$value.houseBusinessName}}
                         {{/if}}
                     {{/if}}
                 </p>

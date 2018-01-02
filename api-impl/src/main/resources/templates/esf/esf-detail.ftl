@@ -148,9 +148,7 @@
                         </#if >
                     </#if>
                     </span></dd>
-                    <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}
-                        电梯<#else>
-                        暂无数据</#if></em></dd>
+                    <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}电梯<#else>暂无数据</#if></em></dd>
                     <dd class="odd-item">类别：
                     <#if houseDetail.houseTypeName?exists&& (houseDetail.houseTypeName !='')>
                         <em>${houseDetail.houseTypeName}</em>
