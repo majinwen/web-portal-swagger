@@ -76,10 +76,10 @@
             <h2>${village['rc']!''}</h2>
             <p>${'['+village['area']!''}
                 <#if village['area']?exists&&village['area']!=''>
-            ${'-'+village['tradingArea']!''+']'}
+                    ${'-'+village['tradingArea']+']'}
             <#else>
                 <#if village['tradingArea']?exists&&village['tradingArea']!=''>
-                ${'['+village['tradingArea']!''+']'}
+                    ${'['+village['tradingArea']+']'}
                 </#if>
             </#if>
             ${village['address']!''}</p>
@@ -489,7 +489,6 @@
 </div>
 <script>
     var locationnumber = '${village['location']}';
-    var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
 </script>
 <section>
     <div class="module-header-message">
