@@ -104,7 +104,7 @@
                             <span data-info="1">近地铁</span>
                             <span data-info="3">随时看</span>
                             <span data-info="5">满二年</span>
-                            <span data-info="6">满五年</span>
+                            <span data-info="4">满五年</span>
                             <span data-info="2">近公园</span>
                         </dd>
                     </dl>

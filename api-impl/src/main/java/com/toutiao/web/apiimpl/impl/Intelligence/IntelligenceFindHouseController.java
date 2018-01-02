@@ -111,9 +111,6 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/goCheckPrice")
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-
-        String[] split = intelligenceQuery.getPreconcTotal().split("万");
-        intelligenceQuery.setPreconcTotal(split[0]);
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
@@ -161,9 +158,11 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
         //根据户型与总价条件赛选条件
-        IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
-
-        return NashResult.build(IntelligenceFh);
+        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
+        if(StringTool.isNotBlank(intelligenceFh)){
+            intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
+        }
+        return NashResult.build(intelligenceFh);
     }
 
 
