@@ -100,10 +100,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             String totalRate = null;
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
-                totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(totalPriceRate)) * 100).append("%").toString();
+                totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(totalPriceRate)) * 100).toString();
                 intelligenceFh.setRatio(totalRate);
             } else {
-                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).append("%").toString());
+                intelligenceFh.setRatio(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString());
             }
             intelligenceFh.setPlotCount(plotCount);
             return intelligenceFh;
