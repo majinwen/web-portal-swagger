@@ -12,7 +12,11 @@ $(function () {
     listSortTab();
 
     //下拉分页
-    pullUpAction();
+    if ($('#valueList').find('li').length>=10) {
+        pullUpAction();
+    } else {
+        $('.tip-box').removeClass('none');
+    }
 
     $('#category-tab').on('click', 'li', function () {
         var $dom = getDataDom($(this),'panel');

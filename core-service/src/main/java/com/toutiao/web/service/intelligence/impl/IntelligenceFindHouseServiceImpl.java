@@ -72,7 +72,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
@@ -97,13 +97,14 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             int plotCount = intelligenceFindhouseMapper.queryPlotCount(plotTotalFirst, plotTotalEnd);
             //获取相对应的比率
             Double totalPriceRate = totalListedRatioMapper.selectByTotalPrice(plotTotalFirst / 10000, plotTotalEnd / 10000);
-            String totalRate = null;
+            String totalRate = "";
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
-                totalRate = new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(totalPriceRate)) * 100).toString();
-                intelligenceFh.setRatio(Double.valueOf(totalRate));
+                intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate*100)));
             } else {
-                intelligenceFh.setRatio(Double.valueOf(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString()));
+               /* intelligenceFh.setRatio(Double.valueOf(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString()));
+                totalRate = String.valueOf(0);*/
+                intelligenceFh.setRatio(Double.valueOf(String.valueOf(0)));
             }
             intelligenceFh.setPlotCount(plotCount);
             return intelligenceFh;
@@ -130,7 +131,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
 
             }
             //选择总价
@@ -160,7 +161,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
                 if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
                     if (roomRatio.size() > 1) {
-                        Double plotRatio = null;
+                        Double plotRatio = 0.0;
                         for (TotalRoomRatio ratio : roomRatio) {
                             plotRatio += ratio.getRatio();
                         }
@@ -238,7 +239,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = intelligenceFh.getDownPayMent() + Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30;
+                plotTotal = intelligenceFh.getDownPayMent() + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000);
 
             }
             //选择总价
