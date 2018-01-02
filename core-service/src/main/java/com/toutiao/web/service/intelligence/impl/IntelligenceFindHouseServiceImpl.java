@@ -165,10 +165,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                             plotRatio += ratio.getRatio();
                         }
                         //用户比率
-                        intelligenceFh.setRatio(plotRatio + "%");
+                        intelligenceFh.setRatio(plotRatio+"");
                     }
                     //用户比率
-                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "");
                     //用户画像类型
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
 
@@ -176,11 +176,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
                         //用户画像类型
                         intelligenceFh.setUserPortrayalType(4);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5+"");
                     }
                     if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
                         intelligenceFh.setUserPortrayalType(1);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5+"");
                     }
                 }
             } else {
@@ -190,16 +190,16 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     //用户画像类型
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
                     //用户比率
-                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "%");
+                    intelligenceFh.setRatio(roomRatio.get(0).getRatio() + "");
                 } else {
                     if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
                         //用户画像类型
                         intelligenceFh.setUserPortrayalType(4);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5 + "");
                     }
                     if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
                         intelligenceFh.setUserPortrayalType(1);
-                        intelligenceFh.setRatio(0.5 + "%");
+                        intelligenceFh.setRatio(0.5 + "");
                     }
                 }
             }

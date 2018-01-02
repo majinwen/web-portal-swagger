@@ -421,7 +421,8 @@
                     data: priceAnduserTppeUrl,
                     success: function (data) {
                         $("#plot_Count").find("em").html(data.data.plotCount);
-                        $("#plot_Ratio").find("em").html(data.data.ratio);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                         params = data.data.userType;
                         //用户类型是第三类
                         if (params == 3) {
@@ -462,7 +463,8 @@
                 success: function (data) {
                     console.log(data.data);
                     $("#plot_Count").find("em").html(data.data.plotCount);
-                    $("#plot_Ratio").find("em").html(data.data.ratio);
+                    var ratio = new Number(data.data.ratio);
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                     params = data.data.userType;
                     prevParams = next2 + '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
                     console.log('next2begin=' + next2);
@@ -513,7 +515,9 @@
                     url: '${router_city('/findhouse/queryPlotCountByDistrict')}',
                     data: next4,
                     success: function (data) {
-                        console.log(data);
+                        $("#plot_Count").find("em").html(data.data.plotCount);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                         //此处要判断是否是一居用户
                         if (data.data.layOut == 1) {
                             //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面

@@ -160,8 +160,6 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/userCheckCategoryPage")
     @ResponseBody
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-        String[] split = intelligenceQuery.getPreconcTotal().split("万");
-        intelligenceQuery.setPreconcTotal(split[0]);
         //根据户型与总价条件赛选条件
         IntelligenceFh IntelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
 
@@ -180,8 +178,7 @@ public class IntelligenceFindHouseController {
     @RequestMapping("/queryPlotCountByDistrict")
     @ResponseBody
     public NashResult queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery, Model model) {
-        String[] split = intelligenceQuery.getPreconcTotal().split("万");
-        intelligenceQuery.setPreconcTotal(split[0]);
+
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
         //报告生成页
