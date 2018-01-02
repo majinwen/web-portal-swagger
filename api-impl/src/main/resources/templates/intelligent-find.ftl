@@ -226,7 +226,7 @@
                     </div>
                 </div>
                 <div class="layer layer3 none">
-                    <div class="layer-content">
+                    <div class="layer-content" style="height: 649px;">
                         <div class="layer-header">
                             <p>选择您的意向区域</p>
                             <div class="area-tips">
@@ -235,24 +235,37 @@
                             </div>
                         </div>
                         <ul id="option_distict" class="area-content clear">
-                            <li class="disabled" data-value="">东城</li>
-                            <li class="disabled" data-value="">东城</li>
-                            <li class="disabled" data-value="">西城</li>
-                            <li class="disabled" data-value="">海淀</li>
-                            <li class="disabled" data-value="">朝阳</li>
-                            <li class="disabled" data-value="">丰台</li>
-                            <li class="disabled" data-value="">门头沟</li>
-                            <li class="disabled" data-value="">石景山</li>
-                            <li class="disabled" data-value="">房山</li>
-                            <li class="disabled" data-value="">顺义</li>
-                            <li class="disabled" data-value="">通州</li>
-                            <li class="disabled" data-value="">昌平</li>
-                            <li class="disabled" data-value="">大兴</li>
-                            <li class="disabled" data-value="">怀柔</li>
-                            <li class="disabled" data-value="">平谷</li>
-                            <li class="disabled" data-value="">延庆</li>
-                            <li class="disabled" data-value="">密云</li>
-                            <li class="disabled" data-value="">北京周边</li>
+                            <li class="disabled" data-value="105041">石景山</li>
+                            <li class="disabled" data-value="105045">顺义</li>
+                            <li class="disabled" data-value="105043">大兴</li>
+                            <li class="disabled" data-value="105034">海淀</li>
+                            <li class="disabled" data-value="105035">朝阳</li>
+                            <li class="disabled" data-value="105036">东城</li>
+                            <li class="disabled" data-value="105037">西城</li>
+                            <li class="disabled" data-value="105040">丰台</li>
+                            <li class="disabled" data-value="105046">昌平</li>
+                            <li class="disabled" data-value="105047">密云</li>
+                            <li class="disabled" data-value="105048">怀柔</li>
+                            <li class="disabled" data-value="105049">延庆</li>
+                            <li class="disabled" data-value="105050">平谷</li>
+                            <li class="disabled" data-value="105051">门头沟</li>
+                            <li class="disabled" data-value="105044">通州</li>
+                            <li class="disabled" data-value="105042">房山</li>
+                            <li class="disabled" data-value="106013">北京周边</li>
+                            <li class="disabled" data-value="106022">武清</li>
+                            <li class="disabled" data-value="106023">燕郊</li>
+                            <li class="disabled" data-value="106024">香河</li>
+                            <li class="disabled" data-value="106025">大厂</li>
+                            <li class="disabled" data-value="106026">固安</li>
+                            <li class="disabled" data-value="106027">永清</li>
+                            <li class="disabled" data-value="106028">廊坊</li>
+                            <li class="disabled" data-value="106029">霸州</li>
+                            <li class="disabled" data-value="106030">涿州</li>
+                            <li class="disabled" data-value="106031">涞水</li>
+                            <li class="disabled" data-value="106032">怀来</li>
+                            <li class="disabled" data-value="106033">崇礼</li>
+                            <li class="disabled" data-value="106034">秦皇岛</li>
+                            <li class="disabled" data-value="106035">天津</li>
                         </ul>
                         <div class="layer-footer">
                             <button type="button" class="button" id="submitArea">确定</button>
@@ -340,7 +353,6 @@
                 params = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
                 var userTypeUrl = 'userType=' + params;
                 $.fn.fullpage.moveSectionDown();
-                console.log(userTypeUrl);
                 $.ajax({
                     type: "GET",
                     url: "${router_city('/findhouse/xuanzeleixing')}",
@@ -366,19 +378,19 @@
         $('#submitPrice').on('click', function () {
             if ($('.total-price').hasClass('current')) {
                 $(this).parents('.layer').addClass('none');
-                var price = $('.total-conent').find('.slide-text').text();
+                var priceInit = $('.total-conent').find('.slide-text').text();
+                var price = priceInit.substr(0, priceInit.length-1);
                 priceAnduserTppeUrl = 'userType=' + params + '&preconcTotal=' + price;
-                console.log(priceAnduserTppeUrl);
                 $.ajax({
                     type: 'GET',
                     url: '${router_city('/findhouse/goCheckPrice')}',
                     data: priceAnduserTppeUrl,
                     success: function (data) {
                         console.log(data.data);
-                        $('#plot_Count').find('em').html(data.data.plotCount);
-                        $('#plot_Ratio').find('em').html(data.data.ratio);
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                         params = data.data.userType;
-                        console.log(params);
                         //用户类型是第三类
                         if (params == 3) {
                             ////将第七种画像附给当前用户userPortrayalType
@@ -399,20 +411,19 @@
                 return
             } else {
                 $(this).parents('.layer').addClass('none');
-                var downPrice = $('.down-slide').find('.slide-text').text();
-                var monthPrce = $('.month-slide').find('.slide-text').text();
-                priceAnduserTppeUrl = 'userType=' + params + '&downPayMent=' + downPrice + '&monthPayMent=' + monthPrce;
-                console.log('首付=' + downPrice, '月供=' + monthPrce);
+                var downPriceInit = $('.down-slide').find('.slide-text').text();
+                var downPrice = downPriceInit.substr(0,downPriceInit.length-1);
+                var monthPrice = $('.month-slide').find('.slide-text').text();
+                priceAnduserTppeUrl = 'userType=' + params + '&downPayMent=' + downPrice + '&monthPayMent=' + monthPrice;
                 $.ajax({
                     type: 'GET',
                     url: '${router_city('/findhouse/goCheckPrice')}',
                     data: priceAnduserTppeUrl,
                     success: function (data) {
-                        console.log(data.data);
                         $("#plot_Count").find("em").html(data.data.plotCount);
-                        $("#plot_Ratio").find("em").html(data.data.ratio);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                         params = data.data.userType;
-                        console(params);
                         //用户类型是第三类
                         if (params == 3) {
                             ////将第七种画像附给当前用户userPortrayalType
@@ -439,6 +450,7 @@
         });
         // 提交户型
         var next2;
+        var prevParams;
         $('#submitHouseType').on('click', function () {
             $(this).parents('.layer').addClass('none');
             var params = $('#layOut').find('li.current').data('layout');
@@ -451,21 +463,29 @@
                 success: function (data) {
                     console.log(data.data);
                     $("#plot_Count").find("em").html(data.data.plotCount);
-                    $("#plot_Ratio").find("em").html(data.data.ratio);
+                    var ratio = new Number(data.data.ratio);
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                     params = data.data.userType;
-                    next2 += '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
-                    console.log(next2);
+                    prevParams = next2 + '&hospitalFlag=' + data.data.hospitalFlag + '&schoolFlag=' + data.data.schoolFlag + '&ratio=' + data.data.ratio;
+                    console.log('next2begin=' + next2);
                     //区域数组
-                    console.log(data.data.distictInfo);
                     var str = "";
-
-                    // .removeClass('disabled').addClass('optional')
                     if (data.data.distictInfo != null) {
-                        $(data.data.distictInfo).each(function (index, item) {
-                            str += "<li class=\"optional\" data-value=\"" + item.districtId + "\">"+item.districtName+"</li>";
-                        });
-                        $("#option_distict").html(str);
-                        console.log(str);
+
+                        $('#option_distict').find('li.disabled').each(function(i,orgin){
+
+                            $(data.data.distictInfo).each(function (index, item) {
+                                if($(orgin).data("value")==item.districtId ){
+                                    $(orgin).removeClass('disabled').addClass('optional');
+                                }
+                            })
+                        }
+                    )
+                        /*$(data.data.distictInfo).each(function (index, item) {
+                            str += "<li class=\"optional\" data-value=\"" + item.districtId + "\">" + item.districtName + "</li>";
+                        });*/
+                       /* $("#option_distict").html(str);
+                        console.log(str);*/
                     }
                 }
             })
@@ -480,7 +500,7 @@
             }
         });
         // 提交选中区域
-        var next4;
+        var next4 = '';
         $('#submitArea').on('click', function () {
             if ($('.area-content').find('li.current').length == 3) {
                 $(this).parents('.layer').addClass('none');
@@ -489,20 +509,21 @@
                 for (var i = 0; i < currentOptinos.length; i++) {
                     districtIdStr.push($(currentOptinos[i]).data('value'));
                 }
-                next4 += next2 + '&districtId=' + districtIdStr.join();
-                console.log(next4)
+                next4 += prevParams + '&districtId=' + districtIdStr.join();
                 $.ajax({
                     type: 'GET',
                     url: '${router_city('/findhouse/queryPlotCountByDistrict')}',
                     data: next4,
                     success: function (data) {
-                        console.log(data);
+                        $("#plot_Count").find("em").html(data.data.plotCount);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
                         //此处要判断是否是一居用户
                         if (data.data.layOut == 1) {
                             //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
                             //将医疗配套和学校配套还原成默认状态
-                            var schoolFlag = data.data.schoolFlag = 0
-                            var hospitalFlag = data.data.hospitalFlag = 0
+                            var schoolFlag = data.data.schoolFlag = 0;
+                            var hospitalFlag = data.data.hospitalFlag = 0;
                             next4 += "&schoolFlag=" + schoolFlag + "&hospitalFlag=" + hospitalFlag;
                             //直接跳转到过渡页
                             $('.start-btn').removeClass('none');

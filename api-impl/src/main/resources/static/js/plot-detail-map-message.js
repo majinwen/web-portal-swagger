@@ -1,8 +1,8 @@
 $(function () {
-    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location=' + locationnumber + '&radius=3000&scope=2&page_size=5&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location=' + locationnumber + '&radius=3000&scope=2&page_size=5&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&tag=综合医院,专科医院,诊所,药店,体检机构,急救中心,疾控中心&location=' + locationnumber + '&radius=3000&scope=2&page_size=3&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=车站&tag=公交车站&location=' + locationnumber + '&radius=3000&scope=2&page_size=1&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&filter=sort_name:distance|sort_rule:1&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&filter=sort_name:distance|sort_rule:1&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&tag=综合医院,专科医院,诊所,药店,体检机构,急救中心,疾控中心&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&filter=sort_name:distance|sort_rule:1&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=车站&tag=公交车站&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&filter=sort_name:distance|sort_rule:1&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
     var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=subway&tag=地铁站&location=' + locationnumber + '&radius=3000&scope=2&page_size=1&filter=sort_name:distance|sort_rule:1&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
 
     $.ajax({
@@ -53,8 +53,7 @@ $(function () {
         dataType: 'jsonp',
         success: function (response) {
             if (response.message === 'ok') {
-                if (response.results.length > 0) {
-                    console.log(response.results);
+                if (response.results.length > 0){
                     var lineNumber = (response.results[0].address).split(';').length;
                     $('#busStation').text(response.results[0].name);
                     $('#busStationNumber').text(lineNumber + '条线路')
@@ -73,8 +72,8 @@ $(function () {
             if (response.message === 'ok') {
                 if (response.results.length > 0) {
                     var subwayLine = (response.results[0].address).split(';')[0].substring(2);
-                    var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0)) / 100 / 10).toFixed(1) + 'km';
-                    $('#subwayLine').text(response.results[0].name + '[' + subwayLine + ']');
+                    var subwayDistance = (((response.results[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
+                    $('#subwayLine').text(response.results[0].name　+'['+　subwayLine+']');
                     $('#subwayDistance').text(subwayDistance);
                 }
             }
@@ -117,7 +116,8 @@ function renderDom(data, parentType) {
         case '教育培训':
             for (var i = 0; i < data.length; i++) {
                 var index = i + 1;
-                var distances = (Math.round(data[i].detail_info.distance / 100) / 10).toFixed(1) + "km";
+                console.log(data[i].detail_info.distance);
+                var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
                 str += '<li><p><i class="expand-icon expand-radius">' + index + '</i>' +
                     '<span class=expand-name>' + data[i].name +
                     '</span></p><span class="expand-distance">' + distances +
@@ -130,16 +130,18 @@ function renderDom(data, parentType) {
             for (var i = 0; i < data.length; i++) {
                 var starStr = '';
                 var index = i + 1;
-                var distances = (Math.round(data[i].detail_info.distance / 100) / 10).toFixed(1) + "km";
+                var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
                 if (data[i].detail_info.overall_rating != undefined) {
                     star = Math.round(data[i].detail_info.overall_rating);
-                    for (var j = 0; j < 5; j++) {
-                        if (j < star) {
-                            starStr += '<i class="red-star"></i>';
-                        } else {
-                            starStr += '<i class="star-icon"></i>';
+                    console.log(star);
+                    if (star > 0) {
+                        for (var j = 0; j < 5; j++){
+                            if (j < star) {
+                                starStr += '<i class="red-star"></i>';
+                            } else {
+                                starStr += '<i class="star-icon"></i>';
+                            }
                         }
-
                     }
                     str += '<li><p><i class="expand-icon expand-radius">' + index + '</i>' +
                         '<span class=expand-name><em>' + data[i].name +
@@ -148,13 +150,8 @@ function renderDom(data, parentType) {
                         '</span></li>';
 
                 } else {
-                    var _defaultStar = '';
-                    for (var k = 0; k < 5; k++) {
-                        _defaultStar += '<i class="star-icon"></i>';
-                    }
                     str += '<li><p><i class="expand-icon expand-radius">' + index + '</i>' +
-                        '<span class=expand-name><em>' + data[i].name +
-                        '</em><em class="star-box">' + _defaultStar + '</em>' +
+                        '<span class=expand-name><em>' + data[i].name + '</em>' +
                         '</span></p><span class="expand-distance">' + distances +
                         '</span></li>';
                 }
@@ -169,7 +166,7 @@ function renderDom(data, parentType) {
             } else {
                 for (var i = 0; i < data.length; i++) {
                     var index = i + 1;
-                    var distances = (Math.round(data[i].detail_info.distance / 100) / 10).toFixed(1) + "km";
+                    var distances = (Math.round(data[i].detail_info.distance/100)/10).toFixed(1) + "km";
                     str += '<li><p><i class="expand-icon medical-treatment"></i>' +
                         '<span class=expand-name>' + data[i].name +
                         '</span></p><span class="expand-distance">' + distances +
