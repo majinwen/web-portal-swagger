@@ -195,7 +195,6 @@
                         <#if map['subwayDistince']?exists>
                             <#assign item=map['subwayDistince']>
                             <#if map['key']?exists>
-
                                 <#if item[map['key']]?exists>
                                     <p class="cont-block-3 distance"><i class="icon"></i>
                                         <#assign rounditems=item[map['key']]?split("$")>
