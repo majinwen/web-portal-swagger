@@ -85,12 +85,12 @@
                         <a href="javascript:;" class="refresh-icon"></a>
                     </div>
                     <div class="searchpage-hot-recommend clear">
-                        <a href="${router_city('/xiaoqu')}?keyword=华夏奥韵">华夏奥韵</a>
-                        <a href="${router_city('/xiaoqu')}?keyword=英嘉花园">英嘉花园</a>
-                        <a href="${router_city('/xiaoqu')}?keyword=金芳公寓">金芳公寓</a>
-                        <a href="${router_city('/xiaoqu')}?keyword=盛华苑">盛华苑</a>
-                        <a href="${router_city('/xiaoqu')}?keyword=寰太大厦">寰太大厦</a>
-                        <a href="${router_city('/xiaoqu')}?keyword=椿树馆小区">椿树馆小区</a>
+                        <a href="${router_city('/xiaoqu')}?keyword=澳景花庭">澳景花庭</a>
+                        <a href="${router_city('/xiaoqu')}?keyword=顺驰林溪">顺驰林溪</a>
+                        <a href="${router_city('/xiaoqu')}?keyword=中科院东南小区">中科院东南小区</a>
+                        <a href="${router_city('/xiaoqu')}?keyword=远见名苑">远见名苑</a>
+                        <a href="${router_city('/xiaoqu')}?keyword=炫特区">炫特区</a>
+                        <a href="${router_city('/xiaoqu')}?keyword=海特花园">海特花园</a>
                     </div>
                 </section>
             </div>

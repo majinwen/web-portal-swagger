@@ -6,7 +6,6 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
-    <link rel="stylesheet" href="${staticurl}/css/plot-detail.css">
     <title>新房详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
@@ -144,21 +143,6 @@
     </div>
 </div>
 </#if>
-<#--<div class="module-bottom-fill">
-    <section>
-        <div class="module-header-message">
-            <h3>楼盘描述</h3>
-            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
-        </div>
-        <dl class="module-table-item">
-            <dt>开发商：${build['developers']!'暂无'}</dt>
-            <dd class="odd-item">物业类型：<span>${build['property_type']!'暂无'}</span></dd>
-            <dd class="even-item">建筑类型：<em>${build['building_type']!'暂无'}</em></dd>
-            <dd class="odd-item">产权年限：<em><#if build['building_life']?exists && build['building_life'] gt 0>${build['building_life']}年<#else>暂无</#if></em></dd>
-            <dd class="even-item">车位配比：<em>${build['park_radio']!'暂无'}</em></dd>
-        </dl>
-    </section>
-</div>-->
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -166,34 +150,16 @@
             <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
-            <#--<div class="column item-only-one">-->
-                <#--<div class="info-card-item">-->
-                <#--${build['building_name']!'暂无'}<em class="high-light-red">${build['finishdate']!'暂无'}</em>年建成住宅,共<em class="high-light-red">${build['build_count']!'暂无'}栋</em>-->
-                    <#--(${build['totaldoor']!'暂无'}户)-->
-                    <#--<#if build['building_type']?exists>-->
-                        <#--,${build['building_type']}-->
-                    <#--</#if>-->
-                <#--</div>-->
-            <#--</div>-->
             <div class="column item-column-two">
                 <div class="info-card-item">
                     <i class="item-two-1"></i>
                     <div class="info-item-text">
                         <p>人均绿化</p>
-                                <#if build['virescencerate']??&&build['virescencerate']?number gt 0>
-                                    <em>${build['virescencerate']?string("#.####")}平方米</em>
-                                <#else >
-                                    <em>暂无数据</em>
-                                </#if>
-                   <#-- <#if build['virescencerate']?exists>
-                        <#if village['avgGreening']?number gt 0>
-                            <em>${village['avgGreening']}平方米</em>
+                        <#if build['virescencerate']??&&build['virescencerate']?number gt 0>
+                            <em>${build['virescencerate']?string("#.####")}平方米</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>
-                    <#else >
-                        <em>暂无数据</em>
-                    </#if>-->
                     </div>
                 </div>
                 <div class="info-card-item">
@@ -247,20 +213,21 @@
                 <div class="info-card-item">
                     <i class="item-three-3"></i>
                     <em>自驾</em>
-                    <p>${build['ringRoadName']!"暂无数据"}</p>
-                    <span>2km</span>
-                   <#-- <#if village['ringRoadDistance']?exists>-->
+                    <p>${build['ringRoadName']!'暂无数据'}</p>
+                    <span>
+                    <#if build['ringRoadDistance']?exists>
                     <#--<#if village['ringRoadDistance']?exists && village['ringRoadDistance']!=''>-->
                     <#--${(village['ringRoadDistance']/1000)?string('#.#')}km-->
                     <#--<#else >-->
                     <#--暂无数据-->
                     <#--</#if>-->
-                       <#-- <#if village['ringRoadDistance']?number gt 0>
-                        ${(village['ringRoadDistance']/1000)?string('#.#')}km
+                        <#if build['ringRoadDistance']?number gt 0>
+                        ${(build['ringRoadDistance']/1000)?string('#.#')}km
                         <#else>
                             暂无数据
                         </#if>
-                    </#if>-->
+                    </#if>
+                    </span>
                 </div>
             </div>
         </div>
@@ -352,42 +319,21 @@
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
-                 <#--   <#if village['propertyFee']?exists>
-                        <span class="expand-price">
-                            <#if village['propertyFee']?number gt 0>
-                            ${village['propertyFee']}元/㎡·月
-                            <#else >
-                                暂无数据
-                            </#if>
-                        </span>
-                    <#else >
-                        <span class="expand-price">暂无数据</span>
-                    </#if>-->
                         <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
-                            <span class="expand-price">${build['propertyfee']}元/㎡·月</p>
+                            <span class="expand-price">${build['propertyfee']}元/㎡·月</span>
                         <#else>暂无数据
                         </#if>
+                    </p>
                 </li>
                 <li>
                     <p>
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
-                   <#-- <#if village['parkingRate']?exists&&village['parkingRate']!=''>
-                        <span class="expand-price">
-                            <#if village['parkingRate']?number gt 0>
-                            ${village['parkingRate']}元/月
-                            <#else >
-                                暂无数据
-                            </#if>
-                        </span>
-                    <#else >
-                        <span class="expand-price">暂无数据</span>
-                    </#if>-->
-
                         <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
-                            <span class="expand-price">${build['car_rent_price']}元/月</p>
+                            <span class="expand-price">${build['car_rent_price']}元/月</span>
                         <#else>暂无数据
                         </#if>
+                    </p>
                 </li>
             </ul>
         </div>
