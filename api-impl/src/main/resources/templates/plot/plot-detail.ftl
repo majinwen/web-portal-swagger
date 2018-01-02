@@ -27,8 +27,7 @@
             </#list>
         <#else>
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/global/tpzw_banner_image.png"
-                     data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
+                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
             </li>
         </#if>
         </ul>
@@ -90,15 +89,12 @@
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
-                <#--<#if label_index lt 3>-->
                     <#if label?exists><span>${label}</span></#if>
-                <#--</#if>-->
                 </#list>
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img
-                src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <#if (reViHouse?exists) && (reViHouse?size>0)>
@@ -183,15 +179,14 @@
                 </div>
             </div>
             <div>
-            <#--<div class="module-header-message">-->
-            <#--<h3>价格走势</h3>-->
-            <#--</div>-->
-            <#if  (mouthList?size>0)>
-                <div class="echarts-box">
-                    <div class="echarts-content" id="village-price-trade"></div>
-                </div>
-            </#if>
-
+                <#--<div class="module-header-message">-->
+                    <#--<h3>价格走势</h3>-->
+                <#--</div>-->
+                <#if  (mouthList?size>0)>
+                    <div class="echarts-box">
+                        <div class="echarts-content" id="village-price-trade" ></div>
+                    </div>
+                </#if>
             </div>
         </div>
     </section>
@@ -201,17 +196,14 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息</h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i
-                    class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
                 <div class="info-card-item" id="base-info">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em
-                        class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em
-                        class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>
                         (${village['sumHousehold']}户)
@@ -331,7 +323,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物<span class="subtitle"></span></h3>
+            <h3>休闲购物</h3>
         </div>
         <div class="expand-content content-visible">
             <div class="map-shopping-box">
@@ -440,11 +432,9 @@
             <i class="map-marker-icon"></i>
         <#if village['location']?exists>
             <#assign locationIp = village['location'] ? split(",")>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
         <#else>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
-                 alt="">
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
         </#if>
         </a>
     </section>
@@ -454,8 +444,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i
-                    class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -492,6 +481,7 @@
 </div>
 <script>
     var locationnumber = '${village['location']}';
+    var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
 </script>
 <section>
     <div class="module-header-message">
@@ -544,10 +534,20 @@
                 // 固定在顶部
                 return [point[0], '10%'];
             },
+           toolbox:{
+                 feature:{
+                     dataZoom:{
+                         show : true
+                     }
+                 }
+           }
         },
         legend: {
-            /*  data:['楼盘价格','区域价格','商圈价格']*/
-            data: ['${village['rc']!'小区'}价格', '${village['area']!'区域'}价格', '${village['tradingArea']!'商圈'}价格']
+          /*  data:['楼盘价格','区域价格','商圈价格']*/
+           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
+            textStyle:{
+                fontSize:25
+            }
         },
         xAxis: {
             type: 'category',
@@ -560,6 +560,24 @@
                 formatter: '{value}'
             },
         },
+    /*  缩放
+     dataZoom: [
+            {
+                type: 'slider',
+                show: true,
+                xAxisIndex: [0],
+                start: 1,
+                end: 80
+            }
+            {
+                type: 'slider',
+                show: true,
+                yAxisIndex: [0],
+                left: '93%',
+                start: 29,
+                end: 36
+            },
+        ],*/
         series: [
         <#if (ptCD0?size==0)>
             {
