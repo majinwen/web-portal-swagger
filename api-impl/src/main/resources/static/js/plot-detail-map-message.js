@@ -1,9 +1,9 @@
 $(function () {
-    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&tag=医院&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=公交车站&tag=公交车站&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
-    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=地铁站&tag=地铁站&location=' + locationnumber + '&radius=3000&scope=2&page_size=1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var educationUrl = 'http://api.map.baidu.com/place/v2/search?query=亲子教育&tag=亲子教育&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var shoppingUrl = 'http://api.map.baidu.com/place/v2/search?query=菜市场&tag=菜市场&location='+ locationnumber +'&radius=3000&scope=2&page_size=5&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var hospitalUrl = 'http://api.map.baidu.com/place/v2/search?query=医院&tag=综合医院,专科医院,诊所,药店,体检机构,急救中心,疾控中心&location='+ locationnumber +'&radius=3000&scope=2&page_size=3&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var busUrl = 'http://api.map.baidu.com/place/v2/search?query=车站&tag=公交车站&location='+ locationnumber +'&radius=3000&scope=2&page_size=1&filter=sort_name:distance|sort_rule:1&distance&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
+    var subwayUrl = 'http://api.map.baidu.com/place/v2/search?query=subway&tag=地铁站&location=' + locationnumber + '&radius=3000&scope=2&page_size=1&filter=sort_name:distance|sort_rule:1&output=json&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS';
 
     $.ajax({
         type: 'GET',
@@ -38,6 +38,7 @@ $(function () {
         url: hospitalUrl,
         dataType: 'jsonp',
         success: function (response) {
+
             if (response.message === 'ok') {
                 renderDom(response.results, '医疗配套');
             }
@@ -53,6 +54,7 @@ $(function () {
         success: function (response) {
             if (response.message === 'ok') {
                 if (response.results.length > 0){
+                    console.log(response.results);
                     var lineNumber = (response.results[0].address).split(';').length;
                     $('#busStation').text(response.results[0].name);
                     $('#busStationNumber').text(lineNumber + '条线路')
