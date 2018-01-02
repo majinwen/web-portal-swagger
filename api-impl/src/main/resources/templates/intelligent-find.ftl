@@ -522,8 +522,8 @@
                         if (data.data.layOut == 1) {
                             //如果是一居用户则直接跳转到过渡页 如果不是则去家庭页面
                             //将医疗配套和学校配套还原成默认状态
-                            var schoolFlag = data.data.schoolFlag = 0
-                            var hospitalFlag = data.data.hospitalFlag = 0
+                            var schoolFlag = data.data.schoolFlag = 0;
+                            var hospitalFlag = data.data.hospitalFlag = 0;
                             next4 += "&schoolFlag=" + schoolFlag + "&hospitalFlag=" + hospitalFlag;
                             //直接跳转到过渡页
                             $('.start-btn').removeClass('none');
