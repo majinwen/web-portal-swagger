@@ -255,7 +255,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物<span class="subtitle">新世界丽樽生活圈</span></h3>
+            <h3>休闲购物</h3>
         </div>
         <div class="expand-content content-visible">
             <div class="map-shopping-box">

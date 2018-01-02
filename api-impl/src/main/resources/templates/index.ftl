@@ -25,7 +25,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/index/dsy_banner.jpg" alt="年末特惠">
+                    <img src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -338,7 +338,7 @@
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
-    new  ElastiStack(document.getElementById('elastics-stack'));
+    new ElastiStack(document.getElementById('elastics-stack'));
 </script>
 </body>
 </html>
