@@ -40,9 +40,9 @@
             <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}">
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="#">
+            <#--<div class="banner-nav-item"><a href="#">
                 <i class="houses-intelligent"></i><p>懂房帝</p>
-            </a></div>
+            </a></div>-->
         </div>
     </section>
 </div>
@@ -175,7 +175,7 @@
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/ ${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
                         </p>
                     <div class="cont-block-4 house-labelling gray middle">
                         <#if map['building_tags']?exists>

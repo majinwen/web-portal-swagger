@@ -253,7 +253,7 @@
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                ${village['avgPrice']}元/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
                 </#if>
             </p>
         </div>
