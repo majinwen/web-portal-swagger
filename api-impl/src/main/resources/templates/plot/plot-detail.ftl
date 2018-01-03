@@ -492,7 +492,7 @@
     <#list newbuilds as builditem>
         <li><a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">
             <div class="picture-box">
-                <#assign imglist = builditem['building_imgs']>
+                <#assign imglist = builditem['building_title_img']>
                 <#if imglist?exists >
                     <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img
                             src="${qiniuimage}/${imglist?split(",")[0]}" alt="${imglist?split(",")[0]}">
