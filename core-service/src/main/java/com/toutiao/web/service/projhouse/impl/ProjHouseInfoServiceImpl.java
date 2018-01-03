@@ -120,7 +120,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                  booleanQueryBuilder.must(QueryBuilders.boolQuery()
                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())).boost(2));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
