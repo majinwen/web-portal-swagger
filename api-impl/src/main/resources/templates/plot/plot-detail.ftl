@@ -456,7 +456,7 @@
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
-                        <img src="${qiniuimage}/${photos[0]}" alt="${nearviitem['rc']}">
+                        <img src="${qiniuimage}/${photos[0]}-tt400x300" alt="${nearviitem['rc']}">
                     <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                 </div>
@@ -482,7 +482,7 @@
             <div class="picture-box">
                 <#assign imglist = builditem['building_title_img']>
                 <#if imglist?exists >
-                    <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}" alt="${imglist?split(",")[0]}">
+                    <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}}-tt400x300" alt="${imglist?split(",")[0]}">
                         <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                 </#if>
