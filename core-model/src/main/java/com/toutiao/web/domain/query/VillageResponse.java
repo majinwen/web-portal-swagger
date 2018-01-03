@@ -33,7 +33,8 @@ public class VillageResponse {
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
     private Double avgGreening;  //户均绿化率
-    private Double liftDoorRadio;  //户均电梯
+    private Double liftDoorRadio;  //梯户比
+    private String avgElevator;  //户均电梯
     private String elevator;  //电梯配备
     private String carPositionRatio;  //车位配比
     private String parkingRate;  //停车费
