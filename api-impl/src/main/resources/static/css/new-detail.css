@@ -150,7 +150,6 @@ hr {
   overflow: hidden;
   text-overflow: ellipsis; }
   .house-labelling.normal span, .house-labelling.gray span {
-    line-height: 0.3733333333rem;
     padding-left: 0.2666666667rem;
     padding-right: 0.2666666667rem;
     margin-right: 0.08rem; }
