@@ -269,6 +269,15 @@ public class PlotServiceImpl implements PlotService {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
 
+            //排序
+            //均价
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
+                srb.addSort("avgPrice", SortOrder.ASC);
+            }
+
+            if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
+                srb.addSort("avgPrice", SortOrder.DESC);
+            }
             //小区默认排序
             //先发布后发布 级别从小到大  分数由大到小
             srb.addSort("is_approve",SortOrder.DESC).addSort("level",SortOrder.ASC).addSort("plotScore",SortOrder.DESC);
@@ -279,15 +288,7 @@ public class PlotServiceImpl implements PlotService {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("level").gt(0).lte(4));
 //            }
 
-            //排序
-            //均价
-            if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
-                srb.addSort("avgPrice", SortOrder.ASC);
-            }
 
-            if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
-                srb.addSort("avgPrice", SortOrder.DESC);
-            }
 
             //分页
             // 每页大小
