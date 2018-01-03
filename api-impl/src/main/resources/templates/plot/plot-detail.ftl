@@ -247,7 +247,7 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>户均电梯</p>
-                        <em>${village['liftDoorRadio']!'暂无数据'}</em>
+                        <em>${village['avgElevator']!'暂无数据'}</em>
                     </div>
                 </div>
                 <div class="info-card-item">
@@ -483,6 +483,7 @@
         </ul>
     </section>
 </div>
+
 <section>
     <div class="module-header-message">
         <h3>新房推荐</h3>

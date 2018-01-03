@@ -29,7 +29,8 @@ public class VillageEntity {
     private Integer sumPrice;  //总价
     private String abbreviatedAge;  //建成年代
     private Integer age;  //楼龄
-    private String areaSize;  //面积
+    private String areaSize;  //占地面积
+    private String buildingAreaSize;  //建筑面积
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
     private Double avgGreening;  //户均绿化
