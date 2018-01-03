@@ -440,14 +440,15 @@
         var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
     </script>
 </section>
-<div class="detail-contact-wrapper">
-    <section class="detail-contact-box" id="detailContactState">
-        <div class="detail-contact-content">
-            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
-        </div>
-    </section>
-</div>
-
+<#if build['saletelphone']?exists>
+    <div class="detail-contact-wrapper">
+        <section class="detail-contact-box" id="detailContactState">
+            <div class="detail-contact-content">
+                <a href="tel:${build['saletelphone']}" class="only contact-telephone-counseling">咨询售楼处</a>
+            </div>
+        </section>
+    </div>
+</#if>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
