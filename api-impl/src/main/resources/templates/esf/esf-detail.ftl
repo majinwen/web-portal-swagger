@@ -247,22 +247,13 @@
                 <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
                     <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
                 </#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>
-                   共<em class="high-light-red">${village['sumBuilding']}</em>栋
-                </#if>
-                <#if village['sumHousehold']?exists>
-                    <#if village['sumHousehold']?number gt 0>
-                        (${village['sumHousehold']}户)
-                    </#if>
-                </#if>
-                <#if (village['sumBuilding']?exists&&(village['sumBuilding']!=''))||(village['sumHousehold']?exists&&village['sumHousehold']?number gt 0)>,</#if>
-                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>
-                    ${village['buildingStructure']}
-                </#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
+                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>${village['buildingStructure']}</#if>
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                ${village['avgPrice']}元/㎡
                 </#if>
             </p>
         </div>
