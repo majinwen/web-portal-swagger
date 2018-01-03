@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
@@ -16,6 +17,7 @@ import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
+import freemarker.template.TemplateModelException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -135,10 +137,6 @@ public class IntelligenceFindHouseController {
         intelligenceQuery.setSchoolFlag(1);
         intelligenceQuery.setHospitalFlag(1);
         String preconcTotal = intelligenceQuery.getPreconcTotal();
-        plotTotalFirst = (Double.valueOf(preconcTotal) - (Double.valueOf(preconcTotal) * 0.1)) * 10000;
-        plotTotalEnd = (Double.valueOf(preconcTotal) + (Double.valueOf(preconcTotal) * 0.1)) * 10000;
-        intelligenceQuery.setMaxTotalPrice(plotTotalEnd);
-        intelligenceQuery.setMinTotalPrice(plotTotalFirst);
         intelligenceQuery.setHasChild(1);
         intelligenceQuery.setHasOldman(1);
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
@@ -245,6 +243,8 @@ public class IntelligenceFindHouseController {
 
 
 
+
+
         return "intelligent-report";
     }
 
@@ -279,4 +279,19 @@ public class IntelligenceFindHouseController {
     }
 
 
+    //测试
+    /**
+     *  
+     * 功能描述：根据id查询报告页数据
+     * @author zengqingzhou
+     * @date 2018/1/3 17:45
+     * @param 
+     * @return 
+     */
+    @RequestMapping("/fandData")
+    @ResponseBody
+    public void find(){
+        List<IntelligenceFhRes> intelligenceFhRes = intelligenceFhResService.queryResById(1);
+        System.out.println(intelligenceFhRes);
+    }
 }

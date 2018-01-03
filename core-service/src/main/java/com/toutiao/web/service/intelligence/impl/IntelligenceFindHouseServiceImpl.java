@@ -1,6 +1,7 @@
 package com.toutiao.web.service.intelligence.impl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
@@ -11,6 +12,7 @@ import com.toutiao.web.dao.mapper.officeweb.*;
 import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
+import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -55,6 +57,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     private IntelligenceFindhouseMapper intelligenceFindhouseMapper;
     @Autowired
     private PriceTrendMapper priceTrendMapper;
+    @Autowired
+    private IntelligenceFhResMapper intelligenceFhResMapper;
 
     @Override
     public IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
@@ -239,7 +243,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = intelligenceFh.getDownPayMent() + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000);
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
 
             }
             //选择总价
@@ -280,40 +284,64 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1A(list);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1B(list, starPropertyList);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1C(list, starPropertyList);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2A(list, starPropertyList);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2B(list, starPropertyList);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2C(list, starPropertyList);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend3A(list);
-            return finalList;
+            save(intelligenceQuery, finalList);
         }
         return null;
     }
+
+    /**
+     *
+     * 功能描述：保存结果
+     * @author zengqingzhou
+     * @date 2018/1/3 15:46
+     * @param
+     * @return
+     */
+    public void save(IntelligenceQuery intelligenceQuery,List<IntelligenceFindhouse> finalList){
+        IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
+        String str = JSONObject.toJSONString(intelligenceQuery);
+        IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
+        BeanUtils.copyProperties(intelligenceFhResJson,intelligenceFhRes);
+        if (null!=finalList&&finalList.size()!=0){
+            for (IntelligenceFindhouse intelligence : finalList) {
+                String jsonStr = JSONObject.toJSONString(intelligence);
+                JSONObject fh_result = JSONObject.parseObject(jsonStr);
+                intelligenceFhRes.setFhResult(fh_result);
+                intelligenceFhResMapper.saveData(intelligenceFhRes);
+            }
+        }
+    }
+
     /**
      *
      * 功能描述：初始化数据
@@ -322,18 +350,27 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @param
      * @return
      */
-    public IntelligenceQuery init(IntelligenceQuery intelligenceQuery){
-        if (null!=intelligenceQuery.getTotalPrice()){
-            Integer totalPrice = Integer.valueOf(intelligenceQuery.getTotalPrice());
-            intelligenceQuery.setMaxTotalPrice(totalPrice*1.1);
-            intelligenceQuery.setMinTotalPrice(totalPrice*0.9);
+    public IntelligenceQuery init(IntelligenceQuery intelligenceFh){
+        Double plotTotalFirst = null;
+        Double plotTotalEnd = null;
+        String plotTotal = null;
+        if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
+                isNotBlank(intelligenceFh.getMonthPayMent())) {
+            plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+
         }
-        if (null==intelligenceQuery.getTotalPrice()){
-            Integer totalPrice = Integer.valueOf(intelligenceQuery.getDownPayMent() + Integer.valueOf(intelligenceQuery.getMonthPayMent()) * 12 * 30);
-            intelligenceQuery.setMaxTotalPrice(totalPrice*1.1);
-            intelligenceQuery.setMinTotalPrice(totalPrice*0.9);
+        //选择总价
+        if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
+            plotTotal = intelligenceFh.getPreconcTotal();
+
         }
-        return intelligenceQuery;
+        //上下浮动10%
+        plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+        plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+        intelligenceFh.setMaxTotalPrice(plotTotalEnd);
+        intelligenceFh.setMinTotalPrice(plotTotalFirst);
+
+        return intelligenceFh;
     }
 
     /**

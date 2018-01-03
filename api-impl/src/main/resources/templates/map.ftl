@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:c="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -31,7 +31,7 @@
         <div class="results-panel-btn"><p></p></div>
         <div id="slideContent">
             <div class="results-title">
-                <p><i class="traffic"></i><em class="title-map-type">地铁站</em></p><span>1.5km内共<em class="result-num high-light-red">1</em>个</span>
+                <p><i class="traffic"></i><em class="title-map-type">地铁站</em></p><span>3km内共<em class="result-num high-light-red">1</em>个</span>
             </div>
             <ul id="resultsPanel" class="results-panel"></ul>
         </div>

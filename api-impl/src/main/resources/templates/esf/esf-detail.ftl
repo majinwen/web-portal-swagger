@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html>
 <head>
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
@@ -167,7 +167,7 @@
                         <em>
                         ${houseDetail.plotName}
                             <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
-                                [${houseDetail.area} - ${houseDetail.houseBusinessName}]
+                                [${houseDetail.area}-${houseDetail.houseBusinessName}]
                             <#else >
                                 <#if houseDetail.area?exists&&houseDetail.area!=''>
                                     [${houseDetail.area}]
@@ -243,16 +243,19 @@
             <h4>
                 <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
             </h4>
-            <h3>
+            <p>
                 <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
-                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</br>
+                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
                 </#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋
-                </#if>
-                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if></br>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
                 <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>${village['buildingStructure']}</#if>
-                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>均价${village['avgPrice']}元/㎡</#if>
-            </h3>
+            </p>
+            <p>
+                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
+                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                </#if>
+            </p>
         </div>
     </a></li>
     </ul>
@@ -265,18 +268,15 @@
         <#if houseDetail.newcode?exists>
             <div class="module-header-message">
                 <h3>配套地图</h3>
-                <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="more-arrows"><i
-                        class="arrows-right"></i></a>
+                <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
             </div>
         </#if>
         <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
-                     alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16" alt="">
             <#else >
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
-                     alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
         </a>
     </section>
@@ -379,10 +379,10 @@
 <script>
     $(function(){
         var text = $("tilePlotDesc").find("p").text();
-          if(text.indexOf(",")==0){
-             var s = text.substring(1);
-              $("tilePlotDesc").find("p").html(s);
-          }
+        if(text.indexOf(",")==0){
+            var s = text.substring(1);
+            $("tilePlotDesc").find("p").html(s);
+        }
     })
 </script>
 </body>

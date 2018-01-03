@@ -150,19 +150,14 @@ $FontSize: 16;
 
     &.normal, &.gray {
         span {
-            @include font-dpr(20);
-            height: rem(32);
-            line-height: rem(32);
             padding-left: rem(20);
             padding-right: rem(20);
-            margin-right: rem(6);
+            margin-right: rem(2);
         }
     }
 
     &.middle {
         span {
-            height: rem(30);
-            line-height: rem(30);
             padding-left: rem(12);
             padding-right: rem(12);
         }
@@ -185,9 +180,6 @@ $FontSize: 16;
 
     &.small {
         span {
-            @include font-dpr(18);
-            height: rem(25);
-            line-height: rem(25);
             padding-left: rem(10);
             padding-right: rem(10);
             margin-right: rem(2);
@@ -196,9 +188,11 @@ $FontSize: 16;
 
     span {
         display: inline-block;
-        -webkit-border-radius: rem(6);
-        -moz-border-radius: rem(6);
-        border-radius: rem(6);
+        height: rem(28);
+        line-height: rem(28);
+        @include font-dpr(20);
+        -webkit-border-radius: rem(4);
+        border-radius: rem(4);
 
         &:last-child {
             margin-right: 0;

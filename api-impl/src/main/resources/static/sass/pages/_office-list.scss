@@ -56,8 +56,8 @@ $textGrayColor: #888;
             
             span {
                 display: block;
-                margin-top: rem(14);
-                @include font-dpr(18);
+                margin-top: rem(8);
+                @include font-dpr(24);
                 color: $textGrayColor;
             }
             
@@ -84,6 +84,8 @@ $textGrayColor: #888;
         }
 
         em {
+            position: relative;
+            top: rem(2);
             display: inline-block;
             height: rem(28);
             line-height: rem(26);

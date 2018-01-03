@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <#--<style type="text/css">
-        body {height: auto;}
-        html {height: auto;}
-    </style>-->
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -63,7 +59,7 @@
                     <li data-type="2">二居 <i></i></li>
                     <li data-type="3">三居 <i></i></li>
                     <li data-type="4">四居 <i></i></li>
-                    <li data-type="5">五居及五居以上 <i></i></li>
+                    <li data-type="5">五居及以上 <i></i></li>
                 </ul>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
@@ -157,8 +153,8 @@
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#if map['building_imgs']?exists>
-                            <#assign imgt = map['building_imgs']?split(",")>
+                        <#if map['building_title_img']?exists>
+                            <#assign imgt = map['building_title_img']?split(",")>
                             <#if imgt[0]?? && imgt[0] != ''>
                                 <img src="${qiniuimage}/${imgt[0]}-tt400x300" alt="${map['building_name']}">
                             <#else>
@@ -192,19 +188,18 @@
                                 <#else>
                                     距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
                                 </#if>
-
                             <#else>
                                 <#if map['district_name']?exists>
                                     ${map['district_name']}
                                 </#if>
                                 <#if map['house_min_area']?exists&&map['house_max_area']?exists>
-                                    /${map['house_min_area']}㎡—${map['house_max_area']}㎡
+                                    / ${map['house_min_area']}㎡-${map['house_max_area']}㎡
                                 </#if>
                             </#if>
                         </p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if  map['building_tags']?exists>
-                                <#assign item =  map['building_tags']>
+                                <#assign item = map['building_tags']>
                                 <#list item as itemValue>
                                     <#if itemValue?exists && itemValue_index<3>
                                         <span>${itemValue}</span>
@@ -251,7 +246,7 @@
     <div class="clear">
         <div class="list-item-img-box">
             {{if ($value.building_imgs) != ''}}
-                <img src="${qiniuimage}/{{$value.building_imgs}}-tt400x300" alt="{{$value.building_name}}">
+                <img src="${qiniuimage}/{{$value.building_title_img}}-tt400x300" alt="{{$value.building_name}}">
             {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.building_name}}">
             {{/if}}
@@ -280,7 +275,7 @@
                     {{$value.district_name}}
                     {{if $value.house_min_area != null}}
                         {{if $value.house_max_area != null}}
-                            /{{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                            / {{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
                         {{/if}}
                     {{/if}}
                 {{/if}}

@@ -204,8 +204,8 @@
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#if map['building_imgs']?exists>
-                            <#assign item = map['building_imgs']?split(",")>
+                        <#if map['building_title_img']?exists>
+                            <#assign item = map['building_title_img']?split(",")>
                             <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
                             <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}"></#if>
                         </#if>
@@ -218,22 +218,23 @@
                         </h3>
                         <#if (map['average_price']?exists && map['average_price'] > 0)>
                             <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                        <#else >
+                            <p class="cont-block-2 high-light-red">售价待定</p>
                         </#if>
                         <p class="cont-block-3">
-                            <#if map['nearsubway']??>
-                            ${map['nearsubway']}
-                            <#else>${map['district_name']}
+                            <#if map['nearsubway']??>${map['nearsubway']}
+                                <#else>${map['district_name']}
                             </#if>
                             <#if map['house_min_area']?exists&&map['house_max_area']?exists>
-                                /${map['house_min_area']}㎡—${map['house_max_area']}㎡</p>
+                                / ${map['house_min_area']}㎡-${map['house_max_area']}㎡</p>
                             </#if>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if map['building_tags']?exists>
-                                <#assign item =  map['building_tags']>
+                                <#assign item = map['building_tags']>
                                 <#list item as itemValue>
                                     <span>${itemValue}</span>
                                 </#list>
-                                </#if>
+                            </#if>
                         </div>
                         <div class="cont-block-sale">
                             <em>${map['sale_status_name']}</em>
@@ -243,11 +244,9 @@
                 <#if map['activity_desc']?exists>
                 <div class="new-active">
                     <i class="icon"></i><em>活动：</em>
-                    <span>
-                        ${map['activity_desc']}
-                    </span>
+                    <span>${map['activity_desc']}</span>
                 </div>
-                    </#if>
+                </#if>
             </a></li>
         </#list>
     </#if>
