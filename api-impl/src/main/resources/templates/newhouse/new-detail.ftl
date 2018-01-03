@@ -420,8 +420,8 @@
                 <div class="picture-box">
                     <#if nearitem['building_imgs']?exists>
                     <#assign imgt = nearitem['building_imgs']?split(",")>
-                        <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${nearitem['building_name']}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}-tt400x300" alt="${nearitem['building_name']}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${nearitem['building_name']}">
                         </#if>
                     </#if>
                 </div>

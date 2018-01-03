@@ -467,8 +467,8 @@
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
-                        <img src="${qiniuimage}/${photos[0]}" alt="${nearviitem['rc']}">
-                    <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <img src="${qiniuimage}/${photos[0]}-tt400x300" alt="${nearviitem['rc']}">
+                    <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${nearviitem['rc']}">
                     </#if>
                 </div>
                 <div class="tilelist-content">
@@ -494,8 +494,8 @@
                 <#assign imglist = builditem['building_imgs']>
                 <#if imglist?exists >
                     <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img
-                            src="${qiniuimage}/${imglist?split(",")[0]}" alt="${imglist?split(",")[0]}">
-                    <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${builditem['building_name']!''}">
+                    <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${builditem['building_name']!''}">
                     </#if>
                 </#if>
             </div>
