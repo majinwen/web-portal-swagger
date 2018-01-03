@@ -22,7 +22,7 @@ public interface IntelligenceFhResMapper extends BaseDao {
 
     IntelligenceFhRes selectByUserPhone(String userPhone);
 
-    void saveData(IntelligenceFhRes intelligenceFhRes);
+    Integer saveData(IntelligenceFhRes intelligenceFhRes);
 
-    List<IntelligenceFhRes> selectById(Integer id);
+    IntelligenceFhRes selectById(Integer id);
 }

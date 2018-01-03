@@ -141,8 +141,8 @@ public class IntelligenceFindHouseController {
         intelligenceQuery.setMinTotalPrice(plotTotalFirst);
         intelligenceQuery.setHasChild(1);
         intelligenceQuery.setHasOldman(1);
-        List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        model.addAttribute("list",list);
+        Integer AIID = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        model.addAttribute("AIId",AIID);
         return "intelligent-report";
     }
 
@@ -290,8 +290,10 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/fandData")
     @ResponseBody
-    public void find(){
-        List<IntelligenceFhRes> intelligenceFhRes = intelligenceFhResService.queryResById(1);
+    public String find(Integer id ,Model model){
+        IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
+        model.addAttribute("intelligenceFhRes",intelligenceFhRes);
         System.out.println(intelligenceFhRes);
+        return null;
     }
 }
