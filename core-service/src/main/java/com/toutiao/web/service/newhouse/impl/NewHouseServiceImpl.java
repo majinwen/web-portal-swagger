@@ -383,10 +383,6 @@ public class NewHouseServiceImpl implements NewHouseService{
             Map<String,Object> item=hit.getSourceAsMap();
             layouts.add(item);
         }
-
-
-
-
         Map<String, Object> maprep = new HashMap<>();
 
         maprep.put("layouts",layouts);
