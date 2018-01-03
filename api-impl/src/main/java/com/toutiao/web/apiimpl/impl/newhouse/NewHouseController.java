@@ -121,6 +121,7 @@ public class NewHouseController {
     public String getNewHouseLayoutCountByRoom(@PathVariable("loupanid") Integer buildingId,@RequestParam("tags") Integer tags,  Model model){
         List<Map<String,Object>> room = newHouseService.getNewHouseLayoutCountByRoom(buildingId);
         Map<String,Object> details = newHouseService.getNewHouseLayoutDetails(buildingId,tags);
+        List<Map<String,Object>> discripts=newHouseService.getNewHouseDiscript(buildingId);
         int rs = 0;
         if(room.size() > 0){
             for(int i=0;i<room.size();i++){
@@ -132,6 +133,7 @@ public class NewHouseController {
         model.addAttribute("bid",buildingId);
         model.addAttribute("tags",tags);
         model.addAttribute("roomcount",rs);
+        model.addAttribute("discript",discripts);
         return "newhouse/new-house-type";
 
     }

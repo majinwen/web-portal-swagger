@@ -155,17 +155,15 @@
                         <div class="list-item-img-box">
                             <#if plot['photo']?exists>
                                 <#assign photo = plot['photo']>
-                                <#if photo[0]?exists>
-                                    <img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">
-                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                <#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">
+                                    <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
                                 </#if>
                             </#if>
                         </div>
                     </#if>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>
-                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}
-                            年建成</#if></p>
+                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>
                         <#if plot['metroWithPlotsDistance']?exists>
                             <#assign map = plot['metroWithPlotsDistance']>
                             <#if plot['key']?exists>
@@ -182,25 +180,23 @@
                                     </p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>
-                                        ${plot['area']!''}
                                         <#if plot['area']?exists&&plot['area']!=''>
-                                        ${'-'+plot['tradingArea']!''}
+                                        ${plot['area']}${'-'+plot['tradingArea']}
                                         <#else>
                                             <#if plot['tradingArea']?exists&&plot['tradingArea']!=''>
-                                            ${plot['tradingArea']!''}
+                                            ${plot['tradingArea']}
                                             </#if>
                                         </#if>
+                                    </p>
                                 </#if>
                             <#else>
                                 <#if plot['tradingArea']?exists>
-                                    <p class="cont-block-3 distance"><i
-                                            class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
                                 </#if>
                             </#if>
                         <#else>
                             <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i
-                                        class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
+                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
                             </#if>
                         </#if>
                         <div class="cont-block-4 house-labelling gray">
@@ -252,8 +248,7 @@
             </div>
             <div class="list-item-cont">
                 <h3 class="cont-block-1"><span>{{$value.rc}}</span></h3>
-                <p class="cont-block-2 plot">{{if
-                    $value.abbreviatedAge}}{{$value.abbreviatedAge}}建成{{else}}暂无数据{{/if}}</p>
+                <p class="cont-block-2 plot">{{if $value.abbreviatedAge}}{{$value.abbreviatedAge}}年建成{{else}}暂无数据{{/if}}</p>
                 {{if $value.metroWithPlotsDistance || $value.tradingArea}}
                 <p class="cont-block-3 distance"><i class="icon"></i>
                     {{if $value.subwayDesc}}

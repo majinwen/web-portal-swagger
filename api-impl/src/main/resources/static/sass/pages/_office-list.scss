@@ -84,6 +84,8 @@ $textGrayColor: #888;
         }
 
         em {
+            position: relative;
+            top: rem(2);
             display: inline-block;
             height: rem(28);
             line-height: rem(26);

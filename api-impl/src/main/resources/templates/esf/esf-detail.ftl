@@ -167,7 +167,7 @@
                         <em>
                         ${houseDetail.plotName}
                             <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
-                                [${houseDetail.area} - ${houseDetail.houseBusinessName}]
+                                [${houseDetail.area}-${houseDetail.houseBusinessName}]
                             <#else >
                                 <#if houseDetail.area?exists&&houseDetail.area!=''>
                                     [${houseDetail.area}]
@@ -237,7 +237,7 @@
         </#if>
         <div class="picture-box">
             <#assign item=houseDetail['plotPhoto']>
-            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
         </div>
         <div id="tilePlotDesc" class="tilelist-content">
             <h4>
@@ -253,7 +253,7 @@
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                ${village['avgPrice']}元/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
                 </#if>
             </p>
         </div>
@@ -342,9 +342,9 @@
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
-                        <#if plotImage[0]?exists><img src="${qiniuimage}/${plotImage[0]}" alt="">
+                        <#if plotImage[0]?exists><img src="${qiniuimage}/${plotImage[0]}-tt400x300" alt="${plotInfo.rc}">
                         <#else >
-                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="${plotInfo.rc}">
                         </#if >
                     </#if>
                 </div>

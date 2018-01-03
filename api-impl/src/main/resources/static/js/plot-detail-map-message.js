@@ -14,8 +14,8 @@ $(function () {
                 var array = response.results;
                 array.sort(function(a,b){
                     return a.detail_info.distance-b.detail_info.distance;
-                })
-                var arr = array.slice(0,5)
+                });
+                var arr = array.slice(0,5);
                 $('.map-message-btn').find('li.parent-child').addClass('current');
                 renderDom(arr, '教育培训');
             }
@@ -33,8 +33,8 @@ $(function () {
                 var array = response.results;
                 array.sort(function(a,b){
                     return a.detail_info.distance-b.detail_info.distance;
-                })
-                var arr = array.slice(0,5)
+                });
+                var arr = array.slice(0,5);
                 $('.map-message-btn').find('li.vegetable-market').addClass('current');
                 renderDom(arr, '休闲购物');
             }
@@ -52,8 +52,8 @@ $(function () {
                 var array = response.results;
                 array.sort(function(a,b){
                     return a.detail_info.distance-b.detail_info.distance;
-                })
-                var arr = array.slice(0,5)
+                });
+                var arr = array.slice(0,5);
                 renderDom(arr, '医疗配套');
             }
         },
@@ -71,8 +71,8 @@ $(function () {
                     var array = response.results;
                     array.sort(function(a,b){
                         return a.detail_info.distance-b.detail_info.distance;
-                    })
-                    var arr = array.slice(0,5)
+                    });
+                    var arr = array.slice(0,5);
                     var lineNumber = (arr[0].address).split(';').length;
                     $('#busStation').text(arr[0].name);
                     $('#busStationNumber').text(lineNumber + '条线路')
@@ -93,8 +93,8 @@ $(function () {
                     var array = response.results;
                     array.sort(function(a,b){
                         return a.detail_info.distance-b.detail_info.distance;
-                    })
-                    var arr = array.slice(0,5)
+                    });
+                    var arr = array.slice(0,5);
                     // console.log(array)
                     var subwayLine = (arr[0].address).split(';')[0].substring(2);
                     var subwayDistance = (((arr[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';
@@ -129,8 +129,8 @@ $('.map-message-btn').on('click', 'li', function () {
                 var array = response.results;
                 array.sort(function(a,b){
                     return a.detail_info.distance-b.detail_info.distance;
-                })
-                var arr = array.slice(0,5)
+                });
+                var arr = array.slice(0,5);
                 renderDom(arr, parentText);
             }
         },

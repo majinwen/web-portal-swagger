@@ -6,10 +6,8 @@ import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *

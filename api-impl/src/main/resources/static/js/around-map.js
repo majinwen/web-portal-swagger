@@ -90,7 +90,7 @@ var Map = {
             self.circle = null;
         } else {
             if (self.circle == null) {
-                self.circle = new BMap.Circle(self.defaultcenterdpoint, 1500, {
+                self.circle = new BMap.Circle(self.defaultcenterdpoint, 3000, {
                     fillColor: '',
                     strokeWeight: 0.1,
                     fillOpacity: 0,
@@ -103,7 +103,7 @@ var Map = {
             } else {
                 self.local = new BMap.LocalSearch(map);
             }
-            self.local.searchNearby(word, self.circle.getCenter(), 1500, {});
+            self.local.searchNearby(word, self.circle.getCenter(), 3000, {});
             self.local.setSearchCompleteCallback(function (results) {
                 var s = [];
                 for (var i = 0; i < results.getCurrentNumPois(); i++) {
