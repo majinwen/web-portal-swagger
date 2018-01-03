@@ -136,7 +136,7 @@ public class PlotServiceImpl implements PlotService {
                         .setAnalyzer("ik_smart")//指定分词器3`3
                         .execute().actionGet();//执行
                 List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-                for (AnalyzeResponse.AnalyzeToken analyzeToken :tokens) {
+                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
                     queryBuilder = QueryBuilders.boolQuery()
                             .should(QueryBuilders.fuzzyQuery("rc", analyzeToken.getTerm()))
                             .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
@@ -198,13 +198,13 @@ public class PlotServiceImpl implements PlotService {
             //列表页均价搜索
             String beginPrice = villageRequest.getBeginPrice();
             String endPrice = villageRequest.getEndPrice();
-            if (beginPrice != null && beginPrice.length() != 0 &&!beginPrice.equals("undefined")&&!endPrice.equals("undefined")&& endPrice != null && endPrice.length() != 0) {
+            if (beginPrice != null && beginPrice.length() != 0 && !beginPrice.equals("undefined") && !endPrice.equals("undefined") && endPrice != null && endPrice.length() != 0) {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(Double.valueOf(beginPrice)).lte(Double.valueOf(endPrice)));
             }
 
             //面积
             if (StringUtil.isNotNullString(villageRequest.getHouseAreaSize())) {
-                String area = villageRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String area = villageRequest.getHouseAreaSize().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",");
                 String[] houseAreaSize = area.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 for (int i = 0; i < houseAreaSize.length; i = i + 2) {
@@ -218,17 +218,17 @@ public class PlotServiceImpl implements PlotService {
             }
             //楼龄
             if (StringUtil.isNotNullString(villageRequest.getAge())) {
-                String age = villageRequest.getAge().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+                String age = villageRequest.getAge().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",");
                 String[] Age = age.split(",");
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 //                for (int i = 0; i < Age.length; i = i + 2) {
 //                    if (i + 1 > Age.length) {
 //                        break;
 //                    }
-                    BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
-                            .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(Age[1]))))
-                            .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(Age[0])))));
-                    queryBuilder = boolQueryBuilder.must(Age1);
+                BoolQueryBuilder Age1 = booleanQueryBuilder.must(QueryBuilders.rangeQuery("age")
+                        .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(Age[1]))))
+                        .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(Age[0])))));
+                queryBuilder = boolQueryBuilder.must(Age1);
 //                }
             }
 
@@ -269,16 +269,6 @@ public class PlotServiceImpl implements PlotService {
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
 
-            //小区默认排序
-            //先发布后发布 级别从小到大  分数由大到小
-            srb.addSort("is_approve",SortOrder.DESC).addSort("level",SortOrder.ASC).addSort("plotScore",SortOrder.DESC);
-
-            //级别为1-4
-//            Integer level = villageRequest.getLevel();
-//            if (level != 0&&!level.equals("undefined")) {
-//                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("level").gt(0).lte(4));
-//            }
-
             //排序
             //均价
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
@@ -288,6 +278,15 @@ public class PlotServiceImpl implements PlotService {
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("1")) {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
+            //小区默认排序
+            //先发布后发布 级别从小到大  分数由大到小
+            srb.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+
+            //级别为1-4
+//            Integer level = villageRequest.getLevel();
+//            if (level != 0&&!level.equals("undefined")) {
+//                queryBuilder = boolQueryBuilder.must(QueryBuilders.rangeQuery("level").gt(0).lte(4));
+//            }
 
             //分页
             // 每页大小
@@ -312,23 +311,23 @@ public class PlotServiceImpl implements PlotService {
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
                     instance.setKey(key);
-                    if ("商电".equals(instance.getElectricSupply())){
+                    if ("商电".equals(instance.getElectricSupply())) {
                         instance.setElectricFee("1.33");
-                    }else {
+                    } else {
                         instance.setElectricFee("0.48");
                     }
-                    if ("商水".equals(instance.getWaterSupply())){
+                    if ("商水".equals(instance.getWaterSupply())) {
                         instance.setWaterFee("6");
-                    }else {
+                    } else {
                         instance.setWaterFee("5");
                     }
-                    if ("0".equals(instance.getHeatingMode())){
+                    if ("0".equals(instance.getHeatingMode())) {
                         instance.setHeatingMode("未知");
                     }
-                    if ("1".equals(instance.getHeatingMode())){
+                    if ("1".equals(instance.getHeatingMode())) {
                         instance.setHeatingMode("集中供暖");
                     }
-                    if ("2".equals(instance.getHeatingMode())){
+                    if ("2".equals(instance.getHeatingMode())) {
                         instance.setHeatingMode("自供暖");
                     }
 

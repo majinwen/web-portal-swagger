@@ -4,6 +4,8 @@ import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IntelligenceFhResMapper extends BaseDao {
     int deleteByPrimaryKey(Integer id);
@@ -19,4 +21,8 @@ public interface IntelligenceFhResMapper extends BaseDao {
     int updateByPrimaryKey(IntelligenceFhRes record);
 
     IntelligenceFhRes selectByUserPhone(String userPhone);
+
+    void saveData(IntelligenceFhRes intelligenceFhRes);
+
+    List<IntelligenceFhRes> selectById(Integer id);
 }

@@ -23,6 +23,12 @@
     from intelligence_fh_res
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from intelligence_fh_res
+    where id = #{id,jdbcType=INTEGER}
+  </select>
   <!--IntelligenceFhRes selectByUserPhone(String userPhone);-->
   <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
@@ -44,6 +50,75 @@
       #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
       #{hasOldman,jdbcType=INTEGER})
   </insert>
+
+  <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+    insert into intelligence_fh_res
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="fhResult != null" >
+        fh_result,
+      </if>
+      <if test="downPayment != null" >
+        down_payment,
+      </if>
+      <if test="monthPayment != null" >
+        month_payment,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="layout != null" >
+        layout,
+      </if>
+      <if test="hasChild != null" >
+        has_child,
+      </if>
+      <if test="hasOldman != null" >
+        has_oldman,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fhResult != null" >
+        '${fhResult}',
+      </if>
+      <if test="downPayment != null" >
+        #{downPayment,jdbcType=INTEGER},
+      </if>
+      <if test="monthPayment != null" >
+        #{monthPayment,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=INTEGER},
+      </if>
+      <if test="layout != null" >
+        #{layout,jdbcType=INTEGER},
+      </if>
+      <if test="hasChild != null" >
+        #{hasChild,jdbcType=INTEGER},
+      </if>
+      <if test="hasOldman != null" >
+        #{hasOldman,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
     insert into intelligence_fh_res
     <trim prefix="(" suffix=")" suffixOverrides="," >

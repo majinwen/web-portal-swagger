@@ -279,4 +279,19 @@ public class IntelligenceFindHouseController {
     }
 
 
+    //测试
+    /**
+     *  
+     * 功能描述：根据id查询报告页数据
+     * @author zengqingzhou
+     * @date 2018/1/3 17:45
+     * @param 
+     * @return 
+     */
+    @RequestMapping("/fandData")
+    @ResponseBody
+    public void find(){
+        List<IntelligenceFhRes> intelligenceFhRes = intelligenceFhResService.queryResById(1);
+        System.out.println(intelligenceFhRes);
+    }
 }
