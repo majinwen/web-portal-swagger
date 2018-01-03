@@ -157,8 +157,8 @@
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#if map['building_imgs']?exists>
-                            <#assign imgt = map['building_imgs']?split(",")>
+                        <#if map['building_title_img']?exists>
+                            <#assign imgt = map['building_title_img']?split(",")>
                             <#if imgt[0]?? && imgt[0] != ''>
                                 <img src="${qiniuimage}/${imgt[0]}-tt400x300" alt="${map['building_name']}">
                             <#else>
