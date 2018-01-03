@@ -2,10 +2,11 @@ package com.toutiao.web.service.intelligence.impl;
 
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper;
-import com.toutiao.web.dao.mapper.officeweb.IntelligenceFindhouseMapper;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
@@ -27,6 +28,23 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
         IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectByUserPhone(usePhone);
 
         return intelligenceFhRes;
+    }
+
+    /**
+     *  
+     * 功能描述：根据id查询生成的报告结果
+     * @author zengqingzhou
+     * @date 2018/1/3 16:02
+     * @param
+     * @return
+     */
+    @Override
+    public List<IntelligenceFhRes> queryResById(Integer id) {
+        List<IntelligenceFhRes> intelligenceFhRes = intelligenceFhResMapper.selectById(id);
+        if (null!=intelligenceFhRes){
+            return intelligenceFhRes;
+        }
+        return null;
     }
 
 }
