@@ -86,20 +86,32 @@
                 </div>
                 <ul class="list-item">
                     <li class="current">
-                        <div class="trangle-animate"></div>
-                        <p>预算</p>
+                        <div class="animate-box">
+                            <div class="trangle-animate"></div>
+                            <p>预算</p>
+                        </div>
+                        <div class="result-animate"></div>
                     </li>
                     <li>
-                        <div class="trangle-animate"></div>
-                        <p>户型</p>
+                        <div class="animate-box">
+                            <div class="trangle-animate"></div>
+                            <p>户型</p>
+                        </div>
+                        <div class="result-animate"></div>
                     </li>
                     <li>
-                        <div class="trangle-animate"></div>
-                        <p>区域</p>
+                        <div class="animate-box">
+                            <div class="trangle-animate"></div>
+                            <p>区域</p>
+                        </div>
+                        <div class="result-animate"></div>
                     </li>
                     <li>
-                        <div class="trangle-animate"></div>
-                        <p>家庭</p>
+                        <div class="animate-box">
+                            <div class="trangle-animate"></div>
+                            <p>家庭</p>
+                        </div>
+                        <div class="result-animate"></div>
                     </li>
                 </ul>
                 <div class="layer layer1 none">
@@ -218,7 +230,7 @@
                             <li class="disabled" data-value="106035">天津</li>
                         </ul>
                         <div class="layer-footer">
-                            <button type="button" class="button" id="submitArea">确定</button>
+                            <button type="button" class="button disabled" id="submitArea">确定</button>
                         </div>
                     </div>
                 </div>
@@ -232,8 +244,8 @@
                                 <label>孩子</label>
                                 <ul class="content-list" id="hasChild">
                                     <li class="current" data-child="0"><span>无</span></li>
-                                    <li data-child="1"><span>0-3岁</span></li>
-                                    <li data-child="2"><span>4-10岁</span></li>
+                                    <li data-child="KG"><span>0-3岁</span></li>
+                                    <li data-child="L"><span>4-10岁</span></li>
                                 </ul>
                             </div>
                             <div class="old-man-box">
@@ -271,7 +283,7 @@
         </div>
     </div>
 </div>
-<script src="/static/js/URI.min.js"></script>
-<script src="${staticurl}/js/intelligent-find.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/intelligent-choose.js"></script>
 </body>
 </html>
