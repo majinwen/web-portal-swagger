@@ -161,7 +161,7 @@ $borderRadiusColor: #999;
             li {
                 position: relative;
                 padding-left: rem(30);
-                @include font-dpr(30);
+                @include font-dpr(28);
                 line-height: rem(92);
                 border-bottom: 1px solid $baseBorderColor;
 

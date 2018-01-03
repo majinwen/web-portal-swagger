@@ -152,7 +152,7 @@ hr {
   .house-labelling.normal span, .house-labelling.gray span {
     padding-left: 0.2666666667rem;
     padding-right: 0.2666666667rem;
-    margin-right: 0.08rem; }
+    margin-right: 0.0266666667rem; }
   .house-labelling.middle span {
     padding-left: 0.16rem;
     padding-right: 0.16rem; }
@@ -472,7 +472,6 @@ hr {
         margin-top: 0.2rem; }
 .page3 .page-content .list-item li {
   position: relative;
-  width: 1.6266666667rem;
   height: 1.6266666667rem;
   line-height: 1.6266666667rem;
   margin: 1.4133333333rem auto;
@@ -486,72 +485,79 @@ hr {
     font-size: 36px; }
   [data-dpr="3"] .page3 .page-content .list-item li {
     font-size: 54px; }
-  .page3 .page-content .list-item li:before {
-    content: '';
-    position: absolute;
-    top: -1.4133333333rem;
-    left: 50%;
-    width: 0.24rem;
-    height: 1.4133333333rem;
-    background-image: url("/static/images/intelligent/znzf_line.png");
-    background-repeat: no-repeat;
-    -webkit-background-size: contain;
-    background-size: contain; }
-    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-      .page3 .page-content .list-item li:before {
-        background-image: url("/static/images/intelligent/znzf_line@2x.png"); } }
-    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-      .page3 .page-content .list-item li:before {
-        background-image: url("/static/images/intelligent/znzf_line@3x.png"); } }
-  .page3 .page-content .list-item li p {
+  .page3 .page-content .list-item li .animate-box {
     position: relative;
-    background-image: url("/static/images/intelligent/list_item_big.png");
-    background-repeat: no-repeat;
-    -webkit-background-size: contain;
-    background-size: contain; }
-    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-      .page3 .page-content .list-item li p {
-        background-image: url("/static/images/intelligent/list_item_big@2x.png"); } }
-    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-      .page3 .page-content .list-item li p {
-        background-image: url("/static/images/intelligent/list_item_big@3x.png"); } }
-    .page3 .page-content .list-item li p:before, .page3 .page-content .list-item li p:after {
+    display: inline-block;
+    width: 1.6266666667rem;
+    height: 1.6266666667rem; }
+    .page3 .page-content .list-item li .animate-box:before {
       content: '';
-      position: absolute; }
-    .page3 .page-content .list-item li p:before {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url("/static/images/intelligent/item_big_roud.png");
-      background-repeat: no-repeat;
-      -webkit-background-size: contain;
-      background-size: contain; }
-      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-        .page3 .page-content .list-item li p:before {
-          background-image: url("/static/images/intelligent/item_big_roud@2x.png"); } }
-      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-        .page3 .page-content .list-item li p:before {
-          background-image: url("/static/images/intelligent/item_big_roud@3x.png"); } }
-    .page3 .page-content .list-item li p:after {
-      top: 50%;
+      position: absolute;
+      top: -1.4133333333rem;
       left: 50%;
-      width: 1.44rem;
+      width: 0.24rem;
       height: 1.4133333333rem;
-      margin: -0.7066666667rem -0.72rem;
-      background-image: url("/static/images/intelligent/list_item_small.png");
+      background-image: url("/static/images/intelligent/znzf_line.png");
       background-repeat: no-repeat;
       -webkit-background-size: contain;
       background-size: contain; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-        .page3 .page-content .list-item li p:after {
-          background-image: url("/static/images/intelligent/list_item_small@2x.png"); } }
+        .page3 .page-content .list-item li .animate-box:before {
+          background-image: url("/static/images/intelligent/znzf_line@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-        .page3 .page-content .list-item li p:after {
-          background-image: url("/static/images/intelligent/list_item_small@3x.png"); } }
+        .page3 .page-content .list-item li .animate-box:before {
+          background-image: url("/static/images/intelligent/znzf_line@3x.png"); } }
+    .page3 .page-content .list-item li .animate-box p {
+      position: relative;
+      width: 1.6266666667rem;
+      height: 1.6266666667rem;
+      background-image: url("/static/images/intelligent/list_item_big.png");
+      background-repeat: no-repeat;
+      -webkit-background-size: contain;
+      background-size: contain; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .page3 .page-content .list-item li .animate-box p {
+          background-image: url("/static/images/intelligent/list_item_big@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .page3 .page-content .list-item li .animate-box p {
+          background-image: url("/static/images/intelligent/list_item_big@3x.png"); } }
+      .page3 .page-content .list-item li .animate-box p:before, .page3 .page-content .list-item li .animate-box p:after {
+        content: '';
+        position: absolute; }
+      .page3 .page-content .list-item li .animate-box p:before {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("/static/images/intelligent/item_big_roud.png");
+        background-repeat: no-repeat;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .page3 .page-content .list-item li .animate-box p:before {
+            background-image: url("/static/images/intelligent/item_big_roud@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .page3 .page-content .list-item li .animate-box p:before {
+            background-image: url("/static/images/intelligent/item_big_roud@3x.png"); } }
+      .page3 .page-content .list-item li .animate-box p:after {
+        top: 50%;
+        left: 50%;
+        width: 1.44rem;
+        height: 1.4133333333rem;
+        margin: -0.7066666667rem -0.72rem;
+        background-image: url("/static/images/intelligent/list_item_small.png");
+        background-repeat: no-repeat;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .page3 .page-content .list-item li .animate-box p:after {
+            background-image: url("/static/images/intelligent/list_item_small@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .page3 .page-content .list-item li .animate-box p:after {
+            background-image: url("/static/images/intelligent/list_item_small@3x.png"); } }
   .page3 .page-content .list-item li.choose-end, .page3 .page-content .list-item li.current {
     opacity: 1; }
-    .page3 .page-content .list-item li.choose-end:before, .page3 .page-content .list-item li.current:before {
+    .page3 .page-content .list-item li.choose-end .animate-box:before, .page3 .page-content .list-item li.current .animate-box:before {
       content: none; }
   .page3 .page-content .list-item li.current .trangle-animate {
     position: absolute;
@@ -590,12 +596,58 @@ hr {
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .page3 .page-content .list-item li.current .trangle-animate:after {
           background-image: url("/static/images/intelligent/znzf_icon_right@3x.png"); } }
-  .page3 .page-content .list-item li.current p:before {
+  .page3 .page-content .list-item li.current .animate-box p:before {
     -webkit-animation: roundRight 4s infinite;
     animation: roundRight 4s infinite; }
-  .page3 .page-content .list-item li.current p:after {
+  .page3 .page-content .list-item li.current .animate-box p:after {
     -webkit-animation: roundLeft 4s infinite;
     animation: roundLeft 4s infinite; }
+  .page3 .page-content .list-item li .result-animate {
+    position: relative;
+    top: 0.2rem;
+    display: inline-block;
+    width: 0;
+    height: 1.2rem;
+    margin-left: -0.2rem;
+    vertical-align: top;
+    background-image: url("/static/images/intelligent/result-text-line-bg.png");
+    background-repeat: no-repeat;
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+    background-position: bottom left; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      .page3 .page-content .list-item li .result-animate {
+        background-image: url("/static/images/intelligent/result-text-line-bg@2x.png"); } }
+    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+      .page3 .page-content .list-item li .result-animate {
+        background-image: url("/static/images/intelligent/result-text-line-bg@3x.png"); } }
+    .page3 .page-content .list-item li .result-animate p {
+      position: absolute;
+      left: 0;
+      bottom: 0.1066666667rem;
+      width: 100%;
+      line-height: 1;
+      text-align: center; }
+      .page3 .page-content .list-item li .result-animate p span {
+        display: block;
+        margin-bottom: 0.16rem;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #e42929; }
+        [data-dpr="1"] .page3 .page-content .list-item li .result-animate p span {
+          font-size: 12px; }
+        [data-dpr="2"] .page3 .page-content .list-item li .result-animate p span {
+          font-size: 24px; }
+        [data-dpr="3"] .page3 .page-content .list-item li .result-animate p span {
+          font-size: 36px; }
+        .page3 .page-content .list-item li .result-animate p span em {
+          display: inline-block;
+          text-align: left;
+          min-width: 1.2rem; }
+  .page3 .page-content .list-item li.choose-end .result-animate {
+    -webkit-transition: width 1s;
+    transition: width 1s;
+    width: 3.9466666667rem; }
 @keyframes lineLeft {
   0% {
     left: -0.5333333333rem; }
@@ -949,6 +1001,8 @@ hr {
         width: 6.6666666667rem;
         height: 0.9333333333rem;
         line-height: 0.9333333333rem; }
+        .page3 .page-content .layer .layer-content .layer-footer button.disabled {
+          background-color: #c5c5c5; }
 .page3 .page-content .start-btn {
   position: absolute;
   left: 50%;
