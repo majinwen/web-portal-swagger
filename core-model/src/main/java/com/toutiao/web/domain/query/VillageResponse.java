@@ -29,7 +29,8 @@ public class VillageResponse {
     private Integer sumPrice;  //总价
     private String abbreviatedAge;  //建成年代
     private Integer age;  //楼龄
-    private String areaSize;  //面积
+    private String areaSize;  //占地面积
+    private String buildingAreaSize;  //建筑面积
     private String sumBuilding;  //总栋数
     private String sumHousehold;  //总户数
     private Double avgGreening;  //户均绿化率
@@ -68,6 +69,7 @@ public class VillageResponse {
     private Integer ringRoadDistance;  //详情环线距离
     private Double tongbi;  //同比
     private Double huanbi;  //环比
+
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数
 //    private String[] mainpushhouse;  //主推房源
