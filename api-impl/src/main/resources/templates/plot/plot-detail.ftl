@@ -9,6 +9,10 @@
     <title>小区详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
+    <script>
+        var locationnumber = '${village['location']}';
+        var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
+    </script>
 <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -479,10 +483,6 @@
         </ul>
     </section>
 </div>
-<script>
-    var locationnumber = '${village['location']}';
-    var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
-</script>
 <section>
     <div class="module-header-message">
         <h3>新房推荐</h3>
