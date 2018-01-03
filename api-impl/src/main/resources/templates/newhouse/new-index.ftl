@@ -150,8 +150,8 @@
         <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <#if map['building_imgs']?exists>
-                    <#assign item = map['building_imgs']?split(",")>
+                    <#if map['building_title_img']?exists>
+                    <#assign item = map['building_title_img']?split(",")>
                     <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
                         <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
                     </#if>
@@ -175,7 +175,7 @@
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        <#if map['house_min_area']??&&map['house_max_area']??>/ ${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/ ${map['house_min_area']}㎡-${map['house_max_area']}㎡</#if>
                         </p>
                     <div class="cont-block-4 house-labelling gray middle">
                         <#if map['building_tags']?exists>

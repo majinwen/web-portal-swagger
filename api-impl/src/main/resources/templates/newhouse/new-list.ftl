@@ -246,7 +246,7 @@
     <div class="clear">
         <div class="list-item-img-box">
             {{if ($value.building_imgs) != ''}}
-                <img src="${qiniuimage}/{{$value.building_imgs}}-tt400x300" alt="{{$value.building_name}}">
+                <img src="${qiniuimage}/{{$value.building_title_img}}-tt400x300" alt="{{$value.building_name}}">
             {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.building_name}}">
             {{/if}}

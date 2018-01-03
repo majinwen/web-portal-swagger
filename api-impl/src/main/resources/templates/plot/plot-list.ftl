@@ -180,12 +180,11 @@
                                     </p>
                                 <#else>
                                     <p class="cont-block-3 distance"><i class="icon"></i>
-                                        ${plot['area']!''}
                                         <#if plot['area']?exists&&plot['area']!=''>
-                                        ${'-'+plot['tradingArea']!''}
+                                        ${plot['area']}${'-'+plot['tradingArea']}
                                         <#else>
                                             <#if plot['tradingArea']?exists&&plot['tradingArea']!=''>
-                                            ${plot['tradingArea']!''}
+                                            ${plot['tradingArea']}
                                             </#if>
                                         </#if>
                                     </p>

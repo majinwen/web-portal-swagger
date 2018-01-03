@@ -167,7 +167,7 @@
                         <em>
                         ${houseDetail.plotName}
                             <#if houseDetail.area?exists&&houseDetail.area!=''&&houseDetail.houseBusinessName?exists&&houseDetail.houseBusinessName!=''>
-                                [${houseDetail.area} - ${houseDetail.houseBusinessName}]
+                                [${houseDetail.area}-${houseDetail.houseBusinessName}]
                             <#else >
                                 <#if houseDetail.area?exists&&houseDetail.area!=''>
                                     [${houseDetail.area}]

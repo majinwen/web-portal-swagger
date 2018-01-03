@@ -437,6 +437,7 @@
         var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
     </script>
 </section>
+</#if>
 <#if build['saletelphone']?exists>
     <div class="detail-contact-wrapper">
         <section class="detail-contact-box" id="detailContactState">
