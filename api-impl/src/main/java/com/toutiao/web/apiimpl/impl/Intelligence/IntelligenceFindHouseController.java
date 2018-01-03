@@ -135,10 +135,6 @@ public class IntelligenceFindHouseController {
         intelligenceQuery.setSchoolFlag(1);
         intelligenceQuery.setHospitalFlag(1);
         String preconcTotal = intelligenceQuery.getPreconcTotal();
-        plotTotalFirst = (Double.valueOf(preconcTotal) - (Double.valueOf(preconcTotal) * 0.1)) * 10000;
-        plotTotalEnd = (Double.valueOf(preconcTotal) + (Double.valueOf(preconcTotal) * 0.1)) * 10000;
-        intelligenceQuery.setMaxTotalPrice(plotTotalEnd);
-        intelligenceQuery.setMinTotalPrice(plotTotalFirst);
         intelligenceQuery.setHasChild(1);
         intelligenceQuery.setHasOldman(1);
         List<IntelligenceFindhouse> list = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
@@ -241,6 +237,8 @@ public class IntelligenceFindHouseController {
         BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
 
         //调用生成报告页展示数据接口
+
+
 
 
 
