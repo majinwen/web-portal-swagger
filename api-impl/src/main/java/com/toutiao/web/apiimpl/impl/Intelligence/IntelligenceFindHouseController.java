@@ -59,7 +59,8 @@ public class IntelligenceFindHouseController {
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
-        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        //String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        String usePhone="15601676403";
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
@@ -233,8 +234,8 @@ public class IntelligenceFindHouseController {
         //调用生成报告页展示数据接口
         //通过相关数据获取报告生成都数据 保存到相应的数据表中
 
-        Long timeMillis = System.currentTimeMillis();
-        intelligenceQuery.setCreateTime(String.valueOf(timeMillis));
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
+        intelligenceQuery.setCreateTime(date);
         Integer reportId = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         if (StringTool.isNotBlank(reportId)) {
             return NashResult.build(reportId);
@@ -256,8 +257,8 @@ public class IntelligenceFindHouseController {
             Map map = new HashMap();
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
             if (StringTool.isNotBlank(intelligenceFhRes)) {
-                String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
-                intelligenceFhRes.setCreateTime(date);
+                //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
+                //intelligenceFhRes.setCreateTime(date);
                 Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                 Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                 model.addAttribute("fhpt", fhpt);
