@@ -156,14 +156,19 @@
         newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
         heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property,has_subway
     </sql>
-    <select id="queryByStarProperty"
-            resultMap="BaseResultMap"
-            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
-        select
-        <include refid="intelligenceFindHouse"/>
-        from intelligence_findhouse
+
+    <sql id="queryInfo">
         <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId}) AND star_property IS NOT NULL ]]>
+            1=1
+            <if test="minTotalPrice != null and maxTotalPrice!=null">
+                AND <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} ]]>
+            </if>
+            <if test="layOut != null">
+                AND <![CDATA[  layout_range @> '{${layOut}}' ]]>
+            </if>
+            <if test="districtId != null">
+                AND <![CDATA[   district_id IN (${districtId}) ]]>
+            </if>
             <if test="school != null">
                 AND <![CDATA[  school_type_array @> '{${school}}' ]]>
             </if>
@@ -171,6 +176,16 @@
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
         </where>
+    </sql>
+
+    <select id="queryByStarProperty"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryInfo"/>
+        AND star_property IS NOT NULL
         ORDER BY star_property DESC
         LIMIT 200
     </select>
@@ -180,15 +195,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId}) ]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         LIMIT 100
     </select>
     <select id="queryByUserType1B"
@@ -197,15 +204,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC
         LIMIT 100
     </select>
@@ -215,15 +214,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
         LIMIT 100
     </select>
@@ -233,15 +224,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
         LIMIT 100
     </select>
@@ -251,15 +234,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
         LIMIT 100
     </select>
@@ -269,15 +244,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
         LIMIT 100
     </select>
@@ -287,15 +254,7 @@
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        <where>
-            <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} AND layout_range @> '{${layOut}}' AND district_id IN (${districtId})]]>
-            <if test="school != null">
-                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
-            </if>
-            <if test="hospital != null">
-                AND <![CDATA[  has_medical = ${hospital} ]]>
-            </if>
-        </where>
+        <include refid="queryInfo"/>
         LIMIT 100
     </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
@@ -1319,7 +1278,7 @@
     </select>
     <!--DistictInfo queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);-->
     <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
-        select DISTINCT district_id  as districtId ,district_name as districtName from intelligence_findhouse
+        select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
         WHERE 1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
             and  <![CDATA[min_total_price<= #{plotTotalFirst} and max_total_price >= #{plotTotalEnd}]]>

@@ -1,15 +1,18 @@
 $(function () {
     $('#superContainer').fullpage({
         fitToSection: true,
+        resize: false,
         onLeave: function (index, nextIndex, direction) {
             if (nextIndex == 4 && direction == 'down') {
                 console.log(joinParams(options));
                 $.ajax({
                     type: "GET",
+                    async: true,
                     url: router_city('/findhouse/showUserPortrayal'),
                     data: options,
-                    success: function (data) {
-                        // console.log(data);
+                    success: function (dataInfo) {
+                         console.log(dataInfo.data);
+                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data);
                     }
                 })
             }
@@ -168,7 +171,6 @@ function chooseUserFinds() {
                     //将第七种画像附给当前用户userPortrayalType
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             });
@@ -194,7 +196,6 @@ function chooseUserFinds() {
                     //将第七种画像附给当前用户userPortrayalType
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             });
@@ -286,7 +287,6 @@ function chooseUserFinds() {
                     if (options['layOut'] == 1) {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             })
@@ -335,9 +335,8 @@ function chooseUserFinds() {
         options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
 
         var familyHtml = '<p><span>孩子：<em>'+ $('#hasChild').find('li.current').find('span').text() +'</em></span>' +
-                         '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
+            '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
         $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
-        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
     });
 }
 

@@ -235,4 +235,9 @@
       has_oldman = #{hasOldman,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--queryUserReport-->
+  <select id="">
+    select * from
+  </select>
+
 </mapper>

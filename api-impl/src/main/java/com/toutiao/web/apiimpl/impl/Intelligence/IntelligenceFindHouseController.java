@@ -55,7 +55,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/26 13:57
      */
-    @RequestMapping("/queryMyReport")
+    /*@RequestMapping("/queryMyReport")
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
@@ -72,7 +72,7 @@ public class IntelligenceFindHouseController {
         }
         //跳转到报告页
         return "";
-    }
+    }*/
 
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
@@ -124,7 +124,7 @@ public class IntelligenceFindHouseController {
      * @param intelligenceQuery
      * @return
      */
-    @RequestMapping("/intelligenceFindHouseByType")
+    /*@RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
     public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery,Model model) {
         Double plotTotalFirst = null;
@@ -142,7 +142,7 @@ public class IntelligenceFindHouseController {
         Integer AIID = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         model.addAttribute("AIId",AIID);
         return "intelligent-report";
-    }
+    }*/
 
     /**
      * 功能描述：根据户型和总价查询小区数量
@@ -157,7 +157,7 @@ public class IntelligenceFindHouseController {
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
         //根据户型与总价条件赛选条件
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
-        if(StringTool.isNotBlank(intelligenceFh)){
+        if (StringTool.isNotBlank(intelligenceFh)) {
             intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
         }
         return NashResult.build(intelligenceFh);
@@ -233,23 +233,44 @@ public class IntelligenceFindHouseController {
      * @param model
      */
     @RequestMapping("/showUserPortrayal")
-    public String showUserPortrayal(Model model,IntelligenceQuery intelligenceQuery) {
-
-        IntelligenceFh intelligenceFh=new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-
+    @ResponseBody
+    public NashResult showUserPortrayal(Model model, IntelligenceQuery intelligenceQuery) {
         //调用生成报告页展示数据接口
+        //通过相关数据获取报告生成都数据 保存到相应的数据表中
+        Integer reportId = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        if (StringTool.isNotBlank(reportId)) {
+            return NashResult.build(reportId);
+        }
+        return NashResult.build(0);
+    }
 
-
-
-
-
+    /**
+     * 功能描述：打开报告页数据信息
+     *
+     * @return java.lang.String
+     * @author
+     * @date 2018/1/4 11:39
+     */
+    @RequestMapping("/showMyReport/{reportId}")
+    public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
+        if (StringTool.isNotBlank(reportId)) {
+            //查询用户是否有报告数据
+            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(reportId);
+            if (StringTool.isNotBlank(userReport)) {
+                model.addAttribute("userReport", userReport);
+            }
+            model.addAttribute("message", "没有报告记录！");
+        } else {
+            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+        }
 
         return "intelligent-report";
     }
 
+
     /**
      * 报告页价格趋势
+     *
      * @param intelligenceQuery
      * @return
      */
@@ -259,12 +280,13 @@ public class IntelligenceFindHouseController {
 
         Integer totalPrice = 500;
 //        Integer totalPrice = intelligenceQuery.getPreconcTotal();
-        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
         return NashResult.build(fhpt);
     }
 
     /**
      * 报告页供需趋势
+     *
      * @param intelligenceQuery
      * @return
      */
@@ -274,25 +296,26 @@ public class IntelligenceFindHouseController {
 
         Integer totalPrice = 500;
 //        Integer totalPrice = intelligenceQuery.getPreconcTotal();
-        Map<String,Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
+        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
         return NashResult.build(fhtp);
     }
 
 
     //测试
+
     /**
-     *  
      * 功能描述：根据id查询报告页数据
+     *
+     * @param
+     * @return
      * @author zengqingzhou
      * @date 2018/1/3 17:45
-     * @param 
-     * @return 
      */
     @RequestMapping("/fandData")
     @ResponseBody
-    public String find(Integer id ,Model model){
+    public String find(Integer id, Model model) {
         IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
-        model.addAttribute("intelligenceFhRes",intelligenceFhRes);
+        model.addAttribute("intelligenceFhRes", intelligenceFhRes);
         System.out.println(intelligenceFhRes);
         return null;
     }
