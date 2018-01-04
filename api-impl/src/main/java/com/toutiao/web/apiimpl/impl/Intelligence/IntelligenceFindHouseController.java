@@ -55,14 +55,15 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/26 13:57
      */
-    /*@RequestMapping("/queryMyReport")
+    @RequestMapping("/queryMyReport")
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
         String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        //String usePhone="15601676403";
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
-            IntelligenceFhRes userReport = intelligenceFhResService.queryUserReport(usePhone);
+            List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
             if (StringTool.isNotBlank(userReport)) {
                 model.addAttribute("userReport", userReport);
             }
@@ -71,8 +72,26 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
         }
         //跳转到报告页
-        return "";
-    }*/
+        return "myReport";
+    }
+
+    /**
+     *
+     * 功能描述：删除报告
+     * @author zhw
+     * @date 2018/1/4 20:06
+     * @return java.lang.String
+     */
+    @RequestMapping("/deleteMyReport/{reportId}/{phone}")
+    public String deleteMyReport(@PathVariable("reportId") String reportId,@PathVariable("phone")String phone,Model model){
+       int count=intelligenceFhResService.deleteMyReport(reportId,phone);
+       if(count!=0){
+            model.addAttribute("message","删除失败！");
+       }
+        return "redirect:/{citypath}/findhouse/queryMyReport";
+    }
+
+
 
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
@@ -100,8 +119,6 @@ public class IntelligenceFindHouseController {
     public NashResult xuanZeLeiXing(@RequestParam(value = "userType", required = true) String userType) {
         return NashResult.build(userType);
     }
-
-
     /**
      * 功能描述：异步根据价钱获取小区数量与相应的比率
      *
@@ -216,8 +233,8 @@ public class IntelligenceFindHouseController {
         //调用生成报告页展示数据接口
         //通过相关数据获取报告生成都数据 保存到相应的数据表中
 
-        Long timeMillis = System.currentTimeMillis();
-        intelligenceQuery.setCreateTime(String.valueOf(timeMillis));
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
+        intelligenceQuery.setCreateTime(date);
         Integer reportId = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         if (StringTool.isNotBlank(reportId)) {
             return NashResult.build(reportId);
@@ -239,8 +256,8 @@ public class IntelligenceFindHouseController {
             Map map = new HashMap();
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
             if (StringTool.isNotBlank(intelligenceFhRes)) {
-                String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
-                intelligenceFhRes.setCreateTime(date);
+                //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
+                //intelligenceFhRes.setCreateTime(date);
                 Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                 Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                 model.addAttribute("fhpt", fhpt);
