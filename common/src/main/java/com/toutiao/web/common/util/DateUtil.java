@@ -1163,7 +1163,7 @@ public class DateUtil {
 		for (int i = 0; i < 12; i++){
 			int currentMonth=cal.get(Calendar.MONTH);
 			int currentYear=cal.get(Calendar.YEAR);
-			dateList.add(currentYear+"年"+(currentMonth+1)+"月");
+			dateList.add(currentYear+"-"+(currentMonth+1));
 			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
 		}
 		return  dateList;
