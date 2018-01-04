@@ -63,7 +63,7 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
             result.put("maxTarget",max);
 
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             for(IntelligenceFhPricetrend intelligenceFhPricetrend : lists){
                 IntelligenceFhPtDo intelligenceFhPtDo = new IntelligenceFhPtDo();
                 try {

@@ -52,7 +52,7 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
         Map<String,Object> result = new HashMap<>();
 
         List<IntelligenceFhTdDo> intelligenceFhTdDos = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
         for(IntelligenceFhTd intelligenceFhTd : lists){
             IntelligenceFhTdDo intelligenceFhTdDo = new IntelligenceFhTdDo();
             try {
@@ -63,8 +63,6 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
                 e.printStackTrace();
             }
         }
-
-
         result.put("ratio",intelligenceFhTdRatio);
         result.put("trend",intelligenceFhTdDos);
         result.put("searchPrice",totalPrice);
