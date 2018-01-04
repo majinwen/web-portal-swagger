@@ -14,6 +14,7 @@
     <result column="has_oldman" property="hasOldman" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
@@ -25,12 +26,13 @@
     from intelligence_fh_res
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <!--IntelligenceFhRes selectByUserPhone(String userPhone);-->
-  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!--List<IntelligenceFhRes> selectByUserPhone(String userPhone);-->
+  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
-    <include refid="Base_Column_List" />
+    <!--<include refid="Base_Column_List" />-->
+   id, phone,down_payment,month_payment,user_type,total_price,layout,has_child, has_oldman,create_time,user_portrait
     from intelligence_fh_res
-    where id = #{userPhone,jdbcType=INTEGER}
+    where phone = #{userPhone} and status=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from intelligence_fh_res
@@ -263,9 +265,12 @@
       user_portrait = #{userPortrait,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!--queryUserReport-->
+
   <select id="queryUserReport" parameterType="java.lang.String" resultType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes">
     select * from intelligence_fh_res where phone=#{usePhone}
   </select>
-
+  <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
+  <update id="deleteMyReport">
+    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone}
+  </update>
 </mapper>
