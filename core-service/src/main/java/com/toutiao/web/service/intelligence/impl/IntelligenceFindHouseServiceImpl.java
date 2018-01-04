@@ -348,10 +348,13 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 //                intelligenceFhResMapper.saveData(intelligenceFhRes);
 //            }
 //        }
-        String jsonString = JSONArray.toJSONString(finalList);
-        intelligenceFhRes.setFhResult(jsonString);
-        intelligenceFhResMapper.saveData(intelligenceFhRes);
-        return intelligenceFhRes.getId();
+        if (null!=finalList&&finalList.size()!=0){
+            String jsonString = JSONArray.toJSONString(finalList);
+            intelligenceFhRes.setFhResult(jsonString);
+            intelligenceFhResMapper.saveData(intelligenceFhRes);
+            return intelligenceFhRes.getId();
+        }
+        return null;
     }
 
     /**
