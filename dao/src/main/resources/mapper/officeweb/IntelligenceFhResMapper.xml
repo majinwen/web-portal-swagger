@@ -51,7 +51,10 @@
       #{hasOldman,jdbcType=INTEGER})
   </insert>
 
-  <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
+  <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" useGeneratedKeys="true" keyProperty="id">
+    <!--<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">-->
+      <!--SELECT currval('id') AS id-->
+    <!--</selectKey>-->
     insert into intelligence_fh_res
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

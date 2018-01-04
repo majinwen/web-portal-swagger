@@ -18,7 +18,7 @@ public interface IntelligenceFindHouseService {
 
     IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
 
-    List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery);
+    Integer intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery);
 
     IntelligenceFh queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery);
 }

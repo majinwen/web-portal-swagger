@@ -8,6 +8,6 @@ public interface IntelligenceFhResService {
 
     IntelligenceFhRes queryUserReport(String usePhone);
 
-    List<IntelligenceFhRes> queryResById(Integer id);
+    IntelligenceFhRes queryResById(Integer id);
 
 }

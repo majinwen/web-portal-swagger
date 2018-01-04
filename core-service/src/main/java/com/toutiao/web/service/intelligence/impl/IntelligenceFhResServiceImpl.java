@@ -39,8 +39,8 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
      * @return
      */
     @Override
-    public List<IntelligenceFhRes> queryResById(Integer id) {
-        List<IntelligenceFhRes> intelligenceFhRes = intelligenceFhResMapper.selectById(id);
+    public IntelligenceFhRes queryResById(Integer id) {
+        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectById(id);
         if (null!=intelligenceFhRes){
             return intelligenceFhRes;
         }
