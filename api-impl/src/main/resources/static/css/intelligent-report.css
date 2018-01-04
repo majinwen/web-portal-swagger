@@ -472,7 +472,15 @@ hr {
           .page2 .page-content .module-item table tr td:nth-child(1) em {
             white-space: nowrap; }
   .page2 .page-content .echart-box {
-    height: 3.7333333333rem; }
+    width: 100%;
+    height: 3.7333333333rem;
+    margin: 0.6533333333rem 0 0.4rem;
+    background-color: #fbfbfb; }
+    .page2 .page-content .echart-box #priceChart, .page2 .page-content .echart-box #marketChart {
+      width: 100%;
+      height: 100%;
+      padding: 0.2666666667rem 0;
+      box-sizing: border-box; }
 
 .elastics-stack-box {
   padding-left: 0.4rem;
