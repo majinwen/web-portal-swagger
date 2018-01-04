@@ -2,6 +2,7 @@ package com.toutiao.web.service.intelligence.impl;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
@@ -272,7 +273,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     @Override
-    public List<IntelligenceFindhouse> intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
+    public Integer intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
 
         //初始化数据
         IntelligenceQuery intelligenceQuery = init(IntelligenceQuery);
@@ -284,37 +285,44 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1A(list);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1B(list, starPropertyList);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1C(list, starPropertyList);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2A(list, starPropertyList);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2B(list, starPropertyList);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2C(list, starPropertyList);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend3A(list);
-            save(intelligenceQuery, finalList);
+            Integer AIID = save(intelligenceQuery, finalList);
+            return AIID;
         }
         return null;
     }
@@ -327,19 +335,23 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @param
      * @return
      */
-    public void save(IntelligenceQuery intelligenceQuery,List<IntelligenceFindhouse> finalList){
+    public Integer save(IntelligenceQuery intelligenceQuery,List<IntelligenceFindhouse> finalList){
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
         BeanUtils.copyProperties(intelligenceFhResJson,intelligenceFhRes);
-        if (null!=finalList&&finalList.size()!=0){
-            for (IntelligenceFindhouse intelligence : finalList) {
-                String jsonStr = JSONObject.toJSONString(intelligence);
-                JSONObject fh_result = JSONObject.parseObject(jsonStr);
-                intelligenceFhRes.setFhResult(fh_result);
-                intelligenceFhResMapper.saveData(intelligenceFhRes);
-            }
-        }
+//        if (null!=finalList&&finalList.size()!=0){
+//            for (IntelligenceFindhouse intelligence : finalList) {
+//                String jsonStr = JSONObject.toJSONString(intelligence);
+//                JSONObject fh_result = JSONObject.parseObject(jsonStr);
+//                intelligenceFhRes.setFhResult(fh_result);
+//                intelligenceFhResMapper.saveData(intelligenceFhRes);
+//            }
+//        }
+        String jsonString = JSONArray.toJSONString(finalList);
+        intelligenceFhRes.setFhResult(jsonString);
+        intelligenceFhResMapper.saveData(intelligenceFhRes);
+        return intelligenceFhRes.getId();
     }
 
     /**
