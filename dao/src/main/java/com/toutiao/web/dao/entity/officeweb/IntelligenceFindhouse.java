@@ -753,5 +753,9 @@ public class IntelligenceFindhouse {
      * 明星楼盘搜索量
      */
     private Integer starProperty;
+    /**
+     * 附近的桥
+     */
+//    private String nearbyQiao;
 
 }

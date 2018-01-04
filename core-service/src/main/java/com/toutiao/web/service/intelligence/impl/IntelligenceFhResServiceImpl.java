@@ -23,9 +23,9 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
      * @date 2017/12/26 15:45
      */
     @Override
-    public IntelligenceFhRes queryUserReport(String usePhone) {
+    public List<IntelligenceFhRes> queryUserReport(String usePhone) {
 
-        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectByUserPhone(usePhone);
+        List<IntelligenceFhRes> intelligenceFhRes = intelligenceFhResMapper.selectByUserPhone(usePhone);
 
         return intelligenceFhRes;
     }
@@ -40,11 +40,18 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
      */
     @Override
     public IntelligenceFhRes queryResById(Integer id) {
-        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectById(id);
+        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectByPrimaryKey(id);
         if (null!=intelligenceFhRes){
             return intelligenceFhRes;
         }
         return null;
+    }
+
+    @Override
+    public Integer deleteMyReport(String reportId,String phone) {
+
+       int result= intelligenceFhResMapper.deleteMyReport(Integer.valueOf(reportId),phone);
+        return result;
     }
 
 }

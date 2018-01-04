@@ -77,7 +77,16 @@
     <section class="plot-primary-header">
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
-            <p>${'['+village['area']!''}<#if village['area']?exists&&village['area']!=''>${'-'+village['tradingArea']+']'}<#else><#if village['tradingArea']?exists&&village['tradingArea']!=''>${'['+village['tradingArea']+']'}</#if></#if>
+            <p><#if village['area']?exists&&village['area']!=''&&village['tradingArea']?exists&&village['tradingArea']!=''>
+                        ${'['+village['area']}${'-'+village['tradingArea']+']'}
+                <#else>
+                    <#if village['area']?exists&&village['area']!=''>
+                        ${'['+village['area']+']'}
+                    </#if>
+                    <#if village['tradingArea']?exists&&village['tradingArea']!=''>
+                        ${'['+village['tradingArea']+']'}
+                    </#if>
+                </#if>
             <#if village['address']?exists&&village['address']!=''>
             <#assign split = village['address']?split('-')>
             <#if split?size gt 1>${split[1]}<#else >
@@ -214,8 +223,8 @@
                     <div class="info-item-text">
                         <p>绿化率</p>
                     <#if village['avgGreening']?exists>
-                        <#if village['avgGreening']?number gt 0>
-                            <em>${village['avgGreening']/100}平方米</em>
+                        <#if village['avgGreening'] gt 0>
+                            <em>${village['avgGreening']?string('#.##')}%</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>
@@ -518,9 +527,11 @@
     option = {
         tooltip: {
             trigger: 'axis',
-            position: function (point, params, dom, rect, size) {
-                // 固定在顶部
-                return [point[0], '10%'];
+            position: function (pos, params, dom, rect, size) {
+                // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+                var obj = {top: 60};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+                return obj;
             },
            toolbox:{
                  feature:{
@@ -548,7 +559,7 @@
                 },
                 data: [<#list  mouthList as item >'${item}',</#list>],
                 axisLabel: {
-                    fontSize:26,
+                    fontSize:25,
                    // interval:0
                 }
             }
@@ -557,7 +568,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
-                fontSize:28
+                fontSize:21
             },
             scale:true
         },
@@ -599,7 +610,7 @@
                {
                    name:'${village['rc']!'小区'}价格',
                    type:'line',
-                   data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                   data:[<#list ptCD0 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                    symbolSize:10,
                    itemStyle:{
                        normal:{
@@ -613,7 +624,7 @@
             {
                 name:'${village['area']!'区域'}价格',
                 type:'line',
-                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                data:[<#list ptCD1 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                 symbolSize:10,
                 itemStyle:{
                     normal:{
@@ -626,7 +637,7 @@
             {
                 name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
-                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                data:[<#list ptCD2 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                 symbolSize:10,
                 itemStyle:{
                        normal:{

@@ -18,12 +18,12 @@
         </ul>
         <ul class="side-nav-item item-my">
             <#--<li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>-->
-            <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
+            <li><a href="${router_city('/findhouse/queryMyReport')}"><i class="icon-report"></i><span>我的报告</span></a></li>
             <li><a id="out_login" href="#"><i class="icon-exit"></i><span>注销</span></a></li>
         </ul>
     </div>
     <div class="side-house-intelligent">
-        <a href="#"><em>智能找房</em></a>
+        <a href="${router_city('/findhouse/')}"><em>懂房帝</em></a>
     </div>
 </section>
 <div class="scroll-mask"></div>

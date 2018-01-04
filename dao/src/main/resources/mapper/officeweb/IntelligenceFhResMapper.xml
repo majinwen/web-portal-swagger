@@ -12,10 +12,13 @@
     <result column="layout" property="layout" jdbcType="INTEGER" />
     <result column="has_child" property="hasChild" jdbcType="INTEGER" />
     <result column="has_oldman" property="hasOldman" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+    <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
-    has_child, has_oldman
+    has_child, has_oldman,create_time,user_portrait
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,18 +26,13 @@
     from intelligence_fh_res
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <!--List<IntelligenceFhRes> selectByUserPhone(String userPhone);-->
+  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
-    <include refid="Base_Column_List" />
+    <!--<include refid="Base_Column_List" />-->
+   id, phone,down_payment,month_payment,user_type,total_price,layout,has_child, has_oldman,create_time,user_portrait
     from intelligence_fh_res
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <!--IntelligenceFhRes selectByUserPhone(String userPhone);-->
-  <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from intelligence_fh_res
-    where id = #{userPhone,jdbcType=INTEGER}
+    where phone = #{userPhone} and status=0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from intelligence_fh_res
@@ -44,11 +42,11 @@
     insert into intelligence_fh_res (id, phone, fh_result, 
       down_payment, month_payment, user_type, 
       total_price, layout, has_child, 
-      has_oldman)
+      has_oldman,create_time,user_portrait)
     values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{fhResult,jdbcType=OTHER}, 
       #{downPayment,jdbcType=INTEGER}, #{monthPayment,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
       #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
-      #{hasOldman,jdbcType=INTEGER})
+      #{hasOldman,jdbcType=INTEGER},#{createTime},jdbcType=VARCHAR),#{userPortrait,jdbcType=INTEGER})
   </insert>
 
   <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" useGeneratedKeys="true" keyProperty="id">
@@ -87,6 +85,12 @@
       <if test="hasOldman != null" >
         has_oldman,
       </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="userPortrait != null" >
+        user_portrait,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -118,6 +122,12 @@
       </if>
       <if test="hasOldman != null" >
         #{hasOldman,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userPortrait != null" >
+        #{userPortrait,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -155,6 +165,12 @@
       <if test="hasOldman != null" >
         has_oldman,
       </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="userPortrait != null" >
+        user_portrait,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -186,6 +202,12 @@
       </if>
       <if test="hasOldman != null" >
         #{hasOldman,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userPortrait != null" >
+        #{userPortrait,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -219,6 +241,12 @@
       <if test="hasOldman != null" >
         has_oldman = #{hasOldman,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="userPortrait != null" >
+        user_portrait = #{userPortrait,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -232,7 +260,17 @@
       total_price = #{totalPrice,jdbcType=INTEGER},
       layout = #{layout,jdbcType=INTEGER},
       has_child = #{hasChild,jdbcType=INTEGER},
-      has_oldman = #{hasOldman,jdbcType=INTEGER}
+      has_oldman = #{hasOldman,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      user_portrait = #{userPortrait,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="queryUserReport" parameterType="java.lang.String" resultType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes">
+    select * from intelligence_fh_res where phone=#{usePhone}
+  </select>
+  <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
+  <update id="deleteMyReport">
+    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone}
   </update>
 </mapper>
