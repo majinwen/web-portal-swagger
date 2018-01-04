@@ -1,15 +1,18 @@
 $(function () {
     $('#superContainer').fullpage({
         fitToSection: true,
+        resize: false,
         onLeave: function (index, nextIndex, direction) {
             if (nextIndex == 4 && direction == 'down') {
                 console.log(joinParams(options));
                 $.ajax({
                     type: "GET",
+                    async: true,
                     url: router_city('/findhouse/showUserPortrayal'),
                     data: options,
-                    success: function (data) {
-                        // console.log(data);
+                    success: function (dataInfo) {
+                         console.log(dataInfo.data);
+                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data);
                     }
                 })
             }
@@ -164,11 +167,10 @@ function chooseUserFinds() {
                 success: function (data) {
                     $('#plot_Count').find('em').text(data.data.plotCount);
                     var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     //将第七种画像附给当前用户userPortrayalType
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             });
@@ -190,11 +192,10 @@ function chooseUserFinds() {
                 success: function (data) {
                     $("#plot_Count").find('em').html(data.data.plotCount);
                     var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     //将第七种画像附给当前用户userPortrayalType
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             });
@@ -224,7 +225,7 @@ function chooseUserFinds() {
             success: function (data) {
                 var ratio = new Number(data.data.ratio);
                 $('#plot_Count').find('em').text(data.data.plotCount);
-                $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                 if (data.data.distictInfo != null) {
                     $('#option_distict').find('li.disabled').each(function (i, orgin) {
                         $(data.data.distictInfo).each(function (index, item) {
@@ -234,6 +235,7 @@ function chooseUserFinds() {
                         });
                     });
                 }
+                options['userPortrayalType'] = data.data.userPortrayalType;
             }
         })
     });
@@ -282,11 +284,10 @@ function chooseUserFinds() {
                 success: function (data) {
                     var ratio = new Number(data.data.ratio);
                     $('#plot_Count').find('em').text(data.data.plotCount);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     if (options['layOut'] == 1) {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             })
@@ -335,9 +336,8 @@ function chooseUserFinds() {
         options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
 
         var familyHtml = '<p><span>孩子：<em>'+ $('#hasChild').find('li.current').find('span').text() +'</em></span>' +
-                         '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
+            '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
         $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
-        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
     });
 }
 

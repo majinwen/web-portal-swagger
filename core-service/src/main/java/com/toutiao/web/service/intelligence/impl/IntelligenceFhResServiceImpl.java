@@ -40,7 +40,7 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
      */
     @Override
     public IntelligenceFhRes queryResById(Integer id) {
-        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectById(id);
+        IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectByPrimaryKey(id);
         if (null!=intelligenceFhRes){
             return intelligenceFhRes;
         }

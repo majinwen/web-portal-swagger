@@ -68,28 +68,52 @@ public class IntelligenceQuery {
      */
     private Integer  schoolFlag=0;
 
-    //医疗配套标签标记
-
+    /**
+     * 医疗配套标签标记
+     */
     private Integer  hospitalFlag=0;
 
-    //是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
+    /**
+     * 是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）
+     */
     private Integer hasChild;
 
-    //是否有老人(0-无，1-有)
+    /**
+     * 是否有老人(0-无，1-有)
+     */
     private Integer hasOldman;
 
-    //测试
-    //最小值
+    /**
+     * 最小值
+     */
     private Double minTotalPrice;
 
-    //最大值
+    /**
+     * 最大值
+     */
     private Double maxTotalPrice;
 
-    //学校
+    /**
+     * 学校
+     */
     private String school;
 
-    //医院
+    /**
+     * 医院
+     */
     private String hospital;
+
+    /**
+     * 创建时间
+     */
+    private String createTime;
+
+    /**
+     * 用户画像
+     */
+    private Integer userPortrait;
+
+
 
 
 

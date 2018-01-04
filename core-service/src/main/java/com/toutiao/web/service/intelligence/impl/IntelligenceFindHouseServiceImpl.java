@@ -36,6 +36,7 @@ import org.springframework.ui.Model;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -328,12 +329,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     /**
-     *
      * 功能描述：保存结果
-     * @author zengqingzhou
-     * @date 2018/1/3 15:46
+     *
      * @param
      * @return
+     * @author zengqingzhou
+     * @date 2018/1/3 15:46
      */
     public Integer save(IntelligenceQuery intelligenceQuery,List<IntelligenceFindhouse> finalList){
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
@@ -348,11 +349,39 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 //                intelligenceFhResMapper.saveData(intelligenceFhRes);
 //            }
 //        }
-        String jsonString = JSONArray.toJSONString(finalList);
-        intelligenceFhRes.setFhResult(jsonString);
-        intelligenceFhResMapper.saveData(intelligenceFhRes);
-        return intelligenceFhRes.getId();
+        if (null != finalList && finalList.size()>0) {
+            for (IntelligenceFindhouse intelligence : finalList) {
+                if (null != intelligence.getPropertyfee()) {
+                    BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
+                    intelligence.setPropertyfee(bigDecimal);
+                }
+                if (null != intelligence.getCarRentPrice()) {
+                    BigDecimal bigDecimal = new BigDecimal(intelligence.getCarRentPrice().doubleValue() * 12);
+                    intelligence.setCarRentPrice(bigDecimal);
+                }
+                if (null != intelligence.getCarSellPrice()) {
+                    BigDecimal bigDecimal = new BigDecimal(intelligence.getCarSellPrice().doubleValue() * 12);
+                    intelligence.setCarSellPrice(bigDecimal);
+                }
+            }
+
+            String jsonString = JSONArray.toJSONString(finalList);
+            intelligenceFhRes.setFhResult(jsonString);
+            intelligenceFhResMapper.saveData(intelligenceFhRes);
+            return intelligenceFhRes.getId();
+        }
+        return null;
     }
+
+    /*public static void main(String[] args) {
+        long time = System.currentTimeMillis();
+        String nowTimeStamp = String.valueOf(time);
+        System.out.println(nowTimeStamp);
+        String formats = "yyyy-MM-dd HH:mm:ss";
+        Long timestamp = Long.parseLong(nowTimeStamp);
+        String date = new SimpleDateFormat(formats, Locale.CHINA).format(new Date(timestamp));
+        System.out.println(date);
+    }*/
 
     /**
      *
