@@ -69,12 +69,12 @@ public class IntelligenceFhResJson {
      * 创建时间
      */
     @JSONField(name = "createTime")
-    private Integer createTime;
+    private String createTime;
 
     /**
      * 用户画像
      */
-    @JSONField(name = "userPortrait")
+    @JSONField(name = "userPortrayalType")
     private Integer userPortrait;
 
 

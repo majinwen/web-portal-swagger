@@ -27,12 +27,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/{citypath}/findhouse")
@@ -217,6 +216,9 @@ public class IntelligenceFindHouseController {
     public NashResult showUserPortrayal(Model model, IntelligenceQuery intelligenceQuery) {
         //调用生成报告页展示数据接口
         //通过相关数据获取报告生成都数据 保存到相应的数据表中
+
+        Long timeMillis = System.currentTimeMillis();
+        intelligenceQuery.setCreateTime(String.valueOf(timeMillis));
         Integer reportId = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
         if (StringTool.isNotBlank(reportId)) {
             return NashResult.build(reportId);
@@ -238,6 +240,8 @@ public class IntelligenceFindHouseController {
             Map map = new HashMap();
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
             if (StringTool.isNotBlank(intelligenceFhRes)) {
+                String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
+                intelligenceFhRes.setCreateTime(date);
                 Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                 Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                 model.addAttribute("fhpt", fhpt);

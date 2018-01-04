@@ -12,7 +12,7 @@
     <result column="layout" property="layout" jdbcType="INTEGER" />
     <result column="has_child" property="hasChild" jdbcType="INTEGER" />
     <result column="has_oldman" property="hasOldman" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
@@ -44,7 +44,7 @@
     values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{fhResult,jdbcType=OTHER}, 
       #{downPayment,jdbcType=INTEGER}, #{monthPayment,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
       #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
-      #{hasOldman,jdbcType=INTEGER},#{createTime,jdbcType=INTEGER}),#{userPortrait,jdbcType=INTEGER})
+      #{hasOldman,jdbcType=INTEGER},#{createTime},jdbcType=VARCHAR),#{userPortrait,jdbcType=INTEGER})
   </insert>
 
   <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" useGeneratedKeys="true" keyProperty="id">
@@ -122,7 +122,7 @@
         #{hasOldman,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="userPortrait != null" >
         #{userPortrait,jdbcType=INTEGER},
@@ -202,7 +202,7 @@
         #{hasOldman,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="userPortrait != null" >
         #{userPortrait,jdbcType=INTEGER},
@@ -240,7 +240,7 @@
         has_oldman = #{hasOldman,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=VARCHAR},
       </if>
       <if test="userPortrait != null" >
         user_portrait = #{userPortrait,jdbcType=INTEGER},
@@ -259,7 +259,7 @@
       layout = #{layout,jdbcType=INTEGER},
       has_child = #{hasChild,jdbcType=INTEGER},
       has_oldman = #{hasOldman,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=VARCHAR},
       user_portrait = #{userPortrait,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -59,7 +59,7 @@ public class IntelligenceFhRes {
     /**
      * 创建时间
      */
-    private Integer createTime;
+    private String createTime;
 
     /**
      * 用户画像
