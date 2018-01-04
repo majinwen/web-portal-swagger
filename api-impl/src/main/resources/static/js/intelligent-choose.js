@@ -235,6 +235,7 @@ function chooseUserFinds() {
                         });
                     });
                 }
+                options['userPortrayalType'] = data.data.userPortrayalType;
             }
         })
     });
