@@ -46,17 +46,17 @@
                     <p>总价<em class="inte-color-red">1000万</em>左右的房源市场为您的目标市场</p>
                 </div>
                 <div class="echart-box">
-
+                    <div id="priceChart"></div>
                 </div>
 
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场 最高涨幅为<em class="inte-color-red">13%</em>，高于北京市场均价涨幅</p>
+                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget"></em>，<em id="priceMaxCompare"></em>于北京市场均价涨幅</p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场 最高跌幅为<em class="inte-color-red">7%</em>，低于北京市场均价跌幅</p>
+                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget"></em>，<em id="priceMinCompare"></em>于北京市场均价跌幅</p>
                     </li>
                 </ul>
             </div>
@@ -69,21 +69,21 @@
                     <p>总价<em class="inte-color-red">1000万</em>左右的房源市场为您的目标市场</p>
                 </div>
                 <div class="echart-box">
-
+                    <div id="marketChart"></div>
                 </div>
 
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em class="inte-color-red">9.1套</em>，为北京市场的<em class="inte-color-red">2.32%</em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red"></em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red"></em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em class="inte-color-red">2.1套</em>，为北京市场的<em class="inte-color-red">1.32%</em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red"></em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red"></em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em class="inte-color-red">3.4套</em>，为北京市场的<em class="inte-color-red">3.21%</em></p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red"></em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red"></em></p>
                     </li>
                 </ul>
             </div>
@@ -318,17 +318,13 @@
         </div>
     </div>
 </div>
+<script src="/static/js/URI.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
+<script src="/static/js/intelligent-chart.js"></script>
 <script>
     new  ElastiStack(document.getElementById('elastics-stack'));
-    $(function () {
-        $('#superContainer').fullpage({
-            fitToSection: true,
-            resize: false
-        });
-        $.fn.fullpage.setAllowScrolling(false, 'up');
-    })
+
 </script>
 </body>
 </html>
