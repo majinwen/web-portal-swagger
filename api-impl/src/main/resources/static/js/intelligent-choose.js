@@ -290,6 +290,7 @@ function chooseUserFinds() {
                     if (options['layOut'] == 1) {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
+                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             })
