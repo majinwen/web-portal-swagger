@@ -214,8 +214,8 @@
                     <div class="info-item-text">
                         <p>绿化率</p>
                     <#if village['avgGreening']?exists>
-                        <#if village['avgGreening']?number gt 0>
-                            <em>${village['avgGreening']/100}平方米</em>
+                        <#if village['avgGreening']?string('#.##')?number gt 0>
+                            <em>${(village['avgGreening']?number/100)?string('#.##')}</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>

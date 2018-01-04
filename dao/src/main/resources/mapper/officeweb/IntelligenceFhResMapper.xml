@@ -23,12 +23,6 @@
     from intelligence_fh_res
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    <include refid="Base_Column_List" />
-    from intelligence_fh_res
-    where id = #{id,jdbcType=INTEGER}
-  </select>
   <!--IntelligenceFhRes selectByUserPhone(String userPhone);-->
   <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
