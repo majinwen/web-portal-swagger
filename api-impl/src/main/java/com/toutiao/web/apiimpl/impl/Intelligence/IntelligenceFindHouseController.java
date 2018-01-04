@@ -59,8 +59,8 @@ public class IntelligenceFindHouseController {
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
-        //String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-        String usePhone="15601676403";
+        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        //String usePhone="15601676403";
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
