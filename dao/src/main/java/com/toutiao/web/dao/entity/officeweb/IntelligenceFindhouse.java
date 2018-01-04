@@ -756,6 +756,6 @@ public class IntelligenceFindhouse {
     /**
      * 附近的桥
      */
-    private String nearbyQiao;
+//    private String nearbyQiao;
 
 }
