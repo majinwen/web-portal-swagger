@@ -518,9 +518,11 @@
     option = {
         tooltip: {
             trigger: 'axis',
-            position: function (point, params, dom, rect, size) {
-                // 固定在顶部
-                return [point[0], '10%'];
+            position: function (pos, params, dom, rect, size) {
+                // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+                var obj = {top: 60};
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
+                return obj;
             },
            toolbox:{
                  feature:{
@@ -548,7 +550,7 @@
                 },
                 data: [<#list  mouthList as item >'${item}',</#list>],
                 axisLabel: {
-                    fontSize:26,
+                    fontSize:25,
                    // interval:0
                 }
             }
@@ -557,7 +559,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
-                fontSize:28
+                fontSize:21
             },
             scale:true
         },
@@ -599,7 +601,7 @@
                {
                    name:'${village['rc']!'小区'}价格',
                    type:'line',
-                   data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                   data:[<#list ptCD0 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                    symbolSize:10,
                    itemStyle:{
                        normal:{
@@ -613,7 +615,7 @@
             {
                 name:'${village['area']!'区域'}价格',
                 type:'line',
-                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                data:[<#list ptCD1 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                 symbolSize:10,
                 itemStyle:{
                     normal:{
@@ -626,7 +628,7 @@
             {
                 name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
-                data:[<#list ptCD2 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
+                data:[<#list ptCD2 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                 symbolSize:10,
                 itemStyle:{
                        normal:{

@@ -33,6 +33,11 @@ public class PriceTrend {
     private Date month;
 
     /**
+     * 趋势图月份
+     */
+    private String tumonth;
+
+    /**
      * 小区名称
      */
     private String buildingName;
