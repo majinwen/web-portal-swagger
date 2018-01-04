@@ -229,4 +229,9 @@
       has_oldman = #{hasOldman,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--queryUserReport-->
+  <select id="queryUserReport" parameterType="java.lang.String" resultType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes">
+    select * from intelligence_fh_res where phone=#{usePhone}
+  </select>
+
 </mapper>

@@ -56,7 +56,7 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/26 13:57
      */
-    @RequestMapping("/queryMyReport")
+    /*@RequestMapping("/queryMyReport")
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
@@ -73,7 +73,7 @@ public class IntelligenceFindHouseController {
         }
         //跳转到报告页
         return "";
-    }
+    }*/
 
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
@@ -183,28 +183,7 @@ public class IntelligenceFindHouseController {
         return NashResult.build(intelligenceFh);
     }
 
-    /**
-     * 功能描述：8完成，生成报告
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/27 12:33
-     */
-    /*@RequestMapping("/goCreateReport")
-    public String goCreateMyReport(IntelligenceQuery intelligenceQuery, Model model) {
-        //复制数据信息
-        IntelligenceFh intelligenceFh = new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-        //若用户选择“无小孩”或“18岁以上”，则去掉页面3中的教育配套标签；
-        if ("0".equalsIgnoreCase(intelligenceFh.getUserType()) || "5".equalsIgnoreCase(intelligenceFh.getUserType())) {
-            intelligenceFh.setSchoolFlag(0);
-            intelligenceFh.setHospitalFlag(0);
-        }
-        model.addAttribute("intelligenceFh", intelligenceFh);
-        //过渡页vs封面
-        return "";
-    }*/
+
 
     /**
      * 功能描述：报告页-用户画像
@@ -234,18 +213,41 @@ public class IntelligenceFindHouseController {
      * @param model
      */
     @RequestMapping("/showUserPortrayal")
-    public String showUserPortrayal(Model model,IntelligenceQuery intelligenceQuery) {
-
-        IntelligenceFh intelligenceFh=new IntelligenceFh();
-        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-
+    @ResponseBody
+    public NashResult showUserPortrayal(Model model, IntelligenceQuery intelligenceQuery) {
         //调用生成报告页展示数据接口
+        //通过相关数据获取报告生成都数据 保存到相应的数据表中
+        Integer reportId = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        if (StringTool.isNotBlank(reportId)) {
+            return NashResult.build(reportId);
+        }
+        return NashResult.build(0);
+    }
 
-
-
-
-
-
+    /**
+     * 功能描述：打开报告页数据信息
+     *
+     * @return java.lang.String
+     * @author
+     * @date 2018/1/4 11:39
+     */
+    @RequestMapping("/showMyReport/{reportId}")
+    public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
+        if (StringTool.isNotBlank(reportId)) {
+            //查询用户是否有报告数据
+            Map map = new HashMap();
+            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+            if (StringTool.isNotBlank(intelligenceFhRes)) {
+                Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                model.addAttribute("fhpt", fhpt);
+                model.addAttribute("fhtp", fhtp);
+                model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+            }
+            model.addAttribute("message", "没有报告记录！");
+        } else {
+            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+        }
         return "intelligent-report";
     }
 
@@ -275,7 +277,7 @@ public class IntelligenceFindHouseController {
 
         Integer totalPrice = 500;
 //        Integer totalPrice = intelligenceQuery.getPreconcTotal();
-        Map<String,Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
+        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
         return NashResult.build(fhtp);
     }
 
@@ -297,7 +299,6 @@ public class IntelligenceFindHouseController {
         Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
         Map<String,Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
         System.out.println(intelligenceFhRes);
-
         map.put("fhpt",fhpt);
         map.put("fhtp",fhtp);
         map.put("intelligenceFhRes",intelligenceFhRes);
