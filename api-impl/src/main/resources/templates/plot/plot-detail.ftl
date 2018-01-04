@@ -482,7 +482,7 @@
             <div class="picture-box">
                 <#assign imglist = builditem['building_title_img']>
                 <#if imglist?exists >
-                    <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}}-tt400x300" alt="${imglist?split(",")[0]}">
+                    <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">
                         <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                 </#if>
