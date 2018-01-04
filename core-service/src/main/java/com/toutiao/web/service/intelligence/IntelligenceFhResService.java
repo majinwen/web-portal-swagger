@@ -6,8 +6,10 @@ import java.util.List;
 
 public interface IntelligenceFhResService {
 
-    IntelligenceFhRes queryUserReport(String usePhone);
+    List<IntelligenceFhRes> queryUserReport(String usePhone);
 
     IntelligenceFhRes queryResById(Integer id);
 
+
+    Integer deleteMyReport(String reportId,String phone);
 }
