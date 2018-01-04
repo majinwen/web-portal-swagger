@@ -77,7 +77,16 @@
     <section class="plot-primary-header">
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
-            <p>${'['+village['area']!''}<#if village['area']?exists&&village['area']!=''>${'-'+village['tradingArea']+']'}<#else><#if village['tradingArea']?exists&&village['tradingArea']!=''>${'['+village['tradingArea']+']'}</#if></#if>
+            <p><#if village['area']?exists&&village['area']!=''&&village['tradingArea']?exists&&village['tradingArea']!=''>
+                        ${'['+village['area']}${'-'+village['tradingArea']+']'}
+                <#else>
+                    <#if village['area']?exists&&village['area']!=''>
+                        ${'['+village['area']+']'}
+                    </#if>
+                    <#if village['tradingArea']?exists&&village['tradingArea']!=''>
+                        ${'['+village['tradingArea']+']'}
+                    </#if>
+                </#if>
             <#if village['address']?exists&&village['address']!=''>
             <#assign split = village['address']?split('-')>
             <#if split?size gt 1>${split[1]}<#else >
@@ -214,8 +223,8 @@
                     <div class="info-item-text">
                         <p>绿化率</p>
                     <#if village['avgGreening']?exists>
-                        <#if village['avgGreening']?string('#.##')?number gt 0>
-                            <em>${(village['avgGreening']?number/100)?string('#.##')}</em>
+                        <#if village['avgGreening'] gt 0>
+                            <em>${village['avgGreening']?string('#.##')}%</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>

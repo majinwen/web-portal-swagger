@@ -297,6 +297,7 @@ public class IntelligenceFindHouseController {
         Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
         Map<String,Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
         System.out.println(intelligenceFhRes);
+
         map.put("fhpt",fhpt);
         map.put("fhtp",fhtp);
         map.put("intelligenceFhRes",intelligenceFhRes);
