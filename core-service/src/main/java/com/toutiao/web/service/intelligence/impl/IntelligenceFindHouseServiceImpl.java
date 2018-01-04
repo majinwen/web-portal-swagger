@@ -77,7 +77,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
@@ -105,7 +105,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             String totalRate = "";
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
-                intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate*100)));
+                intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate * 100)));
             } else {
                /* intelligenceFh.setRatio(Double.valueOf(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString()));
                 totalRate = String.valueOf(0);*/
@@ -136,7 +136,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
 
             }
             //选择总价
@@ -244,7 +244,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
 
             }
             //选择总价
@@ -328,18 +328,18 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     /**
-     *
      * 功能描述：保存结果
-     * @author zengqingzhou
-     * @date 2018/1/3 15:46
+     *
      * @param
      * @return
+     * @author zengqingzhou
+     * @date 2018/1/3 15:46
      */
-    public Integer save(IntelligenceQuery intelligenceQuery,List<IntelligenceFindhouse> finalList){
+    public Integer save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList) {
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
-        BeanUtils.copyProperties(intelligenceFhResJson,intelligenceFhRes);
+        BeanUtils.copyProperties(intelligenceFhResJson, intelligenceFhRes);
 //        if (null!=finalList&&finalList.size()!=0){
 //            for (IntelligenceFindhouse intelligence : finalList) {
 //                String jsonStr = JSONObject.toJSONString(intelligence);
@@ -348,7 +348,22 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 //                intelligenceFhResMapper.saveData(intelligenceFhRes);
 //            }
 //        }
-        if (null!=finalList&&finalList.size()!=0){
+        if (null != finalList && finalList.size() != 0) {
+            for (IntelligenceFindhouse intelligence : finalList) {
+                if (null != intelligence.getPropertyfee()) {
+                    BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
+                    intelligence.setPropertyfee(bigDecimal);
+                }
+                if (null != intelligence.getCarRentPrice()) {
+                    BigDecimal bigDecimal = new BigDecimal(intelligence.getCarRentPrice().doubleValue() * 12);
+                    intelligence.setCarRentPrice(bigDecimal);
+                }
+                if (null != intelligence.getCarSellPrice()) {
+                    BigDecimal bigDecimal = new BigDecimal(intelligence.getCarSellPrice().doubleValue() * 12);
+                    intelligence.setCarSellPrice(bigDecimal);
+                }
+            }
+
             String jsonString = JSONArray.toJSONString(finalList);
             intelligenceFhRes.setFhResult(jsonString);
             intelligenceFhResMapper.saveData(intelligenceFhRes);
@@ -358,20 +373,20 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     /**
-     *
      * 功能描述：初始化数据
-     * @author zengqingzhou
-     * @date 2017/12/31 23:00
+     *
      * @param
      * @return
+     * @author zengqingzhou
+     * @date 2017/12/31 23:00
      */
-    public IntelligenceQuery init(IntelligenceQuery intelligenceFh){
+    public IntelligenceQuery init(IntelligenceQuery intelligenceFh) {
         Double plotTotalFirst = null;
         Double plotTotalEnd = null;
         String plotTotal = null;
         if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                 isNotBlank(intelligenceFh.getMonthPayMent())) {
-            plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+            plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
 
         }
         //选择总价

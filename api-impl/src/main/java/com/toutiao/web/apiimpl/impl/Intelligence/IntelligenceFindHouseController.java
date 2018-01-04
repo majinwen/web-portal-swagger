@@ -39,11 +39,11 @@ import java.util.Map;
 public class IntelligenceFindHouseController {
 
     @Autowired
-    private IntelligenceFindHouseService intelligenceFindHouseService;
+    private IntelligenceFhTdService intelligenceFhTdService;
     @Autowired
     private IntelligenceFhResService intelligenceFhResService;
     @Autowired
-    private IntelligenceFhTdService intelligenceFhTdService;
+    private IntelligenceFindHouseService intelligenceFindHouseService;
     @Autowired
     private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
 
@@ -127,7 +127,7 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/intelligenceFindHouseByType")
     @ResponseBody
-    public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery,Model model) {
+    public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery, Model model) {
         Double plotTotalFirst = null;
         Double plotTotalEnd = null;
         intelligenceQuery.setPreconcTotal("450");
@@ -141,7 +141,7 @@ public class IntelligenceFindHouseController {
         intelligenceQuery.setHasChild(1);
         intelligenceQuery.setHasOldman(1);
         Integer AIID = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        model.addAttribute("AIId",AIID);
+        model.addAttribute("AIId", AIID);
         return "intelligent-report";
     }
 
@@ -158,7 +158,7 @@ public class IntelligenceFindHouseController {
     public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
         //根据户型与总价条件赛选条件
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
-        if(StringTool.isNotBlank(intelligenceFh)){
+        if (StringTool.isNotBlank(intelligenceFh)) {
             intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
         }
         return NashResult.build(intelligenceFh);
@@ -182,7 +182,6 @@ public class IntelligenceFindHouseController {
         //报告生成页
         return NashResult.build(intelligenceFh);
     }
-
 
 
     /**
@@ -262,7 +261,7 @@ public class IntelligenceFindHouseController {
 
         Integer totalPrice = 500;
 //        Integer totalPrice = intelligenceQuery.getPreconcTotal();
-        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
         return NashResult.build(fhpt);
     }
 
@@ -283,25 +282,25 @@ public class IntelligenceFindHouseController {
 
 
     //测试
+
     /**
-     *  
      * 功能描述：根据id查询报告页数据
+     *
+     * @param
+     * @return
      * @author zengqingzhou
      * @date 2018/1/3 17:45
-     * @param 
-     * @return 
      */
-    @RequestMapping("/fandData")
+    @RequestMapping("/queryReport/{id}")
     @ResponseBody
-    public NashResult find(Integer id ){
+    public NashResult find(@PathVariable("id") Integer id) {
         Map map = new HashMap();
         IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
-        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-        Map<String,Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-        System.out.println(intelligenceFhRes);
-        map.put("fhpt",fhpt);
-        map.put("fhtp",fhtp);
-        map.put("intelligenceFhRes",intelligenceFhRes);
+        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+        map.put("fhpt", fhpt);
+        map.put("fhtp", fhtp);
+        map.put("intelligenceFhRes", intelligenceFhRes);
         return NashResult.build(map);
     }
 }

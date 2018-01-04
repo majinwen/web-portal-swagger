@@ -74,7 +74,7 @@ public class IntelligenceFhResJson {
     /**
      * 用户画像
      */
-    @JSONField(name = "userPortrait")
+    @JSONField(name = "userPortrayalType")
     private Integer userPortrait;
 
 
