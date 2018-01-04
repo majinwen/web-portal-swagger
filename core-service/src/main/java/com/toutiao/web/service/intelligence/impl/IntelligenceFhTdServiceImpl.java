@@ -3,11 +3,15 @@ package com.toutiao.web.service.intelligence.impl;
 
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhTdMapper;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdDo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;
 import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +50,23 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
         intelligenceFhTdRatio.setAverageVolume(String.format("%.2f",average));
         intelligenceFhTdRatio.setAverageVolumeRatio(String.format("%.2f",averageratio)+"%");
         Map<String,Object> result = new HashMap<>();
+
+        List<IntelligenceFhTdDo> intelligenceFhTdDos = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for(IntelligenceFhTd intelligenceFhTd : lists){
+            IntelligenceFhTdDo intelligenceFhTdDo = new IntelligenceFhTdDo();
+            try {
+                BeanUtils.copyProperties(intelligenceFhTdDo,intelligenceFhTd);
+                intelligenceFhTdDo.setPeriodicTime(sdf.format(intelligenceFhTd.getPeriodicTime()));
+                intelligenceFhTdDos.add(intelligenceFhTdDo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         result.put("ratio",intelligenceFhTdRatio);
-        result.put("trend",lists);
+        result.put("trend",intelligenceFhTdDos);
         result.put("searchPrice",totalPrice);
         return result;
     }

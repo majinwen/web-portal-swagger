@@ -3,20 +3,21 @@ package com.toutiao.web.service.intelligence.impl;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhPricetrendMapper;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFhPtDo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhPtRatio;
 import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricetrendService{
@@ -37,10 +38,9 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
         IntelligenceFhPtRatio intelligenceFhPtRatio = intelligenceFhPricetrendMapper.queryPriceTrendRatio(totalPrice);
         Map<String,Object> result = new HashMap<>();
         Double[] price = new Double[12];
-        Double[] totalprice = new Double[12];
         MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
         Double[] ratio = new Double[lists.size()-1];
-
+        List<IntelligenceFhPtDo> intelligenceFhPtDos = new ArrayList<>();
         if(lists.size()> 0){
             ok:
             for(int i=0;i<lists.size();i++){
@@ -61,14 +61,25 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
             }
             result.put("minTarget",min);
             result.put("maxTarget",max);
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            for(IntelligenceFhPricetrend intelligenceFhPricetrend : lists){
+                IntelligenceFhPtDo intelligenceFhPtDo = new IntelligenceFhPtDo();
+                try {
+                    BeanUtils.copyProperties(intelligenceFhPtDo,intelligenceFhPricetrend);
+                    intelligenceFhPtDo.setPeriodicTime(sdf.format(intelligenceFhPricetrend.getPeriodicTime()));
+                    intelligenceFhPtDos.add(intelligenceFhPtDo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         //目标市场
         Double cityAvgRatio11 = intelligenceFhPtRatio.getMaxtotalprice().divide(new BigDecimal(12),mc)
                 .divide(intelligenceFhPtRatio.getMaxtotalprice(),mc).multiply(new BigDecimal(100)).doubleValue();
-
-
         result.put("target",cityAvgRatio11);
-        result.put("ptlists",lists);
+        result.put("ptlists",intelligenceFhPtDos);
         result.put("searchPrice",totalPrice);
         return result;
     }
