@@ -24,5 +24,4 @@ public interface IntelligenceFhResMapper extends BaseDao {
 
     Integer saveData(IntelligenceFhRes intelligenceFhRes);
 
-    IntelligenceFhRes selectById(Integer id);
 }

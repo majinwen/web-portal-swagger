@@ -65,4 +65,17 @@ public class IntelligenceFhResJson {
     @JSONField(name = "hasOldman")
     private Integer hasOldman;
 
+    /**
+     * 创建时间
+     */
+    @JSONField(name = "createTime")
+    private Integer createTime;
+
+    /**
+     * 用户画像
+     */
+    @JSONField(name = "userPortrait")
+    private Integer userPortrait;
+
+
 }

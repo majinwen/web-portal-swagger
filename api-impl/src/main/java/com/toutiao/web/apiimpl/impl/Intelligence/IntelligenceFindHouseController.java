@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -290,10 +291,15 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/fandData")
     @ResponseBody
-    public String find(Integer id ,Model model){
+    public NashResult find(Integer id ){
+        Map map = new HashMap();
         IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
-        model.addAttribute("intelligenceFhRes",intelligenceFhRes);
+        Map<String,Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+        Map<String,Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
         System.out.println(intelligenceFhRes);
-        return null;
+        map.put("fhpt",fhpt);
+        map.put("fhtp",fhtp);
+        map.put("intelligenceFhRes",intelligenceFhRes);
+        return NashResult.build(map);
     }
 }
