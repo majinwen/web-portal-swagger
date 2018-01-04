@@ -156,7 +156,7 @@
     <sql id="intelligenceFindHouse">
         newcode,n_or_e,projname,finishdate,virescencerate,lift_door_radio,propertyfee,heating_mode,water_supply,electric_supply,
         car_rent_price, car_sell_price,newh_range_s,newh_range_e,village_range_s,village_range_e,price,
-        esf_price,plot_image,nearest_subway_desc,nearby_road,/*nearby_qiao,*/nearby_road_meter
+        esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter
         <!--,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway-->
     </sql>
 
@@ -188,8 +188,7 @@
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
         <include refid="queryInfo"/>
-        AND star_property IS NOT NULL
-        ORDER BY star_property DESC
+        ORDER BY star_property DESC nulls LAST
         LIMIT 200
     </select>
     <select id="queryByUserType1A"
@@ -310,7 +309,7 @@
       nearby_market_count, nearby_road, nearby_road_meter, 
       min_total_price, max_total_price, layout_range, 
       nearest_subway_desc, subway_line, subway_station, 
-      subway_distince, proj_layout,star_property/*,nearby_qiao*/)
+      subway_distince, proj_layout,star_property,nearby_qiao)
     values (#{newcode,jdbcType=INTEGER}, #{nOrE,jdbcType=SMALLINT}, #{projname,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{installment,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{addressInfo,jdbcType=VARCHAR}, #{housefeature,jdbcType=VARCHAR}, #{projFeature,jdbcType=VARCHAR}, 
@@ -812,9 +811,9 @@
             <if test="starProperty != null">
                 star_property,
             </if>
-            <!--<if test="nearbyQiao != null">
+            <if test="nearbyQiao != null">
                 nearby_qiao,
-            </if>-->
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="newcode != null">
