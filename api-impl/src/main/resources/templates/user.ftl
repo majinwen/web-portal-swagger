@@ -23,7 +23,7 @@
         </ul>
     </div>
     <div class="side-house-intelligent">
-        <a href="#"><em>智能找房</em></a>
+        <a href="${router_city('/findhouse/')}"><em>懂房帝</em></a>
     </div>
 </section>
 <div class="scroll-mask"></div>
