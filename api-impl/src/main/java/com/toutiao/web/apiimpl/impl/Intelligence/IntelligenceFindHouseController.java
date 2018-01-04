@@ -228,7 +228,7 @@ public class IntelligenceFindHouseController {
     }*/
 
     /**
-     * 功能描述：报告页
+     * 功能描述：过渡页
      *
      * @param model
      */
