@@ -349,7 +349,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 //                intelligenceFhResMapper.saveData(intelligenceFhRes);
 //            }
 //        }
-        if (null != finalList && finalList.size() != 0) {
+        if (null != finalList && finalList.size()==5) {
             for (IntelligenceFindhouse intelligence : finalList) {
                 if (null != intelligence.getPropertyfee()) {
                     BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
