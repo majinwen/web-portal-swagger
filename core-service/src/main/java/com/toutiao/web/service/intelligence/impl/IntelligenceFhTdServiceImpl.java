@@ -48,6 +48,7 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
         Map<String,Object> result = new HashMap<>();
         result.put("ratio",intelligenceFhTdRatio);
         result.put("trend",lists);
+        result.put("searchPrice",totalPrice);
         return result;
     }
 }

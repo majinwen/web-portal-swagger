@@ -69,6 +69,7 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
 
         result.put("target",cityAvgRatio11);
         result.put("ptlists",lists);
+        result.put("searchPrice",totalPrice);
         return result;
     }
 
