@@ -167,7 +167,7 @@ function chooseUserFinds() {
                 success: function (data) {
                     $('#plot_Count').find('em').text(data.data.plotCount);
                     var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     //将第七种画像附给当前用户userPortrayalType
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
@@ -192,7 +192,7 @@ function chooseUserFinds() {
                 success: function (data) {
                     $("#plot_Count").find('em').html(data.data.plotCount);
                     var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     //将第七种画像附给当前用户userPortrayalType
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
@@ -225,7 +225,7 @@ function chooseUserFinds() {
             success: function (data) {
                 var ratio = new Number(data.data.ratio);
                 $('#plot_Count').find('em').text(data.data.plotCount);
-                $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                 if (data.data.distictInfo != null) {
                     $('#option_distict').find('li.disabled').each(function (i, orgin) {
                         $(data.data.distictInfo).each(function (index, item) {
@@ -283,7 +283,7 @@ function chooseUserFinds() {
                 success: function (data) {
                     var ratio = new Number(data.data.ratio);
                     $('#plot_Count').find('em').text(data.data.plotCount);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(1) + '%');
+                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     if (options['layOut'] == 1) {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
