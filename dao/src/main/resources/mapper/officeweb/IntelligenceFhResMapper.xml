@@ -25,7 +25,7 @@
     select 
     <include refid="Base_Column_List" />
     from intelligence_fh_res
-    where id = #{id,jdbcType=INTEGER} and status=0 and collect_status=1
+    where id = #{id,jdbcType=INTEGER} and status=0 and collect_status=0
   </select>
   <!--List<IntelligenceFhRes> selectByUserPhone(String userPhone);-->
   <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -273,5 +273,9 @@
   <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
   <update id="deleteMyReport">
     UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_status=1
+  </update>
+  <!--int updateMyReportCollectStatus(@Param("reportId") Integer integer,@Param("usePhone") String usePhone);-->
+  <update id="deleteMyReport">
+    UPDATE intelligence_fh_res set collect_status=1 where id=#{reportId} and phone=#{usePhone} and status=0
   </update>
 </mapper>
