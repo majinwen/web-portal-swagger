@@ -6,11 +6,13 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
-    <title>二手房详情</title>
+    <title>楼盘名称 面积 户型</title>
+    <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
+<img height="1px" width="1px" src="${houseDetail['housePhoto'][0]}">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -93,7 +95,6 @@
                     <li>
                         <span>户型</span>
                         <em><#if houseDetail.room?exists&&houseDetail.hall?exists>
-
                         ${houseDetail.room}室${houseDetail.hall}厅
                         <#else>
                             暂无数据
