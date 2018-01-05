@@ -128,7 +128,7 @@
                             <div class="slide-item">
                                 <label class="layer-type-text">总价</label>
                                 <div class="slide-line total-slide">
-                                    <span class="slide-text">0万</span>
+                                    <span class="slide-text">50万</span>
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
                                         <span class="min"><em>50</em>万</span>
@@ -142,7 +142,7 @@
                             <div class="slide-item">
                                 <label class="layer-type-text">首付</label>
                                 <div class="slide-line down-slide">
-                                    <span class="slide-text">0万</span>
+                                    <span class="slide-text">50万</span>
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
                                         <span class="min"><em>50</em>万</span>
@@ -154,10 +154,10 @@
                             <div class="slide-item">
                                 <label class="layer-type-text">月供</label>
                                 <div class="slide-line month-slide">
-                                    <span class="slide-text">0</span>
+                                    <span class="slide-text">50</span>
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
-                                        <span class="min"><em>0</em></span>
+                                        <span class="min"><em>50</em></span>
                                         <span class="slider-thumb"></span>
                                         <span class="max"><em>30000</em></span>
                                     </div>
