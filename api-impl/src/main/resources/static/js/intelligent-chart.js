@@ -2,14 +2,15 @@ var dpr = window.devicePixelRatio;
 var baseFontSize = 12 * dpr;
 var baseItemWidth = 25 * dpr;
 
-var locationBaseUrl = '';   // 从url中获取的id
+var locationBaseUrl = 0;   // 从url中获取的id
 
 /**
  * 报告页图表集合
  * */
 $(function () {
-    var locationUrl = location.href;
-    locationBaseUrl = locationUrl.substr(locationUrl.lastIndexOf('/')+1);
+    var locationUrl = window.location.href;
+    locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/')+1));
+    console.log(locationBaseUrl);
 
     /**
      * 市场价格走势
@@ -256,12 +257,12 @@ $(function () {
                 data: markerTargetArr
             }]
         });
-        console.log(locationBaseUrl);
     });
 
+    console.log(router_city('/findhouse/showMyReportData/' + locationBaseUrl));
 
-    $.get(router_city('/findhouse/showMyReport/' + locationBaseUrl)).done(function (data) {
-        console.log(data);
+    $.get(router_city('/findhouse/showMyReportData/' + locationBaseUrl)).done(function (data) {
+        console.log(data.data.intelligenceFhRes.fhResult.value);
     })
 });
 
