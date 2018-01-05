@@ -384,7 +384,9 @@ hr {
         margin-left: -2.2rem;
         color: #fff;
         background-image: url("/static/images/intelligent/report-type2-bg.png");
-        background-repeat: no-repeat; }
+        background-repeat: no-repeat;
+        -webkit-background-size: contain;
+        background-size: contain; }
         [data-dpr="1"] .page2 .page-content .module-item .report-title-type2 p {
           font-size: 16px; }
         [data-dpr="2"] .page2 .page-content .module-item .report-title-type2 p {
@@ -462,6 +464,12 @@ hr {
         text-align: center;
         color: #666;
         border: 0.0133333333rem solid #e8e8e8; }
+        [data-dpr="1"] .page2 .page-content .module-item table tr td {
+          font-size: 12px; }
+        [data-dpr="2"] .page2 .page-content .module-item table tr td {
+          font-size: 24px; }
+        [data-dpr="3"] .page2 .page-content .module-item table tr td {
+          font-size: 36px; }
         .page2 .page-content .module-item table tr td em {
           display: block; }
         .page2 .page-content .module-item table tr td span {

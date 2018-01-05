@@ -219,6 +219,8 @@ $inteTextColorRed: #f25a5a;
                     color: $baseWhite;
                     @include font-dpr(32);
                     @include bg-image('/static/images/intelligent/report-type2-bg');
+                    -webkit-background-size: contain;
+                    background-size: contain;
                 }
 
                 span {
@@ -303,6 +305,7 @@ $inteTextColorRed: #f25a5a;
                         text-align: center;
                         color: #666;
                         border: rem(1) solid $baseBorderColor;
+                        @include font-dpr(24);
 
                         em {
                             display: block;

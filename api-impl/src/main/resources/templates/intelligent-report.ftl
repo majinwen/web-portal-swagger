@@ -135,6 +135,9 @@
                     <p>交通</p>
                     <span>交通便利，赶得上节奏，跑得过大盘</span>
                 </div>
+                <div class="echart-box">
+                    <div id="trafficChart"></div>
+                </div>
             </div>
             <div class="module-item">
                 <div class="report-title-type2">

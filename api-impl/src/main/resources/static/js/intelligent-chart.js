@@ -1,10 +1,16 @@
 var dpr = window.devicePixelRatio;
 var baseFontSize = 12 * dpr;
 var baseItemWidth = 25 * dpr;
+
+var locationBaseUrl = '';   // 从url中获取的id
+
 /**
  * 报告页图表集合
  * */
 $(function () {
+    var locationUrl = location.href;
+    locationBaseUrl = locationUrl.substr(locationUrl.lastIndexOf('/')+1);
+
     /**
      * 市场价格走势
      * */
@@ -249,8 +255,14 @@ $(function () {
             },{
                 data: markerTargetArr
             }]
-        })
+        });
+        console.log(locationBaseUrl);
     });
+
+
+    $.get(router_city('/findhouse/showMyReport/' + locationBaseUrl)).done(function (data) {
+        console.log(data);
+    })
 });
 
 function router_city(urlparam) {
