@@ -78,7 +78,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
             }
             //选择总价
             if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
@@ -106,7 +106,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             String totalRate = "";
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
-                intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate*100)));
+                intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate * 100)));
             } else {
                /* intelligenceFh.setRatio(Double.valueOf(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString()));
                 totalRate = String.valueOf(0);*/
@@ -137,7 +137,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
 
             }
             //选择总价
@@ -245,7 +245,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
             if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                     isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
 
             }
             //选择总价
@@ -280,7 +280,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         IntelligenceQuery intelligenceQuery = init(IntelligenceQuery);
 
         //搜索量前200
-        List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
+         List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
 
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
@@ -336,11 +336,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2018/1/3 15:46
      */
-    public Integer save(IntelligenceQuery intelligenceQuery,List<IntelligenceFindhouse> finalList){
+    public Integer save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList) {
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
-        BeanUtils.copyProperties(intelligenceFhResJson,intelligenceFhRes);
+        BeanUtils.copyProperties(intelligenceFhResJson, intelligenceFhRes);
 //        if (null!=finalList&&finalList.size()!=0){
 //            for (IntelligenceFindhouse intelligence : finalList) {
 //                String jsonStr = JSONObject.toJSONString(intelligence);
@@ -349,7 +349,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 //                intelligenceFhResMapper.saveData(intelligenceFhRes);
 //            }
 //        }
-        if (null != finalList && finalList.size()>0) {
+        if (null != finalList && finalList.size() > 0) {
             for (IntelligenceFindhouse intelligence : finalList) {
                 if (null != intelligence.getPropertyfee()) {
                     BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
@@ -384,20 +384,20 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }*/
 
     /**
-     *
      * 功能描述：初始化数据
-     * @author zengqingzhou
-     * @date 2017/12/31 23:00
+     *
      * @param
      * @return
+     * @author zengqingzhou
+     * @date 2017/12/31 23:00
      */
-    public IntelligenceQuery init(IntelligenceQuery intelligenceFh){
+    public IntelligenceQuery init(IntelligenceQuery intelligenceFh) {
         Double plotTotalFirst = null;
         Double plotTotalEnd = null;
         String plotTotal = null;
         if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                 isNotBlank(intelligenceFh.getMonthPayMent())) {
-            plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30/10000));
+            plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
 
         }
         //选择总价
@@ -466,6 +466,35 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             int index = random.nextInt(list.size());
             finalList.add(list.get(index));
             list.remove(index);
+        }
+    }
+
+    /**
+     * 功能描述：从200个中选取一个
+     *
+     * @param
+     * @return
+     * @author zengqingzhou
+     * @date 2018/1/4 23:03
+     */
+    public void removeRepetitionTwo(List<IntelligenceFindhouse> finalList, List<IntelligenceFindhouse> list, int number) {
+        Random random = new Random();
+        for (int i = 0; i < number; i++) {
+            Boolean flag = false;
+            while (!flag) {
+                boolean AA = true;
+                int index = random.nextInt(list.size());
+                for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
+                    if (intelligenceFindhouse.getNewcode().equals(list.get(index).getNewcode())) {
+                        AA = false;
+                    }
+                }
+                if (AA) {
+                    flag = true;
+                    finalList.add(list.get(index));
+                }
+                list.remove(index);
+            }
         }
     }
 
@@ -548,11 +577,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
 
-        //搜索量前200，随机1个
-        if (null != starPropertyList && starPropertyList.size() >= 1) {
-            removeRepetition(finalList, starPropertyList, 1);
-        }
-
         //1km内有地铁，随机2个
         List listFour = new ArrayList();
         if (null != list && list.size() != 0) {
@@ -567,6 +591,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         } else if (null != list && list.size() >= 2) {
             removeRepetition(finalList, list, 2);
         }
+
+        //搜索量前200，随机1个
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetitionTwo(finalList, starPropertyList, 1);
+        }
+
         return finalList;
     }
 
@@ -602,10 +632,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
         }
 
-        //搜索量前200，随机1个
-        if (null != starPropertyList && starPropertyList.size() >= 1) {
-            removeRepetition(finalList, starPropertyList, 1);
-        }
 
         //换手率最高的前20%，随机2个
         for (int i = 0; i < list.size(); i++) {
@@ -637,6 +663,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             list.remove(index2);
         } else if (null != list && list.size() >= 2) {
             removeRepetition(finalList, list, 2);
+        }
+        //搜索量前200，随机1个
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetitionTwo(finalList, starPropertyList, 1);
         }
         return finalList;
     }
@@ -671,10 +701,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 removeRepetition(finalList, list, 2);
             }
         }
-        //搜索量前200，随机1个
-        if (null != starPropertyList && starPropertyList.size() >= 1) {
-            removeRepetition(finalList, starPropertyList, 1);
-        }
+
         //环线在四环内，随机2个
         List listFour = new ArrayList();
         if (null != list && list.size() != 0) {
@@ -688,6 +715,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
             removeRepetition(finalList, list, 2);
+        }
+        //搜索量前200，随机1个
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetitionTwo(finalList, starPropertyList, 1);
         }
         return finalList;
     }
@@ -722,10 +753,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 removeRepetition(finalList, list, 2);
             }
         }
-        //搜索量前200，随机1个
-        if (null != starPropertyList && starPropertyList.size() >= 1) {
-            removeRepetition(finalList, starPropertyList, 1);
-        }
+
         //环线在四环内，随机2个
         List listFour = new ArrayList();
         if (null != list && list.size() != 0) {
@@ -739,6 +767,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
             removeRepetition(finalList, list, 2);
+        }
+        //搜索量前200，随机1个
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetitionTwo(finalList, starPropertyList, 1);
         }
         return finalList;
     }
@@ -773,10 +805,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 removeRepetition(finalList, list, 2);
             }
         }
-        //搜索量前200，随机1个
-        if (null != starPropertyList && starPropertyList.size() >= 1) {
-            removeRepetition(finalList, starPropertyList, 1);
-        }
+
         //环线在三环内，随机2个
         List listFour = new ArrayList();
         if (null != list && list.size() != 0) {
@@ -790,6 +819,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             removeRepetition(finalList, listFour, 2);
         } else if (null != list && list.size() >= 2) {
             removeRepetition(finalList, list, 2);
+        }
+        //搜索量前200，随机1个
+        if (null != starPropertyList && starPropertyList.size() >= 1) {
+            removeRepetitionTwo(finalList, starPropertyList, 1);
         }
         return finalList;
     }
