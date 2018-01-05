@@ -6,8 +6,8 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/index.css">
-    <meta name="description" content="头条上也能找房子，推荐你看看">
-    <title>头条房产</title>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="/static/js/modernizr.custom.js"></script>
 </head>
