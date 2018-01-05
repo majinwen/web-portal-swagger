@@ -11,7 +11,7 @@
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend">
     insert into price_trend (building_id, property_type, contrast_d_a,
       month, price)
-    values (#{buildId,jdbcType=INTEGER}, #{propertyType,jdbcType=SMALLINT}, #{contrastDA,jdbcType=SMALLINT}, 
+    values (#{buildId,jdbcType=INTEGER}, #{propertyType,jdbcType=SMALLINT}, #{contrastDA,jdbcType=SMALLINT},
       #{month,jdbcType=SMALLINT}, #{price,jdbcType=NUMERIC})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend">
@@ -52,6 +52,6 @@
     </trim>
   </insert>
   <select id="searchPriceTrendList" parameterType="com.toutiao.web.dao.entity.officeweb.PriceTrend" resultMap="BaseResultMap">
-           SELECT * FROM price_trend where building_id=#{buildingId,jdbcType=INTEGER} and property_type=#{propertyType,jdbcType=SMALLINT}  and "month" BETWEEN  now() - interval '1 year' AND now() ORDER BY "month"
+           SELECT * FROM price_trend where building_id=#{buildingId,jdbcType=INTEGER} and property_type=#{propertyType,jdbcType=SMALLINT}  and "month" BETWEEN  now() - interval '13 month' AND now() ORDER BY "month"
   </select>
 </mapper>
