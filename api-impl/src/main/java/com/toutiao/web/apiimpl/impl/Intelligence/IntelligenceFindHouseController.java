@@ -59,8 +59,8 @@ public class IntelligenceFindHouseController {
     public String getMyReport(HttpServletRequest request, Model model) {
 
         //从cookie中获取用户手机号码
-        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-        //String usePhone="15601676403";
+        //String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+        String usePhone="15601676403";
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
@@ -249,27 +249,27 @@ public class IntelligenceFindHouseController {
      * @author
      * @date 2018/1/4 11:39
      */
-    @RequestMapping("/showMyReport/{reportId}")
-    public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
-        if (StringTool.isNotBlank(reportId)) {
-            //查询用户是否有报告数据
-            Map map = new HashMap();
-            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
-            if (StringTool.isNotBlank(intelligenceFhRes)) {
-                //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
-                //intelligenceFhRes.setCreateTime(date);
-                Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-                Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-                model.addAttribute("fhpt", fhpt);
-                model.addAttribute("fhtp", fhtp);
-                model.addAttribute("intelligenceFhRes", intelligenceFhRes);
-            }
-            model.addAttribute("message", "没有报告记录！");
-        } else {
-            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
-        }
-        return "intelligent-report";
-    }
+//    @RequestMapping("/showMyReport/{reportId}")
+//    public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
+//        if (StringTool.isNotBlank(reportId)) {
+//            //查询用户是否有报告数据
+//            Map map = new HashMap();
+//            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+//            if (StringTool.isNotBlank(intelligenceFhRes)) {
+//                //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
+//                //intelligenceFhRes.setCreateTime(date);
+//                Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+//                Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+//                model.addAttribute("fhpt", fhpt);
+//                model.addAttribute("fhtp", fhtp);
+//                model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+//            }
+//            model.addAttribute("message", "没有报告记录！");
+//        } else {
+//            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+//        }
+//        return "intelligent-report";
+//    }
 
     /**
      * 报告页价格趋势
@@ -312,7 +312,7 @@ public class IntelligenceFindHouseController {
      * @author zengqingzhou
      * @date 2018/1/3 17:45
      */
-    @RequestMapping("/queryReport/{id}")
+    @RequestMapping("/showMyReport/{reportId}")
     @ResponseBody
     public NashResult find(@PathVariable("id") Integer id) {
         Map map = new HashMap();
