@@ -27,5 +27,5 @@ public interface IntelligenceFhResMapper extends BaseDao {
 
     int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);
 
-    int updateMyReportCollectStatus(@Param("reportId") Integer integer,@Param("usePhone") String usePhone);
+    int updateMyReportCollectStatus(@Param("reportId") Integer reportId,@Param("usePhone") String usePhone);
 }

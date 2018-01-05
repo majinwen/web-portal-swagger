@@ -272,10 +272,10 @@
   </select>
   <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
   <update id="deleteMyReport">
-    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_status=1
+    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_Sstatus=1
   </update>
   <!--int updateMyReportCollectStatus(@Param("reportId") Integer integer,@Param("usePhone") String usePhone);-->
-  <update id="deleteMyReport">
+  <update id="updateMyReportCollectStatus">
     UPDATE intelligence_fh_res set collect_status=1 where id=#{reportId} and phone=#{usePhone} and status=0
   </update>
 </mapper>
