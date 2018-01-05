@@ -142,10 +142,10 @@
                             <div class="slide-item">
                                 <label class="layer-type-text">首付</label>
                                 <div class="slide-line down-slide">
-                                    <span class="slide-text">50万</span>
+                                    <span class="slide-text">100万</span>
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
-                                        <span class="min"><em>50</em>万</span>
+                                        <span class="min"><em>100</em>万</span>
                                         <span class="slider-thumb"></span>
                                         <span class="max"><em>1000</em>万</span>
                                     </div>
