@@ -4,6 +4,10 @@ $inteBorderBlack: #000;
 $inteColorRed: #e42929;
 $inteTextColorRed: #f25a5a;
 
+html {
+    overflow: auto;
+}
+
 .bgbox {
     position: absolute;
     top: 0;
@@ -219,6 +223,8 @@ $inteTextColorRed: #f25a5a;
                     color: $baseWhite;
                     @include font-dpr(32);
                     @include bg-image('/static/images/intelligent/report-type2-bg');
+                    -webkit-background-size: contain;
+                    background-size: contain;
                 }
 
                 span {
@@ -303,6 +309,7 @@ $inteTextColorRed: #f25a5a;
                         text-align: center;
                         color: #666;
                         border: rem(1) solid $baseBorderColor;
+                        @include font-dpr(24);
 
                         em {
                             display: block;
@@ -324,7 +331,6 @@ $inteTextColorRed: #f25a5a;
                 }
             }
         }
-
         .echart-box {
             width: 100%;
             height: rem(280);
@@ -337,6 +343,119 @@ $inteTextColorRed: #f25a5a;
                 padding: rem(20) 0;
                 @include box-sizing;
 
+            }
+        }
+
+        .traffic-box {
+            position: relative;
+            margin-top: rem(50);
+            padding-left: rem(28);
+
+            .left-line {
+                position: absolute;
+                top: rem(70);
+                bottom: 0;
+                width: 0;
+                border-left: 1px dashed $inteBorderRed;
+            }
+            .vertical-line {
+                border-top: 1px dashed $inteBorderRed;
+            }
+
+            .traffic-title {
+                height: rem(120);
+                padding-top: rem(55);
+                @include box-sizing;
+
+                h5 {
+                    position: relative;
+                    padding-left: rem(20);
+                    @include font-dpr(24);
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: rem(-6);
+                        width: rem(12);
+                        height: rem(12);
+                        margin-top: rem(-6);
+                        background-color: $inteBorderRed;
+                        -webkit-border-radius: 50%;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .echart-wrapper {
+                position: relative;
+                padding-left: rem(73);
+                border-top: rem(1) solid $baseBorderColor;
+                border-bottom: rem(1) solid $baseBorderColor;
+
+                &:before, &:after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    width: rem(48);
+                    height: rem(48);
+                    margin: rem(-24);
+                    -webkit-background-size: contain;
+                    background-size: contain;
+                }
+
+                &:before {
+                    top: 0;
+                    @include bg-image('/static/images/intelligent/bgy_icon_xq');
+                }
+
+                &.subway {
+                    &:after {
+                        bottom: 0;
+                        @include bg-image('/static/images/intelligent/bgy_icon_dt')
+                    }
+                }
+                &.rond {
+                    &:after {
+                        bottom: 0;
+                        @include bg-image('/static/images/intelligent/bgy_icon_ld');
+                    }
+                }
+
+                .echart-box {
+                    width: 100%;
+                    height: rem(280);
+                    margin: 0;
+                    background-color: #fbfbfb;
+
+                    #trafficSubwayChart, #trafficRondChart {
+                        width: rem(590);
+                        height: 100%;
+                        @include box-sizing;
+                    }
+                }
+
+            }
+
+            .traffic-text-box {
+                margin-top: rem(56);
+                margin-bottom: rem(75);
+
+                .traffic-text {
+                    position: relative;
+                    padding-left: rem(40);
+                    margin-bottom: rem(45);
+                    color: #888;
+                    @include font-dpr(22);
+
+                    span {
+                        position: absolute;
+                        left: 0;
+                        width: rem(50);
+                        height: rem(47);
+                        margin-left: rem(-25);
+                        text-align: center;
+                    }
+                }
             }
         }
     }

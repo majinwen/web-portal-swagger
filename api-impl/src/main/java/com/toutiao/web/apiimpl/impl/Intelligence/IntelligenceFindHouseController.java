@@ -282,7 +282,7 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showMyReport/{reportId}")
     public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
-        if (StringTool.isNotBlank(reportId)) {
+        /*if (StringTool.isNotBlank(reportId)) {
             //查询用户是否有报告数据
             Map map = new HashMap();
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
@@ -305,7 +305,7 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "没有报告记录！");
         } else {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
-        }
+        }*/
         return "intelligent-report";
     }
 
@@ -352,9 +352,9 @@ public class IntelligenceFindHouseController {
      * @author zengqingzhou
      * @date 2018/1/3 17:45
      */
-    @RequestMapping("/queryReport/{id}")
+    @RequestMapping("/showMyReportData/{reportId}")
     @ResponseBody
-    public NashResult find(@PathVariable("id") Integer id) {
+    public NashResult find(@PathVariable("reportId") Integer id) {
         Map map = new HashMap();
         IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
         Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
