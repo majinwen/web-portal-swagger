@@ -1,95 +1,5 @@
 [
   {
-    "districtId": 105036,
-    "children": [
-      {
-        "circle": 1379,
-        "name": "永定门"
-      },
-      {
-        "circle": 1387,
-        "name": "东直门"
-      },
-      {
-        "circle": 1392,
-        "name": "朝阳门内"
-      },
-      {
-        "circle": 1395,
-        "name": "灯市口"
-      },
-      {
-        "circle": 1399,
-        "name": "东四十条"
-      },
-      {
-        "circle": 1401,
-        "name": "东花市"
-      },
-      {
-        "circle": 1402,
-        "name": "崇文门"
-      },
-      {
-        "circle": 1407,
-        "name": "王府井"
-      },
-      {
-        "circle": 1416,
-        "name": "交道口"
-      },
-      {
-        "circle": 1419,
-        "name": "和平里"
-      },
-      {
-        "circle": 1423,
-        "name": "广渠门内"
-      },
-      {
-        "circle": 1442,
-        "name": "天坛"
-      },
-      {
-        "circle": 1482,
-        "name": "龙潭湖"
-      },
-      {
-        "circle": 1495,
-        "name": "安定门"
-      },
-      {
-        "circle": 1525,
-        "name": "金宝街"
-      },
-      {
-        "circle": 1531,
-        "name": "前门"
-      },
-      {
-        "circle": 1534,
-        "name": "光明楼"
-      },
-      {
-        "circle": 1536,
-        "name": "东单"
-      },
-      {
-        "circle": 1553,
-        "name": "雍和宫"
-      },
-      {
-        "circle": 1593,
-        "name": "东四"
-      },
-      {
-        "circle": 1595,
-        "name": "北新桥"
-      }
-    ],
-    "name": "东城"
-  },
-  {
     "districtId": 105035,
     "children": [
       {
@@ -234,7 +144,7 @@
       },
       {
         "circle": 1541,
-        "name": "cbd"
+        "name": "CBD"
       },
       {
         "circle": 1543,
@@ -314,6 +224,212 @@
       }
     ],
     "name": "朝阳"
+  },
+  {
+    "districtId": 105034,
+    "children": [
+      {
+        "circle": 1456,
+        "name": "玉泉路"
+      },
+      {
+        "circle": 1458,
+        "name": "双榆树"
+      },
+      {
+        "circle": 1461,
+        "name": "清河"
+      },
+      {
+        "circle": 1462,
+        "name": "五道口"
+      },
+      {
+        "circle": 1465,
+        "name": "西北旺"
+      },
+      {
+        "circle": 1467,
+        "name": "万柳"
+      },
+      {
+        "circle": 1473,
+        "name": "中关村"
+      },
+      {
+        "circle": 1474,
+        "name": "苏州桥"
+      },
+      {
+        "circle": 1476,
+        "name": "知春路"
+      },
+      {
+        "circle": 1480,
+        "name": "上地"
+      },
+      {
+        "circle": 1506,
+        "name": "万泉河"
+      },
+      {
+        "circle": 1513,
+        "name": "增光路"
+      },
+      {
+        "circle": 1516,
+        "name": "小西天"
+      },
+      {
+        "circle": 1517,
+        "name": "田村"
+      },
+      {
+        "circle": 1532,
+        "name": "西二旗"
+      },
+      {
+        "circle": 1533,
+        "name": "颐和园"
+      },
+      {
+        "circle": 1535,
+        "name": "五棵松"
+      },
+      {
+        "circle": 1547,
+        "name": "皂君庙"
+      },
+      {
+        "circle": 1548,
+        "name": "魏公村"
+      },
+      {
+        "circle": 1551,
+        "name": "牡丹园"
+      },
+      {
+        "circle": 1552,
+        "name": "定慧寺"
+      },
+      {
+        "circle": 1555,
+        "name": "西三旗"
+      },
+      {
+        "circle": 1556,
+        "name": "马连洼"
+      },
+      {
+        "circle": 1557,
+        "name": "厂洼"
+      },
+      {
+        "circle": 1558,
+        "name": "二里庄"
+      },
+      {
+        "circle": 1559,
+        "name": "学院路"
+      },
+      {
+        "circle": 1561,
+        "name": "军博"
+      },
+      {
+        "circle": 1563,
+        "name": "永定路"
+      },
+      {
+        "circle": 1565,
+        "name": "蓟门桥"
+      },
+      {
+        "circle": 1572,
+        "name": "北太平庄"
+      },
+      {
+        "circle": 1574,
+        "name": "四季青"
+      },
+      {
+        "circle": 1578,
+        "name": "航天桥"
+      },
+      {
+        "circle": 1579,
+        "name": "北京大学"
+      },
+      {
+        "circle": 1581,
+        "name": "温泉镇"
+      },
+      {
+        "circle": 1583,
+        "name": "车道沟"
+      },
+      {
+        "circle": 1584,
+        "name": "公主坟"
+      },
+      {
+        "circle": 1586,
+        "name": "西直门外"
+      },
+      {
+        "circle": 1589,
+        "name": "曙光"
+      },
+      {
+        "circle": 1592,
+        "name": "紫竹桥"
+      },
+      {
+        "circle": 1596,
+        "name": "农大"
+      },
+      {
+        "circle": 1598,
+        "name": "八里庄"
+      },
+      {
+        "circle": 1599,
+        "name": "西山"
+      },
+      {
+        "circle": 1606,
+        "name": "世纪城"
+      },
+      {
+        "circle": 1611,
+        "name": "香山"
+      },
+      {
+        "circle": 1612,
+        "name": "安宁庄"
+      },
+      {
+        "circle": 1617,
+        "name": "花园桥"
+      },
+      {
+        "circle": 1624,
+        "name": "圆明园"
+      },
+      {
+        "circle": 1627,
+        "name": "甘家口"
+      },
+      {
+        "circle": 1629,
+        "name": "马甸"
+      },
+      {
+        "circle": 1653,
+        "name": "万寿寺"
+      }
+    ],
+    "name": "海淀"
   },
   {
     "districtId": 105040,
@@ -468,6 +584,96 @@
       }
     ],
     "name": "丰台"
+  },
+  {
+    "districtId": 105036,
+    "children": [
+      {
+        "circle": 1379,
+        "name": "永定门"
+      },
+      {
+        "circle": 1387,
+        "name": "东直门"
+      },
+      {
+        "circle": 1392,
+        "name": "朝阳门内"
+      },
+      {
+        "circle": 1395,
+        "name": "灯市口"
+      },
+      {
+        "circle": 1399,
+        "name": "东四十条"
+      },
+      {
+        "circle": 1401,
+        "name": "东花市"
+      },
+      {
+        "circle": 1402,
+        "name": "崇文门"
+      },
+      {
+        "circle": 1407,
+        "name": "王府井"
+      },
+      {
+        "circle": 1416,
+        "name": "交道口"
+      },
+      {
+        "circle": 1419,
+        "name": "和平里"
+      },
+      {
+        "circle": 1423,
+        "name": "广渠门内"
+      },
+      {
+        "circle": 1442,
+        "name": "天坛"
+      },
+      {
+        "circle": 1482,
+        "name": "龙潭湖"
+      },
+      {
+        "circle": 1495,
+        "name": "安定门"
+      },
+      {
+        "circle": 1525,
+        "name": "金宝街"
+      },
+      {
+        "circle": 1531,
+        "name": "前门"
+      },
+      {
+        "circle": 1534,
+        "name": "光明楼"
+      },
+      {
+        "circle": 1536,
+        "name": "东单"
+      },
+      {
+        "circle": 1553,
+        "name": "雍和宫"
+      },
+      {
+        "circle": 1593,
+        "name": "东四"
+      },
+      {
+        "circle": 1595,
+        "name": "北新桥"
+      }
+    ],
+    "name": "东城"
   },
   {
     "districtId": 105037,
@@ -756,212 +962,6 @@
       }
     ],
     "name": "大兴"
-  },
-  {
-    "districtId": 105034,
-    "children": [
-      {
-        "circle": 1456,
-        "name": "玉泉路"
-      },
-      {
-        "circle": 1458,
-        "name": "双榆树"
-      },
-      {
-        "circle": 1461,
-        "name": "清河"
-      },
-      {
-        "circle": 1462,
-        "name": "五道口"
-      },
-      {
-        "circle": 1465,
-        "name": "西北旺"
-      },
-      {
-        "circle": 1467,
-        "name": "万柳"
-      },
-      {
-        "circle": 1473,
-        "name": "中关村"
-      },
-      {
-        "circle": 1474,
-        "name": "苏州桥"
-      },
-      {
-        "circle": 1476,
-        "name": "知春路"
-      },
-      {
-        "circle": 1480,
-        "name": "上地"
-      },
-      {
-        "circle": 1506,
-        "name": "万泉河"
-      },
-      {
-        "circle": 1513,
-        "name": "增光路"
-      },
-      {
-        "circle": 1516,
-        "name": "小西天"
-      },
-      {
-        "circle": 1517,
-        "name": "田村"
-      },
-      {
-        "circle": 1532,
-        "name": "西二旗"
-      },
-      {
-        "circle": 1533,
-        "name": "颐和园"
-      },
-      {
-        "circle": 1535,
-        "name": "五棵松"
-      },
-      {
-        "circle": 1547,
-        "name": "皂君庙"
-      },
-      {
-        "circle": 1548,
-        "name": "魏公村"
-      },
-      {
-        "circle": 1551,
-        "name": "牡丹园"
-      },
-      {
-        "circle": 1552,
-        "name": "定慧寺"
-      },
-      {
-        "circle": 1555,
-        "name": "西三旗"
-      },
-      {
-        "circle": 1556,
-        "name": "马连洼"
-      },
-      {
-        "circle": 1557,
-        "name": "厂洼"
-      },
-      {
-        "circle": 1558,
-        "name": "二里庄"
-      },
-      {
-        "circle": 1559,
-        "name": "学院路"
-      },
-      {
-        "circle": 1561,
-        "name": "军博"
-      },
-      {
-        "circle": 1563,
-        "name": "永定路"
-      },
-      {
-        "circle": 1565,
-        "name": "蓟门桥"
-      },
-      {
-        "circle": 1572,
-        "name": "北太平庄"
-      },
-      {
-        "circle": 1574,
-        "name": "四季青"
-      },
-      {
-        "circle": 1578,
-        "name": "航天桥"
-      },
-      {
-        "circle": 1579,
-        "name": "北京大学"
-      },
-      {
-        "circle": 1581,
-        "name": "温泉镇"
-      },
-      {
-        "circle": 1583,
-        "name": "车道沟"
-      },
-      {
-        "circle": 1584,
-        "name": "公主坟"
-      },
-      {
-        "circle": 1586,
-        "name": "西直门外"
-      },
-      {
-        "circle": 1589,
-        "name": "曙光"
-      },
-      {
-        "circle": 1592,
-        "name": "紫竹桥"
-      },
-      {
-        "circle": 1596,
-        "name": "农大"
-      },
-      {
-        "circle": 1598,
-        "name": "八里庄"
-      },
-      {
-        "circle": 1599,
-        "name": "西山"
-      },
-      {
-        "circle": 1606,
-        "name": "世纪城"
-      },
-      {
-        "circle": 1611,
-        "name": "香山"
-      },
-      {
-        "circle": 1612,
-        "name": "安宁庄"
-      },
-      {
-        "circle": 1617,
-        "name": "花园桥"
-      },
-      {
-        "circle": 1624,
-        "name": "圆明园"
-      },
-      {
-        "circle": 1627,
-        "name": "甘家口"
-      },
-      {
-        "circle": 1629,
-        "name": "马甸"
-      },
-      {
-        "circle": 1653,
-        "name": "万寿寺"
-      }
-    ],
-    "name": "海淀"
   },
   {
     "districtId": 105044,

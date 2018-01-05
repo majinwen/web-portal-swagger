@@ -31,5 +31,4 @@ public class HousingProjectServiceImpl implements HousingProjectService {
 //        return projInfoMapper.selectProjInfoList(query);
 //    }
 
-
 }

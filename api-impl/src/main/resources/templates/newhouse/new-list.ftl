@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>新房列表</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden"  value="/newhouse/searchNewHouse">
-    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
-    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
 </header>
 <section class="category-box">
     <ul id="category-tab">
@@ -40,12 +41,12 @@
             <div class="price-list">
                 <ul>
                     <li data-begin-price="" data-end-price="" class="current">不限</li>
-                    <li data-begin-price="0.0" data-end-price="20000.0">20000元/㎡以下</li>
-                    <li data-begin-price="20000.0" data-end-price="30000.0">20000-30000元/㎡</li>
-                    <li data-begin-price="30000.0" data-end-price="40000.0">30000-40000元/㎡</li>
-                    <li data-begin-price="40000.0" data-end-price="60000.0">40000-60000元/㎡</li>
-                    <li data-begin-price="60000.0" data-end-price="80000.0">60000-80000元/㎡</li>
-                    <li data-begin-price="80000.0" data-end-price="800000.0">80000元/㎡以上</li>
+                    <li data-begin-price="0.0" data-end-price="20000.0">2万元以下</li>
+                    <li data-begin-price="20000.0" data-end-price="30000.0">2-3万元</li>
+                    <li data-begin-price="30000.0" data-end-price="40000.0">3-4万元</li>
+                    <li data-begin-price="40000.0" data-end-price="60000.0">4-6万元</li>
+                    <li data-begin-price="60000.0" data-end-price="80000.0">6-8万元</li>
+                    <li data-begin-price="80000.0" data-end-price="800000.0">8万元以上</li>
                 </ul>
             </div>
         </div>
@@ -58,7 +59,7 @@
                     <li data-type="2">二居 <i></i></li>
                     <li data-type="3">三居 <i></i></li>
                     <li data-type="4">四居 <i></i></li>
-                    <li data-type="5">五居及五居以上 <i></i></li>
+                    <li data-type="5">五居及以上 <i></i></li>
                 </ul>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button type-submit" id="typeSubmit">确定</a>
@@ -73,18 +74,22 @@
                     <dd>
                         <span data-info="1">住宅</span>
                         <span data-info="2">别墅</span>
-                        <span data-info="3">写字楼</span>
+
+                        <#--<span data-info="3">写字楼</span>
                         <span data-info="4">商铺</span>
-                        <span data-info="5">底商</span>
+                        <span data-info="5">底商</span>-->
                     </dd>
                 </dl>
                 <dl>
                     <dt data-type="houseAreaSize">面积</dt>
                     <dd>
-                        <span data-info="[0-60]">60以下</span>
-                        <span data-info="[60-90]">60-90</span>
-                        <span data-info="[90-120]">90-120</span>
-                        <span data-info="[120-1000]">120以上</span>
+                        <span data-info="[0-60]">60平以下</span>
+                        <span data-info="[60-90]">60-90平</span>
+                        <span data-info="[90-110]">90-110平</span>
+                        <span data-info="[110-130]">110-130平</span>
+                        <span data-info="[130-150]">130-150平</span>
+                        <span data-info="[150-200]">150-200平</span>
+                        <span data-info="[200-10000]">200平以上</span>
                     </dd>
                 </dl>
                 <dl>
@@ -142,38 +147,61 @@
     </div>
     </div>
 </section>
-<section>
+<section id="result-section">
     <ul id="valueList"><#if builds?exists>
         <#list builds as map>
-            <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <#if map['building_imgs']?exists>
-                            <#assign imgt = map['building_imgs']?split(",")>
-                            <#if imgt[0]?? && imgt[0] != ''><img src="${qiniuimage}/${imgt[0]}" alt="${map['building_name']}">
-                                <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <#if map['building_title_img']?exists>
+                            <#assign imgt = map['building_title_img']?split(",")>
+                            <#if imgt[0]?? && imgt[0] != ''>
+                                <img src="${qiniuimage}/${imgt[0]}-tt400x300" alt="${map['building_name']}">
+                            <#else>
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
                             </#if>
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1"><#if map['building_name']?exists><span>${map['building_name']}</span><#else>暂无</#if>
-                            <#if map['property_type']?exists><em>${map['property_type']}</em></#if>
+                        <h3 class="cont-block-1">
+                            <span class="ellipsis">${map['building_name']}</span>
+                            <#if map['property_type']?exists>
+                                <em>${map['property_type']}</em>
+                            </#if>
                         </h3>
-                        <p class="cont-block-2"><em class="high-light-red"><#if map['average_price']?exists && (map['average_price']>0)>${map['average_price']}元/㎡<#else>售价待定</#if></em></p>
+                        <p class="cont-block-2">
+                            <em class="high-light-red">
+                                <#if map['average_price']?exists && (map['average_price']>0)>
+                                    ${map['average_price']}元/㎡
+                                <#else>
+                                    售价待定
+                                </#if>
+                            </em>
+                        </p>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>
-                            <#assign rounditems = map['nearsubway']?split("$")>
-                            距离${rounditems[1]!""}[${rounditems[0]!'暂无'}] ${rounditems[2]?number/1000}km
+                                <#assign rounditems = map['nearsubway']?split("$")>
+                                <#if rounditems[2]?number gt 1000>
+                                    <#assign x = rounditems[2]?number/1000>
+                                    距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
+                                <#else>
+                                    距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                                </#if>
                             <#else>
-                                <#if map['district_name']?exists>${map['district_name']}</#if><#if map['house_min_area']?exists&&map['house_max_area']?exists>/${map['house_min_area']}㎡—${map['house_max_area']}㎡</#if>
+                                <#if map['district_name']?exists>
+                                    ${map['district_name']}
+                                </#if>
+                                <#if map['house_min_area']?exists&&map['house_max_area']?exists>
+                                    / ${map['house_min_area']}㎡-${map['house_max_area']}㎡
+                                </#if>
                             </#if>
                         </p>
                         <div class="cont-block-4 house-labelling gray middle">
                             <#if  map['building_tags']?exists>
-                                <#assign item =  map['building_tags']>
+                                <#assign item = map['building_tags']>
                                 <#list item as itemValue>
-                                    <#if itemValue?exists>
+                                    <#if itemValue?exists && itemValue_index<3>
                                         <span>${itemValue}</span>
                                     </#if>
                                 </#list>
@@ -193,9 +221,9 @@
             </a></li>
         </#list>
     </#if></ul>
+    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
-<#include "../user.ftl">
-<#include "../search.ftl">
+
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
@@ -207,50 +235,56 @@
     </#if>
     </ul>
 </div>
-<script src="${staticurl}/js/main.js?version=123"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+
+<#include "../user.ftl">
+<#include "../search.ftl">
+
 <script id="listContent" type="text/html">
 {{each data}}
-<li><a class="list-item new" href="/newhouse/getNewHouseDetails?id={{$value.building_name_id}}">
+<li><a class="list-item new" href="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>">
+
     <div class="clear">
         <div class="list-item-img-box">
             {{if ($value.building_imgs) != ''}}
-                <img src="${qiniuimage}/{{$value.building_imgs}}" alt="{{$value.building_name}}">
+                <img src="${qiniuimage}/{{$value.building_title_img}}-tt400x300" alt="{{$value.building_name}}">
             {{else}}
-                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.building_name}}">
             {{/if}}
         </div>
         <div class="list-item-cont">
             <span hidden="hidden">{{$value.building_name_id}}</span>
             <h3 class="cont-block-1">
-                <span>{{$value.building_name}}</span>
+                <span class="ellipsis">{{$value.building_name}}</span>
                 <em>{{$value.property_type}}</em>
             </h3>
             <p class="cont-block-2">
                 <em class="high-light-red">
-                    {{if $value.average_price != null}}
-                        {{if $value.average_price != 0}}
-                            {{$value.average_price}}元/㎡
-                        {{else}}
-                            暂无
-                        {{/if}}
+                    {{if $value.average_price != null && $value.average_price > 0}}
+                        {{$value.average_price}}元/㎡
                     {{else}}
-                        暂无
+                        售价待定
                     {{/if}}
                 </em>
             </p>
             <p class="cont-block-3">
-                {{$value.district_name}}
-                {{if $value.house_min_area != null}}
-                    {{if $value.house_max_area != null}}
-                        /{{$value.house_min_area}}㎡—{{$value.house_max_area}}㎡
+                {{if $value.nearsubway}}
+                    {{if $value.subwayDesc}}
+                        {{$value.subwayDesc}}
+                    {{/if}}
+                {{else}}
+                    {{$value.district_name}}
+                    {{if $value.house_min_area != null}}
+                        {{if $value.house_max_area != null}}
+                            / {{$value.house_min_area}}㎡-{{$value.house_max_area}}㎡
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </p>
             <div class="cont-block-4 house-labelling gray middle">
-                {{each $value.building_tags}}
-                    <span>{{$value}}</span>
+                {{each $value.building_tags tag i}}
+                    {{if i<3}}
+                        <span>{{tag}}</span>
+                    {{/if}}
                 {{/each}}
             </div>
             <div class="cont-block-sale">
@@ -267,5 +301,11 @@
 </a></li>
 {{/each}}
 </script>
+
 </body>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/dropload.min.js"></script>
+<script src="${staticurl}/js/list-category.js"></script>
+<script src="${staticurl}/js/template-web.js"></script>
 </html>

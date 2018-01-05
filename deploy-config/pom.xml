@@ -110,6 +110,7 @@
                 <environment>test</environment>
             </properties>
             <activation>
+
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>

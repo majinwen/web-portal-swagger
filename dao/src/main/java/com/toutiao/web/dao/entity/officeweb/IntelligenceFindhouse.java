@@ -1,11 +1,13 @@
 package com.toutiao.web.dao.entity.officeweb;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class IntelligenceFindhouse {
     /**
      * 序号
@@ -751,5 +753,9 @@ public class IntelligenceFindhouse {
      * 明星楼盘搜索量
      */
     private Integer starProperty;
+    /**
+     * 附近的桥
+     */
+//    private String nearbyQiao;
 
 }

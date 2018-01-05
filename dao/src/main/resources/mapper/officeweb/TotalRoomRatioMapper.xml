@@ -5,7 +5,7 @@
         <result column="total" jdbcType="NUMERIC" property="total"/>
         <result column="room" jdbcType="INTEGER" property="room"/>
         <result column="ratio" jdbcType="NUMERIC" property="ratio"/>
-        <result column="user_portrayal_type" jdbcType="INTEGER" property="userType"/>
+        <result column="user_portrayal_type" jdbcType="INTEGER" property="userPortrayalType"/>
     </resultMap>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
     insert into total_room_ratio (total, room, ratio, 
@@ -39,27 +39,46 @@
             <if test="ratio != null">
                 #{ratio,jdbcType=NUMERIC},
             </if>
-            <if test="userType != null">
+            <if test="userPortrayalType != null">
                 #{userPortrayalType,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
     <!--
-
        List<Double> selectByTotal(@PathVariable("plotTotal") Double plotTotal);
-
-
     -->
-    <select id="selectByTotal" resultType="java.lang.Double" parameterType="java.lang.Double">
-
-     select ratio from total_room_ratio where <![CDATA[total<= #{plotTotal}
-        ]]>
+    <select id="selectByTotal" resultType="java.lang.Double">
+        select ratio from total_room_ratio
+        <where>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
     </select>
-    <!--TotalRoomRatio selectByTotalAndCategory(@PathVariable("plotTotal")
-           Double plotTotal,@PathVariable("categoryId") Integer category_id);-->
-
-    <select id="selectByTotalAndCategory" resultType="com.toutiao.web.dao.entity.officeweb.TotalRoomRatio">
-        select ratio,userPortrayalType from total_room_ratio where  room=#{category_id} and  <![CDATA[total<= #{plotTotal}]]>
+    <!--TotalRoomRatio selectByTotalAndCategory(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd, @Param("categoryId") Integer category_id);-->
+    <select id="selectByTotalAndCategory" resultMap="BaseResultMap">
+        select * from total_room_ratio
+        <where>
+            <if test="categoryId!=null">
+                room=#{categoryId}
+            </if>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
+        ORDER BY total DESC
+    </select>
+    <select id="selectByTotalAndCategory1" resultMap="BaseResultMap">
+        select * from total_room_ratio
+        <where>
+            <if test="categoryId!=null">
+                <![CDATA[ room >=#{categoryId}]]>
+            </if>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
+        ORDER BY total DESC
     </select>
 
 </mapper>

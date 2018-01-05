@@ -4,12 +4,11 @@ import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface PriceTrendMapper extends BaseDao {
-    int insert(PriceTrend record);
 
-    int insertSelective(PriceTrend record);
+    List<PriceTrend> newhouseTrendList(@Param("buildingId")Integer buildingId, @Param("districtId")Integer districtId, @Param("areaId")Integer areaId);
 
-     List<PriceTrend> searchPriceTrendList(PriceTrend priceTrend);
 
 }

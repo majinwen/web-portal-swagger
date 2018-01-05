@@ -2,6 +2,9 @@ package com.toutiao.web.domain.intelligenceFh;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class IntelligenceFh {
 
@@ -16,15 +19,11 @@ public class IntelligenceFh {
     /**
      * 首付
      */
-    private Double downPayMent;
+    private String downPayMent;
     /**
      * 月供
      */
-    private  Double monthPayMent;
-    /**
-     * 总价
-     */
-    private Double totalPrice;
+    private  String monthPayMent;
 
     /**
      * 用户类型(1--自住 刚需,2--自住 改善,3--出租 投资)
@@ -40,16 +39,16 @@ public class IntelligenceFh {
      */
     private Integer userPortrayalType;
     /**
-     * 教育配套标签标记(有true,无false)
+     * 教育配套标签标记(有1,无0)
      */
-    private Boolean schoolFlag;
+    private Integer schoolFlag=0;
 
-    //医疗配套标签标记(有true,无false)
+    //医疗配套标签标记(有1,无0)
 
-    private Boolean hospitalFlag;
+    private Integer hospitalFlag=0;
 
     //用户填入的页面总价信息
-    private Double preconcTotal;
+    private String preconcTotal;
 
     /**
      * 户型
@@ -58,7 +57,7 @@ public class IntelligenceFh {
     /**
      * 是否有老人(0-无，1-有)
      */
-    private Integer hasOldMan;
+    private Integer hasOldman;
     /**
      * 是否有小孩（0-（无、10+岁） ，1-（0-3岁），2-（4-10岁））
      */
@@ -70,11 +69,16 @@ public class IntelligenceFh {
     /**
      * 用户与历史数据百分比
      */
-    private String ratio;
+    private Double ratio;
 
     /**
      * 用户传递的区域id
      */
     private String districtId;
+
+    /**
+     * 区域集合
+     */
+    private List<DistictInfo> distictInfo;
 
 }

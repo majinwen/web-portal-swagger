@@ -8,9 +8,9 @@ import java.util.Date;
 @Data
 public class IntelligenceFhPricetrend {
     /**
-     * 价格
+     * 最低价格
      */
-    private Integer totalPriceRange;
+    private Integer minTotalPrice;
 
     /**
      * 单价
@@ -26,5 +26,10 @@ public class IntelligenceFhPricetrend {
      * 市场总价
      */
     private BigDecimal totalPrice;
+
+    /**
+     * 最高价格
+     */
+    private Integer maxTotalPrice;
 
 }

@@ -2,8 +2,6 @@ package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
-import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -18,11 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/{citypath}/xiaoqu")
 public class PlotConterller {
     @Autowired
     private PlotService plotService;
@@ -33,20 +31,20 @@ public class PlotConterller {
     @Autowired
     private PriceTrendService priceTrendService;
 
-    //(查询附近小区和(距离))
-    @RequestMapping("/fingNearVillageAndDistance")
-    @ResponseBody
-    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
-        List villageList = null;
-        Double lonx = Double.valueOf(lon);
-        Double laty = Double.valueOf(lat);
-        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
-        model.addAttribute("villageList", villageList);
-        return "plot-list";
-    }
+//    //(查询附近小区和(距离))
+//    @RequestMapping("/fingNearVillageAndDistance")
+//    @ResponseBody
+//    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
+//        List villageList = null;
+//        Double lonx = Double.valueOf(lon);
+//        Double laty = Double.valueOf(lat);
+//        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
+//        model.addAttribute("villageList", villageList);
+//        return "plot-list";
+//    }
 
     //根据条件查询小区
-    @RequestMapping("/findVillageByConditions")
+    @RequestMapping("")
     public String findVillageByConditions(VillageRequest villageRequest, Model model) {
         if (villageRequest.getSort() != null) {
             model.addAttribute("sort", Integer.parseInt(villageRequest.getSort()));
@@ -62,28 +60,23 @@ public class PlotConterller {
 
 
     //小区分页
-    @RequestMapping("/villagePage")
+    @RequestMapping(value = {""},produces="application/json") //villagePage
     @ResponseBody
     public NashResult villagePage(VillageRequest villageRequest) {
-        List villageList = null;
+        List<VillageResponse> villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
-
-        for (int i = 0; i < villageList.size(); i++) {
-            HashMap<String, Object> itemMap = (HashMap<String, Object>) villageList.get(i);
-            String imginfo = (String) itemMap.get("building_imgs");
-            if (StringUtil.isNotNullString(imginfo)) {
-                String[] imgs = imginfo.split(",");
-                itemMap.put("building_imgs", imgs[0]);
-                villageList.set(i, itemMap);
+        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
+            for (VillageResponse polt : villageList){
+                String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
+                polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
             }
         }
-
         return NashResult.build(villageList);
     }
 
 
     //小区详情页
-    @RequestMapping("/villageDetail")
+    @RequestMapping("/{id}.html") //villageDetail
     public String villageDetail(VillageRequest villageRequest, NewHouseQuery newHouseQuery, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
         if (villageList != null && villageList.size() != 0) {
@@ -98,16 +91,20 @@ public class PlotConterller {
             model.addAttribute("nearvillage", nearvillage);
 
             //走势图
-            PriceTrend priceTrend = new PriceTrend();
-            priceTrend.setBuildingId(village.getId());
-            priceTrend.setPropertyType((short) 0);
-            Map<String, List<PriceTrend>> stringListMap = priceTrendService.priceTrendList(priceTrend);
+            Integer discId=null;
+            String sdiscId = village.getAreaId();
+            if (sdiscId != null){
+                discId = Integer.parseInt(sdiscId);
+            }
+
+            Integer areaId=null;
+            String sareaId = village.getTradingAreaId();
+            if (sareaId != null){
+                areaId = Integer.parseInt(sareaId);
+            }
+
+            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
             model.addAttribute("tradeline", stringListMap);
-
-            //月份
-            List<String>dateList= DateUtil.oneYearList();
-            model.addAttribute("xlist",dateList);
-
 
             //推荐小区好房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
@@ -127,20 +124,20 @@ public class PlotConterller {
     }
 
 
-    /**
-     * 小区待售页
-     *
-     * @param model
-     * @return
-     */
-    @RequestMapping("/plotSale")
-    public String sale(Model model) {
-        model.addAttribute("user", "asds");
-        return "plot/plot-sale";
-    }
+//    /**
+//     * 小区待售页
+//     *
+//     * @param model
+//     * @return
+//     */
+//    @RequestMapping("/plotSale")
+//    public String sale(Model model) {
+//        model.addAttribute("user", "asds");
+//        return "plot/plot-sale";
+//    }
 
     //基本信息
-    @RequestMapping("/plotParameter")
+    @RequestMapping("/{id}/desc.html")
     public String parameter(VillageRequest villageRequest, Model model) {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
@@ -149,7 +146,7 @@ public class PlotConterller {
     }
 
     //获取小区地图
-    @RequestMapping("/getPlotMap")
+    @RequestMapping("/{id}/map.html")
     public String plotMap(VillageRequest villageRequest, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
         VillageResponse village = (VillageResponse) villageList.get(0);

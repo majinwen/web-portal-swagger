@@ -8,6 +8,7 @@ import com.toutiao.web.service.plot.PlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -23,18 +24,21 @@ public class HomePageController {
     @Autowired
     private PlotService plotService;
 
-
+    @RequestMapping(value={""})
+    public String index(){
+        return "redirect:/bj";
+    }
     /**
      * 大首页
      * @param model
      * @return
      */
-    @RequestMapping("/index")
-    public String index(Model model, VillageRequest villageRequest){
+    @RequestMapping(value={"{citypath}"})
+    public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
         NewHouseQuery newHouseQuery=new NewHouseQuery();
         newHouseQuery.setSort(0);
-        newHouseQuery.setPageNum(1);
-        newHouseQuery.setPageSize(4);
+//        newHouseQuery.setPageNum(1);
+//        newHouseQuery.setPageSize(5);
         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
         List villageList = plotService.findVillageByConditions(villageRequest);
         model.addAttribute("villageList", villageList);

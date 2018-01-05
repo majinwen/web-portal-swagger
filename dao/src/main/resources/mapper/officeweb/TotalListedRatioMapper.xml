@@ -37,9 +37,14 @@
             </if>
         </trim>
     </insert>
-    <!--List<TotalListedRatio> selectByTotalPrice(@PathVariable("plotTotal") Double plotTotal);-->
-    <select id="selectByTotalPrice" parameterType="java.lang.Double" resultType="com.toutiao.web.dao.entity.officeweb.TotalListedRatio">
-        SELECT ratio from total_listed_ratio where  <![CDATA[total<= #{plotTotal}]]>
-  </select>
+    <!--Double selectByTotalPrice(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);;-->
+    <select id="selectByTotalPrice" resultType="java.lang.Double">
+        SELECT sum(ratio) from total_listed_ratio
+        <where>
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[#{plotTotalFirst}<=total and total <= #{plotTotalEnd}]]>
+            </if>
+        </where>
+    </select>
 
 </mapper>

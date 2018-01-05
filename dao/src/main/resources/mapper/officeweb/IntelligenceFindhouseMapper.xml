@@ -151,40 +151,113 @@
         <result column="subway_distince" property="subwayDistince" jdbcType="VARCHAR"/>
         <result column="proj_layout" property="projLayout" jdbcType="VARCHAR"/>
         <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
+        <!--<result column="nearby_qiao" property="nearbyQiao" jdbcType="VARCHAR"/>-->
     </resultMap>
     <sql id="intelligenceFindHouse">
-        newcode,projname,coord_x,coord_y,purposearea,price,esf_price,finishdate,virescencerate,park_radio,air_quality,lift_door_radio,
-        heating_mode,propertyfee,car_rent_price,water_supply,power_supply,star_property
+        newcode,n_or_e,projname,finishdate,virescencerate,lift_door_radio,propertyfee,heating_mode,water_supply,electric_supply,
+        car_rent_price, car_sell_price,newh_range_s,newh_range_e,village_range_s,village_range_e,price,
+        esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter
+        <!--,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway-->
     </sql>
-    <select id="selectByTypeTwoA"
+
+    <sql id="queryInfo">
+        <where>
+            1=1
+            <if test="minTotalPrice != null and maxTotalPrice!=null">
+                AND <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} ]]>
+            </if>
+            <if test="layOut != null">
+                AND <![CDATA[  layout_range @> '{${layOut}}' ]]>
+            </if>
+            <if test="districtId != null">
+                AND <![CDATA[   district_id IN (${districtId}) ]]>
+            </if>
+            <if test="school != null">
+                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
+            </if>
+            <if test="hospital != null">
+                AND <![CDATA[  has_medical = ${hospital} ]]>
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryByStarProperty"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where  <![CDATA[ ring_road<=5 ]]>
+        <include refid="queryInfo"/>
+        ORDER BY star_property DESC nulls LAST
+        LIMIT 200
+    </select>
+    <select id="queryByUserType1A"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryInfo"/>
+        LIMIT 100
+    </select>
+    <select id="queryByUserType1B"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType1C"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
-        LIMIT 200
+        LIMIT 100
     </select>
-    <select id="selectByTypeTwoB"
+    <select id="queryByUserType2A"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where <![CDATA[ ring_road <= 4 ]]> AND propertyfee > 1 AND park_radio IS NOT NULL
-        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
-        LIMIT 200
+        <include refid="queryInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
+        LIMIT 100
     </select>
-    <select id="selectByTypeTwoC"
+    <select id="queryByUserType2B"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
         select
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
-        where <![CDATA[ ring_road <= 4 ]]> AND propertyfee > 2 AND to_number ( park_radio ,'9999') > 10
+        <include refid="queryInfo"/>
         ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
-        LIMIT 200
+        LIMIT 100
+    </select>
+    <select id="queryByUserType2C"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType3A"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryInfo"/>
+        LIMIT 100
     </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
     insert into intelligence_findhouse (newcode, n_or_e, projname, 
@@ -236,7 +309,7 @@
       nearby_market_count, nearby_road, nearby_road_meter, 
       min_total_price, max_total_price, layout_range, 
       nearest_subway_desc, subway_line, subway_station, 
-      subway_distince, proj_layout)
+      subway_distince, proj_layout,star_property,nearby_qiao)
     values (#{newcode,jdbcType=INTEGER}, #{nOrE,jdbcType=SMALLINT}, #{projname,jdbcType=VARCHAR}, 
       #{nickname,jdbcType=VARCHAR}, #{installment,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
       #{addressInfo,jdbcType=VARCHAR}, #{housefeature,jdbcType=VARCHAR}, #{projFeature,jdbcType=VARCHAR}, 
@@ -286,7 +359,7 @@
       #{nearbyMarketCount,jdbcType=INTEGER}, #{nearbyRoad,jdbcType=VARCHAR}, #{nearbyRoadMeter,jdbcType=INTEGER}, 
       #{minTotalPrice,jdbcType=NUMERIC}, #{maxTotalPrice,jdbcType=NUMERIC}, #{layoutRange,jdbcType=ARRAY}, 
       #{nearestSubwayDesc,jdbcType=VARCHAR}, #{subwayLine,jdbcType=ARRAY}, #{subwayStation,jdbcType=ARRAY}, 
-      #{subwayDistince,jdbcType=VARCHAR}, #{projLayout,jdbcType=VARCHAR})
+      #{subwayDistince,jdbcType=VARCHAR}, #{projLayout,jdbcType=VARCHAR},#{starProperty,jdbcType=INTEGER},#{nearbyQiao,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">
         insert into intelligence_findhouse
@@ -735,6 +808,12 @@
             <if test="projLayout != null">
                 proj_layout,
             </if>
+            <if test="starProperty != null">
+                star_property,
+            </if>
+            <if test="nearbyQiao != null">
+                nearby_qiao,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="newcode != null">
@@ -1181,87 +1260,64 @@
             <if test="projLayout != null">
                 #{projLayout,jdbcType=VARCHAR},
             </if>
+            <if test="starProperty != null">
+                #{starProperty,jdbcType=INTEGER},
+            </if>
+            <if test="nearbyQiao != null">
+                #{nearbyQiao,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
-    <!--<sql id="where">-->
-    <!--&lt;!&ndash; ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 &ndash;&gt;-->
-    <!--<where>-->
-    <!--1 = 1-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-    <!--<if test="@com.toutiao.web.common.util.Ognl@isNotEmpty(id)">-->
-    <!--AND id = #{id}-->
-    <!--</if>-->
-
-
-    <!--</where>-->
-    <!--</sql>-->
-    <!--int queryPlotCount(Double plotTotal);-->
+    <!--int queryPlotCount(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);;-->
     <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
-    select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-        max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-
-
-
-
-        ]]>
+        select count(*) from intelligence_findhouse
+        WHERE
+        1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+        </if>
     </select>
-
     <!--
        int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
     -->
-    <select id="queryPlotCountByCategoryAndPrice" resultType="java.lang.Integer">
-    select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-          and layout_range @> {#{categoryId}}
-
-
-
-
-
-        ]]>
+    <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Double" resultType="java.lang.Integer">
+        select count(*) from intelligence_findhouse
+        WHERE 1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+        </if>
+        <if test="categoryId!=null">
+            and layout_range @> ARRAY[#{categoryId}]
+        </if>
+    </select>
+    <!--DistictInfo queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);-->
+    <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
+        select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
+        WHERE 1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+        </if>
+        <if test="categoryId!=null">
+            and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
+        </if>
 
     </select>
-    <!--int queryPlotCountByCategoryAndPriceAndDistict(@PathVariable("plotTotal") Double plotTotal,
-      @PathVariable("categoryId")Integer categoryId,@PathVariable("distinctId")String distinctId);-->
+    <!--int queryPlotCountByCategoryAndPriceAndDistict(Map map);-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
-   select count(*) from intelligence_findhouse
-    WHERE
-    <![CDATA[
-         max_total_price>=#{plotTotal} and min_total_price >=#{plotTotal}
-        and layout_range @> {#{categoryId}} and district_id=#{distinctId}
 
-
-
-
-        ]]>
-
+        select count(*) from intelligence_findhouse
+        <where>
+            1=1
+            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+                and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+            </if>
+            <if test="layOut!=null">
+                and layout_range @> ARRAY[#{layOut}]
+            </if>
+            <if test="distictId!=null">
+                and district_id=#{distictId}
+            </if>
+        </where>
     </select>
 
 

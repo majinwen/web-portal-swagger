@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>小区参数</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="module-bottom-fill"></div>
@@ -17,25 +18,27 @@
     </#if>
     <section class="primary-message">
         <div class="primary-header">
-            <h2>${village['rc']!"暂无"}</h2>
+            <h2>${village['rc']!"暂无数据"}</h2>
             <p><#if village['alias']??>别名：${village['alias']}</#if>&nbsp;</p>
             <div class="primary-header-tag house-labelling gray">
-                <#if village['label']?exists>
+                <#if village['label']?exists&&(village['label']?size gt 0)>
                      <#assign labels = village['label']>
                          <#list labels as label>
+                            <#--<#if label_index lt 3>-->
                              <span>${label!""}</span>
+                            <#--</#if>-->
                          </#list>
-                    <#else>暂无
+                    <#else>暂无数据
                 </#if>
             </div>
             <div class="isopsophic-air-index">
-                <p>空气指数：暂无</p>
-                <p>噪音指数：暂无</p>
+                <p>空气指数：暂无数据</p>
+                <p>噪音指数：暂无数据</p>
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无</#if></p>
+                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无数据</#if></p>
             </li>
         </ul>
     </section>
@@ -47,9 +50,9 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>环线位置：<#if village['ringRoad']?exists&&village['ringRoad']!=''>${village['ringRoad']}<#else >暂无</#if> </p>
-                <p>区域位置：<#if village['area']?exists&&village['area']!=''>${village['area']}<#else >暂无</#if></p>
-                <p>小区地址：<#if village['address']?exists&&village['address']!=''>${village['address']!"暂无"}<#else>暂无</#if></p>
+                <p>环线位置：<#if village['ringRoad']?exists&&village['ringRoad']!=''>${village['ringRoad']}<#else >暂无数据</#if> </p>
+                <p>区域位置：<#if village['area']?exists&&village['area']!=''>${village['area']}<#else >暂无数据</#if></p>
+                <p>小区地址：<#if village['address']?exists&&village['address']!=''>${village['address']!"暂无数据"}<#else>暂无数据</#if></p>
             </li>
         </ul>
     </section>
@@ -61,21 +64,21 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>建成年代：<#if village['abbreviatedAge']?exists&&village['abbreviatedAge']!=''>${village['abbreviatedAge']}<#else > 暂无</#if></p>
-                <p>建筑类型：<#if village['architectureType']?exists><#list village['architectureType'] as arType>
+                <p>建成年代：<#if village['abbreviatedAge']?exists&&village['abbreviatedAge']!=''>${village['abbreviatedAge']}<#else > 暂无数据</#if></p>
+                <p>建筑类型：<#if village['architectureType']?exists&&village['architectureType']?size gt 0><#list village['architectureType'] as arType>
                         ${arType!""}&nbsp;&nbsp;
-                </#list></#if>
+                </#list><#else >暂无数据</#if>
                 </p>
-                <p>产权年限：<#if village['yopr']?exists&&village['yopr']?number gt 0> ${village['yopr']}年<#else>暂无</#if></p>
-                <p>占地面积：<#if village['areaSize']?exists&&village['areaSize']?number gt 0>${village['areaSize']}㎡<#else >暂无</#if></p>
-                <p>建筑面积：<#if village['buildingAreaSize']?exists&&village['buildingAreaSize']?number gt 0 >${village['buildingAreaSize']}㎡<#else> 暂无</#if></p>
-                <p>容积率：<#if village['dimension']?exists&&village['dimension']?number gt 0 >${village['dimension']}<#else >暂无</#if></p>
-                <p>绿化率：<#if village['avgGreening']?exists&&village['avgGreening']?number gt 0>${village['avgGreening']}%<#else >暂无</#if></p>
-                <p>规划户数：<#if village['sumBuilding']?exists&&village['sumBuilding']?number gt 0>${village['sumBuilding']}栋<#else >暂无</#if>
-                    /<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户<#else >暂无</#if></p>
+                <p>产权年限：<#if village['yopr']?exists&&village['yopr']?number gt 0> ${village['yopr']}年<#else>暂无数据</#if></p>
+                <p>占地面积：<#if village['areaSize']?exists&&village['areaSize']?number gt 0>${village['areaSize']}㎡<#else >暂无数据</#if></p>
+                <p>建筑面积：<#if village['buildingAreaSize']?exists&&village['buildingAreaSize']?number gt 0 >${village['buildingAreaSize']}㎡<#else> 暂无数据</#if></p>
+                <p>容积率：<#if village['dimension']?exists&&village['dimension']?number gt 0 >${village['dimension']}<#else >暂无数据</#if></p>
+                <p>绿化率：<#if village['avgGreening']?exists&&village['avgGreening']?number gt 0>${(village['avgGreening']?number*village['sumHousehold']?number)/village['areaSize']?number}%<#else >暂无数据</#if></p>
+                <p>规划户数：<#if village['sumBuilding']?exists&&village['sumBuilding']?number gt 0>${village['sumBuilding']}栋<#else >暂无数据</#if>
+                    /<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户<#else >暂无数据</#if></p>
                <#-- <p>规划车位：EEEEEEEE</p>-->
-                <p>车位配比：<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户数<#else >暂无</#if>
-                    /<#if village['carPositionRatio']?exists>${village['carPositionRatio']}车位数<#else >暂无</#if></p>
+                <p>车位配比：<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户数<#else >暂无数据</#if>
+                    /<#if village['carPositionRatio']?exists>${village['carPositionRatio']}车位数<#else >暂无数据</#if></p>
             </li>
         </ul>
     </section>
@@ -86,13 +89,13 @@
     </div>
     <ul class="primary-item">
         <li>
-            <p>物业类型：${village['propertyTypeName']!"暂无"}</p>
-            <p>物业公司：${village['property']!"暂无"}</p>
-            <p>物业费：${village['propertyFee']!"暂无"}</p>
-            <p>供暖：${village['heatingMode']!"暂无"}</p>
-            <p>供水：${village['waterSupply']!"暂无"}</p>
-            <p>供电：${village['electricSupply']!"暂无"}</p>
-       <#--     <p>燃气：${village['heatingMode']!"暂无"}暂无</p>-->
+            <p>物业类型：<#if village['propertyTypeName']?exists&&village['propertyTypeName']!=''>${village['propertyTypeName']}<#else >暂无数据</#if></p>
+            <p>物业公司：<#if village['property']?exists&&village['property']!=''>${village['property']}<#else >暂无数据</#if></p>
+            <p>物业费：<#if village['propertyFee']?exists&&village['propertyFee']!=''>${village['propertyFee']}元/㎡·月<#else >暂无数据</#if></p>
+            <p>供暖：<#if village['heatingMode']?exists&&village['heatingMode']!=''>${village['heatingMode']}<#else >暂无数据</#if></p>
+            <p>供水：<#if village['waterSupply']?exists&&village['waterSupply']!=''>${village['waterSupply']}<#else >暂无数据</#if></p>
+            <p>供电：<#if village['electricSupply']?exists&&village['electricSupply']!=''>${village['electricSupply']}<#else >暂无数据</#if></p>
+       <#--     <p>燃气：${village['heatingMode']!"暂无数据"}暂无数据</p>-->
         </li>
     </ul>
 </section>
@@ -105,7 +108,7 @@
         </div>
     </section>
 </div>-->
-
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

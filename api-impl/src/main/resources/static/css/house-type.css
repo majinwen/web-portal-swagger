@@ -150,20 +150,10 @@ hr {
   overflow: hidden;
   text-overflow: ellipsis; }
   .house-labelling.normal span, .house-labelling.gray span {
-    height: 0.4266666667rem;
-    line-height: 0.4266666667rem;
     padding-left: 0.2666666667rem;
     padding-right: 0.2666666667rem;
-    margin-right: 0.08rem; }
-    [data-dpr="1"] .house-labelling.normal span, [data-dpr="1"] .house-labelling.gray span {
-      font-size: 10px; }
-    [data-dpr="2"] .house-labelling.normal span, [data-dpr="2"] .house-labelling.gray span {
-      font-size: 20px; }
-    [data-dpr="3"] .house-labelling.normal span, [data-dpr="3"] .house-labelling.gray span {
-      font-size: 30px; }
+    margin-right: 0.0266666667rem; }
   .house-labelling.middle span {
-    height: 0.4rem;
-    line-height: 0.4rem;
     padding-left: 0.16rem;
     padding-right: 0.16rem; }
   .house-labelling.gray span {
@@ -174,22 +164,21 @@ hr {
     border-color: #999;
     border: 1px solid #999; }
   .house-labelling.small span {
-    height: 0.3333333333rem;
-    line-height: 0.3333333333rem;
     padding-left: 0.1333333333rem;
     padding-right: 0.1333333333rem;
     margin-right: 0.0266666667rem; }
-    [data-dpr="1"] .house-labelling.small span {
-      font-size: 9px; }
-    [data-dpr="2"] .house-labelling.small span {
-      font-size: 18px; }
-    [data-dpr="3"] .house-labelling.small span {
-      font-size: 27px; }
   .house-labelling span {
     display: inline-block;
-    -webkit-border-radius: 0.08rem;
-    -moz-border-radius: 0.08rem;
-    border-radius: 0.08rem; }
+    height: 0.3733333333rem;
+    line-height: 0.3733333333rem;
+    -webkit-border-radius: 0.0533333333rem;
+    border-radius: 0.0533333333rem; }
+    [data-dpr="1"] .house-labelling span {
+      font-size: 10px; }
+    [data-dpr="2"] .house-labelling span {
+      font-size: 20px; }
+    [data-dpr="3"] .house-labelling span {
+      font-size: 30px; }
     .house-labelling span:last-child {
       margin-right: 0; }
 
@@ -272,9 +261,8 @@ hr {
         line-height: 0.9066666667rem;
         text-align: center;
         background-color: #fb3939;
-        -webkit-border-radius: 0.1333333333rem;
-        -moz-border-radius: 0.1333333333rem;
-        border-radius: 0.1333333333rem; }
+        -webkit-border-radius: 0.0533333333rem;
+        border-radius: 0.0533333333rem; }
         [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
           font-size: 15px; }
         [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
@@ -299,9 +287,8 @@ hr {
     padding-right: 0.0666666667rem;
     margin-right: 0.2rem;
     border: 1px solid #060622;
-    -webkit-border-radius: 0.08rem;
-    -moz-border-radius: 0.08rem;
-    border-radius: 0.08rem; }
+    -webkit-border-radius: 0.0533333333rem;
+    border-radius: 0.0533333333rem; }
     [data-dpr="1"] .house-type-state span {
       font-size: 12px; }
     [data-dpr="2"] .house-type-state span {
@@ -317,7 +304,7 @@ hr {
 .house-type-header, .house-type-image {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
-  border-top: 1px solid #e1e1e1; }
+  border-top: 1px solid #e8e8e8; }
 
 .house-type-header {
   padding-top: 0.4rem;
@@ -336,7 +323,7 @@ hr {
 
 .house-type-tag {
   padding: 0.4rem 0.4rem 0.32rem;
-  border-top: 1px solid #e1e1e1; }
+  border-top: 1px solid #e8e8e8; }
   .house-type-tag p {
     margin-bottom: 0.2666666667rem; }
     [data-dpr="1"] .house-type-tag p {
@@ -368,7 +355,6 @@ hr {
     color: #fff;
     background-color: #fb3939;
     -webkit-border-radius: 0.36rem 0 0 0.36rem;
-    -moz-border-radius: 0.36rem 0 0 0.36rem;
     border-radius: 0.36rem 0 0 0.36rem; }
     [data-dpr="1"] .house-type-image div .sale-state {
       font-size: 12px; }
@@ -378,12 +364,12 @@ hr {
       font-size: 36px; }
 
 .describe-box {
-  border-top: 1px solid #e1e1e1; }
+  border-top: 1px solid #e8e8e8; }
   .describe-box .describe-header {
     height: 1.2rem;
     line-height: 1.2rem;
     padding: 0 0.4rem;
-    border-bottom: 1px solid #e1e1e1; }
+    border-bottom: 1px solid #e8e8e8; }
     [data-dpr="1"] .describe-box .describe-header {
       font-size: 15px; }
     [data-dpr="2"] .describe-box .describe-header {

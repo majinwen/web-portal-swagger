@@ -1,8 +1,10 @@
 package com.toutiao.web.dao.entity.officeweb;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 @Data
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class IntelligenceFhRes {
     /**
      * id
@@ -53,5 +55,16 @@ public class IntelligenceFhRes {
      * 是否有老人(0-无，1-有)
      */
     private Integer hasOldman;
+
+    /**
+     * 创建时间
+     */
+    private String createTime;
+
+    /**
+     * 用户画像
+     */
+    private Integer userPortrait;
+
 
 }

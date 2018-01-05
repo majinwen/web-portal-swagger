@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="${staticurl}/css/house-type.css">
     <title>户型详情</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <div class="module-bottom-fill">
@@ -20,8 +21,7 @@
     </#if>
     </div>
 </div>
-<div id="all-type" class="module-bottom-fill">
-<#if layoutDetails?exists>
+<div id="all-type" class="module-bottom-fill"><#if layoutDetails?exists>
     <#list layoutDetails as datail>
         <section class="room${datail['room']}">
         <div class="house-type-header">
@@ -31,24 +31,23 @@
             <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
             <div class="house-labelling normal">
                 <#if datail['layout_tag']?exists>
-                    <#list datail['layout_tag'] as tag>
-                        <#if tag?exists> <span>${tag}</span></#if>
-                    </#list>
-                </#if>
+                <#list datail['layout_tag'] as tag>
+                   <span><#if tag?exists>${tag}</#if></span>
+                </#list>
+              </#if>
             </div>
         </div>
 
         <div class="house-type-image">
-           <div>
-              <#if datail['layout_img']?exists>
-                 <#assign layoutimgs = datail['layout_img']?split(",")>
-                  <#list layoutimgs as layoutimg>
-                         <img src="${qiniuimage}/${layoutimg}" alt="户型图">
-                 </#list>
-              <#else>
-                         <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
-              </#if>
-                         <span class="sale-state">${datail['is_sale']!'在售'}</span>
+            <div><#if datail['layout_img']?exists>
+                <#assign layoutimgs = datail['layout_img']?split(",")>
+                <#list layoutimgs as layoutimg>
+                    <img src="${qiniuimage}/${layoutimg}-ttw800" alt="户型图">
+                </#list>
+            <#else>
+                <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
+            </#if>
+                <span class="sale-state">${datail['is_sale']!'在售'}</span>
            </div>
         </div>
           <div class="describe-box">
@@ -63,18 +62,22 @@
           </div>
     </section>
     </#list>
-</#if></div>
+</#if>
+</div>
 <p class="bottom-tips">以上是全部户型</p>
 <div class="detail-contact-wrapper">
+<#assign discript = discript[0]>
+<#if discript['saletelphone']?exists>
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
             <#--<a href="#" class="contact-share"><i></i>分享</a>
             <a href="#" class="contact-collect"><i></i>收藏</a>-->
-            <a href="tel:1234789" class="only contact-telephone-counseling">咨询售楼处</a>
+            <a href="tel:${discript['saletelphone']}" class="only contact-telephone-counseling">咨询售楼处</a>
         </div>
     </section>
+</#if>
 </div>
-
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>

@@ -63,13 +63,14 @@
         </encoder>
     </appender>
 
-    <logger name="com.nashwork.corebiz" level="INFO">
+    <logger name="com.nashwork.corebiz" level="DEBUG">
         <appender-ref ref="SQL"/>
     </logger>
-    <logger name="com.nashwork.corebiz" level="INFO">
+    <logger name="com.nashwork.corebiz" level="DEBUG">
         <appender-ref ref="apollo"/>
     </logger>
-    <logger name="org.springframework.web" level="INFO"/>
+    <!--<logger name="org.springframework.web" level="DEBUG"/>-->
+    <logger name="org.springframework.web" level="WARN"/>
     <logger name="dao" additivity="false">
         <level value="DEBUG"/>
         <appender-ref ref="SQL"/>

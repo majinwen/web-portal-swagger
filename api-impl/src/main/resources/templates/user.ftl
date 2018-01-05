@@ -11,19 +11,19 @@
     </div>
     <div class="side-nav-item-wrapper">
         <ul class="side-nav-item item-link">
-            <li><a href="/index"><i class="icon-index"></i><span>首页</span></a></li>
-            <li><a href="/newhouse/newhouseindex"><i class="icon-new"></i><span>找新房</span></a></li>
-            <li><a href="/findVillageByConditions"><i class="icon-plot"></i><span>找小区</span></a></li>
-            <li><a href="/findProjHouseInfo"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a href="${router_city()}"><i class="icon-index"></i><span>首页</span></a></li>
+            <li><a href="${router_city('/esf')}"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a href="${router_city('/xiaoqu')}"><i class="icon-plot"></i><span>找小区</span></a></li>
+            <li><a href="${router_city('/xinfang')}"><i class="icon-new"></i><span>找新房</span></a></li>
         </ul>
         <ul class="side-nav-item item-my">
             <#--<li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>-->
-            <li><a href="#"><i class="icon-report"></i><span>我的报告</span></a></li>
-            <li><a id="out_login" href="#"><i class="icon-report"></i><span>注销</span></a></li>
+            <li><a href="${router_city('/findhouse/queryMyReport')}"><i class="icon-report"></i><span>我的报告</span></a></li>
+            <li><a id="out_login" href="#"><i class="icon-exit"></i><span>注销</span></a></li>
         </ul>
     </div>
     <div class="side-house-intelligent">
-        <a href="#"><em>智能找房</em></a>
+        <a href="${router_city('/findhouse/')}"><em>懂房帝</em></a>
     </div>
 </section>
 <div class="scroll-mask"></div>

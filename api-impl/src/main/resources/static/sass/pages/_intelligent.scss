@@ -1,6 +1,7 @@
 $inteBlack: #0a0724;
 $inteBorderRed: #fb3939;
 $inteBorderBlack: #000;
+$inteColorRed: #e42929;
 
 .bgbox {
     position: absolute;
@@ -259,81 +260,713 @@ $inteBorderBlack: #000;
             background-color: #f7f6f6;
             color: $inteBlack;
             @include box-sizing;
+
+            .result-content {
+                position: relative;
+                width: rem(460);
+                height: rem(99);
+                margin: 0 auto;
+                background-color: #f7f3f3;
+
+                &:before, &:after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    width: rem(24);
+                    height: rem(24);
+                    border-left: rem(1) solid $inteColorRed;
+                }
+                &:before {
+                    top: 0;
+                    border-top: rem(1) solid $inteColorRed;
+                }
+                &:after {
+                    bottom: 0;
+                    border-bottom: rem(1) solid $inteColorRed;
+                }
+
+                .result-line {
+                    &:before, &:after {
+                        content: '';
+                        position: absolute;
+                        right: 0;
+                        width: rem(24);
+                        height: rem(24);
+                        border-right: rem(1) solid $inteColorRed;
+                    }
+
+                    &:before {
+                        top: 0;
+                        border-top: rem(1) solid $inteColorRed;
+                    }
+                    &:after {
+                        bottom: 0;
+                        border-bottom: rem(1) solid $inteColorRed;
+                    }
+                }
+
+                .result-begin {
+                    p {
+                        line-height: rem(99);
+                        @include font-dpr(36);
+                    }
+                }
+                .result-container {
+                    padding: rem(12) 0;
+
+                    p {
+                        @include font-dpr(26);
+
+                        &:last-child {
+                            margin-top: rem(15);
+                        }
+                    }
+                }
+            }
+        }
+
+        .list-item {
+            li {
+                position: relative;
+                height: rem(122);
+                line-height: rem(122);
+                margin: rem(106) auto;
+                text-align: center;
+                @include font-dpr(36);
+                -webkit-border-radius: 50%;
+                border-radius: 50%;
+                opacity: 0.4;
+
+                .animate-box {
+                    position: relative;
+                    display: inline-block;
+                    width: rem(122);
+                    height: rem(122);
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: rem(-106);
+                        left: 50%;
+                        width: rem(18);
+                        height: rem(106);
+                        @include bg-image('/static/images/intelligent/znzf_line');
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                    }
+
+                    p {
+                        position: relative;
+                        width: rem(122);
+                        height: rem(122);
+                        @include bg-image('/static/images/intelligent/list_item_big');
+                        -webkit-background-size: contain;
+                        background-size: contain;
+
+                        &:before, &:after {
+                            content: '';
+                            position: absolute;
+                        }
+                        &:before {
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            @include bg-image('/static/images/intelligent/item_big_roud');
+                            -webkit-background-size: contain;
+                            background-size: contain;
+                        }
+                        &:after {
+                            top: 50%;
+                            left: 50%;
+                            width: rem(108);
+                            height: rem(106);
+                            margin: rem(-53) rem(-54);
+                            @include bg-image('/static/images/intelligent/list_item_small');
+                            -webkit-background-size: contain;
+                            background-size: contain;
+                        }
+                    }
+                }
+
+                &.choose-end, &.current {
+                    opacity: 1;
+
+                    .animate-box {
+                        &:before {
+                            content: none;
+                        }
+                    }
+                }
+
+                &.current {
+                    .trangle-animate {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+
+                        &:before, &:after {
+                            content: '';
+                            position: absolute;
+                            top: 50%;
+                            width: rem(24);
+                            height: rem(24);
+                            margin-top: rem(-12);
+                        }
+                        &:before {
+                            left: rem(-40);
+                            @include bg-image('/static/images/intelligent/znzf_icon_left');
+                            -webkit-animation: lineLeft 4s infinite;
+                            animation: lineLeft 4s infinite;
+                        }
+                        &:after {
+                            right: rem(-40);
+                            @include bg-image('/static/images/intelligent/znzf_icon_right');
+                            -webkit-animation: lineRight 4s infinite;
+                            animation: lineRight 4s infinite;
+                        }
+                    }
+
+                    .animate-box {
+                        p {
+                            &:before {
+                                -webkit-animation: roundRight 4s infinite;
+                                animation: roundRight 4s infinite;
+                            }
+                            &:after {
+                                -webkit-animation: roundLeft 4s infinite;
+                                animation: roundLeft 4s infinite;
+                            }
+                        }
+                    }
+                }
+
+                .result-animate {
+                    position: relative;
+                    top: rem(15);
+                    display: inline-block;
+                    width: 0;
+                    height: rem(90);
+                    margin-left: rem(-15);
+                    vertical-align: top;
+                    @include bg-image('/static/images/intelligent/result-text-line-bg');
+                    -webkit-background-size: 100% auto;
+                    background-size: 100% auto;
+                    background-position: bottom left;
+
+
+                    p {
+                        position: absolute;
+                        left: 0;
+                        bottom: rem(8);
+                        width: 100%;
+                        line-height: 1;
+                        text-align: center;
+
+                        span {
+                            display: block;
+                            margin-bottom: rem(12);
+                            white-space: nowrap;
+                            overflow: hidden;
+                            color: $inteColorRed;
+                            @include font-dpr(24);
+
+                            em {
+                                display: inline-block;
+                                text-align: left;
+                                min-width: rem(90);
+                            }
+                        }
+                    }
+                }
+
+                &.choose-end {
+                    .result-animate {
+                        -webkit-transition: width 1s;
+                                transition: width 1s;
+                        width: rem(296);
+                    }
+                }
+            }
+        }
+        @keyframes lineLeft {
+              0% {  left: rem(-40);  }
+             50% {  left: rem(-60);  }
+            100% {  left: rem(-40);  }
+        }
+        @-webkit-keyframes lineLeft {
+              0% {  left: rem(-40);  }
+             50% {  left: rem(-60);  }
+            100% {  left: rem(-40);  }
+        }
+        @keyframes lineRight {
+              0% {  right: rem(-40);  }
+             50% {  right: rem(-60);  }
+            100% {  right: rem(-40);  }
+        }
+        @-webkit-keyframes lineRight {
+              0% {  right: rem(-40);  }
+             50% {  right: rem(-60);  }
+            100% {  right: rem(-40);  }
+        }
+        @keyframes roundRight {
+              0% {  transform: rotate(0deg);  }
+             50% {  transform: rotate(45deg);  }
+            100% {  transform: rotate(0deg);  }
+        }
+        @-webkit-keyframes roundRight {
+              0% {  -webkit-transform: rotate(0deg);  }
+             50% {  -webkit-transform: rotate(45deg);  }
+            100% {  -webkit-transform: rotate(0deg);  }
+        }
+        @keyframes roundLeft {
+            0% {  transform: rotate(0deg);  }
+            50% {  transform: rotate(-45deg);  }
+            100% {  transform: rotate(0deg);  }
+        }
+        @-webkit-keyframes roundLeft {
+            0% {  -webkit-transform: rotate(0deg);  }
+            50% {  -webkit-transform: rotate(-45deg);  }
+            100% {  -webkit-transform: rotate(0deg);  }
+        }
+
+
+
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+
+            .layer-content {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                min-height: rem(500);
+                padding: 0 rem(30);
+                background-color: #fff;
+                @include box-sizing;
+
+                .layer-header {
+                    position: relative;
+                    height: rem(100);
+                    border-bottom: rem(1) solid $baseBorderColor;
+
+                    p {
+                        line-height: rem(100);
+                        @include font-dpr(30);
+                    }
+
+                    .price-tab {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        height: 100%;
+                        line-height: rem(100);
+
+                        span {
+                            color: #888;
+
+                            &.current {
+                                color: $inteColorRed;
+                            }
+                        }
+                    }
+
+                    .area-tips {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        height: rem(100);
+                        padding: rem(14) 0;
+                        text-align: center;
+                        @include box-sizing;
+
+                        span {
+                            display: block;
+                        }
+
+                        span {
+                            color: #999;
+                        }
+                        button {
+                            margin-top: rem(5);
+                            padding: rem(5) rem(15);
+                            color: $baseWhite;
+                            background-color: $inteBlack;
+                            -webkit-border-radius: rem(28) rem(28) rem(28);
+                            border-radius: rem(28) rem(28) rem(28);
+                        }
+                    }
+                }
+
+                .total-conent {
+                    margin: rem(85) 0;
+                }
+                .month-content {
+                    margin: rem(22) 0;
+                }
+
+                .slide-item {
+                    position: relative;
+                    height: rem(120);
+
+                    .layer-type-text {
+                        position: absolute;
+                        left: 0;
+                        bottom: rem(34);
+                        @include font-dpr(26);
+                    }
+
+                    .slide-line {
+                        position: relative;
+                        margin-left: rem(90);
+                        margin-top: rem(5);
+
+                        .slide-text {
+                            position: relative;
+                            display: block;
+                            width: rem(100);
+                            height: rem(36);
+                            line-height: rem(36);
+                            margin-left: rem(-50);
+                            margin-bottom: rem(27);
+                            color: $baseWhite;
+                            text-align: center;
+                            background-color: $inteColorRed;
+
+                            &:after {
+                                content: '';
+                                position: absolute;
+                                bottom: rem(-15);
+                                left: 50%;
+                                width: 0;
+                                height: 0;
+                                margin-left: rem(-10);
+                                border-top: rem(15) solid $inteColorRed;
+                                border-left: rem(10) solid transparent;
+                                border-right: rem(10) solid transparent;
+                            }
+                        }
+
+                        .slider-track {
+                            position: relative;
+                            height: rem(12);
+                            -webkit-border-radius: rem(12);
+                            border-radius: rem(12);
+                            border: rem(1) solid $baseBorderColor;
+                            background-color: $baseModuleFillColor;
+                            @include box-sizing;
+
+                            .min, .max {
+                                position: absolute;
+                                top: rem(30);
+                            }
+                            .min {
+                                left: 0;
+                            }
+                            .max {
+                                right: 0;
+                            }
+
+                            .slide-color {
+                                width: 0;
+                                height: 100%;
+                                -webkit-border-radius: rem(12);
+                                border-radius: rem(12);
+                                background-color: $inteBlack;
+                            }
+
+                            .slider-thumb {
+                                position: absolute;
+                                top: 50%;
+                                display: block;
+                                width: rem(50);
+                                height: rem(50);
+                                margin: rem(-20) rem(-25);
+                                @include bg-image('/static/images/intelligent/radio-line-mark');
+                                -webkit-background-size: contain;
+                                background-size: contain;
+                            }
+                        }
+                    }
+                }
+
+                .content-list {
+                    position: relative;
+                    display: -webkit-flex;
+                    display: flex;
+                    justify-content: space-between;
+
+                    &#layOut {
+                        margin: rem(100) 0;
+                    }
+
+                    &#hasChild {
+                        margin-left: rem(90);
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: rem(12);
+                        background-color: $baseModuleFillColor;
+                        -webkit-border-radius: rem(12) rem(12) rem(12);
+                        border-radius: rem(12) rem(12) rem(12);
+                    }
+
+                    li {
+                        position: relative;
+                        margin: 0 rem(10);
+                        text-align: center;
+                        z-index: 1;
+
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            bottom: rem(-2);
+                            left: 50%;
+                            width: rem(16);
+                            height: rem(16);
+                            margin-left: rem(-8);
+                            background-color: #44495f;
+                            -webkit-border-radius: 50%;
+                            border-radius: 50%;
+                        }
+
+                        span {
+                            position: relative;
+                            display: block;
+                            min-width: rem(88);
+                            height: rem(36);
+                            line-height: rem(36);
+                            padding: 0 rem(15);
+                            @include box-sizing;
+                            margin-bottom: rem(50);
+                            color: $inteBlack;
+                            text-align: center;
+                        }
+
+                        &.current {
+                            &:after {
+                                bottom: rem(-25);
+                                width: rem(50);
+                                height: rem(50);
+                                margin-left: rem(-25);
+                                background-color: transparent;
+                                @include bg-image('/static/images/intelligent/radio-line-mark');
+                                -webkit-background-size: contain;
+                                background-size: contain;
+                            }
+
+                            span {
+
+                                color: $baseWhite;
+                                background-color: $inteColorRed;
+
+                                &:after {
+                                    content: '';
+                                    position: absolute;
+                                    bottom: rem(-15);
+                                    left: 50%;
+                                    width: 0;
+                                    height: 0;
+                                    margin-left: rem(-10);
+                                    border-top: rem(15) solid $inteColorRed;
+                                    border-left: rem(10) solid transparent;
+                                    border-right: rem(10) solid transparent;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .area-content {
+                    margin: rem(25) rem(-15) rem(136);
+
+                    li {
+                        display: block;
+                        float: left;
+                        width: rem(114);
+                        height: rem(40);
+                        line-height: rem(38);
+                        margin: rem(10) rem(15);
+                        text-align: center;
+                        border: rem(1) solid #999;
+                        @include box-sizing;
+
+                        &.disabled {
+                            color: #999;
+                        }
+
+                        &.current {
+                            color: $baseWhite;
+                            border-color: $inteColorRed;
+                            background-color: $inteColorRed;
+                        }
+                    }
+                }
+
+                #family-box {
+                    margin-top: rem(30);
+                }
+
+                .child-box {
+                    position: relative;
+                    padding-bottom: rem(9);
+
+                    label {
+                        position: absolute;
+                        bottom: 0;
+                    }
+                }
+
+                .old-man-box {
+                    position: relative;
+                    margin-top: rem(76);
+
+                    label {
+                        position: absolute;
+                        bottom: 0;
+                    }
+                    .choose-radio {
+                        margin-left: rem(90);
+
+                        li {
+                            display: inline-block;
+                            margin-left: rem(72);
+                            @include font-dpr(26);
+                            color: #666;
+
+                            i {
+                                position: relative;
+                                top: rem(3);
+                                display: inline-block;
+                                width: rem(22);
+                                height: rem(22);
+                                margin-right: rem(22);
+                                border: rem(1) solid $inteBlack;
+                                -webkit-border-radius: 50%;
+                                border-radius: 50%;
+                            }
+
+                            &.current {
+                                color: $inteColorRed;
+
+                                i {
+                                    border-color: $inteColorRed;
+
+                                    &:after {
+                                        content: '';
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 50%;
+                                        width: rem(12);
+                                        height: rem(12);
+                                        margin: rem(-6);
+                                        background-color: $inteColorRed;
+                                        -webkit-border-radius: 50%;
+                                        border-radius: 50%;
+                                    }
+                                }
+
+                                span {
+                                    color: $inteColorRed;
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                .layer-footer {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    padding: rem(20) 0;
+                    text-align: center;
+                    border-top: rem(1) solid $baseBorderColor;
+
+                    button {
+                        width: rem(500);
+                        height: rem(70);
+                        line-height: rem(70);
+
+                        &.disabled {
+                            background-color: #c5c5c5;
+                        }
+                    }
+                }
+            }
+        }
+
+        .start-btn {
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: rem(214);
+            height: rem(72);
+            margin-left: rem(-107);
+            text-align: center;
+            @include bg-image('/static/images/intelligent/znzf_qd');
+            -webkit-background-size: contain;
+            background-size: contain;
+
+            p {
+                position: absolute;
+                bottom: rem(12);
+                width: 100%;
+                color: $baseWhite;
+                @include font-dpr(22);
+            }
         }
     }
 }
 
 .page4 {
     .bg4 {
-        @include bg-image('/static/images/intelligent/znzf_user_bg');
-        background-repeat: repeat-y;
-        background-position: center;
-        -webkit-background-size: contain;
-        background-size: contain;
+        background: #fff;
     }
 
-    .user-header-box {
-        position: relative;
-        width: rem(349);
-        height: rem(349);
-        padding: rem(14);
-        margin: rem(90) auto 0;
-        @include box-sizing;
+    .page-content {
+        padding-top: 30%;
+        text-align: center;
 
-        &:before, &:after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: rem(22);
-            height: rem(22);
-            border-left: rem(2) solid $inteBorderRed;
-            @include box-sizing;
-        }
+        .text-content {
+            width: 70%;
+            margin: 0 auto;
+            padding-bottom: rem(100);
+            border-bottom: rem(1) solid $baseBorderColor;
 
-        &:before {
-            top: 0;
-            border-top: rem(2) solid $inteBorderRed;
-        }
+            p {
+                line-height: 1.4;
+                @include font-dpr(26);
 
-        &:after {
-            bottom: 0;
-            border-bottom: rem(2) solid $inteBorderRed;
-        }
+                &:nth-child(3) {
+                    margin-bottom: rem(30);
+                }
 
-        .user-line-triangle {
-            &:before, &:after {
-                content: '';
-                position: absolute;
-                right: 0;
-                width: rem(22);
-                height: rem(22);
-                border-right: rem(2) solid $inteBorderRed;
-                @include box-sizing;
-            }
-            &:before {
-                top: 0;
-                border-top: rem(2) solid $inteBorderRed;
-            }
-            &:after {
-                bottom: 0;
-                border-bottom: rem(2) solid $inteBorderRed;
+                &:nth-child(5) {
+                    margin-bottom: rem(40);
+                }
             }
         }
 
-        img {
-            width: rem(320);
-            height: rem(320);
-        }
-    }
-
-    .word-cont {
-        width: rem(432);
-        margin: rem(74) auto 0;
-        line-height: rem(48);
-        text-align: justify;
-
-        ol {
-            margin-top: rem(30);
+        .button {
+            display: block;
+            width: rem(500);
+            height: rem(70);
+            line-height: rem(70);
+            margin: rem(100) auto;
         }
     }
 }

@@ -8,14 +8,15 @@
     <link rel="stylesheet" href="${staticurl}/css/new-index.css">
     <title>新房首页</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header">
-    <input id="url" type="hidden"  value="/newhouse/searchNewHouse">
-    <a href="/index" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <input id="url" type="hidden"  value="${router_city('/loupan')}">
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="中骏·西山天璟">
+        <input type="text" class="search-link" placeholder="">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -30,18 +31,18 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse ">
+            <div class="banner-nav-item"><a href="${router_city('/loupan')}">
                 <i class="all-buildings"></i><p>全部楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse?saleType=1">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=1')}">
                 <i class="featured-properties"></i><p>在售楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="/newhouse/searchNewHouse?saleType=5">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}">
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="#">
+            <#--<div class="banner-nav-item"><a href="#">
                 <i class="houses-intelligent"></i><p>懂房帝</p>
-            </a></div>
+            </a></div>-->
         </div>
     </section>
 </div>
@@ -65,42 +66,42 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
                     <div class="topic-item-content">
-                        <h5>五环亦庄线</h5>
-                        <p>200万买3居</p>
+                        <h5>万科楼盘</h5>
+                        <p>品牌房企集中亮相</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="万科楼盘">
                 </a></div>
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587898856414222/">
                     <div class="topic-item-content">
-                        <h5>品牌促销</h5>
-                        <p>谁说便宜没好货</p>
+                        <h5>豪宅10万起</h5>
+                        <p>解密北京豪宅楼盘</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image2.jpg" alt="豪宅10万起">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587903362775054/">
                     <div class="topic-item-content">
-                        <h5>精装现房</h5>
-                        <p>不用装修不用等</p>
+                        <h5>90平小三居</h5>
+                        <p>改善族买房标配</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image3.jpg" alt="90平小三居">
                 </a></div>
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
                     <div class="topic-item-content">
-                        <h5>地铁沿线</h5>
-                        <p>给你最美的距离</p>
+                        <h5>新发预售证</h5>
+                        <p>入市新盘全掌握</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="新发预售证">
                 </a></div>
-                <div class="hot-topic-item"><a href="#">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587895837527054/">
                     <div class="topic-item-content">
-                        <h5>家有二宝</h5>
-                        <p>通透三居配套全</p>
+                        <h5>下一站南五环</h5>
+                        <p>南五环热门楼盘盘点</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="">
+                    <img src="${staticurl}/images/newindex/xf_zt_image5.jpg" alt="下一站南五环">
                 </a></div>
             </div>
         </div>
@@ -109,57 +110,72 @@
 <section>
     <div class="index-module-header">
         <h3>新房推荐</h3>
-        <a href="/newhouse/searchNewHouse" class="more-arrows"><i class="arrows-right"></i></a>
+        <a href="${router_city('/loupan')}" class="more-arrows"><i class="arrows-right"></i></a>
     </div>
     <ul><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>
     <#list builds as map>
-    <#if map_index==2>
-        <li><a class="list-item new" href="#">
+        <#--<#if map_index==2>-->
+            <#--<li><a class="list-item new" href="#">-->
+                <#--<div class="clear">-->
+                    <#--<div class="list-item-img-box">-->
+                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+                    <#--</div>-->
+                    <#--<div class="list-item-cont">-->
+                        <#--<h3 class="cont-block-1">-->
+                            <#--<span class="ellipsis">中骏·西山天璟</span>-->
+                            <#--<em>别墅</em>-->
+                        <#--</h3>-->
+                        <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
+                        <#--<p class="cont-block-3">东城/88㎡—526㎡</p>-->
+                        <#--<div class="cont-block-4 house-labelling gray middle">-->
+                            <#--<span>复式</span>-->
+                            <#--<span>五证齐全</span>-->
+                            <#--<span>花园洋房</span>-->
+                        <#--</div>-->
+                        <#--<div class="cont-block-sale">-->
+                            <#--<em>在售</em>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</div>-->
+                <#--<div class="new-active">-->
+                    <#--<i class="icon"></i><em>活动：</em>-->
+                    <#--<span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>-->
+                <#--</div>-->
+            <#--</a></li>-->
+        <#--</#if>-->
+        <#if map_index==5>
+            <#break>
+        </#if>
+        <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
             <div class="clear">
                 <div class="list-item-img-box">
-                    <img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1">中骏·西山天璟<em>别墅</em></h3>
-                    <p class="cont-block-2 high-light-red">68000元/㎡</p>
-                    <p class="cont-block-3">东城/88㎡—526㎡</p>
-                    <div class="cont-block-4 house-labelling gray middle">
-                        <span>复式</span>
-                        <span>五证齐全</span>
-                        <span>花园洋房</span>
-                    </div>
-                    <div class="cont-block-sale">
-                        <em>在售</em>
-                    </div>
-                </div>
-            </div>
-            <div class="new-active">
-                <i class="icon"></i><em>活动：</em>
-                <span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>
-            </div>
-        </a></li>
-    </#if>
-        <li><a class="list-item new" href="/newhouse/getNewHouseDetails?id=${map['building_name_id']?c}">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <#if map['building_imgs']?exists>
-                    <#assign item = map['building_imgs']?split(",")>
-                    <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}" alt="${map['building_name']}">
-                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    <#if map['building_title_img']?exists>
+                    <#assign item = map['building_title_img']?split(",")>
+                    <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
+                        <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
                     </#if>
                     </#if>
                 </div>
                 <div class="list-item-cont">
                     <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                    <h3 class="cont-block-1">${map['building_name']}<em>${map['property_type']!'暂无'}</em></h3>
-                    <p class="cont-block-2 high-light-red"><#if map['average_price']?exists>${map['average_price']}/㎡<#else >暂无</#if></p>
+                    <h3 class="cont-block-1">
+                        <span class="ellipsis">${map['building_name']}</span>
+                        <em>${map['property_type']}</em>
+                    </h3>
+                    <p class="cont-block-2 high-light-red">
+                        <#if map['average_price']?exists && map['average_price'] gt 0>
+                            ${map['average_price']}/㎡
+                        <#else>
+                            售价待定
+                        </#if>
+                    </p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
                         ${map['nearsubway']}
                         <#else>${map['district_name']}
                         </#if>
-                        <#if map['house_min_area']??&&map['house_max_area']??>/${map['house_min_area']}㎡—${map['house_max_area']}㎡<#else>暂无</#if>
+                        <#if map['house_min_area']??&&map['house_max_area']??>/ ${map['house_min_area']}㎡-${map['house_max_area']}㎡</#if>
                         </p>
                     <div class="cont-block-4 house-labelling gray middle">
                         <#if map['building_tags']?exists>
@@ -167,9 +183,7 @@
                             <#list item as itemValue>
                                 <span>${itemValue}</span>
                             </#list>
-                            <#else><span>暂无</span>
                         </#if>
-
                     </div>
                     <div class="cont-block-sale">
                         <em>${map['sale_status_name']}</em>
@@ -187,13 +201,14 @@
     </#if>
     </ul>
 </section>
-<div class="new-index-pull-down">
+<a href="${router_city('/loupan')}" class="new-index-pull-down">
     <p>想查看更多房源，跟我来！</p><img src="${staticurl}/images/newindex/sy_xf_icon_xl.png" alt="查看更多房源">
-</div>
+</a>
 <#include "../user.ftl">
 <#include "../search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 </body>
 </html>
