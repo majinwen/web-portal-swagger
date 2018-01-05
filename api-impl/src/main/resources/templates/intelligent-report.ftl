@@ -135,8 +135,37 @@
                     <p>交通</p>
                     <span>交通便利，赶得上节奏，跑得过大盘</span>
                 </div>
-                <div class="echart-box">
-                    <div id="trafficChart"></div>
+                <div class="traffic-box">
+                    <div class="left-line"></div>
+                    <div>
+                        <div class="traffic-title">
+                            <h5>地铁出行，感谢您为环保事业做出的努力</h5>
+                        </div>
+                        <div class="echart-wrapper subway">
+                            <div class="echart-box">
+                                <div id="trafficSubwayChart"></div>
+                            </div>
+                        </div>
+                        <div class="traffic-text-box">
+                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        </div>
+                    </div>
+                    <div class="vertical-line">
+                        <div class="traffic-title">
+                            <h5>自驾出行，快去最近的环线桥</h5>
+                        </div>
+                        <div class="echart-wrapper rond">
+                            <div class="echart-box">
+                                <div id="trafficRondChart"></div>
+                            </div>
+                        </div>
+                        <div class="traffic-text-box">
+                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="module-item">

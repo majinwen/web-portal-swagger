@@ -9,8 +9,15 @@ var locationBaseUrl = 0;   // 从url中获取的id
  * */
 $(function () {
     var locationUrl = window.location.href;
-    locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/')+1));
+    locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
     console.log(locationBaseUrl);
+
+    var chartGrid = {
+        left: 0,
+        right: '6%',
+        bottom: 0,
+        containLabel: true
+    };
 
     /**
      * 市场价格走势
@@ -18,7 +25,7 @@ $(function () {
     var priceChart = echarts.init(document.getElementById('priceChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
     // 显示标题，图例和空的坐标轴
     priceChart.setOption({
-        color: ['#455765', '#f25a5a'],
+        color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
         textStyle: {fontSize: baseFontSize},
         tooltip: {
             trigger: 'axis',
@@ -35,12 +42,7 @@ $(function () {
                 icon: 'line'
             }]
         },
-        grid: {
-            left: '2%',
-            right: '6%',
-            bottom: 0,
-            containLabel: true
-        },
+        grid: chartGrid,
         xAxis: {
             show: true,
             boundaryGap: false,
@@ -77,54 +79,6 @@ $(function () {
         }]
     });
     priceChart.showLoading();
-    $.get(router_city('/findhouse/queryPt')).done(function (data) {
-        // console.log(data);
-        priceChart.hideLoading();
-        var maxTarget = data.data.maxTarget,
-            minTarget = Math.abs(data.data.minTarget),
-            baseTarget = data.data.target;
-
-        $('#maxTarget').text(maxTarget + '%');
-        $('#minTarget').text(minTarget + '%');
-        if (maxTarget > baseTarget) {
-            $('#priceMaxCompare').text('高');
-        } else {
-            $('#priceMaxCompare').text('低');
-        }
-        if (minTarget > baseTarget) {
-            $('#priceMinCompare').text('高');
-        } else {
-            $('#priceMinCompare').text('低');
-        }
-
-        var totalPriceArr = [],
-            priceArr = [],
-            priceTimeArr = [];
-        var priceChartData = data.data.ptlists;
-        for (var i = priceChartData.length - 1; i >= 0; i--) {
-            totalPriceArr.push(priceChartData[i].totalPrice);
-            priceArr.push(priceChartData[i].price);
-            priceTimeArr.push(priceChartData[i].periodicTime)
-        }
-        var chartOptions = {
-            xAxis: {
-                data: ['2017-12', '2017-11', '2017-10', '2017-09', '2017-08', '2017-07', '2017-06', '2017-05', '2017-04', '2017-03', '2017-02', '2017-01']
-            },
-            series: [{
-                // 根据名字对应到相应的系列
-                name: '北京市场',
-                data: totalPriceArr
-            },{
-                // 根据名字对应到相应的系列
-                name: '目标市场',
-                data: priceArr
-            }]
-        };
-
-
-        priceChart.setOption(chartOptions);
-    });
-
 
     /**
      * 市场供需情况
@@ -150,12 +104,7 @@ $(function () {
                 icon: 'line'
             }]
         },
-        grid: {
-            left: '2%',
-            right: '6%',
-            bottom: 0,
-            containLabel: true
-        },
+        grid: chartGrid,
         yAxis:  {
             type: 'value',
             axisTick: {show: false},
@@ -216,18 +165,239 @@ $(function () {
             }
         ]
     });
-
     marketChart.showLoading();
-    $.get(router_city('/findhouse/queryTd')).done(function (data) {
-        marketChart.hideLoading();
-        console.log(data);
-        var maxVolume = data.data.ratio.maxVolume,
-            maxVolumeRatio = data.data.ratio.maxVolumeRatio,
-            minVolume = data.data.ratio.minVolume,
-            minVolumeRatio = data.data.ratio.minVolumeRatio,
-            averageVolume = data.data.ratio.averageVolume,
-            averageVolumeRatio = data.data.ratio.averageVolumeRatio;
 
+    /**
+     * 地铁信息
+     * */
+    var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+    // 显示标题，图例和空的坐标
+
+    var trafficSubwayLabel = {
+        normal: {
+            show: true,
+            position: 'bottom',
+            color: '#666',
+            fontSize: baseFontSize - 5,
+            formatter: '{c}km\n大望路站'
+        }
+    };
+    trafficSubwayChart.setOption({
+        color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+        textStyle: {fontSize: baseFontSize},
+        grid: {
+            left: 0,
+            right: '6%',
+            bottom: 0,
+            top: 0,
+            containLabel: true
+        },
+        xAxis: {
+            show: false,
+            data: []
+        },
+        yAxis:  {
+            show: false,
+            inverse: true,
+            min: 0,
+            max: 3
+        },
+        series: [
+            {
+                name: '',
+                type: 'bar',
+                label: trafficSubwayLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [2]
+            },
+            {
+                name: '',
+                type: 'bar',
+                label: trafficSubwayLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [1]
+            },
+            {
+                name: '',
+                type: 'bar',
+                label: trafficSubwayLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [1]
+            },
+            {
+                name: '',
+                type: 'bar',
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [0]
+            },
+            {
+                name: '',
+                type: 'bar',
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [0]
+            }
+        ]
+    });
+    // trafficSubwayChart.showLoading();
+
+
+
+    /**
+     * 环线桥信息
+     * */
+    var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+    // 显示标题，图例和空的坐标
+
+    var trafficRondLabel = {
+        normal: {
+            show: true,
+            position: 'bottom',
+            color: '#666',
+            fontSize: baseFontSize - 5,
+            formatter: '{c}km\n大望路站'
+        }
+    };
+    trafficRondChart.setOption({
+        color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+        textStyle: {fontSize: baseFontSize},
+        grid: {
+            left: 0,
+            right: '6%',
+            bottom: 0,
+            top: 0,
+            containLabel: true
+        },
+        xAxis: {
+            show: false,
+            data: []
+        },
+        yAxis:  {
+            show: false,
+            inverse: true,
+            min: 0,
+            max: 3
+        },
+        series: [
+            {
+                name: '',
+                type: 'bar',
+                label: trafficRondLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [2]
+            },
+            {
+                name: '',
+                type: 'bar',
+                label: trafficRondLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [1.4]
+            },
+            {
+                name: '',
+                type: 'bar',
+                label: trafficRondLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [1.4]
+            },
+            {
+                name: '',
+                type: 'bar',
+                label: trafficRondLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [1.4]
+            },
+            {
+                name: '',
+                type: 'bar',
+                label: trafficRondLabel,
+                barGap: 1.5,
+                barWidth: '8%',
+                data: [1.4]
+            }
+        ]
+    });
+    // trafficRondChart.showLoading();
+
+
+    $.get(router_city('/findhouse/showMyReportData/' + locationBaseUrl)).done(function (data) {
+        priceChart.hideLoading();
+        marketChart.hideLoading();
+        var priceData = data.data.fhpt,    // 价格走势
+            marketData = data.data.fhtp,   // 供需情况
+            compareData = JSON.parse(data.data.intelligenceFhRes.fhResult.value);   // 小区详细数据
+
+        console.log(compareData);
+        /**
+         * 价格走势
+         * */
+        var maxTarget = priceData.maxTarget,
+            minTarget = Math.abs(priceData.minTarget),
+            baseTarget = priceData.target;
+        var totalPriceArr = [],
+            priceArr = [],
+            priceTimeArr = [];
+        var priceChartData = priceData.ptlists;
+
+        // 页面文字内容赋值
+        $('#maxTarget').text(maxTarget + '%');
+        $('#minTarget').text(minTarget + '%');
+        if (maxTarget > baseTarget) {
+            $('#priceMaxCompare').text('高');
+        } else {
+            $('#priceMaxCompare').text('低');
+        }
+        if (minTarget > baseTarget) {
+            $('#priceMinCompare').text('高');
+        } else {
+            $('#priceMinCompare').text('低');
+        }
+
+        for (var i = priceChartData.length - 1; i >= 0; i--) {
+            totalPriceArr.push(priceChartData[i].totalPrice);
+            priceArr.push(priceChartData[i].price);
+            priceTimeArr.push(priceChartData[i].periodicTime)
+        }
+
+        priceChart.setOption({
+            xAxis: {
+                data: priceTimeArr
+            },
+            series: [{
+                // 根据名字对应到相应的系列
+                name: '北京市场',
+                data: totalPriceArr
+            },{
+                // 根据名字对应到相应的系列
+                name: '目标市场',
+                data: priceArr
+            }]
+        });
+
+        /**
+         * 供需情况
+         * */
+        var marketDataRatio = marketData.ratio;
+        var maxVolume = marketDataRatio.maxVolume,
+            maxVolumeRatio = marketDataRatio.maxVolumeRatio,
+            minVolume = marketDataRatio.minVolume,
+            minVolumeRatio = marketDataRatio.minVolumeRatio,
+            averageVolume = marketDataRatio.averageVolume,
+            averageVolumeRatio = marketDataRatio.averageVolumeRatio;
+        var marketAllArr = [],
+            markerTargetArr = [],
+            periodicTimeArr = [];
+        var marketChartArr = marketData.trend;
+
+        // 页面内容赋值
         $('#maxVolume').text(maxVolume + '套');
         $('#maxVolumeRatio').text(maxVolumeRatio);
         $('#minVolume').text(minVolume + '套');
@@ -235,16 +405,12 @@ $(function () {
         $('#averageVolume').text(averageVolume + '套');
         $('#averageVolumeRatio').text(averageVolumeRatio);
 
-        var marketAllArr = [],
-            markerTargetArr = [],
-            periodicTimeArr = [];
-
-        var marketChartArr = data.data.trend;
         for (var i = marketChartArr.length - 1; i >= 0; i--) {
             marketAllArr.push(marketChartArr[i].allSd);
             markerTargetArr.push(marketChartArr[i].targetSd);
             periodicTimeArr.push(marketChartArr[i].periodicTime)
         }
+
         marketChart.setOption({
             xAxis: [{
                 data: periodicTimeArr
@@ -252,17 +418,35 @@ $(function () {
                 data: periodicTimeArr
             }],
             series: [{
+                // 根据名字对应到相应的系列
+                name: '北京市场',
                 data: marketAllArr
             },{
+                // 根据名字对应到相应的系列
+                name: '目标市场',
                 data: markerTargetArr
             }]
         });
-    });
 
-    console.log(router_city('/findhouse/showMyReportData/' + locationBaseUrl));
+        /**
+         * 地铁信息
+         * */
 
-    $.get(router_city('/findhouse/showMyReportData/' + locationBaseUrl)).done(function (data) {
-        console.log(data.data.intelligenceFhRes.fhResult.value);
+        var projNameArr = [];
+        var nearestSubwayDescArr = [];
+        for (var i = 0; i < compareData.length; i++) {
+            projNameArr.push(compareData[i].projname);
+            nearestSubwayDescArr.push(compareData[i].nearestSubwayDesc.split('$'));
+        }
+
+
+        trafficSubwayChart.setOption({
+
+        });
+        console.log(nearestSubwayDescArr[0][2]);
+
+
+
     })
 });
 
