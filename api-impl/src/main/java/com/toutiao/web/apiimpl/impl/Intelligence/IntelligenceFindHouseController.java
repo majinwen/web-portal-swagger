@@ -289,6 +289,13 @@ public class IntelligenceFindHouseController {
             if (StringTool.isNotBlank(intelligenceFhRes)) {
                 //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
                 //intelligenceFhRes.setCreateTime(date);
+                Integer  plotTotal=null;
+                if(StringTool.isNotBlank(intelligenceFhRes.getDownPayment())&&StringTool.isNotBlank(intelligenceFhRes.getMonthPayment())){
+                      plotTotal = Integer.valueOf(intelligenceFhRes.getDownPayment()) + (Integer.valueOf(intelligenceFhRes.getMonthPayment()) * 12 * 30/10000);
+                }else{
+                    plotTotal = intelligenceFhRes.getTotalPrice();
+                }
+                intelligenceFhRes.setTotalPrice(plotTotal);
                 Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                 Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                 model.addAttribute("fhpt", fhpt);
