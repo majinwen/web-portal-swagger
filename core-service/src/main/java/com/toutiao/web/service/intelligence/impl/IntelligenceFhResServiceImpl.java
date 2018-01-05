@@ -54,5 +54,13 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
         return result;
     }
 
+    @Override
+    public int updateMyReportCollectStatus(String reportId, String usePhone) {
+
+        int result= intelligenceFhResMapper.updateMyReportCollectStatus(Integer.valueOf(reportId),usePhone);
+
+        return result;
+    }
+
 }
 
