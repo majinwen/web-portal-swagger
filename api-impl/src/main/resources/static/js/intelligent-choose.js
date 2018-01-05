@@ -13,6 +13,9 @@ $(function () {
                     success: function (dataInfo) {
                          console.log(dataInfo.data);
                          $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data);
+                    },
+                    error:function (XMLHttpRequest, textStatus, errorThrown){
+
                     }
                 })
             }
@@ -58,6 +61,9 @@ function chooseUserType() {
                 data: options,
                 success: function (data) {
                     // console.log(data);
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){
+
                 }
             });
         }
@@ -174,6 +180,9 @@ function chooseUserFinds() {
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
                     }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){
+
                 }
             });
             return
@@ -199,6 +208,9 @@ function chooseUserFinds() {
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
                     }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){
+
                 }
             });
         }
@@ -238,6 +250,9 @@ function chooseUserFinds() {
                     });
                 }
                 options['userPortrayalType'] = data.data.userPortrayalType;
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown){
+
             }
         })
     });
@@ -291,6 +306,9 @@ function chooseUserFinds() {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
                     }
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){
+
                 }
             })
         }

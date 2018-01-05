@@ -1,6 +1,5 @@
 package com.toutiao.web.apiimpl.conf.interceptor;
 
-
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.slf4j.Logger;
@@ -13,10 +12,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
@@ -34,64 +34,121 @@ public class GlobalExceptionHandler {
     @Value("${exception.show}")
     private String showException="";
 
+
     // 异常处理方法：
     // 根据特定的异常返回指定的 HTTP 状态码
-    @ResponseStatus(value= HttpStatus.OK)  // 400
+//    @ResponseStatus(value= HttpStatus.OK)  // 400
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
-    public NashResult handleValidationException(HttpServletRequest request,ConstraintViolationException ex) {
+    public Object handleValidationException(HttpServletRequest request,HttpServletResponse response,ConstraintViolationException ex) {
+        String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),ex);
         Set<ConstraintViolation<?>> errors = ex.getConstraintViolations();
         StringBuilder strBuilder = new StringBuilder();
+        NashResult nashResult = new NashResult();
         for (ConstraintViolation<?> violation : errors) {
             strBuilder.append(violation.getMessage() + "\n");
         }
-        return NashResult.Fail("Bad_request-error", strBuilder.toString());
+        logger.error("Bad_request-error", strBuilder.toString());
+        if(requestType==null){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return new ModelAndView("404");
+        }else{
+            nashResult = NashResult.Fail(HttpStatus.BAD_REQUEST.toString(),"找不到接口地址");
+            response.setStatus(Integer.valueOf(HttpStatus.BAD_REQUEST.toString()));
+            return nashResult;
+        }
     }
 
 
-    @ResponseStatus(value=HttpStatus.OK)
+//    @ResponseStatus(value=HttpStatus.OK)
     @ExceptionHandler(value=MethodArgumentNotValidException.class) //400
     @ResponseBody
-    public NashResult MethodArgumentNotValidHandler(HttpServletRequest request,
-                                                MethodArgumentNotValidException exception) throws Exception
+    public Object MethodArgumentNotValidHandler(HttpServletRequest request, HttpServletResponse response,
+                                                    MethodArgumentNotValidException exception) throws Exception
     {
+        String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),exception);
         HashMap<String,String> errortip=new HashMap<>();
         //解析原错误信息，封装后返回，此处返回非法的字段名称，原始值，错误信息
         for (FieldError error : exception.getBindingResult().getFieldErrors()) {
             errortip.put(error.getField(),error.getDefaultMessage());
         }
-
-        return NashResult.Fail("Argument-error","请求参数错误",errortip);
+        logger.error("Argument-error","请求参数错误",errortip);
+        NashResult nashResult = new NashResult();
+        if(requestType==null){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return new ModelAndView("404");
+//            return "404";
+        }else{
+            nashResult = NashResult.Fail(HttpStatus.BAD_REQUEST.toString(),"请求参数错误");
+            response.setStatus(Integer.valueOf(HttpStatus.BAD_REQUEST.toString()));
+            return nashResult;
+        }
     }
 
-    @ResponseStatus(value=HttpStatus.OK)  // 404
+//    @ResponseStatus(value=HttpStatus.OK)  // 404
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseBody
-    public NashResult NoHandlerFoundException( HttpServletRequest request,Exception ex) {
+    public Object NoHandlerFoundException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+        String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),ex);
-        return NashResult.Fail("NoHandlerFound-error","找不到接口地址："+request.getRequestURI().toString());
+        logger.error("NoHandlerFound-error","找不到接口地址："+request.getRequestURI().toString());
+
+        NashResult nashResult = new NashResult();
+        if(requestType==null){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return  new ModelAndView("404");
+        }else{
+            nashResult = NashResult.Fail(HttpStatus.NOT_FOUND.toString(),"找不到接口地址");
+            response.setStatus(Integer.valueOf(HttpStatus.NOT_FOUND.toString()));
+            return nashResult;
+        }
     }
 
-
     // 通用异常的处理，返回500
-    @ResponseStatus(value=HttpStatus.OK)  // 500
+
+//    @ResponseStatus(value=HttpStatus.OK)  // 500
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public NashResult handleException( HttpServletRequest request,Exception ex) {
+    public Object handleException( HttpServletRequest request,HttpServletResponse response,Exception ex) {
+        String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),ex);
+        NashResult nashResult = new NashResult();
         if(ex instanceof BaseException){
             BaseException baseex=(BaseException)ex;
-            return NashResult.Fail(baseex.getCode(),baseex.getMessage());
+            logger.error("异常:"+baseex.getCode(),baseex.getMessage());
+            if(requestType== null){
+                response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+                return new ModelAndView("404");
+            }else{
+                nashResult = NashResult.Fail(HttpStatus.INTERNAL_SERVER_ERROR.toString(),"服务器处理异常");
+                response.setStatus(Integer.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.toString()));
+                return nashResult;
+            }
         }
         if(this.showException!=null && this.showException.toLowerCase().equals("true")) {
-            return NashResult.Fail("server-error", this.getExceptionDetail(ex));
+            logger.error("server-error", this.getExceptionDetail(ex));
+            if(requestType== null){
+                response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+                return new ModelAndView("404");
+            }else{
+                response.setStatus(Integer.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.toString()));
+                nashResult = NashResult.Fail(HttpStatus.INTERNAL_SERVER_ERROR.toString(),"服务器处理异常");
+                return nashResult;
+            }
         }
         else {
-            return NashResult.Fail("server-error", "服务器处理异常");
+            logger.error("server-error", "服务器处理异常");
+            if(requestType== null){
+                response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+                return new ModelAndView("404");
+            }else{
+                response.setStatus(Integer.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.toString()));
+                nashResult = NashResult.Fail(HttpStatus.INTERNAL_SERVER_ERROR.toString(),"服务器处理异常");
+                return nashResult;
+            }
         }
-
     }
 
     private String getExceptionDetail(Exception e) {
@@ -103,4 +160,5 @@ public class GlobalExceptionHandler {
         }
         return stringBuffer.toString();
     }
+
 }
