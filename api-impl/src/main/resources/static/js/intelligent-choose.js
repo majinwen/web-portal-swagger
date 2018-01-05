@@ -27,6 +27,8 @@ $(function () {
     chooseUserType();   // 用户选择类型
 
     chooseUserFinds();  // 用户开启智能找房之旅
+
+    // reportEchartAssemble(); // 报考页图表集合
 });
 
 /**
@@ -288,6 +290,7 @@ function chooseUserFinds() {
                     if (options['layOut'] == 1) {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
+                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
                     }
                 }
             })
@@ -336,7 +339,7 @@ function chooseUserFinds() {
         options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
 
         var familyHtml = '<p><span>孩子：<em>'+ $('#hasChild').find('li.current').find('span').text() +'</em></span>' +
-            '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
+                         '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
         $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
     });
 }

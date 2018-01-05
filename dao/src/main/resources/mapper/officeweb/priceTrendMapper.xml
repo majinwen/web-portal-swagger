@@ -22,6 +22,6 @@
         OR building_id  =#{areaId}
       </if>
     </where>
-    and "month" BETWEEN  now() - interval '1 year' AND now() ORDER BY "month"
+    and "month" BETWEEN  now() - interval '13 month' AND now() ORDER BY "month"
   </select>
 </mapper>
