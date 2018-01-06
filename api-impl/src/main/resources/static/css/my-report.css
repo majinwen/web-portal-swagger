@@ -446,6 +446,10 @@ hr {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); }
 
+.report-page {
+  width: 100%;
+  overflow: hidden; }
+
 .my-report-item {
   position: relative;
   height: 1.7333333333rem;
@@ -571,8 +575,8 @@ hr {
           background-image: url("/static/images/myreport/wdbg_icon_recommond.png");
           background-repeat: no-repeat;
           background-position: left center;
-          -webkit-background-size: auto 0.5866666667rem;
-          background-size: auto 0.5866666667rem; }
+          -webkit-background-size: auto 100%;
+          background-size: auto 100%; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .my-report-item .more-menu li.recommond-plot i {
               background-image: url("/static/images/myreport/wdbg_icon_recommond@2x.png"); } }
