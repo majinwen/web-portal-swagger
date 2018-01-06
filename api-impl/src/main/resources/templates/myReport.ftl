@@ -4,52 +4,125 @@
     <meta charset="UTF-8">
     <script src="${staticurl}/js/flexible.js"></script>
     <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/404.css">
-    <title>404</title>
+    <link rel="stylesheet" href="${staticurl}/css/my-report.css">
+    <title>我的报告页</title>
+<#--<meta name="description" content="头条房产，帮你发现美好生活">-->
+    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+<#include "StatisticsHeader.ftl">
 </head>
 <body>
-<div class="page-empty">
-    <div>
-        <#if userReport?exists>
-            <#list userReport as myReport>
-                <ul>
-                    <li>${myReport.id}</li>
-                    <li>${myReport.phone}</li>
-                    <#if myReport.downPayment?exists>
-                        <li>${myReport.downPayment}</li>
-                    </#if>
-                    <#if myReport.monthPayment?exists>
-                        <li>${myReport.monthPayment}</li>
-                    </#if>
-                    <#if myReport.userType?exists>
-                        <li>${myReport.userType}</li>
-                    </#if>
-                    <#if myReport.totalPrice?exists>
-                        <li>${myReport.totalPrice}</li>
-                    </#if>
-                    <#if myReport.layout?exists>
-                        <li>${myReport.layout}</li>
-                    </#if>
-                    <#if myReport.downPayment?exists>
-                        <li>${myReport.downPayment}</li>
-                    </#if>
-                    <#if myReport.hasChild?exists>
-                        <li> ${(myReport.hasChild == '0')?string('无','有')}</li>
-                    </#if>
-                    <#if myReport.hasOldman?exists>
-                        <li>${(myReport.hasOldman == '0')?string('无','有')}</li>
-                    </#if>
-                    <#if myReport.createTime?exists>
-                        <li>${myReport.createTime}</li>
-                    </#if>
-                    <#if myReport.userPortrait?exists>
-                        <li>${myReport.userPortrait}</li>
-                    </#if>
-                </ul>
-            </#list>
-        </#if>
-    </div>
-    <a href="javascript:history.go(-1)">返回</a>
+<div class="report-page">
+    <div class="module-bottom-fill"></div>
+<#if userReport?exists>
+    <#list userReport as myReport>
+        <div>
+            <div class="module-bottom-fill">
+                <div class="my-report-item">
+                    <div class="report-item-content">
+                        <a class="report-link-block" href="#">
+                            <i class="item-report-icon"></i>
+                            <div class="item-report-title">
+                                <h3>懂房帝--我的报告</h3>
+                                <p>${myReport.createTime}</p>
+                            </div>
+                        </a>
+                        <i class="slide-icon-button"></i>
+                    </div>
+                    <ul class="more-menu">
+                        <li class="examine-report">
+                            <a href="${router_city('/findhouse/showMyReport/'+myReport.id)}">
+                                <span>查看报告</span>
+                                <i></i>
+                            </a>
+                        </li>
+                        <li class="recommond-plot current">
+                            <span>推荐小区</span>
+                            <i></i>
+                        </li>
+                        <li class="cancel-collection">
+                            <a href="${router_city('/findhouse/deleteMyReport/'+myReport.id+'/'+myReport.phone)}">
+                                <span>取消收藏</span>
+                                <i></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="module-bottom-fill none">
+                <section>
+                    <#assign json="${myReport.fhResult}"?eval />
+                    <#list json as item>
+                        <ul>
+                            <li><a class="list-item" href="${router_city('/xiaoqu/'+item.newcode?c+'.html')}">
+                                <div class="clear">
+                                    <div class="list-item-img-box">
+                                        <#if item.plotImage?exists>
+                                            <img src="${qiniuimage}/${item.plotImage?split(',')[0]}-tt400x300" alt="<#if item.projname?exists>${item.projname}</#if>">
+                                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                        </#if>
+                                    </div>
+                                    <div class="list-item-cont">
+                                        <h3 class="cont-block-1"><span><#if item.projname?exists>${item.projname}<#else>暂无数据</#if></span></h3>
+                                        <p class="cont-block-2 plot"><#if item.finishdate?exists>${item.finishdate?split("-")[0]}年建成<#else>暂无数据</#if></p>
+                                        <p class="cont-block-3 distance"><i class="icon"></i>
+                                            <#if item.districtName?exists&&item.areaName?exists>
+                                            ${item.districtName}-${item.areaName}
+                                            <#else >
+                                                <#if item.districtName?exists>${item.districtName}</#if>
+                                                <#if item.areaName?exists>${item.areaName}</#if>
+                                            </#if>
+                                        </p>
+                                        <div class="cont-block-4 house-labelling gray">
+                                            <#if item.buildTags?exists>
+                                                <#assign json1=item.buildTags/>
+                                                <#list json1 as lage >
+                                                    <#if lage?exists>
+                                                        <#if lage_index lt 3>
+                                                            <#if lage==1><span>近地铁</span></#if>
+                                                            <#if lage==3><span>现房</span></#if>
+                                                            <#if lage==4><span>精装修</span></#if>
+                                                            <#if lage==5><span>花园洋房</span></#if>
+                                                            <#if lage==6><span>复式</span></#if>
+                                                            <#if lage==7><span>车位充足</span></#if>
+                                                            <#if lage==8><span>低密度</span></#if>
+                                                            <#if lage==9><span>强房企</span></#if>
+                                                            <#if lage==10><span>优质物业</span></#if>
+                                                            <#if lage==11><span>购物方便</span></#if>
+                                                            <#if lage==12><span>教育配套</span></#if>
+                                                            <#if lage==13><span>医疗配套</span></#if>
+                                                            <#if lage==14><span>换手率高</span></#if>
+                                                            <#if lage==15><span>租金月供比高</span></#if>
+                                                            <#if lage==16><span>五证齐全</span></#if>
+                                                            <#if lage==17><span>人车分流</span></#if>
+                                                        </#if>
+                                                    </#if>
+                                                </#list>
+                                            </#if>
+                                         </div>
+                                        <div class="cont-block-price plot">
+                                            <em><#if item.esfPrice?exists>${item.esfPrice}元/㎡<#else>暂无数据</#if></em>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a></li>
+                        </ul>
+                    </#list>
+                </section>
+            </div>
+        </div>
+    </#list>
+</#if>
 </div>
+<script>
+    $('.slide-icon-button').on('click', function () {
+        console.log($(this).prev());
+        $(this).parents('.report-item-content').toggleClass('animate-left');
+        $(this).parents('.report-item-content').next('.more-menu').toggleClass('animate-left');
+    });
+    $('.recommond-plot').on('click', function () {
+        $(this).toggleClass('current');
+        $(this).parents('.module-bottom-fill').next('.module-bottom-fill').toggleClass('none');
+    })
+</script>
 </body>
 </html>

@@ -24,9 +24,9 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="swiper-container carousel-swiper" id="index-swiper">
-            <ul class="swiper-wrapper" id="house-pic-container">
+            <ul class="swiper-wrapper">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
+                    <img class="scaleImg" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -62,33 +62,6 @@
     </section>
 </div>
 <div class="module-bottom-fill">
-    <section class="elastics-stack-box">
-        <div class="elastics-stack-content">
-            <ul id="elastics-stack" class="elastics-stack">
-                <li class="bgtype-1">
-                    <div>
-                        <h4>2018纯新盘</h4>
-                        <p>北京全新楼盘抢先看</p>
-                    </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image1.jpg" alt="2018纯新盘">
-                </li>
-                <li class="bgtype-2">
-                    <div>
-                        <h4>海淀热门房源</h4>
-                        <p>看看大家关注哪里的房</p>
-                    </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image2.jpg" alt="海淀热门房源">
-                </a></li>
-                <li class="bgtype-3">
-                    <div>
-                        <h4>200万电梯房</h4>
-                        <p>少花钱多办事上下自由</p>
-                    </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                </li>
-            </ul>
-        </div>
-    </section>
     <section>
         <div class="index-module-header border-bot-none">
             <h3>精选主题</h3>
@@ -331,13 +304,10 @@
 <#include "search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="/static/js/draggabilly.pkgd.min.js"></script>
-<script src="/static/js/elastiStack.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
-    new ElastiStack(document.getElementById('elastics-stack'));
 </script>
 </body>
 </html>

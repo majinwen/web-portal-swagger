@@ -77,13 +77,14 @@
                     float: left;
 
                     h4 {
-                        margin-top: rem(36);
-                        @include font-dpr(34);
+                        margin-top: rem(21);
+                        margin-bottom: rem(20);
+                        @include font-dpr(32);
                     }
 
                     p {
-                        margin-top: rem(17);
-                        @include font-dpr(23)
+                        margin-top: rem(15);
+                        @include font-dpr(24)
                     }
                 }
 
@@ -94,6 +95,30 @@
                     padding: rem(5);
                     background-color: #fff;
                     @include box-sizing;
+                }
+            }
+
+            &.report {
+                li {
+                    a {
+                        color: $baseWhite;
+                    }
+
+                    &.bgtype-1 {
+                        background-color: #8a98a4;
+                    }
+                    &.bgtype-2 {
+                        background-color: #e9b8b8;
+                    }
+                    &.bgtype-3 {
+                        background-color: #d6c093;
+                    }
+                    &.bgtype-4 {
+                        background-color: #bcbcbc;
+                    }
+                    &.bgtype-5 {
+                        background-color: #7f9cb5;
+                    }
                 }
             }
         }

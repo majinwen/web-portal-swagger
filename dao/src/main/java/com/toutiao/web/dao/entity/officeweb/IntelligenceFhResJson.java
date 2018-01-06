@@ -77,5 +77,11 @@ public class IntelligenceFhResJson {
     @JSONField(name = "userPortrayalType")
     private Integer userPortrait;
 
+    /**
+     * 用户传递的区域id
+     */
+    @JSONField(name = "districtId")
+    private String districtId;
+
 
 }
