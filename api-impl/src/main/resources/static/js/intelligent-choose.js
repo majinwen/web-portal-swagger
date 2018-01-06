@@ -12,7 +12,8 @@ $(function () {
                     data: options,
                     success: function (dataInfo) {
                          console.log(dataInfo.data);
-                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data);
+                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data.id);
+                         // console.log(dataInfo.data.id)
                     },
                     error:function (XMLHttpRequest, textStatus, errorThrown){
 
@@ -123,7 +124,7 @@ function chooseUserFinds() {
                 slideText.css('left', trackWidth + "px");
                 sildeColor.css('width', trackWidth + "px")
             }
-            slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price) + cm)
+            slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
         }
         $(document).on('touchmove', tt);
         $(document).on('touchend', function (evt) {

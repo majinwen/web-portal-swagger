@@ -273,8 +273,8 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                    <p id="busStation">暂无数据</p>
-                    <span id="busStationNumber">暂无数据</span>
+                        <p id="busStation"></p>
+                        <span id="busStationNumber"></span>
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
@@ -521,7 +521,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<#--<script src="${staticurl}/js/plot-detail-map-message.js"></script>-->
 <script>
     <#if  (mouthList?size>0)>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
@@ -662,6 +662,9 @@
             _divContent = _divContent.substring(1);
             $('#base-info').html(_divContent);
         }
+        $('.map-message-btn').find('li.parent-child').addClass('current');
+        $('.map-message-btn').find('li.vegetable-market').addClass('current');
+
     });
 </script>
 </body>

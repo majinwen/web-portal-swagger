@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 <head>
     <meta charset="UTF-8">
     <script>
@@ -93,7 +93,8 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red">1000万</em>左右的房源市场为您的目标市场</p>
+                    <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    </p>
                 </div>
                 <div class="echart-box">
                     <div id="priceChart"></div>
@@ -102,11 +103,15 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget"></em>，<em id="priceMaxCompare"></em>于北京市场均价涨幅</p>
+                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}
+                            %</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>
+                            低</#if></em>于北京市场均价涨幅</p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget"></em>，<em id="priceMinCompare"></em>于北京市场均价跌幅</p>
+                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}
+                            %</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>
+                            低</#if></em>于北京市场均价跌幅</p>
                     </li>
                 </ul>
             </div>
@@ -116,7 +121,8 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red">1000万</em>左右的房源市场为您的目标市场</p>
+                    <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    </p>
                 </div>
                 <div class="echart-box">
                     <div id="marketChart"></div>
@@ -125,15 +131,15 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red"></em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red"></em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red"></em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red"></em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red"></em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red"></em></p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
                     </li>
                 </ul>
             </div>
@@ -142,7 +148,7 @@
                     <p>智能推荐结果</p>
                 </div>
                 <div class="report-caption">
-                    <p>您的意向区域中，有<em class="inte-color-red">18</em>个小区符合要求</p>
+                    <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
                 </div>
                 <div class="echart-box">
 
@@ -158,9 +164,16 @@
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
-                                <li>总价：2000万</li>
-                                <li><em>朝阳</em><em>海淀</em><em>丰台</em></li>
-                                <li>三居</li>
+                                <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if>万</li>
+                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''>
+                                    <#assign Districts = intelligenceFhRes['districtId']?split(',')>
+                                    <#list Districts as district>
+                                        <em>district</em>
+                                    </#list>
+                                <#else >
+                                    <em>-</em>
+                                </#if></li>
+                                <li>${intelligenceFhRes['layout']}居</li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -175,79 +188,67 @@
                         </div>
                     </div>
                     <ul class="water-item">
-                        <li><p>观湖国际</p></li>
-                        <li><p>正邦家园</p></li>
-                        <li><p>新苑花园小区</p></li>
-                        <li><p>华莱国际</p></li>
-                        <li><p>政豪园</p></li>
+                    <#list intelligenceFhRes['fhResult']?eval as intelligenceFhRe>
+                        <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
+                            <li><p>${intelligenceFhRe['projname']}</p></li>
+                        <#else >
+                            <li> -</li>
+                        </#if>
+                    </#list>
                     </ul>
                 </div>
             </div>
             <div class="module-item">
                 <div class="report-title-type1">
-                    <p>针对这5个小区<br>为您做详细的分析和对比</p>
+                    <p>针对这${intelligenceFhRes['fhResult']?eval?size!''}个小区<br>为您做详细的分析和对比</p>
                 </div>
                 <div class="plot-title-box">
                     <div class="plot-title-block">
                         <div>小区</div>
                         <ul>
-                            <li>中粮万科长阳半岛</li>
-                            <li>首创天禧</li>
-                            <li>翡翠公园</li>
-                            <li>天润富玺大厦</li>
-                            <li>骏豪中央公园广场</li>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''>
+                                    <li>${fhResult['projname']}</li>
+                                <#else >
+                                    <li> -</li>
+                                </#if>
+                            </#list>
+                        </#if>
                         </ul>
                     </div>
                 </div>
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
-                            <li class="bgtype-1">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>观湖国际</h4>
-                                        <p>23400元/㎡</p>
-                                        <p>89㎡-256㎡</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image1.jpg" alt="2018纯新盘">
-                                </a>
-                            </li>
-                            <li class="bgtype-2">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>海淀热门房源</h4>
-                                        <p>看看大家关注哪里的房</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image2.jpg" alt="海淀热门房源">
-                                </a>
-                            </li>
-                            <li class="bgtype-3">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>200万电梯房</h4>
-                                        <p>少花钱多办事上下自由</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                                </a>
-                            </li>
-                            <li class="bgtype-4">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>200万电梯房</h4>
-                                        <p>少花钱多办事上下自由</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                                </a>
-                            </li>
-                            <li class="bgtype-5">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>200万电梯房</h4>
-                                        <p>少花钱多办事上下自由</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                                </a>
-                            </li>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <li class="bgtype-${fhResult_index+1}">
+                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                        <div>
+                                            <h4>${fhResult['projname']}</h4>
+                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
+                                                <p>${fhResult['esfPrice']}元/㎡</p>
+                                            <#else >
+                                                <p>${fhResult['price']}元/㎡</p>
+                                            </#if>
+                                            <#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                                <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                            <#else >
+                                                <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                            </#if>
+                                        </div>
+                                        <#if fhResult['plotImage'][0]?exists>
+                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                        <#else >
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                        </#if>
+                                    </a>
+                                </li>
+                            </#list>
+                        </#if>
                         </ul>
                     </div>
                 </section>
@@ -269,6 +270,10 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
+                            <div class="traffic-text"><span>1</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                             <div class="traffic-text"><span class="type1">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                             <div class="traffic-text"><span class="type2">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
@@ -301,81 +306,87 @@
                             <i></i>
                             <em>楼龄</em>
                         </td>
-                        <td>1岁</td>
-                        <td>2岁</td>
-                        <td>3岁</td>
-                        <td>4岁</td>
-                        <td>5岁</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
+                                    <#assign date = (.now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number)?string + '年'>
+                                    <td>${date!'-'}</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>户均绿化</em>
                         </td>
-                        <td>35%</td>
-                        <td>40%</td>
-                        <td>42%</td>
-                        <td>38%</td>
-                        <td>45%</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                        <#--<#if fhResult['virescencerate']?exists&&fhResult['virescencerate']!''>-->
+                            <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                        <#--</#if>-->
+                        </#list>
+                    </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>车位比</em>
                         </td>
-                        <td>2：1</td>
-                        <td>3：1</td>
-                        <td>4：1</td>
-                        <td>3：1</td>
-                        <td>2：1</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['parkRadio']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>空气质量</em>
                         </td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>6</td>
-                        <td>3</td>
-                        <td>2</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['airQuality']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>电梯</em>
                         </td>
-                        <td>
-                            <em>一户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>二户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>一户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>二户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>二户</em>
-                            <em>一梯</em>
-                        </td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['liftDoorRadio']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>供暖</em>
                         </td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['heatingMode']?exists>
+                                    <#if fhResult['heatingMode']?number == 0>
+                                        <td>未知</td>
+                                    <#elseif fhResult['heatingMode']?number == 1>
+                                        <td>集中供暖</td>
+                                    <#elseif fhResult['heatingMode']?number == 2>
+                                        <td>自供暖</td>
+                                    <#else >
+                                        <td> -</td>
+                                    </#if>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                 </table>
             </div>
@@ -390,64 +401,60 @@
                             <i></i>
                             <em>物业费<br>(/㎡·年)</em>
                         </td>
-                        <td>18元</td>
-                        <td>18元</td>
-                        <td>18元</td>
-                        <td>18元</td>
-                        <td>18元</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i></i>
-                            <em>供暖费<br>(/㎡·年)</em>
-                        </td>
-                        <td>9元</td>
-                        <td>9元</td>
-                        <td>9元</td>
-                        <td>9元</td>
-                        <td>9元</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
+                                    <td>${fhResult['propertyfee']}</td>
+                                <#else >
+                                    <td> -</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>水电费<br>(/吨)<br>(/度)</em>
                         </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>
+                                    <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
+                                        <#if fhResult['waterSupply'] == '商水'>
+                                            <span>6元</span>
+                                        <#else >
+                                            <span>5元</span>
+                                        </#if>
+                                    </#if>
+                                    <hr>
+                                    <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
+                                        <#if fhResult['electricSupply'] == '商电'>
+                                            <span>1.33元</span>
+                                        <#else >
+                                            <span>0.48元</span>
+                                        </#if>
+                                    </#if>
+                                </td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>停车费<br>(/年)</em>
                         </td>
-                        <td>178元</td>
-                        <td>178元</td>
-                        <td>178元</td>
-                        <td>178元</td>
-                        <td>178元</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
+                                    <td>${fhResult['carRentPrice']}元</td>
+                                <#else >
+                                    <td> -</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                 </table>
             </div>
@@ -495,7 +502,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -504,7 +510,7 @@
 <script src="/static/js/elastiStack.js"></script>
 <script src="/static/js/intelligent-chart.js"></script>
 <script>
-    new  ElastiStack(document.getElementById('elastics-stack'));
+    new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
         $('#superContainer').fullpage({
             resize: false,
@@ -588,6 +594,692 @@
     };
     guoduye.init();
 
+    var datajson =${datajson};
+    var ptlists = ${ptlists};
+    var trend = ${trend}
+
+    //    console.log(ptlists)
+    //    console.log(trend)
+    console.log(datajson)
+    var dpr = window.devicePixelRatio;
+    var baseFontSize = 12 * dpr;
+    var baseItemWidth = 25 * dpr;
+
+    function getJiagezoushiYuefen() {
+        var res = [];
+        for (var i = ptlists.length - 1; i >= 0; i--) {
+            res.push(ptlists[i]["periodicTime"])
+        }
+        return res;
+    }
+
+    function getJiagezoushiBeijing() {
+        var res = [];
+        for (var i = ptlists.length - 1; i >= 0; i--) {
+            res.push([ptlists[i]["periodicTime"], ptlists[i]["totalPrice"]])
+        }
+        return res;
+    }
+
+    function getJiagezoushiMuBiao() {
+        var res = [];
+        for (var i = ptlists.length - 1; i >= 0; i--) {
+            res.push([ptlists[i]["periodicTime"], ptlists[i]["price"]])
+        }
+        return res;
+    }
+
+    function getGongxuqingkuangYuefen() {
+        var res = [];
+        for (var i = 0; i < trend.length; i++) {
+            res.push(trend[i]["periodicTime"])
+        }
+        return res;
+    }
+
+    function getGongxuqingkuangBeijing() {
+        var res = [];
+        for (var i = 0; i < trend.length; i++) {
+            res.push(trend[i]["allSd"])
+        }
+        return res;
+    }
+
+    function getGongxuqingkuangMuBiao() {
+        var res = [];
+        for (var i = 0; i < trend.length; i++) {
+            res.push(trend[i]["targetSd"])
+        }
+        return res;
+    }
+
+    function getSubwayInfo() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+        }
+        return res;
+    }
+
+
+    /**
+     * 报告页图表集合
+     * */
+    $(function () {
+        var locationUrl = window.location.href;
+        locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
+        console.log(locationBaseUrl);
+
+        var chartGrid = {
+            left: 0,
+            right: '6%',
+            bottom: 0,
+            containLabel: true
+        };
+
+        /**
+         * 市场价格走势
+         * */
+        var priceChart = echarts.init(document.getElementById('priceChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标轴
+        priceChart.setOption({
+            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            textStyle: {fontSize: baseFontSize},
+            tooltip: {
+                trigger: 'axis',
+                textStyle: {fontSize: baseFontSize}
+            },
+            legend: {
+                itemGap: 20,
+                itemWidth: baseItemWidth,
+                data: [{
+                    name: '北京市场',
+                    icon: 'line'
+                }, {
+                    name: '目标市场',
+                    icon: 'line'
+                }]
+            },
+            grid: chartGrid,
+            xAxis: {
+                show: true,
+                boundaryGap: false,
+                scale: true,
+                axisLabel: {fontSize: baseFontSize - 10},
+                data: getJiagezoushiYuefen()
+            },
+            yAxis: {
+                scale: true,
+                axisLine: {show: true},
+                axisTick: {show: false},
+                axisLabel: {show: false},
+                splitLine: {show: false}
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 50,
+                    end: 100,
+                    filterMode: 'empty',
+                    zoomLock: true
+                }
+            ],
+            series: [{
+                name: '北京市场',
+                type: 'line',
+                showSymbol: false,
+                data: getJiagezoushiBeijing()
+            }, {
+                name: '目标市场',
+                type: 'line',
+                showSymbol: false,
+                data: getJiagezoushiMuBiao()
+            }]
+        });
+
+        /**
+         * 市场供需情况
+         * */
+        var marketChart = echarts.init(document.getElementById('marketChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        marketChart.setOption({
+            textStyle: {fontSize: baseFontSize},
+            tooltip: {
+                show: true,
+                trigger: 'axis',
+                textStyle: {fontSize: baseFontSize},
+                axisPointer: {type: 'shadow'}
+            },
+            legend: {
+                itemGap: 20,
+                itemWidth: baseItemWidth,
+                data: [{
+                    name: '北京市场',
+                    icon: 'line'
+                }, {
+                    name: '目标市场',
+                    icon: 'line'
+                }]
+            },
+            grid: chartGrid,
+            yAxis: {
+                type: 'value',
+                axisTick: {show: false},
+                axisLine: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false}
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {show: false},
+                    axisLine: {show: true},
+                    axisLabel: {fontSize: baseFontSize - 10},
+                    data: getGongxuqingkuangYuefen()
+                }, {
+                    type: 'category',
+                    axisLine: {show: false},
+                    axisTick: {show: false},
+                    axisLabel: {show: false},
+                    splitArea: {show: false},
+                    splitLine: {show: false},
+                    data: getGongxuqingkuangYuefen()
+                }
+            ],
+            series: [
+                {
+                    name: '北京市场',
+                    type: 'bar',
+                    xAxisIndex: 1,
+                    itemStyle: {
+                        normal: {
+                            show: true,
+                            color: '#277ace',
+                            barBorderRadius: 10,
+                            borderWidth: 0,
+                            borderColor: '#333'
+                        }
+                    },
+                    barGap: '0%',
+                    barCategoryGap: '70%',
+                    data: getGongxuqingkuangBeijing()
+                },
+                {
+                    name: '目标市场',
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            show: true,
+                            color: '#5de3e1',
+                            barBorderRadius: 10,
+                            borderWidth: 0,
+                            borderColor: '#333'
+                        }
+                    },
+                    barGap: '0%',
+                    barCategoryGap: '70%',
+                    data: getGongxuqingkuangMuBiao()
+                }
+            ]
+        });
+//        marketChart.showLoading();
+
+        /**
+         * 地铁信息
+         * */
+        var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+
+        var trafficSubwayLabel = {
+            normal: {
+                show: true,
+                position: 'bottom',
+                color: '#666',
+                fontSize: baseFontSize - 5,
+                formatter: '{c}km\n'
+            }
+        };
+        trafficSubwayChart.setOption({
+            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            textStyle: {fontSize: baseFontSize},
+            grid: {
+                left: 0,
+                right: '6%',
+                bottom: 0,
+                top: 0,
+                containLabel: true
+            },
+            xAxis: {
+                show: false,
+                data: []
+            },
+            yAxis: {
+                show: false,
+                inverse: true,
+                min: 0,
+                max: 3
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficSubwayLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [2]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficSubwayLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficSubwayLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [0]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [0]
+                }
+            ]
+        });
+        // trafficSubwayChart.showLoading();
+
+
+        /**
+         * 环线桥信息
+         * */
+        var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+
+        var trafficRondLabel = {
+            normal: {
+                show: true,
+                position: 'bottom',
+                color: '#666',
+                fontSize: baseFontSize - 5,
+                formatter: '{c}km\n大望路站'
+            }
+        };
+        trafficRondChart.setOption({
+            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            textStyle: {fontSize: baseFontSize},
+            grid: {
+                left: 0,
+                right: '6%',
+                bottom: 0,
+                top: 0,
+                containLabel: true
+            },
+            xAxis: {
+                show: false,
+                data: []
+            },
+            yAxis: {
+                show: false,
+                inverse: true,
+                min: 0,
+                max: 3
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [2]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                }
+            ]
+        });
+        // trafficRondChart.showLoading();
+
+        /**
+         * 休闲购物
+         * */
+        var shoppingChart = echarts.init(document.getElementById('shoppingChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        shoppingChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['菜市场', '超市', '购物中心', '餐饮', '健身']
+            },
+            series: [
+                {
+                    name: '健身',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390]
+                },
+                {
+                    name: '餐饮',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90]
+                },
+                {
+                    name: '购物中心',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290]
+                },
+                {
+                    name: '超市',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190]
+                },
+                {
+                    name: '菜市场',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290]
+                }
+            ]
+        });
+
+
+        /**
+         * 教育配套
+         * */
+        var educationChart = echarts.init(document.getElementById('educationChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        educationChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['亲子教育', '幼儿园', '小学', '中学', '大学']
+            },
+            series: [
+                {
+                    name: '大学',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390]
+                },
+                {
+                    name: '中学',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90]
+                },
+                {
+                    name: '小学',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290]
+                },
+                {
+                    name: '幼儿园',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190]
+                },
+                {
+                    name: '亲子教育',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290]
+                }
+            ]
+        });
+
+
+        /**
+         * 医疗配套
+         * */
+        var medicalChart = echarts.init(document.getElementById('medicalChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        medicalChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['综合医院', '专科医院', '诊所', '养老院', '急救中心']
+            },
+            series: [
+                {
+                    name: '急救中心',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390]
+                },
+                {
+                    name: '养老院',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90]
+                },
+                {
+                    name: '诊所',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290]
+                },
+                {
+                    name: '专科医院',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190]
+                },
+                {
+                    name: '综合医院',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290]
+                }
+            ]
+        });
+
+    });
 </script>
 </body>
 </html>
