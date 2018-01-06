@@ -1,7 +1,10 @@
 @import "../base/normalize";
 @import "../base/mixin";
 @import "../pages/office-list";
-
+.report-page {
+    width: 100%;
+    overflow: hidden;
+}
 .my-report-item {
     position: relative;
     height: rem(130);
@@ -121,8 +124,8 @@
                 i {
                     @include bg-image('/static/images/myreport/wdbg_icon_recommond');
                     background-position: left center;
-                    -webkit-background-size: auto rem(44);
-                    background-size: auto rem(44);
+                    -webkit-background-size: auto 100%;
+                    background-size: auto 100%;
                 }
 
                 &.current {
