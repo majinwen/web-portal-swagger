@@ -30,7 +30,7 @@
                     </div>
                     <ul class="more-menu">
                         <li class="examine-report">
-                            <a href="#">
+                            <a href="${router_city('/findhouse/showMyReport/'+myReport.id)}">
                                 <span>查看报告</span>
                                 <i></i>
                             </a>
@@ -62,8 +62,8 @@
                                         </#if>
                                     </div>
                                     <div class="list-item-cont">
-                                        <h3 class="cont-block-1"><span><#if item.projname?exists>${item.projname}</#if></span></h3>
-                                        <p class="cont-block-2 plot"><#if item.finishdate?exists>${item.finishdate?split("-")[0]}年建成</#if></p>
+                                        <h3 class="cont-block-1"><span><#if item.projname?exists>${item.projname}<#else>暂无数据</#if></span></h3>
+                                        <p class="cont-block-2 plot"><#if item.finishdate?exists>${item.finishdate?split("-")[0]}年建成<#else>暂无数据</#if></p>
                                         <p class="cont-block-3 distance"><i class="icon"></i>
                                             <#if item.districtName?exists&&item.areaName?exists>
                                             ${item.districtName}-${item.areaName}
@@ -100,7 +100,7 @@
                                             </#if>
                                          </div>
                                         <div class="cont-block-price plot">
-                                            <em><#if item.esfPrice?exists>${item.esfPrice}元/㎡</#if></em>
+                                            <em><#if item.esfPrice?exists>${item.esfPrice}元/㎡<#else>暂无数据</#if></em>
                                         </div>
                                     </div>
                                 </div>

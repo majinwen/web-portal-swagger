@@ -521,7 +521,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<#--<script src="${staticurl}/js/plot-detail-map-message.js"></script>-->
 <script>
     <#if  (mouthList?size>0)>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
@@ -662,6 +662,9 @@
             _divContent = _divContent.substring(1);
             $('#base-info').html(_divContent);
         }
+        $('.map-message-btn').find('li.parent-child').addClass('current');
+        $('.map-message-btn').find('li.vegetable-market').addClass('current');
+
     });
 </script>
 </body>
