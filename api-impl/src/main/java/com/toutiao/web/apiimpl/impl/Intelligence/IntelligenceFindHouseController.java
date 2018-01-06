@@ -282,7 +282,7 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showMyReport/{reportId}")
     public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
-        /*if (StringTool.isNotBlank(reportId)) {
+        if (StringTool.isNotBlank(reportId)) {
             //查询用户是否有报告数据
             Map map = new HashMap();
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
@@ -305,7 +305,7 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "没有报告记录！");
         } else {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
-        }*/
+        }
         return "intelligent-report";
     }
 
