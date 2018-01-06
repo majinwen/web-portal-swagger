@@ -191,6 +191,9 @@ hr {
   height: 100%;
   overflow: hidden; }
 
+html {
+  overflow: auto; }
+
 .bgbox {
   position: absolute;
   top: 0;
@@ -367,6 +370,30 @@ hr {
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .page2 .page-content .module-item .report-title-type1 p:after {
               background-image: url("/static/images/intelligent/bgy_ys_r@3x.png"); } }
+    .page2 .page-content .module-item .plot-title-box {
+      position: relative;
+      width: 100%;
+      height: 0.9333333333rem; }
+      .page2 .page-content .module-item .plot-title-box .plot-title-block {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 0.9333333333rem; }
+        .page2 .page-content .module-item .plot-title-box .plot-title-block div {
+          float: left;
+          width: 1.3333333333rem;
+          height: 0.9333333333rem;
+          line-height: 0.9333333333rem; }
+        .page2 .page-content .module-item .plot-title-box .plot-title-block ul {
+          display: table-row;
+          float: right;
+          width: 7.8666666667rem;
+          text-align: center; }
+          .page2 .page-content .module-item .plot-title-box .plot-title-block ul li {
+            display: table-cell;
+            width: 20%;
+            padding: 0.0933333333rem 0;
+            vertical-align: middle; }
     .page2 .page-content .module-item .report-title-type2 {
       position: absolute;
       top: 0;
@@ -384,7 +411,9 @@ hr {
         margin-left: -2.2rem;
         color: #fff;
         background-image: url("/static/images/intelligent/report-type2-bg.png");
-        background-repeat: no-repeat; }
+        background-repeat: no-repeat;
+        -webkit-background-size: contain;
+        background-size: contain; }
         [data-dpr="1"] .page2 .page-content .module-item .report-title-type2 p {
           font-size: 16px; }
         [data-dpr="2"] .page2 .page-content .module-item .report-title-type2 p {
@@ -462,6 +491,12 @@ hr {
         text-align: center;
         color: #666;
         border: 0.0133333333rem solid #e8e8e8; }
+        [data-dpr="1"] .page2 .page-content .module-item table tr td {
+          font-size: 12px; }
+        [data-dpr="2"] .page2 .page-content .module-item table tr td {
+          font-size: 24px; }
+        [data-dpr="3"] .page2 .page-content .module-item table tr td {
+          font-size: 36px; }
         .page2 .page-content .module-item table tr td em {
           display: block; }
         .page2 .page-content .module-item table tr td span {
@@ -481,6 +516,116 @@ hr {
       height: 100%;
       padding: 0.2666666667rem 0;
       box-sizing: border-box; }
+  .page2 .page-content .traffic-box {
+    position: relative;
+    margin-top: 0.6666666667rem;
+    padding-left: 0.3733333333rem; }
+    .page2 .page-content .traffic-box .left-line {
+      position: absolute;
+      top: 0.9333333333rem;
+      bottom: 0;
+      width: 0;
+      border-left: 1px dashed #fb3939; }
+    .page2 .page-content .traffic-box .vertical-line {
+      border-top: 1px dashed #fb3939; }
+    .page2 .page-content .traffic-box .traffic-title {
+      height: 1.6rem;
+      padding-top: 0.7333333333rem;
+      box-sizing: border-box; }
+      .page2 .page-content .traffic-box .traffic-title h5 {
+        position: relative;
+        padding-left: 0.2666666667rem; }
+        [data-dpr="1"] .page2 .page-content .traffic-box .traffic-title h5 {
+          font-size: 12px; }
+        [data-dpr="2"] .page2 .page-content .traffic-box .traffic-title h5 {
+          font-size: 24px; }
+        [data-dpr="3"] .page2 .page-content .traffic-box .traffic-title h5 {
+          font-size: 36px; }
+        .page2 .page-content .traffic-box .traffic-title h5:before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: -0.08rem;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-top: -0.08rem;
+          background-color: #fb3939;
+          -webkit-border-radius: 50%;
+          border-radius: 50%; }
+    .page2 .page-content .traffic-box .echart-wrapper {
+      position: relative;
+      padding-left: 0.9733333333rem;
+      border-top: 0.0133333333rem solid #e8e8e8;
+      border-bottom: 0.0133333333rem solid #e8e8e8; }
+      .page2 .page-content .traffic-box .echart-wrapper:before, .page2 .page-content .traffic-box .echart-wrapper:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 0.64rem;
+        height: 0.64rem;
+        margin: -0.32rem;
+        -webkit-background-size: contain;
+        background-size: contain; }
+      .page2 .page-content .traffic-box .echart-wrapper:before {
+        top: 0;
+        background-image: url("/static/images/intelligent/bgy_icon_xq.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .page2 .page-content .traffic-box .echart-wrapper:before {
+            background-image: url("/static/images/intelligent/bgy_icon_xq@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .page2 .page-content .traffic-box .echart-wrapper:before {
+            background-image: url("/static/images/intelligent/bgy_icon_xq@3x.png"); } }
+      .page2 .page-content .traffic-box .echart-wrapper.subway:after {
+        bottom: 0;
+        background-image: url("/static/images/intelligent/bgy_icon_dt.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .page2 .page-content .traffic-box .echart-wrapper.subway:after {
+            background-image: url("/static/images/intelligent/bgy_icon_dt@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .page2 .page-content .traffic-box .echart-wrapper.subway:after {
+            background-image: url("/static/images/intelligent/bgy_icon_dt@3x.png"); } }
+      .page2 .page-content .traffic-box .echart-wrapper.rond:after {
+        bottom: 0;
+        background-image: url("/static/images/intelligent/bgy_icon_ld.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .page2 .page-content .traffic-box .echart-wrapper.rond:after {
+            background-image: url("/static/images/intelligent/bgy_icon_ld@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .page2 .page-content .traffic-box .echart-wrapper.rond:after {
+            background-image: url("/static/images/intelligent/bgy_icon_ld@3x.png"); } }
+      .page2 .page-content .traffic-box .echart-wrapper .echart-box {
+        width: 100%;
+        height: 3.7333333333rem;
+        margin: 0;
+        background-color: #fbfbfb; }
+        .page2 .page-content .traffic-box .echart-wrapper .echart-box #trafficSubwayChart, .page2 .page-content .traffic-box .echart-wrapper .echart-box #trafficRondChart {
+          width: 7.8666666667rem;
+          height: 100%;
+          box-sizing: border-box; }
+    .page2 .page-content .traffic-box .traffic-text-box {
+      margin-top: 0.7466666667rem;
+      margin-bottom: 1rem; }
+      .page2 .page-content .traffic-box .traffic-text-box .traffic-text {
+        position: relative;
+        padding-left: 0.5333333333rem;
+        margin-bottom: 0.6rem;
+        color: #888; }
+        [data-dpr="1"] .page2 .page-content .traffic-box .traffic-text-box .traffic-text {
+          font-size: 11px; }
+        [data-dpr="2"] .page2 .page-content .traffic-box .traffic-text-box .traffic-text {
+          font-size: 22px; }
+        [data-dpr="3"] .page2 .page-content .traffic-box .traffic-text-box .traffic-text {
+          font-size: 33px; }
+        .page2 .page-content .traffic-box .traffic-text-box .traffic-text span {
+          position: absolute;
+          left: 0;
+          width: 0.6666666667rem;
+          height: 0.6266666667rem;
+          margin-left: -0.3333333333rem;
+          text-align: center; }
 
 .elastics-stack-box {
   padding-left: 0.4rem;

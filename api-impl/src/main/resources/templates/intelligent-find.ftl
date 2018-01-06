@@ -8,7 +8,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
-    <title>筛选</title>
+    <title>智能找房 预见所想</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
 </head>
@@ -128,12 +128,12 @@
                             <div class="slide-item">
                                 <label class="layer-type-text">总价</label>
                                 <div class="slide-line total-slide">
-                                    <span class="slide-text">0万</span>
+                                    <span class="slide-text">100万</span>
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
-                                        <span class="min"><em>50</em>万</span>
+                                        <span class="min"><em>100</em>万</span>
                                         <span class="slider-thumb"></span>
-                                        <span class="max"><em>1000</em>万</span>
+                                        <span class="max"><em>3000</em>万</span>
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +142,7 @@
                             <div class="slide-item">
                                 <label class="layer-type-text">首付</label>
                                 <div class="slide-line down-slide">
-                                    <span class="slide-text">0万</span>
+                                    <span class="slide-text">50万</span>
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
                                         <span class="min"><em>50</em>万</span>
@@ -159,7 +159,7 @@
                                         <div class="slide-color"></div>
                                         <span class="min"><em>0</em></span>
                                         <span class="slider-thumb"></span>
-                                        <span class="max"><em>30000</em></span>
+                                        <span class="max"><em>50000</em></span>
                                     </div>
                                 </div>
                             </div>

@@ -8,7 +8,7 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css">
-    <title>报告页</title>
+    <title>智能找房 预见所想</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
     <script src="${staticurl}/js/modernizr.custom.js"></script>
@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="superContainer">
-    <#--<div class="section page1 active">
+    <div class="section page1 active">
         <div class="bgbox bg1">
             <div class="page-content">
                 <div class="user-header-box">
@@ -34,8 +34,8 @@
                 <div class="down-triangle"></div>
             </div>
         </div>
-    </div>-->
-    <div class="section page2 active">
+    </div>
+    <div class="section page2">
         <div class="page-content">
             <div class="module-item">
                 <div class="report-title-type1">
@@ -102,6 +102,18 @@
                 <div class="report-title-type1">
                     <p>针对这5个小区<br>为您做详细的分析和对比</p>
                 </div>
+                <div class="plot-title-box">
+                    <div class="plot-title-block">
+                        <div>小区</div>
+                        <ul>
+                            <li>中粮万科长阳半岛</li>
+                            <li>首创天禧</li>
+                            <li>翡翠公园</li>
+                            <li>天润富玺大厦</li>
+                            <li>骏豪中央公园广场</li>
+                        </ul>
+                    </div>
+                </div>
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack">
@@ -134,6 +146,38 @@
                 <div class="report-title-type2">
                     <p>交通</p>
                     <span>交通便利，赶得上节奏，跑得过大盘</span>
+                </div>
+                <div class="traffic-box">
+                    <div class="left-line"></div>
+                    <div>
+                        <div class="traffic-title">
+                            <h5>地铁出行，感谢您为环保事业做出的努力</h5>
+                        </div>
+                        <div class="echart-wrapper subway">
+                            <div class="echart-box">
+                                <div id="trafficSubwayChart"></div>
+                            </div>
+                        </div>
+                        <div class="traffic-text-box">
+                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        </div>
+                    </div>
+                    <div class="vertical-line">
+                        <div class="traffic-title">
+                            <h5>自驾出行，快去最近的环线桥</h5>
+                        </div>
+                        <div class="echart-wrapper rond">
+                            <div class="echart-box">
+                                <div id="trafficRondChart"></div>
+                            </div>
+                        </div>
+                        <div class="traffic-text-box">
+                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="module-item">
@@ -324,7 +368,20 @@
 <script src="/static/js/intelligent-chart.js"></script>
 <script>
     new  ElastiStack(document.getElementById('elastics-stack'));
-
+    $('#superContainer').fullpage({
+        fitToSection: true,
+        resize: false,
+        onLeave: function (index, nextIndex, direction) {
+        if (nextIndex == 2 && direction == 'down') {
+           /* $('html').css({overflow: 'auto'});
+            $('body').css({height: 'auto', "-ms-touch-action":"inherit", "touch-action":"inherit"});
+            $('#superContainer').css({height:"", "-ms-touch-action":"inherit", "touch-action":"inherit"});
+            $('.page2').height('auto');
+            $('.page2').find('.fp-tableCell').height('auto');*/
+        }
+    }
+    });
+    $.fn.fullpage.setAllowScrolling(false, 'up');
 </script>
 </body>
 </html>

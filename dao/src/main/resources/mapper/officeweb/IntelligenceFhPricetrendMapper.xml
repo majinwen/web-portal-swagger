@@ -15,6 +15,7 @@
     <result column="avgprice" property="avgprice" jdbcType="NUMERIC" />
     <result column="avgtotalprice" property="avgtotalprice" jdbcType="NUMERIC" />
     <result column="maxtotalprice" property="maxtotalprice" jdbcType="NUMERIC" />
+    <result column="sumtotalprice" property="sumtotalprice" jdbcType="NUMERIC" />
   </resultMap>
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend" >
     insert into intelligence_fh_pricetrend (min_total_price, price, periodic_time, 
@@ -78,7 +79,8 @@
     "max"(price) as maxprice,
     "avg"(price) as avgprice,
     "avg"(total_price) as avgtotalprice,
-    "max"(total_price) as maxtotalprice
+    "max"(total_price) as maxtotalprice,
+    "sum"(total_price) as sumtotalprice
     ]]>
     from intelligence_fh_pricetrend
     WHERE 1=1

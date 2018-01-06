@@ -35,21 +35,25 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
     public Map<String,Object> queryPriceTrend(Integer totalPrice) {
 
         List<IntelligenceFhPricetrend> lists = intelligenceFhPricetrendMapper.queryPriceTrend(totalPrice);
-        IntelligenceFhPtRatio intelligenceFhPtRatio = intelligenceFhPricetrendMapper.queryPriceTrendRatio(totalPrice);
+//        IntelligenceFhPtRatio intelligenceFhPtRatio = intelligenceFhPricetrendMapper.queryPriceTrendRatio(totalPrice);
         Map<String,Object> result = new HashMap<>();
         Double[] price = new Double[12];
         MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
         Double[] ratio = new Double[lists.size()-1];
+        Double[] tarratio = new Double[lists.size()-1];
         List<IntelligenceFhPtDo> intelligenceFhPtDos = new ArrayList<>();
+        Double cityAvgRatio = 0.0;
         if(lists.size()> 0){
             ok:
             for(int i=0;i<lists.size();i++){
                 if(ratio.length == i){
                     break ok;
                 }
-                price[i] = lists.get(i).getPrice().doubleValue();
+//                price[i] = lists.get(i).getPrice().doubleValue();
                 ratio[i] = (lists.get(i).getPrice().subtract(lists.get(i+1).getPrice()))
                         .divide(lists.get(i+1).getPrice(),mc).multiply(new BigDecimal(100)).doubleValue();
+                tarratio[i]= (lists.get(i).getTotalPrice().subtract(lists.get(i+1).getTotalPrice()))
+                        .divide(lists.get(i+1).getTotalPrice(),mc).doubleValue();
             }
             Double max=ratio[0];
             Double min=ratio[0];
@@ -59,10 +63,13 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
             for(int j = 0; j<ratio.length;j++){
                 if(ratio[j]<min)min=ratio[j];
             }
+
+            for(int i = 0; i<tarratio.length;i++){
+                cityAvgRatio = cityAvgRatio+tarratio[i];
+            }
+
             result.put("minTarget",min);
             result.put("maxTarget",max);
-
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             for(IntelligenceFhPricetrend intelligenceFhPricetrend : lists){
                 IntelligenceFhPtDo intelligenceFhPtDo = new IntelligenceFhPtDo();
@@ -76,16 +83,12 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
             }
         }
         //目标市场
-        Double cityAvgRatio11 = intelligenceFhPtRatio.getMaxtotalprice().divide(new BigDecimal(12),mc)
-                .divide(intelligenceFhPtRatio.getMaxtotalprice(),mc).multiply(new BigDecimal(100)).doubleValue();
-        result.put("target",cityAvgRatio11);
+//        Double cityAvgRatio11 = intelligenceFhPtRatio.getAvgtotalprice()
+//                .divide(intelligenceFhPtRatio.getSumtotalprice(),mc).multiply(new BigDecimal(100)).doubleValue();
+        cityAvgRatio = cityAvgRatio/12*100;
+        result.put("target",cityAvgRatio);
         result.put("ptlists",intelligenceFhPtDos);
         result.put("searchPrice",totalPrice);
         return result;
     }
-
-
-
-
-
 }

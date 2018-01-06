@@ -6,7 +6,8 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-index.css">
-    <title>新房首页</title>
+    <title>上头条 找新房</title>
+    <meta name="description" content="让美好生活 来找你">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>

@@ -6,11 +6,13 @@
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
-    <title>新房列表</title>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>来头条房产看新房</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
+<img height="1px" width="1px" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">

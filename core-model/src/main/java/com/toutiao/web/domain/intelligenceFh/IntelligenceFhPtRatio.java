@@ -32,6 +32,10 @@ public class IntelligenceFhPtRatio {
      * 北京市场年最高成交价格
      */
     private BigDecimal maxtotalprice;
+    /**
+     * 北京市场年最高成交总和
+     */
+    private BigDecimal sumtotalprice;
 
     /**
      * 最高涨幅
