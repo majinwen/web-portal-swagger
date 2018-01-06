@@ -12,7 +12,8 @@ $(function () {
                     data: options,
                     success: function (dataInfo) {
                          console.log(dataInfo.data);
-                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data);
+                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data.id);
+                         // console.log(dataInfo.data.id)
                     },
                     error:function (XMLHttpRequest, textStatus, errorThrown){
 

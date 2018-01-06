@@ -933,7 +933,7 @@ function pullUpAction() {
                                 var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                 var _key = dataCon[i]['key'];
                                 if (_subwayObj && _key) {
-                                    var _subwayArray = _subwayObj[_key];
+                                    var _subwayArray = _subwayObj[_key].split('$');
                                     if (_subwayArray.length > 2) {
                                         var _subwayDesc;
 

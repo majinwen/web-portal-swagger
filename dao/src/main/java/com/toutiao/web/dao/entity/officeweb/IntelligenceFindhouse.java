@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class IntelligenceFindhouse {
     /**
      * 序号
@@ -756,6 +756,15 @@ public class IntelligenceFindhouse {
     /**
      * 附近的桥
      */
-//    private String nearbyQiao;
+    private String nearbyQiao;
+    /**
+     * 地图信息结果
+     */
+    private Object dataInfo;
+    /**
+     * 地图信息最大数量
+     */
+    private Object typeCount;
+
 
 }
