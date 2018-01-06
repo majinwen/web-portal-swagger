@@ -191,9 +191,6 @@ hr {
   height: 100%;
   overflow: hidden; }
 
-html {
-  overflow: auto; }
-
 .bgbox {
   position: absolute;
   top: 0;
@@ -724,8 +721,6 @@ html {
     height: 3.7333333333rem;
     margin: 0.6533333333rem 0 0.4rem;
     background-color: #fbfbfb; }
-    .page2 .page-content .echart-box.mt100 {
-      margin-top: 1.3333333333rem; }
     .page2 .page-content .echart-box.nearby {
       height: 5.6rem;
       background-color: transparent; }

@@ -4,10 +4,6 @@ $inteBorderBlack: #000;
 $inteColorRed: #e42929;
 $inteTextColorRed: #f25a5a;
 
-html {
-    overflow: auto;
-}
-
 .bgbox {
     position: absolute;
     top: 0;
@@ -586,6 +582,7 @@ html {
             }
 
         }
+
         .report-title-type3 {
             margin-top: rem(70);
             margin-bottom: rem(70);
@@ -625,10 +622,6 @@ html {
             height: rem(280);
             margin: rem(49) 0 rem(30);
             background-color: #fbfbfb;
-
-            &.mt100 {
-                margin-top: rem(100);
-            }
 
             &.nearby {
                 height: rem(420);
@@ -683,6 +676,7 @@ html {
                     }
                 }
             }
+
             .echart-wrapper {
                 position: relative;
                 padding-left: rem(73);

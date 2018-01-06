@@ -11,21 +11,6 @@
     <title>智能找房 预见所想</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
-    <style>
-        .animate-ring-box.active {
-            -webkit-animation: lineRight 4s;
-            animation: lineRight 4s;
-            -webkit-animation-fill-mode:forwards;
-        }
-        @-webkit-keyframes lineRight {
-            0% {  transform: rotate(0deg);  }
-            100% {  transform: rotate(360deg);  }
-        }
-        @keyframes lineRight {
-            0% {  transform: rotate(0deg);  }
-            100% {  transform: rotate(360deg);  }
-        }
-    </style>
 </head>
 <body>
 <div id="superContainer">
@@ -355,10 +340,10 @@
                         <#-- 百分比进度显示 -->
                         <div class="loading-number">0%</div>
                         <#-- 黑色进度条（改变width） -->
-                        <div class="button-mask-box" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 70px; overflow: hidden; z-index: 1;">
+                        <div class="button-mask-box">
                             <div class="button-mask"></div>
                         </div>
-                        <div class="button" style="box-sizing: border-box"></div>
+                        <div class="button"></div>
                         <p class="loading-text">正在生成用户画像</p>
                     </a>
                 </div>
@@ -369,14 +354,14 @@
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/intelligent-choose.js"></script>
 <script type="text/javascript">
-    var rada_animit={
-        timers:[],
-        id:0,
-        random:function (max,min) {
-            return parseInt(Math.random()*max)+min;
+    var rada_animit = {
+        timers: [],
+        id: 0,
+        random: function (max, min) {
+            return parseInt(Math.random() * max) + min;
         },
-        center_process:function () {
-            if(!rada_animit.center_process_start){
+        center_process: function () {
+            if (!rada_animit.center_process_start) {
                 rada_animit.center_process_start = true
             }
             else {
@@ -392,13 +377,13 @@
                 $('#center_circle_div em').eq(0).text(rada_animit.random(10000, 8000));
                 $('#center_circle_div em').eq(1).text(rada_animit.random(15000, 30000));
                 $('#center_circle_div em').eq(2).text(rada_animit.random(150, 50));
-            }, 100)
+            }, 100);
             setTimeout(function () {
                 clearInterval(timer)
-            },4000)
+            }, 4000)
         },
-        left_process:function () {
-            if(!rada_animit.left_process_start){
+        left_process: function () {
+            if (!rada_animit.left_process_start) {
                 rada_animit.left_process_start = true
             }
             else {
@@ -409,16 +394,16 @@
             $('#left_circle_div .text-box').show();
             $('#left_circle_div .animate-ring-box').addClass("active");
             var timer = setInterval(function () {
-                $('#left_circle_div em').eq(0).text(rada_animit.random(10,1));
-                $('#left_circle_div em').eq(1).text(rada_animit.random(1000000,500000));
+                $('#left_circle_div em').eq(0).text(rada_animit.random(10, 1));
+                $('#left_circle_div em').eq(1).text(rada_animit.random(1000000, 500000));
 
-            },100)
+            }, 100);
             setTimeout(function () {
                 clearInterval(timer)
-            },4000)
+            }, 4000)
         },
-        right_process:function () {
-            if(!rada_animit.right_process_start){
+        right_process: function () {
+            if (!rada_animit.right_process_start) {
                 rada_animit.right_process_start = true
             }
             else {
@@ -429,66 +414,65 @@
             $('#right_circle_div .text-box').show();
             $('#right_circle_div .animate-ring-box').addClass("active");
             var timer = setInterval(function () {
-                $('#right_circle_div em').eq(1).text(rada_animit.random(300000,200000));
+                $('#right_circle_div em').eq(1).text(rada_animit.random(300000, 200000));
 
-            },100);
+            }, 100);
             setTimeout(function () {
                 clearInterval(timer)
-            },4000)
+            }, 4000)
         },
-        stop_all:function () {
-            for(var i=0;i<rada_animit.timers.length;i++){
+        stop_all: function () {
+            for (var i = 0; i < rada_animit.timers.length; i++) {
                 clearInterval(rada_animit.timers[i]);
             }
         },
-        init:function () {
+        init: function () {
             $('.animate-line').each(function () {
                 var that = $(this);
-                var step=20;
+                var step = 20;
                 var timer = setInterval(function () {
-                    var maxtop = that.parent().parent().height()
+                    var maxtop = that.parent().parent().height();
 
-                    if(parseInt(that.css('top'))>maxtop){
-                        that.css('top',maxtop+'px');
-                        step=-20
+                    if (parseInt(that.css('top')) > maxtop) {
+                        that.css('top', maxtop + 'px');
+                        step = -20
                     }
-                    else if(parseInt(that.css('top'))<0){
-                        that.css('top','0px');
-                        step=20
+                    else if (parseInt(that.css('top')) < 0) {
+                        that.css('top', '0px');
+                        step = 20
                     }
-                    that.css('top',parseInt(that.css('top'))+step+'px');
-                },100);
-                that.data("lada_timer",timer);
+                    that.css('top', parseInt(that.css('top')) + step + 'px');
+                }, 100);
+                that.data("lada_timer", timer);
             });
-            var process=0;
-            var process_timer =setInterval(function () {
-                    $('.button-mask').width((process+1)+'px');
-                    process += 4;
-                    $('.loading-number').css('left',process+'px')
-                    var rate = parseInt(process*100/parseInt($('#button_report').width()));
-                    if(rate>10){
-                        rada_animit.center_process();
+            var process = 0;
+            var process_timer = setInterval(function () {
+                $('.button-mask').width((process + 1) + 'px');
+                process += 4;
+                $('.loading-number').css('left', process + 'px');
+                var rate = parseInt(process * 100 / parseInt($('#button_report').width()));
+                if (rate > 10) {
+                    rada_animit.center_process();
+                }
+                if (rate > 25) {
+                    rada_animit.left_process();
+                }
+                if (rate > 40) {
+                    rada_animit.right_process();
+                }
+                $('.loading-number').text(parseInt(process * 100 / parseInt($('#button_report').width())) + '%');
+                if (process >= parseInt($('#button_report').width())) {
+                    if (rada_animit.id) {
+                        $('.loading-number').hide();
+                        $('#button_report .button-mask').text('查看报告');
+                        rada_animit.stop_all();
+                        clearInterval(process_timer);
+                        $("#button_report").click(function () {
+                            window.location.replace(router_city('/findhouse/showMyReport/') + rada_animit.id)
+                        });
                     }
-                    if(rate>25) {
-                        rada_animit.left_process();
-                    }
-                    if(rate>40){
-                        rada_animit.right_process();
-                    }
-                    $('.loading-number').text(parseInt(process*100/parseInt($('#button_report').width()))+'%')
-                    if(process>=parseInt($('#button_report').width())) {
-                        if(rada_animit.id) {
-                            $('.loading-number').hide();
-                            $('#button_report .button-mask').text('查看报告');
-                            rada_animit.stop_all();
-                            clearInterval(process_timer);
-                            $("#button_report").click(function () {
-                                window.location.replace(router_city('/findhouse/showMyReport/') + rada_animit.id)
-                            });
-                        }
-                    }
-
-            },80)
+                }
+            }, 80)
         }
     };
 
