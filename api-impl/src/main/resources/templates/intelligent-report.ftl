@@ -104,6 +104,7 @@
     <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
     <script src="${staticurl}/js/modernizr.custom.js"></script>
     <script src="${staticurl}/js/echarts.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
 <div id="superContainer">
@@ -251,7 +252,7 @@
                 <div class="report-caption">
                     <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
                 </div>
-                <div class="echart-box">
+                <div id="allmap" class="echart-box">
 
                 </div>
 
@@ -637,6 +638,7 @@
 
     //    console.log(ptlists)
     //    console.log(trend)
+            console.log(13111)
     console.log(datajson)
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
@@ -697,8 +699,6 @@
         }
         return res;
     }
-
-
     /**
      * 报告页图表集合
      * */
@@ -1385,6 +1385,33 @@
     }
     guoduye.init();
 
+</script>
+<script>
+    var datajson =${datajson};
+    console.log(datajson.length);
+    var res = [];
+    for (var i = 0; i < datajson.length; i++) {
+        res.push(datajson[i]['coordX']+"&"+datajson[i]['coordY'])
+    }
+
+    // 百度地图API功能
+    var map = new BMap.Map("allmap", {
+        minZoom : 1,
+        maxZoom : 18
+    });
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 13);
+    if(res.length >0){
+        for (var i=0;i<res.length;i++){
+            var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
+            addMarker(point);
+        }
+    }
+    function addMarker(point){
+        var marker = new BMap.Marker(point);
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        map.addOverlay(marker);
+    }
 </script>
 </body>
 </html>
