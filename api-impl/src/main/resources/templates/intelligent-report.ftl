@@ -270,10 +270,6 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span>
-                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span>
-                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                             <div class="traffic-text"><span class="type1">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                             <div class="traffic-text"><span class="type2">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
@@ -466,7 +462,7 @@
                     <p>休闲购物</p>
                     <span>3km生活圈，吃喝玩乐买买买</span>
                 </div>
-                <div class="echart-box">
+                <div class="echart-box nearby">
                     <div id="shoppingChart"></div>
                 </div>
             </div>
@@ -476,7 +472,7 @@
                     <span>3km内教育配套，就这样陪你长大</span>
                 </div>
                 <#--<i class="show-echart-detail"></i>-->
-                <div class="echart-box">
+                <div class="echart-box nearby">
                     <div id="educationChart"></div>
                 </div>
             </div>
@@ -486,7 +482,7 @@
                     <span>3km内医疗配套，为您的健康保驾护航</span>
                 </div>
                 <#--<i class="show-echart-detail"></i>-->
-                <div class="echart-box">
+                <div class="echart-box nearby">
                     <div id="medicalChart"></div>
                 </div>
             </div>
@@ -508,7 +504,7 @@
 <script src="/static/js/URI.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
-<script src="/static/js/intelligent-chart.js"></script>
+<#--<script src="/static/js/intelligent-chart.js"></script>-->
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
@@ -600,7 +596,7 @@
 
     //    console.log(ptlists)
     //    console.log(trend)
-    console.log(datajson)
+    console.log(datajson);
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
@@ -686,7 +682,7 @@
         });
         // 显示标题，图例和空的坐标轴
         priceChart.setOption({
-            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
             tooltip: {
                 trigger: 'axis',
@@ -807,7 +803,7 @@
                             borderColor: '#333'
                         }
                     },
-                    barGap: '0%',
+                    barGap: 0,
                     barCategoryGap: '70%',
                     data: getGongxuqingkuangBeijing()
                 },
@@ -823,7 +819,7 @@
                             borderColor: '#333'
                         }
                     },
-                    barGap: '0%',
+                    barGap: 0,
                     barCategoryGap: '70%',
                     data: getGongxuqingkuangMuBiao()
                 }
@@ -851,7 +847,7 @@
             }
         };
         trafficSubwayChart.setOption({
-            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
             grid: {
                 left: 0,
@@ -863,6 +859,7 @@
             xAxis: {
                 show: false,
                 data: []
+//                data: ['第一个小区','第二个小区','第三个小区','第四个小区','第五个小区']
             },
             yAxis: {
                 show: false,
@@ -872,42 +869,59 @@
             },
             series: [
                 {
-                    name: '',
+                    name: '第一个小区',
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#455765' }
+                    },
                     data: [2]
                 },
                 {
-                    name: '',
+                    name: '第二个小区',
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#f25a5a' }
+                    },
                     data: [1]
                 },
                 {
-                    name: '',
+                    name: '第三个小区',
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#fece6c' }
+                    },
                     data: [1]
                 },
                 {
-                    name: '',
+                    name: '第四个小区',
                     type: 'bar',
+                    label: trafficSubwayLabel,
                     barGap: 1.5,
                     barWidth: '8%',
-                    data: [0]
+                    itemStyle: {
+                        normal: { color: '#7f7f7f' }
+                    },
+                    data: [2]
                 },
                 {
-                    name: '',
+                    name: '第五个小区',
                     type: 'bar',
+                    label: trafficSubwayLabel,
                     barGap: 1.5,
                     barWidth: '8%',
-                    data: [0]
+                    itemStyle: {
+                        normal: { color: '#4a7aa3' }
+                    },
+                    data: [1]
                 }
             ]
         });
@@ -929,12 +943,12 @@
                 show: true,
                 position: 'bottom',
                 color: '#666',
-                fontSize: baseFontSize - 5,
-                formatter: '{c}km\n大望路站'
+                fontSize: baseFontSize - 5
+//                formatter: '{c}km: \'' + subwayStation + '\''
             }
         };
         trafficRondChart.setOption({
-            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
             grid: {
                 left: 0,
@@ -955,49 +969,71 @@
             },
             series: [
                 {
-                    name: '',
+                    name: '第一个小区',
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#455765' }
+                    },
                     data: [2]
                 },
                 {
-                    name: '',
+                    name: '第二个小区',
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#f25a5a' }
+                    },
                     data: [1.4]
                 },
                 {
-                    name: '',
+                    name: '第三个小区',
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#fece6c' }
+                    },
                     data: [1.4]
                 },
                 {
-                    name: '',
+                    name: '第四个小区',
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#7f7f7f' }
+                    },
                     data: [1.4]
                 },
                 {
-                    name: '',
+                    name: '第五个小区',
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
                     barWidth: '8%',
+                    itemStyle: {
+                        normal: { color: '#4a7aa3' }
+                    },
                     data: [1.4]
                 }
             ]
         });
         // trafficRondChart.showLoading();
 
+        var nearbyChartGrid = {
+            top: 0,
+            left: '3%',
+            right: '4%',
+            bottom: 0,
+            containLabel: true
+        };
         /**
          * 休闲购物
          * */
@@ -1014,77 +1050,59 @@
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
+            grid: nearbyChartGrid,
             xAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel: {fontSize: baseFontSize - 10}
             },
             yAxis: {
                 type: 'category',
+                axisLabel: {fontSize: baseFontSize - 10},
                 data: ['菜市场', '超市', '购物中心', '餐饮', '健身']
             },
             series: [
                 {
-                    name: '健身',
+                    name: '第一个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#455765' }
                     },
                     data: [320, 302, 301, 334, 390]
                 },
                 {
-                    name: '餐饮',
+                    name: '第二个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#f25a5a' }
                     },
                     data: [120, 132, 101, 134, 90]
                 },
                 {
-                    name: '购物中心',
+                    name: '第三个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#fece6c' }
                     },
                     data: [220, 182, 191, 234, 290]
                 },
                 {
-                    name: '超市',
+                    name: '第四个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#7f7f7f' }
                     },
                     data: [150, 212, 201, 154, 190]
                 },
                 {
-                    name: '菜市场',
+                    name: '第五个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#4a7aa3' }
                     },
                     data: [820, 832, 901, 934, 1290]
                 }
@@ -1108,77 +1126,59 @@
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
+            grid: nearbyChartGrid,
             xAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel: {fontSize: baseFontSize - 10}
             },
             yAxis: {
                 type: 'category',
+                axisLabel: {fontSize: baseFontSize - 10},
                 data: ['亲子教育', '幼儿园', '小学', '中学', '大学']
             },
             series: [
                 {
-                    name: '大学',
+                    name: '第一个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#455765' }
                     },
                     data: [320, 302, 301, 334, 390]
                 },
                 {
-                    name: '中学',
+                    name: '第二个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#f25a5a' }
                     },
                     data: [120, 132, 101, 134, 90]
                 },
                 {
-                    name: '小学',
+                    name: '第三个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#fece6c' }
                     },
                     data: [220, 182, 191, 234, 290]
                 },
                 {
-                    name: '幼儿园',
+                    name: '第四个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#7f7f7f' }
                     },
                     data: [150, 212, 201, 154, 190]
                 },
                 {
-                    name: '亲子教育',
+                    name: '第五个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#4a7aa3' }
                     },
                     data: [820, 832, 901, 934, 1290]
                 }
@@ -1202,77 +1202,59 @@
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                 }
             },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
+            grid: nearbyChartGrid,
             xAxis: {
-                type: 'value'
+                type: 'value',
+                axisLabel: {fontSize: baseFontSize - 10}
             },
             yAxis: {
                 type: 'category',
+                axisLabel: {fontSize: baseFontSize - 10},
                 data: ['综合医院', '专科医院', '诊所', '养老院', '急救中心']
             },
             series: [
                 {
-                    name: '急救中心',
+                    name: '第一个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#455765' }
                     },
                     data: [320, 302, 301, 334, 390]
                 },
                 {
-                    name: '养老院',
+                    name: '第二个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#f25a5a' }
                     },
                     data: [120, 132, 101, 134, 90]
                 },
                 {
-                    name: '诊所',
+                    name: '第三个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#fece6c' }
                     },
                     data: [220, 182, 191, 234, 290]
                 },
                 {
-                    name: '专科医院',
+                    name: '第四个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#7f7f7f' }
                     },
                     data: [150, 212, 201, 154, 190]
                 },
                 {
-                    name: '综合医院',
+                    name: '第五个小区',
                     type: 'bar',
                     stack: '总量',
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'insideRight'
-                        }
+                    itemStyle: {
+                        normal: { color: '#4a7aa3' }
                     },
                     data: [820, 832, 901, 934, 1290]
                 }

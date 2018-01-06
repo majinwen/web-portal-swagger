@@ -630,12 +630,16 @@ html {
                 margin-top: rem(100);
             }
 
-            #priceChart, #marketChart {
+            &.nearby {
+                height: rem(420);
+                background-color: transparent;
+            }
+
+            #priceChart, #marketChart, #shoppingChart, #educationChart, #medicalChart {
                 width: 100%;
                 height: 100%;
                 padding: rem(20) 0;
                 @include box-sizing;
-
             }
         }
 
