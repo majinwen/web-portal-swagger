@@ -266,7 +266,7 @@
                                 <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''>
                                     <#assign Districts = intelligenceFhRes['districtId']?split(',')>
                                     <#list Districts as district>
-                                        <em>district</em>
+                                        <em>${district}</em>
                                     </#list>
                                 <#else >
                                     <em>-</em>
@@ -690,6 +690,7 @@
     function getSubwayInfo() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
+            res.push()
         }
         return res;
     }

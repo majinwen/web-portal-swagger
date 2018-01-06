@@ -761,6 +761,10 @@ public class IntelligenceFindhouse {
      * 地图信息结果
      */
     private Object dataInfo;
+    /**
+     * 地图信息最大数量
+     */
+    private Object typeCount;
 
 
 }
