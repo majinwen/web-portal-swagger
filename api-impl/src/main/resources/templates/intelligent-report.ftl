@@ -3,7 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        (function(h,k){var p=h.document;var b=p.documentElement;var m=p.querySelector('meta[name="viewport"]');var e=p.querySelector('meta[name="flexible"]');var q=0;var d=0;var f;var j=k.flexible||(k.flexible={});if(m){console.warn("将根据已有的meta标签来设置缩放比例");var g=m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);if(g){d=parseFloat(g[1]);q=parseInt(1/d)}}else{if(e){var i=e.getAttribute("content");if(i){var c=i.match(/initial\-dpr=([\d\.]+)/);var o=i.match(/maximum\-dpr=([\d\.]+)/);if(c){q=parseFloat(c[1]);d=parseFloat((1/q).toFixed(2))}if(o){q=parseFloat(o[1]);d=parseFloat((1/q).toFixed(2))}}}}if(!q&&!d){var n=h.devicePixelRatio;if(n>=3&&(!q||q>=3)){q=3}else{if(n>=2&&(!q||q>=2)){q=2}else{q=1}}d=1/q}b.setAttribute("data-dpr",q);if(!m){m=p.createElement("meta");m.setAttribute("name","viewport");m.setAttribute("content","initial-scale="+d+", maximum-scale="+d+", minimum-scale="+d+", user-scalable=no");if(b.firstElementChild){b.firstElementChild.appendChild(m)}else{var a=p.createElement("div");a.appendChild(m);p.write(a.innerHTML)}}function l(){var r=b.getBoundingClientRect().width;if(r/q>540){r=540*q}var s=r/10;b.style.fontSize=s+"px";j.rem=h.rem=s}h.addEventListener("resize",function(){clearTimeout(f);f=setTimeout(l,300)},false);h.addEventListener("pageshow",function(r){if(r.persisted){clearTimeout(f);f=setTimeout(l,300)}},false);if(p.readyState==="complete"){p.body.style.fontSize=12*q+"px"}else{p.addEventListener("DOMContentLoaded",function(r){p.body.style.fontSize=12*q+"px"},false)}l();j.dpr=h.dpr=q;j.refreshRem=l})(window,window["lib"]||(window["lib"]={}));
+        (function (h, k) {
+            var p = h.document;
+            var b = p.documentElement;
+            var m = p.querySelector('meta[name="viewport"]');
+            var e = p.querySelector('meta[name="flexible"]');
+            var q = 0;
+            var d = 0;
+            var f;
+            var j = k.flexible || (k.flexible = {});
+            if (m) {
+                console.warn("将根据已有的meta标签来设置缩放比例");
+                var g = m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
+                if (g) {
+                    d = parseFloat(g[1]);
+                    q = parseInt(1 / d)
+                }
+            } else {
+                if (e) {
+                    var i = e.getAttribute("content");
+                    if (i) {
+                        var c = i.match(/initial\-dpr=([\d\.]+)/);
+                        var o = i.match(/maximum\-dpr=([\d\.]+)/);
+                        if (c) {
+                            q = parseFloat(c[1]);
+                            d = parseFloat((1 / q).toFixed(2))
+                        }
+                        if (o) {
+                            q = parseFloat(o[1]);
+                            d = parseFloat((1 / q).toFixed(2))
+                        }
+                    }
+                }
+            }
+            if (!q && !d) {
+                var n = h.devicePixelRatio;
+                if (n >= 3 && (!q || q >= 3)) {
+                    q = 3
+                } else {
+                    if (n >= 2 && (!q || q >= 2)) {
+                        q = 2
+                    } else {
+                        q = 1
+                    }
+                }
+                d = 1 / q
+            }
+            b.setAttribute("data-dpr", q);
+            if (!m) {
+                m = p.createElement("meta");
+                m.setAttribute("name", "viewport");
+                m.setAttribute("content", "initial-scale=" + d + ", maximum-scale=" + d + ", minimum-scale=" + d + ", user-scalable=no");
+                if (b.firstElementChild) {
+                    b.firstElementChild.appendChild(m)
+                } else {
+                    var a = p.createElement("div");
+                    a.appendChild(m);
+                    p.write(a.innerHTML)
+                }
+            }
+
+            function l() {
+                var r = b.getBoundingClientRect().width;
+                if (r / q > 540) {
+                    r = 540 * q
+                }
+                var s = r / 10;
+                b.style.fontSize = s + "px";
+                j.rem = h.rem = s
+            }
+
+            h.addEventListener("resize", function () {
+                clearTimeout(f);
+                f = setTimeout(l, 300)
+            }, false);
+            h.addEventListener("pageshow", function (r) {
+                if (r.persisted) {
+                    clearTimeout(f);
+                    f = setTimeout(l, 300)
+                }
+            }, false);
+            if (p.readyState === "complete") {
+                p.body.style.fontSize = 12 * q + "px"
+            } else {
+                p.addEventListener("DOMContentLoaded", function (r) {
+                    p.body.style.fontSize = 12 * q + "px"
+                }, false)
+            }
+            l();
+            j.dpr = h.dpr = q;
+            j.refreshRem = l
+        })(window, window["lib"] || (window["lib"] = {}));
     </script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
@@ -24,7 +114,8 @@
                     <img src="/static/images/intelligent/user-header.png" alt="用户头像">
                 </div>
                 <div class="word-cont">
-                    <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
+                    <p>
+                        繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
                     <ol>
                         <li>-    尽量离交通站近，睡多一点</li>
                         <li>-    餐饮便利，到家能吃口热饭</li>
@@ -54,11 +145,15 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
+                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}
+                            %</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>
+                            低</#if></em>于北京市场均价涨幅</p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
+                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}
+                            %</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>
+                            低</#if></em>于北京市场均价跌幅</p>
                     </li>
                 </ul>
             </div>
@@ -79,15 +174,20 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red"></em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red"></em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio"
+                                                                                                  class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em>
+                        </p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red"></em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red"></em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio"
+                                                                                                  class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em>
+                        </p>
                     </li>
                     <li>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red"></em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red"></em></p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em
+                                id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
                     </li>
                 </ul>
             </div>
@@ -96,7 +196,8 @@
                     <p>智能推荐结果</p>
                 </div>
                 <div class="report-caption">
-                    <p>您的意向区域中，有<em class="inte-color-red">18</em>个小区符合要求，占北京市小区总量的<em class="inte-color-red">12.45%</em></p>
+                    <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求，占北京市小区总量的<em
+                            class="inte-color-red">12.45%</em></p>
                 </div>
                 <div class="echart-box">
 
@@ -116,7 +217,7 @@
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''>
                                     <li>${fhResult['projname']}</li>
                                 <#else >
-                                    <li> - </li>
+                                    <li> -</li>
                                 </#if>
                             </#list>
                         </#if>
@@ -428,18 +529,20 @@
                     <p>休闲购物</p>
                     <span>3km生活圈，吃喝玩乐买买买</span>
                 </div>
-                <div class="expand-content content-visible">
-                    <div class="map-shopping-box">
-                        <ul class="map-message-btn" data-type="休闲购物">
-                            <li class="vegetable-market" data-type="菜市场"><span>菜市场</span><i></i></li>
-                            <li class="supermarket" data-type="超市"><span>超市</span><i></i></li>
-                            <li class="shopping-mall" data-type="商场"><span>商场</span><i></i></li>
-                            <li class="dining-room" data-type="餐厅"><span>餐厅</span><i></i></li>
-                            <li class="fitness" data-type="健身中心"><span>健身</span><i></i></li>
-                        </ul>
-                        <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
-                    </div>
-                    <ul class="result-data-expand height-type" id="shoppintListDom"></ul>
+                <div>
+                    <table>
+                        <tr>
+                            地图信息
+                        </tr>
+                        <tr>
+                        <#if intelligenceFhRes?exists&&intelligenceFhRes!=''>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                            <td>${fhResult['dataInfo']['ditie']['line']?split(';')[0]}</td>
+                            </#list>
+                        </#if>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div class="module-item">
@@ -447,27 +550,14 @@
                     <p>教育配套</p>
                     <span>3km内教育配套，就这样陪你长大</span>
                 </div>
-                <div class="expand-content content-visible">
-                    <div class="map-education-box">
-                        <ul class="map-message-btn clear" data-type="教育培训">
-                            <li class="parent-child" data-type="亲子教育"><i></i><span>亲子</span></li>
-                            <li class="kindergarten" data-type="幼儿园"><i></i><span>幼儿园</span></li>
-                            <li class="primary-school" data-type="小学"><i></i><span>小学</span></li>
-                            <li class="middle-school" data-type="中学"><i></i><span>中学</span></li>
-                            <li class="university" data-type="高等院校"><i></i><span>大学</span></li>
-                        </ul>
-                    </div>
-                    <ul class="result-data-expand" id="educationListDom"></ul>
-                </div>
+
             </div>
             <div class="module-item">
                 <div class="report-title-type2">
                     <p>医疗配套</p>
                     <span>3km内医疗配套，为您的健康保驾护航</span>
                 </div>
-                <div class="expand-content">
-                    <ul class="result-data-expand" id="hospitalListDom"></ul>
-                </div>
+
             </div>
         </div>
     </div>
@@ -475,7 +565,7 @@
 <script src="/static/js/URI.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
-<script src="/static/js/intelligent-chart.js"></script>
+<#--<script src="/static/js/intelligent-chart.js"></script>-->
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $('#superContainer').fullpage({
@@ -492,6 +582,385 @@
         }
     });
     $.fn.fullpage.setAllowScrolling(false, 'up');
+    var datajson=${datajson};
+    var ptlists = ${ptlists};
+    var trend = ${trend}
+
+    console.log(ptlists)
+    console.log(trend)
+    var dpr = window.devicePixelRatio;
+    var baseFontSize = 12 * dpr;
+    var baseItemWidth = 25 * dpr;
+
+    function getJiagezoushiYuefen() {
+        var res=[];
+        for(var i=ptlists.length-1;i>=0;i--){
+            res.push(ptlists[i]["periodicTime"])
+        }
+        return res;
+    }
+    function getJiagezoushiBeijing() {
+        var res=[];
+        for(var i=ptlists.length-1;i>=0;i--){
+            res.push([ptlists[i]["periodicTime"],ptlists[i]["totalPrice"]])
+        }
+        return res;
+    }
+    function getJiagezoushiMuBiao() {
+        var res=[];
+        for(var i=ptlists.length-1;i>=0;i--){
+            res.push([ptlists[i]["periodicTime"],ptlists[i]["price"]])
+        }
+        return res;
+    }
+
+    function getGongxuqingkuangYuefen() {
+        var res=[];
+        for(var i=0;i<trend.length;i++){
+            res.push(trend[i]["periodicTime"])
+        }
+        return res;
+    }
+    function getGongxuqingkuangBeijing() {
+        var res=[];
+        for(var i=0;i<trend.length;i++){
+            res.push(trend[i]["allSd"])
+        }
+        return res;
+    }
+    function getGongxuqingkuangMuBiao() {
+        var res=[];
+        for(var i=0;i<trend.length;i++){
+            res.push(trend[i]["targetSd"])
+        }
+        return res;
+    }
+
+
+    /**
+     * 报告页图表集合
+     * */
+    $(function () {
+        var locationUrl = window.location.href;
+        locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
+        console.log(locationBaseUrl);
+
+        var chartGrid = {
+            left: 0,
+            right: '6%',
+            bottom: 0,
+            containLabel: true
+        };
+
+        /**
+         * 市场价格走势
+         * */
+        var priceChart = echarts.init(document.getElementById('priceChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        // 显示标题，图例和空的坐标轴
+        priceChart.setOption({
+            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            textStyle: {fontSize: baseFontSize},
+            tooltip: {
+                trigger: 'axis',
+                textStyle: {fontSize: baseFontSize}
+            },
+            legend: {
+                itemGap: 20,
+                itemWidth: baseItemWidth,
+                data: [{
+                    name: '北京市场',
+                    icon: 'line'
+                },{
+                    name: '目标市场',
+                    icon: 'line'
+                }]
+            },
+            grid: chartGrid,
+            xAxis: {
+                show: true,
+                boundaryGap: false,
+                scale: true,
+                axisLabel: {fontSize: baseFontSize - 10},
+                data: getJiagezoushiYuefen()
+            },
+            yAxis: {
+                scale: true,
+                axisLine: {show: true},
+                axisTick: {show: false},
+                axisLabel: {show: false},
+                splitLine: {show: false}
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 50,
+                    end: 100,
+                    filterMode: 'empty',
+                    zoomLock: true
+                }
+            ],
+            series: [{
+                name: '北京市场',
+                type: 'line',
+                showSymbol: false,
+                data: getJiagezoushiBeijing()
+            },{
+                name: '目标市场',
+                type: 'line',
+                showSymbol: false,
+                data: getJiagezoushiMuBiao()
+            }]
+        });
+
+        /**
+         * 市场供需情况
+         * */
+        var marketChart = echarts.init(document.getElementById('marketChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        // 显示标题，图例和空的坐标
+        marketChart.setOption({
+            textStyle: {fontSize: baseFontSize},
+            tooltip: {
+                show: true,
+                trigger: 'axis',
+                textStyle: {fontSize: baseFontSize},
+                axisPointer: {type: 'shadow'}
+            },
+            legend: {
+                itemGap: 20,
+                itemWidth: baseItemWidth,
+                data: [{
+                    name: '北京市场',
+                    icon: 'line'
+                },{
+                    name: '目标市场',
+                    icon: 'line'
+                }]
+            },
+            grid: chartGrid,
+            yAxis:  {
+                type: 'value',
+                axisTick: {show: false},
+                axisLine: {show: false},
+                splitLine: {show: false},
+                axisLabel: {show: false}
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: {show: false},
+                    axisLine: {show: true},
+                    axisLabel: {fontSize: baseFontSize - 10},
+                    data: getGongxuqingkuangYuefen()
+                }, {
+                    type: 'category',
+                    axisLine: {show: false},
+                    axisTick: {show: false},
+                    axisLabel: {show: false},
+                    splitArea: {show: false},
+                    splitLine: {show: false},
+                    data: getGongxuqingkuangYuefen()
+                }
+            ],
+            series: [
+                {
+                    name: '北京市场',
+                    type: 'bar',
+                    xAxisIndex: 1,
+                    itemStyle: {
+                        normal: {
+                            show: true,
+                            color: '#277ace',
+                            barBorderRadius: 10,
+                            borderWidth: 0,
+                            borderColor: '#333'
+                        }
+                    },
+                    barGap: '0%',
+                    barCategoryGap: '70%',
+                    data: getGongxuqingkuangBeijing()
+                },
+                {
+                    name: '目标市场',
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            show: true,
+                            color: '#5de3e1',
+                            barBorderRadius: 10,
+                            borderWidth: 0,
+                            borderColor: '#333'
+                        }
+                    },
+                    barGap: '0%',
+                    barCategoryGap: '70%',
+                    data: getGongxuqingkuangMuBiao()
+                }
+            ]
+        });
+//        marketChart.showLoading();
+
+        /**
+         * 地铁信息
+         * */
+        var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        // 显示标题，图例和空的坐标
+
+        var trafficSubwayLabel = {
+            normal: {
+                show: true,
+                position: 'bottom',
+                color: '#666',
+                fontSize: baseFontSize - 5,
+                formatter: '{c}km\n大望路站'
+            }
+        };
+        trafficSubwayChart.setOption({
+            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            textStyle: {fontSize: baseFontSize},
+            grid: {
+                left: 0,
+                right: '6%',
+                bottom: 0,
+                top: 0,
+                containLabel: true
+            },
+            xAxis: {
+                show: false,
+                data: []
+            },
+            yAxis:  {
+                show: false,
+                inverse: true,
+                min: 0,
+                max: 3
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficSubwayLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [2]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficSubwayLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficSubwayLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [0]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [0]
+                }
+            ]
+        });
+        // trafficSubwayChart.showLoading();
+
+
+
+        /**
+         * 环线桥信息
+         * */
+        var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        // 显示标题，图例和空的坐标
+
+        var trafficRondLabel = {
+            normal: {
+                show: true,
+                position: 'bottom',
+                color: '#666',
+                fontSize: baseFontSize - 5,
+                formatter: '{c}km\n大望路站'
+            }
+        };
+        trafficRondChart.setOption({
+            color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
+            textStyle: {fontSize: baseFontSize},
+            grid: {
+                left: 0,
+                right: '6%',
+                bottom: 0,
+                top: 0,
+                containLabel: true
+            },
+            xAxis: {
+                show: false,
+                data: []
+            },
+            yAxis:  {
+                show: false,
+                inverse: true,
+                min: 0,
+                max: 3
+            },
+            series: [
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [2]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                },
+                {
+                    name: '',
+                    type: 'bar',
+                    label: trafficRondLabel,
+                    barGap: 1.5,
+                    barWidth: '8%',
+                    data: [1.4]
+                }
+            ]
+        });
+        // trafficRondChart.showLoading();
+
+
+    });
 </script>
 </body>
 </html>

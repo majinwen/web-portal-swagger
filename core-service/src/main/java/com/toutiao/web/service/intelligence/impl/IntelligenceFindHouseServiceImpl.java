@@ -15,6 +15,7 @@ import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
+import com.toutiao.web.service.map.MapService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -25,6 +26,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     private PriceTrendMapper priceTrendMapper;
     @Autowired
     private IntelligenceFhResMapper intelligenceFhResMapper;
+    @Autowired
+    private MapService mapService;
 
     @Override
     public IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
@@ -280,7 +284,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         IntelligenceQuery intelligenceQuery = init(IntelligenceQuery);
 
         //搜索量前200
-         List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
+        List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
 
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
@@ -363,6 +367,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     BigDecimal bigDecimal = new BigDecimal(intelligence.getCarSellPrice().doubleValue() * 12);
                     intelligence.setCarSellPrice(bigDecimal);
                 }
+            }
+            //查询地图信息
+            for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
+                MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
+                JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+                intelligenceFindhouse.setDataInfo(datainfo);
             }
 
             String jsonString = JSONArray.toJSONString(finalList);

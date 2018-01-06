@@ -122,7 +122,6 @@ public class ProjHouseInfoController {
         List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
 
         return NashResult.build(builds);
-
     }
     /**
      * 功能描述：二手房列表
