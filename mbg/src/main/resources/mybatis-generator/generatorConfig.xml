@@ -67,10 +67,10 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="price_trend" domainObjectName="PriceTrend"
-               enableCountByExample="true" enableUpdateByExample="true"
-               enableDeleteByExample="true" enableSelectByExample="true"
-               selectByExampleQueryId="true">
+        <table tableName="map_info" domainObjectName="mapInfo"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
             <!--<columnRenamingRule searchString="^D_"
                             replaceString=""/>-->
         </table>

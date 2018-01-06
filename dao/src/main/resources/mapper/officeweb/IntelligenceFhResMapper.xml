@@ -31,7 +31,7 @@
   <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <!--<include refid="Base_Column_List" />-->
-   id, phone,down_payment,month_payment,user_type,total_price,layout,has_child, has_oldman,create_time,user_portrait
+    <include refid="Base_Column_List" />
     from intelligence_fh_res
     where phone = #{userPhone} and status=0 and collect_status=1
   </select>
@@ -266,13 +266,9 @@
       user_portrait = #{userPortrait,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <select id="queryUserReport" parameterType="java.lang.String" resultType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes">
-    select * from intelligence_fh_res where phone=#{usePhone}
-  </select>
   <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
   <update id="deleteMyReport">
-    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_Sstatus=1
+    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_status=1
   </update>
   <!--int updateMyReportCollectStatus(@Param("reportId") Integer integer,@Param("usePhone") String usePhone);-->
   <update id="updateMyReportCollectStatus">
