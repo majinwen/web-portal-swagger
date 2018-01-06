@@ -462,6 +462,7 @@
                 }
                 $('.loading-number').text(parseInt(process * 100 / parseInt($('#button_report').width())) + '%');
                 if (process >= parseInt($('#button_report').width())) {
+                    $('.button-mask').width($('#button_report').width());
                     if (rada_animit.id) {
                         $('.loading-number').hide();
                         $('#button_report .button-mask').text('查看报告');

@@ -720,7 +720,6 @@
     $(function () {
         var locationUrl = window.location.href;
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
-        console.log(locationBaseUrl);
 
         var chartGrid = {
             left: 0,
