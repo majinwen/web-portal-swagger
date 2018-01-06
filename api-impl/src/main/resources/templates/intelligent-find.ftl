@@ -336,7 +336,7 @@
                 </div>
 
                 <div class="button-bottom">
-                    <a class="button-box" href="${router_city('/findhouse/showUserPortrayal')}">
+                    <a class="button-box" id="button_report" href="${router_city('/findhouse/showUserPortrayal')}">
                         <#-- 百分比进度显示 -->
                         <div class="loading-number">0%</div>
                         <#-- 黑色进度条（改变width） -->
