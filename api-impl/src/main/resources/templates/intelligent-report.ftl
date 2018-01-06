@@ -596,7 +596,6 @@
 
     //    console.log(ptlists)
     //    console.log(trend)
-    console.log(datajson);
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
@@ -663,7 +662,6 @@
     $(function () {
         var locationUrl = window.location.href;
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
-        console.log(locationBaseUrl);
 
         var chartGrid = {
             left: 0,
