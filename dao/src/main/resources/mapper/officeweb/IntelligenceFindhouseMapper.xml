@@ -164,7 +164,7 @@
         <where>
             1=1
             <if test="minTotalPrice != null and maxTotalPrice!=null">
-                AND <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} ]]>
+                and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
             </if>
             <if test="layOut != null">
                 AND <![CDATA[  layout_range @> '{${layOut}}' ]]>
