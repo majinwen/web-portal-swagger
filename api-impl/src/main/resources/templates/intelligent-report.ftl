@@ -270,8 +270,15 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span class="type1">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span class="type2">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult_index lt 2>
+                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                </#if>
+                            </#list>
+                        </#if>
+
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -284,8 +291,14 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span class="type3">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span class="type4">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult_index gt 2>
+                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                </#if>
+                            </#list>
+                        </#if>
                         </div>
                     </div>
 
@@ -708,7 +721,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000])
+            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toString()])
         }
         return res;
     }
@@ -999,7 +1012,8 @@
                 show: true,
                 position: 'bottom',
                 color: '#666',
-                fontSize: baseFontSize - 5
+                fontSize: baseFontSize - 5,
+                formatter: '{c}km\n'
 //                formatter: '{c}km: \'' + subwayStation + '\''
             }
         };
