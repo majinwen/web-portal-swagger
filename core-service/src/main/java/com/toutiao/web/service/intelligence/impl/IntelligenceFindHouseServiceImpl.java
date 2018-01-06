@@ -371,11 +371,13 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
             //查询地图信息
             for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
-                MapInfo mapInfo = mapService.getMapInfo(/*intelligenceFindhouse.getNewcode()*/11113743);
+                MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
                 JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-                JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
+                if (null!=mapInfo.getTypeCount()){
+                    JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
+                    intelligenceFindhouse.setTypeCount(typeCount);
+                }
                 intelligenceFindhouse.setDataInfo(datainfo);
-                intelligenceFindhouse.setTypeCount(typeCount);
             }
             if (null != intelligenceFhRes.getDistrictId()) {
                 String[] districtId = intelligenceFhRes.getDistrictId().split(",");

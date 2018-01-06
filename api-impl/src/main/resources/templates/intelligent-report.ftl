@@ -649,41 +649,69 @@
         return res;
     }
 
-    function getSubwayInfo() {
+    function getPlotName() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push()
+            res.push(datajson[i]["projname"])
         }
         return res;
+        console.log(res)
     }
-    function getXiuxiangouwuJianshen() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["xiuxian"])
-        }
-        return res;
-    }
+
     function getXiuxiangouwu() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["typeCount"]["xiuxian"]["caishichang"])
+            res.push([datajson[i]["typeCount"]||""["xiuxian"]||""["caishichang"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["chaoshi"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["shangchang"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["canting"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["jianshenzhongxin"]||""])
         }
-        console.log(res)
         return res;
     }
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
+            res.push([datajson[i]["typeCount"]||""["jiaoyu"]||""["qinzi"],datajson[i]["typeCount"]||""["jiaoyu"]||""["youeryuan"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["xiaoxue"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["zhongxue"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["gaodeng"]||""])
         }
         return res;
     }
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
+            res.push([datajson[i]["typeCount"]||""["yiliao"]||""])
+        }
+        return res;
+    }
+    function getSubway() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+            res.push([parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2])/1000])
         }
         return res;
     }
 
+    function getMetroStation() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+            res.push((datajson[i]["nearestSubwayDesc"]||"".split("$")[1]))
+        }
+        return res;
+    }
+
+
+    function getNearbyQiao() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+            res.push(datajson[i]["nearbyQiao"]||"")
+        }
+        return res;
+    }
+
+
+    function getNearbyRoadMeter() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+            res.push([parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000])
+        }
+        return res;
+    }
 
     /**
      * 报告页图表集合
@@ -871,7 +899,7 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
+                formatter: '{c}km\n'/*+getMetroStation()*/
             }
         };
         trafficSubwayChart.setOption({
@@ -897,7 +925,7 @@
             },
             series: [
                 {
-                    name: '第一个小区',
+                    name: getPlotName()[0],
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
@@ -905,10 +933,10 @@
                     itemStyle: {
                         normal: { color: '#455765' }
                     },
-                    data: [2]
+                    data: getSubway()[0]
                 },
                 {
-                    name: '第二个小区',
+                    name: getPlotName()[1],
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
@@ -916,10 +944,10 @@
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: [1]
+                    data: getSubway()[1]
                 },
                 {
-                    name: '第三个小区',
+                    name: getPlotName()[2],
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
@@ -927,10 +955,10 @@
                     itemStyle: {
                         normal: { color: '#fece6c' }
                     },
-                    data: [1]
+                    data: getSubway()[2]
                 },
                 {
-                    name: '第四个小区',
+                    name: getPlotName()[3],
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
@@ -938,10 +966,10 @@
                     itemStyle: {
                         normal: { color: '#7f7f7f' }
                     },
-                    data: [2]
+                    data: getSubway()[3]
                 },
                 {
-                    name: '第五个小区',
+                    name: getPlotName()[4],
                     type: 'bar',
                     label: trafficSubwayLabel,
                     barGap: 1.5,
@@ -949,7 +977,7 @@
                     itemStyle: {
                         normal: { color: '#4a7aa3' }
                     },
-                    data: [1]
+                    data: getSubway()[4]
                 }
             ]
         });
@@ -997,7 +1025,7 @@
             },
             series: [
                 {
-                    name: '第一个小区',
+                    name: getPlotName()[0],
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
@@ -1005,10 +1033,10 @@
                     itemStyle: {
                         normal: { color: '#455765' }
                     },
-                    data: [2]
+                    data: getNearbyRoadMeter()[0]
                 },
                 {
-                    name: '第二个小区',
+                    name: getPlotName()[1],
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
@@ -1016,10 +1044,10 @@
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: [1.4]
+                    data: getNearbyRoadMeter()[1]
                 },
                 {
-                    name: '第三个小区',
+                    name: getPlotName()[2],
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
@@ -1027,10 +1055,10 @@
                     itemStyle: {
                         normal: { color: '#fece6c' }
                     },
-                    data: [1.4]
+                    data: getNearbyRoadMeter()[2]
                 },
                 {
-                    name: '第四个小区',
+                    name: getPlotName()[3],
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
@@ -1038,10 +1066,10 @@
                     itemStyle: {
                         normal: { color: '#7f7f7f' }
                     },
-                    data: [1.4]
+                    data: getNearbyRoadMeter()[3]
                 },
                 {
-                    name: '第五个小区',
+                    name: getPlotName()[4],
                     type: 'bar',
                     label: trafficRondLabel,
                     barGap: 1.5,
@@ -1049,7 +1077,7 @@
                     itemStyle: {
                         normal: { color: '#4a7aa3' }
                     },
-                    data: [1.4]
+                    data: getNearbyRoadMeter()[4]
                 }
             ]
         });
@@ -1090,49 +1118,49 @@
             },
             series: [
                 {
-                    name: '第一个小区',
+                    name: getPlotName()[0],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#455765' }
                     },
-                    data: getXiuxiangouwu()
+                    data: getXiuxiangouwu()[0]
                 },
                 {
-                    name: '第二个小区',
+                    name: getPlotName()[1],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: [120, 132, 101, 134, 90]
+                    data: getXiuxiangouwu()[1]
                 },
                 {
-                    name: '第三个小区',
+                    name: getPlotName()[2],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#fece6c' }
                     },
-                    data: [220, 182, 191, 234, 290]
+                    data: getXiuxiangouwu()[2]
                 },
                 {
-                    name: '第四个小区',
+                    name: getPlotName()[3],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#7f7f7f' }
                     },
-                    data: [150, 212, 201, 154, 190]
+                    data: getXiuxiangouwu()[3]
                 },
                 {
-                    name: '第五个小区',
+                    name: getPlotName()[4],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#4a7aa3' }
                     },
-                    data: [820, 832, 901, 934, 1290]
+                    data: getXiuxiangouwu()[4]
                 }
             ]
         });
@@ -1166,49 +1194,49 @@
             },
             series: [
                 {
-                    name: '第一个小区',
+                    name: getPlotName()[0],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#455765' }
                     },
-                    data: [320, 302, 301, 334, 390]
+                    data: getJiaoyupeitao()[0]
                 },
                 {
-                    name: '第二个小区',
+                    name: getPlotName()[1],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: [120, 132, 101, 134, 90]
+                    data: getJiaoyupeitao(1)
                 },
                 {
-                    name: '第三个小区',
+                    name: getPlotName()[2],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#fece6c' }
                     },
-                    data: [220, 182, 191, 234, 290]
+                    data: getJiaoyupeitao()[2]
                 },
                 {
-                    name: '第四个小区',
+                    name: getPlotName()[3],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#7f7f7f' }
                     },
-                    data: [150, 212, 201, 154, 190]
+                    data: getJiaoyupeitao()[3]
                 },
                 {
-                    name: '第五个小区',
+                    name: getPlotName()[4],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#4a7aa3' }
                     },
-                    data: [820, 832, 901, 934, 1290]
+                    data: getJiaoyupeitao()[4]
                 }
             ]
         });
@@ -1242,49 +1270,49 @@
             },
             series: [
                 {
-                    name: '第一个小区',
+                    name: getPlotName()[0],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#455765' }
                     },
-                    data: [320, 302, 301, 334, 390]
+                    data: getYiliaopeitao()[0]
                 },
                 {
-                    name: '第二个小区',
+                    name: getPlotName()[1],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: [120, 132, 101, 134, 90]
+                    data: getYiliaopeitao()[1]
                 },
                 {
-                    name: '第三个小区',
+                    name: getPlotName()[2],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#fece6c' }
                     },
-                    data: [220, 182, 191, 234, 290]
+                    data: getYiliaopeitao()[2]
                 },
                 {
-                    name: '第四个小区',
+                    name: getPlotName()[3],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#7f7f7f' }
                     },
-                    data: [150, 212, 201, 154, 190]
+                    data: getYiliaopeitao()[3]
                 },
                 {
-                    name: '第五个小区',
+                    name: getPlotName()[4],
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
                         normal: { color: '#4a7aa3' }
                     },
-                    data: [820, 832, 901, 934, 1290]
+                    data: getYiliaopeitao()[4]
                 }
             ]
         });
