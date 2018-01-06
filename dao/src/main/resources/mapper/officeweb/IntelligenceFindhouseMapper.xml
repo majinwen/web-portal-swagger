@@ -151,13 +151,12 @@
         <result column="subway_distince" property="subwayDistince" jdbcType="VARCHAR"/>
         <result column="proj_layout" property="projLayout" jdbcType="VARCHAR"/>
         <result column="star_property" property="starProperty" jdbcType="INTEGER"/>
-        <!--<result column="nearby_qiao" property="nearbyQiao" jdbcType="VARCHAR"/>-->
+        <result column="nearby_qiao" property="nearbyQiao" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="intelligenceFindHouse">
         newcode,n_or_e,projname,finishdate,virescencerate,lift_door_radio,propertyfee,heating_mode,water_supply,electric_supply,
         car_rent_price, car_sell_price,newh_range_s,newh_range_e,village_range_s,village_range_e,price,
-        esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter
-        ,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway
+        coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway,
         esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter,district_name,area_name,build_tags
         <!--,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway-->
     </sql>
