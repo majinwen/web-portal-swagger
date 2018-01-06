@@ -16,10 +16,11 @@
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="collect_status" property="collecttatus" jdbcType="INTEGER" />
+    <result column="district_id" property="districtId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
-    has_child, has_oldman,create_time,user_portrait
+    has_child, has_oldman,create_time,user_portrait,district_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -43,11 +44,11 @@
     insert into intelligence_fh_res (id, phone, fh_result, 
       down_payment, month_payment, user_type, 
       total_price, layout, has_child, 
-      has_oldman,create_time,user_portrait)
+      has_oldman,create_time,user_portrait,district_id)
     values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{fhResult,jdbcType=OTHER}, 
       #{downPayment,jdbcType=INTEGER}, #{monthPayment,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
       #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
-      #{hasOldman,jdbcType=INTEGER},#{createTime},jdbcType=VARCHAR),#{userPortrait,jdbcType=INTEGER})
+      #{hasOldman,jdbcType=INTEGER},#{createTime},jdbcType=VARCHAR),#{userPortrait,jdbcType=INTEGER},#{districtId,jdbcType=VARCHAR})
   </insert>
 
   <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" useGeneratedKeys="true" keyProperty="id">
@@ -92,6 +93,9 @@
       <if test="userPortrait != null" >
         user_portrait,
       </if>
+      <if test="districtId != null" >
+        district_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -129,6 +133,9 @@
       </if>
       <if test="userPortrait != null" >
         #{userPortrait,jdbcType=INTEGER},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -172,6 +179,9 @@
       <if test="userPortrait != null" >
         user_portrait,
       </if>
+      <if test="districtId != null" >
+        district_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -209,6 +219,9 @@
       </if>
       <if test="userPortrait != null" >
         #{userPortrait,jdbcType=INTEGER},
+      </if>
+      <if test="districtId != null" >
+        #{districtId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -248,6 +261,9 @@
       <if test="userPortrait != null" >
         user_portrait = #{userPortrait,jdbcType=INTEGER},
       </if>
+      <if test="districtId != null" >
+        district_id= #{districtId,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -263,7 +279,8 @@
       has_child = #{hasChild,jdbcType=INTEGER},
       has_oldman = #{hasOldman,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=VARCHAR},
-      user_portrait = #{userPortrait,jdbcType=INTEGER}
+      user_portrait = #{userPortrait,jdbcType=INTEGER},
+      district_id= #{districtId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
