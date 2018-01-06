@@ -11,6 +11,21 @@
     <title>智能找房 预见所想</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
+    <style>
+        .animate-ring-box.active {
+            -webkit-animation: lineRight 4s;
+            animation: lineRight 4s;
+            -webkit-animation-fill-mode:forwards;
+        }
+        @-webkit-keyframes lineRight {
+            0% {  transform: rotate(0deg);  }
+            100% {  transform: rotate(360deg);  }
+        }
+        @keyframes lineRight {
+            0% {  transform: rotate(0deg);  }
+            100% {  transform: rotate(360deg);  }
+        }
+    </style>
 </head>
 <body>
 <div id="superContainer">
@@ -69,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="section page3">
+    <div class="section page3 ">
         <div class="bgbox bg3">
             <div class="page-content">
                 <div class="result-text">
@@ -267,7 +282,7 @@
             </div>
         </div>
     </div>
-    <div class="section page4">
+    <div class="section page4 ">
         <div class="bgbox bg4">
             <div class="page-content">
                 <div class="city-title">
@@ -275,12 +290,12 @@
                 </div>
                 <div class="animate-wrapper">
                     <div class="animate-item-1">
-                        <div class="animate-big-box">
+                        <div class="animate-big-box" id="left_circle_div">
                             <div class="animate-ring-box"></div>
                             <div class="animate-border-box">
                             <#-- 扫描红线（改变top） -->
                                 <div class="animate-line"></div>
-                                <div class="text-box">
+                                <div class="text-box" style="display: none;">
                                     <p><em>7</em>年</p>
                                     <p><em>305586</em>位</p>
                                     <p>用户择居及生活样本</p>
@@ -297,10 +312,10 @@
                     <div class="animate-item-2">
                         <div class="animate-big-box">
                             <div class="animate-ring-box"></div>
-                            <div class="animate-border-box">
+                            <div class="animate-border-box" id="center_circle_div">
                                 <#-- 扫描红线（改变top） -->
                                 <div class="animate-line"></div>
-                                <div class="text-box">
+                                <div class="text-box"  style="display: none">
                                     <p><em>8123</em>个社区</p>
                                     <p><em>40397</em>套房产</p>
                                     <p><em>142</em>类生活配套设施</p>
@@ -315,12 +330,12 @@
                         </div>
                     </div>
                     <div class="animate-item-3">
-                        <div class="animate-big-box">
+                        <div class="animate-big-box" id="right_circle_div">
                             <div class="animate-ring-box"></div>
                             <div class="animate-border-box">
                             <#-- 扫描红线（改变top） -->
                                 <div class="animate-line"></div>
-                                <div class="text-box">
+                                <div class="text-box" style="display: none">
                                     <p><em>1</em>秒</p>
                                     <p><em>962837</em>次运算</p>
                                 </div>
@@ -336,12 +351,14 @@
                 </div>
 
                 <div class="button-bottom">
-                    <a class="button-box" id="button_report" href="${router_city('/findhouse/showUserPortrayal')}">
+                    <a class="button-box" id="button_report" href="javascript:void(0)">
                         <#-- 百分比进度显示 -->
                         <div class="loading-number">0%</div>
                         <#-- 黑色进度条（改变width） -->
-                        <div class="button-mask"></div>
-                        <div class="button" id="button_report"></div>
+                        <div class="button-mask-box" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 70px; overflow: hidden; z-index: 1;">
+                            <div class="button-mask"></div>
+                        </div>
+                        <div class="button" style="box-sizing: border-box"></div>
                         <p class="loading-text">正在生成用户画像</p>
                     </a>
                 </div>
@@ -351,5 +368,131 @@
 </div>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/intelligent-choose.js"></script>
+<script type="text/javascript">
+    var rada_animit={
+        timers:[],
+        id:0,
+        random:function (max,min) {
+            return parseInt(Math.random()*max)+min;
+        },
+        center_process:function () {
+            if(!rada_animit.center_process_start){
+                rada_animit.center_process_start = true
+            }
+            else {
+                return;
+            }
+
+            $('#center_circle_div .animate-line').hide();
+            clearInterval($('#center_circle_div .animate-line').eq(0).data("lada_timer"));
+            $('#center_circle_div .text-box').show();
+            $('#center_circle_div').prev('.animate-ring-box').addClass("active");
+            var timer = setInterval(function () {
+
+                $('#center_circle_div em').eq(0).text(rada_animit.random(10000, 8000));
+                $('#center_circle_div em').eq(1).text(rada_animit.random(15000, 30000));
+                $('#center_circle_div em').eq(2).text(rada_animit.random(150, 50));
+            }, 100)
+            setTimeout(function () {
+                clearInterval(timer)
+            },4000)
+        },
+        left_process:function () {
+            if(!rada_animit.left_process_start){
+                rada_animit.left_process_start = true
+            }
+            else {
+                return;
+            }
+            $('#left_circle_div .animate-line').hide();
+            clearInterval($('#left_circle_div .animate-line').eq(0).data("lada_timer"));
+            $('#left_circle_div .text-box').show();
+            $('#left_circle_div .animate-ring-box').addClass("active");
+            var timer = setInterval(function () {
+                $('#left_circle_div em').eq(0).text(rada_animit.random(10,1));
+                $('#left_circle_div em').eq(1).text(rada_animit.random(1000000,500000));
+
+            },100)
+            setTimeout(function () {
+                clearInterval(timer)
+            },4000)
+        },
+        right_process:function () {
+            if(!rada_animit.right_process_start){
+                rada_animit.right_process_start = true
+            }
+            else {
+                return;
+            }
+            $('#right_circle_div .animate-line').hide();
+            clearInterval($('#right_circle_div .animate-line').eq(0).data("lada_timer"));
+            $('#right_circle_div .text-box').show();
+            $('#right_circle_div .animate-ring-box').addClass("active");
+            var timer = setInterval(function () {
+                $('#right_circle_div em').eq(1).text(rada_animit.random(300000,200000));
+
+            },100);
+            setTimeout(function () {
+                clearInterval(timer)
+            },4000)
+        },
+        stop_all:function () {
+            for(var i=0;i<rada_animit.timers.length;i++){
+                clearInterval(rada_animit.timers[i]);
+            }
+        },
+        init:function () {
+            $('.animate-line').each(function () {
+                var that = $(this);
+                var step=20;
+                var timer = setInterval(function () {
+                    var maxtop = that.parent().parent().height()
+
+                    if(parseInt(that.css('top'))>maxtop){
+                        that.css('top',maxtop+'px');
+                        step=-20
+                    }
+                    else if(parseInt(that.css('top'))<0){
+                        that.css('top','0px');
+                        step=20
+                    }
+                    that.css('top',parseInt(that.css('top'))+step+'px');
+                },100);
+                that.data("lada_timer",timer);
+            });
+            var process=0;
+            var process_timer =setInterval(function () {
+                    $('.button-mask').width((process+1)+'px');
+                    process += 8;
+                    $('.loading-number').css('left',process+'px')
+                    var rate = parseInt(process*100/parseInt($('#button_report').width()));
+                    if(rate>10){
+                        rada_animit.center_process();
+                    }
+                    if(rate>25) {
+                        rada_animit.left_process();
+                    }
+                    if(rate>40){
+                        rada_animit.right_process();
+                    }
+                    $('.loading-number').text(parseInt(process*100/parseInt($('#button_report').width()))+'%')
+                    if(process>=parseInt($('#button_report').width())) {
+                        if(rada_animit.id) {
+                            $('.loading-number').hide();
+                            $('#button_report').text('查看报告');
+                            rada_animit.stop_all();
+                            clearInterval(process_timer);
+                            $("#button_report").click(function () {
+                                window.location.replace(router_city('/findhouse/showMyReport/') + rada_animit.id)
+                            });
+                        }
+                    }
+
+            },80)
+        }
+    };
+
+
+</script>
 </body>
 </html>
