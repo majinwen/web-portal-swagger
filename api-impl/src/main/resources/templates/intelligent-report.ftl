@@ -694,6 +694,33 @@
         }
         return res;
     }
+    function getXiuxiangouwuJianshen() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+            res.push(datajson[i]["xiuxian"])
+        }
+        return res;
+    }
+    function getXiuxiangouwu() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+            res.push(datajson[i]["typeCount"]["xiuxian"]["caishichang"])
+        }
+        console.log(res)
+        return res;
+    }
+    function getJiaoyupeitao() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+        }
+        return res;
+    }
+    function getYiliaopeitao() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
+        }
+        return res;
+    }
 
 
     /**
@@ -935,14 +962,14 @@
                     type: 'bar',
                     barGap: 1.5,
                     barWidth: '8%',
-                    data: [0]
+                    data: [2]
                 },
                 {
                     name: '',
                     type: 'bar',
                     barGap: 1.5,
                     barWidth: '8%',
-                    data: [0]
+                    data: [1]
                 }
             ]
         });
@@ -1073,7 +1100,7 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [320, 302, 301, 334, 390]
+                    data: getXiuxiangouwu()
                 },
                 {
                     name: '餐饮',
@@ -1085,7 +1112,7 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [120, 132, 101, 134, 90]
+                    data: []
                 },
                 {
                     name: '购物中心',
@@ -1097,7 +1124,7 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [220, 182, 191, 234, 290]
+                    data: []
                 },
                 {
                     name: '超市',
@@ -1109,7 +1136,7 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [150, 212, 201, 154, 190]
+                    data: []
                 },
                 {
                     name: '菜市场',
@@ -1121,7 +1148,7 @@
                             position: 'insideRight'
                         }
                     },
-                    data: [820, 832, 901, 934, 1290]
+                    data: []
                 }
             ]
         });

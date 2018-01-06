@@ -371,25 +371,26 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
             //查询地图信息
             for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
-                MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
+                MapInfo mapInfo = mapService.getMapInfo(/*intelligenceFindhouse.getNewcode()*/11113743);
                 JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-//                JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
+                JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
                 intelligenceFindhouse.setDataInfo(datainfo);
-//                intelligenceFindhouse.setTypeCount(typeCount);
+                intelligenceFindhouse.setTypeCount(typeCount);
             }
-
-            String[] districtId = intelligenceFhRes.getDistrictId().split(",");
-            String district = "";
-            for (int i = 0; i < districtId.length; i++) {
-                if (null != DistrictMap.getDistrict(districtId[i])) {
-                    if (i > 0) {
-                        district += ","+DistrictMap.getDistrict(districtId[i]);
-                    } else {
-                        district += DistrictMap.getDistrict(districtId[i]);
+            if (null != intelligenceFhRes.getDistrictId()) {
+                String[] districtId = intelligenceFhRes.getDistrictId().split(",");
+                String district = "";
+                for (int i = 0; i < districtId.length; i++) {
+                    if (null != DistrictMap.getDistrict(districtId[i])) {
+                        if (i > 0) {
+                            district += "," + DistrictMap.getDistrict(districtId[i]);
+                        } else {
+                            district += DistrictMap.getDistrict(districtId[i]);
+                        }
                     }
                 }
+                intelligenceFhRes.setDistrictId(district);
             }
-            intelligenceFhRes.setDistrictId(district);
             String jsonString = JSONArray.toJSONString(finalList);
             intelligenceFhRes.setFhResult(jsonString);
             intelligenceFhResMapper.saveData(intelligenceFhRes);
