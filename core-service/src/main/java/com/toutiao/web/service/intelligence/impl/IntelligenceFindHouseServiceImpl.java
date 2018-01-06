@@ -372,19 +372,24 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //查询地图信息
             for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
                 MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
-                JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+                JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+//                JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
                 intelligenceFindhouse.setDataInfo(datainfo);
+//                intelligenceFindhouse.setTypeCount(typeCount);
             }
 
-            String[] District = intelligenceFhRes.getDistrictId().split(",");
-            String[] arr = new String[District.length];
-            for (int i = 0; i <District.length ; i++) {
-                if (null!=DistrictMap.getDistrict(District[i])){
-                    arr[i] = DistrictMap.getDistrict(District[i]);
+            String[] districtId = intelligenceFhRes.getDistrictId().split(",");
+            String district = "";
+            for (int i = 0; i < districtId.length; i++) {
+                if (null != DistrictMap.getDistrict(districtId[i])) {
+                    if (i > 0) {
+                        district += ","+DistrictMap.getDistrict(districtId[i]);
+                    } else {
+                        district += DistrictMap.getDistrict(districtId[i]);
+                    }
                 }
             }
-            String arrDistrict = arr.toString();
-            intelligenceFhRes.setDistrictId(arrDistrict);
+            intelligenceFhRes.setDistrictId(district);
             String jsonString = JSONArray.toJSONString(finalList);
             intelligenceFhRes.setFhResult(jsonString);
             intelligenceFhResMapper.saveData(intelligenceFhRes);
