@@ -445,8 +445,21 @@ html {
             }
 
             .water-wrapper {
+                position: relative;
                 width: 100%;
+                padding-top: rem(210);
                 text-align: center;
+
+                #collieContainer {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    width: rem(502);
+                    height: rem(237);
+                    margin: 0 rem(-251);
+                    overflow: hidden;
+                    z-index: 2;
+                }
 
                 .water-bg {
                     position: relative;
@@ -456,6 +469,7 @@ html {
                     @include bg-image('/static/images/intelligent/report-water-bg');
                     -webkit-background-size: contain;
                     background-size: contain;
+                    z-index: 1;
 
                     .water-text-item {
                         position: absolute;
@@ -728,11 +742,33 @@ html {
 
                     span {
                         position: absolute;
+                        top: rem(-6);
                         left: 0;
                         width: rem(50);
                         height: rem(47);
                         margin-left: rem(-25);
+                        padding-top: rem(7);
                         text-align: center;
+                        color: $baseWhite;
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                        @include font-dpr(20);
+
+                        &.type1 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q1');
+                        }
+                        &.type2 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q2');
+                        }
+                        &.type3 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q3');
+                        }
+                        &.type4 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q4');
+                        }
+                        &.type5 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q5');
+                        }
                     }
                 }
             }

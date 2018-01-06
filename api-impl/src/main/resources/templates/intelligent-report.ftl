@@ -152,6 +152,9 @@
                     <p>根据您的需求，为您挑选5个最贴合的</p>
                 </div>
                 <div class="water-wrapper">
+                    <div id="collieContainer">
+                    <#--水滴  的容器-->
+                    </div>
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
@@ -266,8 +269,8 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span class="type1">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span class="type2">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -280,8 +283,8 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span class="type3">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span class="type4">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
                     </div>
 
@@ -492,9 +495,7 @@
                     </div>
                 </div>
             </div>
-            <#--<div id="collieContainer">-->
-                <#--水滴  的容器-->
-            <#--</div>-->
+
         </div>
     </div>
 </div>
@@ -524,67 +525,67 @@
 <script src="${staticurl}/js/raphael.min.js"></script>
 <script type="text/javascript">
     //水滴的效果
-    function waterSharp(pool,laywidth,i) {
+    function waterSharp(pool, laywidth, i) {
         this.pool = pool;
-        this.x_index=i
+        this.x_index = i;
         this.laywidth = laywidth
     }
-    waterSharp.prototype.animale=function () {
-        var that=this;
-        var init_x = this.laywidth/6*(this.x_index%6);
-        var index = Math.random()*6;
-        index = parseInt(index,10);
-        if(Math.random()*100<70){
-            index=0
+    waterSharp.prototype.animale = function () {
+        var that = this;
+        var init_x = this.laywidth / 6 * (this.x_index % 6);
+        var index = Math.random() * 6;
+        index = parseInt(index, 10);
+        if (Math.random() * 100 < 70) {
+            index = 0
         }
-        this.el =this.pool[index].clone();
+        this.el = this.pool[index].clone();
         this.el.toFront();
-        if(index>0){
-            this.el.attr({width:this.el.attr("width")*2.5,height:this.el.attr("height")*2.5});
+        if (index > 0) {
+            this.el.attr({width: this.el.attr("width") * 2.2, height: this.el.attr("height") * 2.2});
         }
-//        var randomNum = Math.random()*5+10;
-//        that.speed = parseInt(randomNum,10)
-        that.speed=10;
-        that.el.attr({x:init_x});
-        var randomNum = Math.random()*200;
-        cy = 0 - parseInt(randomNum,10)
-        that.el.attr({"y":cy})
+//        var randomNum = Math.random() * 5 + 10;
+//        that.speed = parseInt(randomNum, 10)
+        that.speed = 12;
+        that.el.attr({x: init_x});
+        var randomNum = Math.random() * 200;
+        cy = 0 - parseInt(randomNum, 10);
+        that.el.attr({"y": cy});
         var timer = setInterval(function () {
-            var cy = that.el.attr("y")
+            var cy = that.el.attr("y");
 //            that.speed+=1;
-            if(cy>500){
-                clearInterval(timer)
+            if (cy > 500) {
+                clearInterval(timer);
                 that.el.remove();
                 setTimeout(function () {
                     that.animale();
                 })
             }
-            that.el.attr({y:cy+that.speed});
-        },100)
-    }
-    var guoduye={
-        up:100,
-        bottom:100,
+            that.el.attr({y: cy + that.speed});
+        }, 100)
+    };
+    var guoduye = {
+        up: 100,
+        bottom: 100,
 
-        init:function () {
-            var width=$(document).width();
-            var height=200;//$(document).height()-this.up-this.bottom
+        init: function () {
+            var width = $('#collieContainer').width();
+            var height = $('#collieContainer').height(); // $(document).height() - this.up - this.bottom
             var r = Raphael("collieContainer", width, height);
-            var pool = []
-            for(var i=0;i<6;i++){
-                pool.push(r.image("http://wap-qn.toutiaofangchan.com/znzf/water/water"+(i+1)+".png", 0, -100, 28, 35))
+            var pool = [];
+            for (var i = 0; i < 6; i++) {
+                pool.push(r.image("http://wap-qn.toutiaofangchan.com/znzf/water/water" + (i + 1) + ".png", 0, -100, 28, 35))
             }
-            for(var i=0;i<18;i++){
-                setTimeout((function(index){return function () {
-                    var el = new waterSharp(pool,width,index);
-                    el.animale();
-                }})(i),500*i)
+            for (var i = 0; i < 18; i++) {
+                setTimeout((function (index) {
+                    return function () {
+                        var el = new waterSharp(pool, width, index);
+                        el.animale();
+                    }
+                })(i), 500 * i)
 
             }
-
-
         }
-    }
+    };
     guoduye.init();
 
 </script>
