@@ -10,6 +10,7 @@ import com.toutiao.web.dao.entity.officeweb.*;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
 import com.toutiao.web.dao.mapper.officeweb.*;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
@@ -375,6 +376,15 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 intelligenceFindhouse.setDataInfo(datainfo);
             }
 
+            String[] District = intelligenceFhRes.getDistrictId().split(",");
+            String[] arr = new String[District.length];
+            for (int i = 0; i <District.length ; i++) {
+                if (null!=DistrictMap.getDistrict(District[i])){
+                    arr[i] = DistrictMap.getDistrict(District[i]);
+                }
+            }
+            String arrDistrict = arr.toString();
+            intelligenceFhRes.setDistrictId(arrDistrict);
             String jsonString = JSONArray.toJSONString(finalList);
             intelligenceFhRes.setFhResult(jsonString);
             intelligenceFhResMapper.saveData(intelligenceFhRes);

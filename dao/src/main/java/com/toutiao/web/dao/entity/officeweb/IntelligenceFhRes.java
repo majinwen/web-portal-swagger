@@ -66,5 +66,9 @@ public class IntelligenceFhRes {
      */
     private Integer userPortrait;
 
+    /**
+     * 用户传递的区域id
+     */
+    private String districtId;
 
 }

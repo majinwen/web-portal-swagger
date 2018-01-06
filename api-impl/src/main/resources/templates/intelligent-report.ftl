@@ -3,7 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        (function(h,k){var p=h.document;var b=p.documentElement;var m=p.querySelector('meta[name="viewport"]');var e=p.querySelector('meta[name="flexible"]');var q=0;var d=0;var f;var j=k.flexible||(k.flexible={});if(m){console.warn("将根据已有的meta标签来设置缩放比例");var g=m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);if(g){d=parseFloat(g[1]);q=parseInt(1/d)}}else{if(e){var i=e.getAttribute("content");if(i){var c=i.match(/initial\-dpr=([\d\.]+)/);var o=i.match(/maximum\-dpr=([\d\.]+)/);if(c){q=parseFloat(c[1]);d=parseFloat((1/q).toFixed(2))}if(o){q=parseFloat(o[1]);d=parseFloat((1/q).toFixed(2))}}}}if(!q&&!d){var n=h.devicePixelRatio;if(n>=3&&(!q||q>=3)){q=3}else{if(n>=2&&(!q||q>=2)){q=2}else{q=1}}d=1/q}b.setAttribute("data-dpr",q);if(!m){m=p.createElement("meta");m.setAttribute("name","viewport");m.setAttribute("content","initial-scale="+d+", maximum-scale="+d+", minimum-scale="+d+", user-scalable=no");if(b.firstElementChild){b.firstElementChild.appendChild(m)}else{var a=p.createElement("div");a.appendChild(m);p.write(a.innerHTML)}}function l(){var r=b.getBoundingClientRect().width;if(r/q>540){r=540*q}var s=r/10;b.style.fontSize=s+"px";j.rem=h.rem=s}h.addEventListener("resize",function(){clearTimeout(f);f=setTimeout(l,300)},false);h.addEventListener("pageshow",function(r){if(r.persisted){clearTimeout(f);f=setTimeout(l,300)}},false);if(p.readyState==="complete"){p.body.style.fontSize=12*q+"px"}else{p.addEventListener("DOMContentLoaded",function(r){p.body.style.fontSize=12*q+"px"},false)}l();j.dpr=h.dpr=q;j.refreshRem=l})(window,window["lib"]||(window["lib"]={}));
+        (function (h, k) {
+            var p = h.document;
+            var b = p.documentElement;
+            var m = p.querySelector('meta[name="viewport"]');
+            var e = p.querySelector('meta[name="flexible"]');
+            var q = 0;
+            var d = 0;
+            var f;
+            var j = k.flexible || (k.flexible = {});
+            if (m) {
+                console.warn("将根据已有的meta标签来设置缩放比例");
+                var g = m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
+                if (g) {
+                    d = parseFloat(g[1]);
+                    q = parseInt(1 / d)
+                }
+            } else {
+                if (e) {
+                    var i = e.getAttribute("content");
+                    if (i) {
+                        var c = i.match(/initial\-dpr=([\d\.]+)/);
+                        var o = i.match(/maximum\-dpr=([\d\.]+)/);
+                        if (c) {
+                            q = parseFloat(c[1]);
+                            d = parseFloat((1 / q).toFixed(2))
+                        }
+                        if (o) {
+                            q = parseFloat(o[1]);
+                            d = parseFloat((1 / q).toFixed(2))
+                        }
+                    }
+                }
+            }
+            if (!q && !d) {
+                var n = h.devicePixelRatio;
+                if (n >= 3 && (!q || q >= 3)) {
+                    q = 3
+                } else {
+                    if (n >= 2 && (!q || q >= 2)) {
+                        q = 2
+                    } else {
+                        q = 1
+                    }
+                }
+                d = 1 / q
+            }
+            b.setAttribute("data-dpr", q);
+            if (!m) {
+                m = p.createElement("meta");
+                m.setAttribute("name", "viewport");
+                m.setAttribute("content", "initial-scale=" + d + ", maximum-scale=" + d + ", minimum-scale=" + d + ", user-scalable=no");
+                if (b.firstElementChild) {
+                    b.firstElementChild.appendChild(m)
+                } else {
+                    var a = p.createElement("div");
+                    a.appendChild(m);
+                    p.write(a.innerHTML)
+                }
+            }
+
+            function l() {
+                var r = b.getBoundingClientRect().width;
+                if (r / q > 540) {
+                    r = 540 * q
+                }
+                var s = r / 10;
+                b.style.fontSize = s + "px";
+                j.rem = h.rem = s
+            }
+
+            h.addEventListener("resize", function () {
+                clearTimeout(f);
+                f = setTimeout(l, 300)
+            }, false);
+            h.addEventListener("pageshow", function (r) {
+                if (r.persisted) {
+                    clearTimeout(f);
+                    f = setTimeout(l, 300)
+                }
+            }, false);
+            if (p.readyState === "complete") {
+                p.body.style.fontSize = 12 * q + "px"
+            } else {
+                p.addEventListener("DOMContentLoaded", function (r) {
+                    p.body.style.fontSize = 12 * q + "px"
+                }, false)
+            }
+            l();
+            j.dpr = h.dpr = q;
+            j.refreshRem = l
+        })(window, window["lib"] || (window["lib"] = {}));
     </script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
@@ -25,7 +115,8 @@
                     <img src="/static/images/intelligent/user-header.png" alt="用户头像">
                 </div>
                 <div class="word-cont" data-user-type="1">
-                    <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
+                    <p>
+                        繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
                     <ol>
                         <li>- 尽量离交通站近，睡多一点</li>
                         <li>- 餐饮便利，到家能吃口热饭</li>
@@ -33,7 +124,8 @@
                     </ol>
                 </div>
                 <div class="word-cont none" data-user-type="2">
-                    <p>我们深知您买房的每一分钱，都来自全家打拼，甚至还有亲友支援。为这第一个家，您大概找寻了很久，已有多次挑选。因此我们尽量给你更多信息，为您精心挑选最具生活价值的社区，让这第一个“幸福家”争取做到：</p>
+                    <p>
+                        我们深知您买房的每一分钱，都来自全家打拼，甚至还有亲友支援。为这第一个家，您大概找寻了很久，已有多次挑选。因此我们尽量给你更多信息，为您精心挑选最具生活价值的社区，让这第一个“幸福家”争取做到：</p>
                     <ol>
                         <li>- 下班回家，社区清静又安全</li>
                         <li>- 尽量离交通站近，睡多一点</li>
@@ -57,7 +149,8 @@
                     </ol>
                 </div>
                 <div class="word-cont none" data-user-type="5">
-                    <p>为了让更多家庭成员和远来亲友，居住得更宽敞、更舒适；同时也能让老人和孩子，能在社区里安心的行走和奔跑——您已左选右挑，辛劳多日。我们理解您的需求，因此帮您仔细地搜寻对比各种可能合适的社区，争取做到：</p>
+                    <p>
+                        为了让更多家庭成员和远来亲友，居住得更宽敞、更舒适；同时也能让老人和孩子，能在社区里安心的行走和奔跑——您已左选右挑，辛劳多日。我们理解您的需求，因此帮您仔细地搜寻对比各种可能合适的社区，争取做到：</p>
                     <ol>
                         <li>- 抚幼养老，备好教育医疗</li>
                         <li>- 安享无忧，选好社区安保</li>
@@ -74,7 +167,8 @@
                     </ol>
                 </div>
                 <div class="word-cont none" data-user-type="7">
-                    <p>房产，在全球都是家庭资产配置重要一环，长远看，是让您今天不懈的奋斗带来明天稳定的收益。您肯定希望在周边小区价格、换手率和历史成交量价曲线等角度，看到清晰的数据对比，以做好投资决策。我们争取做到：</p>
+                    <p>
+                        房产，在全球都是家庭资产配置重要一环，长远看，是让您今天不懈的奋斗带来明天稳定的收益。您肯定希望在周边小区价格、换手率和历史成交量价曲线等角度，看到清晰的数据对比，以做好投资决策。我们争取做到：</p>
                     <ol>
                         <li>- 帮您对比目标社区的周边价格</li>
                         <li>- 给您提供该社区的换手率信息</li>
@@ -93,7 +187,8 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    <p>总价<em class="inte-color-red"
+                             id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
                     </p>
                 </div>
                 <div class="echart-box">
@@ -121,7 +216,8 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    <p>总价<em class="inte-color-red"
+                             id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
                     </p>
                 </div>
                 <div class="echart-box">
@@ -131,15 +227,20 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em
+                                id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em
+                                id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume"
+                                           class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em
+                                id="averageVolumeRatio"
+                                class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
                     </li>
                 </ul>
             </div>
@@ -161,9 +262,16 @@
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
-                                <li>总价：2000万</li>
-                                <li><em>朝阳</em><em>海淀</em><em>丰台</em></li>
-                                <li>三居</li>
+                                <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if>万</li>
+                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''>
+                                    <#assign Districts = intelligenceFhRes['districtId']?split(',')>
+                                    <#list Districts as district>
+                                        <em>district</em>
+                                    </#list>
+                                <#else >
+                                    <em>-</em>
+                                </#if></li>
+                                <li>${intelligenceFhRes['layout']}居</li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -178,11 +286,13 @@
                         </div>
                     </div>
                     <ul class="water-item">
-                        <li><p>观湖国际</p></li>
-                        <li><p>正邦家园</p></li>
-                        <li><p>新苑花园小区</p></li>
-                        <li><p>华莱国际</p></li>
-                        <li><p>政豪园</p></li>
+                    <#list intelligenceFhRes['fhResult']?eval as intelligenceFhRe>
+                        <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
+                            <li><p>${intelligenceFhRe['projname']}</p></li>
+                        <#else >
+                            <li> -</li>
+                        </#if>
+                    </#list>
                     </ul>
                 </div>
             </div>
@@ -210,52 +320,34 @@
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
-                            <li class="bgtype-1">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>观湖国际</h4>
-                                        <p>23400元/㎡</p>
-                                        <p>89㎡-256㎡</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image1.jpg" alt="2018纯新盘">
-                                </a>
-                            </li>
-                            <li class="bgtype-2">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>海淀热门房源</h4>
-                                        <p>看看大家关注哪里的房</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image2.jpg" alt="海淀热门房源">
-                                </a>
-                            </li>
-                            <li class="bgtype-3">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>200万电梯房</h4>
-                                        <p>少花钱多办事上下自由</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                                </a>
-                            </li>
-                            <li class="bgtype-4">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>200万电梯房</h4>
-                                        <p>少花钱多办事上下自由</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                                </a>
-                            </li>
-                            <li class="bgtype-5">
-                                <a class="clear" href="#">
-                                    <div>
-                                        <h4>200万电梯房</h4>
-                                        <p>少花钱多办事上下自由</p>
-                                    </div>
-                                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                                </a>
-                            </li>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <li class="bgtype-${fhResult_index+1}">
+                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                        <div>
+                                            <h4>${fhResult['projname']}</h4>
+                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
+                                                <p>${fhResult['esfPrice']}元/㎡</p>
+                                            <#else >
+                                                <p>${fhResult['price']}元/㎡</p>
+                                            </#if>
+                                            <#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                                <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                            <#else >
+                                                <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                            </#if>
+                                        </div>
+                                        <#if fhResult['plotImage'][0]?exists>
+                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}"
+                                                 alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                        <#else >
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                        </#if>
+                                    </a>
+                                </li>
+                            </#list>
+                        </#if>
                         </ul>
                     </div>
                 </section>
@@ -277,8 +369,10 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>1</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -291,8 +385,10 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>1</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
                     </div>
 
@@ -479,7 +575,7 @@
                     <p>教育配套</p>
                     <span>3km内教育配套，就这样陪你长大</span>
                 </div>
-                <#--<i class="show-echart-detail"></i>-->
+            <#--<i class="show-echart-detail"></i>-->
                 <div class="echart-box">
                     <div id="educationChart"></div>
                 </div>
@@ -489,7 +585,7 @@
                     <p>医疗配套</p>
                     <span>3km内医疗配套，为您的健康保驾护航</span>
                 </div>
-                <#--<i class="show-echart-detail"></i>-->
+            <#--<i class="show-echart-detail"></i>-->
                 <div class="echart-box">
                     <div id="medicalChart"></div>
                 </div>
@@ -514,7 +610,7 @@
 <script src="/static/js/elastiStack.js"></script>
 <script src="/static/js/intelligent-chart.js"></script>
 <script>
-    new  ElastiStack(document.getElementById('elastics-stack'));
+    new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
         $('#superContainer').fullpage({
             resize: false,
@@ -532,56 +628,68 @@
         })
     });
 
-    var datajson=${datajson};
+    var datajson =${datajson};
     var ptlists = ${ptlists};
     var trend = ${trend}
 
-    console.log(ptlists)
-    console.log(trend)
+    //    console.log(ptlists)
+    //    console.log(trend)
+    console.log(datajson)
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
 
     function getJiagezoushiYuefen() {
-        var res=[];
-        for(var i=ptlists.length-1;i>=0;i--){
+        var res = [];
+        for (var i = ptlists.length - 1; i >= 0; i--) {
             res.push(ptlists[i]["periodicTime"])
         }
         return res;
     }
+
     function getJiagezoushiBeijing() {
-        var res=[];
-        for(var i=ptlists.length-1;i>=0;i--){
-            res.push([ptlists[i]["periodicTime"],ptlists[i]["totalPrice"]])
+        var res = [];
+        for (var i = ptlists.length - 1; i >= 0; i--) {
+            res.push([ptlists[i]["periodicTime"], ptlists[i]["totalPrice"]])
         }
         return res;
     }
+
     function getJiagezoushiMuBiao() {
-        var res=[];
-        for(var i=ptlists.length-1;i>=0;i--){
-            res.push([ptlists[i]["periodicTime"],ptlists[i]["price"]])
+        var res = [];
+        for (var i = ptlists.length - 1; i >= 0; i--) {
+            res.push([ptlists[i]["periodicTime"], ptlists[i]["price"]])
         }
         return res;
     }
 
     function getGongxuqingkuangYuefen() {
-        var res=[];
-        for(var i=0;i<trend.length;i++){
+        var res = [];
+        for (var i = 0; i < trend.length; i++) {
             res.push(trend[i]["periodicTime"])
         }
         return res;
     }
+
     function getGongxuqingkuangBeijing() {
-        var res=[];
-        for(var i=0;i<trend.length;i++){
+        var res = [];
+        for (var i = 0; i < trend.length; i++) {
             res.push(trend[i]["allSd"])
         }
         return res;
     }
+
     function getGongxuqingkuangMuBiao() {
-        var res=[];
-        for(var i=0;i<trend.length;i++){
+        var res = [];
+        for (var i = 0; i < trend.length; i++) {
             res.push(trend[i]["targetSd"])
+        }
+        return res;
+    }
+
+    function getSubwayInfo() {
+        var res = [];
+        for (var i = 0; i < datajson.length; i++) {
         }
         return res;
     }
@@ -605,7 +713,11 @@
         /**
          * 市场价格走势
          * */
-        var priceChart = echarts.init(document.getElementById('priceChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        var priceChart = echarts.init(document.getElementById('priceChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
         // 显示标题，图例和空的坐标轴
         priceChart.setOption({
             color: ['#455765', '#f25a5a', '#fecebc', '#7f7f7f', '#4a7aa3'],
@@ -620,7 +732,7 @@
                 data: [{
                     name: '北京市场',
                     icon: 'line'
-                },{
+                }, {
                     name: '目标市场',
                     icon: 'line'
                 }]
@@ -654,7 +766,7 @@
                 type: 'line',
                 showSymbol: false,
                 data: getJiagezoushiBeijing()
-            },{
+            }, {
                 name: '目标市场',
                 type: 'line',
                 showSymbol: false,
@@ -665,7 +777,11 @@
         /**
          * 市场供需情况
          * */
-        var marketChart = echarts.init(document.getElementById('marketChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        var marketChart = echarts.init(document.getElementById('marketChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
         // 显示标题，图例和空的坐标
         marketChart.setOption({
             textStyle: {fontSize: baseFontSize},
@@ -681,13 +797,13 @@
                 data: [{
                     name: '北京市场',
                     icon: 'line'
-                },{
+                }, {
                     name: '目标市场',
                     icon: 'line'
                 }]
             },
             grid: chartGrid,
-            yAxis:  {
+            yAxis: {
                 type: 'value',
                 axisTick: {show: false},
                 axisLine: {show: false},
@@ -752,7 +868,11 @@
         /**
          * 地铁信息
          * */
-        var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
         // 显示标题，图例和空的坐标
 
         var trafficSubwayLabel = {
@@ -761,7 +881,7 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n大望路站'
+                formatter: '{c}km\n'
             }
         };
         trafficSubwayChart.setOption({
@@ -778,7 +898,7 @@
                 show: false,
                 data: []
             },
-            yAxis:  {
+            yAxis: {
                 show: false,
                 inverse: true,
                 min: 0,
@@ -828,11 +948,14 @@
         // trafficSubwayChart.showLoading();
 
 
-
         /**
          * 环线桥信息
          * */
-        var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'), null, {renderer: 'svg'}, {devicePixelRatio: dpr ,width: '100%', height: '100%'});
+        var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
         // 显示标题，图例和空的坐标
 
         var trafficRondLabel = {
@@ -858,7 +981,7 @@
                 show: false,
                 data: []
             },
-            yAxis:  {
+            yAxis: {
                 show: false,
                 inverse: true,
                 min: 0,
@@ -909,6 +1032,286 @@
         });
         // trafficRondChart.showLoading();
 
+        /**
+         * 休闲购物
+         * */
+        var shoppingChart = echarts.init(document.getElementById('shoppingChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        shoppingChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['菜市场', '超市', '购物中心', '餐饮', '健身']
+            },
+            series: [
+                {
+                    name: '健身',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390]
+                },
+                {
+                    name: '餐饮',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90]
+                },
+                {
+                    name: '购物中心',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290]
+                },
+                {
+                    name: '超市',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190]
+                },
+                {
+                    name: '菜市场',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290]
+                }
+            ]
+        });
+
+
+        /**
+         * 教育配套
+         * */
+        var educationChart = echarts.init(document.getElementById('educationChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        educationChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['亲子教育', '幼儿园', '小学', '中学', '大学']
+            },
+            series: [
+                {
+                    name: '大学',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390]
+                },
+                {
+                    name: '中学',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90]
+                },
+                {
+                    name: '小学',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290]
+                },
+                {
+                    name: '幼儿园',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190]
+                },
+                {
+                    name: '亲子教育',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290]
+                }
+            ]
+        });
+
+
+        /**
+         * 医疗配套
+         * */
+        var medicalChart = echarts.init(document.getElementById('medicalChart'), null, {renderer: 'svg'}, {
+            devicePixelRatio: dpr,
+            width: '100%',
+            height: '100%'
+        });
+        // 显示标题，图例和空的坐标
+        medicalChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value'
+            },
+            yAxis: {
+                type: 'category',
+                data: ['综合医院', '专科医院', '诊所', '养老院', '急救中心']
+            },
+            series: [
+                {
+                    name: '急救中心',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [320, 302, 301, 334, 390]
+                },
+                {
+                    name: '养老院',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [120, 132, 101, 134, 90]
+                },
+                {
+                    name: '诊所',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [220, 182, 191, 234, 290]
+                },
+                {
+                    name: '专科医院',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [150, 212, 201, 154, 190]
+                },
+                {
+                    name: '综合医院',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'insideRight'
+                        }
+                    },
+                    data: [820, 832, 901, 934, 1290]
+                }
+            ]
+        });
 
     });
 </script>
