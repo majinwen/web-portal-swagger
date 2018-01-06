@@ -54,11 +54,11 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget"></em>，<em id="priceMaxCompare"></em>于北京市场均价涨幅</p>
+                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget"></em>，<em id="priceMinCompare"></em>于北京市场均价跌幅</p>
+                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
                     </li>
                 </ul>
             </div>
@@ -104,7 +104,7 @@
             </div>
             <div class="module-item">
                 <div class="report-title-type1">
-                    <p>针对这5个小区<br>为您做详细的分析和对比</p>
+                    <p>针对这${intelligenceFhRes['fhResult']?eval?size!''}个小区<br>为您做详细的分析和对比</p>
                 </div>
                 <div class="plot-title-box">
                     <div class="plot-title-block">
