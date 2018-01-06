@@ -463,7 +463,7 @@
             var process=0;
             var process_timer =setInterval(function () {
                     $('.button-mask').width((process+1)+'px');
-                    process += 8;
+                    process += 4;
                     $('.loading-number').css('left',process+'px')
                     var rate = parseInt(process*100/parseInt($('#button_report').width()));
                     if(rate>10){
@@ -479,7 +479,7 @@
                     if(process>=parseInt($('#button_report').width())) {
                         if(rada_animit.id) {
                             $('.loading-number').hide();
-                            $('#button_report').text('查看报告');
+                            $('#button_report .button-mask').text('查看报告');
                             rada_animit.stop_all();
                             clearInterval(process_timer);
                             $("#button_report").click(function () {
