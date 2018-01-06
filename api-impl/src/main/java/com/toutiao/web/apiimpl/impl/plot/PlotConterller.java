@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,11 +66,15 @@ public class PlotConterller {
     public NashResult villagePage(VillageRequest villageRequest) {
         List<VillageResponse> villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
-        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
+        if (null!=villageList&&villageList.size()!=0){
             for (VillageResponse polt : villageList){
-                if (null!=polt.getMetroWithPlotsDistance().get(polt.getKey())){
+                if (null!=polt.getKey()&&null!=polt.getMetroWithPlotsDistance().get(polt.getKey())){
                     String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
-                    polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
+                    HashMap metroWithPlotsDistance = (HashMap) polt.getMetroWithPlotsDistance();
+                    String key = polt.getKey();
+                    Object o = metroWithPlotsDistance.get(key);
+                    metroWithPlotsDistance.put(key, str);
+                    polt.setMetroWithPlotsDistance(metroWithPlotsDistance);
                 }
             }
         }
