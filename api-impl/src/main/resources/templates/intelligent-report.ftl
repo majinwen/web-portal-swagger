@@ -428,17 +428,45 @@
                     <p>休闲购物</p>
                     <span>3km生活圈，吃喝玩乐买买买</span>
                 </div>
+                <div class="expand-content content-visible">
+                    <div class="map-shopping-box">
+                        <ul class="map-message-btn" data-type="休闲购物">
+                            <li class="vegetable-market" data-type="菜市场"><span>菜市场</span><i></i></li>
+                            <li class="supermarket" data-type="超市"><span>超市</span><i></i></li>
+                            <li class="shopping-mall" data-type="商场"><span>商场</span><i></i></li>
+                            <li class="dining-room" data-type="餐厅"><span>餐厅</span><i></i></li>
+                            <li class="fitness" data-type="健身中心"><span>健身</span><i></i></li>
+                        </ul>
+                        <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
+                    </div>
+                    <ul class="result-data-expand height-type" id="shoppintListDom"></ul>
+                </div>
             </div>
             <div class="module-item">
                 <div class="report-title-type2">
                     <p>教育配套</p>
                     <span>3km内教育配套，就这样陪你长大</span>
                 </div>
+                <div class="expand-content content-visible">
+                    <div class="map-education-box">
+                        <ul class="map-message-btn clear" data-type="教育培训">
+                            <li class="parent-child" data-type="亲子教育"><i></i><span>亲子</span></li>
+                            <li class="kindergarten" data-type="幼儿园"><i></i><span>幼儿园</span></li>
+                            <li class="primary-school" data-type="小学"><i></i><span>小学</span></li>
+                            <li class="middle-school" data-type="中学"><i></i><span>中学</span></li>
+                            <li class="university" data-type="高等院校"><i></i><span>大学</span></li>
+                        </ul>
+                    </div>
+                    <ul class="result-data-expand" id="educationListDom"></ul>
+                </div>
             </div>
             <div class="module-item">
                 <div class="report-title-type2">
                     <p>医疗配套</p>
                     <span>3km内医疗配套，为您的健康保驾护航</span>
+                </div>
+                <div class="expand-content">
+                    <ul class="result-data-expand" id="hospitalListDom"></ul>
                 </div>
             </div>
         </div>
