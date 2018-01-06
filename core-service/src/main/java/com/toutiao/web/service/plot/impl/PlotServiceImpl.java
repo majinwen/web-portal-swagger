@@ -14,7 +14,6 @@ import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -340,6 +339,112 @@ public class PlotServiceImpl implements PlotService {
             }
         } catch
                 (Exception e) {
+            e.printStackTrace();
+        }
+        return houseList;
+    }
+
+    @Override
+    public List findNearByVillageByConditions(VillageRequest villageRequest) {
+        List houseList = new ArrayList();
+        try {
+            TransportClient client = esClientTools.init();
+            int pageNum = 1;
+            int pageSize = 10;
+            if (villageRequest.getPageNum() != null && villageRequest.getPageNum() > 1) {
+                pageNum = villageRequest.getPageNum();
+            }
+
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+            //从该坐标查询距离为distance
+            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(villageRequest.getLat(), villageRequest.getLon()).distance("1.6", DistanceUnit.KILOMETERS);
+            srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
+            // 获取距离多少公里 这个才是获取点与点之间的距离的
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", villageRequest.getLat(), villageRequest.getLon());
+            sort.unit(DistanceUnit.KILOMETERS);
+            sort.order(SortOrder.ASC);
+            sort.point(villageRequest.getLat(), villageRequest.getLon());
+            srb.addSort(sort);
+            SearchResponse searchResponse = srb.execute().actionGet();
+            long oneKM_size = searchResponse.getHits().getTotalHits();
+
+            if(searchResponse != null){
+                int reslocationinfo = searchResponse.getHits().getHits().length;
+                if(reslocationinfo == 10){
+                    SearchHits hits = searchResponse.getHits();
+                    SearchHit[] searchHists = hits.getHits();
+                    houseList = getPoltData(searchHists);
+                }else if(reslocationinfo < 10 && reslocationinfo>0){
+                    SearchHits hits = searchResponse.getHits();
+                    SearchHit[] searchHists = hits.getHits();
+                    houseList = getPoltData(searchHists);
+                    SearchResponse searchresponse = null;
+                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);;
+                    srb1.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                    searchresponse = srb1.setQuery(booleanQueryBuilder)
+                            .setFrom((0) * pageSize)
+                            .setSize(pageSize-hits.getHits().length)
+                            .execute().actionGet();
+                    SearchHits polthits = searchresponse.getHits();
+                    SearchHit[] poltSearchHists = polthits.getHits();
+                    houseList = getPoltData(poltSearchHists);
+                }else if(reslocationinfo == 0){
+                    long es_from = (pageNum-1)*pageSize - oneKM_size;
+                    SearchResponse searchresponse = null;
+                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);;
+                    srb1.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                    searchresponse = srb1.setQuery(booleanQueryBuilder)
+                            .setFrom(Integer.valueOf((int) es_from))
+                            .setSize(pageSize)
+                            .execute().actionGet();
+                    SearchHits polthits = searchresponse.getHits();
+                    SearchHit[] poltSearchHists = polthits.getHits();
+                    for (SearchHit hit : poltSearchHists) {
+                        houseList = getPoltData(poltSearchHists);
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return houseList;
+    }
+
+    public List getPoltData(SearchHit[] args){
+        List houseList = new ArrayList();
+        try {
+            for (SearchHit hit : args) {
+                Map<String, Object> buildings = hit.getSource();
+                Class<VillageResponse> entityClass = VillageResponse.class;
+                VillageResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                if ("商电".equals(instance.getElectricSupply())) {
+                    instance.setElectricFee("1.33");
+                } else {
+                    instance.setElectricFee("0.48");
+                }
+                if ("商水".equals(instance.getWaterSupply())) {
+                    instance.setWaterFee("6");
+                } else {
+                    instance.setWaterFee("5");
+                }
+                if ("0".equals(instance.getHeatingMode())) {
+                    instance.setHeatingMode("未知");
+                }
+                if ("1".equals(instance.getHeatingMode())) {
+                    instance.setHeatingMode("集中供暖");
+                }
+                if ("2".equals(instance.getHeatingMode())) {
+                    instance.setHeatingMode("自供暖");
+                }
+                PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                houseList.add(instance);
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
         return houseList;

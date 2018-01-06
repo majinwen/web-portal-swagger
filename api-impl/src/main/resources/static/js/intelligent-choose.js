@@ -4,18 +4,25 @@ $(function () {
         resize: false,
         onLeave: function (index, nextIndex, direction) {
             if (nextIndex == 4 && direction == 'down') {
-                console.log(joinParams(options));
+                console.log('down4')
+                rada_animit.init();
                 $.ajax({
                     type: "GET",
                     async: true,
                     url: router_city('/findhouse/showUserPortrayal'),
                     data: options,
                     success: function (dataInfo) {
-                         console.log(dataInfo.data);
-                         $("#button_report").attr("href", router_city('/findhouse/showMyReport/') + dataInfo.data);
+                         // console.log(dataInfo.data);
+                        try{
+                            rada_animit.id=dataInfo.data.id;
+                        }
+                        catch (e){
+                            console.error(e)
+                        }
+
                     },
                     error:function (XMLHttpRequest, textStatus, errorThrown){
-
+                        console.error(errorThrown)
                     }
                 })
             }
@@ -123,7 +130,7 @@ function chooseUserFinds() {
                 slideText.css('left', trackWidth + "px");
                 sildeColor.css('width', trackWidth + "px")
             }
-            slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price) + cm)
+            slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
         }
         $(document).on('touchmove', tt);
         $(document).on('touchend', function (evt) {

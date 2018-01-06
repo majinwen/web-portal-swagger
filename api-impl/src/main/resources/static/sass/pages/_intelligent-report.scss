@@ -4,10 +4,6 @@ $inteBorderBlack: #000;
 $inteColorRed: #e42929;
 $inteTextColorRed: #f25a5a;
 
-html {
-    overflow: auto;
-}
-
 .bgbox {
     position: absolute;
     top: 0;
@@ -34,6 +30,8 @@ html {
         background-size: contain;
     }
     .page-content {
+        @include font-dpr(24);
+
         .user-header-box {
             position: relative;
             width: rem(349);
@@ -137,14 +135,19 @@ html {
         color: $inteTextColorRed !important;
     }
 
+
     .page-content {
         position: relative;
         height: 100%;
-        overflow-y: auto;
+        @include font-dpr(24);
 
         .module-item {
             position: relative;
             padding: rem(70) rem(30) rem(70);
+
+            &.type2 {
+                padding-top: rem(100);
+            }
 
             &:before {
                 content: '';
@@ -204,6 +207,96 @@ html {
                 }
             }
 
+            .plot-title-box {
+                position: relative;
+                width: 100%;
+                height: rem(70);
+                margin-bottom: rem(32);
+                margin-top: rem(85);
+
+                .plot-title-block {
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    height: rem(70);
+
+                    div {
+                        float: left;
+                        width: 14.5%;
+                        height: rem(70);
+                        line-height: rem(70);
+                        text-align: center;
+                        background-color: #e0e0e0;
+                    }
+
+                    ul {
+                        display: table-row;
+                        float: right;
+                        width: 85.5%;
+                        text-align: center;
+
+                        li {
+                            position: relative;
+                            display: table-cell;
+                            width: 20%;
+                            height: rem(70);
+                            padding: rem(7);
+                            color: $baseWhite;
+                            vertical-align: middle;
+                            @include box-sizing;
+                            @include font-dpr(20);
+
+                            &:after {
+                                content: '';
+                                position: absolute;
+                                bottom: rem(-16);
+                                left: 0;
+                                width: 0;
+                                height: 0;
+                                border-left: rem(59) solid transparent;
+                                border-right: rem(59) solid transparent;
+                            }
+
+                            &:nth-child(1) {
+                                background-color: #455765;
+
+                                &:after {
+                                    border-top: rem(17) solid #455765;
+                                }
+                            }
+                            &:nth-child(2) {
+                                background-color: #f25a5a;
+
+                                &:after {
+                                    border-top: rem(17) solid #f25a5a;
+                                }
+                            }
+                            &:nth-child(3) {
+                                background-color: #fece6c;
+
+                                &:after {
+                                    border-top: rem(17) solid #fece6c;
+                                }
+                            }
+                            &:nth-child(4) {
+                                background-color: #7f7f7f;
+
+                                &:after {
+                                    border-top: rem(17) solid #7f7f7f;
+                                }
+                            }
+                            &:nth-child(5) {
+                                background-color: #4a7aa3;
+
+                                &:after {
+                                    border-top: rem(17) solid #4a7aa3;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             .report-title-type2 {
                 position: absolute;
                 top: 0;
@@ -228,8 +321,24 @@ html {
                 }
 
                 span {
+                    display: block;
                     color: #888;
                     @include font-dpr(22);
+                }
+            }
+
+            .show-echart-detail {
+                display: block;
+                width: rem(44);
+                height: rem(44);
+                margin: rem(60) auto rem(-30);
+                @include bg-image('/static/images/intelligent/show-echart-detail');
+                background-position: right center;
+                -webkit-background-size: auto 100%;
+                background-size: auto 100%;
+
+                &.down {
+                    background-position: left center;
                 }
             }
 
@@ -295,7 +404,7 @@ html {
 
             table {
                 width: 100%;
-                margin-top: rem(81);
+                margin-top: rem(50);
 
                 tr {
                     &:nth-child(even) {
@@ -330,19 +439,200 @@ html {
                     }
                 }
             }
+
+            .water-wrapper {
+                position: relative;
+                width: 100%;
+                padding-top: rem(210);
+                text-align: center;
+
+                #collieContainer {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    width: rem(502);
+                    height: rem(237);
+                    margin: 0 rem(-251);
+                    overflow: hidden;
+                    z-index: 2;
+                }
+
+                .water-bg {
+                    position: relative;
+                    width: rem(576);
+                    height: rem(532);
+                    margin: 0 auto;
+                    @include bg-image('/static/images/intelligent/report-water-bg');
+                    -webkit-background-size: contain;
+                    background-size: contain;
+                    z-index: 1;
+
+                    .water-text-item {
+                        position: absolute;
+                        top: rem(60);
+                        left: 50%;
+                        width: rem(502);
+                        height: rem(180);
+                        margin-left: rem(-251);
+                        color: $baseWhite;
+                        @include font-dpr(18);
+
+                        ul {
+                            height: rem(64);
+                            line-height: rem(64);
+
+                            li {
+                                float: left;
+                                display: block;
+
+                                &:nth-child(1) {
+                                    padding-left: 3%;
+                                    width: 29%;
+                                }
+                                &:nth-child(2) {
+                                    width: 41%;
+                                }
+                                &:nth-child(3) {
+                                    width: 27%;
+                                }
+                            }
+                        }
+
+                        .tip-text {
+                            width: 80%;
+                            padding: 1% 5%;
+                            height: 60%;
+                            margin: 0 auto;
+                            @include box-sizing;
+
+                            span {
+                                display: inline-block;
+                                margin: 2% 5%;
+
+                                &:nth-child(1) {
+                                    margin-left: 0;
+                                }
+                                &:nth-child(2) {
+                                    margin-left: 18%;
+                                    margin-right: 18%;
+                                }
+                                &:nth-child(3) {
+                                    margin-right: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .water-item {
+                    display: table;
+                    width: 100%;
+                    margin: auto;
+
+                    li {
+                        display: inline-table;
+                        width: 20%;
+                        min-height: rem(70);
+                        padding: 0 rem(13);
+                        color: $baseWhite;
+                        vertical-align: middle;
+                        @include box-sizing;
+                        @include font-dpr(22);
+
+                        p {
+                            display: table-cell;
+                            padding: rem(7);
+                            vertical-align: middle;
+                            -webkit-border-radius: rem(4);
+                            border-radius: rem(4);
+                        }
+
+                        &:nth-child(1) {
+                            p {
+                                background-color: #455765;
+                            }
+
+                        }
+                        &:nth-child(2) {
+                            p {
+                                background-color: #f25a5a;
+                            }
+
+                        }
+                        &:nth-child(3) {
+                            p {
+                                background-color: #fece6c;
+                            }
+
+                        }
+                        &:nth-child(4) {
+                            p {
+                                background-color: #7f7f7f;
+                            }
+
+                        }
+                        &:nth-child(5) {
+                            p {
+                                background-color: #4a7aa3;
+                            }
+
+                        }
+                    }
+                }
+            }
+
         }
+
+        .report-title-type3 {
+            margin-top: rem(70);
+            margin-bottom: rem(70);
+            text-align: center;
+
+            p {
+                position: relative;
+                display: inline-block;
+                height: rem(60);
+                line-height: rem(60);
+                color: #666;
+                border-top: rem(1) solid #455765;
+                border-bottom: rem(1) solid #455765;
+                @include font-dpr(24);
+
+                &:before, &:after {
+                    content: '';
+                    position: absolute;
+                    left: 50%;
+                    margin-left: rem(-11);
+                    border-left: rem(11) solid transparent;
+                    border-right: rem(11) solid transparent;
+                }
+                &:before {
+                    top: rem(-11);
+                    border-bottom: rem(11) solid #455765;
+                }
+                &:after {
+                    bottom: rem(-11);
+                    border-top: rem(11) solid #455765;
+                }
+            }
+        }
+
         .echart-box {
             width: 100%;
             height: rem(280);
             margin: rem(49) 0 rem(30);
             background-color: #fbfbfb;
 
-            #priceChart, #marketChart {
+            &.nearby {
+                height: rem(420);
+                background-color: transparent;
+            }
+
+            #priceChart, #marketChart, #shoppingChart, #educationChart, #medicalChart {
                 width: 100%;
                 height: 100%;
                 padding: rem(20) 0;
                 @include box-sizing;
-
             }
         }
 
@@ -386,6 +676,7 @@ html {
                     }
                 }
             }
+
             .echart-wrapper {
                 position: relative;
                 padding-left: rem(73);
@@ -449,11 +740,133 @@ html {
 
                     span {
                         position: absolute;
+                        top: rem(-6);
                         left: 0;
                         width: rem(50);
                         height: rem(47);
                         margin-left: rem(-25);
+                        padding-top: rem(7);
                         text-align: center;
+                        color: $baseWhite;
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                        @include font-dpr(20);
+
+                        &.type1 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q1');
+                        }
+                        &.type2 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q2');
+                        }
+                        &.type3 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q3');
+                        }
+                        &.type4 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q4');
+                        }
+                        &.type5 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q5');
+                        }
+                    }
+                }
+            }
+        }
+
+        .end-bottom {
+            color: #888;
+            text-align: center;
+
+            .end-text {
+                position: relative;
+                display: inline-block;
+                width: rem(100);
+                height: rem(30);
+                padding-top: rem(19);
+                line-height: rem(30);
+                color: $baseWhite;
+
+                &:before {
+                    content: '';
+                    position: absolute;
+                    bottom: rem(-1);
+                    left: 0;
+                    width: 0;
+                    height: 0;
+                    border-bottom: rem(49) solid #ccc;
+                    border-left: rem(50) solid transparent;
+                    border-right: rem(50) solid transparent;
+                    z-index: -1;
+                }
+            }
+
+            .end-bottom-content {
+                width: 100%;
+                height: rem(564);
+                border-top: rem(1) solid $baseBorderColor;
+                background-color: #f8f7f7;
+                @include bg-image('/static/images/intelligent/bgy_building');
+                background-position: bottom center;
+
+                .collect-tips {
+                    position: relative;
+                    width: rem(630);
+                    margin: rem(53) auto rem(42);
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        width: 100%;
+                        border-top: rem(1) solid $baseBorderColor;
+                    }
+
+                    p {
+                        position: relative;
+                        display: inline-block;
+                        padding-left: rem(38);
+                        padding-right: rem(38);
+                        background-color: #f8f7f7;
+                        @include font-dpr(26);
+
+                        &:before, &:after {
+                            content: '';
+                            position: absolute;
+                            top: 50%;
+                            width: rem(10);
+                            height: rem(10);
+                            margin-top: rem(-5);
+                            -webkit-border-radius: 50%;
+                            border-radius: 50%;
+                            border: rem(1) solid $baseBorderColor;
+                            @include box-sizing;
+                        }
+                        &:before {
+                            left: rem(2);
+                        }
+                        &:after {
+                            right: rem(2);
+                        }
+                    }
+                }
+
+                .collect-button {
+                    .collect {
+                        display: inline-block;
+                        width: rem(40);
+                        height: rem(40);
+                        @include bg-image('/static/images/intelligent/bgy_icon_sca');
+                        background-position: left center;
+                        -webkit-background-size: contain;
+                        background-size: contain;
+
+                        .active {
+                            background-position: right center;
+                        }
+                    }
+                    span {
+                        display: block;
+                        margin-top: rem(13);
                     }
                 }
             }

@@ -10,6 +10,7 @@
     <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="/static/js/modernizr.custom.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
 <header class="main-top-header gradient">
@@ -23,26 +24,26 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="swiper-container carousel-swiper" id="index-swiper">
-            <ul class="swiper-wrapper" id="house-pic-container">
+            <ul class="swiper-wrapper">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
+                    <img class="scaleImg" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xinfang/')}">
+            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
 
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/xiaoqu/')}">
+            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/esf/')}">
+            <div class="banner-nav-item index-nav-item"><a class="index-esf">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a href="${router_city('/findhouse/')}">
+            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -61,33 +62,6 @@
     </section>
 </div>
 <div class="module-bottom-fill">
-    <section class="elastics-stack-box">
-        <div class="elastics-stack-content">
-            <ul id="elastics-stack" class="elastics-stack">
-                <li class="bgtype-1">
-                    <div>
-                        <h4>2018纯新盘</h4>
-                        <p>北京全新楼盘抢先看</p>
-                    </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image1.jpg" alt="2018纯新盘">
-                </li>
-                <li class="bgtype-2">
-                    <div>
-                        <h4>海淀热门房源</h4>
-                        <p>看看大家关注哪里的房</p>
-                    </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image2.jpg" alt="海淀热门房源">
-                </a></li>
-                <li class="bgtype-3">
-                    <div>
-                        <h4>200万电梯房</h4>
-                        <p>少花钱多办事上下自由</p>
-                    </div>
-                    <img src="${staticurl}/images/index/dsy_ts_image3.jpg" alt="200万电梯房">
-                </li>
-            </ul>
-        </div>
-    </section>
     <section>
         <div class="index-module-header border-bot-none">
             <h3>精选主题</h3>
@@ -319,7 +293,6 @@
                             <#else>
                                 <em>售价待定</em>
                             </#if>
-
                         </div>
                     </div>
                 </div>
@@ -331,13 +304,10 @@
 <#include "search.ftl">
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="/static/js/draggabilly.pkgd.min.js"></script>
-<script src="/static/js/elastiStack.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
 <script>
     $('.type-tab-box').removeClass('none');
-    new ElastiStack(document.getElementById('elastics-stack'));
 </script>
 </body>
 </html>

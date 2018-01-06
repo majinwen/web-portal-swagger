@@ -81,7 +81,7 @@
 	};
 
 	ElastiStack.prototype._setStackStyle = function() {
-		var item1 = this._firstItem(), item2 = this._secondItem(), item3 = this._thirdItem();
+		var item1 = this._firstItem(), item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
 
 		if( item1 ) {
 			item1.style.opacity = 1;
@@ -92,13 +92,23 @@
 		if( item2 ) {
 			item2.style.opacity = 1;
 			item2.style.zIndex = 3;
-			setTransformStyle( item2, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)' );
+			setTransformStyle( item2, is3d ? 'translate3d(0,0,-30px)' : 'translate(0,0)' );
 		}
 
 		if( item3 ) {
 			item3.style.opacity = 1;
 			item3.style.zIndex = 2;
-			setTransformStyle( item3, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)' );
+			setTransformStyle( item3, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)' );
+		}
+		if( item4 ) {
+			item4.style.opacity = 1;
+			item4.style.zIndex = 1;
+			setTransformStyle( item4, is3d ? 'translate3d(0,0,-90px)' : 'translate(0,0)' );
+		}
+		if( item5 ) {
+			item5.style.opacity = 1;
+			item5.style.zIndex = 0;
+			setTransformStyle( item5, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)' );
 		}
 	};
 
@@ -119,17 +129,27 @@
 		instance.element.style.opacity = 0;
 
 		// other items move back to stack
-		var item2 = this._secondItem(), item3 = this._thirdItem();
+		var item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
 
 		if( item2 ) {
 			classie.add( item2, 'move-back' );
 			classie.add( item2, 'animate' );
-			setTransformStyle( item2, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)' );
+			setTransformStyle( item2, is3d ? 'translate3d(0,0,-30px)' : 'translate(0,0)' );
 		}
 		if( item3 ) {
 			classie.add( item3, 'move-back' );
 			classie.add( item3, 'animate' );
-			setTransformStyle( item3, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)' );
+			setTransformStyle( item3, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)' );
+		}
+		if( item4 ) {
+			classie.add( item4, 'move-back' );
+			classie.add( item4, 'animate' );
+			setTransformStyle( item4, is3d ? 'translate3d(0,0,-90px)' : 'translate(0,0)' );
+		}
+		if( item5 ) {
+			classie.add( item5, 'move-back' );
+			classie.add( item5, 'animate' );
+			setTransformStyle( item5, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)' );
 		}
 
 		// after transition ends..
@@ -148,12 +168,16 @@
 				// new front items
 				var item1 = self._firstItem(),
 					item2 = self._secondItem(),
-					item3 = self._thirdItem();
+					item3 = self._thirdItem(),
+					item4 = self._fourItem(),
+					item5 = self._fiveItem();
 
 				// reset transition timing function
 				classie.remove( item1, 'move-back' );
 				if( item2 ) classie.remove( item2, 'move-back' );
 				if( item3 ) classie.remove( item3, 'move-back' );
+				if( item4 ) classie.remove( item4, 'move-back' );
+				if( item5 ) classie.remove( item5, 'move-back' );
 
 				setTimeout( function() {
 					// the upcoming one will animate..
@@ -181,7 +205,7 @@
 	};
 
 	ElastiStack.prototype._moveBack = function( instance ) {
-		var item2 = this._secondItem(), item3 = this._thirdItem();
+		var item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
 
 		classie.add( instance.element, 'move-back' );
 		classie.add( instance.element, 'animate' );
@@ -192,18 +216,28 @@
 		if( item2 ) {
 			classie.add( item2, 'move-back' );
 			classie.add( item2, 'animate' );
-			setTransformStyle( item2, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)' );
+			setTransformStyle( item2, is3d ? 'translate3d(0,0,-30px)' : 'translate(0,0)' );
 		}
 		if( item3 ) {
 			classie.add( item3, 'move-back' );
 			classie.add( item3, 'animate' );
-			setTransformStyle( item3, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)' );
+			setTransformStyle( item3, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)' );
+		}
+		if( item4 ) {
+			classie.add( item4, 'move-back' );
+			classie.add( item4, 'animate' );
+			setTransformStyle( item4, is3d ? 'translate3d(0,0,-90px)' : 'translate(0,0)' );
+		}
+		if( item5 ) {
+			classie.add( item5, 'move-back' );
+			classie.add( item5, 'animate' );
+			setTransformStyle( item5, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)' );
 		}
 	};
 
 	ElastiStack.prototype._onDragStart = function( instance, event, pointer ) {
 		// remove transition classes if any
-		var item2 = this._secondItem(), item3 = this._thirdItem();
+		var item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
 
 		classie.remove( instance.element, 'move-back' );
 		classie.remove( instance.element, 'animate' );
@@ -216,6 +250,14 @@
 			classie.remove( item3, 'move-back' );
 			classie.remove( item3, 'animate' );
 		}
+		if( item4 ) {
+			classie.remove( item4, 'move-back' );
+			classie.remove( item4, 'animate' );
+		}
+		if( item5 ) {
+			classie.remove( item5, 'move-back' );
+			classie.remove( item5, 'animate' );
+		}
 	};
 
 	ElastiStack.prototype._onDragMove = function( instance, event, pointer ) {
@@ -224,12 +266,18 @@
 		}
 		else {
 			// the second and third items also move
-			var item2 = this._secondItem(), item3 = this._thirdItem();
+			var item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
 			if( item2 ) {
-				setTransformStyle( item2, is3d ? 'translate3d(' + ( instance.position.x * .6 ) + 'px,' + ( instance.position.y * .6 ) + 'px, -60px)' : 'translate(' + ( instance.position.x * .6 ) + 'px,' + ( instance.position.y * .6 ) + 'px)' );
+				setTransformStyle( item2, is3d ? 'translate3d(' + ( instance.position.x * .6 ) + 'px,' + ( instance.position.y * .6 ) + 'px, -30px)' : 'translate(' + ( instance.position.x * .6 ) + 'px,' + ( instance.position.y * .6 ) + 'px)' );
 			}
 			if( item3 ) {
-				setTransformStyle( item3, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -120px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)' );
+				setTransformStyle( item3, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -60px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)' );
+			}
+			if( item4 ) {
+				setTransformStyle( item4, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -90px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)' );
+			}
+			if( item5 ) {
+				setTransformStyle( item5, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -120px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)' );
 			}
 		}
 	};
@@ -293,6 +341,20 @@
 	ElastiStack.prototype._thirdItem = function() { 
 		if( this.itemsCount >= 3 ) {
 			return this.current + 2 < this.itemsCount ? this.items[ this.current + 2 ] : this.items[ Math.abs( this.itemsCount - ( this.current + 2 ) ) ];
+		}
+	};
+
+	// returns the four item in the stack
+	ElastiStack.prototype._fourItem = function() { 
+		if( this.itemsCount >= 4 ) {
+			return this.current + 3 < this.itemsCount ? this.items[ this.current + 3 ] : this.items[ Math.abs( this.itemsCount - ( this.current + 3 ) ) ];
+		}
+	};
+
+	// returns the five item in the stack
+	ElastiStack.prototype._fiveItem = function() { 
+		if( this.itemsCount >= 5 ) {
+			return this.current + 4 < this.itemsCount ? this.items[ this.current + 4 ] : this.items[ Math.abs( this.itemsCount - ( this.current + 4 ) ) ];
 		}
 	};
 

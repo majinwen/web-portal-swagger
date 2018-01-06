@@ -6,6 +6,8 @@
 var uu = $('#url');
 var BaseUrl=uu.val();
 $(function () {
+    scaleImg();             // 大首页图片拖拽
+
     describeAllShow();      // 描述展示全部
 
     detailContactState();   // 分享，收藏，咨询展示状态
@@ -23,14 +25,45 @@ $(function () {
     moduleExpand();         // 小区详情模块状态
 
     marketsState();         // 小区市场详情切换
+
+    showfujian();           //获取用户地理位置
 });
+
+function scaleImg() {
+    var idWidth = $('.scaleImg').width();
+    var idHeight = $('.scaleImg').height();
+    $(document).on('touchstart', function (evt) {
+        console.log(1);
+        var oldY = evt.originalEvent.targetTouches[0].pageY;
+        $(document).on('touchmove', function (evt) {
+            var newY = evt.originalEvent.targetTouches[0].pageY;
+            if (newY <= oldY) {
+                return
+            }
+            var Y = newY - oldY;
+            var base = Y / 1000 + 1;
+            $('.scaleImg').css({
+                'width': idWidth * base,
+                'height': idHeight * base,
+                'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
+            });
+        });
+    });
+    $(document).on('touchend', function (evt) {
+        $('.scaleImg').animate({
+            "width": idWidth,
+            "height": idHeight,
+            'margin-left': 0
+        },100);
+    });
+}
 
 function describeAllShow() {
     if ($('.describe-cont').length) {
         $('.describe-cont p').each(function () {
-           $(this).data("orig_desc",$(this).text());
-            $(this).text($(this).text().substr(0,56));
-            var p=$(this)
+            $(this).data("orig_desc", $(this).text());
+            $(this).text($(this).text().substr(0, 50));
+            var p = $(this);
 
             $(this).siblings('span.describe-show-btn').click(function () {
                 $(this).hide();
@@ -217,3 +250,48 @@ function router_city(urlparam) {
     }
     return city+urlparam
 };
+
+
+/**
+ * 获取当前用户坐标
+ *
+ */
+function showfujian() {
+    var executed = false;
+
+    $(".index-esf").click(function () {
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                executed = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                    location.href = router_city('/esf')+"?lat="+lat+"&lon="+lon;
+                });
+            }
+            else {
+            }
+        });
+    })
+    $(".index-xiaoqu").click(function () {
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                executed = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                    location.href = router_city('/xiaoqu')+"?lat="+lat+"&lon="+lon;
+                });
+            }
+            else {
+            }
+        });
+    })
+
+}

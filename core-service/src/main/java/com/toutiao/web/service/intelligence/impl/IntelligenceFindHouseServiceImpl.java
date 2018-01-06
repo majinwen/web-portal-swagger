@@ -10,11 +10,13 @@ import com.toutiao.web.dao.entity.officeweb.*;
 import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.dao.entity.robot.SubwayDistance;
 import com.toutiao.web.dao.mapper.officeweb.*;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
+import com.toutiao.web.service.map.MapService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -25,6 +27,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +64,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     private PriceTrendMapper priceTrendMapper;
     @Autowired
     private IntelligenceFhResMapper intelligenceFhResMapper;
+    @Autowired
+    private MapService mapService;
 
     @Override
     public IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
@@ -274,56 +279,56 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     @Override
-    public Integer intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
+    public IntelligenceFhRes intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
 
         //初始化数据
         IntelligenceQuery intelligenceQuery = init(IntelligenceQuery);
 
         //搜索量前200
-         List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
+        List<IntelligenceFindhouse> starPropertyList = intelligenceFindhouseMapper.queryByStarProperty(intelligenceQuery);
 
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1A(list);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1B(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1C(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2A(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2B(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2C(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend3A(list);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         return null;
     }
@@ -336,7 +341,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2018/1/3 15:46
      */
-    public Integer save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList) {
+    public IntelligenceFhRes save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList) {
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
@@ -364,11 +369,35 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     intelligence.setCarSellPrice(bigDecimal);
                 }
             }
-
+            //查询地图信息
+            for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
+                MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
+                JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+                if (null!=mapInfo.getTypeCount()){
+                    JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
+                    intelligenceFindhouse.setTypeCount(typeCount);
+                }
+                intelligenceFindhouse.setDataInfo(datainfo);
+            }
+            if (null != intelligenceFhRes.getDistrictId()) {
+                String[] districtId = intelligenceFhRes.getDistrictId().split(",");
+                String district = "";
+                for (int i = 0; i < districtId.length; i++) {
+                    if (null != DistrictMap.getDistrict(districtId[i])) {
+                        if (i > 0) {
+                            district += "," + DistrictMap.getDistrict(districtId[i]);
+                        } else {
+                            district += DistrictMap.getDistrict(districtId[i]);
+                        }
+                    }
+                }
+                intelligenceFhRes.setDistrictId(district);
+            }
             String jsonString = JSONArray.toJSONString(finalList);
             intelligenceFhRes.setFhResult(jsonString);
             intelligenceFhResMapper.saveData(intelligenceFhRes);
-            return intelligenceFhRes.getId();
+
+            return intelligenceFhRes;
         }
         return null;
     }

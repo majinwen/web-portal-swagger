@@ -331,6 +331,8 @@ function joinParams(req, noPageFlag) {
 
     if (noPageFlag) {
         req['pageNum'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
 
     for (var key in req) {
@@ -470,6 +472,8 @@ function submitPlace(e) {
     req['districtId'] = null;
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, '区域');
@@ -489,6 +493,8 @@ function submitDirstrict(districtid, e) {
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
         req['areaId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['districtId'] = districtid;
     var params = joinParams(req);
@@ -510,6 +516,8 @@ function submitBussiness(districtid, areaId, e) {
         req['pageNum'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['districtId'] = districtid;
     req['areaId'] = areaId;
@@ -566,6 +574,9 @@ function submitSubway(e) {
     req['areaId'] = null;
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
+
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, '地铁');
@@ -620,6 +631,8 @@ function submitSubwayLine(subwayid, e) {
         req['districtId'] = null;
         req['areaId'] = null;
         req['subwayStationId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['subwayLineId'] = subwayid;
     params = joinParams(req);
@@ -638,6 +651,8 @@ function submitStation(subwayid, subwayStationId, e) {
         req['pageNum'] = null;
         req['districtId'] = null;
         req['areaId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['subwayLineId']=subwayid;
     req['subwayStationId']=subwayStationId;
@@ -663,8 +678,12 @@ $('.price-list').on('click', 'li', function (e) {
     } else if (beginPrice == '' || endPrice == '') {
         req['beginPrice']= null;
         req['endPrice']= null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['pageNum'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, $(this).text());
@@ -683,8 +702,12 @@ $('.age-list').on('click', 'li', function (e) {
         req['age'] = ageNumber;
     } else if (ageNumber == '') {
         req['age'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['pageNum'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, $(this).text());
@@ -719,6 +742,8 @@ $('#typeSubmit').on('click', function (e) {
         tabTextReplace(e, layoutText);
         req['pageNum'] = null;
         req['layoutId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
         params = joinParams(req);
         url = _localHref + params;
         $.get(url, function () {
@@ -737,6 +762,8 @@ $('#typeSubmit').on('click', function (e) {
         tabTextReplace(e, layoutText);
     }
     req['pageNum'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
     req['layoutId'] = layoutTextArr.join(',');
     params = joinParams(req);
     url = _localHref + params;
@@ -772,6 +799,8 @@ $('#moreSubmit').on('click', function (e) {
             req[dataType]= arr.join().toString();
         }else {
             req[dataType] = null;
+            req['lat'] = null;
+            req['lon'] = null;
         }
     });
 
@@ -782,6 +811,8 @@ $('#moreSubmit').on('click', function (e) {
         $('#category-tab').find('li[data-mark="tab-more"]').removeClass('choose');
     }
     req['pageNum'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
     $.get(url, function () {
@@ -806,6 +837,8 @@ $('#moreReset').on('click', function () {
     req['houseYearId'] = null;
     req['buildingTypeId'] = null;
     req['ownership'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
 });
 
 /**
@@ -933,7 +966,7 @@ function pullUpAction() {
                                 var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                 var _key = dataCon[i]['key'];
                                 if (_subwayObj && _key) {
-                                    var _subwayArray = _subwayObj[_key];
+                                    var _subwayArray = _subwayObj[_key].split('$');
                                     if (_subwayArray.length > 2) {
                                         var _subwayDesc;
 
