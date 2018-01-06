@@ -12,7 +12,7 @@ public class MapServiceImpl implements MapService {
     @Autowired
     private MapInfoMapper mapInfoMapper;
    @Override
-    public MapInfo getMapInfo(String newcode){
+    public MapInfo getMapInfo(Integer newcode){
 
         MapInfo mapInfo= null;
         try {

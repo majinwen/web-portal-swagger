@@ -68,8 +68,8 @@
       data_info = #{dataInfo,jdbcType=OTHER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!--  MapInfo selectByNewCode(String newcode);-->
-  <select id="selectByNewCode">
-      select * from map_info where newcode=#{newcode}
+  <!--  MapInfo selectByNewCode(Integer newcode);-->
+  <select id="selectByNewCode" resultType="com.toutiao.web.dao.entity.officeweb.MapInfo">
+      select id, newcode, data_info as dataInfo from map_info where newcode=#{newcode}
   </select>
 </mapper>

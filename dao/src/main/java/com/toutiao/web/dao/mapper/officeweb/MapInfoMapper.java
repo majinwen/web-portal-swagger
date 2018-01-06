@@ -15,5 +15,5 @@ public interface MapInfoMapper extends BaseDao {
 
     int updateByPrimaryKey(MapInfo record);
 
-    MapInfo selectByNewCode(String newcode);
+    MapInfo selectByNewCode(Integer newcode);
 }

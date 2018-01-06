@@ -273,8 +273,8 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                    <p id="busStation">暂无数据</p>
-                    <span id="busStationNumber">暂无数据</span>
+                        <p id="busStation"></p>
+                        <span id="busStationNumber"></span>
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>

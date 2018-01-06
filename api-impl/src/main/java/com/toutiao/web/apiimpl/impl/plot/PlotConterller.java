@@ -2,11 +2,13 @@ package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.PriceTrendService;
+import com.toutiao.web.service.map.MapService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
@@ -30,6 +32,8 @@ public class PlotConterller {
     private ProjHouseInfoService projHouseInfoService;
     @Autowired
     private PriceTrendService priceTrendService;
+    @Autowired
+    private MapService mapService;
 
 //    //(查询附近小区和(距离))
 //    @RequestMapping("/fingNearVillageAndDistance")
@@ -118,6 +122,9 @@ public class PlotConterller {
             Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
             List<Object> newbuildrecomed = (List<Object>) builds.get("data");
             model.addAttribute("newbuilds", newbuildrecomed);
+            //查询地图信息
+            MapInfo mapInfo = mapService.getMapInfo(villageRequest.getId());
+            model.addAttribute("mapInfo", mapInfo);
             return "plot/plot-detail";
         }
         return "404";
