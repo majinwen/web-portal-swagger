@@ -95,7 +95,7 @@ $(function () {
                     //     return a.detail_info.distance-b.detail_info.distance;
                     // });
                     // var arr = array.slice(0,20);
-                    console.log(arr)
+                    // console.log(arr)
                     arr[0].address = arr[0].address || ""
                     var subwayLine = (arr[0].address).split(';')[0].substring(2);
                     var subwayDistance = (((arr[0].detail_info.distance).toFixed(0))/100/10).toFixed(1) + 'km';

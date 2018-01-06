@@ -157,14 +157,14 @@
         newcode,n_or_e,projname,finishdate,virescencerate,lift_door_radio,propertyfee,heating_mode,water_supply,electric_supply,
         car_rent_price, car_sell_price,newh_range_s,newh_range_e,village_range_s,village_range_e,price,
         esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter
-        <!--,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway-->
+        ,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway
     </sql>
 
     <sql id="queryInfo">
         <where>
             1=1
             <if test="minTotalPrice != null and maxTotalPrice!=null">
-                AND <![CDATA[ min_total_price>=${minTotalPrice} AND max_total_price<=${maxTotalPrice} ]]>
+                AND <![CDATA[ ${minTotalPrice}<=max_total_price AND ${maxTotalPrice}>=min_total_price ]]>
             </if>
             <if test="layOut != null">
                 AND <![CDATA[  layout_range @> '{${layOut}}' ]]>
