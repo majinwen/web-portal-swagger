@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
     <title>智能找房 预见所想</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
+    <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
 </head>
 <body>
 <div id="superContainer">
