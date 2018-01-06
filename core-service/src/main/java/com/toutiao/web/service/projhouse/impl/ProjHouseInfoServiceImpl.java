@@ -1,40 +1,32 @@
 package com.toutiao.web.service.projhouse.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.admin.ProjHouseInfo;
-import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
-import com.toutiao.web.dao.sources.beijing.*;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.poi.ss.formula.functions.Now;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
@@ -337,6 +329,93 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List queryNearByProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
+        List houseList = new ArrayList();
+        try {
+            TransportClient client = esClientTools.init();
+            int pageNum = 1;
+            int pageSize = 10;
+            if (projHouseInfoRequest.getPageNum() != null && projHouseInfoRequest.getPageNum() > 1) {
+                pageNum = projHouseInfoRequest.getPageNum();
+            }
+
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            //从该坐标查询距离为distance
+            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance("1.6", DistanceUnit.KILOMETERS);
+            srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
+            // 获取距离多少公里 这个才是获取点与点之间的距离的
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+            sort.unit(DistanceUnit.KILOMETERS);
+            sort.order(SortOrder.ASC);
+            sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+            srb.addSort(sort);
+            SearchResponse searchResponse = srb.execute().actionGet();
+            long oneKM_size = searchResponse.getHits().getTotalHits();
+
+            if(searchResponse != null){
+                int reslocationinfo = searchResponse.getHits().getHits().length;
+                if(reslocationinfo == 10){
+                    SearchHits hits = searchResponse.getHits();
+                    SearchHit[] searchHists = hits.getHits();
+                    houseList = getEsfData(searchHists);
+                }else if(reslocationinfo < 10 && reslocationinfo>0){
+                    SearchHits hits = searchResponse.getHits();
+                    SearchHit[] searchHists = hits.getHits();
+                    houseList = getEsfData(searchHists);
+                    SearchResponse searchresponse = null;
+                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                    SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                    booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+                    searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
+                            .setFrom((0) * pageSize)
+                            .setSize(pageSize-hits.getHits().length)
+                            .execute().actionGet();
+                    SearchHits esfhits = searchresponse.getHits();
+                    SearchHit[] esfsearchHists = esfhits.getHits();
+                    houseList = getEsfData(esfsearchHists);
+                }else if(reslocationinfo == 0){
+                    long es_from = (pageNum-1)*pageSize - oneKM_size;
+                    SearchResponse searchresponse = null;
+                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                    SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                    booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+                    searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
+                            .setFrom(Integer.valueOf((int) es_from))
+                            .setSize(pageSize)
+                            .execute().actionGet();
+                    SearchHits esfhits = searchresponse.getHits();
+                    SearchHit[] esfsearchHists = esfhits.getHits();
+                    houseList = getEsfData(esfsearchHists);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return houseList;
+    }
+
+    public List getEsfData(SearchHit[] args){
+        List houseList = new ArrayList();
+        try {
+            for (SearchHit hit : args) {
+                Map<String, Object> buildings = hit.getSource();
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                    //小区坐标
+                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                }
+                houseList.add(instance);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return houseList;
     }
 
     /**

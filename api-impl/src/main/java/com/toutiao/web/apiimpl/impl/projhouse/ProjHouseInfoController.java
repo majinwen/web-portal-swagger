@@ -2,33 +2,24 @@ package com.toutiao.web.apiimpl.impl.projhouse;
 
 
 import com.toutiao.web.common.restmodel.NashResult;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.util.DateUtil;
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.RegexUtils;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.dao.entity.officeweb.PriceTrend;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 二手房管理
@@ -119,8 +110,12 @@ public class ProjHouseInfoController {
     @RequestMapping(value = {""},produces="application/json")
     @ResponseBody
     public NashResult esfHousePageSearch(ProjHouseInfoQuery projHouseInfoQuery) {
-
-        List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        List builds = new ArrayList();
+        if(projHouseInfoQuery.getLat() != 0 && projHouseInfoQuery.getLon() != 0){
+            builds = projHouseInfoService.queryNearByProjHouseInfo(projHouseInfoQuery);
+        }else{
+            builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        }
 
         return NashResult.build(builds);
 
@@ -136,7 +131,12 @@ public class ProjHouseInfoController {
      */
     @RequestMapping("") //
     public String searchProjHouseInfo(ProjHouseInfoQuery projHouseInfoQuery, Model model) {
-        List builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        List builds = new ArrayList();
+        if(projHouseInfoQuery.getLat() != 0 && projHouseInfoQuery.getLon() != 0){
+            builds = projHouseInfoService.queryNearByProjHouseInfo(projHouseInfoQuery);
+        }else{
+            builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+        }
 
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {
             model.addAttribute("builds", builds);

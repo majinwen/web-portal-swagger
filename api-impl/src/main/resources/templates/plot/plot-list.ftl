@@ -9,6 +9,7 @@
     <title>头条房产看二手房小区</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>

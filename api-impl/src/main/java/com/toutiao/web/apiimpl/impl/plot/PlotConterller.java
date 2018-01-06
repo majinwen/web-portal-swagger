@@ -1,7 +1,6 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -52,7 +51,11 @@ public class PlotConterller {
             model.addAttribute("sort", 0);
         }
         List villageList = null;
-        villageList = plotService.findVillageByConditions(villageRequest);
+        if(villageRequest.getLat() != 0 && villageRequest.getLon() != 0){
+            villageList = plotService.findNearByVillageByConditions(villageRequest);
+        }else{
+            villageList = plotService.findVillageByConditions(villageRequest);
+        }
         model.addAttribute("villageList", villageList);
 //        model.addAttribute("searchType", "plot");
         return "plot/plot-list";
@@ -64,7 +67,11 @@ public class PlotConterller {
     @ResponseBody
     public NashResult villagePage(VillageRequest villageRequest) {
         List<VillageResponse> villageList = null;
-        villageList = plotService.findVillageByConditions(villageRequest);
+        if(villageRequest.getLat() != 0 && villageRequest.getLon() != 0){
+            villageList = plotService.findNearByVillageByConditions(villageRequest);
+        }else{
+            villageList = plotService.findVillageByConditions(villageRequest);
+        }
         if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
             for (VillageResponse polt : villageList){
                 String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
