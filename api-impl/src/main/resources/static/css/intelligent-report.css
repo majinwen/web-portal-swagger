@@ -370,6 +370,30 @@ html {
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .page2 .page-content .module-item .report-title-type1 p:after {
               background-image: url("/static/images/intelligent/bgy_ys_r@3x.png"); } }
+    .page2 .page-content .module-item .plot-title-box {
+      position: relative;
+      width: 100%;
+      height: 0.9333333333rem; }
+      .page2 .page-content .module-item .plot-title-box .plot-title-block {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 0.9333333333rem; }
+        .page2 .page-content .module-item .plot-title-box .plot-title-block div {
+          float: left;
+          width: 1.3333333333rem;
+          height: 0.9333333333rem;
+          line-height: 0.9333333333rem; }
+        .page2 .page-content .module-item .plot-title-box .plot-title-block ul {
+          display: table-row;
+          float: right;
+          width: 7.8666666667rem;
+          text-align: center; }
+          .page2 .page-content .module-item .plot-title-box .plot-title-block ul li {
+            display: table-cell;
+            width: 20%;
+            padding: 0.0933333333rem 0;
+            vertical-align: middle; }
     .page2 .page-content .module-item .report-title-type2 {
       position: absolute;
       top: 0;
