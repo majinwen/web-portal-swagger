@@ -262,6 +262,7 @@
         </div>
     </section>
 </div>
+
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -273,14 +274,14 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                        <p id="busStation"></p>
-                        <span id="busStationNumber"></span>
+                        <p id="busStation"><#if datainfo["gongjiao"]["name"]?exists>${datainfo["gongjiao"]["name"]}<#else >暂无数据</#if></p>
+                        <span id="busStationNumber"><#if datainfo["gongjiao"]["lines"]?exists>${datainfo["gongjiao"]["lines"]}条线路<#else >暂无数据</#if></span>
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
-                    <p id="subwayLine">暂无数据</p>
-                    <span id="subwayDistance">暂无数据</span>
+                    <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
+                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>${datainfo["ditie"]["line"]}<#else >暂无数据</#if></span>
                 </div>
             </#if>
                 <div class="info-card-item">
@@ -311,17 +312,61 @@
         <div class="module-header-message">
             <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
         </div>
-        <div class="expand-content content-visible">
+        <div class="expand-content content-visible tab_jiaoyupeixun_info">
             <div class="map-education-box">
                 <ul class="map-message-btn clear" data-type="教育培训">
-                    <li class="parent-child" data-type="亲子教育"><i></i><span>亲子</span></li>
-                    <li class="kindergarten" data-type="幼儿园"><i></i><span>幼儿园</span></li>
-                    <li class="primary-school" data-type="小学"><i></i><span>小学</span></li>
-                    <li class="middle-school" data-type="中学"><i></i><span>中学</span></li>
-                    <li class="university" data-type="高等院校"><i></i><span>大学</span></li>
+                    <li class="parent-child" data-type="qinzi"><i></i><span>亲子</span></li>
+                    <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
+                    <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
+                    <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
+                    <li class="university" data-type="gaodeng"><i></i><span>大学</span></li>
                 </ul>
             </div>
-            <ul class="result-data-expand" id="educationListDom"></ul>
+            <ul class="result-data-expand" id="qinzi">
+                <#assign qinzi=datainfo['jiaoyu']['qinzi'] />
+                <#list qinzi as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand none" id="youeryuan">
+                <#assign youeryuan=datainfo['jiaoyu']['youeryuan'] />
+                <#list youeryuan as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand none" id="xiaoxue">
+                <#assign xiaoxue=datainfo['jiaoyu']['xiaoxue'] />
+                <#list xiaoxue as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand none" id="zhongxue">
+                <#assign zhongxue=datainfo['jiaoyu']['zhongxue'] />
+                <#list zhongxue as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand none" id="gaodeng">
+                <#assign gaodeng=datainfo['jiaoyu']['gaodeng'] />
+                <#list gaodeng as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
         </div>
     </section>
 </div>
@@ -330,18 +375,162 @@
         <div class="module-header-message">
             <h3>休闲购物</h3>
         </div>
-        <div class="expand-content content-visible">
+        <div class="expand-content content-visible tab_xiuxiangouwu_click">
             <div class="map-shopping-box">
                 <ul class="map-message-btn" data-type="休闲购物">
-                    <li class="vegetable-market" data-type="菜市场"><span>菜市场</span><i></i></li>
-                    <li class="supermarket" data-type="超市"><span>超市</span><i></i></li>
-                    <li class="shopping-mall" data-type="商场"><span>商场</span><i></i></li>
-                    <li class="dining-room" data-type="餐厅"><span>餐厅</span><i></i></li>
-                    <li class="fitness" data-type="健身中心"><span>健身</span><i></i></li>
+                    <li class="vegetable-market" data-type="caishichang"><span>菜市场</span><i></i></li>
+                    <li class="supermarket" data-type="chaoshi"><span>超市</span><i></i></li>
+                    <li class="shopping-mall" data-type="shangchang"><span>商场</span><i></i></li>
+                    <li class="dining-room" data-type="canting"><span>餐厅</span><i></i></li>
+                    <li class="fitness" data-type="jianshenzhongxin"><span>健身</span><i></i></li>
                 </ul>
                 <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
             </div>
-            <ul class="result-data-expand height-type" id="shoppintListDom"></ul>
+            <ul class="result-data-expand height-type" id="caishichang">
+                <#assign caishichang=datainfo["xiuxian"]["caishichang"]/>
+                <#list caishichang as item>
+                    <li>
+                        <p>
+                            <i class="expand-icon expand-radius">${item_index+1}</i>
+                            <span class="expand-name">
+                                <em>${item.name}</em>
+                                <em class="star-box">
+                                    <#if item.star?exists&& (item.star??)>
+                                        <#assign star=item.star?number/>
+                                            <#if star gt 0>
+                                                    <#list 1..5 as i>
+                                                        <#if star gt i>
+                                                            <i class="red-star"></i>
+                                                        <#else >
+                                                            <i class="star-icon"></i>
+                                                        </#if>
+                                                    </#list>
+                                                <#else>
+                                            </#if>
+                                    </#if>
+                                </em>
+                            </span>
+                        </p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand height-type none" id="chaoshi">
+                <#assign chaoshi=datainfo["xiuxian"]["chaoshi"]/>
+                <#list chaoshi as item>
+                    <li>
+                        <p>
+                            <i class="expand-icon expand-radius">${item_index+1}</i>
+                            <span class="expand-name">
+                                <em>${item.name}</em>
+                                <em class="star-box">
+                                    <#if item.star?exists&& (item.star??)>
+                                        <#assign star=item.star?number/>
+                                        <#if star gt 0>
+                                            <#list 1..5 as i>
+                                                <#if star gt i>
+                                                    <i class="red-star"></i>
+                                                <#else >
+                                                    <i class="star-icon"></i>
+                                                </#if>
+                                            </#list>
+                                        <#else>
+                                        </#if>
+                                    </#if>
+                                </em>
+                            </span>
+                        </p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand height-type none" id="shangchang">
+                <#assign shangchang=datainfo["xiuxian"]["shangchang"]/>
+                <#list shangchang as item>
+                    <li>
+                        <p>
+                            <i class="expand-icon expand-radius">${item_index+1}</i>
+                            <span class="expand-name">
+                                <em>${item.name}</em>
+                                <em class="star-box">
+                                    <#if item.star?exists&& (item.star??)>
+                                        <#assign star=item.star?number/>
+                                        <#if star gt 0>
+                                            <#list 1..5 as i>
+                                                <#if star gt i>
+                                                    <i class="red-star"></i>
+                                                <#else >
+                                                    <i class="star-icon"></i>
+                                                </#if>
+                                            </#list>
+                                        <#else>
+                                        </#if>
+                                    </#if>
+                                </em>
+                            </span>
+                        </p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand height-type none" id="canting">
+                <#assign canting=datainfo["xiuxian"]["canting"]/>
+                <#list canting as item>
+                    <li>
+                        <p>
+                            <i class="expand-icon expand-radius">${item_index+1}</i>
+                            <span class="expand-name">
+                                <em>${item.name}</em>
+                                <em class="star-box">
+                                    <#if item.star?exists&& (item.star??)>
+                                        <#assign star=item.star?number/>
+                                        <#if star gt 0>
+                                            <#list 1..5 as i>
+                                                <#if star gt i>
+                                                    <i class="red-star"></i>
+                                                <#else >
+                                                    <i class="star-icon"></i>
+                                                </#if>
+                                            </#list>
+                                        <#else>
+                                        </#if>
+                                    </#if>
+                                </em>
+                            </span>
+                        </p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
+            <ul class="result-data-expand height-type none" id="jianshenzhongxin">
+                <#assign jianshenzhongxin=datainfo["xiuxian"]["jianshenzhongxin"]/>
+                <#list jianshenzhongxin as item>
+                    <li>
+                        <p>
+                            <i class="expand-icon expand-radius">${item_index+1}</i>
+                            <span class="expand-name">
+                                <em>${item.name}</em>
+                                <em class="star-box">
+                                    <#if item.star?exists&& (item.star??)>
+                                        <#assign star=item.star?number/>
+                                        <#if star gt 0>
+                                            <#list 1..5 as i>
+                                                <#if star gt i>
+                                                    <i class="red-star"></i>
+                                                <#else >
+                                                    <i class="star-icon"></i>
+                                                </#if>
+                                            </#list>
+                                        <#else>
+                                        </#if>
+                                    </#if>
+                                </em>
+                            </span>
+                        </p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
         </div>
     </section>
 </div>
@@ -352,7 +541,15 @@
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <ul class="result-data-expand" id="hospitalListDom"></ul>
+            <#assign yiliao=datainfo['yiliao'] />
+            <ul class="result-data-expand" id="hospitalListDom">
+                <#list yiliao as item>
+                    <li>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+            </ul>
         </div>
     </section>
 </div>
@@ -521,7 +718,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/main.js"></script>
-<#--<script src="${staticurl}/js/plot-detail-map-message.js"></script>-->
+<script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
     <#if  (mouthList?size>0)>
     var myChartline = echarts.init(document.getElementById('village-price-trade'));
@@ -662,10 +859,9 @@
             _divContent = _divContent.substring(1);
             $('#base-info').html(_divContent);
         }
-        $('.map-message-btn').find('li.parent-child').addClass('current');
-        $('.map-message-btn').find('li.vegetable-market').addClass('current');
-
     });
+
+
 </script>
 </body>
 </html>

@@ -5,9 +5,10 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="newcode" property="newcode" jdbcType="INTEGER" />
     <result column="data_info" property="dataInfo" jdbcType="OTHER" />
+    <result column="type_count" property="typeCount" jdbcType="OTHER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, newcode, data_info
+    id, newcode, data_info,type_count
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -20,9 +21,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.MapInfo" >
-    insert into map_info (id, newcode, data_info
+    insert into map_info (id, newcode, data_info,type_count
       )
-    values (#{id,jdbcType=INTEGER}, #{newcode,jdbcType=INTEGER}, #{dataInfo,jdbcType=OTHER}
+    values (#{id,jdbcType=INTEGER}, #{newcode,jdbcType=INTEGER}, #{dataInfo,jdbcType=OTHER}, #{typeCount,jdbcType=OTHER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.MapInfo" >
@@ -37,6 +38,9 @@
       <if test="dataInfo != null" >
         data_info,
       </if>
+      <if test="typeCount != null" >
+        type_count,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -47,6 +51,9 @@
       </if>
       <if test="dataInfo != null" >
         #{dataInfo,jdbcType=OTHER},
+      </if>
+      <if test="typeCount != null" >
+        #{typeCount,jdbcType=OTHER},
       </if>
     </trim>
   </insert>
@@ -59,6 +66,9 @@
       <if test="dataInfo != null" >
         data_info = #{dataInfo,jdbcType=OTHER},
       </if>
+      <if test="dataInfo != null" >
+        type_count = #{typeCount,jdbcType=OTHER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -70,6 +80,6 @@
   </update>
   <!--  MapInfo selectByNewCode(Integer newcode);-->
   <select id="selectByNewCode" resultType="com.toutiao.web.dao.entity.officeweb.MapInfo">
-      select id, newcode, data_info as dataInfo from map_info where newcode=#{newcode}
+      select id, newcode, data_info as dataInfo,type_count as typeCount from map_info where newcode=#{newcode}
   </select>
 </mapper>
