@@ -1,5 +1,7 @@
 package com.toutiao.web.apiimpl.impl.plot;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
@@ -12,6 +14,7 @@ import com.toutiao.web.service.map.MapService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,7 +135,9 @@ public class PlotConterller {
             model.addAttribute("newbuilds", newbuildrecomed);
             //查询地图信息
             MapInfo mapInfo = mapService.getMapInfo(villageRequest.getId());
+            JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             model.addAttribute("mapInfo", mapInfo);
+            model.addAttribute("datainfo",datainfo);
             return "plot/plot-detail";
         }
         return "404";

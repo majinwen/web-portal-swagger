@@ -19,4 +19,6 @@ public class MapInfo {
      */
     private Object dataInfo;
 
+    private Object typeCount;
+
 }
