@@ -204,6 +204,40 @@ html {
                 }
             }
 
+            .plot-title-box {
+                position: relative;
+                width: 100%;
+                height: rem(70);
+
+                .plot-title-block {
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    height: rem(70);
+
+                    div {
+                        float: left;
+                        width: rem(100);
+                        height: rem(70);
+                        line-height: rem(70);
+                    }
+
+                    ul {
+                        display: table-row;
+                        float: right;
+                        width: rem(590);
+                        text-align: center;
+
+                        li {
+                            display: table-cell;
+                            width: 20%;
+                            padding: rem(7) 0;
+                            vertical-align: middle;
+                        }
+                    }
+                }
+            }
+
             .report-title-type2 {
                 position: absolute;
                 top: 0;
