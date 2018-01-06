@@ -269,14 +269,12 @@
     </div>
     <div class="section page4">
         <div class="bgbox bg4">
-            <div class="page-content">
-                <div class="text-content">
-                    <p>数据多</p>
-                    <p>房源多</p>
-                    <p>用户样本多</p>
-                    <p>处理速度快</p>
-                    <p>技术</p>
-                    <p>技术</p>
+            <div class="page-content" style="padding-top: 0px">
+                <div id="collieContainer">
+
+                </div>
+                <div id="time">
+                    <span id="h"></span>:<span id="m"></span>:<span id="s"></span> <span id="ampm"></span> · <span id="d"></span>/<span id="mnth"></span>
                 </div>
                 <a id="button_report" href="${router_city('/findhouse/showUserPortrayal')}" class="button">打开报告</a>
             </div>
@@ -285,5 +283,84 @@
 </div>
 <script src="${staticurl}/js/URI.min.js"></script>
 <script src="${staticurl}/js/intelligent-choose.js"></script>
+<script src="${staticurl}/js/collie.min.js"></script>
+<script src="${staticurl}/js/raphael.min.js"></script>
+<script type="text/javascript">
+    console.log("document",$(document).height())
+    var guoduye={
+        up:100,
+        bottom:100,
+
+        init:function () {
+            var width=$(document).width();
+            var height=$(document).height()-this.up-this.bottom
+            var r = Raphael("collieContainer", width, height),
+                    R = 200,
+                    init = true,
+                    param = {stroke: "#fff", "stroke-width": 40}
+
+            // Custom Attribute
+            r.customAttributes.arc = function (value, total, R) {
+                var alpha = 360 / total * value,
+                        a = (90 - alpha) * Math.PI / 180,
+                        x = 300 + R * Math.cos(a),
+                        y = 300 - R * Math.sin(a),
+                        color = "hsb(".concat(Math.round(R) / 200, ",", value / total, ", .75)"),
+                        path;
+                if (total == value) {
+                    path = [["M", 300, 300 - R], ["A", R, R, 0, 1, 1, 299.99, 300 - R]];
+                } else {
+                    path = [["M", 300, 300 - R], ["A", R, R, 0, +(alpha > 180), 1, x, y]];
+                }
+                return {path: path, stroke: color};
+            };
+
+
+            var mon = r.path().attr(param).attr({arc: [0, 60, R]});
+            var pm = r.circle(300, 300, 30).attr({stroke: "#000","stroke-width": 10, fill: Raphael.hsb2rgb(15 / 200, 1, .75).hex});
+
+            function updateVal(value, total, R, hand, id) {
+                if (total == 31) { // month
+                    var d = new Date;
+                    d.setDate(1);
+                    d.setMonth(d.getMonth() + 1);
+                    d.setDate(-1);
+                    total = d.getDate();
+                }
+                var color = "hsb(".concat(Math.round(R) / 200, ",", value / total, ", .75)");
+                if (init) {
+                    hand.animate({arc: [value, total, R]}, 900, ">");
+                } else {
+                    if (!value || value == total) {
+                        value = total;
+                        hand.animate({arc: [value, total, R]}, 750, "bounce", function () {
+                            hand.attr({arc: [0, total, R]});
+                        });
+                    } else {
+                        hand.animate({arc: [value, total, R]}, 750, "elastic");
+                    }
+                }
+
+            }
+            function zhuan() {
+                mon.animate({transform:"r10"}, 750, "elastic")
+            }
+
+
+            (function () {
+                var d = new Date,
+                        h = d.getSeconds();
+
+                updateVal(h , 60, 40, mon, 4);
+                zhuan();
+                setTimeout(arguments.callee, 1000);
+                init = false;
+            })();
+
+        }
+    }
+    guoduye.init();
+
+</script>
 </body>
 </html>
