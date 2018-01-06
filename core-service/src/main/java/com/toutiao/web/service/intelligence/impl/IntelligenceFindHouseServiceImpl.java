@@ -274,7 +274,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     }
 
     @Override
-    public Integer intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
+    public IntelligenceFhRes intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
 
         //初始化数据
         IntelligenceQuery intelligenceQuery = init(IntelligenceQuery);
@@ -286,44 +286,44 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1A(list);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1B(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend1C(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2A(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2B(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2B(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2C(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend2C(list, starPropertyList);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3A(intelligenceQuery);
             List<IntelligenceFindhouse> finalList = recommend3A(list);
-            Integer AIID = save(intelligenceQuery, finalList);
-            return AIID;
+            IntelligenceFhRes intelligenceFhRes = save(intelligenceQuery, finalList);
+            return intelligenceFhRes;
         }
         return null;
     }
@@ -336,7 +336,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      * @author zengqingzhou
      * @date 2018/1/3 15:46
      */
-    public Integer save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList) {
+    public IntelligenceFhRes save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList) {
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
@@ -368,7 +368,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             String jsonString = JSONArray.toJSONString(finalList);
             intelligenceFhRes.setFhResult(jsonString);
             intelligenceFhResMapper.saveData(intelligenceFhRes);
-            return intelligenceFhRes.getId();
+
+            return intelligenceFhRes;
         }
         return null;
     }

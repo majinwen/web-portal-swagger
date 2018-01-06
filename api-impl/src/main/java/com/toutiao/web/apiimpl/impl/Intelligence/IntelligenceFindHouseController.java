@@ -187,8 +187,8 @@ public class IntelligenceFindHouseController {
         String preconcTotal = intelligenceQuery.getPreconcTotal();
         intelligenceQuery.setHasChild(1);
         intelligenceQuery.setHasOldman(1);
-        Integer AIID = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        model.addAttribute("AIId", AIID);
+        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        model.addAttribute("AIId", intelligenceFhRes);
         return "intelligent-report";
     }
 
@@ -266,9 +266,10 @@ public class IntelligenceFindHouseController {
 
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
         intelligenceQuery.setCreateTime(date);
-        Integer reportId = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        if (StringTool.isNotBlank(reportId)) {
-            return NashResult.build(reportId);
+        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+
+        if (StringTool.isNotBlank(intelligenceFhRes)) {
+            return NashResult.build(intelligenceFhRes);
         }
         return NashResult.build(0);
     }
@@ -282,13 +283,20 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showMyReport/{reportId}")
     public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
-        /*if (StringTool.isNotBlank(reportId)) {
+        if (StringTool.isNotBlank(reportId)) {
             //查询用户是否有报告数据
             Map map = new HashMap();
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
             if (StringTool.isNotBlank(intelligenceFhRes)) {
                 //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
                 //intelligenceFhRes.setCreateTime(date);
+                Integer  plotTotal=null;
+                if(StringTool.isNotBlank(intelligenceFhRes.getDownPayment())&&StringTool.isNotBlank(intelligenceFhRes.getMonthPayment())){
+                      plotTotal = Integer.valueOf(intelligenceFhRes.getDownPayment()) + (Integer.valueOf(intelligenceFhRes.getMonthPayment()) * 12 * 30/10000);
+                }else{
+                    plotTotal = intelligenceFhRes.getTotalPrice();
+                }
+                intelligenceFhRes.setTotalPrice(plotTotal);
                 Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                 Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                 model.addAttribute("fhpt", fhpt);
@@ -298,7 +306,7 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "没有报告记录！");
         } else {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
-        }*/
+        }
         return "intelligent-report";
     }
 

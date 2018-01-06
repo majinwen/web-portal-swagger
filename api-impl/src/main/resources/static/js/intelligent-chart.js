@@ -334,7 +334,8 @@ $(function () {
         var priceData = data.data.fhpt,    // 价格走势
             marketData = data.data.fhtp,   // 供需情况
             compareData = JSON.parse(data.data.intelligenceFhRes.fhResult.value);   // 小区详细数据
-
+        console.log(priceData)
+        console.log(marketData)
         console.log(compareData);
         /**
          * 价格走势

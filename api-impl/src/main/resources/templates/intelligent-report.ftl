@@ -43,7 +43,9 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red">1000万</em>左右的房源市场为您的目标市场</p>
+                    <p>总价<em class="inte-color-red"
+                             id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    </p>
                 </div>
                 <div class="echart-box">
                     <div id="priceChart"></div>
@@ -66,7 +68,9 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red">1000万</em>左右的房源市场为您的目标市场</p>
+                    <p>总价<em class="inte-color-red"
+                             id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    </p>
                 </div>
                 <div class="echart-box">
                     <div id="marketChart"></div>
@@ -106,11 +110,21 @@
                     <div class="plot-title-block">
                         <div>小区</div>
                         <ul>
-                            <li>中粮万科长阳半岛</li>
-                            <li>首创天禧</li>
-                            <li>翡翠公园</li>
-                            <li>天润富玺大厦</li>
-                            <li>骏豪中央公园广场</li>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''>
+                                    <li>${fhResult['projname']}</li>
+                                <#else >
+                                    <li> - </li>
+                                </#if>
+                            </#list>
+                        </#if>
+                        <#--<li>中粮万科长阳半岛</li>-->
+                        <#--<li>首创天禧</li>-->
+                        <#--<li>翡翠公园</li>-->
+                        <#--<li>天润富玺大厦</li>-->
+                        <#--<li>骏豪中央公园广场</li>-->
                         </ul>
                     </div>
                 </div>
@@ -159,8 +173,10 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>1</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -173,13 +189,16 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span>1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span>2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>1</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                            <div class="traffic-text"><span>2</span>
+                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
                         </div>
                     </div>
 
                 </div>
             </div>
+
             <div class="module-item">
                 <div class="report-title-type2">
                     <p>宜居</p>
@@ -191,81 +210,112 @@
                             <i></i>
                             <em>楼龄</em>
                         </td>
-                        <td>1岁</td>
-                        <td>2岁</td>
-                        <td>3岁</td>
-                        <td>4岁</td>
-                        <td>5岁</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
+                                <#assign date = (.now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number)?string + '年'>
+                                <td>${date!'-'}</td>
+                            </#if>
+                        </#list>
+                    </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>户均绿化</em>
                         </td>
-                        <td>35%</td>
-                        <td>40%</td>
-                        <td>42%</td>
-                        <td>38%</td>
-                        <td>45%</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                        <#--<#if fhResult['virescencerate']?exists&&fhResult['virescencerate']!''>-->
+                            <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                        <#--</#if>-->
+                        </#list>
+                    </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>车位比</em>
                         </td>
-                        <td>2：1</td>
-                        <td>3：1</td>
-                        <td>4：1</td>
-                        <td>3：1</td>
-                        <td>2：1</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <td>${fhResult['parkRadio']!'-'}</td>
+                        </#list>
+                    </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>空气质量</em>
                         </td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>6</td>
-                        <td>3</td>
-                        <td>2</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <td>${fhResult['airQuality']!'-'}</td>
+                        </#list>
+                    </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>电梯</em>
                         </td>
-                        <td>
-                            <em>一户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>二户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>一户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>二户</em>
-                            <em>一梯</em>
-                        </td>
-                        <td>
-                            <em>二户</em>
-                            <em>一梯</em>
-                        </td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <td>${fhResult['liftDoorRadio']!'-'}</td>
+                        </#list>
+                    </#if>
+                    <#--<td>-->
+                    <#--<em>一户</em>-->
+                    <#--<em>一梯</em>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<em>二户</em>-->
+                    <#--<em>一梯</em>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<em>一户</em>-->
+                    <#--<em>一梯</em>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<em>二户</em>-->
+                    <#--<em>一梯</em>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<em>二户</em>-->
+                    <#--<em>一梯</em>-->
+                    <#--</td>-->
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>供暖</em>
                         </td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
-                        <td>集中<br>供暖</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <#if fhResult['heatingMode']?exists>
+                                <#if fhResult['heatingMode']?number == 0>
+                                    <td>未知</td>
+                                <#elseif fhResult['heatingMode']?number == 1>
+                                    <td>集中供暖</td>
+                                <#elseif fhResult['heatingMode']?number == 2>
+                                    <td>自供暖</td>
+                                <#else >
+                                    <td> -</td>
+                                </#if>
+                            </#if>
+                        </#list>
+                    </#if>
+                    <#--<td>集中<br>供暖</td>-->
+                    <#--<td>集中<br>供暖</td>-->
+                    <#--<td>集中<br>供暖</td>-->
+                    <#--<td>集中<br>供暖</td>-->
+                    <#--<td>集中<br>供暖</td>-->
                     </tr>
                 </table>
             </div>
@@ -280,64 +330,96 @@
                             <i></i>
                             <em>物业费<br>(/㎡·年)</em>
                         </td>
-                        <td>18元</td>
-                        <td>18元</td>
-                        <td>18元</td>
-                        <td>18元</td>
-                        <td>18元</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
+                                <td>${fhResult['propertyfee']}</td>
+                            <#else >
+                                <td> -</td>
+                            </#if>
+                        </#list>
+                    </#if>
                     </tr>
-                    <tr>
-                        <td>
-                            <i></i>
-                            <em>供暖费<br>(/㎡·年)</em>
-                        </td>
-                        <td>9元</td>
-                        <td>9元</td>
-                        <td>9元</td>
-                        <td>9元</td>
-                        <td>9元</td>
-                    </tr>
+                <#--<tr>-->
+                <#--<td>-->
+                <#--<i></i>-->
+                <#--<em>供暖费<br>(/㎡·年)</em>-->
+                <#--</td>-->
+                <#--<td>9元</td>-->
+                <#--<td>9元</td>-->
+                <#--<td>9元</td>-->
+                <#--<td>9元</td>-->
+                <#--<td>9元</td>-->
+                <#--</tr>-->
                     <tr>
                         <td>
                             <i></i>
                             <em>水电费<br>(/吨)<br>(/度)</em>
                         </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
-                        <td>
-                            <span>5元</span>
-                            <hr>
-                            <span>0.48元</span>
-                        </td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <td>
+                                <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
+                                    <#if fhResult['waterSupply'] == '商水'>
+                                        <span>6元</span>
+                                    <#else >
+                                        <span>5元</span>
+                                    </#if>
+                                </#if>
+                                <hr>
+                                <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
+                                    <#if fhResult['electricSupply'] == '商电'>
+                                        <span>1.33元</span>
+                                    <#else >
+                                        <span>0.48元</span>
+                                    </#if>
+                                </#if>
+                            </td>
+                        </#list>
+                    </#if>
+                    <#--<td>-->
+                    <#--<span>5元</span>-->
+                    <#--<hr>-->
+                    <#--<span>0.48元</span>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<span>5元</span>-->
+                    <#--<hr>-->
+                    <#--<span>0.48元</span>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<span>5元</span>-->
+                    <#--<hr>-->
+                    <#--<span>0.48元</span>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<span>5元</span>-->
+                    <#--<hr>-->
+                    <#--<span>0.48元</span>-->
+                    <#--</td>-->
+                    <#--<td>-->
+                    <#--<span>5元</span>-->
+                    <#--<hr>-->
+                    <#--<span>0.48元</span>-->
+                    <#--</td>-->
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>停车费<br>(/年)</em>
                         </td>
-                        <td>178元</td>
-                        <td>178元</td>
-                        <td>178元</td>
-                        <td>178元</td>
-                        <td>178元</td>
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults =intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
+                                <td>${fhResult['carRentPrice']}元</td>
+                            <#else >
+                                <td> -</td>
+                            </#if>
+                        </#list>
+                    </#if>
                     </tr>
                 </table>
             </div>
@@ -367,19 +449,19 @@
 <script src="/static/js/elastiStack.js"></script>
 <script src="/static/js/intelligent-chart.js"></script>
 <script>
-    new  ElastiStack(document.getElementById('elastics-stack'));
+    new ElastiStack(document.getElementById('elastics-stack'));
     $('#superContainer').fullpage({
         fitToSection: true,
         resize: false,
         onLeave: function (index, nextIndex, direction) {
-        if (nextIndex == 2 && direction == 'down') {
-           /* $('html').css({overflow: 'auto'});
-            $('body').css({height: 'auto', "-ms-touch-action":"inherit", "touch-action":"inherit"});
-            $('#superContainer').css({height:"", "-ms-touch-action":"inherit", "touch-action":"inherit"});
-            $('.page2').height('auto');
-            $('.page2').find('.fp-tableCell').height('auto');*/
+            if (nextIndex == 2 && direction == 'down') {
+                /* $('html').css({overflow: 'auto'});
+                 $('body').css({height: 'auto', "-ms-touch-action":"inherit", "touch-action":"inherit"});
+                 $('#superContainer').css({height:"", "-ms-touch-action":"inherit", "touch-action":"inherit"});
+                 $('.page2').height('auto');
+                 $('.page2').find('.fp-tableCell').height('auto');*/
+            }
         }
-    }
     });
     $.fn.fullpage.setAllowScrolling(false, 'up');
 </script>
