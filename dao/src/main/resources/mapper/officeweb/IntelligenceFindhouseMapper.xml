@@ -156,7 +156,7 @@
     <sql id="intelligenceFindHouse">
         newcode,n_or_e,projname,finishdate,virescencerate,lift_door_radio,propertyfee,heating_mode,water_supply,electric_supply,
         car_rent_price, car_sell_price,newh_range_s,newh_range_e,village_range_s,village_range_e,price,
-        esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter
+        esf_price,plot_image,nearest_subway_desc,nearby_road,nearby_qiao,nearby_road_meter,district_name,area_name,build_tags
         <!--,coord_x,coord_y,purposearea,park_radio,air_quality,star_property,has_subway-->
     </sql>
 
@@ -1274,7 +1274,7 @@
         WHERE
         1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
         </if>
     </select>
     <!--
@@ -1284,7 +1284,7 @@
         select count(*) from intelligence_findhouse
         WHERE 1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
         </if>
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}]
@@ -1295,7 +1295,7 @@
         select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
         WHERE 1=1
         <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
         </if>
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
@@ -1309,7 +1309,7 @@
         <where>
             1=1
             <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[min_total_price>= #{plotTotalFirst} and max_total_price <= #{plotTotalEnd}]]>
+                and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
             </if>
             <if test="layOut!=null">
                 and layout_range @> ARRAY[#{layOut}]

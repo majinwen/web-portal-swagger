@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.MapInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.MapInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="newcode" property="newcode" jdbcType="INTEGER" />
+    <result column="data_info" property="dataInfo" jdbcType="OTHER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, newcode, data_info
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from map_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from map_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.MapInfo" >
+    insert into map_info (id, newcode, data_info
+      )
+    values (#{id,jdbcType=INTEGER}, #{newcode,jdbcType=INTEGER}, #{dataInfo,jdbcType=OTHER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.MapInfo" >
+    insert into map_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="newcode != null" >
+        newcode,
+      </if>
+      <if test="dataInfo != null" >
+        data_info,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="newcode != null" >
+        #{newcode,jdbcType=INTEGER},
+      </if>
+      <if test="dataInfo != null" >
+        #{dataInfo,jdbcType=OTHER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.officeweb.MapInfo" >
+    update map_info
+    <set >
+      <if test="newcode != null" >
+        newcode = #{newcode,jdbcType=INTEGER},
+      </if>
+      <if test="dataInfo != null" >
+        data_info = #{dataInfo,jdbcType=OTHER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.web.dao.entity.officeweb.MapInfo" >
+    update map_info
+    set newcode = #{newcode,jdbcType=INTEGER},
+      data_info = #{dataInfo,jdbcType=OTHER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--  MapInfo selectByNewCode(String newcode);-->
+  <select id="selectByNewCode">
+      select * from map_info where newcode=#{newcode}
+  </select>
+</mapper>
