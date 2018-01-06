@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
     <title>智能找房 预见所想</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/jquery.fullPage.min.js"></script>
+    <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
 </head>
 <body>
 <div id="superContainer">
@@ -270,15 +270,81 @@
     <div class="section page4">
         <div class="bgbox bg4">
             <div class="page-content">
-                <div class="text-content">
-                    <p>数据多</p>
-                    <p>房源多</p>
-                    <p>用户样本多</p>
-                    <p>处理速度快</p>
-                    <p>技术</p>
-                    <p>技术</p>
+                <div class="city-title">
+                    <p>北京</p>
                 </div>
-                <a id="button_report" href="${router_city('/findhouse/showUserPortrayal')}" class="button">打开报告</a>
+                <div class="animate-wrapper">
+                    <div class="animate-item-1">
+                        <div class="animate-big-box">
+                            <div class="animate-ring-box"></div>
+                            <div class="animate-border-box">
+                            <#-- 扫描红线（改变top） -->
+                                <div class="animate-line"></div>
+                                <div class="text-box">
+                                    <p><em>7</em>年</p>
+                                    <p><em>305586</em>位</p>
+                                    <p>用户择居及生活样本</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="animate-small-box">
+                            <div class="animate-ring-box"></div>
+                            <div class="animate-border-box">
+                                <i></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animate-item-2">
+                        <div class="animate-big-box">
+                            <div class="animate-ring-box"></div>
+                            <div class="animate-border-box">
+                                <#-- 扫描红线（改变top） -->
+                                <div class="animate-line"></div>
+                                <div class="text-box">
+                                    <p><em>8123</em>个社区</p>
+                                    <p><em>40397</em>套房产</p>
+                                    <p><em>142</em>类生活配套设施</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="animate-small-box">
+                            <div class="animate-ring-box"></div>
+                            <div class="animate-border-box">
+                                <i></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animate-item-3">
+                        <div class="animate-big-box">
+                            <div class="animate-ring-box"></div>
+                            <div class="animate-border-box">
+                            <#-- 扫描红线（改变top） -->
+                                <div class="animate-line"></div>
+                                <div class="text-box">
+                                    <p><em>1</em>秒</p>
+                                    <p><em>962837</em>次运算</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="animate-small-box">
+                            <div class="animate-ring-box"></div>
+                            <div class="animate-border-box">
+                                <i></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-bottom">
+                    <a class="button-box" id="button_report" href="${router_city('/findhouse/showUserPortrayal')}">
+                        <#-- 百分比进度显示 -->
+                        <div class="loading-number">0%</div>
+                        <#-- 黑色进度条（改变width） -->
+                        <div class="button-mask"></div>
+                        <div class="button" id="button_report"></div>
+                        <p class="loading-text">正在生成用户画像</p>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
