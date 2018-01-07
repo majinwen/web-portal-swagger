@@ -920,7 +920,7 @@
                 show: false,
                 inverse: true,
                 min: 0,
-                max: 3
+                max: 4
             },
             series: [
                 {
@@ -1020,7 +1020,7 @@
                 show: false,
                 inverse: true,
                 min: 0,
-                max: 3
+                max: 4
             },
             series: [
                 {
