@@ -41,6 +41,8 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
         MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
         Double[] ratio = new Double[lists.size()-1];
         Double[] tarratio = new Double[lists.size()-1];
+        List<Double> list = new ArrayList();
+        Double ratios = 0.0;
         List<IntelligenceFhPtDo> intelligenceFhPtDos = new ArrayList<>();
         Double cityAvgRatio = 0.0;
         if(lists.size()> 0){
@@ -50,18 +52,22 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
                     break ok;
                 }
 //                price[i] = lists.get(i).getPrice().doubleValue();
-                ratio[i] = (lists.get(i).getPrice().subtract(lists.get(i+1).getPrice()))
-                        .divide(lists.get(i+1).getPrice(),mc).multiply(new BigDecimal(100)).doubleValue();
+                if(lists.get(i).getPrice().compareTo(BigDecimal.ZERO)!=0 && lists.get(i+1).getPrice().compareTo(BigDecimal.ZERO)!=0){
+                    ratios = (lists.get(i).getPrice().subtract(lists.get(i+1).getPrice()))
+                            .divide(lists.get(i+1).getPrice(),mc).multiply(new BigDecimal(100)).doubleValue();
+                    list.add(ratios);
+                }
+
                 tarratio[i]= (lists.get(i).getTotalPrice().subtract(lists.get(i+1).getTotalPrice()))
                         .divide(lists.get(i+1).getTotalPrice(),mc).doubleValue();
             }
-            Double max=ratio[0];
-            Double min=ratio[0];
-            for(int i=0; i<ratio.length;i++){
-                if(ratio[i]>max) max=ratio[i];
+            Double max=list.get(0);
+            Double min=list.get(0);
+            for(int i=0; i<list.size();i++){
+                if(list.get(i)>max) max=list.get(i);
             }
-            for(int j = 0; j<ratio.length;j++){
-                if(ratio[j]<min)min=ratio[j];
+            for(int j = 0; j<list.size();j++){
+                if(list.get(j)<min)min=list.get(j);
             }
 
             for(int i = 0; i<tarratio.length;i++){
