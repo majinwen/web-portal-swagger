@@ -532,8 +532,6 @@ $inteColorRed: #e42929;
             100% {  -webkit-transform: rotate(0deg);  }
         }
 
-
-
         .layer {
             position: absolute;
             top: 0;
@@ -1008,6 +1006,21 @@ $inteColorRed: #e42929;
                         @include bg-image('/static/images/intelligent/gdy_dq_2');
                         -webkit-background-size: contain;
                         background-size: contain;
+
+                        &.active {
+                            -webkit-animation: animateRound 4s;
+                            animation: animateRound 4s;
+                            -webkit-animation-fill-mode:forwards;
+                        }
+
+                        @-webkit-keyframes animateRound {
+                            0% {  transform: rotate(0deg);  }
+                            100% {  transform: rotate(360deg);  }
+                        }
+                        @keyframes animateRound {
+                            0% {  transform: rotate(0deg);  }
+                            100% {  transform: rotate(360deg);  }
+                        }
                     }
 
                     .animate-border-box {
@@ -1136,6 +1149,7 @@ $inteColorRed: #e42929;
                         left: 0;
                         width: rem(80);
                         height: rem(80);
+
                     }
 
                     .animate-border-box {
@@ -1349,15 +1363,30 @@ $inteColorRed: #e42929;
                     margin-top: rem(15);
                 }
 
-                .button-mask {
+                .button-mask-box {
                     position: absolute;
-                    left: 0;
-                    top: 0;
+                    width: 100%;
                     height: 100%;
-                    background-color: $inteBorderBlack;
-                    -webkit-border-radius: rem(70) 0 0 rem(70);
-                    border-radius: rem(70) 0 0 rem(70);
+                    top: 0;
+                    left: 0;
+                    border-radius: 70px;
+                    overflow: hidden;
+                    z-index: 1;
+
+                    .button-mask {
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        height: 100%;
+                        line-height: rem(70);
+                        color: $baseWhite;
+                        background-color: $inteBorderBlack;
+                        -webkit-border-radius: rem(70) 0 0 rem(70);
+                        border-radius: rem(70) 0 0 rem(70);
+                        @include font-dpr(30);
+                    }
                 }
+
 
                 .button {
                     display: block;
@@ -1366,12 +1395,11 @@ $inteColorRed: #e42929;
                     left: 0;
                     width: 100%;
                     height: 100%;
-                    line-height: rem(68);
                     border: rem(1) solid $inteBorderBlack;
                     background-color: transparent;
                     -webkit-border-radius: rem(70);
                     border-radius: rem(70);
-                    @include font-dpr(30);
+                    @include box-sizing;
                 }
             }
         }

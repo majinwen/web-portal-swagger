@@ -60,7 +60,11 @@ public class PlotConterller {
             model.addAttribute("sort", 0);
         }
         List villageList = null;
-        villageList = plotService.findVillageByConditions(villageRequest);
+        if(villageRequest.getLat() != 0 && villageRequest.getLon() != 0){
+            villageList = plotService.findNearByVillageByConditions(villageRequest);
+        }else{
+            villageList = plotService.findVillageByConditions(villageRequest);
+        }
         model.addAttribute("villageList", villageList);
 //        model.addAttribute("searchType", "plot");
         return "plot/plot-list";
@@ -72,21 +76,18 @@ public class PlotConterller {
     @ResponseBody
     public NashResult villagePage(VillageRequest villageRequest) {
         List<VillageResponse> villageList = null;
-        villageList = plotService.findVillageByConditions(villageRequest);
-        if (null!=villageList&&villageList.size()!=0){
-//            for (VillageResponse polt : villageList){
-//                if (null!=polt.getKey()&&null!=polt.getMetroWithPlotsDistance().get(polt.getKey())){
-//                    String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
-//                    HashMap metroWithPlotsDistance = (HashMap) polt.getMetroWithPlotsDistance();
-//                    String key = polt.getKey();
-//                    Object o = metroWithPlotsDistance.get(key);
-//                    metroWithPlotsDistance.put(key, str);
-//                    polt.setMetroWithPlotsDistance(metroWithPlotsDistance);
-//                }
-//            }
-            return NashResult.build(villageList);
+        if(villageRequest.getLat() != 0 && villageRequest.getLon() != 0){
+            villageList = plotService.findNearByVillageByConditions(villageRequest);
+        }else{
+            villageList = plotService.findVillageByConditions(villageRequest);
         }
-        return null;
+        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
+            for (VillageResponse polt : villageList){
+                String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
+                polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
+            }
+        }
+        return NashResult.build(villageList);
     }
 
 

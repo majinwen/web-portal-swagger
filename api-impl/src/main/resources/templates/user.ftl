@@ -12,8 +12,8 @@
     <div class="side-nav-item-wrapper">
         <ul class="side-nav-item item-link">
             <li><a href="${router_city()}"><i class="icon-index"></i><span>首页</span></a></li>
-            <li><a href="${router_city('/esf')}"><i class="icon-esf"></i><span>找二手房</span></a></li>
-            <li><a href="${router_city('/xiaoqu')}"><i class="icon-plot"></i><span>找小区</span></a></li>
+            <li><a class="index-esf"><i class="icon-esf"></i><span>找二手房</span></a></li>
+            <li><a class="index-xiaoqu"><i class="icon-plot"></i><span>找小区</span></a></li>
             <li><a href="${router_city('/xinfang')}"><i class="icon-new"></i><span>找新房</span></a></li>
         </ul>
         <ul class="side-nav-item item-my">

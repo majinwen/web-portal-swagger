@@ -25,6 +25,8 @@ $(function () {
     moduleExpand();         // 小区详情模块状态
 
     marketsState();         // 小区市场详情切换
+
+    showfujian();           //获取用户地理位置
 });
 
 function scaleImg() {
@@ -248,3 +250,48 @@ function router_city(urlparam) {
     }
     return city+urlparam
 };
+
+
+/**
+ * 获取当前用户坐标
+ *
+ */
+function showfujian() {
+    var executed = false;
+
+    $(".index-esf").click(function () {
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                executed = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                    location.href = router_city('/esf')+"?lat="+lat+"&lon="+lon;
+                });
+            }
+            else {
+            }
+        });
+    })
+    $(".index-xiaoqu").click(function () {
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function (r) {
+            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                executed = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function(rs){
+                    location.href = router_city('/xiaoqu')+"?lat="+lat+"&lon="+lon;
+                });
+            }
+            else {
+            }
+        });
+    })
+
+}

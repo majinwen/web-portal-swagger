@@ -4,10 +4,6 @@ $inteBorderBlack: #000;
 $inteColorRed: #e42929;
 $inteTextColorRed: #f25a5a;
 
-html {
-    overflow: auto;
-}
-
 .bgbox {
     position: absolute;
     top: 0;
@@ -445,8 +441,21 @@ html {
             }
 
             .water-wrapper {
+                position: relative;
                 width: 100%;
+                padding-top: rem(210);
                 text-align: center;
+
+                #collieContainer {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    width: rem(502);
+                    height: rem(237);
+                    margin: 0 rem(-251);
+                    overflow: hidden;
+                    z-index: 2;
+                }
 
                 .water-bg {
                     position: relative;
@@ -456,6 +465,7 @@ html {
                     @include bg-image('/static/images/intelligent/report-water-bg');
                     -webkit-background-size: contain;
                     background-size: contain;
+                    z-index: 1;
 
                     .water-text-item {
                         position: absolute;
@@ -572,6 +582,7 @@ html {
             }
 
         }
+
         .report-title-type3 {
             margin-top: rem(70);
             margin-bottom: rem(70);
@@ -612,16 +623,16 @@ html {
             margin: rem(49) 0 rem(30);
             background-color: #fbfbfb;
 
-            &.mt100 {
-                margin-top: rem(100);
+            &.nearby {
+                height: rem(420);
+                background-color: transparent;
             }
 
-            #priceChart, #marketChart {
+            #priceChart, #marketChart, #shoppingChart, #educationChart, #medicalChart {
                 width: 100%;
                 height: 100%;
                 padding: rem(20) 0;
                 @include box-sizing;
-
             }
         }
 
@@ -665,6 +676,7 @@ html {
                     }
                 }
             }
+
             .echart-wrapper {
                 position: relative;
                 padding-left: rem(73);
@@ -728,11 +740,33 @@ html {
 
                     span {
                         position: absolute;
+                        top: rem(-6);
                         left: 0;
                         width: rem(50);
                         height: rem(47);
                         margin-left: rem(-25);
+                        padding-top: rem(7);
                         text-align: center;
+                        color: $baseWhite;
+                        -webkit-background-size: contain;
+                        background-size: contain;
+                        @include font-dpr(20);
+
+                        &.type1 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q1');
+                        }
+                        &.type2 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q2');
+                        }
+                        &.type3 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q3');
+                        }
+                        &.type4 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q4');
+                        }
+                        &.type5 {
+                            @include bg-image('/static/images/intelligent/bgy_icon_px_q5');
+                        }
                     }
                 }
             }
