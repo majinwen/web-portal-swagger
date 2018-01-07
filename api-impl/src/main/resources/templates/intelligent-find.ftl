@@ -352,7 +352,7 @@
     </div>
 </div>
 <script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/intelligent-choose.js?201801070756"></script>
+<script src="${staticurl}/js/intelligent-choose.js?201801070812&v=1.0"></script>
 <script type="text/javascript">
     var rada_animit = {
         timers: [],
