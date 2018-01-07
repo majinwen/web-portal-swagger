@@ -1401,17 +1401,59 @@
     });
     var point = new BMap.Point(116.404, 39.915);
     map.centerAndZoom(point, 13);
+    map.enableScrollWheelZoom(true);
+    var ctrlNav = new window.BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        type: BMAP_NAVIGATION_CONTROL_LARGE
+    });
+    map.addControl(ctrlNav);
+    var ctrlOve = new window.BMap.OverviewMapControl({
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        isOpen: 1
+    });
+    map.addControl(ctrlOve);
+    var ctrlSca = new window.BMap.ScaleControl({
+        anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    map.addControl(ctrlSca);
+
     if(res.length >0){
         for (var i=0;i<res.length;i++){
             var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
-            addMarker(point);
+            addMarker(point,i);
         }
     }
-    function addMarker(point){
-        var marker = new BMap.Marker(point);
+    // 添加标注
+    function addMarker(point, index) {
+        var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
+                new BMap.Size(23, 25), {
+                    offset: new BMap.Size(10, 25),
+                    imageOffset: new BMap.Size(0, 0 -  index * 25)
+
+                });
+        var marker = new BMap.Marker(point, { icon: myIcon });
         marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
         map.addOverlay(marker);
+        return marker;
     }
+    // 添加定位控件
+    var geolocationControl = new BMap.GeolocationControl();
+    geolocationControl.addEventListener("locationSuccess", function(e){
+        // 定位成功事件
+        var address = '';
+        address += e.addressComponent.province;
+        address += e.addressComponent.city;
+        address += e.addressComponent.district;
+        address += e.addressComponent.street;
+        address += e.addressComponent.streetNumber;
+        alert("当前定位地址为：" + address);
+    });
+    geolocationControl.addEventListener("locationError",function(e){
+        // 定位失败事件
+        alert(e.message);
+    });
+    map.addControl(geolocationControl);
+
 </script>
 </body>
 </html>
