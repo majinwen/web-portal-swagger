@@ -130,11 +130,11 @@ function chooseUserFinds() {
                 slideText.css('left', trackWidth + "px");
                 sildeColor.css('width', trackWidth + "px")
             }
-            alert(Math.ceil(parseInt(thisDom.css('left'))));
-                alert(trackWidth);
-            alert(price);
-            alert(parseInt(thisDom.prev().children('em').text()));
-            alert(cm);
+            alert('left:'+Math.ceil(parseInt(thisDom.css('left')))+thisDom.css('left'));
+                alert('trackWidth:'+trackWidth);
+            alert('price:'+price);
+            alert('thisDom.prev().children(\'em\').text():'+parseInt(thisDom.prev().children('em').text()));
+            alert('cm'+cm);
 
             slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
         }
