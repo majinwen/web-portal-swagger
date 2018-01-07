@@ -739,7 +739,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000])
+            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toString()])
         }
         return res;
     }
@@ -1153,7 +1153,7 @@
                     itemStyle: {
                         normal: { color: '#455765' }
                     },
-                    data: [3,4,5,6,7]//getXiuxiangouwu()[0]
+                    data: getXiuxiangouwu()[0]
                 },
                 {
                     name: getPlotName()[1],
