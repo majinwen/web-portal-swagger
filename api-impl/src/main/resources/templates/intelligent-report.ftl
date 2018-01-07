@@ -271,8 +271,14 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span class="type1">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span class="type2">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult_index lte 2>
+                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                </#if>
+                            </#list>
+                        </#if>
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -285,8 +291,14 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span class="type3">1</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span class="type4">2</span><p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult_index gt 3>
+                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                </#if>
+                            </#list>
+                        </#if>
                         </div>
                     </div>
 
@@ -659,24 +671,42 @@
 
     }
 
+    function dict_getValueOrDefault(obj,key,default_value) {
+        obj = obj || {}
+        var v = obj[key]
+        if(typeof(v) == "undefined"){
+            return default_value
+        }
+        return v
+    }
+
     function getXiuxiangouwu() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"]||""["xiuxian"]||""["caishichang"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["chaoshi"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["shangchang"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["canting"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["jianshenzhongxin"]||""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{})
+
+            res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0),dict_getValueOrDefault(xiuxian,"jianshenzhongxin",0)])
         }
         return res;
     }
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"]||""["jiaoyu"]||""["qinzi"],datajson[i]["typeCount"]||""["jiaoyu"]||""["youeryuan"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["xiaoxue"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["zhongxue"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["gaodeng"]||""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
+            res.push([dict_getValueOrDefault(xiuxian,"qinzi",0),dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
+
         }
         return res;
     }
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"]||""["yiliao"]||""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"yiliao",0)
+            res.push([xiuxian])
+
         }
         return res;
     }
@@ -709,7 +739,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000])
+            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toString()])
         }
         return res;
     }
@@ -1265,7 +1295,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['综合医院', '专科医院', '诊所', '养老院', '急救中心']
+                data: ['医疗']
             },
             series: [
                 {
@@ -1333,17 +1363,59 @@
     });
     var point = new BMap.Point(116.404, 39.915);
     map.centerAndZoom(point, 13);
+    map.enableScrollWheelZoom(true);
+    var ctrlNav = new window.BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        type: BMAP_NAVIGATION_CONTROL_LARGE
+    });
+    map.addControl(ctrlNav);
+    var ctrlOve = new window.BMap.OverviewMapControl({
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        isOpen: 1
+    });
+    map.addControl(ctrlOve);
+    var ctrlSca = new window.BMap.ScaleControl({
+        anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    map.addControl(ctrlSca);
+
     if(res.length >0){
         for (var i=0;i<res.length;i++){
             var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
-            addMarker(point);
+            addMarker(point,i);
         }
     }
-    function addMarker(point){
-        var marker = new BMap.Marker(point);
+    // 添加标注
+    function addMarker(point, index) {
+        var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
+                new BMap.Size(23, 25), {
+                    offset: new BMap.Size(10, 25),
+                    imageOffset: new BMap.Size(0, 0 -  index * 25)
+
+                });
+        var marker = new BMap.Marker(point, { icon: myIcon });
         marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
         map.addOverlay(marker);
+        return marker;
     }
+    // 添加定位控件
+    var geolocationControl = new BMap.GeolocationControl();
+    geolocationControl.addEventListener("locationSuccess", function(e){
+        // 定位成功事件
+        var address = '';
+        address += e.addressComponent.province;
+        address += e.addressComponent.city;
+        address += e.addressComponent.district;
+        address += e.addressComponent.street;
+        address += e.addressComponent.streetNumber;
+        alert("当前定位地址为：" + address);
+    });
+    geolocationControl.addEventListener("locationError",function(e){
+        // 定位失败事件
+        alert(e.message);
+    });
+    map.addControl(geolocationControl);
+
 </script>
 </body>
 </html>
