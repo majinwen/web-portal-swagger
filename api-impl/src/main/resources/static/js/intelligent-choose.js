@@ -130,6 +130,12 @@ function chooseUserFinds() {
                 slideText.css('left', trackWidth + "px");
                 sildeColor.css('width', trackWidth + "px")
             }
+            alert(Math.ceil(parseInt(thisDom.css('left'))));
+                alert(trackWidth);
+            alert(price);
+            alert(parseInt(thisDom.prev().children('em').text()));
+            alert(cm);
+
             slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
         }
         $(document).on('touchmove', tt);
