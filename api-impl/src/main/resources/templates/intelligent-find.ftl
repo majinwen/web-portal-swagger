@@ -132,7 +132,7 @@
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
                                         <span class="min"><em>100</em>万</span>
-                                        <span class="slider-thumb"></span>
+                                        <span class="slider-thumb" style="left: 0px"></span>
                                         <span class="max"><em>3000</em>万</span>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
                                         <span class="min"><em>50</em>万</span>
-                                        <span class="slider-thumb"></span>
+                                        <span class="slider-thumb" style="left: 0px"></span>
                                         <span class="max"><em>1000</em>万</span>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                                     <div class="slider-track">
                                         <div class="slide-color"></div>
                                         <span class="min"><em>0</em></span>
-                                        <span class="slider-thumb"></span>
+                                        <span class="slider-thumb" style="left: 0px"></span>
                                         <span class="max"><em>50000</em></span>
                                     </div>
                                 </div>
