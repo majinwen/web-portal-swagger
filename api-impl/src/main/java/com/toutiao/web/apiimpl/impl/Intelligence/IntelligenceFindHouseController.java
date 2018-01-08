@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.Constant;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
@@ -72,7 +73,8 @@ public class IntelligenceFindHouseController {
             }
             model.addAttribute("message", "没有报告记录！");
         } else {
-            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+            model.addAttribute("report", Constant.report);
+           return "login";
         }
         //跳转到报告页
         return "myReport";

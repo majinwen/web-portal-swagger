@@ -49,6 +49,7 @@ public class Login {
 
     @RequestMapping(value = {"/tologin"}, method = {RequestMethod.POST})
     public String login(@RequestParam(value = "phone") String phone,
+                        @RequestParam(value = "report",required = false) String report,
                         @RequestParam(value = "code") String code,
                         HttpServletResponse response, HttpServletRequest request,
                         @RequestParam(value = "imageCode", required = false) String imageCode, ModelMap modelMap) {
@@ -106,6 +107,9 @@ public class Login {
             }
             //将用户登录信息放置到cookie中判断用户登录状态
             setCookieAndCache(phone, request, response);
+            if(StringTool.isNotBlank(report)&& report.equalsIgnoreCase(Constant.report)){
+                return "redirect:/bj/findhouse/queryMyReport";
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

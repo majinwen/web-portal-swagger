@@ -191,9 +191,11 @@
                     <ul class="water-item">
                     <#list intelligenceFhRes['fhResult']?eval as intelligenceFhRe>
                         <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
-                            <li><p>${intelligenceFhRe['projname']}</p></li>
+                            <li class="plot_class" data-type="${intelligenceFhRe.coordX?c}_${intelligenceFhRe.coordY?c}_${intelligenceFhRe_index}">
+                                <p>${intelligenceFhRe['projname']}</p>
+                            </li>
                         <#else >
-                            <li> -</li>
+                            <li>-</li>
                         </#if>
                     </#list>
                     </ul>
@@ -391,7 +393,7 @@
                                     <#elseif fhResult['heatingMode']?number == 2>
                                         <td>自供暖</td>
                                     <#else >
-                                        <td> -</td>
+                                        <td>-</td>
                                     </#if>
                                 </#if>
                             </#list>
@@ -416,7 +418,7 @@
                                 <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
                                     <td>${fhResult['propertyfee']}</td>
                                 <#else >
-                                    <td> -</td>
+                                    <td>-</td>
                                 </#if>
                             </#list>
                         </#if>
@@ -460,7 +462,7 @@
                                 <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
                                     <td>${fhResult['carRentPrice']}元</td>
                                 <#else >
-                                    <td> -</td>
+                                    <td>-</td>
                                 </#if>
                             </#list>
                         </#if>
@@ -545,6 +547,7 @@
         this.x_index = i;
         this.laywidth = laywidth
     }
+
     waterSharp.prototype.animale = function () {
         var that = this;
         var init_x = this.laywidth / 6 * (this.x_index % 6);
@@ -690,6 +693,7 @@
         }
         return res;
     }
+
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
@@ -700,6 +704,7 @@
         }
         return res;
     }
+
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
@@ -710,10 +715,11 @@
         }
         return res;
     }
+
     function getSubway() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2])/1000])
+            res.push([parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2]) / 1000])
         }
         return res;
     }
@@ -721,7 +727,7 @@
     function getMetroStation() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push((datajson[i]["nearestSubwayDesc"]||"".split("$")[1]))
+            res.push((datajson[i]["nearestSubwayDesc"] || "".split("$")[1]))
         }
         return res;
     }
@@ -730,7 +736,7 @@
     function getNearbyQiao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["nearbyQiao"]||"")
+            res.push(datajson[i]["nearbyQiao"] || "")
         }
         return res;
     }
@@ -739,7 +745,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toString()])
+            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"") / 1000).toString()])
         }
         return res;
     }
@@ -1353,17 +1359,28 @@
     console.log(datajson.length);
     var res = [];
     for (var i = 0; i < datajson.length; i++) {
-        res.push(datajson[i]['coordX']+"&"+datajson[i]['coordY'])
+        res.push(datajson[i]['coordX'] + "&" + datajson[i]['coordY'])
     }
-
     // 百度地图API功能
     var map = new BMap.Map("allmap", {
-        minZoom : 1,
-        maxZoom : 18
+        minZoom: 1,
+        maxZoom: 18
     });
     var point = new BMap.Point(116.404, 39.915);
-    map.centerAndZoom(point, 13);
+    map.centerAndZoom(point, 12);
     map.enableScrollWheelZoom(true);
+
+    $('.water-item').on('click', 'li', function () {
+        var attr = $(this).attr('data-type');
+        var point = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
+
+        map.centerAndZoom(new BMap.Point(attr.split("_")[0],attr.split("_")[1]),13);
+
+        addMarker(point,attr.split("-")[2]);
+
+    });
+
+
     var ctrlNav = new window.BMap.NavigationControl({
         anchor: BMAP_ANCHOR_TOP_LEFT,
         type: BMAP_NAVIGATION_CONTROL_LARGE
@@ -1378,11 +1395,11 @@
         anchor: BMAP_ANCHOR_BOTTOM_LEFT
     });
     map.addControl(ctrlSca);
-
-    if(res.length >0){
-        for (var i=0;i<res.length;i++){
+    //页面刚进来显示5个小区在地图上的地理坐标信息
+    if (res.length > 0) {
+        for (var i = 0; i < res.length; i++) {
             var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
-            addMarker(point,i);
+            addMarker(point, i);
         }
     }
     // 添加标注
@@ -1390,17 +1407,18 @@
         var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
                 new BMap.Size(23, 25), {
                     offset: new BMap.Size(10, 25),
-                    imageOffset: new BMap.Size(0, 0 -  index * 25)
+                    imageOffset: new BMap.Size(0, 0 - index * 25)
 
                 });
-        var marker = new BMap.Marker(point, { icon: myIcon });
+        var marker = new BMap.Marker(point, {icon: myIcon});
         marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
         map.addOverlay(marker);
         return marker;
     }
+
     // 添加定位控件
     var geolocationControl = new BMap.GeolocationControl();
-    geolocationControl.addEventListener("locationSuccess", function(e){
+    geolocationControl.addEventListener("locationSuccess", function (e) {
         // 定位成功事件
         var address = '';
         address += e.addressComponent.province;
@@ -1410,7 +1428,7 @@
         address += e.addressComponent.streetNumber;
         alert("当前定位地址为：" + address);
     });
-    geolocationControl.addEventListener("locationError",function(e){
+    geolocationControl.addEventListener("locationError", function (e) {
         // 定位失败事件
         alert(e.message);
     });
