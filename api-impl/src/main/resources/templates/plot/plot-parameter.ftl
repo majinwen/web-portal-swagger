@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>小区参数</title>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -38,7 +38,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无数据</#if></p>
+                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡ <#else>暂无数据</#if></p>
             </li>
         </ul>
     </section>
@@ -73,7 +73,7 @@
                 <p>占地面积：<#if village['areaSize']?exists&&village['areaSize']?number gt 0>${village['areaSize']}㎡<#else >暂无数据</#if></p>
                 <p>建筑面积：<#if village['buildingAreaSize']?exists&&village['buildingAreaSize']?number gt 0 >${village['buildingAreaSize']}㎡<#else> 暂无数据</#if></p>
                 <p>容积率：<#if village['dimension']?exists&&village['dimension']?number gt 0 >${village['dimension']}<#else >暂无数据</#if></p>
-                <p>绿化率：<#if village['avgGreening']?exists&&village['avgGreening']?number gt 0>${(village['avgGreening']?number*village['sumHousehold']?number)/village['areaSize']?number}%<#else >暂无数据</#if></p>
+                <p>绿化率：<#if village['avgGreening']?exists&&village['avgGreening']?number gt 0>${village['avgGreening']?string('#.##')}%<#else >暂无数据</#if></p>
                 <p>规划户数：<#if village['sumBuilding']?exists&&village['sumBuilding']?number gt 0>${village['sumBuilding']}栋<#else >暂无数据</#if>
                     /<#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>${village['sumHousehold']}户<#else >暂无数据</#if></p>
                <#-- <p>规划车位：EEEEEEEE</p>-->
@@ -95,7 +95,7 @@
             <p>供暖：<#if village['heatingMode']?exists&&village['heatingMode']!=''>${village['heatingMode']}<#else >暂无数据</#if></p>
             <p>供水：<#if village['waterSupply']?exists&&village['waterSupply']!=''>${village['waterSupply']}<#else >暂无数据</#if></p>
             <p>供电：<#if village['electricSupply']?exists&&village['electricSupply']!=''>${village['electricSupply']}<#else >暂无数据</#if></p>
-       <#--     <p>燃气：${village['heatingMode']!"暂无数据"}暂无数据</p>-->
+       <#--<p>燃气：${village['heatingMode']!"暂无数据"}暂无数据</p>-->
         </li>
     </ul>
 </section>

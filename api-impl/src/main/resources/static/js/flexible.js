@@ -32,15 +32,23 @@
     }
 
     if (!dpr && !scale) {
+        var isAndroid = win.navigator.appVersion.match(/android/gi);
+        var isIPhone = win.navigator.appVersion.match(/iphone/gi);
         var devicePixelRatio = win.devicePixelRatio;
-        if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
-            dpr = 3;
-        } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)){
-            dpr = 2;
+        if (isIPhone) {
+            if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
+                dpr = 3
+            } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
+                dpr = 2
+            } else {
+                dpr = 1
+            }
         } else {
+            // 	其他设备下，仍旧使用1倍的方案
             dpr = 1;
         }
-        scale = 1 / dpr;
+
+        scale = 1 / dpr;	// initial-scale
     }
 
     docEl.setAttribute('data-dpr', dpr);
@@ -63,6 +71,7 @@
             width = 540 * dpr;
         }
         var rem = width / 10;
+
         docEl.style.fontSize = rem + 'px';
         flexible.rem = win.rem = rem;
     }
@@ -77,15 +86,6 @@
             tid = setTimeout(refreshRem, 300);
         }
     }, false);
-
-    if (doc.readyState === 'complete') {
-        doc.body.style.fontSize = 12 * dpr + 'px';
-    } else {
-        doc.addEventListener('DOMContentLoaded', function(e) {
-            doc.body.style.fontSize = 12 * dpr + 'px';
-        }, false);
-    }
-
 
     refreshRem();
 

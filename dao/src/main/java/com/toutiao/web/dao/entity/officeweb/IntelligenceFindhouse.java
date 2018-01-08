@@ -765,6 +765,13 @@ public class IntelligenceFindhouse {
      * 地图信息最大数量
      */
     private Object typeCount;
-
+    /**
+     * 默认排序编号
+     */
+    private Integer sortInex;
+    /**
+     * 地铁和小区的距离
+     */
+    private Integer metroWithPlotDistance;
 
 }

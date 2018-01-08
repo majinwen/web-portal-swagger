@@ -354,6 +354,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 //                intelligenceFhResMapper.saveData(intelligenceFhRes);
 //            }
 //        }
+        int index = 1;
         if (null != finalList && finalList.size() > 0) {
             for (IntelligenceFindhouse intelligence : finalList) {
                 if (null != intelligence.getPropertyfee()) {
@@ -368,16 +369,22 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     BigDecimal bigDecimal = new BigDecimal(intelligence.getCarSellPrice().doubleValue() * 12);
                     intelligence.setCarSellPrice(bigDecimal);
                 }
+                //默认顺序
+                intelligence.setSortInex(index++);
+                if (null != intelligence.getNearestSubwayDesc()) {
+                    Integer distance = Integer.valueOf(intelligence.getNearestSubwayDesc().split("\\$")[2]);
+                    intelligence.setMetroWithPlotDistance(distance);
+                }
             }
             //查询地图信息
             for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
                 MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
-                JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-                if (null!=mapInfo.getTypeCount()){
-                    JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
+                if (null != mapInfo && null != mapInfo.getTypeCount() && null != mapInfo.getDataInfo()) {
+                    JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+                    JSONObject typeCount = JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
                     intelligenceFindhouse.setTypeCount(typeCount);
+                    intelligenceFindhouse.setDataInfo(datainfo);
                 }
-                intelligenceFindhouse.setDataInfo(datainfo);
             }
             if (null != intelligenceFhRes.getDistrictId()) {
                 String[] districtId = intelligenceFhRes.getDistrictId().split(",");
