@@ -167,10 +167,6 @@
                     <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
                     </#if>
                 </div>
-                <div id="allmap" class="echart-box">
-
-                </div>
-
                 <div class="report-title-type3">
                     <p>根据您的需求，为您挑选5个最贴合的</p>
                 </div>
@@ -216,6 +212,42 @@
                     </#list>
                     </ul>
                 </div>
+                <div id="allmap" class="echart-box">
+
+                </div>
+                <section class="elastics-stack-box">
+                    <div class="elastics-stack-content">
+                        <ul id="elastics-stack" class="elastics-stack report">
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <li class="bgtype-${fhResult_index+1}">
+                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                        <div>
+                                            <h4>${fhResult['projname']}</h4>
+                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
+                                                <p>${fhResult['esfPrice']}元/㎡</p>
+                                            <#else >
+                                                <p>${fhResult['price']}元/㎡</p>
+                                            </#if>
+                                        <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                            <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                        <#else >
+                                            <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                        </#if>-->
+                                        </div>
+                                        <#if fhResult['plotImage'][0]?exists>
+                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                        <#else >
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                        </#if>
+                                    </a>
+                                </li>
+                            </#list>
+                        </#if>
+                        </ul>
+                    </div>
+                </section>
             </div>
             <div class="module-item">
                 <div class="report-title-type1">
@@ -238,39 +270,6 @@
                         </ul>
                     </div>
                 </div>
-                <section class="elastics-stack-box">
-                    <div class="elastics-stack-content">
-                        <ul id="elastics-stack" class="elastics-stack report">
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <li class="bgtype-${fhResult_index+1}">
-                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
-                                        <div>
-                                            <h4>${fhResult['projname']}</h4>
-                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
-                                                <p>${fhResult['esfPrice']}元/㎡</p>
-                                            <#else >
-                                                <p>${fhResult['price']}元/㎡</p>
-                                            </#if>
-                                            <#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
-                                                <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
-                                            <#else >
-                                                <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
-                                            </#if>
-                                        </div>
-                                        <#if fhResult['plotImage'][0]?exists>
-                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
-                                        <#else >
-                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
-                                        </#if>
-                                    </a>
-                                </li>
-                            </#list>
-                        </#if>
-                        </ul>
-                    </div>
-                </section>
             </div>
             <div class="module-item type2">
                 <div class="report-title-type2">
@@ -319,7 +318,6 @@
                         </#if>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="module-item type2">
