@@ -11,6 +11,8 @@ public interface PlotService {
 
     List findVillageByConditions(VillageRequest villageRequest);
 
+    List findNearByVillageByConditions(VillageRequest villageRequest);
+
     void saveParent(VillageEntityES village);
 
     void saveChild(ProjHouseInfoES projHouseInfoes);

@@ -14,6 +14,7 @@
     <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
     <script src="${staticurl}/js/modernizr.custom.js"></script>
     <script src="${staticurl}/js/echarts.min.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
 <div id="superContainer">
@@ -150,7 +151,7 @@
                 <div class="report-caption">
                     <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
                 </div>
-                <div class="echart-box">
+                <div id="allmap" class="echart-box">
 
                 </div>
 
@@ -278,7 +279,6 @@
                                 </#if>
                             </#list>
                         </#if>
-
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -609,7 +609,7 @@
 
     //    console.log(ptlists)
     //    console.log(trend)
-    console.log(datajson);
+
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
@@ -668,27 +668,45 @@
             res.push(datajson[i]["projname"])
         }
         return res;
-        console.log(res)
+
+    }
+
+    function dict_getValueOrDefault(obj,key,default_value) {
+        obj = obj || {}
+        var v = obj[key]
+        if(typeof(v) == "undefined"){
+            return default_value
+        }
+        return v
     }
 
     function getXiuxiangouwu() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"]||""["xiuxian"]||""["caishichang"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["chaoshi"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["shangchang"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["canting"]||"",datajson[i]["typeCount"]||""["xiuxian"]||""["jianshenzhongxin"]||""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{})
+
+            res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0),dict_getValueOrDefault(xiuxian,"jianshenzhongxin",0)])
         }
         return res;
     }
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"]||""["jiaoyu"]||""["qinzi"],datajson[i]["typeCount"]||""["jiaoyu"]||""["youeryuan"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["xiaoxue"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["zhongxue"]||"",datajson[i]["typeCount"]||""["jiaoyu"]||""["gaodeng"]||""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
+            res.push([dict_getValueOrDefault(xiuxian,"qinzi",0),dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
+
         }
         return res;
     }
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"]||""["yiliao"]||""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"yiliao",0)
+            res.push([xiuxian])
+
         }
         return res;
     }
@@ -732,7 +750,6 @@
     $(function () {
         var locationUrl = window.location.href;
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
-        console.log(locationBaseUrl);
 
         var chartGrid = {
             left: 0,
@@ -928,7 +945,6 @@
             xAxis: {
                 show: false,
                 data: []
-//                data: ['第一个小区','第二个小区','第三个小区','第四个小区','第五个小区']
             },
             yAxis: {
                 show: false,
@@ -1012,8 +1028,7 @@
                 show: true,
                 position: 'bottom',
                 color: '#666',
-                fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
+                fontSize: baseFontSize - 5
 //                formatter: '{c}km: \'' + subwayStation + '\''
             }
         };
@@ -1280,7 +1295,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['综合医院', '专科医院', '诊所', '养老院', '急救中心']
+                data: ['医疗']
             },
             series: [
                 {
@@ -1332,6 +1347,75 @@
         });
 
     });
+</script>
+<script>
+    var datajson =${datajson};
+    console.log(datajson.length);
+    var res = [];
+    for (var i = 0; i < datajson.length; i++) {
+        res.push(datajson[i]['coordX']+"&"+datajson[i]['coordY'])
+    }
+
+    // 百度地图API功能
+    var map = new BMap.Map("allmap", {
+        minZoom : 1,
+        maxZoom : 18
+    });
+    var point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 13);
+    map.enableScrollWheelZoom(true);
+    var ctrlNav = new window.BMap.NavigationControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        type: BMAP_NAVIGATION_CONTROL_LARGE
+    });
+    map.addControl(ctrlNav);
+    var ctrlOve = new window.BMap.OverviewMapControl({
+        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+        isOpen: 1
+    });
+    map.addControl(ctrlOve);
+    var ctrlSca = new window.BMap.ScaleControl({
+        anchor: BMAP_ANCHOR_BOTTOM_LEFT
+    });
+    map.addControl(ctrlSca);
+
+    if(res.length >0){
+        for (var i=0;i<res.length;i++){
+            var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
+            addMarker(point,i);
+        }
+    }
+    // 添加标注
+    function addMarker(point, index) {
+        var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
+                new BMap.Size(23, 25), {
+                    offset: new BMap.Size(10, 25),
+                    imageOffset: new BMap.Size(0, 0 -  index * 25)
+
+                });
+        var marker = new BMap.Marker(point, { icon: myIcon });
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        map.addOverlay(marker);
+        return marker;
+    }
+    // 添加定位控件
+    var geolocationControl = new BMap.GeolocationControl();
+    geolocationControl.addEventListener("locationSuccess", function(e){
+        // 定位成功事件
+        var address = '';
+        address += e.addressComponent.province;
+        address += e.addressComponent.city;
+        address += e.addressComponent.district;
+        address += e.addressComponent.street;
+        address += e.addressComponent.streetNumber;
+        alert("当前定位地址为：" + address);
+    });
+    geolocationControl.addEventListener("locationError",function(e){
+        // 定位失败事件
+        alert(e.message);
+    });
+    map.addControl(geolocationControl);
+
 </script>
 </body>
 </html>
