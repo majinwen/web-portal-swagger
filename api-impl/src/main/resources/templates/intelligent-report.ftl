@@ -555,29 +555,37 @@
                 $.ajax({
                     type: "GET",
                     async: true,
-                    url: "/bj/findhouse/collectMyReport?reportId="+reportId,
+                    url: router_city('/findhouse/collectMyReport')+"?reportId="+reportId,
                     data: reportId,
                     success: function(data){
                         //改变状态
-                        if(data.code="success"){
+                        if(data.data=="ok"){
                             console.log(data.data)
                             //缺少
-                            $(this).find('.collect').toggleClass('active');
-                        }else{
-                            if(data.code="fail"){
-                                console.log(data.code);
-                                //重定向到登陆页面
-                                window.location.href = "/user/login?reportId="+reportId;
-                            }
                         }
-                    },
-                    error:function (XMLHttpRequest, textStatus, errorThrown){
-                        console.error(errorThrown)
+                        if(data.data=="fail"){
+                            console.log(data);
+                            //重定向到登陆页面
+                            window.location.href = "/user/login?reportId="+reportId;
+                        }
                     }
                 })
             }
         })
     });
+    function router_city(urlparam) {
+        urlparam = urlparam || '';
+        if (urlparam[0] != '/') {
+            urlparam = '/' + urlparam
+        }
+        var uri = new URI(window.location.href);
+        var segmens = uri.segment();
+        var city = '';
+        if (segmens.length > 0) {
+            city = '/' + segmens[0]
+        }
+        return city + urlparam
+    }
 </script>
 <script src="${staticurl}/js/raphael.min.js"></script>
 <script type="text/javascript">

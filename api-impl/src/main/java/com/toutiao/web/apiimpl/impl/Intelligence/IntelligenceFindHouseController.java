@@ -98,11 +98,11 @@ public class IntelligenceFindHouseController {
             String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
             if (StringTool.isBlank(usePhone)) {
                 //前台判断状态 然后跳转到登陆页面
-                return NashResult.Fail("fail","未登录!",Constant.report_result);
+                 return NashResult.build("fail");
             }else {
                 //更改当前报告的状态
                 int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
-                if (result == 0) {
+                if (result != 0) {
                     //收藏成功
                     return NashResult.build("ok");
                 }
