@@ -170,6 +170,9 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
+        if(intelligenceFh.getPlotCount()-5<5){
+            intelligenceFh.setPlotCount(0);
+        }
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
     }
