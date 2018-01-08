@@ -318,7 +318,6 @@ public class IntelligenceFindHouseController {
                 model.addAttribute("reportId", reportId);
                 model.addAttribute("intelligenceFhRes", intelligenceFhRes);
                 return "intelligent-report";
-
             }
             model.addAttribute("message", "没有报告记录！");
             return "404";

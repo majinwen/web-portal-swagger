@@ -32,7 +32,7 @@
                 <p>销售状态：<#if discript['sale_status_name']?exists>${discript['sale_status_name']}</#if></p>
                 <p>最新开盘：<#if discript['opened_time']?exists>${discript['opened_time']}<#else>暂无</#if></p>
                 <p>交房时间：<#if discript['deliver_time']?exists>${discript['deliver_time']}<#else>暂无</#if></p>
-                <p>参考均价：<#if (discript['average_price']?exists && discript['average_price']>0)>${discript['average_price']}元/㎡<#else>售价待定</#if></p>
+                <p>参考均价：<#if (discript['average_price']?exists && discript['average_price']>0)>${discript['average_price']?number?round}元/㎡<#else>售价待定</#if></p>
             </li>
         </ul>
     </section>
