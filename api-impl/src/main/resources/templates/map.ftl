@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "staticHeader.ftl">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <#include "staticHeader.ftl">
     <title>地图页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
