@@ -372,12 +372,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //查询地图信息
             for (IntelligenceFindhouse intelligenceFindhouse : finalList) {
                 MapInfo mapInfo = mapService.getMapInfo(intelligenceFindhouse.getNewcode());
-                JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-                if (null!=mapInfo.getTypeCount()){
+                if (null!=mapInfo&&null!=mapInfo.getTypeCount()&&null!=mapInfo.getDataInfo()){
+                    JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
                     JSONObject typeCount=JSON.parseObject(((PGobject) mapInfo.getTypeCount()).getValue());
                     intelligenceFindhouse.setTypeCount(typeCount);
+                    intelligenceFindhouse.setDataInfo(datainfo);
                 }
-                intelligenceFindhouse.setDataInfo(datainfo);
             }
             if (null != intelligenceFhRes.getDistrictId()) {
                 String[] districtId = intelligenceFhRes.getDistrictId().split(",");
