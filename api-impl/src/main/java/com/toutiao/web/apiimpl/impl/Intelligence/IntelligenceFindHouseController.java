@@ -74,7 +74,7 @@ public class IntelligenceFindHouseController {
             model.addAttribute("message", "没有报告记录！");
         } else {
             model.addAttribute("report", Constant.report);
-           return "login";
+           return "/user/login";
         }
         //跳转到报告页
         return "myReport";
@@ -98,13 +98,14 @@ public class IntelligenceFindHouseController {
             String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
             if (StringTool.isBlank(usePhone)) {
                 //前台判断状态 然后跳转到登陆页面
-                return NashResult.Fail("fail","未登录!");
-            }
-            //更改当前报告的状态
-            int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
-            if (result == 0) {
-                //收藏成功
-                return NashResult.build("ok");
+                return NashResult.Fail("fail","未登录!",Constant.report_result);
+            }else {
+                //更改当前报告的状态
+                int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
+                if (result == 0) {
+                    //收藏成功
+                    return NashResult.build("ok");
+                }
             }
         }
         return NashResult.Fail("fail","收藏失败!");
@@ -309,6 +310,7 @@ public class IntelligenceFindHouseController {
                 model.addAttribute("ptlists",JSON.toJSON(fhpt.getOrDefault("ptlists",new ArrayList<String>())).toString());
                 model.addAttribute("datajson",datajson);
                 model.addAttribute("fhtp", fhtp);
+                model.addAttribute("reportId", reportId);
                 model.addAttribute("intelligenceFhRes", intelligenceFhRes);
 
             }

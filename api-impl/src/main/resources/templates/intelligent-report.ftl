@@ -619,15 +619,31 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
-
         $('.collect-button').on('click', function () {
+            var reportId=${reportId};
             $(this).find('.collect').toggleClass('active');
-            $.ajax({
-                url: router_city('/findhouse/collectMyReport/'),
-                processData: false,
-                data: xmlDocument,
-                success: handleResponse
-            });
+            if(reportId!=""&&reportId!=null){
+                $.ajax({
+                    type: "GET",
+                    async: true,
+                    url: "/bj/findhouse/collectMyReport?reportId="+reportId,
+                    data: reportId,
+                    success: function(data){
+                        //改变状态
+                        if(data.code="success"){
+                            //缺少
+
+                        }
+                        if(data.code="fail"){
+                            //重定向到登陆页面
+                            window.location.href = "/user/login?reportId="+reportId;
+                        }
+                    },
+                    error:function (XMLHttpRequest, textStatus, errorThrown){
+                        console.error(errorThrown)
+                    }
+                })
+            }
         })
     });
 </script>
