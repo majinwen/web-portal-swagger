@@ -97,30 +97,33 @@
                     <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
                     </p>
                 </div>
+            <#if fhpt?exists>
                 <div class="echart-box">
                     <div id="priceChart"></div>
                 </div>
 
                 <ul class="results-contrast">
                     <li>
-                    <#if fhpt['maxTarget']?exists&&fhpt['maxTarget']?number gt 0 &&fhpt['target']?exists&&fhpt['target']?number gt 0 >
+
+                    <#if fhpt['maxTarget']?exists&&(fhpt['maxTarget']?number gt 0 )&&fhpt['target']?exists&&fhpt['target']?number gt 0 >
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget">
+                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">
                         ${fhpt['maxTarget']?string('#.##')}
                             %</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>
                             低</#if></em>于北京市场均价涨幅</p>
                     </#if>
                     </li>
                     <li>
-                    <#if fhpt['minTarget']?exists&&fhpt['minTarget']?number gt 0&&fhpt['target']?exists&&fhpt['target']?number gt 0 >
+                        <#if fhpt['minTarget']?exists&&fhpt['minTarget']?number gt 0&&fhpt['target']?exists&&fhpt['target']?number gt 0 >
                         <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}
+                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}
                             %</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>
                             低</#if></em>于北京市场均价跌幅</p>
                         </#if>
                     </li>
                 </ul>
             </div>
+                    </#if>
             <div class="module-item">
                 <div class="report-title-type1">
                     <p>目标市场供需情况</p>
@@ -130,6 +133,7 @@
                     <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
                     </p>
                 </div>
+                <#if fhtp?exists>
                 <div class="echart-box">
                     <div id="marketChart"></div>
                 </div>
@@ -157,6 +161,7 @@
                 </#if>
                 </ul>
             </div>
+                </#if>
             <div class="module-item">
                 <div class="report-title-type1">
                     <p>智能推荐结果</p>
@@ -660,9 +665,9 @@
     var ptlists = ${ptlists};
     var trend = ${trend}
 
-    //    console.log(ptlists)
-    //    console.log(trend)
-        console.log(datajson)
+//        console.log(ptlists)
+//        console.log(trend)
+//        console.log(datajson)
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;

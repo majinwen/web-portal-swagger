@@ -314,13 +314,15 @@ public class IntelligenceFindHouseController {
                 model.addAttribute("fhtp", fhtp);
                 model.addAttribute("reportId", reportId);
                 model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+                return "intelligent-report";
 
             }
             model.addAttribute("message", "没有报告记录！");
+            return "404";
         } else {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+            return "404";
         }
-        return "intelligent-report";
     }
 
     /**
