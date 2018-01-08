@@ -109,9 +109,9 @@ public class NewHouseController {
 //        Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
         //查询地图信息
         MapInfo mapInfo = mapService.getMapInfo(buildingId);
-        JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            model.addAttribute("datainfo",datainfo);
         model.addAttribute("mapInfo", mapInfo);
-        model.addAttribute("datainfo",datainfo);
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));
