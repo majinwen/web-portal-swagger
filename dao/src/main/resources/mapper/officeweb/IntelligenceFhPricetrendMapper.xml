@@ -62,7 +62,7 @@
   </insert>
 
   <select id="queryPriceTrend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT * FROM intelligence_fh_pricetrend
+    SELECT min_total_price,periodic_time,total_price,max_total_price,FLOOR(price) AS price FROM intelligence_fh_pricetrend
     WHERE 1=1
     <if test="totalPrice!=null">
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
@@ -70,7 +70,6 @@
     and periodic_time BETWEEN  now() - interval '14 month' AND now()
     ORDER BY periodic_time DESC
   </select>
-
 
   <select id="queryPriceTrendRatio" parameterType="java.lang.Integer" resultMap="CountRatioBaseResultMap">
     SELECT

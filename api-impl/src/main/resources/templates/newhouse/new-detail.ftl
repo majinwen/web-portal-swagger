@@ -197,7 +197,7 @@
                     <div class="info-item-text">
                         <p>绿化率</p>
                         <#if build['virescencerate']??&&build['virescencerate']?number gt 0>
-                            <em>${build['virescencerate']?string("#.####")}平方米</em>
+                            <em>${build['virescencerate']?string("#.####")}%</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>

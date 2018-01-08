@@ -176,8 +176,8 @@
                         </div>
                         <ul class="content-list" id="layOut">
                             <li data-layout="1"><span>一居</span></li>
-                            <li data-layout="2"><span>两居</span></li>
-                            <li class="current" data-layout="3"><span>三居</span></li>
+                            <li class="current" data-layout="2"><span>两居</span></li>
+                            <li data-layout="3"><span>三居</span></li>
                             <li data-layout="4"><span>四居</span></li>
                             <li data-layout="5"><span>五居</span></li>
                             <li data-layout="6"><span>五居以上</span></li>
@@ -246,6 +246,7 @@
                                     <li class="current" data-child="0"><span>无</span></li>
                                     <li data-child="KG"><span>0-3岁</span></li>
                                     <li data-child="L"><span>4-10岁</span></li>
+                                    <li data-child="0"><span>10岁+</span></li>
                                 </ul>
                             </div>
                             <div class="old-man-box">
