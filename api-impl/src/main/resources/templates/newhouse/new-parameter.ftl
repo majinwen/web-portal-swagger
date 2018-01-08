@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>新房参数</title>
+    <meta name="description" content="让美好生活 来找你">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -24,7 +24,6 @@
                         <#if item?exists><span>${item}</span></#if>
                     </#list><#else>暂无数据
                 </#if>
-
             </div>
         </div>
         <ul class="primary-item">
