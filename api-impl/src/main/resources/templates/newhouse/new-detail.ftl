@@ -17,7 +17,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img height="1px" width="1px" src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -26,7 +26,7 @@
             <#if item?exists>
                 <#if item?? && item!= ''>
                     <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/${item}-tt1200x640" data-src="${qiniuimage}/${item}-tt1200x640" alt="${build['building_name']}">
+                        <img src="${qiniuimage}/${item}"  data-src="${qiniuimage}/${item}" alt="${build['building_name']}">
                     </li>
                 <#else >
                     <li onclick="initphoto(this,0)" class="swiper-slide">
@@ -207,7 +207,10 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${build['park_radio']!'暂无数据'}</em>
+                        <em> <#if build['park_radio']??&&build['lift_door_radio']!=''>
+                            ${build['park_radio']}
+                              <#else>暂无数据
+                             </#if></em>
                     </div>
                 </div>
             </div>
@@ -216,14 +219,21 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>电梯配备</p>
-                        <em>${build['lift_door_radio']!'暂无数据'}</em>
+                        <em><#if build['lift_door_radio']??&&build['lift_door_radio']!=''>
+                        ${build['lift_door_radio']}
+                        <#else>暂无数据
+                        </#if></em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-4"></i>
                     <div class="info-item-text">
                         <p>空气质量</p>
-                        <em>${build['air_quality']!'暂无数据'}</em>
+                        <em><#if build['air_quality']??&&build['air_quality']!=''>
+                        ${build['air_quality']}
+                        <#else>暂无数据
+                        </#if>
+                        </em>
                     </div>
                 </div>
             </div>
@@ -241,15 +251,22 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                    <p id="busStation"><#if datainfo["gongjiao"]["name"]?exists>${datainfo["gongjiao"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="busStationNumber"><#if datainfo["gongjiao"]["lines"]?exists>${datainfo["gongjiao"]["lines"]}条线路<#else >暂无数据</#if></span>
+                    <p id="busStation"><#if datainfo??&&datainfo["gongjiao"]["name"]?exists>${datainfo["gongjiao"]["name"]}<#else >暂无数据</#if></p>
+                    <span id="busStationNumber"><#if datainfo??&&datainfo["gongjiao"]["lines"]?exists>${datainfo["gongjiao"]["lines"]}条线路<#else >暂无数据</#if></span>
 
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
                     <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>${datainfo["ditie"]["line"]}<#else >暂无数据</#if></span>
+                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>
+                                        <#-- ${ datainfo["ditie"]["line"]?substring(0,2)}-->
+                                            <#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>
+                                            ${ datainfo["ditie"]["line"]?substring(2)}
+                                            <#else>
+                                            ${ datainfo["ditie"]["line"]}
+                                            </#if>
+                                        <#else >暂无数据</#if></span>
                 </div>
 
                 <div class="info-card-item">
@@ -511,12 +528,33 @@
         <div class="expand-content">
         <#assign yiliao=datainfo['yiliao'] />
             <ul class="result-data-expand" id="hospitalListDom">
-            <#list yiliao as item>
-                <li>
-                    <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
-                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                </li>
-            </#list>
+                <#--<#if (yiliao['zhuanke']?size>0)>
+                ${yiliao['zhuanke']}
+                </#if>-->
+                <#if (yiliao['zhuanke']?size>0)>
+                <#list yiliao['zhuanke'] as item>
+                    <li>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
+                </#if>
+                <#if (yiliao['zhensuo']?size>0)>
+                    <#list yiliao['zhensuo'] as item>
+                        <li>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                        </li>
+                    </#list>
+                </#if>
+                <#if (yiliao['zonghe']?size>0)>
+                    <#list yiliao['zonghe'] as item>
+                        <li>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                        </li>
+                    </#list>
+                </#if>
             </ul>
         </div>
     </section>
@@ -581,7 +619,7 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a id="more-map-info-new" href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>

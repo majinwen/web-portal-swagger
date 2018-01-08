@@ -27,7 +27,31 @@ $(function () {
     marketsState();         // 小区市场详情切换
 
     showfujian();           //获取用户地理位置
+
+    moreInfoClick();        // 获取更多信息
+
+    $('#more-map-info-new').on('click',function () {
+              var hrefurl = $(this).attr('href');
+              /*location.replace(hrefurl);*/
+        location.href = hrefurl
+    })
 });
+
+
+
+function moreInfoClick() {
+          $('.module-header-message h3').click(function () {
+              console.log( $(this).parent().find('a').attr('class'));
+              $(this).parent().find('a').click();
+               /* if($(this).parent().find('a').attr('class') == "more-arrows expand-btn"){
+                    $(this).parent().find('a').attr('class',"more-arrows expand-btn expand")
+                    console.log("a")
+                }else if ($(this).parent().find('a').attr('class') == "more-arrows expand-btn expand"){
+                    $(this).parent().find('a').attr('class',"more-arrows expand-btn")
+                    console.log("b")
+                }*/
+          });
+}
 
 function scaleImg() {
     var idWidth = $('.scaleImg').width();
