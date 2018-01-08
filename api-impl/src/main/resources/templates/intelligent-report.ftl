@@ -88,73 +88,89 @@
     </div>
     <div class="section page2">
         <div class="page-content">
-            <div class="module-item">
-                <div class="report-title-type1">
-                    <p>目标市场价格走势</p>
-                </div>
-                <div class="report-caption">
-                    <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
-                    </p>
-                </div>
-                <div class="echart-box">
-                    <div id="priceChart"></div>
-                </div>
+        <div class="module-item">
+            <div class="report-title-type1">
+                <p>目标市场价格走势</p>
+            </div>
+            <div class="report-caption">
+                <p>根据您的检索条件</p>
+                <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                </p>
+            </div>
+        <#if fhpt?exists>
+            <div class="echart-box">
+                <div id="priceChart"></div>
+            </div>
 
-                <ul class="results-contrast">
-                    <li>
+            <ul class="results-contrast">
+                <li>
+                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists >
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场环比 最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}
-                            %</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>
-                            低</#if></em>于北京市场均价涨幅</p>
-                    </li>
-                    <li>
-                        <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场环比 最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}
-                            %</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>
-                            低</#if></em>于北京市场均价跌幅</p>
-                    </li>
-                </ul>
+                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">
+                        ${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
+                    </#if>
+                </li>
+                <li>
+                    <#if fhpt['minTarget']?exists&&fhpt['target']?exists >
+                        <span class="contrast-mark type-dark-green">跌 </span>
+                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">
+                        ${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
+                    </#if>
+                </li>
+            </ul>
+        </div>
+        </#if>
+        <div class="module-item">
+            <div class="report-title-type1">
+                <p>目标市场供需情况</p>
             </div>
-            <div class="module-item">
-                <div class="report-title-type1">
-                    <p>目标市场供需情况</p>
-                </div>
-                <div class="report-caption">
-                    <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
-                    </p>
-                </div>
-                <div class="echart-box">
-                    <div id="marketChart"></div>
-                </div>
+            <div class="report-caption">
+                <p>根据您的检索条件</p>
+                <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                </p>
+            </div>
+        <#if fhtp?exists>
+            <div class="echart-box">
+                <div id="marketChart"></div>
+            </div>
 
-                <ul class="results-contrast">
+            <ul class="results-contrast">
+                <#if fhtp['ratio']?exists&&fhtp['ratio']!=''>
                     <li>
-                        <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists>
+                            <span class="contrast-mark type-red">高</span>
+                            <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio"
+                                                                                                                                   class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        </#if>
                     </li>
                     <li>
-                        <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists>
+                            <span class="contrast-mark type-dark-green">低</span>
+                            <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio"
+                                                                                                                                   class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        </#if>
                     </li>
                     <li>
-                        <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                        <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists>
+                            <span class="contrast-mark type-yellow">均</span>
+                            <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio"
+                                                                                                                                          class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em>
+                            </p>
+                        </#if>
                     </li>
-                </ul>
-            </div>
+                </#if>
+            </ul>
+        </div>
+        </#if>
             <div class="module-item">
                 <div class="report-title-type1">
                     <p>智能推荐结果</p>
                 </div>
                 <div class="report-caption">
+                <#if intelligenceFhRes['fhResult']?exists>
                     <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
+                </#if>
                 </div>
-                <div id="allmap" class="echart-box">
-
-                </div>
-
                 <div class="report-title-type3">
                     <p>根据您的需求，为您挑选5个最贴合的</p>
                 </div>
@@ -200,6 +216,42 @@
                     </#list>
                     </ul>
                 </div>
+                <div id="allmap" class="echart-box">
+
+                </div>
+                <section class="elastics-stack-box">
+                    <div class="elastics-stack-content">
+                        <ul id="elastics-stack" class="elastics-stack report">
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <li class="bgtype-${fhResult_index+1}">
+                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                        <div>
+                                            <h4>${fhResult['projname']}</h4>
+                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
+                                                <p>${fhResult['esfPrice']}元/㎡</p>
+                                            <#else >
+                                                <p>${fhResult['price']}元/㎡</p>
+                                            </#if>
+                                        <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                            <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                        <#else >
+                                            <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                        </#if>-->
+                                        </div>
+                                        <#if fhResult['plotImage'][0]?exists>
+                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                        <#else >
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                        </#if>
+                                    </a>
+                                </li>
+                            </#list>
+                        </#if>
+                        </ul>
+                    </div>
+                </section>
             </div>
             <div class="module-item">
                 <div class="report-title-type1">
@@ -222,39 +274,6 @@
                         </ul>
                     </div>
                 </div>
-                <section class="elastics-stack-box">
-                    <div class="elastics-stack-content">
-                        <ul id="elastics-stack" class="elastics-stack report">
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <li class="bgtype-${fhResult_index+1}">
-                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
-                                        <div>
-                                            <h4>${fhResult['projname']}</h4>
-                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
-                                                <p>${fhResult['esfPrice']}元/㎡</p>
-                                            <#else >
-                                                <p>${fhResult['price']}元/㎡</p>
-                                            </#if>
-                                            <#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
-                                                <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
-                                            <#else >
-                                                <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
-                                            </#if>
-                                        </div>
-                                        <#if fhResult['plotImage'][0]?exists>
-                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
-                                        <#else >
-                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
-                                        </#if>
-                                    </a>
-                                </li>
-                            </#list>
-                        </#if>
-                        </ul>
-                    </div>
-                </section>
             </div>
             <div class="module-item type2">
                 <div class="report-title-type2">
@@ -278,6 +297,10 @@
                             <#list fhResults?eval as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult_index lt 3>
                                     <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 3>
+                                    <div class="traffic-text"><span class="type1">1</span>
+                                        <p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p>
+                                    </div>
                                 </#if>
                             </#list>
                         </#if>
@@ -296,14 +319,15 @@
                         <#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
-                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult_index gt 2>
-                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index gt 2>
+                                    <div class="traffic-text"><span class="type1">1</span>
+                                        <p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p>
+                                    </div>
                                 </#if>
                             </#list>
                         </#if>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="module-item type2">
@@ -330,14 +354,14 @@
                     <tr>
                         <td>
                             <i></i>
-                            <em>户均绿化</em>
+                            <em>绿化率</em>
                         </td>
                     <#if intelligenceFhRes?exists>
                         <#assign fhResults =intelligenceFhRes['fhResult']>
                         <#list fhResults?eval as fhResult>
-                        <#--<#if fhResult['virescencerate']?exists&&fhResult['virescencerate']!''>-->
-                            <td>${fhResult['virescencerate']+'%'!'-'}</td>
-                        <#--</#if>-->
+                            <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
+                                <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                            </#if>
                         </#list>
                     </#if>
                     </tr>
@@ -533,11 +557,45 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
-
         $('.collect-button').on('click', function () {
+            var reportId =${reportId};
             $(this).find('.collect').toggleClass('active');
+            /*var count= $(this).find('.collect').attr('data-type');
+            console.log(count);*/
+            if (reportId != "" && reportId != null) {
+                $.ajax({
+                    type: "GET",
+                    async: true,
+                    url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
+                    data: reportId,
+                    success: function (data) {
+                        //改变状态
+                        if (data.data == "ok") {
+                            //缺少收藏样式
+                        }
+                        if (data.data == "fail") {
+                            //重定向到登陆页面
+                            window.location.href = "/user/login?reportId=" + reportId;
+                        }
+                    }
+                })
+            }
         })
     });
+
+    function router_city(urlparam) {
+        urlparam = urlparam || '';
+        if (urlparam[0] != '/') {
+            urlparam = '/' + urlparam
+        }
+        var uri = new URI(window.location.href);
+        var segmens = uri.segment();
+        var city = '';
+        if (segmens.length > 0) {
+            city = '/' + segmens[0]
+        }
+        return city + urlparam
+    }
 </script>
 <script src="${staticurl}/js/raphael.min.js"></script>
 <script type="text/javascript">
@@ -671,13 +729,12 @@
             res.push(datajson[i]["projname"])
         }
         return res;
-
     }
 
-    function dict_getValueOrDefault(obj,key,default_value) {
+    function dict_getValueOrDefault(obj, key, default_value) {
         obj = obj || {}
         var v = obj[key]
-        if(typeof(v) == "undefined"){
+        if (typeof(v) == "undefined") {
             return default_value
         }
         return v
@@ -686,10 +743,9 @@
     function getXiuxiangouwu() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{})
-
-            res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0),dict_getValueOrDefault(xiuxian,"jianshenzhongxin",0)])
+            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
+            var xiuxian = dict_getValueOrDefault(typecount, "xiuxian", {})
+            res.push([dict_getValueOrDefault(xiuxian, "caishichang", 0), dict_getValueOrDefault(xiuxian, "chaoshi", 0), dict_getValueOrDefault(xiuxian, "shangchang", 0), dict_getValueOrDefault(xiuxian, "canting", 0), dict_getValueOrDefault(xiuxian, "jianshenzhongxin", 0)])
         }
         return res;
     }
@@ -697,10 +753,9 @@
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
-            res.push([dict_getValueOrDefault(xiuxian,"qinzi",0),dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
-
+            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
+            var xiuxian = dict_getValueOrDefault(typecount, "jiaoyu", {})
+            res.push([dict_getValueOrDefault(xiuxian, "youeryuan", 0), dict_getValueOrDefault(xiuxian, "xiaoxue", 0), dict_getValueOrDefault(xiuxian, "zhongxue", 0), dict_getValueOrDefault(xiuxian, "gaodeng", 0)])
         }
         return res;
     }
@@ -708,8 +763,8 @@
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var xiuxian=dict_getValueOrDefault(typecount,"yiliao",0)
+            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
+            var xiuxian = dict_getValueOrDefault(typecount, "yiliao", 0)
             res.push([xiuxian])
 
         }
@@ -1225,7 +1280,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['亲子教育', '幼儿园', '小学', '中学', '大学']
+                data: ['幼儿园', '小学', '中学', '大学']
             },
             series: [
                 {
@@ -1244,7 +1299,7 @@
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: getJiaoyupeitao(1)
+                    data: getJiaoyupeitao()[1]
                 },
                 {
                     name: getPlotName()[2],
@@ -1361,6 +1416,7 @@
     for (var i = 0; i < datajson.length; i++) {
         res.push(datajson[i]['coordX'] + "&" + datajson[i]['coordY'])
     }
+
     // 百度地图API功能
     var map = new BMap.Map("allmap", {
         minZoom: 1,
@@ -1369,17 +1425,6 @@
     var point = new BMap.Point(116.404, 39.915);
     map.centerAndZoom(point, 12);
     map.enableScrollWheelZoom(true);
-
-    $('.water-item').on('click', 'li', function () {
-        var attr = $(this).attr('data-type');
-        var point = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
-
-        map.centerAndZoom(new BMap.Point(attr.split("_")[0],attr.split("_")[1]),13);
-
-        addMarker(point,attr.split("-")[2]);
-
-    });
-
 
     var ctrlNav = new window.BMap.NavigationControl({
         anchor: BMAP_ANCHOR_TOP_LEFT,
@@ -1399,21 +1444,20 @@
     if (res.length > 0) {
         for (var i = 0; i < res.length; i++) {
             var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
-            addMarker(point, i);
+            addMarker(point);
         }
     }
-    // 添加标注
-    function addMarker(point, index) {
-        var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png",
-                new BMap.Size(23, 25), {
-                    offset: new BMap.Size(10, 25),
-                    imageOffset: new BMap.Size(0, 0 - index * 25)
 
+    // 添加标注
+    function addMarker(point) {
+        var myIcon = new BMap.Icon("/static/images/map/bgy_icon_zb1.png",
+                new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 30)
                 });
-        var marker = new BMap.Marker(point, {icon: myIcon});
-        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-        map.addOverlay(marker);
-        return marker;
+        var marker_first = new BMap.Marker(point, {icon: myIcon});
+        //marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        map.addOverlay(marker_first);
+        return marker_first;
     }
 
     // 添加定位控件
@@ -1433,6 +1477,36 @@
         alert(e.message);
     });
     map.addControl(geolocationControl);
+    $('.water-item').on('click', 'li', function () {
+        var attr = $(this).attr('data-type');
+        var myIcon = new BMap.Icon("/static/images/map/bgy_icon_zb2.png",
+                new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 30)
+                });
+        var myIcon1 = new BMap.Icon("/static/images/map/bgy_icon_zb1.png",
+                new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 30)
+                });
+        var point = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
+        map.centerAndZoom(point, 12);
+        var allOverlay = map.getOverlays();
+        for(var i = 0;i<allOverlay.length;i++) {
+            //删除指定经度的点
+            if (allOverlay[i].getPosition().lng == attr.split("_")[0]) {
+                map.removeOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon, {icon: myIcon1})));
+                map.addOverlay(new BMap.Marker(new BMap.Point(attr.split("_")[0], attr.split("_")[1]), {icon: myIcon}));
+                addMarker(attr.split("_")[0], attr.split("_")[1]);
+                return false;
+            }else{
+                map.addOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon, {icon: myIcon})));
+                map.removeOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon), {icon: myIcon1}));
+                addMarker(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon);
+            }
+        }
+
+
+    });
+
 
 </script>
 </body>

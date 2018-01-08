@@ -73,8 +73,13 @@ public class Constant {
      */
     public static final String NO = "no";
     /**
-     * 报告页标识
+     * 报告页收藏标识
      */
     public static final String report = "428c7ff359c6ddfbd48e1f9eee30c6e4";
+
+    /**
+     * 报告页结果页标识
+     */
+    public static final String report_result = "6eb3e57271a43c300a5c7f49b8c11b24";
 
 }

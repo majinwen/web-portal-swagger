@@ -14,6 +14,8 @@
 <form action="/user/tologin" id="myform" class="login-form" method="post">
     <input type="hidden" name="count" id="count" value="<#if count?exists>${count}<#else >0</#if>">
     <input type="hidden" name="report" id="report" value="<#if report?exists>${report}</#if>">
+    <input type="hidden" name="reportResult" id="reportResult" value="<#if reportResult?exists>${reportResult}</#if>">
+    <input type="hidden" name="reportId" id="reportId" value="<#if reportId?exists>${reportId}</#if>">
     <div class="input-phone">
         <input type="tel" maxlength="11" id="user_phone" name="phone" placeholder="请输入手机号"
                value="<#if phone?exists>${phone}</#if>"

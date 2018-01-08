@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.Constant;
@@ -68,13 +69,14 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
-            if (StringTool.isNotBlank(userReport)) {
+            if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
+            }else{
+                model.addAttribute("message", "没有报告记录！");
             }
-            model.addAttribute("message", "没有报告记录！");
         } else {
             model.addAttribute("report", Constant.report);
-           return "login";
+           return "/user/login";
         }
         //跳转到报告页
         return "myReport";
@@ -98,16 +100,17 @@ public class IntelligenceFindHouseController {
             String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
             if (StringTool.isBlank(usePhone)) {
                 //前台判断状态 然后跳转到登陆页面
-                return NashResult.Fail("fail","未登录!");
-            }
-            //更改当前报告的状态
-            int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
-            if (result == 0) {
-                //收藏成功
-                return NashResult.build("ok");
+                 return NashResult.build("fail");
+            }else {
+                //更改当前报告的状态
+                int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
+                if (result != 0) {
+                    //收藏成功
+                    return NashResult.build("ok");
+                }
             }
         }
-        return NashResult.Fail("fail","收藏失败!");
+        return null;
     }
 
 
@@ -167,6 +170,9 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
+        if(intelligenceFh.getPlotCount()-5<5){
+            intelligenceFh.setPlotCount(0);
+        }
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
     }
@@ -309,14 +315,17 @@ public class IntelligenceFindHouseController {
                 model.addAttribute("ptlists",JSON.toJSON(fhpt.getOrDefault("ptlists",new ArrayList<String>())).toString());
                 model.addAttribute("datajson",datajson);
                 model.addAttribute("fhtp", fhtp);
+                model.addAttribute("reportId", reportId);
                 model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+                return "intelligent-report";
 
             }
             model.addAttribute("message", "没有报告记录！");
+            return "404";
         } else {
             model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+            return "404";
         }
-        return "intelligent-report";
     }
 
     /**
