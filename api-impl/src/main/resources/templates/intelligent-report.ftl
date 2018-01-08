@@ -962,8 +962,7 @@
             yAxis: {
                 show: false,
                 inverse: true,
-                min: 0,
-                max: 3
+                min: 0
             },
             series: [
                 {
@@ -1062,8 +1061,7 @@
             yAxis: {
                 show: false,
                 inverse: true,
-                min: 0,
-                max: 3
+                min: 0
             },
             series: [
                 {
