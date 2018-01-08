@@ -108,7 +108,7 @@ public class Login {
             //将用户登录信息放置到cookie中判断用户登录状态
             setCookieAndCache(phone, request, response);
             if(StringTool.isNotBlank(report)&& report.equalsIgnoreCase(Constant.report)){
-                return "redirect:/bj/findhouse/queryMyReport";
+                return "redirect:/{citypath}/findhouse/queryMyReport";
             }
         } catch (Exception e) {
             e.printStackTrace();

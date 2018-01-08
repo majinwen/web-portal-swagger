@@ -622,7 +622,12 @@
 
         $('.collect-button').on('click', function () {
             $(this).find('.collect').toggleClass('active');
-
+            $.ajax({
+                url: router_city('/findhouse/collectMyReport/'),
+                processData: false,
+                data: xmlDocument,
+                success: handleResponse
+            });
         })
     });
 </script>
