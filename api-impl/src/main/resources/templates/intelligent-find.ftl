@@ -12,11 +12,11 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1">
+    <div class="section page1 active">
         <div class="bgbox bg1"></div>
         <div class="page-content">
-            <h1>智能找房</h1>
-            <p>房产头条大数据<br>根据您的需求推荐最匹配的小区和房源</p>
+            <h1>懂房帝</h1>
+            <p>智能人需 更懂人居<br>根据您的需求推荐最匹配的小区</p>
             <button type="button" class="button begin">开始体验</button>
         </div>
     </div>
@@ -65,7 +65,7 @@
             <button type="button" class="button" id="userTypeSubmit">确定</button>
         </div>
     </div>
-    <div class="section page3 active">
+    <div class="section page3">
         <div class="bgbox bg3"></div>
         <div class="page-content">
             <div class="result-text">

@@ -34,8 +34,10 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        margin-top: rem(146);
+        top: 12%;
+        height: 85%;
         text-align: center;
+        @include box-sizing;
 
         h1 {
             color: $inteBlack;
@@ -70,8 +72,9 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        margin-top: rem(82);
+        padding-top: 10%;
         text-align: center;
+        @include box-sizing;
 
         h2 {
             @include font-dpr(36);
@@ -1005,10 +1008,12 @@ $inteColorRed: #e42929;
         }
 
         .animate-wrapper {
-            position: relative;
+            position: absolute;
+            top: 48%;
+            left: 50%;
             width: rem(690);
             height: rem(517);
-            margin: rem(98) auto 0;
+            margin: rem(-258) rem(-345);
 
             .animate-item-1, .animate-item-2, .animate-item-3 {
                 position: absolute;

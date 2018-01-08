@@ -7,16 +7,11 @@ var uu = $('#url');
 var BaseUrl = uu.val();
 
 $(function () {
-    console.log("dfghjkl;");
-});
-$(function () {
     scaleImg();             // 大首页图片拖拽
 
     describeAllShow();      // 描述展示全部
 
     detailContactState();   // 分享，收藏，咨询展示状态
-
-    console.log(1);
 
     carouselSwiper();       // 顶部swiper轮播点击弹层photoswipe轮播
 
@@ -43,35 +38,32 @@ $(function () {
     })
 });
 
-
-
 function moreInfoClick() {
-          $('.module-header-message h3').click(function () {
-              console.log( $(this).parent().find('a').attr('class'));
-              $(this).parent().find('a').click();
-               /* if($(this).parent().find('a').attr('class') == "more-arrows expand-btn"){
-                    $(this).parent().find('a').attr('class',"more-arrows expand-btn expand")
-                    console.log("a")
-                }else if ($(this).parent().find('a').attr('class') == "more-arrows expand-btn expand"){
-                    $(this).parent().find('a').attr('class',"more-arrows expand-btn")
-                    console.log("b")
-                }*/
-          });
+    $('.module-header-message h3').click(function () {
+        console.log($(this).parent().find('a').attr('class'));
+        $(this).parent().find('a').click();
+
+    });
 }
 
 function scaleImg() {
-    var idWidth = $('.scaleImg').width();
-    var idHeight = $('.scaleImg').height();
-    if ($(document).scrollTop() == 0) {
+    if ($('.scaleImg').length) {
+        var idWidth = $('.scaleImg').width();
+        var idHeight = $('.scaleImg').height();
         $(document).on('touchstart', function (evt) {
+            if ($('.scaleImg').offset().top != 0) {
+                return
+            }
+
             var oldY = evt.originalEvent.targetTouches[0].pageY;
             $(document).on('touchmove', function (evt) {
                 var newY = evt.originalEvent.targetTouches[0].pageY;
-                if (newY <= oldY) {
+                if (newY < oldY) {
                     return
                 }
                 var Y = newY - oldY;
-                var base = Y / 1000 + 1;
+                base = Y / 1000 + 1;
+                console.log(newY,oldY,Y,base);
                 $('.scaleImg').css({
                     'width': idWidth * base,
                     'height': idHeight * base,
@@ -81,11 +73,11 @@ function scaleImg() {
         });
         $(document).on('touchend', function (evt) {
             $('.scaleImg').animate({
-                "width": idWidth,
-                "height": idHeight,
+                "width": '100%',
+                "height": '100%',
                 'margin-left': 0
             }, 100);
-        });
+        })
     }
 }
 
@@ -114,7 +106,6 @@ function detailContactState() {
 function carouselSwiper() {
     var bannerloop;
     var newIndexloop;
-    console.log(1);
     if ($('.swiper-container').length) {
         // 详情页
         if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) == 1) {

@@ -897,11 +897,11 @@ a.pswp__share--download:hover {
     display: inline-block;
     padding: 0 0.16rem;
     height: 0.3733333333rem;
-    line-height: 0.3733333333rem;
+    line-height: 0.3466666667rem;
     margin-left: 0.32rem;
     vertical-align: middle;
     color: #fb3939;
-    border: 1px solid #fb3939;
+    border: 0.0133333333rem solid #fb3939;
     -webkit-border-radius: 0.0533333333rem;
     border-radius: 0.0533333333rem; }
     [data-dpr="1"] .primary-message .primary-header h2 .sale-state {
@@ -980,6 +980,8 @@ a.pswp__share--download:hover {
       vertical-align: top;
       background-image: url("/static/images/global/primary_map_icon.png");
       background-repeat: no-repeat;
+      -webkit-background-size: contain;
+      background-size: contain;
       background-position: center; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .primary-message ul.primary-item > li p .primary-map-icon {
@@ -996,7 +998,9 @@ a.pswp__share--download:hover {
       height: 0.6266666667rem;
       background-image: url("/static/images/global/arrows_right_icon.png");
       background-repeat: no-repeat;
-      background-position: center; }
+      background-position: center;
+      -webkit-background-size: 40%;
+      background-size: 40%; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .primary-message ul.primary-item > li p .arrows-right {
           background-image: url("/static/images/global/arrows_right_icon@2x.png"); } }
@@ -1112,7 +1116,9 @@ a.pswp__share--download:hover {
       width: 0.6266666667rem;
       height: 1.52rem;
       background-image: url("/static/images/global/arrows_right_icon.png");
-      background-repeat: no-repeat; }
+      background-repeat: no-repeat;
+      -webkit-background-size: 40%;
+      background-size: 40%; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .module-header-message .more-arrows .arrows-right {
           background-image: url("/static/images/global/arrows_right_icon@2x.png"); } }
@@ -1124,7 +1130,9 @@ a.pswp__share--download:hover {
       width: 0.5866666667rem;
       height: 1.52rem;
       background-image: url("/static/images/global/arrows_bottom_icon.png");
-      background-repeat: no-repeat; }
+      background-repeat: no-repeat;
+      -webkit-background-size: 100%;
+      background-size: 100%; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .module-header-message .more-arrows .arrows-expand {
           background-image: url("/static/images/global/arrows_bottom_icon@2x.png"); } }
@@ -1215,8 +1223,8 @@ a.pswp__share--download:hover {
           height: 0.88rem;
           margin: 0 auto 0.2666666667rem;
           background-position: left center;
-          -webkit-background-size: auto 0.88rem;
-          background-size: auto 0.88rem; }
+          -webkit-background-size: auto 100%;
+          background-size: auto 100%; }
         .expand-content .map-education-box ul li.parent-child i {
           background-image: url("/static/images/plot/xqxq_jy_icon1_w.png");
           background-repeat: no-repeat; }
@@ -1327,8 +1335,8 @@ a.pswp__share--download:hover {
           height: 2.4266666667rem;
           background-image: url("/static/images/plot/xqxq_csc.png");
           background-repeat: no-repeat;
-          -webkit-background-size: auto 2.4266666667rem;
-          background-size: auto 2.4266666667rem; }
+          -webkit-background-size: auto 100%;
+          background-size: auto 100%; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .expand-content .map-shopping-box .map-message-btn li.vegetable-market i {
               background-image: url("/static/images/plot/xqxq_csc@2x.png"); } }
@@ -1355,8 +1363,8 @@ a.pswp__share--download:hover {
           height: 3.2933333333rem;
           background-image: url("/static/images/plot/xqxq_sc.png");
           background-repeat: no-repeat;
-          -webkit-background-size: auto 3.2933333333rem;
-          background-size: auto 3.2933333333rem; }
+          -webkit-background-size: auto 100%;
+          background-size: auto 100%; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .expand-content .map-shopping-box .map-message-btn li.shopping-mall i {
               background-image: url("/static/images/plot/xqxq_sc@2x.png"); } }
@@ -1583,7 +1591,9 @@ a.pswp__share--download:hover {
         height: 0.6933333333rem;
         margin-right: 0.3333333333rem;
         vertical-align: top;
-        background-position: center; }
+        background-position: center;
+        -webkit-background-size: contain;
+        background-size: contain; }
         .basic-information .column.item-column-two .info-card-item i.item-two-1 {
           background-image: url("/static/images/plot/xfxq_jbxx_icon_lh.png");
           background-repeat: no-repeat; }
@@ -1654,7 +1664,9 @@ a.pswp__share--download:hover {
           height: 0.5333333333rem;
           margin-bottom: 0.2666666667rem;
           vertical-align: top;
-          background-position: center; }
+          background-position: center;
+          -webkit-background-size: contain;
+          background-size: contain; }
           .basic-information .column.item-column-three .info-card-item i.item-three-1 {
             background-image: url("/static/images/plot/xfxq_jtxx_icon_bus.png");
             background-repeat: no-repeat; }

@@ -243,8 +243,10 @@ body {
     .page1 .bg1 {
       background-image: url("/static/images/intelligent/znzf_image@3x.png"); } }
 .page1 .page-content {
-  margin-top: 1.9466666667rem;
-  text-align: center; }
+  top: 12%;
+  height: 85%;
+  text-align: center;
+  box-sizing: border-box; }
   .page1 .page-content h1 {
     color: #0a0724; }
     [data-dpr="1"] .page1 .page-content h1 {
@@ -289,8 +291,9 @@ body {
     .page2 .bg2 {
       background-image: url("/static/images/intelligent/znzf_gjcy_bg@3x.png"); } }
 .page2 .page-content {
-  margin-top: 1.0933333333rem;
-  text-align: center; }
+  padding-top: 10%;
+  text-align: center;
+  box-sizing: border-box; }
   [data-dpr="1"] .page2 .page-content h2 {
     font-size: 18px; }
   [data-dpr="2"] .page2 .page-content h2 {
@@ -1136,10 +1139,12 @@ body {
       .page4 .page-content .city-title p:after {
         right: 110%; }
   .page4 .page-content .animate-wrapper {
-    position: relative;
+    position: absolute;
+    top: 48%;
+    left: 50%;
     width: 9.2rem;
     height: 6.8933333333rem;
-    margin: 1.3066666667rem auto 0; }
+    margin: -3.44rem -4.6rem; }
     .page4 .page-content .animate-wrapper .animate-item-1, .page4 .page-content .animate-wrapper .animate-item-2, .page4 .page-content .animate-wrapper .animate-item-3 {
       position: absolute; }
       .page4 .page-content .animate-wrapper .animate-item-1 .animate-big-box, .page4 .page-content .animate-wrapper .animate-item-2 .animate-big-box, .page4 .page-content .animate-wrapper .animate-item-3 .animate-big-box {

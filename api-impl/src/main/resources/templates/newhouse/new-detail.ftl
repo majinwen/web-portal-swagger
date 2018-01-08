@@ -286,7 +286,7 @@
                     <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
                     <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
                     <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
-                    <li class="university" data-type="gaodeng"><i></i><span>大学</span></li>
+                    <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
                 </ul>
             </div>
             <ul class="result-data-expand" id="qinzi">
