@@ -104,21 +104,17 @@
 
                 <ul class="results-contrast">
                     <li>
-
-                    <#if fhpt['maxTarget']?exists&&(fhpt['maxTarget']?number gt 0 )&&fhpt['target']?exists&&fhpt['target']?number gt 0 >
+                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists >
                         <span class="contrast-mark type-red">涨</span>
                         <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">
-                        ${fhpt['maxTarget']?string('#.##')}
-                            %</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>
-                            低</#if></em>于北京市场均价涨幅</p>
+                        ${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
                     </#if>
                     </li>
                     <li>
-                        <#if fhpt['minTarget']?exists&&fhpt['minTarget']?number gt 0&&fhpt['target']?exists&&fhpt['target']?number gt 0 >
-                        <span class="contrast-mark type-dark-green">跌</span>
-                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}
-                            %</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>
-                            低</#if></em>于北京市场均价跌幅</p>
+                        <#if fhpt['minTarget']?exists&&fhpt['target']?exists >
+                        <span class="contrast-mark type-dark-green">跌 </span>
+                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">
+                        ${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
                         </#if>
                     </li>
                 </ul>
@@ -704,7 +700,6 @@
         for (var i = 0; i < datajson.length; i++) {
             var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
             var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{})
-
             res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0),dict_getValueOrDefault(xiuxian,"jianshenzhongxin",0)])
         }
         return res;
@@ -714,8 +709,7 @@
         for (var i = 0; i < datajson.length; i++) {
             var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
             var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
-            res.push([dict_getValueOrDefault(xiuxian,"qinzi",0),dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
-
+            res.push([dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
         }
         return res;
     }
@@ -1238,7 +1232,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['亲子教育', '幼儿园', '小学', '中学', '大学']
+                data: ['幼儿园', '小学', '中学', '大学']
             },
             series: [
                 {
@@ -1257,7 +1251,7 @@
                     itemStyle: {
                         normal: { color: '#f25a5a' }
                     },
-                    data: getJiaoyupeitao(1)
+                    data: getJiaoyupeitao()[1]
                 },
                 {
                     name: getPlotName()[2],
