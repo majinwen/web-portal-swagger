@@ -281,7 +281,6 @@ function chooseUserFinds() {
         $(this).addClass('optional').removeClass('current');
         var currentChoose = $('.area-content').find('li.current').length;
         if(currentChoose < 3){
-            console.log(distictInfo);
             $('.area-content').find('li.disabled').each(function (i, orgin) {
                 $(distictInfo).each(function (index, item) {
                     if ($(orgin).data('value') == item.districtId) {
@@ -343,6 +342,8 @@ function chooseUserFinds() {
      * 修改预算/重置
      * */
     $('.modify-reset').on('click', function () {
+
+        $('.area-content').find('li:not(.disabled )').removeClass('current').removeClass('optional').addClass('disabled');
         $(this).parents('.layer').addClass('none');
         $('.result-begin').removeClass('none');
         $('.result-container').addClass('none');

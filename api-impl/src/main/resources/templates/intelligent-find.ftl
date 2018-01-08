@@ -197,37 +197,37 @@
                             </div>
                         </div>
                         <ul id="option_distict" class="area-content clear">
-                            <li class="disabled" data-value="105041">石景山</li>
-                            <li class="disabled" data-value="105045">顺义</li>
-                            <li class="disabled" data-value="105043">大兴</li>
-                            <li class="disabled" data-value="105034">海淀</li>
                             <li class="disabled" data-value="105035">朝阳</li>
+                            <li class="disabled" data-value="105034">海淀</li>
+                            <li class="disabled" data-value="105040">丰台</li>
                             <li class="disabled" data-value="105036">东城</li>
                             <li class="disabled" data-value="105037">西城</li>
-                            <li class="disabled" data-value="105040">丰台</li>
+                            <li class="disabled" data-value="105041">石景山</li>
                             <li class="disabled" data-value="105046">昌平</li>
-                            <li class="disabled" data-value="105047">密云</li>
-                            <li class="disabled" data-value="105048">怀柔</li>
-                            <li class="disabled" data-value="105049">延庆</li>
-                            <li class="disabled" data-value="105050">平谷</li>
-                            <li class="disabled" data-value="105051">门头沟</li>
+                            <li class="disabled" data-value="105043">大兴</li>
                             <li class="disabled" data-value="105044">通州</li>
+                            <li class="disabled" data-value="105045">顺义</li>
                             <li class="disabled" data-value="105042">房山</li>
+                            <li class="disabled" data-value="105047">密云</li>
+                            <li class="disabled" data-value="105051">门头沟</li>
+                            <li class="disabled" data-value="105050">平谷</li>
                             <li class="disabled" data-value="106013">北京周边</li>
-                            <li class="disabled" data-value="106022">武清</li>
-                            <li class="disabled" data-value="106023">燕郊</li>
-                            <li class="disabled" data-value="106024">香河</li>
-                            <li class="disabled" data-value="106025">大厂</li>
-                            <li class="disabled" data-value="106026">固安</li>
-                            <li class="disabled" data-value="106027">永清</li>
-                            <li class="disabled" data-value="106028">廊坊</li>
-                            <li class="disabled" data-value="106029">霸州</li>
-                            <li class="disabled" data-value="106030">涿州</li>
-                            <li class="disabled" data-value="106031">涞水</li>
-                            <li class="disabled" data-value="106032">怀来</li>
-                            <li class="disabled" data-value="106033">崇礼</li>
-                            <li class="disabled" data-value="106034">秦皇岛</li>
-                            <li class="disabled" data-value="106035">天津</li>
+                            <#--<li class="disabled" data-value="105048">怀柔</li>-->
+                            <#--<li class="disabled" data-value="105049">延庆</li>-->
+                            <#--<li class="disabled" data-value="106022">武清</li>-->
+                            <#--<li class="disabled" data-value="106023">燕郊</li>-->
+                            <#--<li class="disabled" data-value="106024">香河</li>-->
+                            <#--<li class="disabled" data-value="106025">大厂</li>-->
+                            <#--<li class="disabled" data-value="106026">固安</li>-->
+                            <#--<li class="disabled" data-value="106027">永清</li>-->
+                            <#--<li class="disabled" data-value="106028">廊坊</li>-->
+                            <#--<li class="disabled" data-value="106029">霸州</li>-->
+                            <#--<li class="disabled" data-value="106030">涿州</li>-->
+                            <#--<li class="disabled" data-value="106031">涞水</li>-->
+                            <#--<li class="disabled" data-value="106032">怀来</li>-->
+                            <#--<li class="disabled" data-value="106033">崇礼</li>-->
+                            <#--<li class="disabled" data-value="106034">秦皇岛</li>-->
+                            <#--<li class="disabled" data-value="106035">天津</li>-->
                         </ul>
                         <div class="layer-footer">
                             <button type="button" class="button disabled" id="submitArea">确定</button>
