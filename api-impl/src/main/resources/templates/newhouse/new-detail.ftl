@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
     <title>来头条看【${build['building_name']}】</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
     <#include "../StatisticsHeader.ftl">
@@ -17,7 +16,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img height="1px" width="1px" src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">

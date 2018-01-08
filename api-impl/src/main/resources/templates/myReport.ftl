@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/my-report.css">
     <title>我的报告页</title>
-<#--<meta name="description" content="头条房产，帮你发现美好生活">-->
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-<#include "StatisticsHeader.ftl">
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <div class="report-page">

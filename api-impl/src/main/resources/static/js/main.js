@@ -4,13 +4,19 @@
  * @private
  */
 var uu = $('#url');
-var BaseUrl=uu.val();
+var BaseUrl = uu.val();
+
+$(function () {
+    console.log("dfghjkl;");
+});
 $(function () {
     scaleImg();             // 大首页图片拖拽
 
     describeAllShow();      // 描述展示全部
 
     detailContactState();   // 分享，收藏，咨询展示状态
+
+    console.log(1);
 
     carouselSwiper();       // 顶部swiper轮播点击弹层photoswipe轮播
 
@@ -32,30 +38,31 @@ $(function () {
 function scaleImg() {
     var idWidth = $('.scaleImg').width();
     var idHeight = $('.scaleImg').height();
-    $(document).on('touchstart', function (evt) {
-        console.log(1);
-        var oldY = evt.originalEvent.targetTouches[0].pageY;
-        $(document).on('touchmove', function (evt) {
-            var newY = evt.originalEvent.targetTouches[0].pageY;
-            if (newY <= oldY) {
-                return
-            }
-            var Y = newY - oldY;
-            var base = Y / 1000 + 1;
-            $('.scaleImg').css({
-                'width': idWidth * base,
-                'height': idHeight * base,
-                'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
+    if ($(document).scrollTop() == 0) {
+        $(document).on('touchstart', function (evt) {
+            var oldY = evt.originalEvent.targetTouches[0].pageY;
+            $(document).on('touchmove', function (evt) {
+                var newY = evt.originalEvent.targetTouches[0].pageY;
+                if (newY <= oldY) {
+                    return
+                }
+                var Y = newY - oldY;
+                var base = Y / 1000 + 1;
+                $('.scaleImg').css({
+                    'width': idWidth * base,
+                    'height': idHeight * base,
+                    'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
+                });
             });
         });
-    });
-    $(document).on('touchend', function (evt) {
-        $('.scaleImg').animate({
-            "width": idWidth,
-            "height": idHeight,
-            'margin-left': 0
-        },100);
-    });
+        $(document).on('touchend', function (evt) {
+            $('.scaleImg').animate({
+                "width": idWidth,
+                "height": idHeight,
+                'margin-left': 0
+            }, 100);
+        });
+    }
 }
 
 function describeAllShow() {
@@ -70,12 +77,6 @@ function describeAllShow() {
                 p.text(p.data("orig_desc"));
             });
         });
-        // var describeAllContent = $('.describe-cont p').text();
-        // $('.describe-cont p').text(describeAllContent.substr(0,56));
-        // $('.describe-show-btn').click(function () {
-        //     $(this).hide();
-        //     $('.describe-cont p').text(describeAllContent);
-        // });
     }
 }
 
@@ -89,7 +90,8 @@ function detailContactState() {
 function carouselSwiper() {
     var bannerloop;
     var newIndexloop;
-    if ($('.swiper-container').length){
+    console.log(1);
+    if ($('.swiper-container').length) {
         // 详情页
         if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) == 1) {
             bannerloop = false;
@@ -100,8 +102,8 @@ function carouselSwiper() {
         var bannerSwiper = new Swiper('#detail-swiper', {
             autoplay: 2000,//可选选项，自动滑动
             loop: bannerloop,
-            pagination : '.swiper-pagination',
-            paginationType : 'fraction'
+            pagination: '.swiper-pagination',
+            paginationType: 'fraction'
         });
 
         // 新房首页
@@ -114,13 +116,13 @@ function carouselSwiper() {
         var newIndexSwiper = new Swiper('#index-swiper', {
             autoplay: 2000,//可选选项，自动滑动
             loop: newIndexloop,
-            pagination : '.swiper-pagination'
+            pagination: '.swiper-pagination'
         })
     }
 }
 
-function initphoto(a,i) {
-    if(typeof i == 'undefined'){
+function initphoto(a, i) {
+    if (typeof i == 'undefined') {
         i = 0;
     }
     var b = [];
@@ -142,29 +144,29 @@ function initphoto(a,i) {
 }
 
 function houseTypeState() {
-    if ($('.house-type-state').length){
-        $('.house-type-state').on('click','span',function () {
+    if ($('.house-type-state').length) {
+        $('.house-type-state').on('click', 'span', function () {
             $(this).addClass('current').siblings().removeClass('current');
-          /* location.href="/newhouse/getNewHouseLayoutCountByRoom?id="+$(this).data('bid')+"&&tags="+$(this).data('id');*/
+            /* location.href="/newhouse/getNewHouseLayoutCountByRoom?id="+$(this).data('bid')+"&&tags="+$(this).data('id');*/
             $('#all-type').children("section").siblings().hide();
-            if($(this).data('id')=="0"){
+            if ($(this).data('id') == "0") {
                 $('#all-type').children("section").siblings().show();
-            }else {
-               var roomDom = document.getElementsByClassName("room"+$(this).data('id'));
-               var $roomid = $(roomDom);
-               $roomid.show();
+            } else {
+                var roomDom = document.getElementsByClassName("room" + $(this).data('id'));
+                var $roomid = $(roomDom);
+                $roomid.show();
             }
             /*else if ($(this).data('id')=="2"){
-                $(".room2").show();
-            }else if ($(this).data('id')=="3"){
-                $(".room3").show();
-            }else if ($(this).data('id')=="4"){
-                $(".room4").show();
-            }else if ($(this).data('id')=="5"){
-                $(".room5").show();
-            }else if ($(this).data('id')=="1"){
-                $(".room1").show();
-            }*/
+             $(".room2").show();
+             }else if ($(this).data('id')=="3"){
+             $(".room3").show();
+             }else if ($(this).data('id')=="4"){
+             $(".room4").show();
+             }else if ($(this).data('id')=="5"){
+             $(".room5").show();
+             }else if ($(this).data('id')=="1"){
+             $(".room1").show();
+             }*/
 
         });
     }
@@ -186,14 +188,14 @@ function textSlider() {
         $ul.append($li.eq(0).clone());
         setInterval(function () {
             num++;
-            $ul.addClass('animate').css('-webkit-transform','translateY(-' + $lilength*(num) + 'px)');
+            $ul.addClass('animate').css('-webkit-transform', 'translateY(-' + $lilength * (num) + 'px)');
             setTimeout(function () {
                 if (num == $length) {
-                    $ul.removeClass('animate').css('-webkit-transform','translateY(0)');
+                    $ul.removeClass('animate').css('-webkit-transform', 'translateY(0)');
                     num = 0;
                 }
-            },300)
-        },3000);
+            }, 300)
+        }, 3000);
     }
 }
 
@@ -220,7 +222,7 @@ function moduleExpand() {
             $(this).parent().next('.expand-content').slideUp();
         }
     });
-};
+}
 
 function marketsState() {
     $('.price-trend-btn').on('click', function () {
@@ -235,21 +237,21 @@ function marketsState() {
         $('.supply-contrast').removeClass('none');
         $('.price-trend').addClass('none');
     })
-};
+}
 
 function router_city(urlparam) {
-    urlparam = urlparam || ""
-    if(urlparam[0] != '/'){
+    urlparam = urlparam || "";
+    if (urlparam[0] != '/') {
         urlparam = '/' + urlparam
     }
     var uri = new URI(window.location.href);
     var segmens = uri.segment();
     var city = "";
-    if(segmens.length>0){
+    if (segmens.length > 0) {
         city = "/" + segmens[0]
     }
-    return city+urlparam
-};
+    return city + urlparam
+}
 
 
 /**
@@ -268,14 +270,14 @@ function showfujian() {
                 lat = r.point.lat;
                 var point = new BMap.Point(lon, lat);//创建点坐标
                 var gc = new BMap.Geocoder();
-                gc.getLocation(point, function(rs){
-                    location.href = router_city('/esf')+"?lat="+lat+"&lon="+lon;
+                gc.getLocation(point, function (rs) {
+                    location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
                 });
             }
             else {
             }
         });
-    })
+    });
     $(".index-xiaoqu").click(function () {
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
@@ -285,8 +287,8 @@ function showfujian() {
                 lat = r.point.lat;
                 var point = new BMap.Point(lon, lat);//创建点坐标
                 var gc = new BMap.Geocoder();
-                gc.getLocation(point, function(rs){
-                    location.href = router_city('/xiaoqu')+"?lat="+lat+"&lon="+lon;
+                gc.getLocation(point, function (rs) {
+                    location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
                 });
             }
             else {

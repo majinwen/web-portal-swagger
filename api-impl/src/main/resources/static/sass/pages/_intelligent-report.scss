@@ -857,10 +857,10 @@ $inteTextColorRed: #f25a5a;
                         height: rem(40);
                         @include bg-image('/static/images/intelligent/bgy_icon_sca');
                         background-position: left center;
-                        -webkit-background-size: contain;
-                        background-size: contain;
+                        -webkit-background-size: auto 100%;
+                        background-size: auto 100%;
 
-                        .active {
+                        &.active {
                             background-position: right center;
                         }
                     }

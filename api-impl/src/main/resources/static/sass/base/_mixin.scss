@@ -136,6 +136,16 @@ $FontSize: 16;
     @return $list;
 }
 
+body, input, button, textarea, select {
+    @include font-dpr(24);
+}
+
+body {
+    position: relative;
+    width: rem(750);
+    margin: 0 auto !important;
+}
+
 .module-bottom-fill {
     padding-bottom: rem(16);
     background-color: $baseModuleFillColor;
@@ -209,4 +219,7 @@ $FontSize: 16;
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+.shareTopImg {
+    position: absolute;
 }
