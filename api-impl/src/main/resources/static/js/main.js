@@ -54,7 +54,6 @@ function scaleImg() {
             if ($('.scaleImg').offset().top != 0) {
                 return
             }
-
             var oldY = evt.originalEvent.targetTouches[0].pageY;
             $(document).on('touchmove', function (evt) {
                 var newY = evt.originalEvent.targetTouches[0].pageY;
@@ -63,7 +62,6 @@ function scaleImg() {
                 }
                 var Y = newY - oldY;
                 base = Y / 1000 + 1;
-                console.log(newY,oldY,Y,base);
                 $('.scaleImg').css({
                     'width': idWidth * base,
                     'height': idHeight * base,
