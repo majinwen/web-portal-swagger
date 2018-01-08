@@ -92,7 +92,7 @@
             <li>
                 <p>均价：<em class="high-light-red">
                 <#if build['average_price']?exists && build['average_price'] gt 0>
-                    ${build['average_price']}元/㎡
+                    ${build['average_price']?number?round}元/㎡
                 <#else>
                     售价待定
                 </#if>
@@ -558,7 +558,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
                         <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
-                            <span class="expand-price">${build['propertyfee']}元/㎡·月</span>
+                            <span class="expand-price">${build['propertyfee']?number?round}元/㎡·月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -568,7 +568,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
                         <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
-                            <span class="expand-price">${build['car_rent_price']}元/月</span>
+                            <span class="expand-price">${build['car_rent_price']?number?round}元/月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -625,7 +625,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']}元/㎡<#else >售价待定</#if></em></h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']?number?round}元/㎡<#else >售价待定</#if></em></h4>
                 </div>
             </a>
         </li>

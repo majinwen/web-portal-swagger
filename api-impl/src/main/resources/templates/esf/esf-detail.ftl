@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
     <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>
 ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
-    <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
+    <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices?number?round}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
@@ -88,7 +88,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                         <span>总价</span>
                         <em>
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
-                        ${houseDetail.houseTotalPrices}万
+                        ${houseDetail.houseTotalPrices?number?round}万
                         <#else>
                             暂无数据
                         </#if>
@@ -119,7 +119,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
+                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?number?round) * 10000}元/㎡
                 <#else>
                     暂无数据
                 </#if>
@@ -256,7 +256,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡
                 </#if>
             </p>
         </div>
@@ -315,7 +315,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                                     <#if map.houseTotalPrices==0>
                                     </#if>
                                 <#else>
-                                ${map.houseTotalPrices}万
+                                ${map.houseTotalPrices?number?round}万
                                 </#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
                                 <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
@@ -356,7 +356,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                         <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
-                        <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                        <p class="cont-last"><em>${plotInfo.avgPrice?number?round}元</em>/㎡</p>
                     </#if>
                 </div>
             </a></li>
