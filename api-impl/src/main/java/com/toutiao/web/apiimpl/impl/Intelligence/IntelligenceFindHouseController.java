@@ -108,7 +108,7 @@ public class IntelligenceFindHouseController {
                 }
             }
         }
-        return NashResult.Fail("fail","收藏失败!");
+        return null;
     }
 
 

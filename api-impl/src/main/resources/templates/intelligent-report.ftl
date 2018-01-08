@@ -545,12 +545,15 @@
                     success: function(data){
                         //改变状态
                         if(data.code="success"){
+                            console.log(data.data)
                             //缺少
-
-                        }
-                        if(data.code="fail"){
-                            //重定向到登陆页面
-                            window.location.href = "/user/login?reportId="+reportId;
+                            $(this).find('.collect').toggleClass('active');
+                        }else{
+                            if(data.code="fail"){
+                                console.log(data.code);
+                                //重定向到登陆页面
+                                window.location.href = "/user/login?reportId="+reportId;
+                            }
                         }
                     },
                     error:function (XMLHttpRequest, textStatus, errorThrown){
@@ -767,7 +770,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toString()])
+            res.push([parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000])
         }
         return res;
     }
