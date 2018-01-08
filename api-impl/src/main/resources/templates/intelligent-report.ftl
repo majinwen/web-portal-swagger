@@ -3,97 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script>
-        (function (h, k) {
-            var p = h.document;
-            var b = p.documentElement;
-            var m = p.querySelector('meta[name="viewport"]');
-            var e = p.querySelector('meta[name="flexible"]');
-            var q = 0;
-            var d = 0;
-            var f;
-            var j = k.flexible || (k.flexible = {});
-            if (m) {
-                console.warn("将根据已有的meta标签来设置缩放比例");
-                var g = m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);
-                if (g) {
-                    d = parseFloat(g[1]);
-                    q = parseInt(1 / d)
-                }
-            } else {
-                if (e) {
-                    var i = e.getAttribute("content");
-                    if (i) {
-                        var c = i.match(/initial\-dpr=([\d\.]+)/);
-                        var o = i.match(/maximum\-dpr=([\d\.]+)/);
-                        if (c) {
-                            q = parseFloat(c[1]);
-                            d = parseFloat((1 / q).toFixed(2))
-                        }
-                        if (o) {
-                            q = parseFloat(o[1]);
-                            d = parseFloat((1 / q).toFixed(2))
-                        }
-                    }
-                }
-            }
-            if (!q && !d) {
-                var n = h.devicePixelRatio;
-                if (n >= 3 && (!q || q >= 3)) {
-                    q = 3
-                } else {
-                    if (n >= 2 && (!q || q >= 2)) {
-                        q = 2
-                    } else {
-                        q = 1
-                    }
-                }
-                d = 1 / q
-            }
-            b.setAttribute("data-dpr", q);
-            if (!m) {
-                m = p.createElement("meta");
-                m.setAttribute("name", "viewport");
-                m.setAttribute("content", "initial-scale=" + d + ", maximum-scale=" + d + ", minimum-scale=" + d + ", user-scalable=no");
-                if (b.firstElementChild) {
-                    b.firstElementChild.appendChild(m)
-                } else {
-                    var a = p.createElement("div");
-                    a.appendChild(m);
-                    p.write(a.innerHTML)
-                }
-            }
-
-            function l() {
-                var r = b.getBoundingClientRect().width;
-                if (r / q > 540) {
-                    r = 540 * q
-                }
-                var s = r / 10;
-                b.style.fontSize = s + "px";
-                j.rem = h.rem = s
-            }
-
-            h.addEventListener("resize", function () {
-                clearTimeout(f);
-                f = setTimeout(l, 300)
-            }, false);
-            h.addEventListener("pageshow", function (r) {
-                if (r.persisted) {
-                    clearTimeout(f);
-                    f = setTimeout(l, 300)
-                }
-            }, false);
-            if (p.readyState === "complete") {
-                p.body.style.fontSize = 12 * q + "px"
-            } else {
-                p.addEventListener("DOMContentLoaded", function (r) {
-                    p.body.style.fontSize = 12 * q + "px"
-                }, false)
-            }
-            l();
-            j.dpr = h.dpr = q;
-            j.refreshRem = l
-        })(window, window["lib"] || (window["lib"] = {}));
+        (function(h,k){var p=h.document;var b=p.documentElement;var m=p.querySelector('meta[name="viewport"]');var e=p.querySelector('meta[name="flexible"]');var q=0;var d=0;var f;var j=k.flexible||(k.flexible={});if(m){console.warn("将根据已有的meta标签来设置缩放比例");var g=m.getAttribute("content").match(/initial\-scale=([\d\.]+)/);if(g){d=parseFloat(g[1]);q=parseInt(1/d)}}else{if(e){var i=e.getAttribute("content");if(i){var c=i.match(/initial\-dpr=([\d\.]+)/);var o=i.match(/maximum\-dpr=([\d\.]+)/);if(c){q=parseFloat(c[1]);d=parseFloat((1/q).toFixed(2))}if(o){q=parseFloat(o[1]);d=parseFloat((1/q).toFixed(2))}}}}if(!q&&!d){var n=h.devicePixelRatio;if(n>=3&&(!q||q>=3)){q=3}else{if(n>=2&&(!q||q>=2)){q=2}else{q=1}}d=1/q}b.setAttribute("data-dpr",q);if(!m){m=p.createElement("meta");m.setAttribute("name","viewport");m.setAttribute("content","initial-scale="+d+", maximum-scale="+d+", minimum-scale="+d+", user-scalable=no");if(b.firstElementChild){b.firstElementChild.appendChild(m)}else{var a=p.createElement("div");a.appendChild(m);p.write(a.innerHTML)}}function l(){var r=b.getBoundingClientRect().width;if(r/q>540){r=540*q}var s=r/10;b.style.fontSize=s+"px";j.rem=h.rem=s}h.addEventListener("resize",function(){clearTimeout(f);f=setTimeout(l,300)},false);h.addEventListener("pageshow",function(r){if(r.persisted){clearTimeout(f);f=setTimeout(l,300)}},false);if(p.readyState==="complete"){p.body.style.fontSize=12*q+"px"}else{p.addEventListener("DOMContentLoaded",function(r){p.body.style.fontSize=12*q+"px"},false)}l();j.dpr=h.dpr=q;j.refreshRem=l})(window,window["lib"]||(window["lib"]={}));
     </script>
     <meta name="renderer" content="webkit">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
@@ -222,19 +132,15 @@
                 <ul class="results-contrast">
                     <li>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio"
-                                                                                                                               class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio"
-                                                                                                                               class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
                     </li>
                     <li>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio"
-                                                                                                                                      class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em>
-                        </p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
                     </li>
                 </ul>
             </div>
@@ -367,10 +273,14 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span class="type1">1</span>
-                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span class="type2">2</span>
-                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 3>
+                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                </#if>
+                            </#list>
+                        </#if>
                         </div>
                     </div>
                     <div class="vertical-line">
@@ -383,10 +293,14 @@
                             </div>
                         </div>
                         <div class="traffic-text-box">
-                            <div class="traffic-text"><span class="type3">1</span>
-                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
-                            <div class="traffic-text"><span class="type4">2</span>
-                                <p>珠江帝景，距大望路站<em>0.6km</em>,约步行<em>3</em>分钟</p></div>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index gt 2>
+                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                                </#if>
+                            </#list>
+                        </#if>
                         </div>
                     </div>
 
@@ -403,15 +317,15 @@
                             <i></i>
                             <em>楼龄</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
-                                <#assign date = (.now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number)?string + '年'>
-                                <td>${date!'-'}</td>
-                            </#if>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
+                                    <#assign date = (.now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number)?string + '年'>
+                                    <td>${date!'-'}</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
@@ -432,58 +346,58 @@
                             <i></i>
                             <em>车位比</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>${fhResult['parkRadio']!'-'}</td>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['parkRadio']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>空气质量</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>${fhResult['airQuality']!'-'}</td>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['airQuality']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>电梯</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>${fhResult['liftDoorRadio']!'-'}</td>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['liftDoorRadio']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>供暖</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['heatingMode']?exists>
-                                <#if fhResult['heatingMode']?number == 0>
-                                    <td>未知</td>
-                                <#elseif fhResult['heatingMode']?number == 1>
-                                    <td>集中供暖</td>
-                                <#elseif fhResult['heatingMode']?number == 2>
-                                    <td>自供暖</td>
-                                <#else >
-                                    <td> -</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['heatingMode']?exists>
+                                    <#if fhResult['heatingMode']?number == 0>
+                                        <td>未知</td>
+                                    <#elseif fhResult['heatingMode']?number == 1>
+                                        <td>集中供暖</td>
+                                    <#elseif fhResult['heatingMode']?number == 2>
+                                        <td>自供暖</td>
+                                    <#else >
+                                        <td> -</td>
+                                    </#if>
                                 </#if>
-                            </#if>
-                        </#list>
-                    </#if>
+                            </#list>
+                        </#if>
                     </tr>
                 </table>
             </div>
@@ -498,60 +412,60 @@
                             <i></i>
                             <em>物业费<br>(/㎡·年)</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
-                                <td>${fhResult['propertyfee']}</td>
-                            <#else >
-                                <td> -</td>
-                            </#if>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
+                                    <td>${fhResult['propertyfee']}</td>
+                                <#else >
+                                    <td> -</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>水电费<br>(/吨)<br>(/度)</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>
-                                <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
-                                    <#if fhResult['waterSupply'] == '商水'>
-                                        <span>6元</span>
-                                    <#else >
-                                        <span>5元</span>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>
+                                    <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
+                                        <#if fhResult['waterSupply'] == '商水'>
+                                            <span>6元</span>
+                                        <#else >
+                                            <span>5元</span>
+                                        </#if>
                                     </#if>
-                                </#if>
-                                <hr>
-                                <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
-                                    <#if fhResult['electricSupply'] == '商电'>
-                                        <span>1.33元</span>
-                                    <#else >
-                                        <span>0.48元</span>
+                                    <hr>
+                                    <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
+                                        <#if fhResult['electricSupply'] == '商电'>
+                                            <span>1.33元</span>
+                                        <#else >
+                                            <span>0.48元</span>
+                                        </#if>
                                     </#if>
-                                </#if>
-                            </td>
-                        </#list>
-                    </#if>
+                                </td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>停车费<br>(/年)</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
-                                <td>${fhResult['carRentPrice']}元</td>
-                            <#else >
-                                <td> -</td>
-                            </#if>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
+                                    <td>${fhResult['carRentPrice']}元</td>
+                                <#else >
+                                    <td> -</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                 </table>
             </div>
@@ -782,10 +696,22 @@
 
     }
 
+    function dict_getValueOrDefault(obj,key,default_value) {
+        obj = obj || {}
+        var v = obj[key]
+        if(typeof(v) == "undefined"){
+            return default_value
+        }
+        return v
+    }
+
     function getXiuxiangouwu() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"] || ""["xiuxian"] || ""["caishichang"] || "", datajson[i]["typeCount"] || ""["xiuxian"] || ""["chaoshi"] || "", datajson[i]["typeCount"] || ""["xiuxian"] || ""["shangchang"] || "", datajson[i]["typeCount"] || ""["xiuxian"] || ""["canting"] || "", datajson[i]["typeCount"] || ""["xiuxian"] || ""["jianshenzhongxin"] || ""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{})
+
+            res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0),dict_getValueOrDefault(xiuxian,"jianshenzhongxin",0)])
         }
         return res;
     }
@@ -793,7 +719,10 @@
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"] || ""["jiaoyu"] || ""["qinzi"], datajson[i]["typeCount"] || ""["jiaoyu"] || ""["youeryuan"] || "", datajson[i]["typeCount"] || ""["jiaoyu"] || ""["xiaoxue"] || "", datajson[i]["typeCount"] || ""["jiaoyu"] || ""["zhongxue"] || "", datajson[i]["typeCount"] || ""["jiaoyu"] || ""["gaodeng"] || ""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
+            res.push([dict_getValueOrDefault(xiuxian,"qinzi",0),dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
+
         }
         return res;
     }
@@ -801,7 +730,10 @@
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([datajson[i]["typeCount"] || ""["yiliao"] || ""])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"yiliao",0)
+            res.push([xiuxian])
+
         }
         return res;
     }
@@ -809,7 +741,7 @@
     function getSubway() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2]) / 1000])
+            res.push([parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2])/1000])
         }
         return res;
     }
@@ -817,7 +749,7 @@
     function getMetroStation() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push((datajson[i]["nearestSubwayDesc"] || "".split("$")[1]))
+            res.push((datajson[i]["nearestSubwayDesc"]||"".split("$")[1]))
         }
         return res;
     }
@@ -826,7 +758,7 @@
     function getNearbyQiao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["nearbyQiao"] || "")
+            res.push(datajson[i]["nearbyQiao"]||"")
         }
         return res;
     }
@@ -835,7 +767,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearbyRoadMeter"] || "") / 1000])
+            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toString()])
         }
         return res;
     }
@@ -1056,7 +988,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getSubway()[0]
                 },
@@ -1067,7 +999,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getSubway()[1]
                 },
@@ -1078,7 +1010,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getSubway()[2]
                 },
@@ -1089,7 +1021,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getSubway()[3]
                 },
@@ -1100,7 +1032,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getSubway()[4]
                 }
@@ -1156,7 +1088,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getNearbyRoadMeter()[0]
                 },
@@ -1167,7 +1099,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getNearbyRoadMeter()[1]
                 },
@@ -1178,7 +1110,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getNearbyRoadMeter()[2]
                 },
@@ -1189,7 +1121,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getNearbyRoadMeter()[3]
                 },
@@ -1200,7 +1132,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getNearbyRoadMeter()[4]
                 }
@@ -1247,7 +1179,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getXiuxiangouwu()[0]
                 },
@@ -1256,7 +1188,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getXiuxiangouwu()[1]
                 },
@@ -1265,7 +1197,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getXiuxiangouwu()[2]
                 },
@@ -1274,7 +1206,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getXiuxiangouwu()[3]
                 },
@@ -1283,7 +1215,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getXiuxiangouwu()[4]
                 }
@@ -1323,7 +1255,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getJiaoyupeitao()[0]
                 },
@@ -1332,7 +1264,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getJiaoyupeitao(1)
                 },
@@ -1341,7 +1273,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getJiaoyupeitao()[2]
                 },
@@ -1350,7 +1282,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getJiaoyupeitao()[3]
                 },
@@ -1359,7 +1291,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getJiaoyupeitao()[4]
                 }
@@ -1391,7 +1323,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['综合医院', '专科医院', '诊所', '养老院', '急救中心']
+                data: ['医疗']
             },
             series: [
                 {
@@ -1399,7 +1331,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getYiliaopeitao()[0]
                 },
@@ -1408,7 +1340,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getYiliaopeitao()[1]
                 },
@@ -1417,7 +1349,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getYiliaopeitao()[2]
                 },
@@ -1426,7 +1358,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getYiliaopeitao()[3]
                 },
@@ -1435,7 +1367,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getYiliaopeitao()[4]
                 }
@@ -1449,12 +1381,13 @@
     console.log(datajson.length);
     var res = [];
     for (var i = 0; i < datajson.length; i++) {
-        res.push(datajson[i]['coordX'] + "&" + datajson[i]['coordY'])
+        res.push(datajson[i]['coordX']+"&"+datajson[i]['coordY'])
     }
+
     // 百度地图API功能
     var map = new BMap.Map("allmap", {
-        minZoom: 1,
-        maxZoom: 18
+        minZoom : 1,
+        maxZoom : 18
     });
     var point = new BMap.Point(116.404, 39.915);
     map.centerAndZoom(point, 12);
