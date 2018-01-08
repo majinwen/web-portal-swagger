@@ -272,7 +272,7 @@
         <div class="bgbox bg4">
             <div class="page-content">
                 <div class="city-title">
-                    <p>北京</p>
+                    <p>智能人居更懂人需</p>
                 </div>
                 <div class="animate-wrapper">
                     <div class="animate-item-1">
