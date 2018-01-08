@@ -528,7 +528,7 @@
                         <p>您可以添加收藏，方便之后查阅！</p>
                     </div>
                     <div class="collect-button" >
-                        <i class="collect" data-type="0"></i>
+                        <i class="collect"></i>
                         <span>收藏</span>
                     </div>
                 </div>
@@ -556,8 +556,8 @@
         $('.collect-button').on('click', function () {
             var reportId=${reportId};
             $(this).find('.collect').toggleClass('active');
-            var count= $(this).find('.collect').attr('data-type');
-            console.log(count);
+            /*var count= $(this).find('.collect').attr('data-type');
+            console.log(count);*/
             if(reportId!=""&&reportId!=null){
                 $.ajax({
                     type: "GET",
@@ -567,11 +567,9 @@
                     success: function(data){
                         //改变状态
                         if(data.data=="ok"){
-                            console.log(data.data)
                             //缺少收藏样式
                         }
                         if(data.data=="fail"){
-                            console.log(data);
                             //重定向到登陆页面
                             window.location.href = "/user/login?reportId="+reportId;
                         }
