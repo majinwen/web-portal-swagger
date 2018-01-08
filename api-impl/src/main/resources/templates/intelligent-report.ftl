@@ -622,6 +622,7 @@
 
         $('.collect-button').on('click', function () {
             $(this).find('.collect').toggleClass('active');
+
         })
     });
 </script>
