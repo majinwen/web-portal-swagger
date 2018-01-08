@@ -17,7 +17,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img height="1px" width="1px" src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -26,7 +26,7 @@
             <#if item?exists>
                 <#if item?? && item!= ''>
                     <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/${item}" data-src="${qiniuimage}/${item}" alt="${build['building_name']}">
+                        <img src="${qiniuimage}/${item}"  data-src="${qiniuimage}/${item}" alt="${build['building_name']}">
                     </li>
                 <#else >
                     <li onclick="initphoto(this,0)" class="swiper-slide">
@@ -207,7 +207,10 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${build['park_radio']!'暂无数据'}</em>
+                        <em> <#if build['park_radio']??&&build['lift_door_radio']!=''>
+                            ${build['park_radio']}
+                              <#else>暂无数据
+                             </#if></em>
                     </div>
                 </div>
             </div>
@@ -216,14 +219,21 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>电梯配备</p>
-                        <em>${build['lift_door_radio']!'暂无数据'}</em>
+                        <em><#if build['lift_door_radio']??&&build['lift_door_radio']!=''>
+                        ${build['lift_door_radio']}
+                        <#else>暂无数据
+                        </#if></em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-4"></i>
                     <div class="info-item-text">
                         <p>空气质量</p>
-                        <em>${build['air_quality']!'暂无数据'}</em>
+                        <em><#if build['air_quality']??&&build['air_quality']!=''>
+                        ${build['air_quality']}
+                        <#else>暂无数据
+                        </#if>
+                        </em>
                     </div>
                 </div>
             </div>
@@ -249,7 +259,14 @@
                     <i class="item-three-2"></i>
                     <em>地铁</em>
                     <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>${datainfo["ditie"]["line"]}<#else >暂无数据</#if></span>
+                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>
+                                        <#-- ${ datainfo["ditie"]["line"]?substring(0,2)}-->
+                                            <#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>
+                                            ${ datainfo["ditie"]["line"]?substring(2)}
+                                            <#else>
+                                            ${ datainfo["ditie"]["line"]}
+                                            </#if>
+                                        <#else >暂无数据</#if></span>
                 </div>
 
                 <div class="info-card-item">

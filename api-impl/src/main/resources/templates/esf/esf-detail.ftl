@@ -14,7 +14,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img height="1px" width="1px" src="${houseDetail['housePhoto'][0]}">
+<img height="1px" width="1px" hidden src="${houseDetail['housePhoto'][0]}">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -153,14 +153,15 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                     </span></dd>
                     <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}电梯<#else>暂无数据</#if></em></dd>
                     <dd class="odd-item">类别：
-                    <#if houseDetail.houseTypeName?exists&& (houseDetail.houseTypeName !='')>
-                        <em>${houseDetail.houseTypeName}</em>
+                    <#if houseDetail.buildCategoryName?exists&& (houseDetail.buildCategoryName !='')>
+                        <em>${houseDetail.buildCategoryName}</em>
                     <#else>
-                        <#if houseDetail.buildCategoryName?exists && (houseDetail.buildCategoryName!='') >
-                            <em>${houseDetail.buildCategoryName}</em>
+                       <#-- <#if houseDetail.houseTypeName?exists && (houseDetail.houseTypeName!='') >
+                            <em>${houseDetail.houseTypeName}</em>
                         <#else>
                             暂无数据
-                        </#if>
+                        </#if>-->
+                        暂无数据
                     </#if>
                     </dd>
                     <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无数据</#if></em>
@@ -206,7 +207,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon"  <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
@@ -252,7 +253,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                 </#if>
                 <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
-                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>${village['buildingStructure']}</#if>
+                <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>

@@ -14,7 +14,7 @@
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
-<img height="1px" width="1px" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img height="1" width="1" hidden src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
