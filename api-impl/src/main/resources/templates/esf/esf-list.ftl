@@ -140,14 +140,14 @@
                             <span class="only" data-info="2">无</span>
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="buildingTypeId">建筑类型</dt>
-                        <dd>
-                            <span data-info="1">板楼</span>
-                            <span data-info="2">塔楼</span>
-                            <span data-info="3">板塔结合</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="buildingTypeId">建筑类型</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">板楼</span>-->
+                            <#--<span data-info="2">塔楼</span>-->
+                            <#--<span data-info="3">板塔结合</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                     <dl>
                         <dt data-type="ownership">权属</dt>
                         <dd>

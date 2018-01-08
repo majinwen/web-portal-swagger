@@ -11,7 +11,7 @@ public class ProjHouseInfoQuery {
      * 页面需要传递的字段
      */
     //房源面积(1,2,3,4)
-    private String houseAreaId;
+    private String houseAreaSize;
 
     /**
      * 室 数字

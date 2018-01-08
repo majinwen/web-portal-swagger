@@ -168,8 +168,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //面积
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
-                String area = projHouseInfoRequest.getHouseAreaId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaSize())) {
+                String area = projHouseInfoRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 String[] layoutId = area.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
