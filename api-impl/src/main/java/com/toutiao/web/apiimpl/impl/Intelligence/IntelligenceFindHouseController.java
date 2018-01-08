@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.Constant;
@@ -68,10 +69,11 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
-            if (StringTool.isNotBlank(userReport)) {
+            if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
+            }else{
+                model.addAttribute("message", "没有报告记录！");
             }
-            model.addAttribute("message", "没有报告记录！");
         } else {
             model.addAttribute("report", Constant.report);
            return "/user/login";
