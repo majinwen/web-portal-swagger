@@ -86,7 +86,7 @@
                         <span>总价</span>
                         <em>
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
-                        ${houseDetail.houseTotalPrices}万
+                        ${houseDetail.houseTotalPrices?number?round}万
                         <#else>
                             暂无数据
                         </#if>
@@ -117,7 +117,7 @@
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
+                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?number?round) * 10000}元/㎡
                 <#else>
                     暂无数据
                 </#if>
@@ -254,7 +254,7 @@
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡
                 </#if>
             </p>
         </div>
@@ -313,7 +313,7 @@
                                     <#if map.houseTotalPrices==0>
                                     </#if>
                                 <#else>
-                                ${map.houseTotalPrices}万
+                                ${map.houseTotalPrices?number?round}万
                                 </#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
                                 <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
@@ -354,7 +354,7 @@
                         <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
-                        <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                        <p class="cont-last"><em>${plotInfo.avgPrice?number?round}元</em>/㎡</p>
                     </#if>
                 </div>
             </a></li>

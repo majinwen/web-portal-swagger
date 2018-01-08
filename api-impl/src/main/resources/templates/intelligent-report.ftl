@@ -94,7 +94,7 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场
                     </p>
                 </div>
             <#if fhpt?exists>
@@ -126,7 +126,7 @@
                 </div>
                 <div class="report-caption">
                     <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if></em>左右的房源市场为您的目标市场
+                    <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场
                     </p>
                 </div>
                 <#if fhtp?exists>
@@ -181,7 +181,7 @@
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
-                                <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']}</#if>万</li>
+                                <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}</#if>万</li>
                                 <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''>
                                     <#assign Districts = intelligenceFhRes['districtId']?split(',')>
                                     <#list Districts as district>
@@ -247,9 +247,9 @@
                                         <div>
                                             <h4>${fhResult['projname']}</h4>
                                             <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
-                                                <p>${fhResult['esfPrice']}元/㎡</p>
+                                                <p>${fhResult['esfPrice']?number?round}元/㎡</p>
                                             <#else >
-                                                <p>${fhResult['price']}元/㎡</p>
+                                                <p>${fhResult['price']?number?round}元/㎡</p>
                                             </#if>
                                             <#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
                                                 <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
@@ -288,10 +288,10 @@
                         </div>
                         <div class="traffic-text-box">
                         <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 3>
-                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
+                             <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
                                 </#if>
                             </#list>
                         </#if>
@@ -308,10 +308,10 @@
                         </div>
                         <div class="traffic-text-box">
                         <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index gt 2>
-                                    <div class="traffic-text"><span class="type1">1</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${fhResult['nearestSubwayDesc']?split('$')[2]}m</em><#--,约步行<em>3</em>分钟--></p></div>
+                            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
+                            <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
+                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
                                 </#if>
                             </#list>
                         </#if>
@@ -474,7 +474,7 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
                                 <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
-                                    <td>${fhResult['carRentPrice']}元</td>
+                                    <td>${fhResult['carRentPrice']?number?round}元</td>
                                 <#else >
                                     <td> -</td>
                                 </#if>
@@ -698,17 +698,17 @@
     function getXiuxiangouwu() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{});
-            var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{});
-            res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0),dict_getValueOrDefault(xiuxian,"jianshenzhongxin",0)])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"xiuxian",{})
+            res.push([dict_getValueOrDefault(xiuxian,"caishichang",0),dict_getValueOrDefault(xiuxian,"chaoshi",0),dict_getValueOrDefault(xiuxian,"shangchang",0),dict_getValueOrDefault(xiuxian,"canting",0)])
         }
         return res;
     }
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{});
-            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{});
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
             res.push([dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
         }
         return res;
@@ -716,25 +716,34 @@
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {});
-            var xiuxian = dict_getValueOrDefault(typecount, "yiliao", 0);
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var xiuxian=dict_getValueOrDefault(typecount,"yiliao",0)
             res.push([xiuxian])
 
         }
         return res;
     }
+
     function getSubway() {
+
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2]) / 1000])
+            if (datajson[i]["nearestSubwayDesc"] == null){
+                res.push([''])
+            }else {
+                res.push([(parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2])/1000).toFixed(1)])
+            }
         }
         return res;
     }
-
     function getMetroStation() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push((datajson[i]["nearestSubwayDesc"] || "".split("$")[1]))
+            if (datajson[i]["nearestSubwayDesc"] == null){
+                res.push([""])
+            }else {
+                res.push((datajson[i]["nearestSubwayDesc"].split("$")[1]))
+            }
         }
         return res;
     }
@@ -752,7 +761,7 @@
     function getNearbyRoadMeter() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            res.push([(parseInt(datajson[i]["nearbyRoadMeter"] || "") / 1000).toString()])
+            res.push([(parseInt(datajson[i]["nearbyRoadMeter"]||"")/1000).toFixed(1).toString()])
         }
         return res;
     }
@@ -942,7 +951,13 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'/*+getMetroStation()*/
+                formatter: '{c}km\n'
+//                formatter: function(getMetroStation()){
+//                    var arr = getMetroStation();
+//                    for(var i = 0;i<arr.length;i++){
+//                        return '{c}km'+arr
+//                    }
+//                }
             }
         };
         trafficSubwayChart.setOption({
@@ -1040,8 +1055,8 @@
                 show: true,
                 position: 'bottom',
                 color: '#666',
-                fontSize: baseFontSize - 5
-//                formatter: '{c}km: \'' + subwayStation + '\''
+                fontSize: baseFontSize - 5,
+                formatter: '{c}km\n'
             }
         };
         trafficRondChart.setOption({
@@ -1154,7 +1169,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['菜市场', '超市', '购物中心', '餐饮', '健身']
+                data: ['菜市场', '超市', '购物中心', '餐饮']
             },
             series: [
                 {
@@ -1361,7 +1376,6 @@
 </script>
 <script>
     var datajson =${datajson};
-    console.log(datajson.length);
     var res = [];
     for (var i = 0; i < datajson.length; i++) {
         res.push(datajson[i]['coordX']+"&"+datajson[i]['coordY'])

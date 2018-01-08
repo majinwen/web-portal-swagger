@@ -177,7 +177,7 @@
                         <p class="cont-block-2">
                             <em class="high-light-red">
                                 <#if map['average_price']?exists && (map['average_price']>0)>
-                                    ${map['average_price']}元/㎡
+                                    ${map['average_price']?number?round}元/㎡
                                 <#else>
                                     售价待定
                                 </#if>
