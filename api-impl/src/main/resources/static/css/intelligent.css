@@ -785,24 +785,15 @@ body {
           .page3 .page-content .layer .layer-content .layer-header .price-tab span.current {
             color: #e42929; }
       .page3 .page-content .layer .layer-content .layer-header .area-tips {
-        position: absolute;
-        top: 0;
-        right: 0;
+        float: left;
         height: 1.3333333333rem;
-        padding: 0.1866666667rem 0;
+        line-height: 1.3333333333rem;
         text-align: center;
         box-sizing: border-box; }
         .page3 .page-content .layer .layer-content .layer-header .area-tips span {
           display: block; }
         .page3 .page-content .layer .layer-content .layer-header .area-tips span {
           color: #999; }
-        .page3 .page-content .layer .layer-content .layer-header .area-tips button {
-          margin-top: 0.0666666667rem;
-          padding: 0.0666666667rem 0.2rem;
-          color: #fff;
-          background-color: #0a0724;
-          -webkit-border-radius: 0.3733333333rem 0.3733333333rem 0.3733333333rem;
-          border-radius: 0.3733333333rem 0.3733333333rem 0.3733333333rem; }
     .page3 .page-content .layer .layer-content .total-conent {
       margin: 1.04rem 0; }
     .page3 .page-content .layer .layer-content .slide-item {
@@ -1059,6 +1050,8 @@ body {
         line-height: 0.9333333333rem; }
         .page3 .page-content .layer .layer-content .layer-footer button.disabled {
           background-color: #c5c5c5; }
+  .page3 .page-content .layer.layer3 .layer-content .layer-header p {
+    float: left; }
 .page3 .page-content .start-btn {
   position: absolute;
   left: 50%;

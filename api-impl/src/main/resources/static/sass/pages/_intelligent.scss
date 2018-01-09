@@ -599,11 +599,9 @@ $inteColorRed: #e42929;
                     }
 
                     .area-tips {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
+                        float: left;
                         height: rem(100);
-                        padding: rem(14) 0;
+                        line-height: rem(100);
                         text-align: center;
                         @include box-sizing;
 
@@ -613,14 +611,6 @@ $inteColorRed: #e42929;
 
                         span {
                             color: #999;
-                        }
-                        button {
-                            margin-top: rem(5);
-                            padding: rem(5) rem(15);
-                            color: $baseWhite;
-                            background-color: $inteBlack;
-                            -webkit-border-radius: rem(28) rem(28) rem(28);
-                            border-radius: rem(28) rem(28) rem(28);
                         }
                     }
                 }
@@ -912,6 +902,16 @@ $inteColorRed: #e42929;
 
                         &.disabled {
                             background-color: #c5c5c5;
+                        }
+                    }
+                }
+            }
+
+            &.layer3 {
+                .layer-content {
+                    .layer-header {
+                        p {
+                            float: left;
                         }
                     }
                 }

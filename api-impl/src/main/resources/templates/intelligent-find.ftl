@@ -183,10 +183,9 @@
             <div class="layer layer3 none">
                 <div class="layer-content">
                     <div class="layer-header">
-                        <p>选择您的意向区域</p>
+                        <p>您想住在哪里？</p>
                         <div class="area-tips">
-                            <span>意向区域不能点么</span>
-                            <button class="modify-reset">修改预算</button>
+                            <span>（最多可以选择3个意向区域）</span>
                         </div>
                     </div>
                     <ul id="option_distict" class="area-content clear">
