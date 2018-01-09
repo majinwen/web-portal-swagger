@@ -20,7 +20,7 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red">1000万</em>左右的房源市场为您的目标市场 </p>
+                <p>根据您的检索条件<br>总价<em class="high-light-red"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>
@@ -139,19 +139,19 @@
                     <li>
                         <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>套，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
                         </#if>
                     </li>
                     <li>
                     <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>套，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
                     </#if>
                     </li>
                     <li>
                     <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>套，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
                     </#if>
                     </li>
                 </#if>
@@ -212,9 +212,9 @@
                     </#list>
                     </ul>
                 </div>
-                <div id="allmap" class="echart-box">
+                <#--<div id="allmap" class="echart-box">
 
-                </div>
+                </div>-->
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
@@ -292,7 +292,11 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                              <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                <#if fhResult_index == 0>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                <#else >
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                </#if>
                                 </#if>
                             </#list>
                         </#if>
@@ -312,7 +316,11 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                             <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                <#if fhResult_index == 0>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                <#else >
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                </#if>
                                 </#if>
                             </#list>
                         </#if>
@@ -425,13 +433,13 @@
                     <tr>
                         <td>
                             <i></i>
-                            <em>物业费<br>(/㎡·年)</em>
+                            <em>物业费<br>(/㎡·月)</em>
                         </td>
                         <#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
                                 <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
-                                    <td>${fhResult['propertyfee']}</td>
+                                    <td>${fhResult['propertyfee']}元</td>
                                 <#else >
                                     <td>-</td>
                                 </#if>
@@ -484,9 +492,29 @@
                     </tr>
                 </table>
             </div>
+
+        <#if intelligenceFhRes?exists>
+            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
             <div class="report-title-type3 mt0">
                 <p>工作再忙，也要享受生活，看看3km内生活圈</p>
             </div>
+            <#assign xiuxian = 0>
+            <#assign jiaoyu = 0>
+            <#assign yiliao = 0>
+            <#list fhResults as fhResult>
+            <#if fhResult['typeCount']?exists>
+                <#if fhResult['typeCount']['xiuxian']?exists>
+                    <#assign xiuxian = xiuxian+1>
+                </#if>
+                <#if fhResult['typeCount']['jiaoyu']?exists>
+                    <#assign jiaoyu = jiaoyu+1>
+                </#if>
+                <#if fhResult['typeCount']['yiliao']?exists>
+                    <#assign yiliao = yiliao+1>
+                </#if>
+            </#if>
+            </#list>
+        <#if xiuxian != 0>
             <div class="module-item type2">
                 <div class="report-title-type2">
                     <p>休闲购物</p>
@@ -496,6 +524,8 @@
                     <div id="shoppingChart"></div>
                 </div>
             </div>
+        </#if>
+        <#if jiaoyu !=0>
             <div class="module-item type2">
                 <div class="report-title-type2">
                     <p>教育配套</p>
@@ -506,6 +536,8 @@
                     <div id="educationChart"></div>
                 </div>
             </div>
+        </#if>
+        <#if yiliao !=0>
             <div class="module-item type2">
                 <div class="report-title-type2">
                     <p>医疗配套</p>
@@ -516,6 +548,7 @@
                     <div id="medicalChart"></div>
                 </div>
             </div>
+        </#if>
             <div class="end-bottom">
                 <p class="end-text">End</p>
                 <div class="end-bottom-content">
@@ -528,6 +561,7 @@
                     </div>
                 </div>
             </div>
+        </#if>
         </div>
     </div>
 </div>
@@ -548,25 +582,56 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
+        var status=${intelligenceFhRes.collectStatus};
+
+        if(status==1){
+            $('.collect-button').find('.collect').toggleClass('active');
+        }
+
         $('.collect-button').on('click', function () {
             var reportId =${reportId};
-            $(this).find('.collect').toggleClass('active');
             /*var count= $(this).find('.collect').attr('data-type');
             console.log(count);*/
-            if (reportId != "" && reportId != null) {
+            $(this).find('.collect').toggleClass('active');
+            if ($(this).find('.collect').hasClass('active')) {
+                // 收藏
+                if (reportId != "" && reportId != null) {
+                    $.ajax({
+                        type: "GET",
+                        async: true,
+                        url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
+                        data: reportId,
+                        success: function (data) {
+                            //改变状态
+                            if (data.data == "ok") {
+
+                            }
+                            if (data.data == "fail") {
+                                //重定向到登陆页面
+                                window.location.href = "/user/login?reportId=" + reportId;
+                            }
+                            // 收藏失败
+                            if (data.data == "cancel") {
+                                $(this).find('.collect').removeClass('active');
+                            }
+                        }
+                    })
+                }
+            } else {
+                // 取消收藏
                 $.ajax({
                     type: "GET",
                     async: true,
-                    url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
+                    url: router_city('/findhouse/cancleMyReport/') + reportId,
                     data: reportId,
                     success: function (data) {
                         //改变状态
                         if (data.data == "ok") {
-                            //缺少收藏样式
+
                         }
                         if (data.data == "fail") {
-                            //重定向到登陆页面
-                            window.location.href = "/user/login?reportId=" + reportId;
+                            // 取消收藏失败
+                            $(this).find('.collect').removeClass('active');
                         }
                     }
                 })
@@ -661,7 +726,6 @@
     //    console.log(ptlists)
     //    console.log(trend)
 
-    var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
 
@@ -743,9 +807,9 @@
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
-            var xiuxian = dict_getValueOrDefault(typecount, "jiaoyu", {})
-            res.push([dict_getValueOrDefault(xiuxian, "youeryuan", 0), dict_getValueOrDefault(xiuxian, "xiaoxue", 0), dict_getValueOrDefault(xiuxian, "zhongxue", 0), dict_getValueOrDefault(xiuxian, "gaodeng", 0)])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var jiaoyu=dict_getValueOrDefault(typecount,"jiaoyu",{})
+            res.push([dict_getValueOrDefault(jiaoyu,"youeryuan",0),dict_getValueOrDefault(jiaoyu,"xiaoxue",0),dict_getValueOrDefault(jiaoyu,"zhongxue",0)])
         }
         return res;
     }
@@ -753,9 +817,9 @@
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
-            var xiuxian = dict_getValueOrDefault(typecount, "yiliao", 0)
-            res.push([xiuxian])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var yiliao=dict_getValueOrDefault(typecount,"yiliao",0)
+            res.push([dict_getValueOrDefault(yiliao,"zonghe",0),dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0)])
 
         }
         return res;
@@ -773,25 +837,26 @@
         }
         return res;
     }
-    function getMetroStation() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            if (datajson[i]["nearestSubwayDesc"] == null){
-                res.push([""])
-            }else {
-                res.push((datajson[i]["nearestSubwayDesc"].split("$")[1]))
-            }
+    function getMetroStation(index) {
+        if (index < datajson.length) {
+                return datajson[index]["nearestSubwayDesc"].split("$") || ""
         }
-        return res;
+        return "";
     }
 
 
-    function getNearbyQiao() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["nearbyQiao"] || "")
+    function getNearbyQiao(index) {
+        if (index < datajson.length) {
+            return datajson[index]["nearbyQiao"] || ""
         }
-        return res;
+        return "";
+    }
+
+    function getNearbyRoad(index) {
+        if (index < datajson.length) {
+            return datajson[index]["nearbyRoad"] || ""
+        }
+        return "";
     }
 
 
@@ -811,7 +876,7 @@
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
 
         var chartGrid = {
-            left: 0,
+            left: '2%',
             right: '6%',
             bottom: 0,
             containLabel: true
@@ -849,7 +914,7 @@
                 show: true,
                 boundaryGap: false,
                 scale: true,
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: getJiagezoushiYuefen()
             },
             yAxis: {
@@ -922,7 +987,7 @@
                     type: 'category',
                     axisTick: {show: false},
                     axisLine: {show: true},
-                    axisLabel: {fontSize: baseFontSize - 10},
+                    axisLabel: {fontSize: baseFontSize - 4},
                     data: getGongxuqingkuangYuefen()
                 }, {
                     type: 'category',
@@ -988,13 +1053,11 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
-//                formatter: function(getMetroStation()){
-//                    var arr = getMetroStation();
-//                    for(var i = 0;i<arr.length;i++){
-//                        return '{c}km'+arr
-//                    }
-//                }
+                formatter: function (params, ticket, callback) {
+//                    console.log(params,ticket)
+                    return params.data+"km\n"+getMetroStation(params.seriesIndex)[1]/*+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"*/
+                }
+
             }
         };
         trafficSubwayChart.setOption({
@@ -1093,7 +1156,10 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
+                formatter: function (params, ticket, callback) {
+//                    console.log(params,ticket)
+                    return params.data+"km\n"+getNearbyQiao(params.seriesIndex)+"\n"+"("+getNearbyRoad(params.seriesIndex)+")"
+                }
             }
         };
         trafficRondChart.setOption({
@@ -1201,11 +1267,11 @@
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: ['菜市场', '超市', '购物中心', '餐饮']
             },
             series: [
@@ -1277,12 +1343,12 @@
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
-                data: ['幼儿园', '小学', '中学', '大学']
+                axisLabel: {fontSize: baseFontSize - 4},
+                data: ['幼儿园', '小学', '中学']
             },
             series: [
                 {
@@ -1353,12 +1419,12 @@
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
-                data: ['医疗']
+                axisLabel: {fontSize: baseFontSize - 4},
+                data: ['综合','诊所','专科']
             },
             series: [
                 {
@@ -1411,7 +1477,7 @@
 
     });
 </script>
-<script>
+<#--<script>
     var datajson =${datajson};
     var res = [];
     for (var i = 0; i < datajson.length; i++) {
@@ -1491,24 +1557,27 @@
         var point = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
         map.centerAndZoom(point, 12);
         var allOverlay = map.getOverlays();
-        for(var i = 0;i<allOverlay.length;i++) {
-            //删除指定经度的点
-            if (allOverlay[i].getPosition().lng == attr.split("_")[0]) {
-                map.removeOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon, {icon: myIcon1})));
-                map.addOverlay(new BMap.Marker(new BMap.Point(attr.split("_")[0], attr.split("_")[1]), {icon: myIcon}));
-                addMarker(attr.split("_")[0], attr.split("_")[1]);
-                return false;
-            }else{
-                map.addOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon, {icon: myIcon})));
-                map.removeOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon), {icon: myIcon1}));
-                addMarker(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon);
+        var point2 = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
+        map.removeOverlay(new BMap.Marker(point2, {icon: myIcon1}));
+        map.addOverlay(new BMap.Marker(point2, {icon: myIcon}));
+        addMarker(attr.split("_")[0], attr.split("_")[1]);
+        new BMap.Marker(point2, {icon: myIcon}).setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        map.removeOverlay();
+
+        if (res.length > 0) {
+            for (var i = 0; i < res.length; i++) {
+                var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
+
+                if (point.lat != point2.lat) {
+                    map.removeOverlay(new BMap.Marker(point, {icon: myIcon1}));
+                    addMarker(point);
+                }
             }
         }
-
 
     });
 
 
-</script>
+</script>-->
 </body>
 </html>
