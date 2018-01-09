@@ -779,25 +779,26 @@
                  }
            },
             textStyle:{
-                fontSize:30
-            },
+                fontSize:11
+            }
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
            data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
             textStyle:{
-                fontSize:25
+                fontSize:12
             }
         },
         xAxis: [
             {
                 type: 'category',
+                boundaryGap: false,
                 axisTick: {
-                    alignWithLabel: true,
+                    alignWithLabel: true
                 },
                 data: [<#list  mouthList as item >'${item}',</#list>],
                 axisLabel: {
-                    fontSize:25,
+                    fontSize:10
                    // interval:0
                 }
             }
@@ -806,7 +807,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
-                fontSize:21
+                fontSize:8
             },
             scale:true
         },
@@ -863,28 +864,28 @@
                 name:'${village['area']!'区域'}价格',
                 type:'line',
                 data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
+                symbolSize:5,
                 itemStyle:{
                     normal:{
                         lineStyle:{
-                            width:4,
-                        },
-                    },
-                },
+                            width:2,
+                        }
+                    }
+                }
             },
             {
                 name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
+                symbolSize:5,
                 itemStyle:{
                        normal:{
                            lineStyle:{
-                                width:4,
-                           },
-                       },
-                },
-            },
+                                width:2,
+                           }
+                       }
+                }
+            }
         ]
     };
     <#if  (mouthList?size>0)>
