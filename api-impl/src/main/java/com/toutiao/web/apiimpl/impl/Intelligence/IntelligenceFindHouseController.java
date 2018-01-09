@@ -186,9 +186,12 @@ public class IntelligenceFindHouseController {
     public NashResult queryUserChoice(IntelligenceQuery intelligenceQuery){
 
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
-        if(5-5<5){
-            intelligenceFh.setPlotCount(0);
+        if(StringTool.isNotBlank(intelligenceFh)){
+            if(intelligenceFh.getPlotCount()-5<5){
+                intelligenceFh.setPlotCount(0);
+            }
         }
+
         return NashResult.build(intelligenceFh);
     }
 

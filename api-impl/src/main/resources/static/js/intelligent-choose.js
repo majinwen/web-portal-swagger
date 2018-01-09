@@ -195,8 +195,8 @@ function chooseUserFinds() {
                 success: function (data) {
                     console.log("data.data.plotCount="+data.data.plotCount);
                     if(data.data.plotCount==0){
-                        $('.list-item').find('li').eq(0).addClass('current').removeClass('choose-end');
-                        $('.list-item').find('li').eq(1).addClass('current').removeClass('choose-end');
+                        $('.list-item').find('li').eq(0).addClass('current');
+                        $('.list-item').find('li').eq(1).removeClass('current');
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         $('#plot_Ratio').find('em').text('0%');
                     }else{
