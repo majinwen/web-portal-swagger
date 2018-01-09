@@ -20,7 +20,7 @@
 <#assign ptCD1 = tradeline['arealine']>
 <#assign ptCD2 = tradeline['tradearealine']>
 <#assign mouthList = tradeline['mouthList']>
-<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]}-tt1200x640" alt="">
+<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-tt1200x640" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -766,14 +766,14 @@
                  }
            },
             textStyle:{
-                fontSize:30
+                fontSize:15
             },
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
            data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
             textStyle:{
-                fontSize:25
+                fontSize:15
             }
         },
         xAxis: [
@@ -784,7 +784,7 @@
                 },
                 data: [<#list  mouthList as item >'${item}',</#list>],
                 axisLabel: {
-                    fontSize:25,
+                    fontSize:15,
                    // interval:0
                 }
             }
@@ -793,7 +793,7 @@
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
-                fontSize:21
+                fontSize:15
             },
             scale:true
         },
@@ -850,11 +850,11 @@
                 name:'${village['area']!'区域'}价格',
                 type:'line',
                 data:[<#list ptCD1 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
+                symbolSize:5,
                 itemStyle:{
                     normal:{
                         lineStyle:{
-                            width:4,
+                            width:2,
                         },
                     },
                 },
@@ -863,11 +863,11 @@
                 name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
                 data:[<#list ptCD2 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
+                symbolSize:5,
                 itemStyle:{
                        normal:{
                            lineStyle:{
-                                width:4,
+                                width:2,
                            },
                        },
                 },
