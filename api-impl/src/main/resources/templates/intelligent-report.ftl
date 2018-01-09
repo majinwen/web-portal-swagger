@@ -483,9 +483,29 @@
                     </tr>
                 </table>
             </div>
+
+        <#if intelligenceFhRes?exists>
+            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
             <div class="report-title-type3 mt0">
                 <p>工作再忙，也要享受生活，看看3km内生活圈</p>
             </div>
+            <#assign xiuxian = 0>
+            <#assign jiaoyu = 0>
+            <#assign yiliao = 0>
+            <#list fhResults as fhResult>
+            <#if fhResult['typeCount']?exists>
+                <#if fhResult['typeCount']['xiuxian']?exists>
+                    <#assign xiuxian = xiuxian+1>
+                </#if>
+                <#if fhResult['typeCount']['jiaoyu']?exists>
+                    <#assign jiaoyu = jiaoyu+1>
+                </#if>
+                <#if fhResult['typeCount']['yiliao']?exists>
+                    <#assign yiliao = yiliao+1>
+                </#if>
+            </#if>
+            </#list>
+        <#if xiuxian != 0>
             <div class="module-item type2">
                 <div class="report-title-type2">
                     <p>休闲购物</p>
@@ -495,6 +515,8 @@
                     <div id="shoppingChart"></div>
                 </div>
             </div>
+        </#if>
+        <#if jiaoyu !=0>
             <div class="module-item type2">
                 <div class="report-title-type2">
                     <p>教育配套</p>
@@ -505,6 +527,8 @@
                     <div id="educationChart"></div>
                 </div>
             </div>
+        </#if>
+        <#if yiliao !=0>
             <div class="module-item type2">
                 <div class="report-title-type2">
                     <p>医疗配套</p>
@@ -515,6 +539,7 @@
                     <div id="medicalChart"></div>
                 </div>
             </div>
+        </#if>
             <div class="end-bottom">
                 <p class="end-text">End</p>
                 <div class="end-bottom-content">
@@ -527,6 +552,7 @@
                     </div>
                 </div>
             </div>
+        </#if>
         </div>
     </div>
 </div>
@@ -708,8 +734,8 @@
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
             var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var xiuxian=dict_getValueOrDefault(typecount,"jiaoyu",{})
-            res.push([dict_getValueOrDefault(xiuxian,"youeryuan",0),dict_getValueOrDefault(xiuxian,"xiaoxue",0),dict_getValueOrDefault(xiuxian,"zhongxue",0),dict_getValueOrDefault(xiuxian,"gaodeng",0)])
+            var jiaoyu=dict_getValueOrDefault(typecount,"jiaoyu",{})
+            res.push([dict_getValueOrDefault(jiaoyu,"youeryuan",0),dict_getValueOrDefault(jiaoyu,"xiaoxue",0),dict_getValueOrDefault(jiaoyu,"zhongxue",0),dict_getValueOrDefault(jiaoyu,"gaodeng",0)])
         }
         return res;
     }
@@ -717,8 +743,8 @@
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
             var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var xiuxian=dict_getValueOrDefault(typecount,"yiliao",0)
-            res.push([xiuxian])
+            var yiliao=dict_getValueOrDefault(typecount,"yiliao",0)
+            res.push([dict_getValueOrDefault(yiliao,"zonghe",0),dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0)])
 
         }
         return res;
@@ -736,25 +762,19 @@
         }
         return res;
     }
-    function getMetroStation() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            if (datajson[i]["nearestSubwayDesc"] == null){
-                res.push([""])
-            }else {
-                res.push((datajson[i]["nearestSubwayDesc"].split("$")[1]))
-            }
+    function getMetroStation(index) {
+        if (index < datajson.length) {
+                return datajson[index]["nearestSubwayDesc"].split("$") || ""
         }
-        return res;
+        return "";
     }
 
 
-    function getNearbyQiao() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["nearbyQiao"] || "")
+    function getNearbyQiao(index) {
+        if (index < datajson.length) {
+            return datajson[index]["nearbyQiao"] || ""
         }
-        return res;
+        return "";
     }
 
 
@@ -951,13 +971,11 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
-//                formatter: function(getMetroStation()){
-//                    var arr = getMetroStation();
-//                    for(var i = 0;i<arr.length;i++){
-//                        return '{c}km'+arr
-//                    }
-//                }
+                formatter: function (params, ticket, callback) {
+//                    console.log(params,ticket)
+                    return params.data+"km\n\n"+getMetroStation(params.seriesIndex)[1]+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"
+                }
+
             }
         };
         trafficSubwayChart.setOption({
@@ -1056,7 +1074,10 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
+                formatter: function (params, ticket, callback) {
+//                    console.log(params,ticket)
+                    return params.data+"km\n\n"+getNearbyQiao(params.seriesIndex)
+                }
             }
         };
         trafficRondChart.setOption({
@@ -1321,7 +1342,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['医疗']
+                data: ['综合','诊所','专科']
             },
             series: [
                 {
