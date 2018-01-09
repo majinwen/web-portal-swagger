@@ -47,36 +47,42 @@ function moreInfoClick() {
 }
 
 function scaleImg() {
-    if ($('.scaleImg').length) {
-        var idWidth = $('.scaleImg').width();
-        var idHeight = $('.scaleImg').height();
-        $(document).on('touchstart', function (evt) {
-            if ($('.scaleImg').offset().top != 0) {
-                return
-            }
-            var oldY = evt.originalEvent.targetTouches[0].pageY;
-            $(document).on('touchmove', function (evt) {
-                var newY = evt.originalEvent.targetTouches[0].pageY;
-                if (newY < oldY) {
-                    return
-                }
-                var Y = newY - oldY;
-                base = Y / 1000 + 1;
-                $('.scaleImg').css({
-                    'width': idWidth * base,
-                    'height': idHeight * base,
-                    'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
-                });
-            });
-        });
-        $(document).on('touchend', function (evt) {
-            $('.scaleImg').animate({
-                "width": '100%',
-                "height": '100%',
-                'margin-left': 0
-            }, 100);
-        })
+    if (0 == $('.scaleImg').length) {
+        return;
     }
+    var mybody = document.getElementsByTagName('body')[0];
+    var startX, startY, moveEndX, moveEndY, X, Y, base;
+    var idWidth = $('.scaleImg').width();
+    var idHeight = $('.scaleImg').height();
+    mybody.addEventListener('touchstart', function(e) {
+        // e.preventDefault();
+        startX = e.touches[0].pageX;
+        startY = e.touches[0].pageY;
+    }, false);
+    mybody.addEventListener('touchmove', function(e) {
+        // e.preventDefault();
+        moveEndX = e.changedTouches[0].pageX;
+        moveEndY = e.changedTouches[0].pageY;
+        X = moveEndX - startX;
+        Y = moveEndY - startY;
+        if( Math.abs(Y) > Math.abs(X) && Y > 0) {// down
+
+            base = Y / 1000 + 1;
+            $('.scaleImg').css({
+                'width': idWidth * base,
+                'height': idHeight * base,
+                'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
+            });
+        }
+    });
+
+    mybody.addEventListener('touchend', function(e) {
+        $('.scaleImg').animate({
+            "width": '100%',
+            "height": '100%',
+            'margin-left': 0
+        }, 100);
+    });
 }
 
 function describeAllShow() {

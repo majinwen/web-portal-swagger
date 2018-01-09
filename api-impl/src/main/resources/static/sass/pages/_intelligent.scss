@@ -67,8 +67,8 @@ $inteColorRed: #e42929;
         @include bg-image('/static/images/intelligent/znzf_gjcy_bg');
         background-repeat: repeat-y;
         background-position: center;
-        -webkit-background-size: contain;
-        background-size: contain;
+        -webkit-background-size: cover;
+        background-size: cover;
     }
 
     .page-content {
@@ -88,7 +88,7 @@ $inteColorRed: #e42929;
 
         .choose-wrapper {
             width: rem(666);
-            margin: rem(97) auto rem(126);
+            margin: 10% auto 0;
 
             .clear {
                 margin-top: rem(129);
@@ -129,16 +129,17 @@ $inteColorRed: #e42929;
                     width: rem(186);
                     height: rem(186);
                     margin: rem(-93);
-                    padding: rem(30);
+                    padding: rem(54) rem(20);
                     background-color: #f7f6f6;
                     border: rem(1) solid $inteBorderBlack;
                     z-index: 1;
 
                     span {
                         display: block;
-                        margin-top: rem(14);
+                        margin-top: rem(20);
                         color: $baseBlack;
                         white-space: nowrap;
+                        @include font-dpr(24);
 
                         &:first-child {
                             margin-top: 0;
@@ -227,7 +228,7 @@ $inteColorRed: #e42929;
         button {
             position: absolute;
             left: 50%;
-            bottom: rem(100);
+            bottom: 2%;
             width: rem(460);
             height: rem(90);
             line-height: rem(90);
@@ -245,7 +246,7 @@ $inteColorRed: #e42929;
             }
 
             button {
-                bottom: rem(50);
+                bottom: 2%;
             }
         }
     }
@@ -262,7 +263,7 @@ $inteColorRed: #e42929;
 
     .page-content {
         .result-text {
-            height: rem(179);
+            height: rem(171);
             padding: rem(42) 0;
             text-align: center;
             background-color: #f7f6f6;
@@ -272,7 +273,7 @@ $inteColorRed: #e42929;
             .result-content {
                 position: relative;
                 width: rem(460);
-                height: rem(99);
+                height: rem(91);
                 margin: 0 auto;
                 background-color: #f7f3f3;
 
@@ -340,7 +341,7 @@ $inteColorRed: #e42929;
                 position: relative;
                 height: rem(122);
                 line-height: rem(122);
-                margin: rem(106) auto;
+                margin: rem(78) auto;
                 text-align: center;
                 @include font-dpr(36);
                 -webkit-border-radius: 50%;
@@ -364,10 +365,10 @@ $inteColorRed: #e42929;
                     &:before {
                         content: '';
                         position: absolute;
-                        top: rem(-106);
+                        top: rem(-78);
                         left: 50%;
                         width: rem(18);
-                        height: rem(106);
+                        height: rem(78);
                         @include bg-image('/static/images/intelligent/znzf_line');
                         -webkit-background-size: contain;
                         background-size: contain;
@@ -436,28 +437,28 @@ $inteColorRed: #e42929;
                             background-size: contain;
                         }
                         &:before {
-                            left: rem(-40);
+                            left: rem(-60);
                             @include bg-image('/static/images/intelligent/znzf_icon_left');
-                            -webkit-animation: lineLeft 2s infinite;
-                            animation: lineLeft 2s infinite;
+                            -webkit-animation: lineLeft 1.2s infinite;
+                            animation: lineLeft 1.2s infinite;
                         }
                         &:after {
-                            right: rem(-40);
+                            right: rem(-60);
                             @include bg-image('/static/images/intelligent/znzf_icon_right');
-                            -webkit-animation: lineRight 2s infinite;
-                            animation: lineRight 2s infinite;
+                            -webkit-animation: lineRight 1.2s infinite;
+                            animation: lineRight 1.2s infinite;
                         }
                     }
 
                     .animate-box {
                         p {
                             &:before {
-                                -webkit-animation: roundRight 2s infinite;
-                                animation: roundRight 2s infinite;
+                                -webkit-animation: roundRight 1.2s infinite;
+                                animation: roundRight 1.2s infinite;
                             }
                             &:after {
-                                -webkit-animation: roundLeft 2s infinite;
-                                animation: roundLeft 2s infinite;
+                                -webkit-animation: roundLeft 1.2s infinite;
+                                animation: roundLeft 1.2s infinite;
                             }
                         }
                     }
@@ -512,24 +513,24 @@ $inteColorRed: #e42929;
             }
         }
         @keyframes lineLeft {
-              0% {  left: rem(-40);  }
-             50% {  left: rem(-60);  }
-            100% {  left: rem(-40);  }
+              0% {  left: rem(-60);  }
+             50% {  left: rem(-40);  }
+            100% {  left: rem(-60);  }
         }
         @-webkit-keyframes lineLeft {
-              0% {  left: rem(-40);  }
-             50% {  left: rem(-60);  }
-            100% {  left: rem(-40);  }
+              0% {  left: rem(-60);  }
+             50% {  left: rem(-40);  }
+            100% {  left: rem(-60);  }
         }
         @keyframes lineRight {
-              0% {  right: rem(-40);  }
-             50% {  right: rem(-60);  }
-            100% {  right: rem(-40);  }
+              0% {  right: rem(-60);  }
+             50% {  right: rem(-40);  }
+            100% {  right: rem(-60);  }
         }
         @-webkit-keyframes lineRight {
-              0% {  right: rem(-40);  }
-             50% {  right: rem(-60);  }
-            100% {  right: rem(-40);  }
+              0% {  right: rem(-60);  }
+             50% {  right: rem(-40);  }
+            100% {  right: rem(-60);  }
         }
         @keyframes roundRight {
               0% {  transform: rotate(0deg);  }
@@ -625,15 +626,13 @@ $inteColorRed: #e42929;
                 }
 
                 .total-conent {
-                    margin: rem(85) 0;
-                }
-                .month-content {
-                    margin: rem(22) 0;
+                    margin: rem(78) 0;
                 }
 
                 .slide-item {
                     position: relative;
                     height: rem(120);
+                    padding-bottom: rem(12);
 
                     .layer-type-text {
                         position: absolute;
@@ -645,32 +644,23 @@ $inteColorRed: #e42929;
                     .slide-line {
                         position: relative;
                         margin-left: rem(90);
-                        margin-top: rem(5);
+                        margin-top: rem(10);
 
                         .slide-text {
                             position: relative;
                             display: block;
                             width: rem(100);
-                            height: rem(36);
-                            line-height: rem(36);
+                            height: rem(55);
+                            padding-top: rem(12);
+                            line-height: 1;
                             margin-left: rem(-50);
-                            margin-bottom: rem(27);
+                            margin-bottom: rem(20);
                             color: $baseWhite;
                             text-align: center;
-                            background-color: $inteColorRed;
-
-                            &:after {
-                                content: '';
-                                position: absolute;
-                                bottom: rem(-15);
-                                left: 50%;
-                                width: 0;
-                                height: 0;
-                                margin-left: rem(-10);
-                                border-top: rem(15) solid $inteColorRed;
-                                border-left: rem(10) solid transparent;
-                                border-right: rem(10) solid transparent;
-                            }
+                            @include bg-image('/static/images/intelligent/znzf_slide_text_bg');
+                            -webkit-background-size: 100% 100%;
+                            background-size: 100% 100%;
+                            @include box-sizing;
                         }
 
                         .slider-track {
@@ -720,13 +710,14 @@ $inteColorRed: #e42929;
                     position: relative;
                     display: -webkit-flex;
                     display: flex;
+                    padding-bottom: rem(12);
                     justify-content: space-between;
 
                     &#layOut {
-                        margin: rem(100) 0;
+                        margin: rem(96) 0;
                     }
 
-                    &#hasChild {
+                    &#hasChild, &#oldMan {
                         margin-left: rem(90);
                     }
 
@@ -734,7 +725,7 @@ $inteColorRed: #e42929;
                         content: '';
                         position: absolute;
                         left: 0;
-                        bottom: 0;
+                        bottom: rem(12);
                         width: 100%;
                         height: rem(12);
                         background-color: $baseModuleFillColor;
@@ -765,11 +756,11 @@ $inteColorRed: #e42929;
                             position: relative;
                             display: block;
                             min-width: rem(88);
-                            height: rem(36);
-                            line-height: rem(36);
-                            padding: 0 rem(15);
+                            height: rem(55);
+                            line-height: 1;
+                            padding: rem(12) rem(15) 0;
                             @include box-sizing;
-                            margin-bottom: rem(50);
+                            margin-bottom: rem(30);
                             color: $inteBlack;
                             text-align: center;
                         }
@@ -787,22 +778,10 @@ $inteColorRed: #e42929;
                             }
 
                             span {
-
                                 color: $baseWhite;
-                                background-color: $inteColorRed;
-
-                                &:after {
-                                    content: '';
-                                    position: absolute;
-                                    bottom: rem(-15);
-                                    left: 50%;
-                                    width: 0;
-                                    height: 0;
-                                    margin-left: rem(-10);
-                                    border-top: rem(15) solid $inteColorRed;
-                                    border-left: rem(10) solid transparent;
-                                    border-right: rem(10) solid transparent;
-                                }
+                                @include bg-image('/static/images/intelligent/znzf_slide_text_bg');
+                                -webkit-background-size: 100% 100%;
+                                background-size: 100% 100%;
                             }
                         }
                     }
@@ -815,8 +794,8 @@ $inteColorRed: #e42929;
                         display: block;
                         float: left;
                         width: rem(114);
-                        height: rem(40);
-                        line-height: rem(38);
+                        height: rem(46);
+                        line-height: rem(44);
                         margin: rem(10) rem(15);
                         text-align: center;
                         border: rem(1) solid #999;
@@ -828,14 +807,20 @@ $inteColorRed: #e42929;
 
                         &.current {
                             color: $baseWhite;
-                            border-color: $inteColorRed;
-                            background-color: $inteColorRed;
+                            border: none;
+                            width: rem(124);
+                            height: rem(56);
+                            line-height: rem(56);
+                            margin: rem(5) rem(10);
+                            @include bg-image('/static/images/intelligent/distict-box');
+                            -webkit-background-size: 100% 100%;
+                            background-size: 100% 100%;
                         }
                     }
                 }
 
                 #family-box {
-                    margin-top: rem(30);
+                    margin: rem(26) 0;
                 }
 
                 .child-box {
@@ -844,18 +829,24 @@ $inteColorRed: #e42929;
 
                     label {
                         position: absolute;
-                        bottom: 0;
+                        bottom: rem(12);
                     }
                 }
 
                 .old-man-box {
                     position: relative;
-                    margin-top: rem(76);
+                    padding-bottom: rem(9);
+                    margin-top: rem(24);
 
                     label {
                         position: absolute;
-                        bottom: 0;
+                        bottom: rem(12);
                     }
+
+                    .content-list {
+                        width: rem(266);
+                    }
+
                     .choose-radio {
                         margin-left: rem(90);
 
@@ -905,7 +896,6 @@ $inteColorRed: #e42929;
                     }
                 }
 
-
                 .layer-footer {
                     position: absolute;
                     left: 0;
@@ -931,21 +921,65 @@ $inteColorRed: #e42929;
         .start-btn {
             position: absolute;
             left: 50%;
-            bottom: 0;
-            width: rem(214);
-            height: rem(72);
-            margin-left: rem(-107);
+            bottom: 3%;
+            width: rem(294);
+            height: rem(94);
+            margin-left: rem(-140);
             text-align: center;
-            @include bg-image('/static/images/intelligent/znzf_qd');
-            -webkit-background-size: contain;
-            background-size: contain;
+
+            &:before, &:after {
+                content: '';
+                position: absolute;
+                left: 0;
+                width: rem(26);
+                height: rem(26);
+                border-left: rem(1) solid $inteBlack;
+            }
+            &:before {
+                top: 0;
+                border-top: rem(1) solid $inteBlack;
+            }
+            &:after {
+                bottom: 0;
+                border-bottom: rem(1) solid $inteBlack;
+            }
+
+            .start-triangle {
+
+                &:before, &:after {
+                    content: '';
+                    position: absolute;
+                    right: 0;
+                    width: rem(26);
+                    height: rem(26);
+                    border-right: rem(1) solid $inteBlack;
+                }
+                &:before {
+                    top: 0;
+                    border-top: rem(1) solid $inteBlack;
+                }
+                &:after {
+                    bottom: 0;
+                    border-bottom: rem(1) solid $inteBlack;
+                }
+            }
 
             p {
                 position: absolute;
-                bottom: rem(12);
-                width: 100%;
+                top: 50%;
+                left: 50%;
+                width: rem(280);
+                height: rem(80);
+                margin: rem(-40) rem(-140);
+                line-height: rem(80);
                 color: $baseWhite;
-                @include font-dpr(22);
+                @include font-dpr(30);
+                background-color: $inteBlack;
+
+                img {
+                    width: rem(56);
+                    margin-right: rem(25);
+                }
             }
         }
     }
@@ -968,22 +1002,26 @@ $inteColorRed: #e42929;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 90%;
             height: rem(174);
             padding-top: rem(54);
+            margin-left: 5%;
+            margin-right: 5%;
             @include box-sizing;
+            overflow: hidden;
 
             p {
                 position: relative;
                 display: inline-block;
-                width: rem(184);
                 height: rem(76);
                 line-height: rem(76);
+                padding: 0 rem(20);
                 text-align: center;
                 color: #fb3939;
+                white-space: nowrap;
                 @include bg-image('/static/images/intelligent/city-title-block');
-                -webkit-background-size: contain;
-                background-size: contain;
+                -webkit-background-size: 100% 100%;
+                background-size: 100% 100%;
                 @include font-dpr(36);
 
                 &:before, &:after {
@@ -1063,8 +1101,7 @@ $inteColorRed: #e42929;
                             top: 0;
                             left: 0;
                             width: 100%;
-                            height: rem(8);
-                            background-color: #ff4848;
+                            height: rem(15);
                         }
 
                         .text-box {
@@ -1409,7 +1446,6 @@ $inteColorRed: #e42929;
                         @include font-dpr(30);
                     }
                 }
-
 
                 .button {
                     display: block;

@@ -1,37 +1,38 @@
 $(function () {
     $('#superContainer').fullpage({
         fitToSection: true,
-        resize: false,
-        onLeave: function (index, nextIndex, direction) {
-            if (nextIndex == 4 && direction == 'down') {
-                console.log('down4')
-                rada_animit.init();
-                $.ajax({
-                    type: "GET",
-                    async: true,
-                    url: router_city('/findhouse/showUserPortrayal'),
-                    data: options,
-                    success: function (dataInfo) {
-                         // console.log(dataInfo.data);
-                        try{
-                            rada_animit.id=dataInfo.data.id;
-                        }
-                        catch (e){
-                            console.error(e)
-                        }
-
-                    },
-                    error:function (XMLHttpRequest, textStatus, errorThrown){
-                        console.error(errorThrown)
-                    }
-                })
-            }
-        }
+        resize: false
     });
     $.fn.fullpage.setAllowScrolling(false, 'up, down');
 
     $('.begin').on('click', function () {
         $.fn.fullpage.moveSectionDown();
+    });
+
+    $('.start-btn').on('click', function () {
+        if (!$(this).hasClass('none')) {
+            $.fn.fullpage.moveSectionDown();
+            rada_animit.init();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: router_city('/findhouse/showUserPortrayal'),
+                data: options,
+                success: function (dataInfo) {
+                    // console.log(dataInfo.data);
+                    try{
+                        rada_animit.id=dataInfo.data.id;
+                    }
+                    catch (e){
+                        console.error(e)
+                    }
+
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){
+                    console.error(errorThrown)
+                }
+            })
+        }
     });
 
     chooseUserType();   // 用户选择类型
@@ -51,7 +52,6 @@ var options = new Object();
  * Step1:Choose user type
  */
 function chooseUserType() {
-
     $('.choose-wrapper').on('click', '.choose-item-box', function () {
         $('.choose-wrapper').find('.choose-item-box').removeClass('current');
         $(this).addClass('current');
@@ -62,7 +62,7 @@ function chooseUserType() {
             var userTypeParams = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
 
             options['userType'] = userTypeParams;
-            console.log("options=="+JSON.stringify(options));
+
             $.ajax({
                 type: "GET",
                 url: router_city('/findhouse/xuanzeleixing'),
@@ -79,7 +79,6 @@ function chooseUserType() {
 }
 
 function chooseUserFinds() {
-
     $('.list-item').on('click', 'li', function () {
         if ($(this).hasClass('optional')) {
             var index = $(this).index() + 1;
@@ -167,10 +166,9 @@ function chooseUserFinds() {
         $('.result-container').removeClass('none');
         if (3 == options['userType']) {
             $('.start-btn').removeClass('none');
-            $.fn.fullpage.setAllowScrolling(true, 'down');
             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end');
         } else {
-            $.fn.fullpage.setAllowScrolling(false, 'up, down');
+
             if ($('.list-item').find('li').eq(1).hasClass('choose-end')) {
                 $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('optional');
             } else {
@@ -246,7 +244,6 @@ function chooseUserFinds() {
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
                     }
-                    console.log("options=="+JSON.stringify(options));
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
 
@@ -266,7 +263,6 @@ function chooseUserFinds() {
      * */
     var distictInfo;
     $('#submitHouseType').on('click', function () {
-
         $(this).parents('.layer').addClass('none');
         if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
             $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('optional');
@@ -339,13 +335,11 @@ function chooseUserFinds() {
      * 提交选中区域
      * */
     $('#submitArea').on('click', function () {
-
         if (!$(this).hasClass('disabled')) {
             $(this).parents('.layer').addClass('none');
             if (options['layOut'] == 1) {
                 $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end');
                 $('.start-btn').removeClass('none');
-                $.fn.fullpage.setAllowScrolling(true, 'down');
             } else {
                 if ($('.list-item').find('li').eq(3).hasClass('choose-end')) {
                     $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('optional');
@@ -362,7 +356,7 @@ function chooseUserFinds() {
             }
             options['districtId'] = districtIdStr.join();
 
-            console.log("options=="+JSON.stringify(options));
+
             var districtHtml = '<p><span>'+ districtNameStr.join(' ') +'</span></p>';
             $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
 
@@ -424,15 +418,13 @@ function chooseUserFinds() {
      * 提交家庭结构内容
      * */
     $('#submitFamily').on('click', function () {
-
         $(this).parents('.layer').addClass('none');
         $('.list-item').find('li').eq(3).removeClass('current').addClass('choose-end');
         $('.start-btn').removeClass('none');
-        $.fn.fullpage.setAllowScrolling(true, 'down');
 
         options['childParams'] = $('#hasChild').find('li.current').data('child');
         options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
-        console.log("options=="+JSON.stringify(options));
+
         var familyHtml = '<p><span>孩子：<em>'+ $('#hasChild').find('li.current').find('span').text() +'</em></span>' +
                          '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
         $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
