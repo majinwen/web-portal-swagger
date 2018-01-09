@@ -20,7 +20,7 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red">1000万</em>左右的房源市场为您的目标市场 </p>
+                <p>根据您的检索条件<br>总价<em class="high-light-red"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>
@@ -139,19 +139,19 @@
                     <li>
                         <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>套，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
                         </#if>
                     </li>
                     <li>
                     <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>套，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
                     </#if>
                     </li>
                     <li>
                     <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>套，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
                     </#if>
                     </li>
                 </#if>
@@ -292,7 +292,11 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                              <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                <#if fhResult_index == 0>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                <#else >
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                </#if>
                                 </#if>
                             </#list>
                         </#if>
@@ -312,7 +316,11 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                             <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                <#if fhResult_index == 0>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                <#else >
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                </#if>
                                 </#if>
                             </#list>
                         </#if>
@@ -425,13 +433,13 @@
                     <tr>
                         <td>
                             <i></i>
-                            <em>物业费<br>(/㎡·年)</em>
+                            <em>物业费<br>(/㎡·月)</em>
                         </td>
                         <#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
                                 <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
-                                    <td>${fhResult['propertyfee']}</td>
+                                    <td>${fhResult['propertyfee']}元</td>
                                 <#else >
                                     <td>-</td>
                                 </#if>
@@ -686,7 +694,7 @@
 
     //    console.log(ptlists)
     //    console.log(trend)
-
+//    console.log(datajson)
     var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
@@ -771,7 +779,7 @@
         for (var i = 0; i < datajson.length; i++) {
             var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
             var jiaoyu=dict_getValueOrDefault(typecount,"jiaoyu",{})
-            res.push([dict_getValueOrDefault(jiaoyu,"youeryuan",0),dict_getValueOrDefault(jiaoyu,"xiaoxue",0),dict_getValueOrDefault(jiaoyu,"zhongxue",0),dict_getValueOrDefault(jiaoyu,"gaodeng",0)])
+            res.push([dict_getValueOrDefault(jiaoyu,"youeryuan",0),dict_getValueOrDefault(jiaoyu,"xiaoxue",0),dict_getValueOrDefault(jiaoyu,"zhongxue",0)])
         }
         return res;
     }
@@ -810,6 +818,13 @@
     function getNearbyQiao(index) {
         if (index < datajson.length) {
             return datajson[index]["nearbyQiao"] || ""
+        }
+        return "";
+    }
+
+    function getNearbyRoad(index) {
+        if (index < datajson.length) {
+            return datajson[index]["nearbyRoad"] || ""
         }
         return "";
     }
@@ -1010,7 +1025,7 @@
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
 //                    console.log(params,ticket)
-                    return params.data+"km\n\n"+getMetroStation(params.seriesIndex)[1]+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"
+                    return params.data+"km\n\n"+getMetroStation(params.seriesIndex)[1]/*+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"*/
                 }
 
             }
@@ -1113,7 +1128,7 @@
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
 //                    console.log(params,ticket)
-                    return params.data+"km\n\n"+getNearbyQiao(params.seriesIndex)
+                    return params.data+"km\n\n"+getNearbyQiao(params.seriesIndex)+"\n\n"+"("+getNearbyRoad(params.seriesIndex)+")"
                 }
             }
         };
@@ -1303,7 +1318,7 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 10},
-                data: ['幼儿园', '小学', '中学', '大学']
+                data: ['幼儿园', '小学', '中学']
             },
             series: [
                 {

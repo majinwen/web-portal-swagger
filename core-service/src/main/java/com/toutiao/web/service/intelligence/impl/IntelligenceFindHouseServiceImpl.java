@@ -357,10 +357,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         int index = 1;
         if (null != finalList && finalList.size() > 0) {
             for (IntelligenceFindhouse intelligence : finalList) {
-                if (null != intelligence.getPropertyfee()) {
-                    BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
-                    intelligence.setPropertyfee(bigDecimal);
-                }
+//                if (null != intelligence.getPropertyfee()) {
+//                    BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
+//                    intelligence.setPropertyfee(bigDecimal);
+//                }
                 if (null != intelligence.getCarRentPrice()) {
                     BigDecimal bigDecimal = new BigDecimal(intelligence.getCarRentPrice().doubleValue() * 12);
                     intelligence.setCarRentPrice(bigDecimal);
