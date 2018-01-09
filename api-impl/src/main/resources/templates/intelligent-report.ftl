@@ -695,7 +695,7 @@
     //    console.log(ptlists)
     //    console.log(trend)
 //    console.log(datajson)
-    var dpr = window.devicePixelRatio;
+
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
 
@@ -846,7 +846,7 @@
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
 
         var chartGrid = {
-            left: 0,
+            left: '2%',
             right: '6%',
             bottom: 0,
             containLabel: true
@@ -884,7 +884,7 @@
                 show: true,
                 boundaryGap: false,
                 scale: true,
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: getJiagezoushiYuefen()
             },
             yAxis: {
@@ -957,7 +957,7 @@
                     type: 'category',
                     axisTick: {show: false},
                     axisLine: {show: true},
-                    axisLabel: {fontSize: baseFontSize - 10},
+                    axisLabel: {fontSize: baseFontSize - 4},
                     data: getGongxuqingkuangYuefen()
                 }, {
                     type: 'category',
@@ -1025,7 +1025,7 @@
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
 //                    console.log(params,ticket)
-                    return params.data+"km\n\n"+getMetroStation(params.seriesIndex)[1]/*+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"*/
+                    return params.data+"km\n"+getMetroStation(params.seriesIndex)[1]/*+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"*/
                 }
 
             }
@@ -1128,7 +1128,7 @@
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
 //                    console.log(params,ticket)
-                    return params.data+"km\n\n"+getNearbyQiao(params.seriesIndex)+"\n\n"+"("+getNearbyRoad(params.seriesIndex)+")"
+                    return params.data+"km\n"+getNearbyQiao(params.seriesIndex)+"\n"+"("+getNearbyRoad(params.seriesIndex)+")"
                 }
             }
         };
@@ -1237,11 +1237,11 @@
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: ['菜市场', '超市', '购物中心', '餐饮']
             },
             series: [
@@ -1313,11 +1313,11 @@
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: ['幼儿园', '小学', '中学']
             },
             series: [
@@ -1389,11 +1389,11 @@
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: ['综合','诊所','专科']
             },
             series: [
@@ -1546,8 +1546,6 @@
             }
 
     });
-
-
 </script>
 </body>
 </html>
