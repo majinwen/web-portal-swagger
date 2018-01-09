@@ -81,7 +81,7 @@
                 </div>
             </div>
             <ul class="list-item">
-                <li class="current">
+                <li class="current optional">
                     <div class="animate-box">
                         <div class="trangle-animate"></div>
                         <p>预算</p>
@@ -187,10 +187,10 @@
                 <div class="layer-content">
                     <div class="layer-header">
                         <p>选择您的意向区域</p>
-                        <div class="area-tips">
-                            <span>意向区域不能点么</span>
-                            <button class="modify-reset">修改预算</button>
-                        </div>
+                        <#--<div class="area-tips">-->
+                            <#--<span>意向区域不能点么</span>-->
+                            <#--<button class="modify-reset">修改预算</button>-->
+                        <#--</div>-->
                     </div>
                     <ul id="option_distict" class="area-content clear">
                         <li class="disabled" data-value="105035">朝阳</li>

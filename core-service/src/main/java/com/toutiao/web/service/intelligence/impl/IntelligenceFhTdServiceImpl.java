@@ -47,7 +47,7 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
 
         intelligenceFhTdRatio.setMinVolumeRatio(String.format("%.2f",minratio)+"%");
         intelligenceFhTdRatio.setMaxVolumeRatio(String.format("%.2f",maxratio)+"%");
-        intelligenceFhTdRatio.setAverageVolume(String.format("%.2f",average));
+        intelligenceFhTdRatio.setAverageVolume(String.valueOf((int)Math.ceil(average)));
         intelligenceFhTdRatio.setAverageVolumeRatio(String.format("%.2f",averageratio)+"%");
         Map<String,Object> result = new HashMap<>();
 

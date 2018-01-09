@@ -4,44 +4,24 @@ package com.toutiao.web.service.intelligence.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.*;
-import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
-import com.toutiao.web.dao.entity.robot.SubwayDistance;
 import com.toutiao.web.dao.mapper.officeweb.*;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
-import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import com.toutiao.web.service.map.MapService;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @Transactional
@@ -67,99 +47,80 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
     @Autowired
     private MapService mapService;
 
+
+
+
     @Override
-    public IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery) {
+    public IntelligenceFh queryUserChoice(IntelligenceQuery intelligenceQuery) {
 
         IntelligenceFh intelligenceFh = null;
-        try {
-            intelligenceFh = new IntelligenceFh();
-            //复制信息
-            BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-            //初始化
-            Double plotTotalFirst = null;
-            Double plotTotalEnd = null;
-            String plotTotal = null;
-            //判断用户是否首付还是总价
-            //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
-            if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
-                    isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
-            }
-            //选择总价
-            if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
-                plotTotal = intelligenceFh.getPreconcTotal();
+        intelligenceFh = new IntelligenceFh();
+        //复制对象信息
+        BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
+        //初始化
 
+        String plotTotal = null;
+        //判断用户是否首付还是总价
+        //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
+        if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
+                isNotBlank(intelligenceFh.getMonthPayMent())) {
+            plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
+        }
+        //选择总价
+        if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
+            plotTotal = intelligenceFh.getPreconcTotal();
+        }
+        intelligenceFh.setPreconcTotal(plotTotal);
+        //上下浮动10%
+        Double plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+        intelligenceFh.setPlotTotalFirst(plotTotalFirst);
+        Double plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+        intelligenceFh.setPlotTotalEnd(plotTotalEnd);
+
+
+        //户型选择======
+        if (StringTool.isNotBlank(intelligenceFh.getLayOut())){
+            userChooiseLayout(intelligenceFh);
+        }
+
+        if(StringTool.isNotBlank(intelligenceFh.getDistrictId())){
+            int count= 0;
+            String[] split  = intelligenceFh.getDistrictId().split(",");
+            for (int i = 0; i < split.length; i++) {
+                //通过总价和户型查询小区数量
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
+                count += count1;
             }
-            //上下浮动10%
-            plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
-            plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
-            //获取用户类型
-            String userType = intelligenceFh.getUserType();
-            //判断总价是否高于400万
-            if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 >= 4E6) {
-                //获取用户的类型
-                if (StringTool.isNotBlank(userType) && userType.equalsIgnoreCase("1")) {
-                    //需要将用户选择的类型改成自住 改善
-                    userType = "2";
-                    intelligenceFh.setUserType(userType);
-                }
-            }
-            //根据总价，筛选小区（小区总价范围），得到结果集数量，即为您筛选出X个小区
-            int plotCount = intelligenceFindhouseMapper.queryPlotCount(plotTotalFirst, plotTotalEnd);
-            //获取相对应的比率
+        }
+
+        //通过总价和户型查询小区数量
+        Integer count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+        //获取该小区所在区域的信息
+        List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+        intelligenceFh.setDistictInfo(distictInfo);
+        //用户占比率
+        if(!StringTool.isNotBlank(intelligenceFh.getLayOut())){
             Double totalPriceRate = totalListedRatioMapper.selectByTotalPrice(plotTotalFirst / 10000, plotTotalEnd / 10000);
-            String totalRate = "";
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
                 intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate * 100)));
             } else {
-               /* intelligenceFh.setRatio(Double.valueOf(new StringBuffer().append(Double.valueOf(new DecimalFormat("##.000").format(0)) * 100).toString()));
-                totalRate = String.valueOf(0);*/
                 intelligenceFh.setRatio(Double.valueOf(String.valueOf(0)));
             }
-            intelligenceFh.setPlotCount(plotCount);
-            return intelligenceFh;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
+
+        //小区数量
+        intelligenceFh.setPlotCount(count);
+        return intelligenceFh;
     }
 
-
-    @Override
-    public IntelligenceFh queryUserCheckPriceAndCategory(IntelligenceQuery intelligenceQuery) {
-        IntelligenceFh intelligenceFh = null;
-
-        try {
-            intelligenceFh = new IntelligenceFh();
-            //复制对象信息
-            BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
-            //初始化
-            Double plotTotalFirst = null;
-            Double plotTotalEnd = null;
-            String plotTotal = null;
-            //判断用户是否首付还是总价
-            //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
-            if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
-                    isNotBlank(intelligenceFh.getMonthPayMent())) {
-                plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
-
-            }
-            //选择总价
-            if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
-                plotTotal = intelligenceFh.getPreconcTotal();
-
-            }
-            //上下浮动10%
-            plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
-            plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
-
-            //通过总价和户型查询小区数量
-            Integer count = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
-            //获取该小区所在区域的信息
-            List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
-            intelligenceFh.setDistictInfo(distictInfo);
-            //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
+    /**
+     * 用户类型选择
+     * @param intelligenceFh
+     * @return
+     */
+    private IntelligenceFh userChooiseLayout(IntelligenceFh intelligenceFh) {
+        //用户选择3居及以上，认为用户优先需要3km内有教育配套和医疗配套，即为用户打了教育配套和医疗配套标签，此处不参与1中描述的结果集统计
             if (StringTool.isNotBlank(intelligenceFh.getLayOut()) && intelligenceFh.getLayOut() >= 3) {
                 //教育配套
                 intelligenceFh.setSchoolFlag(1);
@@ -169,7 +130,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //获取相对应的比率
             Integer layOut = intelligenceFh.getLayOut();
             if (StringTool.isNotBlank(layOut) && layOut == 6) {
-                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(intelligenceFh.getPlotTotalFirst() / 10000, intelligenceFh.getPlotTotalEnd() / 10000, intelligenceFh.getLayOut());
                 if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
                     if (roomRatio.size() > 1) {
                         Double plotRatio = 0.0;
@@ -185,44 +146,40 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
 
                 } else {
-                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
+                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(intelligenceFh.getPreconcTotal()) && Integer.valueOf(intelligenceFh.getPreconcTotal()) * 10000 > 4E6) {
                         //用户画像类型
                         intelligenceFh.setUserPortrayalType(4);
                         intelligenceFh.setRatio(0.5);
                     }
-                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
+                    if (StringTool.isNotBlank(layOut) && layOut == 6 && StringTool.isNotBlank(intelligenceFh.getPreconcTotal()) && Integer.valueOf(intelligenceFh.getPreconcTotal()) * 10000 <= 4E6) {
                         intelligenceFh.setUserPortrayalType(1);
                         intelligenceFh.setRatio(0.5);
                     }
                 }
             } else {
                 //比率
-                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(plotTotalFirst / 10000, plotTotalEnd / 10000, intelligenceFh.getLayOut());
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(intelligenceFh.getPlotTotalFirst() / 10000, intelligenceFh.getPlotTotalEnd() / 10000, intelligenceFh.getLayOut());
                 if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
                     //用户画像类型
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
                     //用户比率
                     intelligenceFh.setRatio(roomRatio.get(0).getRatio());
                 } else {
-                    if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 > 4E6) {
+                    if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal()) && Integer.valueOf(intelligenceFh.getPreconcTotal()) * 10000 > 4E6) {
                         //用户画像类型
                         intelligenceFh.setUserPortrayalType(4);
                         intelligenceFh.setRatio(0.5);
                     }
-                    if (StringTool.isNotBlank(plotTotal) && Integer.valueOf(plotTotal) * 10000 <= 4E6) {
+                    if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal()) && Integer.valueOf(intelligenceFh.getPreconcTotal()) * 10000 <= 4E6) {
                         intelligenceFh.setUserPortrayalType(1);
                         intelligenceFh.setRatio(0.5);
                     }
                 }
             }
-            //小区数量
-            intelligenceFh.setPlotCount(count);
-            return intelligenceFh;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return intelligenceFh;
     }
+
+
 
     /**
      * 功能描述：根据区域赛选小区数量
@@ -243,8 +200,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             BeanUtils.copyProperties(intelligenceQuery, intelligenceFh);
 
             //初始化
-            Double plotTotalFirst = null;
-            Double plotTotalEnd = null;
             String plotTotal = null;
             //判断用户是否首付还是总价
             //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
@@ -259,8 +214,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
             }
             //上下浮动10%
-            plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
-            plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            Double plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            Double plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
 
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");
@@ -277,6 +232,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         }
         return null;
     }
+
+
 
     @Override
     public IntelligenceFhRes intelligenceFindHouseServiceByType(IntelligenceQuery IntelligenceQuery) {
@@ -346,14 +303,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
         BeanUtils.copyProperties(intelligenceFhResJson, intelligenceFhRes);
-//        if (null!=finalList&&finalList.size()!=0){
-//            for (IntelligenceFindhouse intelligence : finalList) {
-//                String jsonStr = JSONObject.toJSONString(intelligence);
-//                JSONObject fh_result = JSONObject.parseObject(jsonStr);
-//                intelligenceFhRes.setFhResult(fh_result);
-//                intelligenceFhResMapper.saveData(intelligenceFhRes);
-//            }
-//        }
         int index = 1;
         if (null != finalList && finalList.size() > 0) {
             for (IntelligenceFindhouse intelligence : finalList) {
@@ -409,15 +358,6 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         return null;
     }
 
-    /*public static void main(String[] args) {
-        long time = System.currentTimeMillis();
-        String nowTimeStamp = String.valueOf(time);
-        System.out.println(nowTimeStamp);
-        String formats = "yyyy-MM-dd HH:mm:ss";
-        Long timestamp = Long.parseLong(nowTimeStamp);
-        String date = new SimpleDateFormat(formats, Locale.CHINA).format(new Date(timestamp));
-        System.out.println(date);
-    }*/
 
     /**
      * 功能描述：初始化数据
