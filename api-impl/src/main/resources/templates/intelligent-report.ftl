@@ -1491,20 +1491,23 @@
         var point = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
         map.centerAndZoom(point, 12);
         var allOverlay = map.getOverlays();
-        for(var i = 0;i<allOverlay.length;i++) {
-            //删除指定经度的点
-            if (allOverlay[i].getPosition().lng == attr.split("_")[0]) {
-                map.removeOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon, {icon: myIcon1})));
-                map.addOverlay(new BMap.Marker(new BMap.Point(attr.split("_")[0], attr.split("_")[1]), {icon: myIcon}));
-                addMarker(attr.split("_")[0], attr.split("_")[1]);
-                return false;
-            }else{
-                map.addOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon, {icon: myIcon})));
-                map.removeOverlay(new BMap.Marker(new BMap.Point(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon), {icon: myIcon1}));
-                addMarker(allOverlay[i].getPosition().lng, allOverlay[i].getPosition().lon);
-            }
-        }
+        var point2 = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
+        map.removeOverlay(new BMap.Marker(point2, {icon: myIcon1}));
+        map.addOverlay(new BMap.Marker(point2, {icon: myIcon}));
+        addMarker(attr.split("_")[0], attr.split("_")[1]);
+        new BMap.Marker(point2, {icon: myIcon}).setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+        map.removeOverlay();
 
+        if (res.length > 0) {
+                for (var i = 0; i < res.length; i++) {
+                    var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
+
+                    if(point.lat!=point2.lat){
+                        map.removeOverlay(new BMap.Marker(point, {icon: myIcon1}));
+                        addMarker(point);
+                    }
+                }
+            }
 
     });
 
