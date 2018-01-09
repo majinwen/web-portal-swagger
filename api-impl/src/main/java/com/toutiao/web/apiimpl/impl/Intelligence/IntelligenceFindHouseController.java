@@ -219,6 +219,9 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(intelligenceFh)) {
             intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
         }
+        if(intelligenceFh.getPlotCount()-5<5){
+            intelligenceFh.setPlotCount(0);
+        }
         return NashResult.build(intelligenceFh);
     }
 
@@ -237,6 +240,9 @@ public class IntelligenceFindHouseController {
 
         //通过页面传递过来的区域等信息赛选小区数量
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
+        if(intelligenceFh.getPlotCount()-5<5){
+            intelligenceFh.setPlotCount(0);
+        }
         //报告生成页
         return NashResult.build(intelligenceFh);
     }
