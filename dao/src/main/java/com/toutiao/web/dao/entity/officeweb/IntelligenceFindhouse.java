@@ -707,7 +707,7 @@ public class IntelligenceFindhouse {
     /**
      * 距离最近的环线米
      */
-    private Integer nearbyRoadMeter;
+    private Integer nearbyRoadMeter = 2000000000;
 
     /**
      * 最低总价
@@ -772,6 +772,6 @@ public class IntelligenceFindhouse {
     /**
      * 地铁和小区的距离
      */
-    private Integer metroWithPlotDistance;
+    private Integer metroWithPlotDistance = 2000000000;
 
 }
