@@ -16,7 +16,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -523,28 +523,41 @@
                 <#--<#if (yiliao['zhuanke']?size>0)>
                 ${yiliao['zhuanke']}
                 </#if>-->
+                <#assign itnum = 0>
                 <#if (yiliao['zhuanke']?size>0)>
                 <#list yiliao['zhuanke'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
                 </#if>
                 <#if (yiliao['zhensuo']?size>0)>
                     <#list yiliao['zhensuo'] as item>
+                        <#if itnum<5>
+                          <#assign itnum=itnum+1>
                         <li>
-                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
                             <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                         </li>
+                        <#else><#break>
+                        </#if>
                     </#list>
                 </#if>
                 <#if (yiliao['zonghe']?size>0)>
                     <#list yiliao['zonghe'] as item>
+                        <#if itnum<5>
+                            <#assign itnum=itnum+1>
                         <li>
-                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
                             <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                         </li>
+                        <#else><#break>
+                        </#if>
                     </#list>
                 </#if>
             </ul>

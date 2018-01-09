@@ -76,4 +76,7 @@ public class IntelligenceFhRes {
      */
     private String metroWithPlotdistance;
 
+
+    private Integer collectStatus;
+
 }

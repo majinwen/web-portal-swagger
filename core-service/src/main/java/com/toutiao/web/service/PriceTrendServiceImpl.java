@@ -22,7 +22,6 @@ public class PriceTrendServiceImpl implements PriceTrendService {
 
    public Map<String,Object> priceTrendList(Integer buildingId,Integer districtId,Integer areaId){
        List<PriceTrend> priceTrendList = priceTrendMapper.newhouseTrendList(buildingId,districtId,areaId);
-       SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-M");
        List<PriceTrend> ptCD0 =new ArrayList<>();
        List<PriceTrend> ptCD1 =new  ArrayList<>();
