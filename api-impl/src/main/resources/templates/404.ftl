@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/404.css">
     <title>404</title>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
 </head>
 <body>
 <div class="page-empty">

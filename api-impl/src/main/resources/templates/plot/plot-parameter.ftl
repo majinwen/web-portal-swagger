@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>小区参数</title>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -38,7 +38,7 @@
         </div>
         <ul class="primary-item">
             <li>
-                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无数据</#if></p>
+                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡ <#else>暂无数据</#if></p>
             </li>
         </ul>
     </section>

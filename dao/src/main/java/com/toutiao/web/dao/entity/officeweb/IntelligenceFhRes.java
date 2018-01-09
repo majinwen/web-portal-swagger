@@ -71,4 +71,9 @@ public class IntelligenceFhRes {
      */
     private String districtId;
 
+    /**
+     * 小区到地铁站的距离
+     */
+    private String metroWithPlotdistance;
+
 }

@@ -129,9 +129,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //关键字搜索
             if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
                  booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())).boost(2));
+                         .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
+                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                         .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
@@ -186,8 +187,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //面积
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
-                String area = projHouseInfoRequest.getHouseAreaId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaSize())) {
+                String area = projHouseInfoRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 String[] layoutId = area.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
@@ -283,7 +284,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         .setSize(pageSize)
                         .execute().actionGet();
             } else {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
+                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.ASC)
                         .setFrom((pageNum - 1) * pageSize)
                         .setSize(pageSize)
                         .execute().actionGet();

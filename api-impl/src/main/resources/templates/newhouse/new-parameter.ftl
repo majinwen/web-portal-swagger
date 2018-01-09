@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/parameter.css">
     <title>新房参数</title>
+    <meta name="description" content="让美好生活 来找你">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -24,7 +24,6 @@
                         <#if item?exists><span>${item}</span></#if>
                     </#list><#else>暂无数据
                 </#if>
-
             </div>
         </div>
         <ul class="primary-item">
@@ -32,7 +31,7 @@
                 <p>销售状态：<#if discript['sale_status_name']?exists>${discript['sale_status_name']}</#if></p>
                 <p>最新开盘：<#if discript['opened_time']?exists>${discript['opened_time']}<#else>暂无</#if></p>
                 <p>交房时间：<#if discript['deliver_time']?exists>${discript['deliver_time']}<#else>暂无</#if></p>
-                <p>参考均价：<#if (discript['average_price']?exists && discript['average_price']>0)>${discript['average_price']}元/㎡<#else>售价待定</#if></p>
+                <p>参考均价：<#if (discript['average_price']?exists && discript['average_price']>0)>${discript['average_price']?number?round}元/㎡<#else>售价待定</#if></p>
             </li>
         </ul>
     </section>

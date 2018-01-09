@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css">
     <link rel="stylesheet" href="${staticurl}/css/list.css">
     <title>头条房产看二手房小区</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img height="1px" width="1px" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/xiaoqu')}">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+        <input type="text"  class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -215,7 +214,7 @@
                             </#if>
                         </div>
                         <div class="cont-block-price plot">
-                            <em>${plot['avgPrice']}元/㎡</em>
+                            <em>${plot['avgPrice']?number?round}元/㎡</em>
                         </div>
                     </div>
                 </div>
