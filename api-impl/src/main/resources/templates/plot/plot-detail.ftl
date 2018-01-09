@@ -21,7 +21,7 @@
 <#assign ptCD1 = tradeline['arealine']>
 <#assign ptCD2 = tradeline['tradearealine']>
 <#assign mouthList = tradeline['mouthList']>
-<img height="1px" width="1px" hidden src="${qiniuimage}/${village['photo'][0]}-tt1200x640" alt="">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${village['photo'][0]!""}-tt1200x640" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
