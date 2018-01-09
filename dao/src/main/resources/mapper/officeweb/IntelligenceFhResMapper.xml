@@ -19,7 +19,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
-    has_child, has_oldman,create_time,user_portrait,district_id
+    has_child, has_oldman,create_time,user_portrait,district_id,collect_status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -33,7 +33,7 @@
     <!--<include refid="Base_Column_List" />-->
     <include refid="Base_Column_List" />
     from intelligence_fh_res
-    where phone = #{userPhone} and collect_status=1
+    where phone = #{userPhone}  and collect_status=1 ORDER by id DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from intelligence_fh_res
@@ -283,9 +283,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
-  <!--<update id="deleteMyReport">-->
-    <!--UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_status=1-->
-  <!--</update>-->
+  <update id="deleteMyReport">
+    UPDATE intelligence_fh_res set collect_status=0 where id=#{reportId} and phone=#{phone} and collect_status=1
+  </update>
   <!--int updateMyReportCollectStatus(@Param("reportId") Integer integer,@Param("usePhone") String usePhone);-->
   <update id="updateMyReportCollectStatus">
     UPDATE intelligence_fh_res set collect_status=1,phone = #{usePhone} where id=#{reportId}

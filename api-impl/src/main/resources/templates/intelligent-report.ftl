@@ -212,9 +212,9 @@
                     </#list>
                     </ul>
                 </div>
-                <div id="allmap" class="echart-box">
+                <#--<div id="allmap" class="echart-box">
 
-                </div>
+                </div>-->
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
@@ -582,25 +582,56 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
+        var status=${intelligenceFhRes.collectStatus};
+
+        if(status==1){
+            $('.collect-button').find('.collect').toggleClass('active');
+        }
+
         $('.collect-button').on('click', function () {
             var reportId =${reportId};
-            $(this).find('.collect').toggleClass('active');
             /*var count= $(this).find('.collect').attr('data-type');
             console.log(count);*/
-            if (reportId != "" && reportId != null) {
+            $(this).find('.collect').toggleClass('active');
+            if ($(this).find('.collect').hasClass('active')) {
+                // 收藏
+                if (reportId != "" && reportId != null) {
+                    $.ajax({
+                        type: "GET",
+                        async: true,
+                        url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
+                        data: reportId,
+                        success: function (data) {
+                            //改变状态
+                            if (data.data == "ok") {
+
+                            }
+                            if (data.data == "fail") {
+                                //重定向到登陆页面
+                                window.location.href = "/user/login?reportId=" + reportId;
+                            }
+                            // 收藏失败
+                            if (data.data == "cancel") {
+                                $(this).find('.collect').removeClass('active');
+                            }
+                        }
+                    })
+                }
+            } else {
+                // 取消收藏
                 $.ajax({
                     type: "GET",
                     async: true,
-                    url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
+                    url: router_city('/findhouse/cancleMyReport/') + reportId,
                     data: reportId,
                     success: function (data) {
                         //改变状态
                         if (data.data == "ok") {
-                            //缺少收藏样式
+
                         }
                         if (data.data == "fail") {
-                            //重定向到登陆页面
-                            window.location.href = "/user/login?reportId=" + reportId;
+                            // 取消收藏失败
+                            $(this).find('.collect').removeClass('active');
                         }
                     }
                 })
@@ -694,7 +725,6 @@
 
     //    console.log(ptlists)
     //    console.log(trend)
-//    console.log(datajson)
 
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
@@ -1447,7 +1477,7 @@
 
     });
 </script>
-<script>
+<#--<script>
     var datajson =${datajson};
     var res = [];
     for (var i = 0; i < datajson.length; i++) {
@@ -1535,17 +1565,19 @@
         map.removeOverlay();
 
         if (res.length > 0) {
-                for (var i = 0; i < res.length; i++) {
-                    var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
+            for (var i = 0; i < res.length; i++) {
+                var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
 
-                    if(point.lat!=point2.lat){
-                        map.removeOverlay(new BMap.Marker(point, {icon: myIcon1}));
-                        addMarker(point);
-                    }
+                if (point.lat != point2.lat) {
+                    map.removeOverlay(new BMap.Marker(point, {icon: myIcon1}));
+                    addMarker(point);
                 }
             }
+        }
 
     });
-</script>
+
+
+</script>-->
 </body>
 </html>
