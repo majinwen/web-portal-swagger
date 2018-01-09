@@ -81,4 +81,8 @@ public class IntelligenceFh {
      */
     private List<DistictInfo> distictInfo;
 
+    private Double plotTotalFirst;
+
+    private Double plotTotalEnd;
+
 }

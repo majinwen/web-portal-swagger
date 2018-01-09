@@ -8,7 +8,7 @@ $(function () {
     $('.begin').on('click', function () {
         $.fn.fullpage.moveSectionDown();
     });
-    
+
     $('.start-btn').on('click', function () {
         if (!$(this).hasClass('none')) {
             $.fn.fullpage.moveSectionDown();
@@ -80,10 +80,14 @@ function chooseUserType() {
 
 function chooseUserFinds() {
     $('.list-item').on('click', 'li', function () {
-        if ($(this).hasClass('current')) {
+        if ($(this).hasClass('optional')) {
             var index = $(this).index() + 1;
-            $(this).addClass('current').siblings().removeClass('current');
-            $(this).prev().addClass('choose-end');
+            if ($(this).hasClass('choose-end')) {
+                $(this).addClass('optional');
+            } else {
+                $(this).addClass('current optional').siblings().removeClass('current');
+                $(this).prev().addClass('choose-end');
+            }
             $('.layer' + index).removeClass('none');
         }
     });
@@ -164,7 +168,17 @@ function chooseUserFinds() {
             $('.start-btn').removeClass('none');
             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end');
         } else {
-            $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current');
+
+            if ($('.list-item').find('li').eq(1).hasClass('choose-end')) {
+                $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('optional');
+            } else {
+                $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current optional');
+            }
+            if ($('.list-item').find('li').eq(2).hasClass('choose-end')){
+                options['districtId'] = null;
+                $('.list-item').find('li').eq(2).find('.result-animate span').text('');
+                $('#option_distict').find('li.current').removeClass('current').addClass('disabled');
+            }
         }
 
         if ($('.total-price').hasClass('current')) {//choose totalPrice
@@ -176,15 +190,31 @@ function chooseUserFinds() {
 
             $.ajax({
                 type: "GET",
-                url: router_city('/findhouse/goCheckPrice'),
+                url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
-                    $('#plot_Count').find('em').text(data.data.plotCount);
-                    var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
-                    //将第七种画像附给当前用户userPortrayalType
-                    if (options['userType'] == 3) {
-                        options['userPortrayalType'] = 7;
+                    console.log("data.data.plotCount="+data.data.plotCount);
+                    if(data.data.plotCount==0){
+                        $('.list-item').find('li').eq(0).addClass('current');
+                        $('.list-item').find('li').eq(1).removeClass('current');
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        $('#plot_Ratio').find('em').text('0%');
+                    }else{
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
+                        //将第七种画像附给当前用户userPortrayalType
+                        if (options['userType'] == 3) {
+                            options['userPortrayalType'] = 7;
+                        }
+                        $('#option_distict').find('li.disabled').each(function (i, orgin) {
+                            $(data.data.distictInfo).each(function (index, item) {
+                                if ($(orgin).data('value') == item.districtId) {
+                                    $(orgin).removeClass('disabled').addClass('optional');
+                                    $('#submitArea').addClass('disabled');
+                                }
+                            });
+                        });
                     }
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
@@ -204,7 +234,7 @@ function chooseUserFinds() {
 
             $.ajax({
                 type: "GET",
-                url: router_city('/findhouse/goCheckPrice'),
+                url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
                     $("#plot_Count").find('em').html(data.data.plotCount);
@@ -234,17 +264,26 @@ function chooseUserFinds() {
     var distictInfo;
     $('#submitHouseType').on('click', function () {
         $(this).parents('.layer').addClass('none');
-        $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current');
+        if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
+            $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('optional');
+            if ($('.list-item').find('li').eq(2).hasClass('choose-end')){
+                options['districtId'] = null;
+                $('.list-item').find('li').eq(2).find('.result-animate span').text('');
+                $('#option_distict').find('li.current').removeClass('current').addClass('disabled');
+            }
+        } else {
+            $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current optional');
+        }
         options['layOut'] = $('#layOut').find('li.current').data('layout');
         var layOutHtml = '<p><span>'+ $('#layOut').find('li.current').find('span').text() +'</span></p>';
         $('.list-item').find('li').eq(1).find('.result-animate').html(layOutHtml);
 
         $.ajax({
             type: 'GET',
-            url: router_city('/findhouse/userCheckCategoryPage'),
+            url: router_city('/findhouse/queryUserChoice'),
             data: options,
             success: function (data) {
-                var ratio = new Number(data.data.ratio);
+                var ratio = new Number(data.data.ratio/100);
                 $('#plot_Count').find('em').text(data.data.plotCount);
                 $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                 if (data.data.distictInfo != null) {
@@ -253,11 +292,13 @@ function chooseUserFinds() {
                         $(data.data.distictInfo).each(function (index, item) {
                             if ($(orgin).data('value') == item.districtId) {
                                 $(orgin).removeClass('disabled').addClass('optional');
+                                $('#submitArea').addClass('disabled');
                             }
                         });
                     });
                 }
                 options['userPortrayalType'] = data.data.userPortrayalType;
+                console.log("options=="+JSON.stringify(options));
             },
             error:function (XMLHttpRequest, textStatus, errorThrown){
 
@@ -300,7 +341,11 @@ function chooseUserFinds() {
                 $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end');
                 $('.start-btn').removeClass('none');
             } else {
-                $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('current');
+                if ($('.list-item').find('li').eq(3).hasClass('choose-end')) {
+                    $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('optional');
+                } else {
+                    $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('current optional');
+                }
             }
             var currentOptinos = $('#option_distict').find('li.current');
             var districtIdStr = [];
@@ -317,18 +362,19 @@ function chooseUserFinds() {
 
             $.ajax({
                 type: 'GET',
-                url: router_city('/findhouse/queryPlotCountByDistrict'),
+                url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
-                    var ratio = new Number(data.data.ratio);
+                    var ratio = new Number(data.data.ratio/100);
                     $('#plot_Count').find('em').text(data.data.plotCount);
                     $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     if (options['layOut'] == 1) {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
                         console.log(router_city('findhouse'));
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
+                        $("#button_report").attr("href", router_city('/findhouse/queryUserChoice') + joinParams(options));
                     }
+
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
 

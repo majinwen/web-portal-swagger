@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class="page-empty">
-    <img src="${staticurl}/images/global/kym_1.png" alt="请稍后">
+    <img src="${staticurl}/images/global/kym_1.png" alt="请稍后" style="padding-top: 357px;">
     <p>这个页面拆迁了，换一个吧！</p>
     <a href="javascript:history.go(-1)">返回</a>
 </div>

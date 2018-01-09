@@ -177,6 +177,28 @@ public class IntelligenceFindHouseController {
     }
 
     /**
+     * 智能找房--用户筛选
+     * @param intelligenceQuery
+     * @return
+     */
+    @RequestMapping(value = "/queryUserChoice")
+    @ResponseBody
+    public NashResult queryUserChoice(IntelligenceQuery intelligenceQuery){
+
+        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
+        if(StringTool.isNotBlank(intelligenceFh)){
+            if(intelligenceFh.getPlotCount()-5<5){
+                intelligenceFh.setPlotCount(0);
+            }
+        }
+
+        return NashResult.build(intelligenceFh);
+    }
+
+
+
+
+    /**
      * 功能描述：判断选择的类型，进行跳转
      *
      * @param userType, model
@@ -190,50 +212,17 @@ public class IntelligenceFindHouseController {
         return NashResult.build(userType);
     }
 
-    /**
-     * 功能描述：异步根据价钱获取小区数量与相应的比率
-     *
-     * @param intelligenceQuery
-     * @return com.toutiao.web.common.restmodel.NashResult
-     * @author zhw
-     * @date 2017/12/18 21:05
-     */
-    @RequestMapping("/goCheckPrice")
-    @ResponseBody
-    public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
-        if(intelligenceFh.getPlotCount()-5<5){
-            intelligenceFh.setPlotCount(0);
-        }
-        //获取根据用户条件筛选的小区数量和相应比率
-        return NashResult.build(intelligenceFh);
-    }
+//    @RequestMapping("/goCheckPrice")
+//    @ResponseBody
+//    public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
+//        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
+//        if(intelligenceFh.getPlotCount()-5<5){
+//            intelligenceFh.setPlotCount(0);
+//        }
+//        //获取根据用户条件筛选的小区数量和相应比率
+//        return NashResult.build(intelligenceFh);
+//    }
 
-    /**
-     * 测试
-     *
-     * @param intelligenceQuery
-     * @return
-     */
-    @RequestMapping("/intelligenceFindHouseByType")
-    @ResponseBody
-    public String intelligenceFindHouseByType(IntelligenceQuery intelligenceQuery, Model model) {
-        Double plotTotalFirst = null;
-        Double plotTotalEnd = null;
-        intelligenceQuery.setPreconcTotal("450");
-        intelligenceQuery.setUserType("1");
-        intelligenceQuery.setUserPortrayalType(5);
-        intelligenceQuery.setLayOut(3);
-        intelligenceQuery.setDistrictId("105037");
-        intelligenceQuery.setSchoolFlag(1);
-        intelligenceQuery.setHospitalFlag(1);
-        String preconcTotal = intelligenceQuery.getPreconcTotal();
-        intelligenceQuery.setHasChild(1);
-        intelligenceQuery.setHasOldman(1);
-        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
-        model.addAttribute("AIId", intelligenceFhRes);
-        return "intelligent-report";
-    }
 
     /**
      * 功能描述：根据户型和总价查询小区数量
@@ -243,19 +232,19 @@ public class IntelligenceFindHouseController {
      * @author zhw
      * @date 2017/12/26 20:56
      */
-    @RequestMapping("/userCheckCategoryPage")
-    @ResponseBody
-    public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-        //根据户型与总价条件赛选条件
-        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
-        if (StringTool.isNotBlank(intelligenceFh)) {
-            intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
-        }
-        if(intelligenceFh.getPlotCount()-5<5){
-            intelligenceFh.setPlotCount(0);
-        }
-        return NashResult.build(intelligenceFh);
-    }
+//    @RequestMapping("/userCheckCategoryPage")
+//    @ResponseBody
+//    public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
+//        //根据户型与总价条件赛选条件
+//        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
+//        if (StringTool.isNotBlank(intelligenceFh)) {
+//            intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
+//        }
+//        if(intelligenceFh.getPlotCount()-5<5){
+//            intelligenceFh.setPlotCount(0);
+//        }
+//        return NashResult.build(intelligenceFh);
+//    }
 
 
     /**
@@ -306,36 +295,37 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showMyReport/{reportId}")
     public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
-        if (StringTool.isNotBlank(reportId)) {
-            //查询用户是否有报告数据
-            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
-            if (StringTool.isNotBlank(intelligenceFhRes)) {
-                //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
-                //intelligenceFhRes.setCreateTime(date);
-                Integer  plotTotal=null;
-                if(StringTool.isNotBlank(intelligenceFhRes.getDownPayment())&&StringTool.isNotBlank(intelligenceFhRes.getMonthPayment())){
-                      plotTotal = Integer.valueOf(intelligenceFhRes.getDownPayment()) + (Integer.valueOf(intelligenceFhRes.getMonthPayment()) * 12 * 30/10000);
-                }else{
-                    plotTotal = intelligenceFhRes.getTotalPrice();
+        try {
+            if (StringTool.isNotBlank(reportId)) {
+                //查询用户是否有报告数据
+                IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+                if (StringTool.isNotBlank(intelligenceFhRes)) {
+                    //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
+                    //intelligenceFhRes.setCreateTime(date);
+                    Integer plotTotal = null;
+                    if (StringTool.isNotBlank(intelligenceFhRes.getDownPayment()) && StringTool.isNotBlank(intelligenceFhRes.getMonthPayment())) {
+                        plotTotal = Integer.valueOf(intelligenceFhRes.getDownPayment()) + (Integer.valueOf(intelligenceFhRes.getMonthPayment()) * 12 * 30 / 10000);
+                    } else {
+                        plotTotal = intelligenceFhRes.getTotalPrice();
+                    }
+                    Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                    Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                    model.addAttribute("fhpt", fhpt);
+                    model.addAttribute("trend", JSON.toJSON(fhtp.getOrDefault("trend", new ArrayList<String>())).toString());
+                    String datajson = ((PGobject) intelligenceFhRes.getFhResult()).getValue();
+                    model.addAttribute("ptlists", JSON.toJSON(fhpt.getOrDefault("ptlists", new ArrayList<String>())).toString());
+                    model.addAttribute("datajson", datajson);
+                    model.addAttribute("fhtp", fhtp);
+                    model.addAttribute("reportId", reportId);
+                    model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+                    return "intelligent-report";
                 }
-                Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-                Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-                model.addAttribute("fhpt", fhpt);
-                model.addAttribute("trend",JSON.toJSON(fhtp.getOrDefault("trend",new ArrayList<String>())).toString());
-                String datajson=((PGobject)intelligenceFhRes.getFhResult()).getValue();
-                model.addAttribute("ptlists",JSON.toJSON(fhpt.getOrDefault("ptlists",new ArrayList<String>())).toString());
-                model.addAttribute("datajson",datajson);
-                model.addAttribute("fhtp", fhtp);
-                model.addAttribute("reportId", reportId);
-                model.addAttribute("intelligenceFhRes", intelligenceFhRes);
-                return "intelligent-report";
             }
-            model.addAttribute("message", "没有报告记录！");
-            return "404";
-        } else {
-            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return "404";
         }
+        return "404";
     }
 
     /**

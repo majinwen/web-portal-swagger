@@ -78,7 +78,7 @@
                 </div>
             </div>
             <ul class="list-item">
-                <li class="current">
+                <li class="current optional">
                     <div class="animate-box">
                         <div class="trangle-animate"></div>
                         <p>预算</p>
