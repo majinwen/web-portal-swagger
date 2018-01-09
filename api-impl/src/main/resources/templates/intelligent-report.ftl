@@ -200,7 +200,7 @@
                                 <#else >
                                     <em>-</em>
                                 </#if></li>
-                                <li>${intelligenceFhRes['layout']}居</li>
+                                <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']?number gt 0>${intelligenceFhRes['layout']}居</#if> </li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>

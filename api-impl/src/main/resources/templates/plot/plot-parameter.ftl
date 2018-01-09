@@ -91,7 +91,7 @@
         <li>
             <p>物业类型：<#if village['propertyTypeName']?exists&&village['propertyTypeName']!=''>${village['propertyTypeName']}<#else >暂无数据</#if></p>
             <p>物业公司：<#if village['property']?exists&&village['property']!=''>${village['property']}<#else >暂无数据</#if></p>
-            <p>物业费：<#if village['propertyFee']?exists&&village['propertyFee']!=''>${village['propertyFee']}元/㎡·月<#else >暂无数据</#if></p>
+            <p>物业费：<#if village['propertyFee']?exists&&village['propertyFee']?number gt 0>${village['propertyFee']}元/㎡·月<#else >暂无数据</#if></p>
             <p>供暖：<#if village['heatingMode']?exists&&village['heatingMode']!=''>${village['heatingMode']}<#else >暂无数据</#if></p>
             <p>供水：<#if village['waterSupply']?exists&&village['waterSupply']!=''>${village['waterSupply']}<#else >暂无数据</#if></p>
             <p>供电：<#if village['electricSupply']?exists&&village['electricSupply']!=''>${village['electricSupply']}<#else >暂无数据</#if></p>
