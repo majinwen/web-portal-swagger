@@ -760,7 +760,11 @@
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
     <#if  (mouthList?size>0)>
-    var myChartline = echarts.init(document.getElementById('village-price-trade'));
+    var myChartline = echarts.init(document.getElementById('village-price-trade'), null, {renderer: 'svg'}, {
+        devicePixelRatio: dpr,
+        width: '100%',
+        height: '100%'
+    });
     </#if>
     option = {
         tooltip: {

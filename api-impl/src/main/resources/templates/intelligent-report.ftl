@@ -186,7 +186,7 @@
                                 <#else >
                                     <em>-</em>
                                 </#if></li>
-                                <li>${intelligenceFhRes['layout']}居</li>
+                                <li>${intelligenceFhRes['layout']!""}居</li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -229,6 +229,9 @@
                                                 <p>${fhResult['esfPrice']?number?round}元/㎡</p>
                                             <#else >
                                                 <p>${fhResult['price']?number?round}元/㎡</p>
+                                            </#if>
+                                            <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
+                                                <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
                                             </#if>
                                         <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
                                             <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
