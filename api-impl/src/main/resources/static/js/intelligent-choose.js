@@ -79,10 +79,14 @@ function chooseUserType() {
 
 function chooseUserFinds() {
     $('.list-item').on('click', 'li', function () {
-        if ($(this).hasClass('current')) {
+        if ($(this).hasClass('optional')) {
             var index = $(this).index() + 1;
-            $(this).addClass('current').siblings().removeClass('current');
-            $(this).prev().addClass('choose-end');
+            if ($(this).hasClass('choose-end')) {
+                $(this).addClass('optional');
+            } else {
+                $(this).addClass('current optional').siblings().removeClass('current');
+                $(this).prev().addClass('choose-end');
+            }
             $('.layer' + index).removeClass('none');
         }
     });
@@ -165,7 +169,11 @@ function chooseUserFinds() {
             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end');
         } else {
             $.fn.fullpage.setAllowScrolling(false, 'up, down');
-            $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current');
+            if ($('.list-item').find('li').eq(1).hasClass('choose-end')) {
+                $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('optional');
+            } else {
+                $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current optional');
+            }
         }
 
         if ($('.total-price').hasClass('current')) {//choose totalPrice
@@ -177,7 +185,7 @@ function chooseUserFinds() {
 
             $.ajax({
                 type: "GET",
-                url: router_city('/findhouse/goCheckPrice'),
+                url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
                     $('#plot_Count').find('em').text(data.data.plotCount);
@@ -205,7 +213,7 @@ function chooseUserFinds() {
 
             $.ajax({
                 type: "GET",
-                url: router_city('/findhouse/goCheckPrice'),
+                url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
                     $("#plot_Count").find('em').html(data.data.plotCount);
@@ -235,14 +243,18 @@ function chooseUserFinds() {
     var distictInfo;
     $('#submitHouseType').on('click', function () {
         $(this).parents('.layer').addClass('none');
-        $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current');
+        if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
+            $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('optional');
+        } else {
+            $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current optional');
+        }
         options['layOut'] = $('#layOut').find('li.current').data('layout');
         var layOutHtml = '<p><span>'+ $('#layOut').find('li.current').find('span').text() +'</span></p>';
         $('.list-item').find('li').eq(1).find('.result-animate').html(layOutHtml);
 
         $.ajax({
             type: 'GET',
-            url: router_city('/findhouse/userCheckCategoryPage'),
+            url: router_city('/findhouse/queryUserChoice'),
             data: options,
             success: function (data) {
                 var ratio = new Number(data.data.ratio);
@@ -302,7 +314,11 @@ function chooseUserFinds() {
                 $('.start-btn').removeClass('none');
                 $.fn.fullpage.setAllowScrolling(true, 'down');
             } else {
-                $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('current');
+                if ($('.list-item').find('li').eq(3).hasClass('choose-end')) {
+                    $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('optional');
+                } else {
+                    $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('current optional');
+                }
             }
             var currentOptinos = $('#option_distict').find('li.current');
             var districtIdStr = [];
@@ -319,7 +335,7 @@ function chooseUserFinds() {
 
             $.ajax({
                 type: 'GET',
-                url: router_city('/findhouse/queryPlotCountByDistrict'),
+                url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
                     var ratio = new Number(data.data.ratio);
@@ -329,7 +345,7 @@ function chooseUserFinds() {
                         options['schoolFlag'] = 0;
                         options['hospitalFlag'] = 0;
                         console.log(router_city('findhouse'));
-                        $("#button_report").attr("href", router_city('/findhouse/showUserPortrayal') + joinParams(options));
+                        $("#button_report").attr("href", router_city('/findhouse/queryUserChoice') + joinParams(options));
                     }
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
