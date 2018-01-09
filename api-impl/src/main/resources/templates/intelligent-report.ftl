@@ -590,7 +590,6 @@
 
         $('.collect-button').on('click', function () {
             var reportId =${reportId};
-            $(this).find('.collect').toggleClass('active');
             /*var count= $(this).find('.collect').attr('data-type');
             console.log(count);*/
             $(this).find('.collect').toggleClass('active');
