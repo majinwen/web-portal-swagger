@@ -11,6 +11,11 @@ $inteColorRed: #e42929;
     height: 100%;
     background-color: #f0f0f0;
 }
+.page-content {
+    position: relative;
+    top: 0;
+    height: 100%;
+}
 
 .button {
     color: $baseWhite;
@@ -29,8 +34,10 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        margin-top: rem(146);
+        top: 12%;
+        height: 85%;
         text-align: center;
+        @include box-sizing;
 
         h1 {
             color: $inteBlack;
@@ -65,8 +72,9 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        margin-top: rem(82);
+        padding-top: 10%;
         text-align: center;
+        @include box-sizing;
 
         h2 {
             @include font-dpr(36);
@@ -248,8 +256,8 @@ $inteColorRed: #e42929;
         @include bg-image('/static/images/intelligent/znzf_bg');
         background-repeat: repeat-y;
         background-position: center bottom;
-        -webkit-background-size: contain;
-        background-size: contain;
+        -webkit-background-size: cover;
+        background-size: cover;
     }
 
     .page-content {
@@ -326,6 +334,8 @@ $inteColorRed: #e42929;
         }
 
         .list-item {
+            margin-top: 8%;
+
             li {
                 position: relative;
                 height: rem(122);
@@ -336,6 +346,14 @@ $inteColorRed: #e42929;
                 -webkit-border-radius: 50%;
                 border-radius: 50%;
                 opacity: 0.4;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
 
                 .animate-box {
                     position: relative;
@@ -379,9 +397,9 @@ $inteColorRed: #e42929;
                         &:after {
                             top: 50%;
                             left: 50%;
-                            width: rem(108);
-                            height: rem(106);
-                            margin: rem(-53) rem(-54);
+                            width: rem(110);
+                            height: rem(110);
+                            margin: rem(-55) rem(-55);
                             @include bg-image('/static/images/intelligent/list_item_small');
                             -webkit-background-size: contain;
                             background-size: contain;
@@ -414,30 +432,32 @@ $inteColorRed: #e42929;
                             width: rem(24);
                             height: rem(24);
                             margin-top: rem(-12);
+                            -webkit-background-size: contain;
+                            background-size: contain;
                         }
                         &:before {
                             left: rem(-40);
                             @include bg-image('/static/images/intelligent/znzf_icon_left');
-                            -webkit-animation: lineLeft 4s infinite;
-                            animation: lineLeft 4s infinite;
+                            -webkit-animation: lineLeft 2s infinite;
+                            animation: lineLeft 2s infinite;
                         }
                         &:after {
                             right: rem(-40);
                             @include bg-image('/static/images/intelligent/znzf_icon_right');
-                            -webkit-animation: lineRight 4s infinite;
-                            animation: lineRight 4s infinite;
+                            -webkit-animation: lineRight 2s infinite;
+                            animation: lineRight 2s infinite;
                         }
                     }
 
                     .animate-box {
                         p {
                             &:before {
-                                -webkit-animation: roundRight 4s infinite;
-                                animation: roundRight 4s infinite;
+                                -webkit-animation: roundRight 2s infinite;
+                                animation: roundRight 2s infinite;
                             }
                             &:after {
-                                -webkit-animation: roundLeft 4s infinite;
-                                animation: roundLeft 4s infinite;
+                                -webkit-animation: roundLeft 2s infinite;
+                                animation: roundLeft 2s infinite;
                             }
                         }
                     }
@@ -539,6 +559,7 @@ $inteColorRed: #e42929;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
 
             .layer-content {
                 position: absolute;
@@ -987,10 +1008,12 @@ $inteColorRed: #e42929;
         }
 
         .animate-wrapper {
-            position: relative;
+            position: absolute;
+            top: 48%;
+            left: 50%;
             width: rem(690);
             height: rem(517);
-            margin: rem(98) auto 0;
+            margin: rem(-258) rem(-345);
 
             .animate-item-1, .animate-item-2, .animate-item-3 {
                 position: absolute;

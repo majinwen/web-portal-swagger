@@ -232,6 +232,7 @@ function chooseUserFinds() {
     /**
      * 提交户型
      * */
+    var distictInfo;
     $('#submitHouseType').on('click', function () {
         $(this).parents('.layer').addClass('none');
         $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current');
@@ -248,6 +249,7 @@ function chooseUserFinds() {
                 $('#plot_Count').find('em').text(data.data.plotCount);
                 $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                 if (data.data.distictInfo != null) {
+                    distictInfo = data.data.distictInfo;
                     $('#option_distict').find('li.disabled').each(function (i, orgin) {
                         $(data.data.distictInfo).each(function (index, item) {
                             if ($(orgin).data('value') == item.districtId) {
@@ -268,11 +270,25 @@ function chooseUserFinds() {
      * 选择区域
      * */
     $('.area-content').on('click', 'li.optional', function () {
-        $(this).addClass('current').removeClass('optional');
+            $(this).addClass('current').removeClass('optional');
+            var currentChoose = $('.area-content').find('li.current').length;
+            if (currentChoose > 2) {
+                $('.area-content').find('li:not(.current)').removeClass('optional').addClass('disabled');
+                $('#submitArea').removeClass('disabled');
+            }
+    });
+    $('.area-content').on('click', 'li.current', function () {
+        $(this).addClass('optional').removeClass('current');
         var currentChoose = $('.area-content').find('li.current').length;
-        if (currentChoose > 2) {
-            $('.area-content').find('li:not(.current)').removeClass('optional').addClass('disabled');
-            $('#submitArea').removeClass('disabled');
+        if(currentChoose < 3){
+            $('.area-content').find('li.disabled').each(function (i, orgin) {
+                $(distictInfo).each(function (index, item) {
+                    if ($(orgin).data('value') == item.districtId) {
+                        $(orgin).removeClass('disabled').addClass('optional');
+                    }
+                });
+            });
+            $('#submitArea').addClass('disabled');
         }
     });
     /**
@@ -326,6 +342,8 @@ function chooseUserFinds() {
      * 修改预算/重置
      * */
     $('.modify-reset').on('click', function () {
+
+        $('.area-content').find('li:not(.disabled )').removeClass('current').removeClass('optional').addClass('disabled');
         $(this).parents('.layer').addClass('none');
         $('.result-begin').removeClass('none');
         $('.result-container').addClass('none');
