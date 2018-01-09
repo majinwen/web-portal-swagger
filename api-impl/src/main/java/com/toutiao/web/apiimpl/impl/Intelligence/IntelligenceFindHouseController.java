@@ -209,24 +209,6 @@ public class IntelligenceFindHouseController {
         return NashResult.build(userType);
     }
 
-    /**
-     * 功能描述：异步根据价钱获取小区数量与相应的比率
-     *
-     * @param intelligenceQuery
-     * @return com.toutiao.web.common.restmodel.NashResult
-     * @author zhw
-     * @date 2017/12/18 21:05
-     */
-    @RequestMapping("/goCheckPrice")
-    @ResponseBody
-    public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
-        if (intelligenceFh.getPlotCount() - 5 < 5) {
-            intelligenceFh.setPlotCount(0);
-        }
-        //获取根据用户条件筛选的小区数量和相应比率
-        return NashResult.build(intelligenceFh);
-    }
 //    @RequestMapping("/goCheckPrice")
 //    @ResponseBody
 //    public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
