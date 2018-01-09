@@ -31,6 +31,9 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
     int queryPlotCountByCategoryAndPriceAndDistict(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,
                                                    @Param("layOut")Integer layOut, @Param("distictId")Integer distictId);
 
+    int queryUserChoice(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,
+                                                   @Param("layOut")Integer layOut);
+
     List<IntelligenceFindhouse> selectByUserPrice(String totlaPrice);
 
     /**

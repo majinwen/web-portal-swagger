@@ -51,6 +51,7 @@ var options = new Object();
  * Step1:Choose user type
  */
 function chooseUserType() {
+
     $('.choose-wrapper').on('click', '.choose-item-box', function () {
         $('.choose-wrapper').find('.choose-item-box').removeClass('current');
         $(this).addClass('current');
@@ -61,7 +62,7 @@ function chooseUserType() {
             var userTypeParams = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
 
             options['userType'] = userTypeParams;
-
+            console.log("options=="+JSON.stringify(options));
             $.ajax({
                 type: "GET",
                 url: router_city('/findhouse/xuanzeleixing'),
@@ -78,6 +79,7 @@ function chooseUserType() {
 }
 
 function chooseUserFinds() {
+
     $('.list-item').on('click', 'li', function () {
         if ($(this).hasClass('optional')) {
             var index = $(this).index() + 1;
@@ -174,6 +176,11 @@ function chooseUserFinds() {
             } else {
                 $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current optional');
             }
+            if ($('.list-item').find('li').eq(2).hasClass('choose-end')){
+                options['districtId'] = null;
+                $('.list-item').find('li').eq(2).find('.result-animate span').text('');
+                $('#option_distict').find('li.current').removeClass('current').addClass('disabled');
+            }
         }
 
         if ($('.total-price').hasClass('current')) {//choose totalPrice
@@ -188,12 +195,28 @@ function chooseUserFinds() {
                 url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
-                    $('#plot_Count').find('em').text(data.data.plotCount);
-                    var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
-                    //将第七种画像附给当前用户userPortrayalType
-                    if (options['userType'] == 3) {
-                        options['userPortrayalType'] = 7;
+                    console.log("data.data.plotCount="+data.data.plotCount);
+                    if(data.data.plotCount==0){
+                        $('.list-item').find('li').eq(0).addClass('current').removeClass('choose-end');
+                        $('.list-item').find('li').eq(1).addClass('current').removeClass('choose-end');
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        $('#plot_Ratio').find('em').text('0%');
+                    }else{
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
+                        //将第七种画像附给当前用户userPortrayalType
+                        if (options['userType'] == 3) {
+                            options['userPortrayalType'] = 7;
+                        }
+                        $('#option_distict').find('li.disabled').each(function (i, orgin) {
+                            $(data.data.distictInfo).each(function (index, item) {
+                                if ($(orgin).data('value') == item.districtId) {
+                                    $(orgin).removeClass('disabled').addClass('optional');
+                                    $('#submitArea').addClass('disabled');
+                                }
+                            });
+                        });
                     }
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
@@ -223,6 +246,7 @@ function chooseUserFinds() {
                     if (options['userType'] == 3) {
                         options['userPortrayalType'] = 7;
                     }
+                    console.log("options=="+JSON.stringify(options));
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
 
@@ -242,9 +266,15 @@ function chooseUserFinds() {
      * */
     var distictInfo;
     $('#submitHouseType').on('click', function () {
+
         $(this).parents('.layer').addClass('none');
         if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
             $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('optional');
+            if ($('.list-item').find('li').eq(2).hasClass('choose-end')){
+                options['districtId'] = null;
+                $('.list-item').find('li').eq(2).find('.result-animate span').text('');
+                $('#option_distict').find('li.current').removeClass('current').addClass('disabled');
+            }
         } else {
             $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current optional');
         }
@@ -257,7 +287,7 @@ function chooseUserFinds() {
             url: router_city('/findhouse/queryUserChoice'),
             data: options,
             success: function (data) {
-                var ratio = new Number(data.data.ratio);
+                var ratio = new Number(data.data.ratio/100);
                 $('#plot_Count').find('em').text(data.data.plotCount);
                 $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                 if (data.data.distictInfo != null) {
@@ -266,11 +296,13 @@ function chooseUserFinds() {
                         $(data.data.distictInfo).each(function (index, item) {
                             if ($(orgin).data('value') == item.districtId) {
                                 $(orgin).removeClass('disabled').addClass('optional');
+                                $('#submitArea').addClass('disabled');
                             }
                         });
                     });
                 }
                 options['userPortrayalType'] = data.data.userPortrayalType;
+                console.log("options=="+JSON.stringify(options));
             },
             error:function (XMLHttpRequest, textStatus, errorThrown){
 
@@ -307,6 +339,7 @@ function chooseUserFinds() {
      * 提交选中区域
      * */
     $('#submitArea').on('click', function () {
+
         if (!$(this).hasClass('disabled')) {
             $(this).parents('.layer').addClass('none');
             if (options['layOut'] == 1) {
@@ -329,7 +362,7 @@ function chooseUserFinds() {
             }
             options['districtId'] = districtIdStr.join();
 
-
+            console.log("options=="+JSON.stringify(options));
             var districtHtml = '<p><span>'+ districtNameStr.join(' ') +'</span></p>';
             $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
 
@@ -338,7 +371,7 @@ function chooseUserFinds() {
                 url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
-                    var ratio = new Number(data.data.ratio);
+                    var ratio = new Number(data.data.ratio/100);
                     $('#plot_Count').find('em').text(data.data.plotCount);
                     $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
                     if (options['layOut'] == 1) {
@@ -347,6 +380,7 @@ function chooseUserFinds() {
                         console.log(router_city('findhouse'));
                         $("#button_report").attr("href", router_city('/findhouse/queryUserChoice') + joinParams(options));
                     }
+
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
 
@@ -390,6 +424,7 @@ function chooseUserFinds() {
      * 提交家庭结构内容
      * */
     $('#submitFamily').on('click', function () {
+
         $(this).parents('.layer').addClass('none');
         $('.list-item').find('li').eq(3).removeClass('current').addClass('choose-end');
         $('.start-btn').removeClass('none');
@@ -397,7 +432,7 @@ function chooseUserFinds() {
 
         options['childParams'] = $('#hasChild').find('li.current').data('child');
         options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
-
+        console.log("options=="+JSON.stringify(options));
         var familyHtml = '<p><span>孩子：<em>'+ $('#hasChild').find('li.current').find('span').text() +'</em></span>' +
                          '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() +'</em></span></p>';
         $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
