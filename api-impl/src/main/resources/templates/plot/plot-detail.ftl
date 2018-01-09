@@ -870,7 +870,7 @@
             {
                 name:'${village['area']!'区域'}价格',
                 type:'line',
-                data:[<#list ptCD1 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                 symbolSize:10,
                 itemStyle:{
                     normal:{
@@ -883,7 +883,7 @@
             {
                 name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
-                data:[<#list ptCD2 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
                 symbolSize:10,
                 itemStyle:{
                        normal:{
