@@ -79,6 +79,53 @@ function chooseUserType() {
 }
 
 function chooseUserFinds() {
+    // var yusuan_model={
+    //     el:$('.list-item li').eq(0),
+    //     dialog:{
+    //         show:function(){
+    //             $('.layer1').removeClass('none');
+    //             // 绑定滑块的事件
+    //             $('.month-slide').on('touchstart', '.slider-thumb', function (evt) {
+    //                 slide($(this), evt, '')
+    //             });
+    //             $('.down-slide').on('touchstart', '.slider-thumb', function (evt) {
+    //                 slide($(this), evt, '万')
+    //             });
+    //             $('.total-slide').on('touchstart', '.slider-thumb', function (evt) {
+    //                 slide($(this), evt, '万')
+    //             });
+    //             $("#submitPrice").click(function () {
+    //                 yusuan_model.dialog.finish();
+    //             })
+    //         },
+    //         hide:function () {
+    //             $('.layer1').addClass('none');
+    //         },
+    //         finish:function () {
+    //             yusuan_model.el.addClass('current');
+    //             yusuan_model.el.siblings().removeClass('current');
+    //             yusuan_model.el.prev().addClass('choose-end');
+    //             yusuan_model.dialog.hide();
+    //         }
+    //
+    //
+    //     },
+    //     init:function () {
+    //         this.el.click(function () {
+    //
+    //                 var index = $(this).index() + 1;
+    //                 if ($(this).hasClass('choose-end')) {
+    //                     $(this).addClass('optional');
+    //                 } else {
+    //                     $(this).addClass('current optional').siblings().removeClass('current');
+    //                     $(this).prev().addClass('choose-end');
+    //                 }
+    //                 $('.layer' + index).removeClass('none');
+    //             yusuan_model.dialog.show();
+    //         })
+    //     }
+    // }
+    // yusuan_model.init();
     $('.list-item').on('click', 'li', function () {
         if ($(this).hasClass('optional')) {
             var index = $(this).index() + 1;
@@ -195,8 +242,8 @@ function chooseUserFinds() {
                 success: function (data) {
                     console.log("data.data.plotCount="+data.data.plotCount);
                     if(data.data.plotCount==0){
-                        $('.list-item').find('li').eq(0).addClass('current');
-                        $('.list-item').find('li').eq(1).removeClass('current');
+                        $('.list-item').find('li').eq(0).addClass('current').addClass('optional');
+                        $('.list-item').find('li').eq(1).removeClass('current').addClass('disabled');
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         $('#plot_Ratio').find('em').text('0%');
                     }else{
