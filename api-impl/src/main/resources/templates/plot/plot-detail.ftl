@@ -796,15 +796,10 @@
         xAxis: [
             {
                 type: 'category',
-                boundaryGap: false,
-                axisTick: {
-                    alignWithLabel: true
-                },
-                data: [<#list  mouthList as item >'${item}',</#list>],
-                axisLabel: {
-                    fontSize:10
-                   // interval:0
-                }
+                axisTick: {show: false},
+                axisLine: {show: true},
+                axisLabel: {fontSize: baseFontSize - 4},
+                data: [<#list  mouthList as item >'${item}',</#list>]
             }
         ],
         yAxis: {
