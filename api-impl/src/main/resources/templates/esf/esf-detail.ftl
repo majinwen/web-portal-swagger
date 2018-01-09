@@ -128,7 +128,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
             <li>
                 <p>预算：
                 <#if houseDetail.housingDeposit?exists&&houseDetail.houseMonthPayment?exists>
-                    参考首付${houseDetail.housingDeposit?number}万，月供${houseDetail.houseMonthPayment?number}元/月
+                    参考首付${houseDetail.housingDeposit}万，月供${houseDetail.houseMonthPayment}元/月
                 <#else>
                     暂无数据
                 </#if>
@@ -322,6 +322,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                             </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
+                        <h4 class="cont-last"><#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}<#else></#if></h4>
                     </div>
                 </a></li>
             </#list>

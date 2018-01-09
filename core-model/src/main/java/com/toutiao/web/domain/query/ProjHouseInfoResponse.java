@@ -1,6 +1,8 @@
 package com.toutiao.web.domain.query;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+import org.jboss.logging.Field;
 
 import java.util.Date;
 import java.util.Map;
@@ -153,7 +155,7 @@ public class ProjHouseInfoResponse {
 
 
     //房源首付 （后台提供）
-    private Double HousingDeposit;
+    private Double housingDeposit;
 
     //房源月供
     private Double houseMonthPayment;
@@ -299,5 +301,7 @@ public class ProjHouseInfoResponse {
      * 房源标题图片
      */
     private String housePhotoTitle;
+
+    private String housetToPlotDistance;
 
 }

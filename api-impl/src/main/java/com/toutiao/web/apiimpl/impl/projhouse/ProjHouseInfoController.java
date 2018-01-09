@@ -59,7 +59,7 @@ public class ProjHouseInfoController {
             List village = plotService.findVillageByConditions(villageRequest);
             model.addAttribute("village",village.get(0));
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(data_house.getNewcode().toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }
