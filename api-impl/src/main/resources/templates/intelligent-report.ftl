@@ -216,9 +216,9 @@
                     </#list>
                     </ul>
                 </div>
-                <div id="allmap" class="echart-box">
+                <#--<div id="allmap" class="echart-box">
 
-                </div>
+                </div>-->
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
@@ -1453,7 +1453,7 @@
 
     });
 </script>
-<script>
+<#--<script>
     var datajson =${datajson};
     var res = [];
     for (var i = 0; i < datajson.length; i++) {
@@ -1554,6 +1554,6 @@
     });
 
 
-</script>
+</script>-->
 </body>
 </html>
