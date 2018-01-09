@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1 active">
+    <div class="section page1">
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <div class="user-header-title">
@@ -86,106 +86,72 @@
             <div class="down-triangle"></div>
         </div>
     </div>
-    <div class="section page2">
+    <div class="section page2 active">
         <div class="page-content">
-            <div class="module-item">
+            <#if fhpt?exists><div class="module-item">
                 <div class="report-title-type1">
                     <p>目标市场价格走势</p>
                 </div>
                 <div class="report-caption">
-                    <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场
-                    </p>
+                    <p>对比北京市场近1年整体价格情况，洞察目标房产的价格走势</p>
                 </div>
-            <#if fhpt?exists>
+
                 <div class="echart-box">
                     <div id="priceChart"></div>
                 </div>
 
                 <ul class="results-contrast">
-                    <li>
-                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists >
+                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists ><li>
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">
-                        ${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
-                    </#if>
-                    </li>
-                    <li>
-                        <#if fhpt['minTarget']?exists&&fhpt['target']?exists >
+                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
+                    </li></#if>
+                    <#if fhpt['minTarget']?exists&&fhpt['target']?exists ><li>
                         <span class="contrast-mark type-dark-green">跌 </span>
-                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">
-                        ${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
-                        </#if>
-                    </li>
+                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
+                    </li></#if>
                 </ul>
-            </div>
-            </#if>
-            <div class="module-item">
+            </div></#if>
+            <#if fhtp?exists><div class="module-item">
                 <div class="report-title-type1">
-                    <p>目标市场供需情况</p>
+                    <p>目标市场成交行情</p>
                 </div>
                 <div class="report-caption">
-                    <p>根据您的检索条件</p>
-                    <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场
-                    </p>
+                    <p>对比北京市场近1年整体成交情况，把握目标房产的成交量变化</p>
                 </div>
-                <#if fhtp?exists>
+
                 <div class="echart-box">
                     <div id="marketChart"></div>
                 </div>
 
-                <ul class="results-contrast">
-                <#if fhtp['ratio']?exists&&fhtp['ratio']!=''>
-                    <li>
-                        <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists>
+                <#if fhtp['ratio']?exists&&fhtp['ratio']!=''><ul class="results-contrast">
+                    <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists><li>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
-                        </#if>
-                    </li>
-                    <li>
-                    <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>套，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                    </li></#if>
+                    <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists><li>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
-                    </#if>
-                    </li>
-                    <li>
-                    <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>套，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                    </li></#if>
+                    <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists><li>
                         <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
-                    </#if>
-                    </li>
-                </#if>
-                </ul>
-            </div>
-            </#if>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>套，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                    </li></#if>
+                </ul></#if>
+            </div></#if>
             <div class="module-item">
                 <div class="report-title-type1">
                     <p>智能推荐结果</p>
                 </div>
                 <div class="report-caption">
-                <#if intelligenceFhRes['fhResult']?exists>
-                    <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
-                </#if>
-                </div>
-                <div class="report-title-type3">
-                    <p>根据您的需求，为您挑选5个最贴合的</p>
+                    <p>根据您的检索条件，在5394个小区中，为您推荐5个小区，作为您所属族群的理想家</p>
                 </div>
                 <div class="water-wrapper">
-                    <div id="collieContainer">
-                    <#--水滴  的容器-->
-                    </div>
+                    <div id="collieContainer"><#--水滴  的容器--></div>
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
                                 <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}</#if>万</li>
-                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''>
-                                    <#assign Districts = intelligenceFhRes['districtId']?split(',')>
-                                    <#list Districts as district>
-                                        <em>${district}</em>
-                                    </#list>
-                                <#else >
-                                    <em>-</em>
-                                </#if></li>
+                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district}</em></#list><#else ><em>-</em></#if></li>
                                 <li>${intelligenceFhRes['layout']!""}居</li>
                             </ul>
                             <div class="tip-text">
@@ -205,16 +171,12 @@
                         <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
                             <li class="plot_class" data-type="${intelligenceFhRe.coordX?c}_${intelligenceFhRe.coordY?c}_${intelligenceFhRe_index}">
                                 <p>${intelligenceFhRe['projname']}</p>
-                            </li>
-                        <#else >
-                            <li>-</li>
+                            </li><#else ><li>-</li>
                         </#if>
                     </#list>
                     </ul>
                 </div>
-                <#--<div id="allmap" class="echart-box">
-
-                </div>-->
+                <#--<div id="allmap" class="echart-box"></div>-->
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
@@ -290,8 +252,7 @@
                                 <div id="trafficSubwayChart"></div>
                             </div>
                         </div>
-                        <div class="traffic-text-box">
-                        <#if intelligenceFhRes?exists>
+                        <#if intelligenceFhRes?exists><div class="traffic-text-box">
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                              <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
@@ -302,8 +263,7 @@
                                 </#if>
                                 </#if>
                             </#list>
-                        </#if>
-                        </div>
+                        </div></#if>
                     </div>
                     <div class="vertical-line">
                         <div class="traffic-title">
@@ -314,8 +274,7 @@
                                 <div id="trafficRondChart"></div>
                             </div>
                         </div>
-                        <div class="traffic-text-box">
-                        <#if intelligenceFhRes?exists>
+                        <#if intelligenceFhRes?exists><div class="traffic-text-box mb0">
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                             <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
@@ -326,10 +285,8 @@
                                 </#if>
                                 </#if>
                             </#list>
-                        </#if>
-                        </div>
+                        </div></#if>
                     </div>
-
                 </div>
             </div>
             <div class="module-item type2">
@@ -358,14 +315,14 @@
                             <i></i>
                             <em>绿化率</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                        <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
-                            <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                            <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
+                                <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                            </#if>
+                            </#list>
                         </#if>
-                        </#list>
-                    </#if>
                     </tr>
                     <tr>
                         <td>
@@ -495,83 +452,81 @@
                     </tr>
                 </table>
             </div>
-
-        <#if intelligenceFhRes?exists>
-            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
-            <div class="report-title-type3 mt0">
-                <p>工作再忙，也要享受生活，看看3km内生活圈</p>
-            </div>
-            <#assign xiuxian = 0>
-            <#assign jiaoyu = 0>
-            <#assign yiliao = 0>
-            <#list fhResults as fhResult>
-            <#if fhResult['typeCount']?exists>
-                <#if fhResult['typeCount']['xiuxian']?exists>
-                    <#assign xiuxian = xiuxian+1>
+            <#if intelligenceFhRes?exists>
+                <#assign fhResults =intelligenceFhRes['fhResult']?eval>
+                <div class="report-title-type3 mt0">
+                    <p>工作再忙，也要享受生活，看看3km内生活圈</p>
+                </div>
+                <#assign xiuxian = 0>
+                <#assign jiaoyu = 0>
+                <#assign yiliao = 0>
+                <#list fhResults as fhResult>
+                <#if fhResult['typeCount']?exists>
+                    <#if fhResult['typeCount']['xiuxian']?exists>
+                        <#assign xiuxian = xiuxian+1>
+                    </#if>
+                    <#if fhResult['typeCount']['jiaoyu']?exists>
+                        <#assign jiaoyu = jiaoyu+1>
+                    </#if>
+                    <#if fhResult['typeCount']['yiliao']?exists>
+                        <#assign yiliao = yiliao+1>
+                    </#if>
                 </#if>
-                <#if fhResult['typeCount']['jiaoyu']?exists>
-                    <#assign jiaoyu = jiaoyu+1>
+                </#list>
+                <#if xiuxian != 0>
+                <div class="module-item type2">
+                    <div class="report-title-type2">
+                        <p>休闲购物</p>
+                        <span>3km生活圈，吃喝玩乐买买买</span>
+                    </div>
+                    <div class="echart-box nearby">
+                        <div id="shoppingChart"></div>
+                    </div>
+                </div>
                 </#if>
-                <#if fhResult['typeCount']['yiliao']?exists>
-                    <#assign yiliao = yiliao+1>
+                <#if jiaoyu !=0>
+                <div class="module-item type2">
+                    <div class="report-title-type2">
+                        <p>教育配套</p>
+                        <span>3km内教育配套，就这样陪你长大</span>
+                    </div>
+                    <#--<i class="show-echart-detail"></i>-->
+                    <div class="echart-box nearby">
+                        <div id="educationChart"></div>
+                    </div>
+                </div>
                 </#if>
+                <#if yiliao !=0>
+                <div class="module-item type2">
+                    <div class="report-title-type2">
+                        <p>医疗配套</p>
+                        <span>3km内医疗配套，为您的健康保驾护航</span>
+                    </div>
+                    <#--<i class="show-echart-detail"></i>-->
+                    <div class="echart-box nearby">
+                        <div id="medicalChart"></div>
+                    </div>
+                </div>
+                </#if>
+                <div class="end-bottom">
+                    <p class="end-text">End</p>
+                    <div class="end-bottom-content">
+                        <div class="collect-tips">
+                            <p>您可以添加收藏，方便之后查阅！</p>
+                        </div>
+                        <div class="collect-button">
+                            <i class="collect"></i>
+                            <span>收藏</span>
+                        </div>
+                    </div>
+                </div>
             </#if>
-            </#list>
-        <#if xiuxian != 0>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>休闲购物</p>
-                    <span>3km生活圈，吃喝玩乐买买买</span>
-                </div>
-                <div class="echart-box nearby">
-                    <div id="shoppingChart"></div>
-                </div>
-            </div>
-        </#if>
-        <#if jiaoyu !=0>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>教育配套</p>
-                    <span>3km内教育配套，就这样陪你长大</span>
-                </div>
-                <#--<i class="show-echart-detail"></i>-->
-                <div class="echart-box nearby">
-                    <div id="educationChart"></div>
-                </div>
-            </div>
-        </#if>
-        <#if yiliao !=0>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>医疗配套</p>
-                    <span>3km内医疗配套，为您的健康保驾护航</span>
-                </div>
-                <#--<i class="show-echart-detail"></i>-->
-                <div class="echart-box nearby">
-                    <div id="medicalChart"></div>
-                </div>
-            </div>
-        </#if>
-            <div class="end-bottom">
-                <p class="end-text">End</p>
-                <div class="end-bottom-content">
-                    <div class="collect-tips">
-                        <p>您可以添加收藏，方便之后查阅！</p>
-                    </div>
-                    <div class="collect-button">
-                        <i class="collect"></i>
-                        <span>收藏</span>
-                    </div>
-                </div>
-            </div>
-        </#if>
         </div>
     </div>
 </div>
 <script src="/static/js/URI.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
-<#--<script src="/static/js/intelligent-chart.js"></script>-->
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
@@ -726,9 +681,6 @@
     var ptlists = ${ptlists};
     var trend = ${trend};
 
-    //    console.log(ptlists)
-    //    console.log(trend)
-
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
 
@@ -822,7 +774,8 @@
         for (var i = 0; i < datajson.length; i++) {
             var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
             var yiliao=dict_getValueOrDefault(typecount,"yiliao",0)
-            res.push([dict_getValueOrDefault(yiliao,"zonghe",0),dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0)])
+//            res.push([dict_getValueOrDefault(yiliao,"zonghe",0),dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0)])
+            res.push([dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0),dict_getValueOrDefault(yiliao,"zonghe",0)])
 
         }
         return res;
@@ -1010,7 +963,7 @@
                     itemStyle: {
                         normal: {
                             show: true,
-                            color: '#277ace',
+                            color: '#455765',
                             barBorderRadius: 10,
                             borderWidth: 0,
                             borderColor: '#333'
@@ -1026,7 +979,7 @@
                     itemStyle: {
                         normal: {
                             show: true,
-                            color: '#5de3e1',
+                            color: '#f25a5a',
                             barBorderRadius: 10,
                             borderWidth: 0,
                             borderColor: '#333'
@@ -1038,7 +991,6 @@
                 }
             ]
         });
-//        marketChart.showLoading();
 
         /**
          * 地铁信息
@@ -1049,12 +1001,19 @@
             height: '100%'
         });
         // 显示标题，图例和空的坐标
-
+        var trafficSubwayGrid = {
+            left: 0,
+            right: '6%',
+            top: 0,
+            bottom: '25%',
+            containLabel: true
+        }
         var trafficSubwayLabel = {
             normal: {
                 show: true,
                 position: 'bottom',
                 color: '#666',
+                offset: [20,20],
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
 //                    console.log(params,ticket)
@@ -1066,20 +1025,14 @@
         trafficSubwayChart.setOption({
             color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
-            grid: {
-                left: 0,
-                right: '6%',
-                top: 0,
-                containLabel: true
-            },
+            grid: trafficSubwayGrid,
             xAxis: {
                 show: false,
                 data: []
             },
             yAxis: {
                 show: false,
-                inverse: true,
-                min: 0
+                inverse: true
             },
             series: [
                 {
@@ -1139,8 +1092,6 @@
                 }
             ]
         });
-        // trafficSubwayChart.showLoading();
-
 
         /**
          * 环线桥信息
@@ -1159,7 +1110,6 @@
                 color: '#666',
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-//                    console.log(params,ticket)
                     return params.data+"km\n"+getNearbyQiao(params.seriesIndex)+"\n"+"("+getNearbyRoad(params.seriesIndex)+")"
                 }
             }
@@ -1167,20 +1117,14 @@
         trafficRondChart.setOption({
             color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
-            grid: {
-                left: 0,
-                right: '6%',
-                top: 0,
-                containLabel: true
-            },
+            grid: trafficSubwayGrid,
             xAxis: {
                 show: false,
                 data: []
             },
             yAxis: {
                 show: false,
-                inverse: true,
-                min: 0
+                inverse: true
             },
             series: [
                 {
@@ -1240,7 +1184,6 @@
                 }
             ]
         });
-        // trafficRondChart.showLoading();
 
         var nearbyChartGrid = {
             top: 0,
@@ -1263,7 +1206,8 @@
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                },
+                textStyle: {fontSize: baseFontSize}
             },
             grid: nearbyChartGrid,
             xAxis: {
@@ -1324,7 +1268,6 @@
             ]
         });
 
-
         /**
          * 教育配套
          * */
@@ -1339,7 +1282,8 @@
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                },
+                textStyle: {fontSize: baseFontSize}
             },
             grid: nearbyChartGrid,
             xAxis: {
@@ -1400,7 +1344,6 @@
             ]
         });
 
-
         /**
          * 医疗配套
          * */
@@ -1415,7 +1358,8 @@
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                },
+                textStyle: {fontSize: baseFontSize}
             },
             grid: nearbyChartGrid,
             xAxis: {
@@ -1425,7 +1369,8 @@
             yAxis: {
                 type: 'category',
                 axisLabel: {fontSize: baseFontSize - 4},
-                data: ['综合','诊所','专科']
+//                data: ['综合','诊所','专科']
+                data: ['诊所','专科医院','综合医院']
             },
             series: [
                 {
@@ -1475,7 +1420,6 @@
                 }
             ]
         });
-
     });
 </script>
 <#--<script>
@@ -1577,8 +1521,6 @@
         }
 
     });
-
-
 </script>-->
 </body>
 </html>

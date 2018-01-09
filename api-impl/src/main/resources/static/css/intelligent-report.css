@@ -615,6 +615,7 @@ body {
       position: relative;
       width: 100%;
       padding-top: 2.8rem;
+      margin-top: 0.9333333333rem;
       text-align: center; }
       .page2 .page-content .module-item .water-wrapper #collieContainer {
         position: absolute;
@@ -865,6 +866,8 @@ body {
           font-size: 22px; }
         [data-dpr="3"] .page2 .page-content .traffic-box .traffic-text-box .traffic-text {
           font-size: 33px; }
+        .page2 .page-content .traffic-box .traffic-text-box .traffic-text:last-child {
+          margin-bottom: 0; }
         .page2 .page-content .traffic-box .traffic-text-box .traffic-text span {
           position: absolute;
           top: -0.08rem;
