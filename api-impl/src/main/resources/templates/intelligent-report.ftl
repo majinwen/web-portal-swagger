@@ -1069,7 +1069,6 @@
             grid: {
                 left: 0,
                 right: '6%',
-                bottom: 0,
                 top: 0,
                 containLabel: true
             },
@@ -1171,7 +1170,6 @@
             grid: {
                 left: 0,
                 right: '6%',
-                bottom: 0,
                 top: 0,
                 containLabel: true
             },

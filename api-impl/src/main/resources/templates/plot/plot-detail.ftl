@@ -796,9 +796,10 @@
         xAxis: [
             {
                 type: 'category',
-                axisTick: {show: false},
-                axisLine: {show: true},
-                axisLabel: {fontSize: baseFontSize - 4},
+                boundaryGap: false,
+                axisTick: {
+                    alignWithLabel: true
+                },
                 data: [<#list  mouthList as item >'${item}',</#list>]
             }
         ],
