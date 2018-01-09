@@ -139,13 +139,13 @@
                     <li>
                         <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists>
                         <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}套</em>，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
                         </#if>
                     </li>
                     <li>
                     <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists>
                         <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}套</em>，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
                     </#if>
                     </li>
                     <li>
@@ -190,7 +190,7 @@
                                 <#else >
                                     <em>-</em>
                                 </#if></li>
-                                <li>${intelligenceFhRes['layout']}居</li>
+                                <#if intelligenceFhRes['layout']??><li>${intelligenceFhRes['layout']}居</li></#if>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -251,10 +251,15 @@
                                             <#else >
                                                 <p>${fhResult['price']}元/㎡</p>
                                             </#if>
-                                            <#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                            <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
                                                 <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
                                             <#else >
                                                 <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                            </#if>-->
+                                            <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
+                                                <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
+                                <#--            <#else >
+                                                <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>-->
                                             </#if>
                                         </div>
                                         <#if fhResult['plotImage'][0]?exists>

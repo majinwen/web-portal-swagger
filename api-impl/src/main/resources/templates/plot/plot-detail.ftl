@@ -559,28 +559,41 @@
         <div class="expand-content">
             <#assign yiliao=datainfo['yiliao'] />
             <ul class="result-data-expand" id="hospitalListDom">
+            <#assign itnum = 0>
             <#if (yiliao['zhuanke']?size>0)>
                 <#list yiliao['zhuanke'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
             </#if>
             <#if (yiliao['zhensuo']?size>0)>
                 <#list yiliao['zhensuo'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
             </#if>
             <#if (yiliao['zonghe']?size>0)>
                 <#list yiliao['zonghe'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
             </#if>
             </ul>
