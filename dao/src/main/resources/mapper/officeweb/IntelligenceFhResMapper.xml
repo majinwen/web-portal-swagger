@@ -14,7 +14,7 @@
     <result column="has_oldman" property="hasOldman" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
-    <result column="collect_status" property="collecttatus" jdbcType="INTEGER" />
+    <result column="collect_status" property="collectStatus" jdbcType="INTEGER" />
     <result column="district_id" property="districtId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
