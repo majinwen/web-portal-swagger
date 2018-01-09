@@ -243,7 +243,7 @@ function chooseUserFinds() {
                     console.log("data.data.plotCount="+data.data.plotCount);
                     if(data.data.plotCount==0){
                         $('.list-item').find('li').eq(0).addClass('current').addClass('optional');
-                        $('.list-item').find('li').eq(1).removeClass('current').addClass('disabled');
+                        $('.list-item').find('li').eq(1).removeClass('current optional');
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         $('#plot_Ratio').find('em').text('0%');
                     }else{
@@ -284,12 +284,19 @@ function chooseUserFinds() {
                 url: router_city('/findhouse/queryUserChoice'),
                 data: options,
                 success: function (data) {
-                    $("#plot_Count").find('em').html(data.data.plotCount);
-                    var ratio = new Number(data.data.ratio);
-                    $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
-                    //将第七种画像附给当前用户userPortrayalType
-                    if (options['userType'] == 3) {
-                        options['userPortrayalType'] = 7;
+                    if(data.data.plotCount==0) {
+                        $('.list-item').find('li').eq(0).addClass('current').addClass('optional');
+                        $('.list-item').find('li').eq(1).removeClass('current optional');
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        $('#plot_Ratio').find('em').text('0%');
+                    }else{
+                        $("#plot_Count").find('em').html(data.data.plotCount);
+                        var ratio = new Number(data.data.ratio);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(3)=='0.000'?'0' + '%':ratio.toFixed(3)+ '%');
+                        //将第七种画像附给当前用户userPortrayalType
+                        if (options['userType'] == 3) {
+                            options['userPortrayalType'] = 7;
+                        }
                     }
                 },
                 error:function (XMLHttpRequest, textStatus, errorThrown){
