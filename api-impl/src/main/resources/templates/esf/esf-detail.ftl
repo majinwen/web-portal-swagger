@@ -188,7 +188,7 @@
         <#if houseDetail.traffic?exists>
             <li>
                 <p>
-                    交通信息：${houseDetail.traffic}
+                    交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
                     <em class="primary-distance"></em>
                     <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="primary-map-icon"></a>
                     <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
@@ -219,7 +219,7 @@
             <#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>
                 <div class="describe-cont">
                     <p>${houseDetail.houseDesc}</p>
-                    <span class="describe-show-btn">>>展开</span>
+                    <#--<span class="describe-show-btn">>>展开</span>-->
                 </div>
             </#if>
         </div>
