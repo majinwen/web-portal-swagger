@@ -212,10 +212,10 @@ body {
 
 .page-empty {
   position: absolute;
-  top: 40%;
+  top: 0;
   left: 0;
   width: 100%;
-  margin-top: -2.72rem;
+  margin-top: 30%;
   text-align: center; }
   .page-empty img {
     width: 2.2rem;

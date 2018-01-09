@@ -256,7 +256,9 @@ body {
       display: block;
       width: 0.6133333333rem;
       height: 100%;
-      background-position: center; }
+      background-position: center;
+      -webkit-background-size: contain;
+      background-size: contain; }
       .side-nav-cont .side-nav-item-wrapper ul li i.icon-index {
         background-image: url("../images/global/grcl_icon_sy.png");
         background-repeat: no-repeat; }

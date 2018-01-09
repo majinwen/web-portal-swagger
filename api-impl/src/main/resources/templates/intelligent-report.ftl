@@ -4,7 +4,7 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css">
-    <title>智能找房 预见所想</title>
+    <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>

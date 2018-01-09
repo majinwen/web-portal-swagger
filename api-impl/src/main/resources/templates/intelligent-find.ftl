@@ -4,7 +4,7 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
-    <title>智能找房 预见所想</title>
+    <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
@@ -31,9 +31,8 @@
                     <div class="choose-item-cont">
                         <div class="dashed-line one"></div>
                         <p data-user-type="1">
-                            <span>自住</span>
-                            <span>刚需</span>
-                            <span>交通便利</span>
+                            <span>自住 刚需</span>
+                            <span>[首次购房]</span>
                         </p>
                     </div>
                 </div>
@@ -43,9 +42,8 @@
                         <div class="choose-item-cont">
                             <div class="dashed-line two"></div>
                             <p data-user-type="2">
-                                <span>自住</span>
-                                <span>改善</span>
-                                <span>配套完善</span>
+                                <span>自住 改善</span>
+                                <span>[居所升级]</span>
                             </p>
                         </div>
                     </div>
@@ -54,9 +52,8 @@
                         <div class="choose-item-cont">
                             <div class="dashed-line three"></div>
                             <p data-user-type="3">
-                                <span>出租</span>
-                                <span>保值</span>
-                                <span>回报率</span>
+                                <span>出租 持有</span>
+                                <span>[长远保值]</span>
                             </p>
                         </div>
                     </div>
@@ -247,10 +244,14 @@
                         </div>
                         <div class="old-man-box">
                             <label>老人</label>
+                            <ul class="content-list" id="oldMan">
+                                <li class="current" data-old-man='0'><span>无</span></li>
+                                <li data-old-man='1'><span>有</span></li>
+                            </ul><#--
                             <ul class="choose-radio" id="oldMan">
                                 <li data-old-man='0' class="current"><i></i><span>无</span></li>
                                 <li data-old-man='1'><i></i><span>有</span></li>
-                            </ul>
+                            </ul>-->
                         </div>
                     </div>
                     <div class="layer-footer">
@@ -259,7 +260,8 @@
                 </div>
             </div>
             <div class="start-btn none">
-                <p>启动</p>
+                <div class="start-triangle"></div>
+                <p><img src="/static/images/intelligent/znzf_icon_zw.png" alt="开启">开启</p>
             </div>
         </div>
     </div>
@@ -274,8 +276,7 @@
                     <div class="animate-big-box" id="left_circle_div">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box">
-                        <#-- 扫描红线（改变top） -->
-                            <div class="animate-line"></div>
+                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box" style="display: none;">
                                 <p><em>7</em>年</p>
                                 <p><em>305586</em>位</p>
@@ -294,8 +295,7 @@
                     <div class="animate-big-box">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box" id="center_circle_div">
-                            <#-- 扫描红线（改变top） -->
-                            <div class="animate-line"></div>
+                                <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box"  style="display: none">
                                 <p><em>8123</em>个社区</p>
                                 <p><em>40397</em>套房产</p>
@@ -314,8 +314,7 @@
                     <div class="animate-big-box" id="right_circle_div">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box">
-                        <#-- 扫描红线（改变top） -->
-                            <div class="animate-line"></div>
+                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box" style="display: none">
                                 <p><em>1</em>秒</p>
                                 <p><em>962837</em>次运算</p>

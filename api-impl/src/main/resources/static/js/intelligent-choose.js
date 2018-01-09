@@ -1,37 +1,38 @@
 $(function () {
     $('#superContainer').fullpage({
         fitToSection: true,
-        resize: false,
-        onLeave: function (index, nextIndex, direction) {
-            if (nextIndex == 4 && direction == 'down') {
-                console.log('down4')
-                rada_animit.init();
-                $.ajax({
-                    type: "GET",
-                    async: true,
-                    url: router_city('/findhouse/showUserPortrayal'),
-                    data: options,
-                    success: function (dataInfo) {
-                         // console.log(dataInfo.data);
-                        try{
-                            rada_animit.id=dataInfo.data.id;
-                        }
-                        catch (e){
-                            console.error(e)
-                        }
-
-                    },
-                    error:function (XMLHttpRequest, textStatus, errorThrown){
-                        console.error(errorThrown)
-                    }
-                })
-            }
-        }
+        resize: false
     });
     $.fn.fullpage.setAllowScrolling(false, 'up, down');
 
     $('.begin').on('click', function () {
         $.fn.fullpage.moveSectionDown();
+    });
+    
+    $('.start-btn').on('click', function () {
+        if (!$(this).hasClass('none')) {
+            $.fn.fullpage.moveSectionDown();
+            rada_animit.init();
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: router_city('/findhouse/showUserPortrayal'),
+                data: options,
+                success: function (dataInfo) {
+                    // console.log(dataInfo.data);
+                    try{
+                        rada_animit.id=dataInfo.data.id;
+                    }
+                    catch (e){
+                        console.error(e)
+                    }
+
+                },
+                error:function (XMLHttpRequest, textStatus, errorThrown){
+                    console.error(errorThrown)
+                }
+            })
+        }
     });
 
     chooseUserType();   // 用户选择类型
@@ -161,10 +162,8 @@ function chooseUserFinds() {
         $('.result-container').removeClass('none');
         if (3 == options['userType']) {
             $('.start-btn').removeClass('none');
-            $.fn.fullpage.setAllowScrolling(true, 'down');
             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end');
         } else {
-            $.fn.fullpage.setAllowScrolling(false, 'up, down');
             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current');
         }
 
@@ -300,7 +299,6 @@ function chooseUserFinds() {
             if (options['layOut'] == 1) {
                 $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end');
                 $('.start-btn').removeClass('none');
-                $.fn.fullpage.setAllowScrolling(true, 'down');
             } else {
                 $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('current');
             }
@@ -377,7 +375,6 @@ function chooseUserFinds() {
         $(this).parents('.layer').addClass('none');
         $('.list-item').find('li').eq(3).removeClass('current').addClass('choose-end');
         $('.start-btn').removeClass('none');
-        $.fn.fullpage.setAllowScrolling(true, 'down');
 
         options['childParams'] = $('#hasChild').find('li.current').data('child');
         options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
