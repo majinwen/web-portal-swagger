@@ -83,18 +83,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             userChooiseLayout(intelligenceFh);
         }
 
-        if(StringTool.isNotBlank(intelligenceFh.getDistrictId())){
-            int count= 0;
-            String[] split  = intelligenceFh.getDistrictId().split(",");
-            for (int i = 0; i < split.length; i++) {
-                //通过总价和户型查询小区数量
-                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
-                count += count1;
-            }
+        Integer count = 0;
+        //通过总价和户型查询小区数量
+        if(!StringTool.isNotBlank(intelligenceFh.getDistrictId())){
+            count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
         }
 
-        //通过总价和户型查询小区数量
-        Integer count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
         //获取该小区所在区域的信息
         List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
         intelligenceFh.setDistictInfo(distictInfo);
@@ -106,6 +100,16 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate * 100)));
             } else {
                 intelligenceFh.setRatio(Double.valueOf(String.valueOf(0)));
+            }
+        }
+
+        if(StringTool.isNotBlank(intelligenceFh.getDistrictId())){
+
+            String[] split  = intelligenceFh.getDistrictId().split(",");
+            for (int i = 0; i < split.length; i++) {
+                //通过总价和户型查询小区数量
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
+                count = count+count1;
             }
         }
 
