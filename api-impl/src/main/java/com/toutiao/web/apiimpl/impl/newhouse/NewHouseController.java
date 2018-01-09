@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.domain.query.NewHouseQuery;
@@ -109,9 +110,12 @@ public class NewHouseController {
 //        Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
         //查询地图信息
         MapInfo mapInfo = mapService.getMapInfo(buildingId);
-        JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-        model.addAttribute("mapInfo", mapInfo);
-        model.addAttribute("datainfo",datainfo);
+        //查询地图信息
+        JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+        if(StringTool.isNotBlank(mapInfo)&&StringTool.isNotBlank(datainfo)){
+            model.addAttribute("mapInfo", mapInfo);
+            model.addAttribute("datainfo",datainfo);
+        }
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));

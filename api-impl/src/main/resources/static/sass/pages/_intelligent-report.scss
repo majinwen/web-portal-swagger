@@ -22,30 +22,44 @@ $inteTextColorRed: #f25a5a;
 }
 
 .page1 {
+    .fp-scroller {
+        height: 100%;
+    }
+
     .bg1 {
         @include bg-image('/static/images/intelligent/znzf_user_bg');
         background-repeat: repeat-y;
         background-position: center;
-        -webkit-background-size: contain;
-        background-size: contain;
+        -webkit-background-size: cover;
+        background-size: cover;
     }
     .page-content {
+        position: relative;
+        top: 0;
+        height: 100%;
         @include font-dpr(24);
+
+        .user-header-title {
+            padding-top: 5%;
+            padding-bottom: 10%;
+            line-height: rem(36);
+            text-align: center;
+        }
 
         .user-header-box {
             position: relative;
-            width: rem(349);
-            height: rem(349);
+            width: rem(278);
+            height: rem(278);
             padding: rem(14);
-            margin: rem(90) auto 0;
+            margin: 0 auto;
             @include box-sizing;
 
             &:before, &:after {
                 content: '';
                 position: absolute;
                 left: 0;
-                width: rem(22);
-                height: rem(22);
+                width: rem(18);
+                height: rem(18);
                 border-left: rem(2) solid $inteBorderRed;
                 @include box-sizing;
             }
@@ -65,8 +79,8 @@ $inteTextColorRed: #f25a5a;
                     content: '';
                     position: absolute;
                     right: 0;
-                    width: rem(22);
-                    height: rem(22);
+                    width: rem(18);
+                    height: rem(18);
                     border-right: rem(2) solid $inteBorderRed;
                     @include box-sizing;
                 }
@@ -81,16 +95,21 @@ $inteTextColorRed: #f25a5a;
             }
 
             img {
-                width: rem(320);
-                height: rem(320);
+                width: rem(254);
+                height: rem(254);
             }
         }
 
         .word-cont {
-            width: rem(432);
-            margin: rem(74) auto 0;
+            width: 64%;
+            margin: 0 auto;
+            padding: rem(74) 0;
             line-height: rem(48);
             text-align: justify;
+
+            p {
+                text-indent: 2em;
+            }
 
             ol {
                 margin-top: rem(30);
@@ -806,6 +825,8 @@ $inteTextColorRed: #f25a5a;
                 background-color: #f8f7f7;
                 @include bg-image('/static/images/intelligent/bgy_building');
                 background-position: bottom center;
+                -webkit-background-size: 85%;
+                background-size: 85%;
 
                 .collect-tips {
                     position: relative;
@@ -857,10 +878,10 @@ $inteTextColorRed: #f25a5a;
                         height: rem(40);
                         @include bg-image('/static/images/intelligent/bgy_icon_sca');
                         background-position: left center;
-                        -webkit-background-size: contain;
-                        background-size: contain;
+                        -webkit-background-size: auto 100%;
+                        background-size: auto 100%;
 
-                        .active {
+                        &.active {
                             background-position: right center;
                         }
                     }

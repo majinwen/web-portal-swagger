@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/index.css">
     <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="/static/js/modernizr.custom.js"></script>

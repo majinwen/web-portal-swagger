@@ -4,6 +4,11 @@ html {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+html, body {
+    font-size: 100%;
+    max-height: 100%;
+}
+
 body, p, h1, h2, h3, h4, h5, h6, ul, ol, dl, dd, fieldset, legend, input, button, textarea, option, hr {
     margin: 0;
     padding: 0;
