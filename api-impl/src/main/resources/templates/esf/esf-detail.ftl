@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
-    <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>
-${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
+    <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
     <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img height="1px" width="1px" hidden src="${houseDetail['housePhoto'][0]}">
+<img class="shareTopImg" height="0" width="0" src="${houseDetail['housePhoto'][0]}">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -88,7 +86,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                         <span>总价</span>
                         <em>
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
-                        ${houseDetail.houseTotalPrices}万
+                        ${houseDetail.houseTotalPrices?number?round}万
                         <#else>
                             暂无数据
                         </#if>
@@ -119,7 +117,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
+                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?number?round) * 10000}元/㎡
                 <#else>
                     暂无数据
                 </#if>
@@ -127,8 +125,8 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
             </li>
             <li>
                 <p>预算：
-                <#if houseDetail.houseBudget?exists>
-                ${houseDetail.houseBudget}元/㎡
+                <#if houseDetail.housingDeposit?exists&&houseDetail.houseMonthPayment?exists>
+                    参考首付${houseDetail.housingDeposit}万，月供${houseDetail.houseMonthPayment}元/月
                 <#else>
                     暂无数据
                 </#if>
@@ -207,7 +205,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon"  <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
@@ -257,7 +255,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡
                 </#if>
             </p>
         </div>
@@ -316,13 +314,14 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                                     <#if map.houseTotalPrices==0>
                                     </#if>
                                 <#else>
-                                ${map.houseTotalPrices}万
+                                ${map.houseTotalPrices?number?round}万
                                 </#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
                                 <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
                             </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
+                        <h4 class="cont-last"><#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}<#else></#if></h4>
                     </div>
                 </a></li>
             </#list>
@@ -357,7 +356,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                         <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
-                        <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
+                        <p class="cont-last"><em>${plotInfo.avgPrice?number?round}元</em>/㎡</p>
                     </#if>
                 </div>
             </a></li>

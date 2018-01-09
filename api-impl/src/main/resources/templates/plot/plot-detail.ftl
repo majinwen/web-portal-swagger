@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/plot-detail.css">
     <title>来头条房产看【${village['rc']!'小区'}】</title>
     <meta name="description" content="推荐你上头条房产看看【${village['rc']!'小区'}】的价格走势与小区详情">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
     <script>
@@ -290,14 +289,7 @@
                     <i class="item-three-2"></i>
                     <em>地铁</em>
                     <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>
-                                                         <#-- ${ datainfo["ditie"]["line"]?substring(0,2)}-->
-                                                          <#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>
-                                                             ${ datainfo["ditie"]["line"]?substring(2)}
-                                                          <#else>
-                                                             ${ datainfo["ditie"]["line"]}
-                                                          </#if>
-                                              <#else >暂无数据</#if></span>
+                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >暂无数据</#if></span>
                 </div>
             </#if>
                 <div class="info-card-item">
@@ -335,7 +327,7 @@
                     <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
                     <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
                     <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
-                    <li class="university" data-type="gaodeng"><i></i><span>大学</span></li>
+                    <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
                 </ul>
             </div>
             <ul class="result-data-expand" id="qinzi">
@@ -639,7 +631,7 @@
                     <#if village['propertyFee']?exists>
                         <span class="expand-price">
                             <#if village['propertyFee']?number gt 0>
-                            ${village['propertyFee']}元/㎡·月
+                            ${village['propertyFee']?number?round}元/㎡·月
                             <#else >
                                 暂无数据
                             </#if>
@@ -656,7 +648,7 @@
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
                             <#if village['parkingRate']??>
-                            ${village['parkingRate']}元/月
+                            ${village['parkingRate']?number?round}元/月
                             <#else >
                                 暂无数据
                             </#if>
@@ -674,7 +666,7 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a  href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
@@ -720,7 +712,7 @@
                     <p class="cont-center">
                         <span>${nearviitem['area']!" "}</span><span>${nearviitem['tradingArea']!" "}</span>
                     </p>
-                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']?number?round}</em>/㎡</h4>
                 </div>
             </a></li>
         </#list>
@@ -746,7 +738,7 @@
                 <h4 class="cont-first">${builditem['building_name']!''}</h4>
                 <#if builditem['average_price']?exists>
                     <#if builditem['average_price']?number gt 0>
-                        <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                        <p class="cont-last">均价：<em>${builditem['average_price']?number?round}元</em>/㎡</p>
                     <#else >
                         <p class="cont-last">均价：<em>售价待定</em></p>
                     </#if>

@@ -130,19 +130,20 @@ public class PlotServiceImpl implements PlotService {
             //小区名称
             if (null != villageRequest.getKeyword()) {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
-                AnalyzeResponse response = esClientTools.init().admin().indices()
-                        .prepareAnalyze(villageRequest.getKeyword())//内容
-                        .setAnalyzer("ik_smart")//指定分词器3`3
-                        .execute().actionGet();//执行
-                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
+//                AnalyzeResponse response = esClientTools.init().admin().indices()
+//                        .prepareAnalyze(villageRequest.getKeyword())//内容
+//                        .setAnalyzer("ik_smart")//指定分词器3`3
+//                        .execute().actionGet();//执行
+//                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+//                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
                     queryBuilder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.fuzzyQuery("rc", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("tradingArea", analyzeToken.getTerm()));
+                            .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()).boost(2))
+                            .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()));
 
-                    queryBuilder = boolQueryBuilder.should(queryBuilder);
-                }
+                    queryBuilder = boolQueryBuilder.must(queryBuilder);
+//                }
 
 
             }
@@ -279,7 +280,7 @@ public class PlotServiceImpl implements PlotService {
             }
             //小区默认排序
             //先发布后发布 级别从小到大  分数由大到小
-            srb.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            srb.addSort("_score",SortOrder.DESC).addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
 
             //级别为1-4
 //            Integer level = villageRequest.getLevel();

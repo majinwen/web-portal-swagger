@@ -13,12 +13,12 @@
                 display: inline-block;
                 padding: 0 rem(12);
                 height: rem(28);
-                line-height: rem(28);
+                line-height: rem(26);
                 margin-left: rem(24);
                 vertical-align: middle;
                 @include font-dpr(20);
                 color: $baseRed;
-                border: 1px solid $baseRed;
+                border: rem(1) solid $baseRed;
                 -webkit-border-radius: rem(4);
                 border-radius: rem(4);
             }
@@ -104,6 +104,8 @@
                     margin-left: rem(10);
                     vertical-align: top;
                     @include bg-image('/static/images/global/primary_map_icon');
+                    -webkit-background-size: contain;
+                    background-size: contain;
                     background-position: center;
                 }
 
@@ -116,6 +118,8 @@
                     height: rem(47);
                     @include bg-image('/static/images/global/arrows_right_icon');
                     background-position: center;
+                    -webkit-background-size: 40%;
+                    background-size: 40%;
                 }
             }
 
@@ -228,6 +232,8 @@
             width: rem(47);
             height: rem(114);
             @include bg-image('/static/images/global/arrows_right_icon');
+            -webkit-background-size: 40%;
+            background-size: 40%;
         }
 
         .arrows-expand {
@@ -235,6 +241,8 @@
             width: rem(44);
             height: rem(114);
             @include bg-image('/static/images/global/arrows_bottom_icon');
+            -webkit-background-size: 100%;
+            background-size: 100%;
         }
 
         &.expand {
@@ -324,8 +332,8 @@
                     height: rem(66);
                     margin: 0 auto rem(20);
                     background-position: left center;
-                    -webkit-background-size: auto rem(66);
-                    background-size: auto rem(66);
+                    -webkit-background-size: auto 100%;
+                    background-size: auto 100%;
                 }
 
                 &.parent-child {
@@ -444,8 +452,8 @@
                     i {
                         height: rem(182);
                         @include bg-image('/static/images/plot/xqxq_csc');
-                        -webkit-background-size: auto rem(182);
-                        background-size: auto rem(182);
+                        -webkit-background-size: auto 100%;
+                        background-size: auto 100%;
                     }
                 }
                 &.supermarket {
@@ -464,8 +472,8 @@
                     i {
                         height: rem(247);
                         @include bg-image('/static/images/plot/xqxq_sc');
-                        -webkit-background-size: auto rem(247);
-                        background-size: auto rem(247);
+                        -webkit-background-size: auto 100%;
+                        background-size: auto 100%;
                     }
                 }
                 &.dining-room {
@@ -685,6 +693,8 @@
                     margin-right: rem(25);
                     vertical-align: top;
                     background-position: center;
+                    -webkit-background-size: contain;
+                    background-size: contain;
 
                     &.item-two-1 {
                         @include bg-image('/static/images/plot/xfxq_jbxx_icon_lh');
@@ -731,6 +741,8 @@
                     margin-bottom: rem(20);
                     vertical-align: top;
                     background-position: center;
+                    -webkit-background-size: contain;
+                    background-size: contain;
 
                     &.item-three-1 {
                         @include bg-image('/static/images/plot/xfxq_jtxx_icon_bus');

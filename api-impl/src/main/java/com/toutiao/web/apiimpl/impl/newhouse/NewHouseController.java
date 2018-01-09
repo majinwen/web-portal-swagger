@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.domain.query.NewHouseQuery;

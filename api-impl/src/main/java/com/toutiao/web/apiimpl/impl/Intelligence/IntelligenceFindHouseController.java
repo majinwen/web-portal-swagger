@@ -4,8 +4,11 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.Com35Aes;
+import com.toutiao.web.common.util.Constant;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
@@ -20,6 +23,7 @@ import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import freemarker.template.TemplateModelException;
+import org.apache.poi.ss.formula.functions.Na;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +71,17 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
-            if (StringTool.isNotBlank(userReport)) {
-                model.addAttribute("userReport", userReport);
+            for (IntelligenceFhRes inte:userReport) {
+                inte.setPhone(Com35Aes.encrypt(Com35Aes.KEYCODE, inte.getPhone()));
             }
-            model.addAttribute("message", "没有报告记录！");
+            if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
+                model.addAttribute("userReport", userReport);
+            }else{
+                model.addAttribute("message", "没有报告记录！");
+            }
         } else {
-            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+            model.addAttribute("report", Constant.report);
+           return "/user/login";
         }
         //跳转到报告页
         return "myReport";
@@ -96,16 +105,19 @@ public class IntelligenceFindHouseController {
             String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
             if (StringTool.isBlank(usePhone)) {
                 //前台判断状态 然后跳转到登陆页面
-                return NashResult.Fail("fail","未登录!");
-            }
-            //更改当前报告的状态
-            int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
-            if (result == 0) {
-                //收藏成功
-                return NashResult.build("ok");
+                 return NashResult.build("fail");
+            }else {
+                //更改当前报告的状态
+                int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
+                if (result != 0) {
+                    //收藏成功
+                    return NashResult.build("ok");
+                }else{
+                    return NashResult.build("cancel");
+                }
             }
         }
-        return NashResult.Fail("fail","收藏失败!");
+        return NashResult.build("cancel");
     }
 
 
@@ -118,14 +130,39 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/deleteMyReport/{reportId}/{phone}")
     public String deleteMyReport(@PathVariable("reportId") String reportId, @PathVariable("phone") String phone, Model model) {
-        int count = intelligenceFhResService.deleteMyReport(reportId, phone);
+
+        //解密
+        int count = intelligenceFhResService.deleteMyReport(reportId, Com35Aes.decrypt(Com35Aes.KEYCODE, phone));
         if (count != 0) {
             model.addAttribute("message", "删除失败！");
         }
         return "redirect:/{citypath}/findhouse/queryMyReport";
     }
+    /**
+     * 功能描述：取消收藏
+     *
+     * @return java.lang.String
+     * @author zhw
+     * @date 2018/1/4 20:06
+     */
+    @RequestMapping("/cancleMyReport/{reportId}")
+    @ResponseBody
+    public NashResult cancleMyReport(HttpServletRequest request,@PathVariable("reportId") String reportId){
 
+        try {
+            String phone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+            int count = intelligenceFhResService.deleteMyReport(reportId, phone);
+            if(count != 0){
+                return NashResult.build("ok");
+            }else{
+                return NashResult.build("fail");
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return NashResult.build("fail");
+        }
+    }
     /**
      * 功能描述：跳转功能，跳转到选择类型页面
      *
@@ -165,6 +202,9 @@ public class IntelligenceFindHouseController {
     @ResponseBody
     public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
+        if(intelligenceFh.getPlotCount()-5<5){
+            intelligenceFh.setPlotCount(0);
+        }
         //获取根据用户条件筛选的小区数量和相应比率
         return NashResult.build(intelligenceFh);
     }
@@ -211,6 +251,9 @@ public class IntelligenceFindHouseController {
         if (StringTool.isNotBlank(intelligenceFh)) {
             intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
         }
+        if(intelligenceFh.getPlotCount()-5<5){
+            intelligenceFh.setPlotCount(0);
+        }
         return NashResult.build(intelligenceFh);
     }
 
@@ -232,29 +275,6 @@ public class IntelligenceFindHouseController {
         //报告生成页
         return NashResult.build(intelligenceFh);
     }
-
-
-    /**
-     * 功能描述：报告页-用户画像
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/27 15:17
-     */
-    /*@RequestMapping("/showUserPortrayal")
-    public String showUserPortrayal(IntelligenceQuery intelligenceQuery, Model model) {
-
-        Integer userPortrayalType = intelligenceQuery.getUserPortrayalType();
-
-        if (StringTool.isNotBlank(userPortrayalType)) {
-            //根据用户画像，查询用户画像介绍
-
-        }
-
-
-        return "intelligent-report";
-    }*/
 
     /**
      * 功能描述：过渡页
@@ -298,7 +318,6 @@ public class IntelligenceFindHouseController {
                 }else{
                     plotTotal = intelligenceFhRes.getTotalPrice();
                 }
-                intelligenceFhRes.setTotalPrice(plotTotal);
                 Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                 Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                 model.addAttribute("fhpt", fhpt);
@@ -307,9 +326,9 @@ public class IntelligenceFindHouseController {
                 model.addAttribute("ptlists",JSON.toJSON(fhpt.getOrDefault("ptlists",new ArrayList<String>())).toString());
                 model.addAttribute("datajson",datajson);
                 model.addAttribute("fhtp", fhtp);
+                model.addAttribute("reportId", reportId);
                 model.addAttribute("intelligenceFhRes", intelligenceFhRes);
                 return "intelligent-report";
-
             }
             model.addAttribute("message", "没有报告记录！");
             return "404";

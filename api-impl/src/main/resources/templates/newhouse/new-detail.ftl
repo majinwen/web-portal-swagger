@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
+    <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
     <title>来头条看【${build['building_name']}】</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
     <script src="${staticurl}/js/echarts.js"></script>
     <#include "../StatisticsHeader.ftl">
@@ -26,7 +25,7 @@
             <#if item?exists>
                 <#if item?? && item!= ''>
                     <li onclick="initphoto(this,${item_index})" class="swiper-slide">
-                        <img src="${qiniuimage}/${item}"  data-src="${qiniuimage}/${item}" alt="${build['building_name']}">
+                        <img src="${qiniuimage}/${item}" data-src="${qiniuimage}/${item}" alt="${build['building_name']}">
                     </li>
                 <#else >
                     <li onclick="initphoto(this,0)" class="swiper-slide">
@@ -92,7 +91,7 @@
             <li>
                 <p>均价：<em class="high-light-red">
                 <#if build['average_price']?exists && build['average_price'] gt 0>
-                    ${build['average_price']}元/㎡
+                    ${build['average_price']?number?round}元/㎡
                 <#else>
                     售价待定
                 </#if>
@@ -197,7 +196,7 @@
                     <div class="info-item-text">
                         <p>绿化率</p>
                         <#if build['virescencerate']??&&build['virescencerate']?number gt 0>
-                            <em>${build['virescencerate']?string("#.####")}平方米</em>
+                            <em>${build['virescencerate']?string("#.####")}%</em>
                         <#else >
                             <em>暂无数据</em>
                         </#if>
@@ -259,14 +258,7 @@
                     <i class="item-three-2"></i>
                     <em>地铁</em>
                     <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>
-                                        <#-- ${ datainfo["ditie"]["line"]?substring(0,2)}-->
-                                            <#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>
-                                            ${ datainfo["ditie"]["line"]?substring(2)}
-                                            <#else>
-                                            ${ datainfo["ditie"]["line"]}
-                                            </#if>
-                                        <#else >暂无数据</#if></span>
+                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >暂无数据</#if></span>
                 </div>
 
                 <div class="info-card-item">
@@ -304,7 +296,7 @@
                     <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
                     <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
                     <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
-                    <li class="university" data-type="gaodeng"><i></i><span>大学</span></li>
+                    <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
                 </ul>
             </div>
             <ul class="result-data-expand" id="qinzi">
@@ -609,7 +601,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
                         <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
-                            <span class="expand-price">${build['propertyfee']}元/㎡·月</span>
+                            <span class="expand-price">${build['propertyfee']?number?round}元/㎡·月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -619,7 +611,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
                         <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
-                            <span class="expand-price">${build['car_rent_price']}元/月</span>
+                            <span class="expand-price">${build['car_rent_price']?number?round}元/月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -676,7 +668,7 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']}元/㎡<#else >售价待定</#if></em></h4>
+                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']?number?round}元/㎡<#else >售价待定</#if></em></h4>
                 </div>
             </a>
         </li>
