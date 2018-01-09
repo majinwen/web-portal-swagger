@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface ProjHouseInfoService {
 
-    List queryProjHouseByhouseIdandLocation(String houseId, double lat, double lon);
+    List queryProjHouseByhouseIdandLocation(String newhouse, double lat, double lon);
 
     List queryProjHouseInfo(ProjHouseInfoQuery ProjHouseInfoQuery);
 
