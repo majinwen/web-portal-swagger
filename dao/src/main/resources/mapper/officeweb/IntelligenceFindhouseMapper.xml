@@ -1295,11 +1295,29 @@
     <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
         select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
         WHERE 1=1
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-        </if>
+        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+        <!--</if>-->
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
+        </if>
+        <if test="categoryId!=null and categoryId==1 and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[layout_price1_min<= #{plotTotalEnd} and layout_price1_max >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null and categoryId==2  and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[layout_price2_min<= #{plotTotalEnd} and layout_price2_max >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null and categoryId==3  and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[layout_price3_min<= #{plotTotalEnd} and layout_price3_max >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null and categoryId==4  and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[layout_price4_min<= #{plotTotalEnd} and layout_price4_max >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null and categoryId==5  and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[layout_price5_min<= #{plotTotalEnd} and layout_price5_max >= #{plotTotalFirst}]]>
+        </if>
+        <if test="categoryId!=null and categoryId==6  and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[layout_price6_min<= #{plotTotalEnd} and layout_price6_max >= #{plotTotalFirst}]]>
         </if>
 
     </select>
@@ -1309,14 +1327,32 @@
         select count(*) from intelligence_findhouse
         <where>
             1=1
-            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-            </if>
+            <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+                <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+            <!--</if>-->
             <if test="layOut!=null">
-                and layout_range @> ARRAY[#{layOut}]
+                and layout_range @> ARRAY[#{layOut}]  and is_approve = 1
             </if>
             <if test="distictId!=null">
                 and district_id=#{distictId}
+            </if>
+            <if test="layOut!=null and layOut==1 and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price1_min<= #{plotTotalEnd} and layout_price1_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==2  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price2_min<= #{plotTotalEnd} and layout_price2_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==3  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price3_min<= #{plotTotalEnd} and layout_price3_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==4  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price4_min<= #{plotTotalEnd} and layout_price4_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==5  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price5_min<= #{plotTotalEnd} and layout_price5_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==6  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price6_min<= #{plotTotalEnd} and layout_price6_max >= #{plotTotalFirst}]]>
             </if>
         </where>
     </select>
@@ -1327,11 +1363,29 @@
         select count(*) from intelligence_findhouse
         <where>
             1=1
-            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-            </if>
+            <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+                <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+            <!--</if>-->
             <if test="layOut!=null">
-                and layout_range @> ARRAY[#{layOut}]
+                and layout_range @> ARRAY[#{layOut}]  and is_approve = 1
+            </if>
+            <if test="layOut!=null and layOut==1 and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price1_min<= #{plotTotalEnd} and layout_price1_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==2  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price2_min<= #{plotTotalEnd} and layout_price2_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==3  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price3_min<= #{plotTotalEnd} and layout_price3_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==4  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price4_min<= #{plotTotalEnd} and layout_price4_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==5  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price5_min<= #{plotTotalEnd} and layout_price5_max >= #{plotTotalFirst}]]>
+            </if>
+            <if test="layOut!=null and layOut==6  and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[layout_price6_min<= #{plotTotalEnd} and layout_price6_max >= #{plotTotalFirst}]]>
             </if>
         </where>
     </select>

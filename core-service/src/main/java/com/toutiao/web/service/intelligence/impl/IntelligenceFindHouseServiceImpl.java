@@ -86,11 +86,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         Integer count = 0;
         //通过总价和户型查询小区数量
         if(!StringTool.isNotBlank(intelligenceFh.getDistrictId())){
-            count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+            count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
         }
 
         //获取该小区所在区域的信息
-        List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+        List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
         intelligenceFh.setDistictInfo(distictInfo);
         //用户占比率
         if(!StringTool.isNotBlank(intelligenceFh.getLayOut())){
@@ -108,7 +108,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             String[] split  = intelligenceFh.getDistrictId().split(",");
             for (int i = 0; i < split.length; i++) {
                 //通过总价和户型查询小区数量
-                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
                 count = count+count1;
             }
         }
