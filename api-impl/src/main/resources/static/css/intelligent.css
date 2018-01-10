@@ -1213,8 +1213,8 @@ body {
             .page4 .page-content .animate-wrapper .animate-item-1 .animate-big-box .animate-ring-box, .page4 .page-content .animate-wrapper .animate-item-2 .animate-big-box .animate-ring-box, .page4 .page-content .animate-wrapper .animate-item-3 .animate-big-box .animate-ring-box {
               background-image: url("/static/images/intelligent/gdy_dq_2@3x.png"); } }
           .page4 .page-content .animate-wrapper .animate-item-1 .animate-big-box .animate-ring-box.active, .page4 .page-content .animate-wrapper .animate-item-2 .animate-big-box .animate-ring-box.active, .page4 .page-content .animate-wrapper .animate-item-3 .animate-big-box .animate-ring-box.active {
-            -webkit-animation: animateRound 4s;
-            animation: animateRound 4s;
+            -webkit-animation: animateRound 1s;
+            animation: animateRound 1s;
             -webkit-animation-fill-mode: forwards; }
 @-webkit-keyframes animateRound {
   0% {

@@ -26,6 +26,7 @@
                 <div class="user-line-triangle"></div>
                 <img src="/static/images/intelligent/user-header.png" alt="用户头像">
             </div>
+            <#if intelligenceFhRes['userPortrait']?number ==1>
             <div class="word-cont" data-user-type="1">
                 <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
                 <ol>
@@ -34,7 +35,9 @@
                     <li>- 有休闲地儿，周末看场大片</li>
                 </ol>
             </div>
-            <div class="word-cont none" data-user-type="2">
+            </#if>
+            <#if intelligenceFhRes['userPortrait']?number ==2>
+            <div class="word-cont" data-user-type="2">
                 <p>我们深知您买房的每一分钱，都来自全家打拼，甚至还有亲友支援。为这第一个家，您大概找寻了很久，已有多次挑选。因此我们尽量给你更多信息，为您精心挑选最具生活价值的社区，让这第一个“幸福家”争取做到：</p>
                 <ol>
                     <li>- 下班回家，社区清静又安全</li>
@@ -42,7 +45,9 @@
                     <li>- 好商圈，让家人享受生活时间</li>
                 </ol>
             </div>
-            <div class="word-cont none" data-user-type="3">
+            </#if>
+            <#if intelligenceFhRes['userPortrait']?number ==3>
+            <div class="word-cont" data-user-type="3">
                 <p>恭喜您经过多年打拼，事业终有所成！今天，您以无数汗滴换来的一丝安逸，将凝聚在这第一套本地房子——它区位好品质高、既时尚又便利。我们根据您的条件，为您精心挑选社区，争取做到：</p>
                 <ol>
                     <li>- 离市区近，尊享都市时尚繁华</li>
@@ -50,7 +55,9 @@
                     <li>- 社区配套好，烦恼琐事全放下</li>
                 </ol>
             </div>
-            <div class="word-cont none" data-user-type="4">
+            </#if>
+            <#if intelligenceFhRes['userPortrait']?number ==4>
+            <div class="word-cont" data-user-type="4">
                 <p>您日夜操劳，只为家人安好。现在选房，是让上老下小，有更大的生活空间和更好的周边配套。为改善家庭居住条件，您大概找寻了很长时间，我们将根据您的需求，帮您仔细对比各种社区，争取做到：</p>
                 <ol>
                     <li>- 学校近，确保孩子未来成长</li>
@@ -58,7 +65,9 @@
                     <li>- 业态多样，轻松生活不抓狂</li>
                 </ol>
             </div>
-            <div class="word-cont none" data-user-type="5">
+            </#if>
+            <#if intelligenceFhRes['userPortrait']?number ==5>
+            <div class="word-cont" data-user-type="5">
                 <p>为了让更多家庭成员和远来亲友，居住得更宽敞、更舒适；同时也能让老人和孩子，能在社区里安心的行走和奔跑——您已左选右挑，辛劳多日。我们理解您的需求，因此帮您仔细地搜寻对比各种可能合适的社区，争取做到：</p>
                 <ol>
                     <li>- 抚幼养老，备好教育医疗</li>
@@ -66,7 +75,9 @@
                     <li>- 休闲解压，找好生活配套</li>
                 </ol>
             </div>
-            <div class="word-cont none" data-user-type="6">
+            </#if>
+            <#if intelligenceFhRes['userPortrait']?number ==6>
+            <div class="word-cont" data-user-type="6">
                 <p>恭喜您事业有成！多年辛劳，终于有时间享受人生。平时您很忙，但也注重片刻的静思明月、小酌清风；同时，您大概也想着让整个乐享生活，自在从容。我们将帮助您搜寻和对比各种社区，争取做到：</p>
                 <ol>
                     <li>- 物业服务高端，开发商品牌知名</li>
@@ -75,7 +86,9 @@
                     <li>- 有会所空间，与友人一道品茗</li>
                 </ol>
             </div>
-            <div class="word-cont none" data-user-type="7">
+            </#if>
+            <#if intelligenceFhRes['userPortrait']?number ==7>
+            <div class="word-cont" data-user-type="7">
                 <p>房产，在全球都是家庭资产配置重要一环，长远看，是让您今天不懈的奋斗带来明天稳定的收益。您肯定希望在周边小区价格、换手率和历史成交量价曲线等角度，看到清晰的数据对比，以做好投资决策。我们争取做到：</p>
                 <ol>
                     <li>- 帮您对比目标社区的周边价格</li>
@@ -83,6 +96,7 @@
                     <li>- 为您提供该社区的历史成交数据</li>
                 </ol>
             </div>
+            </#if>
             <div class="down-triangle"></div>
         </div>
     </div>
@@ -155,9 +169,9 @@
                     </#if>
                     </li>
                 </#if>
-            </ul>
-        </div>
-        </#if>
+                </ul>
+            </div>
+            </#if>
             <div class="module-item">
                 <div class="report-title-type1">
                     <p>智能推荐结果</p>
@@ -186,7 +200,7 @@
                                 <#else >
                                     <em>-</em>
                                 </#if></li>
-                                <li>${intelligenceFhRes['layout']}居</li>
+                                <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']?number gt 0>${intelligenceFhRes['layout']}居</#if> </li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -636,7 +650,6 @@
                     }
                 })
             }
-
         })
     });
 
@@ -662,7 +675,6 @@
         this.x_index = i;
         this.laywidth = laywidth
     }
-
     waterSharp.prototype.animale = function () {
         var that = this;
         var init_x = this.laywidth / 6 * (this.x_index % 6);
