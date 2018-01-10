@@ -27,7 +27,7 @@
         <#if village['photo']?exists&&(village['photo']?size gt 0)>
             <#list village['photo'] as vpphoto>
                 <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                    <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}" alt="">
+                    <img src="${qiniuimage}/${vpphoto}-ttfdc1200x640" data-src="${qiniuimage}/${vpphoto}-ttfdc1200x640" alt="">
                 </li>
             </#list>
         <#else>
@@ -759,6 +759,14 @@
 <script src="${staticurl}/js/main.js"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
+    var chartGrid = {
+        left: '2%',
+        right: '6%',
+        bottom: 0,
+        containLabel: true
+    };
+    var baseFontSize = 12 * dpr;
+    var baseItemWidth = 25 * dpr;
     <#if  (mouthList?size>0)>
     var myChartline = echarts.init(document.getElementById('village-price-trade'), null, {renderer: 'svg'}, {
         devicePixelRatio: dpr,
@@ -766,131 +774,62 @@
         height: '100%'
     });
     </#if>
-    option = {
-        tooltip: {
-            trigger: 'axis',
-            position: function (pos, params, dom, rect, size) {
-                // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
-                var obj = {top: 60};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-                return obj;
+        option = {
+            textStyle: {fontSize: baseFontSize},
+            tooltip: {
+                trigger: 'axis',
+                textStyle: {fontSize: baseFontSize}
             },
-           toolbox:{
-                 feature:{
-                     dataZoom:{
-                         show : true
-                     }
-                 }
-           },
-            textStyle:{
-                fontSize:11
-            }
-        },
-        legend: {
-          /*  data:['楼盘价格','区域价格','商圈价格']*/
-           data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
-            textStyle:{
-                fontSize:12
-            }
-        },
-        xAxis: [
-            {
-                type: 'category',
-                boundaryGap: false,
-                axisTick: {
-                    alignWithLabel: true
-                },
-                data: [<#list  mouthList as item >'${item}',</#list>]
-            }
-        ],
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value}',
-                fontSize:8
+            legend: {
+                itemGap: 20,
+                itemWidth: baseItemWidth,
+                data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
             },
-            scale:true
-        },
-    /*  缩放*/
-   /*  dataZoom: [
-          /!*  {
-                type: 'slider',
-                show: true,
-                xAxisIndex: [0],
-                start: 1,
-                end: 80
-            },*!/
-           {
-                type: 'slider',
-                show: true,
-                yAxisIndex: [0],
-                left: '93%',
-                start: 1,
-                end: 50
-            }
-        ],*/
-        series: [
-           <#--<#if (ptCD0?size==0)>
+            grid: chartGrid,
+            xAxis:
                 {
-                    name: '${village['rc']!'小区'}价格',
-                    type: 'scatter',
-                    coordinateSystem:'cartesian2d',
-                    data:[ <#list mouthList as item >
-                            <#if (item_index == (mouthList?size-1))>
-                            ${village['avgPrice']},
-                            <#else>
-                                NaN,
-                            </#if>
-                         </#list>
-                    ],
-                    symbolSize:25,
+                    show: true,
+                    boundaryGap: false,
+                    scale: true,
+                    axisLabel: {fontSize: baseFontSize - 4},
+                    data: [<#list  mouthList as item >'${item}',</#list>],
                 },
-           <#else>
-               {
-                   name:'${village['rc']!'小区'}价格',
-                   type:'line',
-                   data:[<#list ptCD0 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                   symbolSize:10,
-                   itemStyle:{
-                       normal:{
-                           lineStyle:{
-                               width:4,
-                           },
-                       },
-                   },
-               },
-            </#if>-->
-            {
-                name:'${village['area']!'区域'}价格',
-                type:'line',
-                data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:5,
-                itemStyle:{
-                    normal:{
-                        lineStyle:{
-                            width:2,
-                        }
-                    }
-                }
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}',
+                    fontSize:8
+                },
+                scale:true
             },
-            {
-                name:'${village['tradingArea']!'商圈'}价格',
-                type:'line',
-                data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:5,
-                itemStyle:{
-                       normal:{
-                           lineStyle:{
-                                width:2,
-                           }
-                       }
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 50,
+                    end: 100,
+                    filterMode: 'empty',
+                    zoomLock: true
                 }
-            }
-        ]
-    };
+            ],
+            series: [
+                {
+                    name:'${village['area']!'区域'}价格',
+                    type:'line',
+                    data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                    showSymbol: false,
+                },
+                {
+                    name:'${village['tradingArea']!'商圈'}价格',
+                    type:'line',
+                    data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                    showSymbol: false,
+                }
+            ]
+        };
     <#if  (mouthList?size>0)>
         myChartline.setOption(option);
     </#if>
+
 </script>
 <script>
     $(function () {
