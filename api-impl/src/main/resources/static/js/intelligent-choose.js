@@ -386,9 +386,8 @@ function chooseUserFinds() {
             });
             $('#submitFamily').unbind('click');
             $('#submitFamily').on('click', function () {
-                options['childParams'] = $('#hasChild').find('li.current').data('child');
-                options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
-
+                options['hasChild'] = $('#hasChild').find('li.current').data('child');
+                options['hasOldman'] = $('#oldMan').find('li.current').data('old-man');
                 var familyHtml = '<p><span>孩子：<em>' + $('#hasChild').find('li.current').find('span').text() + '</em></span>' +
                     '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() + '</em></span></p>';
                 $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
