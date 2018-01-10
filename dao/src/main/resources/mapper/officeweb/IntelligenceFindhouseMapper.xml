@@ -1273,23 +1273,38 @@
         </trim>
     </insert>
     <!--int queryPlotCount(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);;-->
+
+    <sql id="queryInfoPro">
+        <where>
+            1=1
+            <if test="minTotalPrice != null and maxTotalPrice!=null">
+                AND <![CDATA[ ${plotTotalFirst}<=max_total_price  ]]>
+            </if>
+            <if test="maxTotalPrice!=null">
+                AND <![CDATA[  ${plotTotalEnd}>=min_total_price ]]>
+            </if>
+        </where>
+    </sql>
+
     <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
         select count(*) from intelligence_findhouse
-        WHERE
-        1=1
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-        </if>
+        <include refid="queryInfoPro"/>
+    <!--WHERE-->
+        <!--1=1-->
+        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+        <!--</if>-->
     </select>
     <!--
        int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
     -->
     <select id="queryPlotCountByCategoryAndPrice" parameterType="java.lang.Double" resultType="java.lang.Integer">
         select count(*) from intelligence_findhouse
-        WHERE 1=1
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-        </if>
+        <include refid="queryInfoPro"/>
+        <!--WHERE 1=1-->
+        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+        <!--</if>-->
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}]
         </if>
@@ -1297,23 +1312,43 @@
     <!--DistictInfo queryPlotCountByCategoryAndPrice1(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd,@Param("categoryId") Integer categoryId);-->
     <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
         select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
-        WHERE 1=1
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-        </if>
+        <include refid="queryInfoPro"/>
+        <!--WHERE 1=1-->
+        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+        <!--</if>-->
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
         </if>
 
     </select>
     <!--int queryPlotCountByCategoryAndPriceAndDistict(Map map);-->
+    <!--<select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">-->
+
+        <!--select count(*) from intelligence_findhouse-->
+        <!--<where>-->
+            <!--1=1-->
+            <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+                <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+            <!--</if>-->
+            <!--<if test="layOut!=null">-->
+                <!--and layout_range @> ARRAY[#{layOut}]-->
+            <!--</if>-->
+            <!--<if test="distictId!=null">-->
+                <!--and district_id=#{distictId}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
 
         select count(*) from intelligence_findhouse
         <where>
             1=1
-            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
+            <if test="plotTotalEnd!=null  ">
+                and  <![CDATA[min_total_price<= #{plotTotalEnd} ]]>
+            </if>
+            <if test="plotTotalFirst!=null ">
+                and  <![CDATA[ max_total_price >= #{plotTotalFirst}]]>
             </if>
             <if test="layOut!=null">
                 and layout_range @> ARRAY[#{layOut}]
@@ -1325,13 +1360,29 @@
     </select>
 
 
-    <select id="queryUserChoice" resultType="java.lang.Integer">
+    <!--<select id="queryUserChoice" resultType="java.lang.Integer">-->
+
+        <!--select count(*) from intelligence_findhouse-->
+        <!--<where>-->
+            <!--1=1-->
+            <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+                <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+            <!--</if>-->
+            <!--<if test="layOut!=null">-->
+                <!--and layout_range @> ARRAY[#{layOut}]-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select> -->
+    <select id="queryUserChoice" resultType="java.lang.Integer" >
 
         select count(*) from intelligence_findhouse
         <where>
             1=1
-            <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-                and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
+            <if test="plotTotalEnd!=null  ">
+                and  <![CDATA[min_total_price<= #{plotTotalEnd} ]]>
+            </if>
+            <if test=" plotTotalFirst!=null ">
+                and  <![CDATA[max_total_price >= #{plotTotalFirst}]]>
             </if>
             <if test="layOut!=null">
                 and layout_range @> ARRAY[#{layOut}]
