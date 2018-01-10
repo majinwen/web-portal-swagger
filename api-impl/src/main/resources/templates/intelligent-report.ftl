@@ -304,8 +304,12 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
                                 <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
-                                    <#assign date = (.now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number)?string + '年'>
-                                    <td>${date!'-'}</td>
+                                    <#assign date = .now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number>
+                                    <#if date?exists&&date gt 0>
+                                    <td>${date}年</td>
+                                    <#else >
+                                        <td>-</td>
+                                    </#if>
                                 </#if>
                             </#list>
                         </#if>
@@ -319,7 +323,7 @@
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
                             <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
-                                <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                                <td>${fhResult['virescencerate']+'%'}</td>
                             </#if>
                             </#list>
                         </#if>
@@ -332,7 +336,11 @@
                         <#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
-                                <td>${fhResult['parkRadio']!'-'}</td>
+                            <#if fhResult['parkRadio']?exists&&fhResult['parkRadio']!=''>
+                                <td>${fhResult['parkRadio']}</td>
+                            <#else >
+                                <td>-</td>
+                            </#if>
                             </#list>
                         </#if>
                     </tr>
@@ -356,7 +364,11 @@
                         <#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
-                                <td>${fhResult['liftDoorRadio']!'-'}</td>
+                            <#if fhResult['liftDoorRadio']?exists&&fhResult['liftDoorRadio']!=''>
+                                <td>${fhResult['liftDoorRadio']}</td>
+                            <#else >
+                                <td>-</td>
+                            </#if>
                             </#list>
                         </#if>
                     </tr>
@@ -680,6 +692,7 @@
     var datajson =${datajson};
     var ptlists = ${ptlists};
     var trend = ${trend};
+    console.log(datajson)
 
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
