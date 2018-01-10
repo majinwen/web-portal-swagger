@@ -203,8 +203,10 @@ body {
 
 .fixed-scroll {
   position: fixed;
-  width: 100%;
+  left: 50%;
+  width: 10rem;
   height: 100%;
+  margin-left: -5rem !important;
   overflow: hidden; }
 
 .shareTopImg {
@@ -646,7 +648,7 @@ body {
 .search-page-wrapper {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 10rem;
   height: 100%;
   background-color: #fff;
   -webkit-transition: transform 0.5s ease;
@@ -865,7 +867,7 @@ body {
   content: '';
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 10rem;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); }
 

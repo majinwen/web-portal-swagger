@@ -203,8 +203,10 @@ body {
 
 .fixed-scroll {
   position: fixed;
-  width: 100%;
+  left: 50%;
+  width: 10rem;
   height: 100%;
+  margin-left: -5rem !important;
   overflow: hidden; }
 
 .shareTopImg {
@@ -213,15 +215,13 @@ body {
 .map-container {
   position: fixed !important;
   top: 0;
-  left: 0;
-  width: 100%;
+  width: 10rem;
   height: 100%; }
 
 .map-type-nav {
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  width: 10rem;
   white-space: nowrap;
   background-color: #fff;
   overflow-x: auto;
@@ -253,8 +253,7 @@ body {
 .type-result-box {
   position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  width: 10rem;
   background-color: #f2f2f2; }
   .type-result-box .type-item-sel-box {
     padding: 0.3333333333rem 0.4rem;
