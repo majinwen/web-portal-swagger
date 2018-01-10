@@ -82,6 +82,7 @@ function chooseUserType() {
 function chooseUserFinds() {
     var asyn_check={
         isLoading:null,
+        count:0,
         get:function (success_callback,error_callback) {
             var defaults={
                 "preconcTotal":100
@@ -105,6 +106,7 @@ function chooseUserFinds() {
                     try {
                         var ratio = new Number(data.data.ratio / 100);
                         $('#plot_Count').find('em').text(data.data.plotCount);
+                        that.count=data.data.plotCount;
                         $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
                         $('.result-begin').addClass('none');
                         $('.result-container').removeClass('none');
@@ -304,7 +306,7 @@ function chooseUserFinds() {
     huxing_model = $.extend({},base_Model,huxing_model)
     var quyu_model={
         el:$('.list-item li').eq(2),
-
+        distictInfo:[],
         check:function (reset,checkParent,needBubble) {
             reset = reset || false
             needBubble = needBubble || false
@@ -320,9 +322,10 @@ function chooseUserFinds() {
             }
             if(parent_check){
                 var that=this;
+                $('#option_distict li').removeClass('current').removeClass('optional').addClass('disabled')
                 asyn_check.get(function (data) {
                     if (data.data.distictInfo != null) {
-                        distictInfo = data.data.distictInfo;
+                        that.distictInfo = data.data.distictInfo;
                         $('#option_distict').find('li.disabled').each(function (i, orgin) {
                             $(data.data.distictInfo).each(function (index, item) {
                                 if ($(orgin).data('value') == item.districtId) {
@@ -363,7 +366,7 @@ function chooseUserFinds() {
                 var currentChoose = $('.area-content').find('li.current').length;
                 if (currentChoose < 3) {
                     $('.area-content').find('li.disabled').each(function (i, orgin) {
-                        $(distictInfo).each(function (index, item) {
+                        $.each(that.distictInfo,function (index, item) {
                             if ($(orgin).data('value') == item.districtId) {
                                 $(orgin).removeClass('disabled').addClass('optional');
                             }
@@ -502,14 +505,14 @@ function chooseUserFinds() {
                     }
                 }
             }
-            if(parent_check){
+            if(parent_check && asyn_check.count>0){
                 var that=this;
                 that.enable(reset);
             }
             var self_check=parent_check;
             //todo 验证自己的选择值是否正确
 
-            return  parent_check &&self_check;
+            return  self_check && asyn_check.count>0;
         }
     }
     console.log(options['userType'])
