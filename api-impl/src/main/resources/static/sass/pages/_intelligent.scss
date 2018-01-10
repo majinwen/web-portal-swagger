@@ -662,15 +662,18 @@ $inteColorRed: #e42929;
                             background-color: $baseModuleFillColor;
                             @include box-sizing;
 
-                            .min, .max {
+                            .min, .max, .mid {
                                 position: absolute;
                                 top: rem(30);
                             }
                             .min {
                                 left: 0;
                             }
+                            .mid {
+                                left: 42%;
+                            }
                             .max {
-                                right: 0;
+                                right: -20%;
                             }
 
                             .slide-color {
@@ -1069,8 +1072,8 @@ $inteColorRed: #e42929;
                         background-size: contain;
 
                         &.active {
-                            -webkit-animation: animateRound 4s;
-                            animation: animateRound 4s;
+                            -webkit-animation: animateRound 2s;
+                            animation: animateRound 2s;
                             -webkit-animation-fill-mode:forwards;
                         }
 

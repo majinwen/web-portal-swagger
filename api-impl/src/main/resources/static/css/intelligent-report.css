@@ -480,7 +480,7 @@ body {
           padding: 0 0.4rem;
           margin: 0 -0.4rem;
           box-sizing: border-box;
-          z-index: 999999; }
+          z-index: 99999999; }
         .page2 .page-content .module-item .plot-title-box .plot-title-block div {
           float: left;
           width: 14.5%;
@@ -1120,7 +1120,8 @@ body {
   width: 100%;
   height: 100%;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.75); }
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 99999999; }
   .share-pop #off-share {
     margin-top: 5%; }
 
