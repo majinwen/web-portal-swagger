@@ -846,7 +846,7 @@ body {
           border: 0.0133333333rem solid #e8e8e8;
           background-color: #f2f2f2;
           box-sizing: border-box; }
-          .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min,.page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .mid, .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .max {
+          .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min, .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .max, .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .mid {
             position: absolute;
             top: 0.4rem; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min {
@@ -1210,8 +1210,8 @@ body {
             .page4 .page-content .animate-wrapper .animate-item-1 .animate-big-box .animate-ring-box, .page4 .page-content .animate-wrapper .animate-item-2 .animate-big-box .animate-ring-box, .page4 .page-content .animate-wrapper .animate-item-3 .animate-big-box .animate-ring-box {
               background-image: url("/static/images/intelligent/gdy_dq_2@3x.png"); } }
           .page4 .page-content .animate-wrapper .animate-item-1 .animate-big-box .animate-ring-box.active, .page4 .page-content .animate-wrapper .animate-item-2 .animate-big-box .animate-ring-box.active, .page4 .page-content .animate-wrapper .animate-item-3 .animate-big-box .animate-ring-box.active {
-            -webkit-animation: animateRound 4s;
-            animation: animateRound 4s;
+            -webkit-animation: animateRound 2s;
+            animation: animateRound 2s;
             -webkit-animation-fill-mode: forwards; }
 @-webkit-keyframes animateRound {
   0% {

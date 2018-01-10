@@ -282,7 +282,7 @@ $inteTextColorRed: #f25a5a;
                         padding: 0 rem(30);
                         margin: 0 rem(-30);
                         @include box-sizing;
-                        z-index: 999999;
+                        z-index: 99999999;
                     }
 
                     div {
@@ -978,6 +978,7 @@ $inteTextColorRed: #f25a5a;
     height: 100%;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.75);
+    z-index: 99999999;
 
     #off-share {
         margin-top: 5%;
