@@ -386,9 +386,8 @@ function chooseUserFinds() {
             });
             $('#submitFamily').unbind('click');
             $('#submitFamily').on('click', function () {
-                options['childParams'] = $('#hasChild').find('li.current').data('child');
-                options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
-
+                options['hasChild'] = $('#hasChild').find('li.current').data('child');
+                options['hasOldman'] = $('#oldMan').find('li.current').data('old-man');
                 var familyHtml = '<p><span>孩子：<em>' + $('#hasChild').find('li.current').find('span').text() + '</em></span>' +
                     '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() + '</em></span></p>';
                 $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
@@ -508,7 +507,8 @@ function chooseUserFinds() {
                 sildeColor.css('width', trackWidth + "px")
             }
             var totalPrice = Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text())
-            if(totalPrice>1500){
+
+            if(totalPrice>1500&&thisDom.prev().text().split("万")[0]==100){
                 slideText.text('1500' + cm + '+')
             }else {
                 slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
