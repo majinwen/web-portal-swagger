@@ -338,14 +338,14 @@
                         <div class="button-mask"></div>
                     </div>
                     <div class="button"></div>
-                    <p class="loading-text">正在生成 专属用户画像</p>
+                    <p class="loading-text">正在生成用户画像</p>
                 </a>
             </div>
         </div>
     </div>
 </div>
 <script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/intelligent-choose.js?201801070812&v=1.0"></script>
+<script src="${staticurl}/js/intelligent-choose.js"></script>
 <script type="text/javascript">
     var rada_animit = {
         timers: [],
@@ -353,7 +353,6 @@
         random: function (max, min) {
             return parseInt(Math.random() * max) + min;
         },
-        total_seconds:5000.0,
         center_process: function () {
             if (!rada_animit.center_process_start) {
                 rada_animit.center_process_start = true
@@ -366,17 +365,15 @@
             clearInterval($('#center_circle_div .animate-line').eq(0).data("lada_timer"));
             $('#center_circle_div .text-box').show();
             $('#center_circle_div').prev('.animate-ring-box').addClass("active");
-            var seconds=0
             var timer = setInterval(function () {
-                seconds += 100;
-                if(seconds>=rada_animit.total_seconds/3){
-                    clearInterval(timer)
-                }
+
                 $('#center_circle_div em').eq(0).text(rada_animit.random(10000, 8000));
                 $('#center_circle_div em').eq(1).text(rada_animit.random(15000, 30000));
                 $('#center_circle_div em').eq(2).text(rada_animit.random(150, 50));
             }, 100);
-
+            setTimeout(function () {
+                clearInterval(timer)
+            }, 4000)
         },
         left_process: function () {
             if (!rada_animit.left_process_start) {
@@ -389,16 +386,14 @@
             clearInterval($('#left_circle_div .animate-line').eq(0).data("lada_timer"));
             $('#left_circle_div .text-box').show();
             $('#left_circle_div .animate-ring-box').addClass("active");
-            var seconds=0;
             var timer = setInterval(function () {
-                seconds += 100;
-                if(seconds>=rada_animit.total_seconds/3){
-                    clearInterval(timer)
-                }
                 $('#left_circle_div em').eq(0).text(rada_animit.random(10, 1));
                 $('#left_circle_div em').eq(1).text(rada_animit.random(1000000, 500000));
 
             }, 100);
+            setTimeout(function () {
+                clearInterval(timer)
+            }, 4000)
         },
         right_process: function () {
             if (!rada_animit.right_process_start) {
@@ -411,16 +406,13 @@
             clearInterval($('#right_circle_div .animate-line').eq(0).data("lada_timer"));
             $('#right_circle_div .text-box').show();
             $('#right_circle_div .animate-ring-box').addClass("active");
-            var seconds=0;
             var timer = setInterval(function () {
-                seconds += 100;
-                if(seconds>=rada_animit.total_seconds/3){
-                    clearInterval(timer)
-                }
                 $('#right_circle_div em').eq(1).text(rada_animit.random(300000, 200000));
 
             }, 100);
-
+            setTimeout(function () {
+                clearInterval(timer)
+            }, 4000)
         },
         stop_all: function () {
             for (var i = 0; i < rada_animit.timers.length; i++) {
@@ -446,44 +438,23 @@
                 }, 100);
                 that.data("lada_timer", timer);
             });
-            var tips=[
-                "正在生成 目标市场分析",
-                "正在生成 智能推荐结果",
-                "正在生成 生活配套报告",
-                "已完成 敬请查阅"]
             var process = 0;
-            var seconds=0;
-            var steppx =parseInt($('#button_report').width())/ rada_animit.total_seconds*80;
             var process_timer = setInterval(function () {
-                process = process +steppx
-                seconds += 80;
-                if (seconds > 0) {
+                $('.button-mask').width((process + 1) + 'px');
+                process += 4;
+                $('.loading-number').css('left', process + 'px');
+                var rate = parseInt(process * 100 / parseInt($('#button_report').width()));
+                if (rate > 10) {
                     rada_animit.center_process();
                 }
-                if (seconds >= rada_animit.total_seconds/3 ) {
+                if (rate > 25) {
                     rada_animit.left_process();
                 }
-                if (seconds > rada_animit.total_seconds/3*2) {
+                if (rate > 40) {
                     rada_animit.right_process();
                 }
-                if(seconds >= rada_animit.total_seconds){
-                    $('.loading-text').text("已完成 敬请查阅");
-                }
-                else if(seconds >= rada_animit.total_seconds*3/4){
-                    $('.loading-text').text("正在生成 生活配套报告");
-                }
-                else if(seconds >= rada_animit.total_seconds*2/4){
-                    $('.loading-text').text("正在生成 智能推荐结果");
-                }
-                else if(seconds >= rada_animit.total_seconds*1/4){
-                    $('.loading-text').text("正在生成 目标市场分析");
-                }
-                $('.button-mask').width((process ) + 'px');
-
-                $('.loading-number').css('left', process + 'px');
                 $('.loading-number').text(parseInt(process * 100 / parseInt($('#button_report').width())) + '%');
-
-                if (seconds>rada_animit.total_seconds) {
+                if (process >= parseInt($('#button_report').width())) {
                     $('.button-mask').width($('#button_report').width());
                     if (rada_animit.id) {
                         $('.loading-number').hide();
@@ -495,7 +466,6 @@
                         });
                     }
                 }
-
             }, 80)
         }
     };
