@@ -88,6 +88,12 @@
     </div>
     <div class="section page2 active">
         <div class="page-content">
+            <div class="header-summary-box">
+                <div class="header-summary">
+                    <p>根据您的检索条件，总价1200万左右的房源市场 为您的目标市场。</p>
+                    <p>以下从市场行情，地理位置，宜居指数，交通及周边 配套设施等方面，为您挑选生活家</p>
+                </div>
+            </div>
             <#if fhpt?exists><div class="module-item">
                 <div class="report-title-type1">
                     <p>目标市场价格走势</p>
@@ -517,7 +523,7 @@
                         <span>3km内医疗配套，为您的健康保驾护航</span>
                     </div>
                     <#--<i class="show-echart-detail"></i>-->
-                    <div class="echart-box nearby">
+                    <div class="echart-box nearby mb0">
                         <div id="medicalChart"></div>
                     </div>
                 </div>
@@ -526,17 +532,28 @@
                     <p class="end-text">End</p>
                     <div class="end-bottom-content">
                         <div class="collect-tips">
-                            <p>您可以添加收藏，方便之后查阅！</p>
+                            <p>选房就是选生活<br>愿您选到心仪的居家和生活环境</p>
+                            <p>发现美好家园 就在头条房产</p>
                         </div>
-                        <div class="collect-button">
-                            <i class="collect"></i>
-                            <span>收藏</span>
+                        <div class="report-bottom-button">
+                            <div class="collect-button">
+                                <i class="collect"></i>
+                                <span>收藏</span>
+                            </div>
+                            <div class="share-button">
+                                <i class="share"></i>
+                                <span>分享</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </#if>
         </div>
     </div>
+</div>
+<div class="share-pop none">
+    <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
+    <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
 <script src="/static/js/URI.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
@@ -554,6 +571,13 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
+        
+        $('.share-button').on('click', function () {
+            $('.share-pop').removeClass('none');
+        });
+        $('#off-share').on('click', function () {
+            $('.share-pop').addClass('none');
+        });
         var status=${intelligenceFhRes.collectStatus};
 
         if(status==1){

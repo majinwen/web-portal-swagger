@@ -343,6 +343,54 @@ body {
     font-size: 24px; }
   [data-dpr="3"] .page2 .page-content {
     font-size: 36px; }
+  .page2 .page-content .header-summary-box {
+    padding: 0.8rem 0.4rem 1.0666666667rem; }
+    .page2 .page-content .header-summary-box .header-summary {
+      position: relative;
+      width: 100%;
+      padding: 0.6666666667rem 0.4rem 0.6666666667rem 0.6666666667rem;
+      background-image: url("/static/images/intelligent/header-summary.png");
+      background-repeat: no-repeat;
+      -webkit-background-size: 100% 100%;
+      background-size: 100% 100%;
+      box-sizing: border-box; }
+      @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+        .page2 .page-content .header-summary-box .header-summary {
+          background-image: url("/static/images/intelligent/header-summary@2x.png"); } }
+      @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+        .page2 .page-content .header-summary-box .header-summary {
+          background-image: url("/static/images/intelligent/header-summary@3x.png"); } }
+      .page2 .page-content .header-summary-box .header-summary:after {
+        content: '';
+        position: absolute;
+        bottom: -0.5066666667rem;
+        left: 50%;
+        width: 1.6266666667rem;
+        height: 0.3733333333rem;
+        margin-left: -0.8133333333rem;
+        background-image: url("/static/images/intelligent/header-summary-triangle.png");
+        background-repeat: no-repeat;
+        -webkit-background-size: 100% 100%;
+        background-size: 100% 100%; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .page2 .page-content .header-summary-box .header-summary:after {
+            background-image: url("/static/images/intelligent/header-summary-triangle@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .page2 .page-content .header-summary-box .header-summary:after {
+            background-image: url("/static/images/intelligent/header-summary-triangle@3x.png"); } }
+      .page2 .page-content .header-summary-box .header-summary p {
+        line-height: 0.5333333333rem; }
+        [data-dpr="1"] .page2 .page-content .header-summary-box .header-summary p {
+          font-size: 13px; }
+        [data-dpr="2"] .page2 .page-content .header-summary-box .header-summary p {
+          font-size: 26px; }
+        [data-dpr="3"] .page2 .page-content .header-summary-box .header-summary p {
+          font-size: 39px; }
+        .page2 .page-content .header-summary-box .header-summary p:nth-child(1) {
+          color: #555; }
+        .page2 .page-content .header-summary-box .header-summary p:nth-child(2) {
+          margin-top: 0.2rem;
+          color: #888; }
   .page2 .page-content .module-item {
     position: relative;
     padding: 0.9333333333rem 0.4rem 0.9333333333rem; }
@@ -955,7 +1003,7 @@ body {
         z-index: -1; }
     .page2 .page-content .end-bottom .end-bottom-content {
       width: 100%;
-      height: 7.52rem;
+      height: 9.1466666667rem;
       border-top: 0.0133333333rem solid #e8e8e8;
       background-color: #f8f7f7;
       background-image: url("/static/images/intelligent/bgy_building.png");
@@ -971,62 +1019,95 @@ body {
           background-image: url("/static/images/intelligent/bgy_building@3x.png"); } }
       .page2 .page-content .end-bottom .end-bottom-content .collect-tips {
         position: relative;
-        width: 8.4rem;
-        margin: 0.7066666667rem auto 0.56rem; }
+        margin: 1.2rem 0.4rem 0.8rem; }
         .page2 .page-content .end-bottom .end-bottom-content .collect-tips:before {
           content: '';
           position: absolute;
           left: 0;
           top: 50%;
           width: 100%;
-          border-top: 0.0133333333rem solid #e8e8e8; }
+          border-top: 0.0133333333rem solid #2d4456; }
         .page2 .page-content .end-bottom .end-bottom-content .collect-tips p {
           position: relative;
           display: inline-block;
+          line-height: 0.5333333333rem;
           padding-left: 0.5066666667rem;
           padding-right: 0.5066666667rem;
-          background-color: #f8f7f7; }
+          background-color: #f8f7f7;
+          color: #555; }
           [data-dpr="1"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p {
             font-size: 13px; }
           [data-dpr="2"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p {
             font-size: 26px; }
           [data-dpr="3"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p {
             font-size: 39px; }
-          .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:before, .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 0.1333333333rem;
-            height: 0.1333333333rem;
-            margin-top: -0.0666666667rem;
-            -webkit-border-radius: 50%;
-            border-radius: 50%;
-            border: 0.0133333333rem solid #e8e8e8;
-            box-sizing: border-box; }
-          .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:before {
-            left: 0.0266666667rem; }
-          .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:after {
-            right: 0.0266666667rem; }
-      .page2 .page-content .end-bottom .end-bottom-content .collect-button .collect {
+          .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:nth-child(2) {
+            margin-top: 0.1333333333rem;
+            color: #888; }
+            [data-dpr="1"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:nth-child(2) {
+              font-size: 11px; }
+            [data-dpr="2"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:nth-child(2) {
+              font-size: 22px; }
+            [data-dpr="3"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:nth-child(2) {
+              font-size: 33px; }
+      .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div {
         display: inline-block;
-        width: 0.5333333333rem;
-        height: 0.5333333333rem;
-        background-image: url("/static/images/intelligent/bgy_icon_sca.png");
-        background-repeat: no-repeat;
-        background-position: left center;
-        -webkit-background-size: auto 100%;
-        background-size: auto 100%; }
-        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .page2 .page-content .end-bottom .end-bottom-content .collect-button .collect {
-            background-image: url("/static/images/intelligent/bgy_icon_sca@2x.png"); } }
-        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .page2 .page-content .end-bottom .end-bottom-content .collect-button .collect {
-            background-image: url("/static/images/intelligent/bgy_icon_sca@3x.png"); } }
-        .page2 .page-content .end-bottom .end-bottom-content .collect-button .collect.active {
-          background-position: right center; }
-      .page2 .page-content .end-bottom .end-bottom-content .collect-button span {
-        display: block;
-        margin-top: 0.1733333333rem; }
+        width: 2.3733333333rem;
+        height: 0.9333333333rem;
+        line-height: 0.9333333333rem;
+        color: #fff;
+        background-color: #2d4456;
+        -webkit-border-radius: 0.0533333333rem;
+        border-radius: 0.0533333333rem;
+        -webkit-box-shadow: 0 0.08rem 0.16rem 0 rgba(13, 38, 58, 0.25);
+        box-shadow: 0 0.08rem 0.16rem 0 rgba(13, 38, 58, 0.25); }
+        .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div.share-button {
+          margin-left: 0.6666666667rem; }
+        .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div i {
+          display: inline-block;
+          margin-right: 0.1333333333rem;
+          vertical-align: middle;
+          margin-top: -0.04rem; }
+        .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .collect {
+          width: 0.4266666667rem;
+          height: 0.4266666667rem;
+          background-image: url("/static/images/intelligent/bgy_icon_sca.png");
+          background-repeat: no-repeat;
+          background-position: left center;
+          -webkit-background-size: auto 100%;
+          background-size: auto 100%; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .collect {
+              background-image: url("/static/images/intelligent/bgy_icon_sca@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .collect {
+              background-image: url("/static/images/intelligent/bgy_icon_sca@3x.png"); } }
+          .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .collect.active {
+            background-position: right center; }
+        .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .share {
+          width: 0.5866666667rem;
+          height: 0.5866666667rem;
+          background-image: url("/static/images/intelligent/bgy_icon_share.png");
+          background-repeat: no-repeat;
+          -webkit-background-size: contain;
+          background-size: contain; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .share {
+              background-image: url("/static/images/intelligent/bgy_icon_share@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .end-bottom .end-bottom-content .report-bottom-button div .share {
+              background-image: url("/static/images/intelligent/bgy_icon_share@3x.png"); } }
+
+.share-pop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.75); }
+  .share-pop #off-share {
+    margin-top: 5%; }
 
 .elastics-stack-box {
   padding-left: 0.4rem;

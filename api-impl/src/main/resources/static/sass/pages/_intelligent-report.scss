@@ -154,11 +154,50 @@ $inteTextColorRed: #f25a5a;
         color: $inteTextColorRed !important;
     }
 
-
     .page-content {
         position: relative;
         height: 100%;
         @include font-dpr(24);
+
+        .header-summary-box {
+            padding: rem(60) rem(30) rem(80);
+
+            .header-summary {
+                position: relative;
+                width: 100%;
+                padding: rem(50) rem(30) rem(50) rem(50);
+                @include bg-image('/static/images/intelligent/header-summary');
+                -webkit-background-size: 100% 100%;
+                background-size: 100% 100%;
+                @include box-sizing;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    bottom: rem(-38);
+                    left: 50%;
+                    width: rem(122);
+                    height: rem(28);
+                    margin-left: rem(-61);
+                    @include bg-image('/static/images/intelligent/header-summary-triangle');
+                    -webkit-background-size: 100% 100%;
+                    background-size: 100% 100%;
+                }
+
+                p {
+                    line-height: rem(40);
+                    @include font-dpr(26);
+
+                    &:nth-child(1) {
+                        color: #555;
+                    }
+                    &:nth-child(2) {
+                        margin-top: rem(15);
+                        color: #888;
+                    }
+                }
+            }
+        }
 
         .module-item {
             position: relative;
@@ -825,7 +864,7 @@ $inteTextColorRed: #f25a5a;
 
             .end-bottom-content {
                 width: 100%;
-                height: rem(564);
+                height: rem(686);
                 border-top: rem(1) solid $baseBorderColor;
                 background-color: #f8f7f7;
                 @include bg-image('/static/images/intelligent/bgy_building');
@@ -835,8 +874,7 @@ $inteTextColorRed: #f25a5a;
 
                 .collect-tips {
                     position: relative;
-                    width: rem(630);
-                    margin: rem(53) auto rem(42);
+                    margin: rem(90) rem(30) rem(60);
 
                     &:before {
                         content: '';
@@ -844,58 +882,88 @@ $inteTextColorRed: #f25a5a;
                         left: 0;
                         top: 50%;
                         width: 100%;
-                        border-top: rem(1) solid $baseBorderColor;
+                        border-top: rem(1) solid #2d4456;
                     }
 
                     p {
                         position: relative;
                         display: inline-block;
+                        line-height: rem(40);
                         padding-left: rem(38);
                         padding-right: rem(38);
                         background-color: #f8f7f7;
+                        color: #555;
                         @include font-dpr(26);
 
-                        &:before, &:after {
-                            content: '';
-                            position: absolute;
-                            top: 50%;
-                            width: rem(10);
-                            height: rem(10);
-                            margin-top: rem(-5);
-                            -webkit-border-radius: 50%;
-                            border-radius: 50%;
-                            border: rem(1) solid $baseBorderColor;
-                            @include box-sizing;
-                        }
-                        &:before {
-                            left: rem(2);
-                        }
-                        &:after {
-                            right: rem(2);
+                        &:nth-child(2) {
+                            margin-top: rem(10);
+                            color: #888;
+                            @include font-dpr(22);
                         }
                     }
                 }
 
-                .collect-button {
-                    .collect {
-                        display: inline-block;
-                        width: rem(40);
-                        height: rem(40);
-                        @include bg-image('/static/images/intelligent/bgy_icon_sca');
-                        background-position: left center;
-                        -webkit-background-size: auto 100%;
-                        background-size: auto 100%;
-
-                        &.active {
-                            background-position: right center;
+                .report-bottom-button {
+                    div {
+                        &.share-button {
+                            margin-left: rem(50);
                         }
-                    }
-                    span {
-                        display: block;
-                        margin-top: rem(13);
+
+                        display: inline-block;
+                        width: rem(178);
+                        height: rem(70);
+                        line-height: rem(70);
+                        color: $baseWhite;
+                        background-color: #2d4456;
+                        -webkit-border-radius: rem(4);
+                        border-radius: rem(4);
+                        -webkit-box-shadow: 0 rem(6) rem(12) 0 rgba(13, 38, 58, 0.25);
+                        box-shadow: 0 rem(6) rem(12) 0 rgba(13, 38, 58, 0.25);
+
+                        i {
+                            display: inline-block;
+                            margin-right: rem(10);
+                            vertical-align: middle;
+                            margin-top: rem(-3);
+                        }
+
+                        .collect {
+                            width: rem(32);
+                            height: rem(32);
+                            @include bg-image('/static/images/intelligent/bgy_icon_sca');
+                            background-position: left center;
+                            -webkit-background-size: auto 100%;
+                            background-size: auto 100%;
+
+                            &.active {
+                                background-position: right center;
+                            }
+                        }
+
+                        .share {
+                            width: rem(44);
+                            height: rem(44);
+                            @include bg-image('/static/images/intelligent/bgy_icon_share');
+                            -webkit-background-size: contain;
+                            background-size: contain;
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+.share-pop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.75);
+
+    #off-share {
+        margin-top: 5%;
     }
 }
