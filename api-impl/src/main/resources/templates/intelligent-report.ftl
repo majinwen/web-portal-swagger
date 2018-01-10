@@ -324,6 +324,8 @@
                             <#list fhResults?eval as fhResult>
                             <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
                                 <td>${fhResult['virescencerate']+'%'}</td>
+                            <#else >
+                                <td>-</td>
                             </#if>
                             </#list>
                         </#if>
@@ -692,7 +694,7 @@
     var datajson =${datajson};
     var ptlists = ${ptlists};
     var trend = ${trend};
-    console.log(datajson)
+//    console.log(datajson)
 
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
