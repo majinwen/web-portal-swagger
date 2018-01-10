@@ -60,6 +60,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         //初始化
 
         String plotTotal = null;
+        Double plotTotalFirst = null;
+        Double plotTotalEnd = null;
         //判断用户是否首付还是总价
         //如果是首付和月付 则需要计算总价  总价=首付+月供*12*30
         if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
@@ -70,12 +72,20 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
             plotTotal = intelligenceFh.getPreconcTotal();
         }
-        intelligenceFh.setPreconcTotal(plotTotal);
-        //上下浮动10%
-        Double plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
-        intelligenceFh.setPlotTotalFirst(plotTotalFirst);
-        Double plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
-        intelligenceFh.setPlotTotalEnd(plotTotalEnd);
+        String substring1 = plotTotal.substring(0, plotTotal.length()-1);
+        if(Double.valueOf(substring1)<=1500){
+            intelligenceFh.setPreconcTotal(plotTotal);
+            //上下浮动10%
+            plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            intelligenceFh.setPlotTotalFirst(plotTotalFirst);
+            plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            intelligenceFh.setPlotTotalEnd(plotTotalEnd);
+        }else{
+            intelligenceFh.setPreconcTotal(plotTotal);
+            plotTotalEnd = Double.valueOf(plotTotal) * 10000;
+            intelligenceFh.setPlotTotalFirst(plotTotalEnd);
+        }
+
 
 
         //户型选择======

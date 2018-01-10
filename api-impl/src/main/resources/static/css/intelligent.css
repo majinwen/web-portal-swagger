@@ -844,13 +844,15 @@ body {
           border: 0.0133333333rem solid #e8e8e8;
           background-color: #f2f2f2;
           box-sizing: border-box; }
-          .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min, .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .max {
+          .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min,.page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .mid, .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .max {
             position: absolute;
             top: 0.4rem; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min {
             left: 0; }
+          .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .mid {
+            left: 42%; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .max {
-            right: 0; }
+            right: -20%; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .slide-color {
             width: 0;
             height: 100%;

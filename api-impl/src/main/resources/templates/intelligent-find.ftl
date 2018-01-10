@@ -127,6 +127,7 @@
                                     <span class="min"><em>100</em>万</span>
                                     <span class="slider-thumb"></span>
                                     <span class="max"><em>3000</em>万</span>
+                                    <span class="mid"><em>1500</em>万</span>
                                 </div>
                             </div>
                         </div>

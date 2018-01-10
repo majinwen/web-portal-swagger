@@ -191,7 +191,6 @@ public class IntelligenceFindHouseController {
                 intelligenceFh.setPlotCount(0);
             }
         }
-
         return NashResult.build(intelligenceFh);
     }
 
