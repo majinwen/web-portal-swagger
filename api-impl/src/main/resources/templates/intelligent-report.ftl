@@ -92,7 +92,7 @@
         <div class="page-content">
             <div class="header-summary-box">
                 <div class="header-summary">
-                    <p>根据您的检索条件，总价1200万左右的房源市场为您的目标市场。</p>
+                    <p>根据您的检索条件，总价<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if>左右的房源市场为您的目标市场。</p>
                     <p>以下从市场行情，地理位置，宜居指数，交通及周边 配套设施等方面，为您挑选生活家</p>
                 </div>
             </div>
