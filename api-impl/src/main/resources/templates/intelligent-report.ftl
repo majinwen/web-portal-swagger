@@ -16,7 +16,7 @@
 </head>
 <body>
 <div id="superContainer">
-    <div class="section page1">
+    <div class="section page1 active">
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <div class="user-header-title">
@@ -86,7 +86,7 @@
             <div class="down-triangle"></div>
         </div>
     </div>
-    <div class="section page2 active">
+    <div class="section page2">
         <div class="page-content">
             <div class="header-summary-box">
                 <div class="header-summary">
@@ -499,7 +499,7 @@
                         <p>休闲购物</p>
                         <span>3km生活圈，吃喝玩乐买买买</span>
                     </div>
-                    <div class="echart-box nearby">
+                    <div class="echart-box nearby mb0">
                         <div id="shoppingChart"></div>
                     </div>
                 </div>
@@ -511,7 +511,7 @@
                         <span>3km内教育配套，就这样陪你长大</span>
                     </div>
                     <#--<i class="show-echart-detail"></i>-->
-                    <div class="echart-box nearby">
+                    <div class="echart-box nearby mb0">
                         <div id="educationChart"></div>
                     </div>
                 </div>

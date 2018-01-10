@@ -52,9 +52,8 @@
         <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt=""></div>
         <div class="text-scroll">
             <ul>
-                <li>猛犸温泉高档小区开盘在即，各大商铺积极响</li>
-                <li>猛犸温泉高档小区开盘在即，各大商铺积极响猛犸温泉高档小区开盘在即，各大商铺积极响</li>
-                <li>猛犸温泉高档小区开盘在即，各大商铺猛犸温泉高档小区开盘在即，各大商铺积极响铺积极响铺积极响</li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586541609479182/"><em class="scroll-text-tag">问答</em>如果你现在有50万，是买房还是存着？</a></li>
             </ul>
         </div>
     </section>
@@ -67,19 +66,19 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
+                <div class="hot-topic-item"><a href="https://www.toutiao.com/i6507390085581767176/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143399&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content">
-                        <h5>万科楼盘</h5>
-                        <p>品牌房企集中亮相</p>
+                        <h5>房价排行榜</h5>
+                        <p>2017年房价排行榜出炉</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="万科楼盘">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="房价排行榜">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587898856414222/">
+                <div class="hot-topic-item"><a href="https://www.toutiao.com/i6507035043548889607/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143385&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content">
-                        <h5>豪宅10万起</h5>
-                        <p>解密北京豪宅楼盘</p>
+                        <h5>图说豪宅</h5>
+                        <p>北京豪宅震撼大片</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image2.jpg" alt="豪宅10万起">
+                    <img src="${staticurl}/images/newindex/xf_zt_image2.jpg" alt="图说豪宅">
                 </a></div>
             </div>
             <div class="column">
@@ -92,15 +91,15 @@
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
                     <div class="topic-item-content">
-                        <h5>新发预售证</h5>
-                        <p>入市新盘全掌握</p>
+                        <h5>万科楼盘</h5>
+                        <p>品牌房企集中亮相</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="新发预售证">
+                    <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="万科楼盘">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587895837527054/">
                     <div class="topic-item-content">
                         <h5>下一站南五环</h5>
-                        <p>南五环热门楼盘盘点</p>
+                        <p>南五环热盘盘点</p>
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image5.jpg" alt="下一站南五环">
                 </a></div>

@@ -53,9 +53,8 @@
         <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
         <div class="text-scroll index-text">
             <ul>
-                <li><em class="scroll-text-tag">市场</em>北京二手房现全面“砍价”全年成交13.4万</li>
-                <li><em class="scroll-text-tag">市场</em>猛犸温泉高档小区开盘在即，各大商铺积极响猛犸温泉高档小区开盘在即，各大商铺积极响</li>
-                <li><em class="scroll-text-tag">市场</em>猛犸温泉高档小区开盘在即，各大商铺猛犸温泉高档小区开盘在即，各大商铺积极响铺积极响铺积极响</li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/"><em class="scroll-text-tag">导购</em>北京城市副中心正式启用 看看还有哪些“正经”盘可以买</a></li>
             </ul>
         </div>
     </section>
@@ -67,35 +66,35 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
+                <div class="hot-topic-item index-topic-item"><a href="https://www.toutiao.com/i6506676833080050184/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143248&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content">
-                        <h5>新开通地铁旁楼盘</h5>
-                        <p>地铁盘推荐 </p>
+                        <h5>2018房价是涨是降？</h5>
+                        <p>市场预测</p>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="地铁盘推荐">
+                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场预测">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseLabelId=6')}">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
                     <div class="topic-item-content">
-                        <h5>满五税少房推荐</h5>
-                        <p>每日热推</p>
+                        <h5>房贷知识知多少</h5>
+                        <p>热门问答</p>
                     </div>
-                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="每日热推">
+                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="热门问答">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?beginPrice=350.0&endPrice=400.0&districtId=105037')}">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588564480256007/">
                     <div class="topic-item-content">
-                        <h5>西城区400万房源</h5>
-                        <p>热点专区</p>
+                        <h5>最美样板间实景VR</h5>
+                        <p>VR+房产</p>
                     </div>
-                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="热点专区">
+                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="VR+房产">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseYearId=[0-5]')}">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
                     <div class="topic-item-content">
-                        <h5>5年内楼龄房源</h5>
-                        <p>品质小区</p>
+                        <h5>新开通地铁沿线盘</h5>
+                        <p>精选导购</p>
                     </div>
-                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="品质小区">
+                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="精选导购">
                 </a></div>
             </div>
         </div>
