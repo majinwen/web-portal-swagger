@@ -234,11 +234,16 @@
                                             <#else >
                                                 <p>${fhResult['price']?number?round}元/㎡</p>
                                             </#if>
-                                        <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
-                                            <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
-                                        <#else >
-                                            <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
-                                        </#if>-->
+                                            <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
+                                                <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
+                                            <#else >
+                                                <#if fhResult['districtName']?exists>
+                                                    <p>${fhResult['districtName']}</p>
+                                                </#if>
+                                                <#if fhResult['areaName']?exists>
+                                                    <p>${fhResult['areaName']}</p>
+                                                </#if>
+                                            </#if>
                                         </div>
                                         <#if fhResult['plotImage'][0]?exists>
                                             <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
