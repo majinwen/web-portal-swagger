@@ -157,12 +157,7 @@ function chooseUserFinds() {
             for(var i=0;i<this.childs.length;i++){
                 this.childs[i].next(true,count-1);
             }
-        }
-    }
-    var yusuan_model={
-        el:$('.list-item li').eq(0),
-
-
+        },
         check:function (reset,checkParent,needBubble) {
             reset = reset || false
             needBubble = needBubble || false
@@ -177,12 +172,21 @@ function chooseUserFinds() {
                 }
             }
             if(parent_check){
-                this.enable(reset);
+                if(this.after_parent_check){
+                    this.after_parent_check(reset,checkParent,needBubble);
+                }
             }
             var self_check=this.context;
             //todo 验证自己的选择值是否正确
 
             return  self_check;
+        },
+    }
+    var yusuan_model={
+        el:$('.list-item li').eq(0),
+
+        after_parent_check:function (reset, checkParent, needBubble) {
+            this.enable(reset);
         },
         dialog_show:function () {
             var that = this;
@@ -253,26 +257,8 @@ function chooseUserFinds() {
     yusuan_model = $.extend({},base_Model,yusuan_model)
     var huxing_model={
         el:$('.list-item li').eq(1),
-        check:function (reset,checkParent,needBubble) {
-            reset = reset || false
-            needBubble = needBubble || false
-            checkParent = checkParent || false
-            this.disable(reset);
-            var parent_check=true && checkParent;
-            if(checkParent) {
-                for (var i = 0; i < this.parents.length; i++) {
-                    if (!this.parents[i].check(reset && needBubble,checkParent && needBubble,needBubble)) {
-                        parent_check = false;
-                    }
-                }
-            }
-            if(parent_check){
-                this.enable(reset);
-            }
-            var self_check=this.context;
-            //todo 验证自己的选择值是否正确
-
-            return  self_check;
+        after_parent_check:function (reset, checkParent, needBubble) {
+            this.enable(reset);
         },
         dialog_show:function () {
             var that = this;
@@ -307,23 +293,10 @@ function chooseUserFinds() {
     var quyu_model={
         el:$('.list-item li').eq(2),
         distictInfo:[],
-        check:function (reset,checkParent,needBubble) {
-            reset = reset || false
-            needBubble = needBubble || false
-            checkParent = checkParent || false
-            this.disable(reset);
-            var parent_check=true && checkParent;
-            if(checkParent) {
-                for (var i = 0; i < this.parents.length; i++) {
-                    if (!this.parents[i].check(reset && needBubble,checkParent && needBubble,needBubble)) {
-                        parent_check = false;
-                    }
-                }
-            }
-            if(parent_check){
-                var that=this;
-                $('#option_distict li').removeClass('current').removeClass('optional').addClass('disabled')
-                asyn_check.get(function (data) {
+        after_parent_check:function (reset, checkParent, needBubble) {
+            var that=this;
+            $('#option_distict li').removeClass('current').removeClass('optional').addClass('disabled')
+            asyn_check.get(function (data) {
                     if (data.data.distictInfo != null) {
                         that.distictInfo = data.data.distictInfo;
                         $('#option_distict').find('li.disabled').each(function (i, orgin) {
@@ -340,13 +313,8 @@ function chooseUserFinds() {
                 function () {
                     console.error(arguments)
                 })
-
-            }
-            var self_check=this.context;
-            //todo 验证自己的选择值是否正确
-
-            return  self_check;
         },
+
         dialog_show:function () {
             var that = this;
             $('.layer3').removeClass('none');
@@ -386,8 +354,6 @@ function chooseUserFinds() {
                     districtNameStr.push($(currentOptinos[i]).text());
                 }
                 options['districtId'] = districtIdStr.join();
-
-
                 var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
                 $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
                 that.dialog_finish();
@@ -396,10 +362,6 @@ function chooseUserFinds() {
                     that.next();
                 })
             });
-
-
-
-
         },
         dialog_finish:function () {
             this.el.removeClass('current').addClass('choose-end');
@@ -409,29 +371,8 @@ function chooseUserFinds() {
     quyu_model = $.extend({},base_Model,quyu_model)
     var jiating_model={
         el:$('.list-item li').eq(3),
-
-        check:function (reset,checkParent,needBubble) {
-            reset = reset || false
-            needBubble = needBubble || false
-            checkParent = checkParent || false
-            this.disable(reset);
-            var parent_check=true && checkParent;
-            if(checkParent) {
-                for (var i = 0; i < this.parents.length; i++) {
-                    if (!this.parents[i].check(reset && needBubble,checkParent && needBubble,needBubble)) {
-                        parent_check = false;
-                    }
-                }
-            }
-            if(parent_check){
-                var that=this;
-                that.enable(reset);
-
-            }
-            var self_check=this.context;
-            //todo 验证自己的选择值是否正确
-
-            return  self_check;
+        after_parent_check:function (reset, checkParent, needBubble) {
+            this.enable(reset);
         },
         dialog_show:function () {
             var that = this;
@@ -515,7 +456,6 @@ function chooseUserFinds() {
             return  self_check && asyn_check.count>0;
         }
     }
-    console.log(options['userType'])
     if(3 == options['userType']){
         yusuan_model.childs=[end_model]
         end_model.parents=[yusuan_model]
