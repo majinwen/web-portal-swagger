@@ -1288,13 +1288,27 @@
         </trim>
     </insert>
     <!--int queryPlotCount(@Param("plotTotalFirst")Double plotTotalFirst,@Param("plotTotalEnd")Double plotTotalEnd);;-->
+
+    <sql id="queryInfoPro">
+        <where>
+            1=1
+            <if test="minTotalPrice != null and maxTotalPrice!=null">
+                AND <![CDATA[ ${plotTotalFirst}<=max_total_price  ]]>
+            </if>
+            <if test="maxTotalPrice!=null">
+                AND <![CDATA[  ${plotTotalEnd}>=min_total_price ]]>
+            </if>
+        </where>
+    </sql>
+
     <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
         select count(*) from intelligence_findhouse
-        WHERE
-        1=1
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-        </if>
+        <include refid="queryInfoPro"/>
+    <!--WHERE-->
+        <!--1=1-->
+        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+        <!--</if>-->
     </select>
     <!--
        int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
@@ -1313,9 +1327,9 @@
     <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
         select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
         WHERE 1=1
-        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
-            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
-        <!--</if>-->
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
+        </if>
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
         </if>
