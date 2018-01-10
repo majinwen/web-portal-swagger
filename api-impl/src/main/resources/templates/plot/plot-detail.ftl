@@ -107,7 +107,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>市场行情<span class="subtitle">价格走势</span></h3>
+            <h3>市场行情<span class="subtitle">洞察价格走势</span></h3>
             <#--<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>-->
         </div>
         <div class="basic-information price-trend">
@@ -162,8 +162,8 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+            <h3>小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -199,7 +199,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>基本信息</h3>
+            <h3>基本信息<span class="subtitle">了解居住环境</span></h3>
             <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
@@ -274,7 +274,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>交通信息</h3>
+            <h3>交通信息<span class="subtitle">最便捷的出行方式</span></h3>
         </div>
         <div class="basic-information">
             <div class="column item-column-three">
@@ -318,7 +318,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
+            <h3>教育配套<span class="subtitle">看你发芽 陪你长大</span></h3>
         </div>
         <div class="expand-content content-visible tab_jiaoyupeixun_info">
             <div class="map-education-box">
@@ -381,7 +381,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物</h3>
+            <h3>休闲购物<span class="subtitle">3km内生活圈</span></h3>
         </div>
         <div class="expand-content content-visible tab_xiuxiangouwu_click">
             <div class="map-shopping-box">
@@ -545,7 +545,7 @@
 <div class="module-bottom-fill" id="hospitalListWrapper">
     <section>
         <div class="module-header-message">
-            <h3>医疗配套</h3>
+            <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
@@ -595,7 +595,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>生活成本</h3>
+            <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
@@ -684,7 +684,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -692,7 +692,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>看了本楼盘的用户还看了</h3>
+            <h3>看了本小区的用户还看了</h3>
         </div>
         <ul class="tilelist">
         <#list nearvillage as nearviitem>
