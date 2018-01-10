@@ -209,7 +209,7 @@
                                         </#if>-->
                                         </div>
                                         <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
-                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
                                         <#else >
                                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                         </#if>

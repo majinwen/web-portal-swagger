@@ -507,7 +507,12 @@ function chooseUserFinds() {
                 slideText.css('left', trackWidth + "px");
                 sildeColor.css('width', trackWidth + "px")
             }
-            slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price) + parseInt(thisDom.prev().children('em').text()) + cm)
+            var totalPrice = Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text())
+            if(totalPrice>1500){
+                slideText.text('1500' + cm + '+')
+            }else {
+                slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
+            }
         }
 
         $(document).on('touchmove', tt);

@@ -1327,9 +1327,9 @@
     <select id="queryPlotCountByCategoryAndPrice1" resultType="com.toutiao.web.domain.intelligenceFh.DistictInfo">
         select DISTINCT district_id as districtId ,district_name as districtName from intelligence_findhouse
         WHERE 1=1
-        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
-            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
-        </if>
+        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
+            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
+        <!--</if>-->
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
         </if>
