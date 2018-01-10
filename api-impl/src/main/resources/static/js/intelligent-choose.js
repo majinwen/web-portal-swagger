@@ -37,7 +37,7 @@ $(function () {
 
     chooseUserType();   // 用户选择类型
 
-    chooseUserFinds();  // 用户开启智能找房之旅
+
 
     // reportEchartAssemble(); // 报考页图表集合
 });
@@ -74,6 +74,7 @@ function chooseUserType() {
 
                 }
             });
+            chooseUserFinds();  // 用户开启智能找房之旅
         }
     });
 }
@@ -83,9 +84,9 @@ function chooseUserFinds() {
         isLoading:null,
         get:function (success_callback,error_callback) {
             var defaults={
-                "preconcTotal":500
+                "preconcTotal":100
             }
-            var params=$.extend(options,defaults);
+            var params=$.extend({},defaults,options);
             var that=this;
             if(this.isLoading){
                 try{
@@ -101,6 +102,16 @@ function chooseUserFinds() {
                 data: params,
                 success:function(data){
                     that.isLoading=null
+                    try {
+                        var ratio = new Number(data.data.ratio / 100);
+                        $('#plot_Count').find('em').text(data.data.plotCount);
+                        $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
+                        $('.result-begin').addClass('none');
+                        $('.result-container').removeClass('none');
+                    }
+                    catch (e){
+                        console.error(e)
+                    }
                     success_callback(data);
                 },
                 error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -110,8 +121,7 @@ function chooseUserFinds() {
             });
         }
     }
-    var yusuan_model={
-        el:$('.list-item li').eq(0),
+    var base_Model={
         parents:[],
         childs:[],
         context:null,
@@ -145,7 +155,12 @@ function chooseUserFinds() {
             for(var i=0;i<this.childs.length;i++){
                 this.childs[i].next(true,count-1);
             }
-        },
+        }
+    }
+    var yusuan_model={
+        el:$('.list-item li').eq(0),
+
+
         check:function (reset,checkParent,needBubble) {
             reset = reset || false
             needBubble = needBubble || false
@@ -165,7 +180,6 @@ function chooseUserFinds() {
             var self_check=this.context;
             //todo 验证自己的选择值是否正确
 
-            console.log('yusuan',parent_check,self_check)
             return  self_check;
         },
         dialog_show:function () {
@@ -197,7 +211,6 @@ function chooseUserFinds() {
             });
             $("#submitPrice").unbind('click');
             $("#submitPrice").click(function () {
-
                 //选择总价
                 if ($('.total-price').hasClass('current')) {
                     var priceInit = $('.total-conent').find('.slide-text').text();
@@ -221,8 +234,11 @@ function chooseUserFinds() {
                     /*$('.list-item').find('li').eq(0).find('.result-animate').html(payPriceHtml);*/
                 }
                 that.dialog_finish();
-                that.context=1
-                that.next();
+                asyn_check.get(function () {
+                    that.context=1
+                    that.next();
+                })
+
 
             })
         },
@@ -232,43 +248,9 @@ function chooseUserFinds() {
             $('.layer1').addClass('none');
         }
     };
+    yusuan_model = $.extend({},base_Model,yusuan_model)
     var huxing_model={
         el:$('.list-item li').eq(1),
-        parents:[],
-        childs:[],
-        context:null,
-        disable:function (reset) {
-            if(!reset)
-                return
-            this.context=null
-            this.el.unbind('click');
-            this.el.removeClass('current');
-            this.el.removeClass('optional');
-            this.el.removeClass('choose-end');
-        },
-        enable:function (reset) {
-            if(!reset)
-                return
-            this.el.addClass('current');
-            this.el.addClass('optional');
-            var that = this;
-            this.el.click(function () {
-                that.dialog_show();
-            })
-
-        },
-        next:function (resetSelf,count) {
-            resetSelf = resetSelf || false
-            if(typeof(count) == "undefined"){
-                count=2
-            }
-            if(resetSelf) {
-                this.check(resetSelf, count>0, false);
-            }
-            for(var i=0;i<this.childs.length;i++){
-                this.childs[i].next(true,count-1);
-            }
-        },
         check:function (reset,checkParent,needBubble) {
             reset = reset || false
             needBubble = needBubble || false
@@ -288,7 +270,6 @@ function chooseUserFinds() {
             var self_check=this.context;
             //todo 验证自己的选择值是否正确
 
-            console.log('huxing',parent_check,self_check)
             return  self_check;
         },
         dialog_show:function () {
@@ -308,8 +289,10 @@ function chooseUserFinds() {
                 that.el.find('.result-animate').html(layOutHtml);
 
                 that.dialog_finish();
-                that.context=1;
-                that.next();
+                asyn_check.get(function () {
+                    that.context=1
+                    that.next();
+                })
             });
 
         },
@@ -318,49 +301,15 @@ function chooseUserFinds() {
             $('.layer2').addClass('none');
         }
     };
+    huxing_model = $.extend({},base_Model,huxing_model)
     var quyu_model={
         el:$('.list-item li').eq(2),
-        parents:[],
-        childs:[],
-        context:null,
-        disable:function (reset) {
-            if(!reset)
-                return
-            this.context=null
-            this.el.unbind('click');
-            this.el.removeClass('current');
-            this.el.removeClass('optional');
-            this.el.removeClass('choose-end');
-        },
-        enable:function (reset) {
-            if(!reset)
-                return
-            this.el.addClass('current');
-            this.el.addClass('optional');
-            var that = this;
-            this.el.click(function () {
-                that.dialog_show();
-            })
 
-        },
-        next:function (resetSelf,count) {
-            resetSelf = resetSelf || false
-            if(typeof(count) == "undefined"){
-                count=2
-            }
-            if(resetSelf) {
-                this.check(resetSelf, count>0, false);
-            }
-            for(var i=0;i<this.childs.length;i++){
-                this.childs[i].next(true,count-1);
-            }
-        },
         check:function (reset,checkParent,needBubble) {
             reset = reset || false
             needBubble = needBubble || false
             checkParent = checkParent || false
             this.disable(reset);
-            console.log(checkParent,'checkParent')
             var parent_check=true && checkParent;
             if(checkParent) {
                 for (var i = 0; i < this.parents.length; i++) {
@@ -372,7 +321,6 @@ function chooseUserFinds() {
             if(parent_check){
                 var that=this;
                 asyn_check.get(function (data) {
-                    console.log('quyu',data)
                     if (data.data.distictInfo != null) {
                         distictInfo = data.data.distictInfo;
                         $('#option_distict').find('li.disabled').each(function (i, orgin) {
@@ -394,7 +342,6 @@ function chooseUserFinds() {
             var self_check=this.context;
             //todo 验证自己的选择值是否正确
 
-            console.log('quyu',parent_check,self_check)
             return  self_check;
         },
         dialog_show:function () {
@@ -441,8 +388,10 @@ function chooseUserFinds() {
                 var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
                 $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
                 that.dialog_finish();
-                that.context=1;
-                that.next();
+                asyn_check.get(function () {
+                    that.context=1
+                    that.next();
+                })
             });
 
 
@@ -454,44 +403,10 @@ function chooseUserFinds() {
             $('.layer3').addClass('none');
         }
     }
-
+    quyu_model = $.extend({},base_Model,quyu_model)
     var jiating_model={
         el:$('.list-item li').eq(3),
-        parents:[],
-        childs:[],
-        context:null,
-        disable:function (reset) {
-            if(!reset)
-                return
-            this.context=null
-            this.el.unbind('click');
-            this.el.removeClass('current');
-            this.el.removeClass('optional');
-            this.el.removeClass('choose-end');
-        },
-        enable:function (reset) {
-            if(!reset)
-                return
-            this.el.addClass('current');
-            this.el.addClass('optional');
-            var that = this;
-            this.el.click(function () {
-                that.dialog_show();
-            })
 
-        },
-        next:function (resetSelf,count) {
-            resetSelf = resetSelf || false
-            if(typeof(count) == "undefined"){
-                count=2
-            }
-            if(resetSelf) {
-                this.check(resetSelf, count>0, false);
-            }
-            for(var i=0;i<this.childs.length;i++){
-                this.childs[i].next(true,count-1);
-            }
-        },
         check:function (reset,checkParent,needBubble) {
             reset = reset || false
             needBubble = needBubble || false
@@ -507,29 +422,12 @@ function chooseUserFinds() {
             }
             if(parent_check){
                 var that=this;
-                asyn_check.get(function (data) {
-                        if (data.data.distictInfo != null) {
-                            distictInfo = data.data.distictInfo;
-                            $('#option_distict').find('li.disabled').each(function (i, orgin) {
-                                $(data.data.distictInfo).each(function (index, item) {
-                                    if ($(orgin).data('value') == item.districtId) {
-                                        $(orgin).removeClass('disabled').addClass('optional');
-                                        $('#submitArea').addClass('disabled');
-                                    }
-                                });
-                            });
-                        }
-                        that.enable(reset);
-                    },
-                    function () {
-                        console.error(arguments)
-                    })
+                that.enable(reset);
 
             }
             var self_check=this.context;
             //todo 验证自己的选择值是否正确
 
-            console.log('jiating',parent_check,self_check)
             return  self_check;
         },
         dialog_show:function () {
@@ -548,8 +446,10 @@ function chooseUserFinds() {
                     '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() + '</em></span></p>';
                 $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
                 that.dialog_finish();
-                that.context=1;
-                that.next();
+                asyn_check.get(function () {
+                    that.context=1
+                    that.next();
+                })
             });
         },
         dialog_finish:function () {
@@ -557,6 +457,7 @@ function chooseUserFinds() {
             $('.layer4').addClass('none');
         }
     }
+    jiating_model=$.extend({},base_Model,jiating_model)
     var end_model={
         el:$('.start-btn'),
         parents:[],
@@ -575,7 +476,6 @@ function chooseUserFinds() {
             this.el.removeClass('none');
             var that = this;
             this.el.click(function () {
-                alert('qidong')
             })
 
         },
@@ -609,83 +509,26 @@ function chooseUserFinds() {
             var self_check=parent_check;
             //todo 验证自己的选择值是否正确
 
-            console.log('end',parent_check,self_check)
             return  parent_check &&self_check;
         }
     }
-    // yusuan_model.check();
-    // huxing_model.check();
-    // quyu_model.check();
-    // jiating_model.check();
-    // quyu_model.dependencies=[]
-    yusuan_model.childs=[quyu_model]
-    huxing_model.childs=[quyu_model]
-    quyu_model.parents=[yusuan_model,huxing_model]
-    quyu_model.childs=[end_model]
-    jiating_model.childs=[end_model]
-    end_model.parents=[quyu_model,jiating_model]
+    console.log(options['userType'])
+    if(3 == options['userType']){
+        yusuan_model.childs=[end_model]
+        end_model.parents=[yusuan_model]
+    }
+    else {
+        yusuan_model.childs=[quyu_model]
+        huxing_model.childs=[quyu_model]
+        quyu_model.parents=[yusuan_model,huxing_model]
+        quyu_model.childs=[end_model]
+        jiating_model.childs=[end_model]
+        end_model.parents=[quyu_model,jiating_model]
+    }
+
     end_model.check(true,true,true);
 
-        // $.ajax({
-        //     type: 'GET',
-        //     url: router_city('/findhouse/queryUserChoice'),
-        //     data: options,
-        //     success: function (data) {
-        //         if (data.data.plotCount == 0) {
-        //             $('.list-item').find('li').eq(1).addClass('current').addClass('optional');
-        //             $('.list-item').find('li').eq(2).removeClass('current optional');
-        //             $('#plot_Count').find('em').text(data.data.plotCount);
-        //             $('#plot_Ratio').find('em').text('0%');
-        //         } else {
-        //             var ratio = new Number(data.data.ratio / 100);
-        //             $('#plot_Count').find('em').text(data.data.plotCount);
-        //             $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
-        //             if (data.data.distictInfo != null) {
-        //                 distictInfo = data.data.distictInfo;
-        //                 $('#option_distict').find('li.disabled').each(function (i, orgin) {
-        //                     $(data.data.distictInfo).each(function (index, item) {
-        //                         if ($(orgin).data('value') == item.districtId) {
-        //                             $(orgin).removeClass('disabled').addClass('optional');
-        //                             $('#submitArea').addClass('disabled');
-        //                         }
-        //                     });
-        //                 });
-        //             }
-        //             options['userPortrayalType'] = data.data.userPortrayalType;
-        //             console.log("options==" + JSON.stringify(options));
-        //         }
-        //     },
-        //     error: function (XMLHttpRequest, textStatus, errorThrown) {
-        //
-        //     }
-        // })
-    // $('.list-item').on('click', 'li', function () {
-    //     if ($(this).hasClass('optional')) {
-    //         var index = $(this).index() + 1;
-    //         if ($(this).hasClass('choose-end')) {
-    //             $(this).addClass('optional');
-    //         } else {
-    //             $(this).addClass('current optional').siblings().removeClass('current');
-    //             $(this).prev().addClass('choose-end');
-    //         }
-    //         $('.layer' + index).removeClass('none');
-    //     }
-    // });
-    // $('.layer').click(function () {
-    //     $('.layer').addClass('none');
-    // });
-    // $('.layer-content').click(function (e) {
-    //     e.stopPropagation();
-    // });
-    // $('.month-slide').on('touchstart', '.slider-thumb', function (evt) {
-    //     slide($(this), evt, '')
-    // });
-    // $('.down-slide').on('touchstart', '.slider-thumb', function (evt) {
-    //     slide($(this), evt, '万')
-    // });
-    // $('.total-slide').on('touchstart', '.slider-thumb', function (evt) {
-    //     slide($(this), evt, '万')
-    // });
+
 
     /*
      * 滑块滑动
@@ -728,278 +571,7 @@ function chooseUserFinds() {
     }
 
 
-    /**
-     * 提交预算
-     * */
-    // $('#submitPrice').on('click', function () {
-    //     $(this).parents('.layer').addClass('none');
-    //     $('.result-begin').addClass('none');
-    //     $('.result-container').removeClass('none');
-    //     if (3 == options['userType']) {
-    //         $('.start-btn').removeClass('none');
-    //         $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end');
-    //     } else {
-    //
-    //         if ($('.list-item').find('li').eq(1).hasClass('choose-end')) {
-    //             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('optional');
-    //         } else {
-    //             $('.list-item').find('li').eq(0).removeClass('current').addClass('choose-end').next().addClass('current optional');
-    //         }
-    //         if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
-    //             options['districtId'] = null;
-    //             $('.list-item').find('li').eq(2).find('.result-animate span').text('');
-    //             $('#option_distict').find('li.current').removeClass('current').addClass('disabled');
-    //             $('.start-btn').addClass('none');
-    //         }
-    //     }
-    //
-    //     if ($('.total-price').hasClass('current')) {//choose totalPrice
-    //         var priceInit = $('.total-conent').find('.slide-text').text();
-    //         var totalPrice = priceInit.substr(0, priceInit.length - 1);
-    //         options['preconcTotal'] = totalPrice;
-    //         var totalPriceHtml = '<p><span>总价：<em>' + priceInit + '</em></span></p>';
-    //         $('.list-item').find('li').eq(0).find('.result-animate').html(totalPriceHtml);
-    //
-    //         $.ajax({
-    //             type: "GET",
-    //             url: router_city('/findhouse/queryUserChoice'),
-    //             data: options,
-    //             success: function (data) {
-    //                 console.log("data.data.plotCount=" + data.data.plotCount);
-    //                 if (data.data.plotCount == 0) {
-    //                     $('.list-item').find('li').eq(0).addClass('current').addClass('optional');
-    //                     $('.list-item').find('li').eq(1).removeClass('current optional');
-    //                     $('#plot_Count').find('em').text(data.data.plotCount);
-    //                     $('#plot_Ratio').find('em').text('0%');
-    //                 } else {
-    //                     $('#plot_Count').find('em').text(data.data.plotCount);
-    //                     var ratio = new Number(data.data.ratio);
-    //                     $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
-    //                     //将第七种画像附给当前用户userPortrayalType
-    //                     if (options['userType'] == 3) {
-    //                         options['userPortrayalType'] = 7;
-    //                     }
-    //                     $('#option_distict').find('li.disabled').each(function (i, orgin) {
-    //                         $(data.data.distictInfo).each(function (index, item) {
-    //                             if ($(orgin).data('value') == item.districtId) {
-    //                                 $(orgin).removeClass('disabled').addClass('optional');
-    //                                 $('#submitArea').addClass('disabled');
-    //                             }
-    //                         });
-    //                     });
-    //                 }
-    //             },
-    //             error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //
-    //             }
-    //         });
-    //         return
-    //     } else {//choose monthPrice
-    //         var payInit = $('.down-slide').find('.slide-text').text();
-    //         var payPrice = payInit.substr(0, payInit.length - 1);
-    //         var monthPrice = $('.month-slide').find('.slide-text').text();
-    //
-    //         options['downPayMent'] = payPrice;
-    //         options['monthPayMent'] = monthPrice;
-    //         var payPriceHtml = '<p><span>首付：<em>' + payInit + '</em></span><span>月供：<em>' + monthPrice + '</em></span></p>';
-    //         $('.list-item').find('li').eq(0).find('.result-animate').html(payPriceHtml);
-    //
-    //         $.ajax({
-    //             type: "GET",
-    //             url: router_city('/findhouse/queryUserChoice'),
-    //             data: options,
-    //             success: function (data) {
-    //                 if (data.data.plotCount == 0) {
-    //                     $('.list-item').find('li').eq(0).addClass('current').addClass('optional');
-    //                     $('.list-item').find('li').eq(1).removeClass('current optional');
-    //                     $('#plot_Count').find('em').text(data.data.plotCount);
-    //                     $('#plot_Ratio').find('em').text('0%');
-    //                 } else {
-    //                     $("#plot_Count").find('em').html(data.data.plotCount);
-    //                     var ratio = new Number(data.data.ratio);
-    //                     $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
-    //                     //将第七种画像附给当前用户userPortrayalType
-    //                     if (options['userType'] == 3) {
-    //                         options['userPortrayalType'] = 7;
-    //                     }
-    //                 }
-    //             },
-    //             error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //
-    //             }
-    //         });
-    //     }
-    // });
 
-    /**
-     * 选择户型
-     * */
-
-    /**
-     * 提交户型
-     * */
-    var distictInfo;
-    // $('#submitHouseType').on('click', function () {
-    //     $(this).parents('.layer').addClass('none');
-    //     if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
-    //         $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('optional');
-    //         options['districtId'] = null;
-    //         $('.list-item').find('li').eq(2).find('.result-animate span').text('');
-    //         $('#option_distict').find('li.current').removeClass('current');
-    //         if ($('.list-item').find('li').eq(2).hasClass('choose-end')) {
-    //             $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end');
-    //             $('.start-btn').removeClass('none');
-    //         } else {
-    //             $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current optional');
-    //         }
-    //     } else {
-    //         $('.list-item').find('li').eq(1).removeClass('current').addClass('choose-end').next().addClass('current optional');
-    //     }
-    //     options['layOut'] = $('#layOut').find('li.current').data('layout');
-    //     var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';
-    //     $('.list-item').find('li').eq(1).find('.result-animate').html(layOutHtml);
-    //
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: router_city('/findhouse/queryUserChoice'),
-    //         data: options,
-    //         success: function (data) {
-    //             if (data.data.plotCount == 0) {
-    //                 $('.list-item').find('li').eq(1).addClass('current').addClass('optional');
-    //                 $('.list-item').find('li').eq(2).removeClass('current optional');
-    //                 $('#plot_Count').find('em').text(data.data.plotCount);
-    //                 $('#plot_Ratio').find('em').text('0%');
-    //             } else {
-    //                 var ratio = new Number(data.data.ratio / 100);
-    //                 $('#plot_Count').find('em').text(data.data.plotCount);
-    //                 $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
-    //                 if (data.data.distictInfo != null) {
-    //                     distictInfo = data.data.distictInfo;
-    //                     $('#option_distict').find('li.disabled').each(function (i, orgin) {
-    //                         $(data.data.distictInfo).each(function (index, item) {
-    //                             if ($(orgin).data('value') == item.districtId) {
-    //                                 $(orgin).removeClass('disabled').addClass('optional');
-    //                                 $('#submitArea').addClass('disabled');
-    //                             }
-    //                         });
-    //                     });
-    //                 }
-    //                 options['userPortrayalType'] = data.data.userPortrayalType;
-    //                 console.log("options==" + JSON.stringify(options));
-    //             }
-    //         },
-    //         error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //
-    //         }
-    //     })
-    // });
-
-
-    /**
-     * 提交选中区域
-     * */
-    // $('#submitArea').on('click', function () {
-    //     if (!$(this).hasClass('disabled')) {
-    //         $(this).parents('.layer').addClass('none');
-    //         if (options['layOut'] == 1) {
-    //             $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end');
-    //             $('.start-btn').removeClass('none');
-    //         } else {
-    //             if ($('.list-item').find('li').eq(3).hasClass('choose-end')) {
-    //                 $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end');
-    //                 $('.start-btn').removeClass('none');
-    //             } else {
-    //                 $('.list-item').find('li').eq(2).removeClass('current').addClass('choose-end').next().addClass('current optional');
-    //             }
-    //         }
-    //         var currentOptinos = $('#option_distict').find('li.current');
-    //         var districtIdStr = [];
-    //         var districtNameStr = [];
-    //         for (var i = 0; i < currentOptinos.length; i++) {
-    //             districtIdStr.push($(currentOptinos[i]).data('value'));
-    //             districtNameStr.push($(currentOptinos[i]).text());
-    //         }
-    //         options['districtId'] = districtIdStr.join();
-    //
-    //
-    //         var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
-    //         $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
-    //
-    //         $.ajax({
-    //             type: 'GET',
-    //             url: router_city('/findhouse/queryUserChoice'),
-    //             data: options,
-    //             success: function (data) {
-    //                 if (data.data.plotCount == 0) {
-    //                     $('.list-item').find('li').eq(2).addClass('current').addClass('optional');
-    //                     $('.list-item').find('li').eq(3).removeClass('current optional');
-    //                     $('#plot_Count').find('em').text(data.data.plotCount);
-    //                     $('#plot_Ratio').find('em').text('0%');
-    //                 } else {
-    //                     var ratio = new Number(data.data.ratio / 100);
-    //                     $('#plot_Count').find('em').text(data.data.plotCount);
-    //                     $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
-    //                     if (options['layOut'] == 1) {
-    //                         options['schoolFlag'] = 0;
-    //                         options['hospitalFlag'] = 0;
-    //                         console.log(router_city('findhouse'));
-    //                         $("#button_report").attr("href", router_city('/findhouse/queryUserChoice') + joinParams(options));
-    //                     }
-    //                 }
-    //             },
-    //             error: function (XMLHttpRequest, textStatus, errorThrown) {
-    //
-    //             }
-    //         })
-    //     }
-    // });
-    /**
-     * 修改预算/重置
-     * */
-    // $('.modify-reset').on('click', function () {
-    //
-    //     $('.area-content').find('li:not(.disabled )').removeClass('current').removeClass('optional').addClass('disabled');
-    //     $(this).parents('.layer').addClass('none');
-    //     $('.result-begin').removeClass('none');
-    //     $('.result-container').addClass('none');
-    //     $('.start-btn').addClass('none');
-    //     $('.list-item').find('li').attr('class', '').eq(0).addClass('current');
-    //     var tempUserType = options['userType'];
-    //     options = new Object();
-    //     options['userType'] = tempUserType;
-    //     $('.month-slide').on('touchstart', '.slider-thumb', function (evt) {
-    //         slide($(this), evt, '')
-    //     });
-    //     $('.down-slide').on('touchstart', '.slider-thumb', function (evt) {
-    //         slide($(this), evt, '万')
-    //     });
-    //     $('.total-slide').on('touchstart', '.slider-thumb', function (evt) {
-    //         slide($(this), evt, '万')
-    //     });
-    //
-    //     $('.result-animate').html();
-    // });
-    /**
-     * 选择家庭结构
-     * */
-    // $('#family-box').on('click', 'li', function () {
-    //     $(this).addClass('current').siblings().removeClass('current');
-    // });
-    /**
-     * 提交家庭结构内容
-     * */
-    // $('#submitFamily').on('click', function () {
-    //     $(this).parents('.layer').addClass('none');
-    //     $('.list-item').find('li').eq(3).removeClass('current').addClass('choose-end');
-    //     $('.start-btn').removeClass('none');
-    //
-    //     options['childParams'] = $('#hasChild').find('li.current').data('child');
-    //     options['oldManParams'] = $('#oldMan').find('li.current').data('old-man');
-    //
-    //     var familyHtml = '<p><span>孩子：<em>' + $('#hasChild').find('li.current').find('span').text() + '</em></span>' +
-    //         '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() + '</em></span></p>';
-    //     $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
-    // });
 }
 
 function router_city(urlparam) {
