@@ -82,12 +82,6 @@ public class PlotConterller {
         }else{
             villageList = plotService.findVillageByConditions(villageRequest);
         }
-        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
-            for (VillageResponse polt : villageList){
-                String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
-                polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
-            }
-        }
         return NashResult.build(villageList);
     }
 

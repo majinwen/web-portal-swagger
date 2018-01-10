@@ -77,7 +77,7 @@ public class IntelligenceFindHouseController {
             if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
             }else{
-                model.addAttribute("message", "没有报告记录！");
+                return "emptyReport";
             }
         } else {
             model.addAttribute("report", Constant.report);
@@ -186,8 +186,10 @@ public class IntelligenceFindHouseController {
     public NashResult queryUserChoice(IntelligenceQuery intelligenceQuery){
 
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
-        if(intelligenceFh.getPlotCount()-5<5){
-            intelligenceFh.setPlotCount(0);
+        if(StringTool.isNotBlank(intelligenceFh)){
+            if(intelligenceFh.getPlotCount()-5<5){
+                intelligenceFh.setPlotCount(0);
+            }
         }
         return NashResult.build(intelligenceFh);
     }
@@ -300,36 +302,37 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showMyReport/{reportId}")
     public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
-        if (StringTool.isNotBlank(reportId)) {
-            //查询用户是否有报告数据
-            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
-            if (StringTool.isNotBlank(intelligenceFhRes)) {
-                //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
-                //intelligenceFhRes.setCreateTime(date);
-                Integer  plotTotal=null;
-                if(StringTool.isNotBlank(intelligenceFhRes.getDownPayment())&&StringTool.isNotBlank(intelligenceFhRes.getMonthPayment())){
-                      plotTotal = Integer.valueOf(intelligenceFhRes.getDownPayment()) + (Integer.valueOf(intelligenceFhRes.getMonthPayment()) * 12 * 30/10000);
-                }else{
-                    plotTotal = intelligenceFhRes.getTotalPrice();
+        try {
+            if (StringTool.isNotBlank(reportId)) {
+                //查询用户是否有报告数据
+                IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+                if (StringTool.isNotBlank(intelligenceFhRes)) {
+                    //String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(Long.parseLong(intelligenceFhRes.getCreateTime())));
+                    //intelligenceFhRes.setCreateTime(date);
+                    Integer plotTotal = null;
+                    if (StringTool.isNotBlank(intelligenceFhRes.getDownPayment()) && StringTool.isNotBlank(intelligenceFhRes.getMonthPayment())) {
+                        plotTotal = Integer.valueOf(intelligenceFhRes.getDownPayment()) + (Integer.valueOf(intelligenceFhRes.getMonthPayment()) * 12 * 30 / 10000);
+                    } else {
+                        plotTotal = intelligenceFhRes.getTotalPrice();
+                    }
+                    Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                    Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                    model.addAttribute("fhpt", fhpt);
+                    model.addAttribute("trend", JSON.toJSON(fhtp.getOrDefault("trend", new ArrayList<String>())).toString());
+                    String datajson = ((PGobject) intelligenceFhRes.getFhResult()).getValue();
+                    model.addAttribute("ptlists", JSON.toJSON(fhpt.getOrDefault("ptlists", new ArrayList<String>())).toString());
+                    model.addAttribute("datajson", datajson);
+                    model.addAttribute("fhtp", fhtp);
+                    model.addAttribute("reportId", reportId);
+                    model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+                    return "intelligent-report";
                 }
-                Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-                Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-                model.addAttribute("fhpt", fhpt);
-                model.addAttribute("trend",JSON.toJSON(fhtp.getOrDefault("trend",new ArrayList<String>())).toString());
-                String datajson=((PGobject)intelligenceFhRes.getFhResult()).getValue();
-                model.addAttribute("ptlists",JSON.toJSON(fhpt.getOrDefault("ptlists",new ArrayList<String>())).toString());
-                model.addAttribute("datajson",datajson);
-                model.addAttribute("fhtp", fhtp);
-                model.addAttribute("reportId", reportId);
-                model.addAttribute("intelligenceFhRes", intelligenceFhRes);
-                return "intelligent-report";
             }
-            model.addAttribute("message", "没有报告记录！");
-            return "404";
-        } else {
-            model.addAttribute("message", "登陆后才能显示相应的报告信息！");
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return "404";
         }
+        return "404";
     }
 
     /**

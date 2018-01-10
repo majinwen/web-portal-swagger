@@ -188,7 +188,7 @@
         <#if houseDetail.traffic?exists>
             <li>
                 <p>
-                    交通信息：${houseDetail.traffic}
+                    交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
                     <em class="primary-distance"></em>
                     <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="primary-map-icon"></a>
                     <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
@@ -219,7 +219,7 @@
             <#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>
                 <div class="describe-cont">
                     <p>${houseDetail.houseDesc}</p>
-                    <span class="describe-show-btn">>>展开</span>
+                    <#--<span class="describe-show-btn">>>展开</span>-->
                 </div>
             </#if>
         </div>
@@ -305,23 +305,16 @@
                             <#else >
                                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
+                            </div>
                         </div>
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em>
-                                <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0>
-                                    </#if>
-                                <#else>
-                                ${map.houseTotalPrices?number?round}万
-                                </#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
-                                <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
-                            </em>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices?number?round}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>${map.room}室</#if>
                         </p>
-                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
-                        <h4 class="cont-last"><#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}<#else></#if></h4>
+                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
                 </a></li>
             </#list>
@@ -336,12 +329,7 @@
     </div>
     <ul class="tilelist">
         <#list plotList as plotInfo>
-            <li>
-                <#if plotInfo['id']?exists>
-                <a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
-                <#else >
-                <a href="#">
-                </#if>
+            <li><a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >

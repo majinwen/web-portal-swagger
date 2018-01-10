@@ -2,19 +2,31 @@
 @import "../base/mixin";
 
 .page-empty {
-    position: absolute;
-    top: 40%;
+    position: fixed;
+    top: 25%;
     left: 0;
     width: 100%;
-    margin-top: rem(-204);
+    height: 100%;
     text-align: center;
+
+    &.report {
+        top: 0;
+
+        img {
+            padding-top: rem(145);
+        }
+
+        > p {
+            margin-bottom: 9%;
+        }
+    }
 
     img {
         width: rem(165);
         height: rem(181);
     }
 
-    p {
+    > p {
         margin-top: rem(50);
         color: #666;
         @include font-dpr(28);
@@ -31,5 +43,48 @@
         border: rem(1) solid #0a0724;
         -webkit-border-radius: rem(26);
         border-radius: rem(26);
+
+        &.link-intelligent {
+            width: rem(282);
+            height: rem(70);
+            line-height: rem(68);
+            color: $baseWhite;
+            background-color: #0a0724;
+            -webkit-border-radius: rem(70);
+            border-radius: rem(70);
+        }
+    }
+
+    .tips-content-wrapper {
+        position: relative;
+        margin-left: rem(85);
+        margin-right: rem(85);
+        padding: rem(67) rem(20) rem(53);
+        @include bg-image('/static/images/global/wdbg_kuang');
+        -webkit-background-size: 100% 100%;
+        background-size: 100% 100%;
+
+        &.mt {
+            margin-top: rem(30);
+        }
+
+        span {
+            display: block;
+            position: absolute;
+            top: 4%;
+            left: 50%;
+            width: rem(40);
+            margin-left: rem(-20);
+            color: $baseWhite;
+            @include font-dpr(20);
+        }
+
+        .tips-content {
+            p {
+                margin-top: rem(20);
+                line-height: 1.5;
+                color: #999;
+            }
+        }
     }
 }

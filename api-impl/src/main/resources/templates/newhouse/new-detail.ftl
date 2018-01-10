@@ -16,7 +16,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${build['building_title_img']}" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -186,7 +186,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>基本信息</h3>
+            <h3>基本信息<span class="subtitle">了解居住环境</span></h3>
             <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
@@ -242,7 +242,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>交通信息</h3>
+            <h3>交通信息<span class="subtitle">最便捷的出行方式</span></h3>
         </div>
         <div class="basic-information">
             <div class="column item-column-three">
@@ -287,7 +287,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
+            <h3>教育配套<span class="subtitle">看你发芽 陪你长大</span></h3>
         </div>
         <div class="expand-content content-visible tab_jiaoyupeixun_info">
             <div class="map-education-box">
@@ -301,48 +301,48 @@
             </div>
             <ul class="result-data-expand" id="qinzi">
                 <#assign qinzi=datainfo['jiaoyu']['qinzi'] />
-                    <#list qinzi as item>
-                        <li>
-                            <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                        </li>
-                    </#list>
+                <#list qinzi as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
             </ul>
             <ul class="result-data-expand none" id="youeryuan">
                 <#assign youeryuan=datainfo['jiaoyu']['youeryuan'] />
-                    <#list youeryuan as item>
-                        <li>
-                            <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                        </li>
-                    </#list>
+                <#list youeryuan as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
             </ul>
             <ul class="result-data-expand none" id="xiaoxue">
                 <#assign xiaoxue=datainfo['jiaoyu']['xiaoxue'] />
-                    <#list xiaoxue as item>
-                        <li>
-                            <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                        </li>
-                    </#list>
+                <#list xiaoxue as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
             </ul>
             <ul class="result-data-expand none" id="zhongxue">
                 <#assign zhongxue=datainfo['jiaoyu']['zhongxue'] />
-                    <#list zhongxue as item>
-                        <li>
-                            <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                        </li>
-                    </#list>
+                <#list zhongxue as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
             </ul>
             <ul class="result-data-expand none" id="gaodeng">
                 <#assign gaodeng=datainfo['jiaoyu']['gaodeng'] />
-                    <#list gaodeng as item>
-                        <li>
-                            <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                        </li>
-                    </#list>
+                <#list gaodeng as item>
+                    <li>
+                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                </#list>
             </ul>
         </div>
     </section>
@@ -350,7 +350,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物</h3>
+            <h3>休闲购物<span class="subtitle">3km内生活圈</span></h3>
         </div>
         <div class="expand-content content-visible tab_xiuxiangouwu_click">
             <div class="map-shopping-box">
@@ -370,23 +370,23 @@
                     <p>
                         <i class="expand-icon expand-radius">${item_index+1}</i>
                         <span class="expand-name">
-                                <em>${item.name}</em>
-                                <em class="star-box">
-                                    <#if item.star?exists&& (item.star??)>
-                                        <#assign star=item.star?number/>
-                                        <#if star gt 0>
-                                            <#list 1..5 as i>
-                                                <#if star gt i>
-                                                    <i class="red-star"></i>
-                                                <#else >
-                                                    <i class="star-icon"></i>
-                                                </#if>
-                                            </#list>
-                                        <#else>
-                                        </#if>
+                            <em>${item.name}</em>
+                            <em class="star-box">
+                                <#if item.star?exists&& (item.star??)>
+                                    <#assign star=item.star?number/>
+                                    <#if star gt 0>
+                                        <#list 1..5 as i>
+                                            <#if star gt i>
+                                                <i class="red-star"></i>
+                                            <#else >
+                                                <i class="star-icon"></i>
+                                            </#if>
+                                        </#list>
+                                    <#else>
                                     </#if>
-                                </em>
-                            </span>
+                                </#if>
+                            </em>
+                        </span>
                     </p>
                     <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                 </li>
@@ -399,23 +399,23 @@
                     <p>
                         <i class="expand-icon expand-radius">${item_index+1}</i>
                         <span class="expand-name">
-                                <em>${item.name}</em>
-                                <em class="star-box">
-                                    <#if item.star?exists&& (item.star??)>
-                                        <#assign star=item.star?number/>
-                                        <#if star gt 0>
-                                            <#list 1..5 as i>
-                                                <#if star gt i>
-                                                    <i class="red-star"></i>
-                                                <#else >
-                                                    <i class="star-icon"></i>
-                                                </#if>
-                                            </#list>
-                                        <#else>
-                                        </#if>
+                            <em>${item.name}</em>
+                            <em class="star-box">
+                                <#if item.star?exists&& (item.star??)>
+                                    <#assign star=item.star?number/>
+                                    <#if star gt 0>
+                                        <#list 1..5 as i>
+                                            <#if star gt i>
+                                                <i class="red-star"></i>
+                                            <#else >
+                                                <i class="star-icon"></i>
+                                            </#if>
+                                        </#list>
+                                    <#else>
                                     </#if>
-                                </em>
-                            </span>
+                                </#if>
+                            </em>
+                        </span>
                     </p>
                     <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                 </li>
@@ -428,23 +428,23 @@
                     <p>
                         <i class="expand-icon expand-radius">${item_index+1}</i>
                         <span class="expand-name">
-                                <em>${item.name}</em>
-                                <em class="star-box">
-                                    <#if item.star?exists&& (item.star??)>
-                                        <#assign star=item.star?number/>
-                                        <#if star gt 0>
-                                            <#list 1..5 as i>
-                                                <#if star gt i>
-                                                    <i class="red-star"></i>
-                                                <#else >
-                                                    <i class="star-icon"></i>
-                                                </#if>
-                                            </#list>
-                                        <#else>
-                                        </#if>
+                            <em>${item.name}</em>
+                            <em class="star-box">
+                                <#if item.star?exists&& (item.star??)>
+                                    <#assign star=item.star?number/>
+                                    <#if star gt 0>
+                                        <#list 1..5 as i>
+                                            <#if star gt i>
+                                                <i class="red-star"></i>
+                                            <#else >
+                                                <i class="star-icon"></i>
+                                            </#if>
+                                        </#list>
+                                    <#else>
                                     </#if>
-                                </em>
-                            </span>
+                                </#if>
+                            </em>
+                        </span>
                     </p>
                     <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                 </li>
@@ -457,23 +457,23 @@
                     <p>
                         <i class="expand-icon expand-radius">${item_index+1}</i>
                         <span class="expand-name">
-                                <em>${item.name}</em>
-                                <em class="star-box">
-                                    <#if item.star?exists&& (item.star??)>
-                                        <#assign star=item.star?number/>
-                                        <#if star gt 0>
-                                            <#list 1..5 as i>
-                                                <#if star gt i>
-                                                    <i class="red-star"></i>
-                                                <#else >
-                                                    <i class="star-icon"></i>
-                                                </#if>
-                                            </#list>
-                                        <#else>
-                                        </#if>
+                            <em>${item.name}</em>
+                            <em class="star-box">
+                                <#if item.star?exists&& (item.star??)>
+                                    <#assign star=item.star?number/>
+                                    <#if star gt 0>
+                                        <#list 1..5 as i>
+                                            <#if star gt i>
+                                                <i class="red-star"></i>
+                                            <#else >
+                                                <i class="star-icon"></i>
+                                            </#if>
+                                        </#list>
+                                    <#else>
                                     </#if>
-                                </em>
-                            </span>
+                                </#if>
+                            </em>
+                        </span>
                     </p>
                     <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                 </li>
@@ -486,23 +486,23 @@
                     <p>
                         <i class="expand-icon expand-radius">${item_index+1}</i>
                         <span class="expand-name">
-                                <em>${item.name}</em>
-                                <em class="star-box">
-                                    <#if item.star?exists&& (item.star??)>
-                                        <#assign star=item.star?number/>
-                                        <#if star gt 0>
-                                            <#list 1..5 as i>
-                                                <#if star gt i>
-                                                    <i class="red-star"></i>
-                                                <#else >
-                                                    <i class="star-icon"></i>
-                                                </#if>
-                                            </#list>
-                                        <#else>
-                                        </#if>
+                            <em>${item.name}</em>
+                            <em class="star-box">
+                                <#if item.star?exists&& (item.star??)>
+                                    <#assign star=item.star?number/>
+                                    <#if star gt 0>
+                                        <#list 1..5 as i>
+                                            <#if star gt i>
+                                                <i class="red-star"></i>
+                                            <#else >
+                                                <i class="star-icon"></i>
+                                            </#if>
+                                        </#list>
+                                    <#else>
                                     </#if>
-                                </em>
-                            </span>
+                                </#if>
+                            </em>
+                        </span>
                     </p>
                     <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                 </li>
@@ -514,7 +514,7 @@
 <div class="module-bottom-fill" id="hospitalListWrapper">
     <section>
         <div class="module-header-message">
-            <h3>医疗配套</h3>
+            <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
@@ -523,28 +523,41 @@
                 <#--<#if (yiliao['zhuanke']?size>0)>
                 ${yiliao['zhuanke']}
                 </#if>-->
+                <#assign itnum = 0>
                 <#if (yiliao['zhuanke']?size>0)>
                 <#list yiliao['zhuanke'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
                 </#if>
                 <#if (yiliao['zhensuo']?size>0)>
                     <#list yiliao['zhensuo'] as item>
+                        <#if itnum<5>
+                          <#assign itnum=itnum+1>
                         <li>
-                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
                             <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                         </li>
+                        <#else><#break>
+                        </#if>
                     </#list>
                 </#if>
                 <#if (yiliao['zonghe']?size>0)>
                     <#list yiliao['zonghe'] as item>
+                        <#if itnum<5>
+                            <#assign itnum=itnum+1>
                         <li>
-                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
                             <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                         </li>
+                        <#else><#break>
+                        </#if>
                     </#list>
                 </#if>
             </ul>
@@ -554,7 +567,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>生活成本</h3>
+            <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
@@ -582,7 +595,6 @@
                     </#if>
                     </p>
                 </li>
-
                 <li>
                     <p>
                         <i class="expand-icon living-cost"></i>

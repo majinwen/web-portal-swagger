@@ -36,6 +36,9 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
 
     List<IntelligenceFindhouse> selectByUserPrice(String totlaPrice);
 
+    List<IntelligenceFindhouse> test(Integer id);
+
+
     /**
      * 根据用户画像1 A匹配
      * @param intelligenceQuery

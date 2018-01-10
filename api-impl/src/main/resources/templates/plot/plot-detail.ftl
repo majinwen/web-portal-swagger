@@ -20,7 +20,7 @@
 <#assign ptCD1 = tradeline['arealine']>
 <#assign ptCD2 = tradeline['tradearealine']>
 <#assign mouthList = tradeline['mouthList']>
-<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]}-tt1200x640" alt="">
+<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-tt1200x640" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -107,7 +107,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>市场行情<span class="subtitle">价格走势</span></h3>
+            <h3>市场行情<span class="subtitle">洞察价格走势</span></h3>
             <#--<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>-->
         </div>
         <div class="basic-information price-trend">
@@ -162,8 +162,8 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+            <h3>小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -199,7 +199,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>基本信息</h3>
+            <h3>基本信息<span class="subtitle">了解居住环境</span></h3>
             <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
@@ -274,7 +274,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>交通信息</h3>
+            <h3>交通信息<span class="subtitle">最便捷的出行方式</span></h3>
         </div>
         <div class="basic-information">
             <div class="column item-column-three">
@@ -318,7 +318,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
+            <h3>教育配套<span class="subtitle">看你发芽 陪你长大</span></h3>
         </div>
         <div class="expand-content content-visible tab_jiaoyupeixun_info">
             <div class="map-education-box">
@@ -381,7 +381,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物</h3>
+            <h3>休闲购物<span class="subtitle">3km内生活圈</span></h3>
         </div>
         <div class="expand-content content-visible tab_xiuxiangouwu_click">
             <div class="map-shopping-box">
@@ -545,34 +545,47 @@
 <div class="module-bottom-fill" id="hospitalListWrapper">
     <section>
         <div class="module-header-message">
-            <h3>医疗配套</h3>
+            <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
             <#assign yiliao=datainfo['yiliao'] />
             <ul class="result-data-expand" id="hospitalListDom">
+            <#assign itnum = 0>
             <#if (yiliao['zhuanke']?size>0)>
                 <#list yiliao['zhuanke'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
             </#if>
             <#if (yiliao['zhensuo']?size>0)>
                 <#list yiliao['zhensuo'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
             </#if>
             <#if (yiliao['zonghe']?size>0)>
                 <#list yiliao['zonghe'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
             </#if>
             </ul>
@@ -582,7 +595,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>生活成本</h3>
+            <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
@@ -671,7 +684,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -679,7 +692,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>看了本楼盘的用户还看了</h3>
+            <h3>看了本小区的用户还看了</h3>
         </div>
         <ul class="tilelist">
         <#list nearvillage as nearviitem>
@@ -747,7 +760,11 @@
 <script src="${staticurl}/js/plot-detail-map-message.js"></script>
 <script>
     <#if  (mouthList?size>0)>
-    var myChartline = echarts.init(document.getElementById('village-price-trade'));
+    var myChartline = echarts.init(document.getElementById('village-price-trade'), null, {renderer: 'svg'}, {
+        devicePixelRatio: dpr,
+        width: '100%',
+        height: '100%'
+    });
     </#if>
     option = {
         tooltip: {
@@ -766,34 +783,31 @@
                  }
            },
             textStyle:{
-                fontSize:30
-            },
+                fontSize:11
+            }
         },
         legend: {
           /*  data:['楼盘价格','区域价格','商圈价格']*/
            data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
             textStyle:{
-                fontSize:25
+                fontSize:12
             }
         },
         xAxis: [
             {
                 type: 'category',
+                boundaryGap: false,
                 axisTick: {
-                    alignWithLabel: true,
+                    alignWithLabel: true
                 },
-                data: [<#list  mouthList as item >'${item}',</#list>],
-                axisLabel: {
-                    fontSize:25,
-                   // interval:0
-                }
+                data: [<#list  mouthList as item >'${item}',</#list>]
             }
         ],
         yAxis: {
             type: 'value',
             axisLabel: {
                 formatter: '{value}',
-                fontSize:21
+                fontSize:8
             },
             scale:true
         },
@@ -849,29 +863,29 @@
             {
                 name:'${village['area']!'区域'}价格',
                 type:'line',
-                data:[<#list ptCD1 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
+                data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                symbolSize:5,
                 itemStyle:{
                     normal:{
                         lineStyle:{
-                            width:4,
-                        },
-                    },
-                },
+                            width:2,
+                        }
+                    }
+                }
             },
             {
                 name:'${village['tradingArea']!'商圈'}价格',
                 type:'line',
-                data:[<#list ptCD2 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
+                data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                symbolSize:5,
                 itemStyle:{
                        normal:{
                            lineStyle:{
-                                width:4,
-                           },
-                       },
-                },
-            },
+                                width:2,
+                           }
+                       }
+                }
+            }
         ]
     };
     <#if  (mouthList?size>0)>

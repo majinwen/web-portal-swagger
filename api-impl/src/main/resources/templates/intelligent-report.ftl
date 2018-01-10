@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-<#include "staticHeader.ftl">
+    <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css">
-    <title>智能找房 预见所想</title>
+    <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
@@ -20,7 +20,7 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red">1000万</em>左右的房源市场为您的目标市场 </p>
+                <p>根据您的检索条件<br>总价<em class="high-light-red"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>
@@ -88,109 +88,77 @@
     </div>
     <div class="section page2">
         <div class="page-content">
-        <div class="module-item">
-            <div class="report-title-type1">
-                <p>目标市场价格走势</p>
+            <div class="header-summary-box">
+                <div class="header-summary">
+                    <p>根据您的检索条件，总价1200万左右的房源市场为您的目标市场。</p>
+                    <p>以下从市场行情，地理位置，宜居指数，交通及周边 配套设施等方面，为您挑选生活家</p>
+                </div>
             </div>
-            <div class="report-caption">
-                <p>根据您的检索条件</p>
-                <p>总价<em class="inte-color-red" id="totlePrice"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场
-                </p>
-            </div>
-        <#if fhpt?exists>
-            <div class="echart-box">
-                <div id="priceChart"></div>
-            </div>
+            <#if fhpt?exists><div class="module-item">
+                <div class="report-title-type1">
+                    <p>目标市场价格走势</p>
+                </div>
+                <div class="report-caption">
+                    <p>对比北京市场近1年整体价格情况，洞察目标房产的价格走势</p>
+                </div>
 
-            <ul class="results-contrast">
-                <li>
-                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists >
+                <div class="echart-box">
+                    <div id="priceChart"></div>
+                </div>
+
+                <ul class="results-contrast">
+                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists ><li>
                         <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">
-                        ${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
-                    </#if>
-                </li>
-                <li>
-                    <#if fhpt['minTarget']?exists&&fhpt['target']?exists >
+                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
+                    </li></#if>
+                    <#if fhpt['minTarget']?exists&&fhpt['target']?exists ><li>
                         <span class="contrast-mark type-dark-green">跌 </span>
-                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">
-                        ${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
-                    </#if>
-                </li>
-            </ul>
-        </div>
-        </#if>
-        <div class="module-item">
-            <div class="report-title-type1">
-                <p>目标市场供需情况</p>
-            </div>
-            <div class="report-caption">
-                <p>根据您的检索条件</p>
-                <p>总价<em class="inte-color-red" id="totlePrice1"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场
-                </p>
-            </div>
-        <#if fhtp?exists>
-            <div class="echart-box">
-                <div id="marketChart"></div>
-            </div>
+                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
+                    </li></#if>
+                </ul>
+            </div></#if>
+            <#if fhtp?exists><div class="module-item">
+                <div class="report-title-type1">
+                    <p>目标市场成交行情</p>
+                </div>
+                <div class="report-caption">
+                    <p>对比北京市场近1年整体成交情况，把握目标房产的成交量变化</p>
+                </div>
 
-            <ul class="results-contrast">
-                <#if fhtp['ratio']?exists&&fhtp['ratio']!=''>
-                    <li>
-                        <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists>
-                            <span class="contrast-mark type-red">高</span>
-                            <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>，为北京市场的<em id="maxVolumeRatio"
-                                                                                                                                   class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
-                        </#if>
-                    </li>
-                    <li>
-                        <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists>
-                            <span class="contrast-mark type-dark-green">低</span>
-                            <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>，为北京市场的<em id="minVolumeRatio"
-                                                                                                                                   class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
-                        </#if>
-                    </li>
-                    <li>
-                        <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists>
-                            <span class="contrast-mark type-yellow">均</span>
-                            <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>，为北京市场的<em id="averageVolumeRatio"
-                                                                                                                                          class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em>
-                            </p>
-                        </#if>
-                    </li>
-                </#if>
-            </ul>
-        </div>
-        </#if>
+                <div class="echart-box">
+                    <div id="marketChart"></div>
+                </div>
+
+                <#if fhtp['ratio']?exists&&fhtp['ratio']!=''><ul class="results-contrast">
+                    <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists><li>
+                        <span class="contrast-mark type-red">高</span>
+                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>套，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                    </li></#if>
+                    <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists><li>
+                        <span class="contrast-mark type-dark-green">低</span>
+                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>套，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                    </li></#if>
+                    <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists><li>
+                        <span class="contrast-mark type-yellow">均</span>
+                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>套，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                    </li></#if>
+                </ul></#if>
+            </div></#if>
             <div class="module-item">
                 <div class="report-title-type1">
                     <p>智能推荐结果</p>
                 </div>
                 <div class="report-caption">
-                <#if intelligenceFhRes['fhResult']?exists>
-                    <p>您的意向区域中，有<em class="inte-color-red">${intelligenceFhRes['fhResult']?eval?size!''}</em>个小区符合要求</p>
-                </#if>
-                </div>
-                <div class="report-title-type3">
-                    <p>根据您的需求，为您挑选5个最贴合的</p>
+                    <p>根据您的检索条件，在5394个小区中，为您推荐5个小区，作为您所属族群的理想家</p>
                 </div>
                 <div class="water-wrapper">
-                    <div id="collieContainer">
-                    <#--水滴  的容器-->
-                    </div>
+                    <div id="collieContainer"><#--水滴  的容器--></div>
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
                                 <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}</#if>万</li>
-                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''>
-                                    <#assign Districts = intelligenceFhRes['districtId']?split(',')>
-                                    <#list Districts as district>
-                                        <em>${district}</em>
-                                    </#list>
-                                <#else >
-                                    <em>-</em>
-                                </#if></li>
-                                <li>${intelligenceFhRes['layout']}居</li>
+                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district}</em></#list><#else ><em>-</em></#if></li>
+                                <li>${intelligenceFhRes['layout']!""}居</li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -209,16 +177,12 @@
                         <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
                             <li class="plot_class" data-type="${intelligenceFhRe.coordX?c}_${intelligenceFhRe.coordY?c}_${intelligenceFhRe_index}">
                                 <p>${intelligenceFhRe['projname']}</p>
-                            </li>
-                        <#else >
-                            <li>-</li>
+                            </li><#else ><li>-</li>
                         </#if>
                     </#list>
                     </ul>
                 </div>
-                <#--<div id="allmap" class="echart-box">
-
-                </div>-->
+                <#--<div id="allmap" class="echart-box"></div>-->
                 <section class="elastics-stack-box">
                     <div class="elastics-stack-content">
                         <ul id="elastics-stack" class="elastics-stack report">
@@ -236,19 +200,17 @@
                                             </#if>
                                             <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
                                                 <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
-                                            <#else >
-                                                <#if fhResult['districtName']?exists>
-                                                    <p>${fhResult['districtName']}</p>
-                                                </#if>
-                                                <#if fhResult['areaName']?exists>
-                                                    <p>${fhResult['areaName']}</p>
-                                                </#if>
                                             </#if>
+                                        <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                            <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                        <#else >
+                                            <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                        </#if>-->
                                         </div>
-                                        <#if fhResult['plotImage'][0]?exists>
+                                        <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
                                             <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
                                         <#else >
-                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                         </#if>
                                     </a>
                                 </li>
@@ -296,18 +258,18 @@
                                 <div id="trafficSubwayChart"></div>
                             </div>
                         </div>
-                        <div class="traffic-text-box">
-                        <#if intelligenceFhRes?exists>
+                        <#if intelligenceFhRes?exists><div class="traffic-text-box">
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
-                            <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
+                             <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span>
-                                        <p>${fhResult['projname']}，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟
-                                        </p></div>
+                                <#if fhResult_index == 0>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                <#else >
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
+                                </#if>
                                 </#if>
                             </#list>
-                        </#if>
-                        </div>
+                        </div></#if>
                     </div>
                     <div class="vertical-line">
                         <div class="traffic-title">
@@ -318,20 +280,19 @@
                                 <div id="trafficRondChart"></div>
                             </div>
                         </div>
-                        <div class="traffic-text-box">
-                        <#if intelligenceFhRes?exists>
+                        <#if intelligenceFhRes?exists><div class="traffic-text-box mb0">
                             <#assign fhResults =intelligenceFhRes['fhResult']?eval>
                             <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span>
-                                        <p>${fhResult['projname']}，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}
-                                            km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                <#if fhResult_index == 0>
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                <#else >
+                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
+                                </#if>
                                 </#if>
                             </#list>
-                        </#if>
-                        </div>
+                        </div></#if>
                     </div>
-
                 </div>
             </div>
             <div class="module-item type2">
@@ -345,87 +306,101 @@
                             <i></i>
                             <em>楼龄</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
-                                <#assign date = (.now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number)?string + '年'>
-                                <td>${date!'-'}</td>
-                            </#if>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
+                                    <#assign date = .now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number>
+                                    <#if date?exists&&date gt 0>
+                                    <td>${date}年</td>
+                                    <#else >
+                                        <td>-</td>
+                                    </#if>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>绿化率</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
                             <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
-                                <td>${fhResult['virescencerate']+'%'!'-'}</td>
+                                <td>${fhResult['virescencerate']+'%'}</td>
+                            <#else >
+                                <td>-</td>
                             </#if>
-                        </#list>
-                    </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>车位比</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>${fhResult['parkRadio']!'-'}</td>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                            <#if fhResult['parkRadio']?exists&&fhResult['parkRadio']!=''>
+                                <td>${fhResult['parkRadio']}</td>
+                            <#else >
+                                <td>-</td>
+                            </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>空气质量</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>${fhResult['airQuality']!'-'}</td>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>${fhResult['airQuality']!'-'}</td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>电梯</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>${fhResult['liftDoorRadio']!'-'}</td>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                            <#if fhResult['liftDoorRadio']?exists&&fhResult['liftDoorRadio']!=''>
+                                <td>${fhResult['liftDoorRadio']}</td>
+                            <#else >
+                                <td>-</td>
+                            </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>供暖</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['heatingMode']?exists>
-                                <#if fhResult['heatingMode']?number == 0>
-                                    <td>未知</td>
-                                <#elseif fhResult['heatingMode']?number == 1>
-                                    <td>集中供暖</td>
-                                <#elseif fhResult['heatingMode']?number == 2>
-                                    <td>自供暖</td>
-                                <#else >
-                                    <td>-</td>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['heatingMode']?exists>
+                                    <#if fhResult['heatingMode']?number == 0>
+                                        <td>未知</td>
+                                    <#elseif fhResult['heatingMode']?number == 1>
+                                        <td>集中供暖</td>
+                                    <#elseif fhResult['heatingMode']?number == 2>
+                                        <td>自供暖</td>
+                                    <#else >
+                                        <td>-</td>
+                                    </#if>
                                 </#if>
-                            </#if>
-                        </#list>
-                    </#if>
+                            </#list>
+                        </#if>
                     </tr>
                 </table>
             </div>
@@ -438,116 +413,151 @@
                     <tr>
                         <td>
                             <i></i>
-                            <em>物业费<br>(/㎡·年)</em>
+                            <em>物业费<br>(/㎡·月)</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
-                                <td>${fhResult['propertyfee']}</td>
-                            <#else >
-                                <td>-</td>
-                            </#if>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
+                                    <td>${fhResult['propertyfee']}元</td>
+                                <#else >
+                                    <td>-</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>水电费<br>(/吨)<br>(/度)</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <td>
-                                <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
-                                    <#if fhResult['waterSupply'] == '商水'>
-                                        <span>6元</span>
-                                    <#else >
-                                        <span>5元</span>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <td>
+                                    <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
+                                        <#if fhResult['waterSupply'] == '商水'>
+                                            <span>6元</span>
+                                        <#else >
+                                            <span>5元</span>
+                                        </#if>
                                     </#if>
-                                </#if>
-                                <hr>
-                                <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
-                                    <#if fhResult['electricSupply'] == '商电'>
-                                        <span>1.33元</span>
-                                    <#else >
-                                        <span>0.48元</span>
+                                    <hr>
+                                    <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
+                                        <#if fhResult['electricSupply'] == '商电'>
+                                            <span>1.33元</span>
+                                        <#else >
+                                            <span>0.48元</span>
+                                        </#if>
                                     </#if>
-                                </#if>
-                            </td>
-                        </#list>
-                    </#if>
+                                </td>
+                            </#list>
+                        </#if>
                     </tr>
                     <tr>
                         <td>
                             <i></i>
                             <em>停车费<br>(/年)</em>
                         </td>
-                    <#if intelligenceFhRes?exists>
-                        <#assign fhResults =intelligenceFhRes['fhResult']>
-                        <#list fhResults?eval as fhResult>
-                            <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
-                                <td>${fhResult['carRentPrice']?number?round}元</td>
-                            <#else >
-                                <td>-</td>
-                            </#if>
-                        </#list>
-                    </#if>
+                        <#if intelligenceFhRes?exists>
+                            <#assign fhResults =intelligenceFhRes['fhResult']>
+                            <#list fhResults?eval as fhResult>
+                                <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
+                                    <td>${fhResult['carRentPrice']?number?round}元</td>
+                                <#else >
+                                    <td>-</td>
+                                </#if>
+                            </#list>
+                        </#if>
                     </tr>
                 </table>
             </div>
-            <div class="report-title-type3 mt0">
-                <p>工作再忙，也要享受生活，看看3km内生活圈</p>
-            </div>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>休闲购物</p>
-                    <span>3km生活圈，吃喝玩乐买买买</span>
+            <#if intelligenceFhRes?exists>
+                <#assign fhResults =intelligenceFhRes['fhResult']?eval>
+                <div class="report-title-type3 mt0">
+                    <p>工作再忙，也要享受生活，看看3km内生活圈</p>
                 </div>
-                <div class="echart-box nearby">
-                    <div id="shoppingChart"></div>
-                </div>
-            </div>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>教育配套</p>
-                    <span>3km内教育配套，就这样陪你长大</span>
-                </div>
-            <#--<i class="show-echart-detail"></i>-->
-                <div class="echart-box nearby">
-                    <div id="educationChart"></div>
-                </div>
-            </div>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>医疗配套</p>
-                    <span>3km内医疗配套，为您的健康保驾护航</span>
-                </div>
-            <#--<i class="show-echart-detail"></i>-->
-                <div class="echart-box nearby">
-                    <div id="medicalChart"></div>
-                </div>
-            </div>
-            <div class="end-bottom">
-                <p class="end-text">End</p>
-                <div class="end-bottom-content">
-                    <div class="collect-tips">
-                        <p>您可以添加收藏，方便之后查阅！</p>
+                <#assign xiuxian = 0>
+                <#assign jiaoyu = 0>
+                <#assign yiliao = 0>
+                <#list fhResults as fhResult>
+                <#if fhResult['typeCount']?exists>
+                    <#if fhResult['typeCount']['xiuxian']?exists>
+                        <#assign xiuxian = xiuxian+1>
+                    </#if>
+                    <#if fhResult['typeCount']['jiaoyu']?exists>
+                        <#assign jiaoyu = jiaoyu+1>
+                    </#if>
+                    <#if fhResult['typeCount']['yiliao']?exists>
+                        <#assign yiliao = yiliao+1>
+                    </#if>
+                </#if>
+                </#list>
+                <#if xiuxian != 0>
+                <div class="module-item type2">
+                    <div class="report-title-type2">
+                        <p>休闲购物</p>
+                        <span>3km生活圈，吃喝玩乐买买买</span>
                     </div>
-                    <div class="collect-button">
-                        <i class="collect"></i>
-                        <span>收藏</span>
+                    <div class="echart-box nearby mb0">
+                        <div id="shoppingChart"></div>
                     </div>
                 </div>
-            </div>
+                </#if>
+                <#if jiaoyu !=0>
+                <div class="module-item type2">
+                    <div class="report-title-type2">
+                        <p>教育配套</p>
+                        <span>3km内教育配套，就这样陪你长大</span>
+                    </div>
+                    <#--<i class="show-echart-detail"></i>-->
+                    <div class="echart-box nearby mb0">
+                        <div id="educationChart"></div>
+                    </div>
+                </div>
+                </#if>
+                <#if yiliao !=0>
+                <div class="module-item type2">
+                    <div class="report-title-type2">
+                        <p>医疗配套</p>
+                        <span>3km内医疗配套，为您的健康保驾护航</span>
+                    </div>
+                    <#--<i class="show-echart-detail"></i>-->
+                    <div class="echart-box nearby mb0">
+                        <div id="medicalChart"></div>
+                    </div>
+                </div>
+                </#if>
+                <div class="end-bottom">
+                    <p class="end-text">End</p>
+                    <div class="end-bottom-content">
+                        <div class="collect-tips">
+                            <p>选房就是选生活<br>愿您选到心仪的居家和生活环境</p>
+                            <p>发现美好家园 就在头条房产</p>
+                        </div>
+                        <div class="report-bottom-button">
+                            <div class="collect-button">
+                                <i class="collect"></i>
+                                <span>收藏</span>
+                            </div>
+                            <div class="share-button">
+                                <i class="share"></i>
+                                <span>分享</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </#if>
         </div>
     </div>
+</div>
+<div class="share-pop none">
+    <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
+    <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
 <script src="/static/js/URI.min.js"></script>
 <script src="/static/js/draggabilly.pkgd.min.js"></script>
 <script src="/static/js/elastiStack.js"></script>
-<#--<script src="/static/js/intelligent-chart.js"></script>-->
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
@@ -561,6 +571,13 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
+
+        $('.share-button').on('click', function () {
+            $('.share-pop').removeClass('none');
+        });
+        $('#off-share').on('click', function () {
+            $('.share-pop').addClass('none');
+        });
         var status=${intelligenceFhRes.collectStatus};
 
         if(status==1){
@@ -615,7 +632,6 @@
                     }
                 })
             }
-
         })
     });
 
@@ -641,7 +657,6 @@
         this.x_index = i;
         this.laywidth = laywidth
     }
-
     waterSharp.prototype.animale = function () {
         var that = this;
         var init_x = this.laywidth / 6 * (this.x_index % 6);
@@ -704,10 +719,6 @@
     var ptlists = ${ptlists};
     var trend = ${trend};
 
-    //    console.log(ptlists)
-    //    console.log(trend)
-
-    var dpr = window.devicePixelRatio;
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
 
@@ -789,9 +800,9 @@
     function getJiaoyupeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
-            var xiuxian = dict_getValueOrDefault(typecount, "jiaoyu", {})
-            res.push([dict_getValueOrDefault(xiuxian, "youeryuan", 0), dict_getValueOrDefault(xiuxian, "xiaoxue", 0), dict_getValueOrDefault(xiuxian, "zhongxue", 0), dict_getValueOrDefault(xiuxian, "gaodeng", 0)])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var jiaoyu=dict_getValueOrDefault(typecount,"jiaoyu",{})
+            res.push([dict_getValueOrDefault(jiaoyu,"youeryuan",0),dict_getValueOrDefault(jiaoyu,"xiaoxue",0),dict_getValueOrDefault(jiaoyu,"zhongxue",0)])
         }
         return res;
     }
@@ -799,9 +810,10 @@
     function getYiliaopeitao() {
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
-            var xiuxian = dict_getValueOrDefault(typecount, "yiliao", 0)
-            res.push([xiuxian])
+            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
+            var yiliao=dict_getValueOrDefault(typecount,"yiliao",0)
+//            res.push([dict_getValueOrDefault(yiliao,"zonghe",0),dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0)])
+            res.push([dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0),dict_getValueOrDefault(yiliao,"zonghe",0)])
 
         }
         return res;
@@ -811,34 +823,34 @@
 
         var res = [];
         for (var i = 0; i < datajson.length; i++) {
-            if (datajson[i]["nearestSubwayDesc"] == null) {
+            if (datajson[i]["nearestSubwayDesc"] == null){
                 res.push([''])
-            } else {
-                res.push([(parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2]) / 1000).toFixed(1)])
+            }else {
+                res.push([(parseInt(datajson[i]["nearestSubwayDesc"].split("$")[2])/1000).toFixed(1)])
             }
         }
         return res;
     }
-
-    function getMetroStation() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            if (datajson[i]["nearestSubwayDesc"] == null) {
-                res.push([""])
-            } else {
-                res.push((datajson[i]["nearestSubwayDesc"].split("$")[1]))
-            }
+    function getMetroStation(index) {
+        if (index < datajson.length) {
+                return datajson[index]["nearestSubwayDesc"].split("$") || ""
         }
-        return res;
+        return "";
     }
 
 
-    function getNearbyQiao() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            res.push(datajson[i]["nearbyQiao"] || "")
+    function getNearbyQiao(index) {
+        if (index < datajson.length) {
+            return datajson[index]["nearbyQiao"] || ""
         }
-        return res;
+        return "";
+    }
+
+    function getNearbyRoad(index) {
+        if (index < datajson.length) {
+            return datajson[index]["nearbyRoad"] || ""
+        }
+        return "";
     }
 
 
@@ -858,7 +870,7 @@
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
 
         var chartGrid = {
-            left: 0,
+            left: '2%',
             right: '6%',
             bottom: 0,
             containLabel: true
@@ -896,7 +908,7 @@
                 show: true,
                 boundaryGap: false,
                 scale: true,
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: getJiagezoushiYuefen()
             },
             yAxis: {
@@ -969,7 +981,7 @@
                     type: 'category',
                     axisTick: {show: false},
                     axisLine: {show: true},
-                    axisLabel: {fontSize: baseFontSize - 10},
+                    axisLabel: {fontSize: baseFontSize - 4},
                     data: getGongxuqingkuangYuefen()
                 }, {
                     type: 'category',
@@ -989,7 +1001,7 @@
                     itemStyle: {
                         normal: {
                             show: true,
-                            color: '#277ace',
+                            color: '#455765',
                             barBorderRadius: 10,
                             borderWidth: 0,
                             borderColor: '#333'
@@ -1005,7 +1017,7 @@
                     itemStyle: {
                         normal: {
                             show: true,
-                            color: '#5de3e1',
+                            color: '#f25a5a',
                             barBorderRadius: 10,
                             borderWidth: 0,
                             borderColor: '#333'
@@ -1017,7 +1029,6 @@
                 }
             ]
         });
-//        marketChart.showLoading();
 
         /**
          * 地铁信息
@@ -1028,40 +1039,37 @@
             height: '100%'
         });
         // 显示标题，图例和空的坐标
-
+        var trafficSubwayGrid = {
+            left: 0,
+            right: '6%',
+            top: 0,
+            bottom: '25%',
+            containLabel: true
+        }
         var trafficSubwayLabel = {
             normal: {
                 show: true,
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
-//                formatter: function(getMetroStation()){
-//                    var arr = getMetroStation();
-//                    for(var i = 0;i<arr.length;i++){
-//                        return '{c}km'+arr
-//                    }
-//                }
+                formatter: function (params, ticket, callback) {
+//                    console.log(params,ticket)
+                    return params.data+"km\n"+getMetroStation(params.seriesIndex)[1]/*+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"*/
+                }
+
             }
         };
         trafficSubwayChart.setOption({
             color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
-            grid: {
-                left: 0,
-                right: '6%',
-                bottom: 0,
-                top: 0,
-                containLabel: true
-            },
+            grid: trafficSubwayGrid,
             xAxis: {
                 show: false,
                 data: []
             },
             yAxis: {
                 show: false,
-                inverse: true,
-                min: 0
+                inverse: true
             },
             series: [
                 {
@@ -1071,7 +1079,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getSubway()[0]
                 },
@@ -1082,7 +1090,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getSubway()[1]
                 },
@@ -1093,7 +1101,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getSubway()[2]
                 },
@@ -1104,7 +1112,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getSubway()[3]
                 },
@@ -1115,14 +1123,12 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getSubway()[4]
                 }
             ]
         });
-        // trafficSubwayChart.showLoading();
-
 
         /**
          * 环线桥信息
@@ -1140,27 +1146,22 @@
                 position: 'bottom',
                 color: '#666',
                 fontSize: baseFontSize - 5,
-                formatter: '{c}km\n'
+                formatter: function (params, ticket, callback) {
+                    return params.data+"km\n"+getNearbyQiao(params.seriesIndex)+"\n"+"("+getNearbyRoad(params.seriesIndex)+")"
+                }
             }
         };
         trafficRondChart.setOption({
             color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
-            grid: {
-                left: 0,
-                right: '6%',
-                bottom: 0,
-                top: 0,
-                containLabel: true
-            },
+            grid: trafficSubwayGrid,
             xAxis: {
                 show: false,
                 data: []
             },
             yAxis: {
                 show: false,
-                inverse: true,
-                min: 0
+                inverse: true
             },
             series: [
                 {
@@ -1170,7 +1171,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getNearbyRoadMeter()[0]
                 },
@@ -1181,7 +1182,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getNearbyRoadMeter()[1]
                 },
@@ -1192,7 +1193,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getNearbyRoadMeter()[2]
                 },
@@ -1203,7 +1204,7 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getNearbyRoadMeter()[3]
                 },
@@ -1214,13 +1215,12 @@
                     barGap: 1.5,
                     barWidth: '8%',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getNearbyRoadMeter()[4]
                 }
             ]
         });
-        // trafficRondChart.showLoading();
 
         var nearbyChartGrid = {
             top: 0,
@@ -1243,16 +1243,17 @@
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                },
+                textStyle: {fontSize: baseFontSize}
             },
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
+                axisLabel: {fontSize: baseFontSize - 4},
                 data: ['菜市场', '超市', '购物中心', '餐饮']
             },
             series: [
@@ -1261,7 +1262,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getXiuxiangouwu()[0]
                 },
@@ -1270,7 +1271,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getXiuxiangouwu()[1]
                 },
@@ -1279,7 +1280,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getXiuxiangouwu()[2]
                 },
@@ -1288,7 +1289,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getXiuxiangouwu()[3]
                 },
@@ -1297,13 +1298,12 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getXiuxiangouwu()[4]
                 }
             ]
         });
-
 
         /**
          * 教育配套
@@ -1319,17 +1319,18 @@
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                },
+                textStyle: {fontSize: baseFontSize}
             },
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
-                data: ['幼儿园', '小学', '中学', '大学']
+                axisLabel: {fontSize: baseFontSize - 4},
+                data: ['幼儿园', '小学', '中学']
             },
             series: [
                 {
@@ -1337,7 +1338,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getJiaoyupeitao()[0]
                 },
@@ -1346,7 +1347,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getJiaoyupeitao()[1]
                 },
@@ -1355,7 +1356,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getJiaoyupeitao()[2]
                 },
@@ -1364,7 +1365,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getJiaoyupeitao()[3]
                 },
@@ -1373,13 +1374,12 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getJiaoyupeitao()[4]
                 }
             ]
         });
-
 
         /**
          * 医疗配套
@@ -1395,17 +1395,19 @@
                 trigger: 'axis',
                 axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                     type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
+                },
+                textStyle: {fontSize: baseFontSize}
             },
             grid: nearbyChartGrid,
             xAxis: {
                 type: 'value',
-                axisLabel: {fontSize: baseFontSize - 10}
+                axisLabel: {fontSize: baseFontSize - 4}
             },
             yAxis: {
                 type: 'category',
-                axisLabel: {fontSize: baseFontSize - 10},
-                data: ['医疗']
+                axisLabel: {fontSize: baseFontSize - 4},
+//                data: ['综合','诊所','专科']
+                data: ['诊所','专科医院','综合医院']
             },
             series: [
                 {
@@ -1413,7 +1415,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#455765'}
+                        normal: { color: '#455765' }
                     },
                     data: getYiliaopeitao()[0]
                 },
@@ -1422,7 +1424,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#f25a5a'}
+                        normal: { color: '#f25a5a' }
                     },
                     data: getYiliaopeitao()[1]
                 },
@@ -1431,7 +1433,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#fece6c'}
+                        normal: { color: '#fece6c' }
                     },
                     data: getYiliaopeitao()[2]
                 },
@@ -1440,7 +1442,7 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#7f7f7f'}
+                        normal: { color: '#7f7f7f' }
                     },
                     data: getYiliaopeitao()[3]
                 },
@@ -1449,13 +1451,12 @@
                     type: 'bar',
                     stack: '总量',
                     itemStyle: {
-                        normal: {color: '#4a7aa3'}
+                        normal: { color: '#4a7aa3' }
                     },
                     data: getYiliaopeitao()[4]
                 }
             ]
         });
-
     });
 </script>
 <#--<script>
@@ -1557,8 +1558,6 @@
         }
 
     });
-
-
 </script>-->
 </body>
 </html>

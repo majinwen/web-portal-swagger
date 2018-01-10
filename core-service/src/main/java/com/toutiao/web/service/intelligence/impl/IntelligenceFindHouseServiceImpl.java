@@ -307,13 +307,15 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
         BeanUtils.copyProperties(intelligenceFhResJson, intelligenceFhRes);
+//        List<IntelligenceFindhouse> test = intelligenceFindhouseMapper.test(11114240);
+//        finalList = test;
         int index = 1;
         if (null != finalList && finalList.size() > 0) {
             for (IntelligenceFindhouse intelligence : finalList) {
-                if (null != intelligence.getPropertyfee()) {
-                    BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
-                    intelligence.setPropertyfee(bigDecimal);
-                }
+//                if (null != intelligence.getPropertyfee()) {
+//                    BigDecimal bigDecimal = new BigDecimal(intelligence.getPropertyfee().doubleValue() * 12);
+//                    intelligence.setPropertyfee(bigDecimal);
+//                }
                 if (null != intelligence.getCarRentPrice()) {
                     BigDecimal bigDecimal = new BigDecimal(intelligence.getCarRentPrice().doubleValue() * 12);
                     intelligence.setCarRentPrice(bigDecimal);
