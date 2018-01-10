@@ -182,6 +182,9 @@
         </where>
     </sql>
 
+    <select id="test" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT * FROM intelligence_findhouse WHERE newcode = 11114240
+    </select>
     <select id="queryByStarProperty"
             resultMap="BaseResultMap"
             parameterType="com.toutiao.web.domain.query.IntelligenceQuery">

@@ -303,6 +303,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
         BeanUtils.copyProperties(intelligenceFhResJson, intelligenceFhRes);
+//        List<IntelligenceFindhouse> test = intelligenceFindhouseMapper.test(11114240);
+//        finalList = test;
         int index = 1;
         if (null != finalList && finalList.size() > 0) {
             for (IntelligenceFindhouse intelligence : finalList) {
