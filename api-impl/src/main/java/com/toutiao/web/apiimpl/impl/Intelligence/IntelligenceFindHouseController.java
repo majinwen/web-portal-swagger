@@ -77,7 +77,7 @@ public class IntelligenceFindHouseController {
             if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
             }else{
-                model.addAttribute("message", "没有报告记录！");
+                return "emptyReport";
             }
         } else {
             model.addAttribute("report", Constant.report);

@@ -207,10 +207,10 @@
                                             <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
                                         </#if>-->
                                         </div>
-                                        <#if fhResult['plotImage'][0]?exists>
+                                        <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
                                             <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
                                         <#else >
-                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                         </#if>
                                     </a>
                                 </li>
@@ -571,7 +571,7 @@
             $(this).toggleClass('down');
             $(this).next('.echart-box').toggleClass('none');
         })*/
-        
+
         $('.share-button').on('click', function () {
             $('.share-pop').removeClass('none');
         });
@@ -718,7 +718,7 @@
     var datajson =${datajson};
     var ptlists = ${ptlists};
     var trend = ${trend};
-//    console.log(datajson)
+    console.log(datajson)
 
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;

@@ -305,23 +305,16 @@
                             <#else >
                                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
+                            </div>
                         </div>
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em>
-                                <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0>
-                                    </#if>
-                                <#else>
-                                ${map.houseTotalPrices?number?round}万
-                                </#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
-                                <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
-                            </em>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices?number?round}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>${map.room}室</#if>
                         </p>
-                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
-                        <h4 class="cont-last"><#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}<#else></#if></h4>
+                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
                 </a></li>
             </#list>
@@ -336,12 +329,7 @@
     </div>
     <ul class="tilelist">
         <#list plotList as plotInfo>
-            <li>
-                <#if plotInfo['id']?exists>
-                <a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
-                <#else >
-                <a href="#">
-                </#if>
+            <li><a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >

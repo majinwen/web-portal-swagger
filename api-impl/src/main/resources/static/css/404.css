@@ -211,23 +211,29 @@ body {
   position: absolute; }
 
 .page-empty {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 25%;
   left: 0;
   width: 100%;
-  margin-top: 30%;
+  height: 100%;
   text-align: center; }
+  .page-empty.report {
+    top: 0; }
+    .page-empty.report img {
+      padding-top: 1.9333333333rem; }
+    .page-empty.report > p {
+      margin-bottom: 9%; }
   .page-empty img {
     width: 2.2rem;
     height: 2.4133333333rem; }
-  .page-empty p {
+  .page-empty > p {
     margin-top: 0.6666666667rem;
     color: #666; }
-    [data-dpr="1"] .page-empty p {
+    [data-dpr="1"] .page-empty > p {
       font-size: 14px; }
-    [data-dpr="2"] .page-empty p {
+    [data-dpr="2"] .page-empty > p {
       font-size: 28px; }
-    [data-dpr="3"] .page-empty p {
+    [data-dpr="3"] .page-empty > p {
       font-size: 42px; }
   .page-empty a {
     display: block;
@@ -245,5 +251,48 @@ body {
       font-size: 26px; }
     [data-dpr="3"] .page-empty a {
       font-size: 39px; }
+    .page-empty a.link-intelligent {
+      width: 3.76rem;
+      height: 0.9333333333rem;
+      line-height: 0.9066666667rem;
+      color: #fff;
+      background-color: #0a0724;
+      -webkit-border-radius: 0.9333333333rem;
+      border-radius: 0.9333333333rem; }
+  .page-empty .tips-content-wrapper {
+    position: relative;
+    margin-left: 1.1333333333rem;
+    margin-right: 1.1333333333rem;
+    padding: 0.8933333333rem 0.2666666667rem 0.7066666667rem;
+    background-image: url("/static/images/global/wdbg_kuang.png");
+    background-repeat: no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      .page-empty .tips-content-wrapper {
+        background-image: url("/static/images/global/wdbg_kuang@2x.png"); } }
+    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+      .page-empty .tips-content-wrapper {
+        background-image: url("/static/images/global/wdbg_kuang@3x.png"); } }
+    .page-empty .tips-content-wrapper.mt {
+      margin-top: 0.4rem; }
+    .page-empty .tips-content-wrapper span {
+      display: block;
+      position: absolute;
+      top: 4%;
+      left: 50%;
+      width: 0.5333333333rem;
+      margin-left: -0.2666666667rem;
+      color: #fff; }
+      [data-dpr="1"] .page-empty .tips-content-wrapper span {
+        font-size: 10px; }
+      [data-dpr="2"] .page-empty .tips-content-wrapper span {
+        font-size: 20px; }
+      [data-dpr="3"] .page-empty .tips-content-wrapper span {
+        font-size: 30px; }
+    .page-empty .tips-content-wrapper .tips-content p {
+      margin-top: 0.2666666667rem;
+      line-height: 1.5;
+      color: #999; }
 
 /*# sourceMappingURL=404.css.map */
