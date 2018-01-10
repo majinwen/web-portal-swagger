@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "staticHeader.ftl">
+<#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
     <title>懂房帝</title>
@@ -296,7 +296,7 @@
                     <div class="animate-big-box">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box" id="center_circle_div">
-                                <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
+                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box"  style="display: none">
                                 <p><em>8123</em>个社区</p>
                                 <p><em>40397</em>套房产</p>
@@ -333,9 +333,9 @@
 
             <div class="button-bottom">
                 <a class="button-box" id="button_report" href="javascript:void(0)">
-                    <#-- 百分比进度显示 -->
+                <#-- 百分比进度显示 -->
                     <div class="loading-number">0%</div>
-                    <#-- 黑色进度条（改变width） -->
+                <#-- 黑色进度条（改变width） -->
                     <div class="button-mask-box">
                         <div class="button-mask"></div>
                     </div>

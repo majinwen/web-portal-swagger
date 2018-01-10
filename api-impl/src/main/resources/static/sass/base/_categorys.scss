@@ -249,7 +249,7 @@ $borderRadiusColor: #999;
         content: '';
         position: fixed;
         top: 0;
-        width: 100%;
+        width: rem(750);
         height: 100%;
         background-color: rgba(0,0,0,0.5);
     }

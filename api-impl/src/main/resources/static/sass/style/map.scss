@@ -4,15 +4,13 @@
 .map-container {
     position: fixed !important;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: rem(750);
     height: 100%;
 }
 .map-type-nav {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: rem(750);
     white-space: nowrap;
     background-color: $baseWhite;
     overflow-x: auto;
@@ -48,8 +46,7 @@
 .type-result-box {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    width: rem(750);
     background-color: #f2f2f2;
 
     .type-item-sel-box {

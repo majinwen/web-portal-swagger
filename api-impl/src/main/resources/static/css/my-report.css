@@ -203,8 +203,10 @@ body {
 
 .fixed-scroll {
   position: fixed;
-  width: 100%;
+  left: 50%;
+  width: 10rem;
   height: 100%;
+  margin-left: -5rem !important;
   overflow: hidden; }
 
 .shareTopImg {

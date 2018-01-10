@@ -7,9 +7,10 @@ $inteTextColorRed: #f25a5a;
 .bgbox {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    width: rem(750);
     height: 100%;
+    margin-left: rem(-375);
     background-color: #f0f0f0;
 }
 
@@ -22,16 +23,14 @@ $inteTextColorRed: #f25a5a;
 }
 
 .page1 {
-    .fp-scroller {
-        height: 100%;
-    }
-
     .bg1 {
+        position: fixed;
         @include bg-image('/static/images/intelligent/znzf_user_bg');
         background-repeat: repeat-y;
         background-position: center;
         -webkit-background-size: cover;
         background-size: cover;
+        z-index: 10;
     }
     .page-content {
         position: relative;
@@ -277,6 +276,14 @@ $inteTextColorRed: #f25a5a;
                     top: 0;
                     width: 100%;
                     height: rem(70);
+
+                    &.fixed {
+                        position: fixed;
+                        padding: 0 rem(30);
+                        margin: 0 rem(-30);
+                        @include box-sizing;
+                        z-index: 999999;
+                    }
 
                     div {
                         float: left;
@@ -677,6 +684,7 @@ $inteTextColorRed: #f25a5a;
         }
 
         .echart-box {
+            position: relative;
             width: 100%;
             height: rem(280);
             margin: rem(49) 0 rem(30);
@@ -686,12 +694,19 @@ $inteTextColorRed: #f25a5a;
                 height: rem(420);
                 background-color: transparent;
             }
-
             #priceChart, #marketChart, #shoppingChart, #educationChart, #medicalChart {
-                width: 100%;
-                height: 100%;
+                position: absolute;
+                width: rem(690);
                 padding: rem(20) 0;
                 @include box-sizing;
+            }
+
+            #priceChart, #marketChart {
+                height: rem(280);
+            }
+
+            #shoppingChart, #educationChart, #medicalChart {
+                height: rem(420);
             }
         }
 
@@ -779,7 +794,7 @@ $inteTextColorRed: #f25a5a;
 
                     #trafficSubwayChart, #trafficRondChart {
                         width: rem(590);
-                        height: 100%;
+                        height: rem(280);
                         @include box-sizing;
                     }
                 }
