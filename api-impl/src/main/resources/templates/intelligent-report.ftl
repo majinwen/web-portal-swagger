@@ -225,7 +225,7 @@
                                             <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
                                         </#if>-->
                                         </div>
-                                        <#if fhResult['plotImage'][0]?exists>
+                                        <#if fhResult['plotImage']?exists&&fhResult['plotImage']?size gt 0>
                                             <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
                                         <#else >
                                             <img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
@@ -252,7 +252,7 @@
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''>
                                     <li>${fhResult['projname']}</li>
                                 <#else >
-                                    <li> -</li>
+                                    <li>-</li>
                                 </#if>
                             </#list>
                         </#if>
