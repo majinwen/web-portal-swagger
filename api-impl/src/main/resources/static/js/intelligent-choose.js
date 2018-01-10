@@ -104,6 +104,9 @@ function chooseUserFinds() {
                 success:function(data){
                     that.isLoading=null
                     try {
+                        if(options['userPortrayalType']!=7) {
+                            options['userPortrayalType'] = data.data.userPortrayalType;
+                        }
                         var ratio = new Number(data.data.ratio / 100);
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         that.count=data.data.plotCount;
@@ -457,6 +460,7 @@ function chooseUserFinds() {
         }
     }
     if(3 == options['userType']){
+        options['userPortrayalType'] = 7;
         yusuan_model.childs=[end_model]
         end_model.parents=[yusuan_model]
     }
