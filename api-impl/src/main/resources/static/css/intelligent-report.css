@@ -1042,6 +1042,7 @@ body {
           [data-dpr="3"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p {
             font-size: 39px; }
           .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:nth-child(2) {
+            display: block;
             margin-top: 0.1333333333rem;
             color: #888; }
             [data-dpr="1"] .page2 .page-content .end-bottom .end-bottom-content .collect-tips p:nth-child(2) {

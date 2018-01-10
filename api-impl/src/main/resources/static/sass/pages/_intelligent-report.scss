@@ -896,6 +896,7 @@ $inteTextColorRed: #f25a5a;
                         @include font-dpr(26);
 
                         &:nth-child(2) {
+                            display: block;
                             margin-top: rem(10);
                             color: #888;
                             @include font-dpr(22);
