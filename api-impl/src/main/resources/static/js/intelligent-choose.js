@@ -508,7 +508,8 @@ function chooseUserFinds() {
                 sildeColor.css('width', trackWidth + "px")
             }
             var totalPrice = Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text())
-            if(totalPrice>1500){
+
+            if(totalPrice>1500&&thisDom.prev().text().split("万")[0]==100){
                 slideText.text('1500' + cm + '+')
             }else {
                 slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
