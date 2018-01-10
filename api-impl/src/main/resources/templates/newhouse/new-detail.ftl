@@ -89,11 +89,15 @@
         </div>
         <ul class="primary-item">
             <li>
+             <#if build['average_price']?exists && build['average_price'] gt 0>
                 <p>均价：<em class="high-light-red">
-                <#if build['average_price']?exists && build['average_price'] gt 0>
                     ${build['average_price']?number?round}元/㎡
                 <#else>
-                    售价待定
+                 <#if build['total_price']?exists && build['total_price'] gt 0>
+                <p>总价：<em class="high-light-red">
+                    ${build['total_price']?number?round}万元/套
+                 <#else>暂无价格
+                 </#if>
                 </#if>
                 </em></p>
             </li>

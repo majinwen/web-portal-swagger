@@ -11,6 +11,7 @@
     <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
 </head>
 <body>
+<img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
 <div id="superContainer">
     <div class="section page1 active">
         <div class="bgbox bg1"></div>
