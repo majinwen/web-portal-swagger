@@ -164,8 +164,23 @@
     <sql id="queryInfo">
         <where>
             1=1
-            <if test="minTotalPrice != null and maxTotalPrice!=null">
-                AND <![CDATA[ ${minTotalPrice}<=max_total_price AND ${maxTotalPrice}>=min_total_price ]]>
+            <if test="layOut!=null and layOut==1 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price1_min<= #{maxTotalPrice} and layout_price1_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layOut!=null and layOut==2 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price2_min<= #{maxTotalPrice} and layout_price2_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layOut!=null and layOut==3 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price3_min<= #{maxTotalPrice} and layout_price3_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layOut!=null and layOut==4 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price4_min<= #{maxTotalPrice} and layout_price4_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layOut!=null and layOut==5 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price5_min<= #{maxTotalPrice} and layout_price5_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layOut!=null and layOut==6 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price6_min<= #{maxTotalPrice} and layout_price6_max >= #{minTotalPrice}]]>
             </if>
             <if test="layOut != null">
                 AND <![CDATA[  layout_range @> '{${layOut}}' ]]>

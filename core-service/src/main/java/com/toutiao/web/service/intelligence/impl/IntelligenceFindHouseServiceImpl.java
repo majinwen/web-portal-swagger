@@ -386,8 +386,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
         }
         //上下浮动10%
-        plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
-        plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+        plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1));
+        plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1));
         intelligenceFh.setMaxTotalPrice(plotTotalEnd);
         intelligenceFh.setMinTotalPrice(plotTotalFirst);
 
