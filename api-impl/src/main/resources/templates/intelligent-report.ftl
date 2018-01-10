@@ -8,8 +8,8 @@
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/scrolloverflow.js"></script>
-    <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
+    <#--<script src="${staticurl}/js/scrolloverflow.js"></script>-->
+    <#--<script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>-->
     <script src="${staticurl}/js/modernizr.custom.js"></script>
     <script src="${staticurl}/js/echarts.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
@@ -17,7 +17,7 @@
 <body>
 <div id="superContainer">
     <div class="section page1 active">
-        <div class="bgbox bg1"></div>
+        <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
                 <p>根据您的检索条件<br>总价<em class="high-light-red"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场 </p>
@@ -84,6 +84,7 @@
                 </ol>
             </div>
             <div class="down-triangle"></div>
+        </div>
         </div>
     </div>
     <div class="section page2">
@@ -234,7 +235,7 @@
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''>
                                     <li>${fhResult['projname']}</li>
                                 <#else >
-                                    <li> -</li>
+                                    <li>-</li>
                                 </#if>
                             </#list>
                         </#if>
@@ -555,39 +556,20 @@
     <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
     <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
-<script src="/static/js/URI.min.js"></script>
-<script src="/static/js/draggabilly.pkgd.min.js"></script>
-<script src="/static/js/elastiStack.js"></script>
+<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/draggabilly.pkgd.min.js"></script>
+<script src="${staticurl}/js/elastiStack.js"></script>
+<script src="${staticurl}/js/intelligent-report.js"></script>
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
-        $('#superContainer').fullpage({
-            resize: false,
-            scrollOverflow: true
-        });
-        $.fn.fullpage.setAllowScrolling(false, 'up');
-
-        /*$('.show-echart-detail').on('click', function () {
-            $(this).toggleClass('down');
-            $(this).next('.echart-box').toggleClass('none');
-        })*/
-
-        $('.share-button').on('click', function () {
-            $('.share-pop').removeClass('none');
-        });
-        $('#off-share').on('click', function () {
-            $('.share-pop').addClass('none');
-        });
-        var status=${intelligenceFhRes.collectStatus};
-
-        if(status==1){
+        var status = ${intelligenceFhRes.collectStatus};
+        if (status == 1) {
             $('.collect-button').find('.collect').toggleClass('active');
         }
 
         $('.collect-button').on('click', function () {
-            var reportId =${reportId};
-            /*var count= $(this).find('.collect').attr('data-type');
-            console.log(count);*/
+            var reportId = ${reportId};
             $(this).find('.collect').toggleClass('active');
             if ($(this).find('.collect').hasClass('active')) {
                 // 收藏
@@ -670,8 +652,7 @@
         if (index > 0) {
             this.el.attr({width: this.el.attr("width") * 2.2, height: this.el.attr("height") * 2.2});
         }
-//        var randomNum = Math.random() * 5 + 10;
-//        that.speed = parseInt(randomNum, 10)
+
         that.speed = 12;
         that.el.attr({x: init_x});
         var randomNum = Math.random() * 200;
@@ -679,7 +660,6 @@
         that.el.attr({"y": cy});
         var timer = setInterval(function () {
             var cy = that.el.attr("y");
-//            that.speed+=1;
             if (cy > 500) {
                 clearInterval(timer);
                 that.el.remove();
@@ -718,7 +698,6 @@
     var datajson =${datajson};
     var ptlists = ${ptlists};
     var trend = ${trend};
-    console.log(datajson)
 
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
@@ -871,6 +850,7 @@
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
 
         var chartGrid = {
+            top: 0,
             left: '2%',
             right: '6%',
             bottom: 0,
@@ -880,11 +860,7 @@
         /**
          * 市场价格走势
          * */
-        var priceChart = echarts.init(document.getElementById('priceChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var priceChart = echarts.init(document.getElementById('priceChart'));
         // 显示标题，图例和空的坐标轴
         priceChart.setOption({
             color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
@@ -944,11 +920,7 @@
         /**
          * 市场供需情况
          * */
-        var marketChart = echarts.init(document.getElementById('marketChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var marketChart = echarts.init(document.getElementById('marketChart'));
         // 显示标题，图例和空的坐标
         marketChart.setOption({
             textStyle: {fontSize: baseFontSize},
@@ -1034,11 +1006,7 @@
         /**
          * 地铁信息
          * */
-        var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'));
         // 显示标题，图例和空的坐标
         var trafficSubwayGrid = {
             left: 0,
@@ -1046,7 +1014,7 @@
             top: 0,
             bottom: '25%',
             containLabel: true
-        }
+        };
         var trafficSubwayLabel = {
             normal: {
                 show: true,
@@ -1055,8 +1023,7 @@
                 offset: [20,20],
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-//                    console.log(params,ticket)
-                    return params.data+"km\n"+getMetroStation(params.seriesIndex)[1]/*+"\n\n"+"("+getMetroStation(params.seriesIndex)[0]+")"*/
+                    return params.data + "km\n" + getMetroStation(params.seriesIndex)[1]
                 }
 
             }
@@ -1135,11 +1102,7 @@
         /**
          * 环线桥信息
          * */
-        var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var trafficRondChart = echarts.init(document.getElementById('trafficRondChart'));
         // 显示标题，图例和空的坐标
 
         var trafficRondLabel = {
@@ -1149,7 +1112,7 @@
                 color: '#666',
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-                    return params.data+"km\n"+getNearbyQiao(params.seriesIndex)+"\n"+"("+getNearbyRoad(params.seriesIndex)+")"
+                    return params.data + "km\n" + getNearbyQiao(params.seriesIndex) + "\n" + "(" + getNearbyRoad(params.seriesIndex) + ")"
                 }
             }
         };
@@ -1234,11 +1197,7 @@
         /**
          * 休闲购物
          * */
-        var shoppingChart = echarts.init(document.getElementById('shoppingChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var shoppingChart = echarts.init(document.getElementById('shoppingChart'));
         // 显示标题，图例和空的坐标
         shoppingChart.setOption({
             tooltip: {
@@ -1310,11 +1269,7 @@
         /**
          * 教育配套
          * */
-        var educationChart = echarts.init(document.getElementById('educationChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var educationChart = echarts.init(document.getElementById('educationChart'));
         // 显示标题，图例和空的坐标
         educationChart.setOption({
             tooltip: {
@@ -1386,11 +1341,7 @@
         /**
          * 医疗配套
          * */
-        var medicalChart = echarts.init(document.getElementById('medicalChart'), null, {renderer: 'svg'}, {
-            devicePixelRatio: dpr,
-            width: '100%',
-            height: '100%'
-        });
+        var medicalChart = echarts.init(document.getElementById('medicalChart'));
         // 显示标题，图例和空的坐标
         medicalChart.setOption({
             tooltip: {

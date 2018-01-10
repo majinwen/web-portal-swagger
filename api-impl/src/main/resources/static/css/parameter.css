@@ -203,8 +203,10 @@ body {
 
 .fixed-scroll {
   position: fixed;
-  width: 100%;
+  left: 50%;
+  width: 10rem;
   height: 100%;
+  margin-left: -5rem !important;
   overflow: hidden; }
 
 .shareTopImg {
@@ -1107,7 +1109,7 @@ body {
   .detail-contact-box .detail-contact-content {
     display: -webkit-flex;
     display: flex;
-    width: 100%;
+    width: 10rem;
     height: 1.3066666667rem;
     padding: 0.2rem 0.4rem;
     background-color: #060622;
