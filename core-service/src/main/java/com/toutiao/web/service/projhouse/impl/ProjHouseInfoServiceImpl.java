@@ -284,10 +284,19 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         .setSize(pageSize)
                         .execute().actionGet();
             } else {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.ASC)
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
+                //如果含有关键字查询，优先显示关键字
+                if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.ASC)
+                            .setFrom((pageNum - 1) * pageSize)
+                            .setSize(pageSize)
+                            .execute().actionGet();
+                }else{
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
+                            .setFrom((pageNum - 1) * pageSize)
+                            .setSize(pageSize)
+                            .execute().actionGet();
+                }
+
             }
             SearchHits hits = searchresponse.getHits();
             List houseList = new ArrayList();

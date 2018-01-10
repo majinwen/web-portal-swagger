@@ -3,6 +3,7 @@ package com.toutiao.web.service.plot.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
@@ -279,8 +280,14 @@ public class PlotServiceImpl implements PlotService {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
             //小区默认排序
-            //先发布后发布 级别从小到大  分数由大到小
-            srb.addSort("_score",SortOrder.DESC).addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            //如果有关键字，优先按关键字查找
+            if(StringTool.isNotBlank(villageRequest.getKeyword())){
+                srb.addSort("_score",SortOrder.DESC).addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            }else{
+                //先发布后发布 级别从小到大  分数由大到小
+                srb.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            }
+
 
             //级别为1-4
 //            Integer level = villageRequest.getLevel();
