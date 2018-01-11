@@ -21,7 +21,14 @@
         <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场 </p>
+                <p>根据您的检索条件<br>总价<em class="high-light-red">
+                <#if intelligenceFhRes?exists>
+                    <#if intelligenceFhRes['totalPrice']?number == 1500>
+                        ${intelligenceFhRes['totalPrice']?number?round}万以上
+                    <#else>
+                        ${intelligenceFhRes['totalPrice']?number?round}万左右
+                    </#if>
+                </#if></em>的房源市场为您的目标市场 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>
@@ -92,7 +99,15 @@
         <div class="page-content">
             <div class="header-summary-box">
                 <div class="header-summary">
-                    <p>根据您的检索条件，总价<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if>左右的房源市场为您的目标市场。</p>
+                    <p>根据您的检索条件，总价
+                    <#if intelligenceFhRes?exists>
+                        <#if intelligenceFhRes['totalPrice']?number == 1500>
+                        ${intelligenceFhRes['totalPrice']?number?round}万以上
+                        <#else>
+                        ${intelligenceFhRes['totalPrice']?number?round}万左右
+                        </#if>
+                    </#if>
+                        的房源市场为您的目标市场。</p>
                     <p>以下从市场行情，地理位置，宜居指数，交通及周边 配套设施等方面，为您挑选生活家</p>
                 </div>
             </div>
@@ -158,8 +173,16 @@
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
-                                <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}</#if>万</li>
-                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district}</em></#list><#else ><em>-</em></#if></li>
+                                <#--这里的空格保留-->
+                                <li>总价：<#if intelligenceFhRes?exists>
+                                    <#if intelligenceFhRes['totalPrice']?number == 1500>
+                                    ${intelligenceFhRes['totalPrice']?number?round}万+
+                                    <#else>
+                                    ${intelligenceFhRes['totalPrice']?number?round}万
+                                    </#if>
+                                    </#if>
+                                </li>
+                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district} </em></#list><#else ><em>-</em></#if></li>
                                 <li>${intelligenceFhRes['layout']!""}居</li>
                             </ul>
                             <div class="tip-text">
@@ -1010,8 +1033,8 @@
         var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'));
         // 显示标题，图例和空的坐标
         var trafficSubwayGrid = {
-            left: 0,
-            right: '6%',
+            left: '-6.5%',
+            right: '0%',
             top: 0,
             bottom: '25%',
             containLabel: true
