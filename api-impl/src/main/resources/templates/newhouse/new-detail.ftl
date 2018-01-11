@@ -8,7 +8,7 @@
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/echarts.js"></script>
+    <script src="${staticurl}/js/echarts.simple.min.js"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
