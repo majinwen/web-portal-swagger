@@ -232,7 +232,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?number?round) * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)) * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>

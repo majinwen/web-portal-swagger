@@ -165,10 +165,13 @@
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            ${map['average_price']?number?round}/㎡
+                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
                         <#else>
-                            售价待定
+                        <#if map['total_price']?exists && map['total_price'] gt 0>
+                            <p class="cont-block-2 high-light-red">${map['total_price']?number?round}万元/套</p>
+                        <#else>售价待定
                         </#if>
+                    </#if>
                     </p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
