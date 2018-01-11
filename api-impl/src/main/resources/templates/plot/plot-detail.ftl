@@ -648,7 +648,7 @@
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
                             <#if village['parkingRate']??>
-                            ${village['parkingRate']?number?round}元/月
+                            ${village['parkingRate']}元/月
                             <#else >
                                 暂无数据
                             </#if>
