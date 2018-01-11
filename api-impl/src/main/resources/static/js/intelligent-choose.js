@@ -107,12 +107,25 @@ function chooseUserFinds() {
                         if(options['userPortrayalType']!=7) {
                             options['userPortrayalType'] = data.data.userPortrayalType;
                         }
-                        var ratio = new Number(data.data.ratio / 100);
+                        if(data.data.plotCount==0){
+                            that.count=data.data.plotCount;
+                            $('.result-begin').removeClass('none').find('p').text("无匹配小区，换个条件看看").addClass('high-light-red');
+                            $('.result-container').addClass('none');
+                        }else{
+                            var ratio = new Number(data.data.ratio / 100);
+                            $('#plot_Count').find('em').text(data.data.plotCount);
+                            that.count=data.data.plotCount;
+                            $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
+                            $('.result-begin').addClass('none');
+                            $('.result-container').removeClass('none');
+                        }
+                        /*var ratio = new Number(data.data.ratio / 100);
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         that.count=data.data.plotCount;
                         $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
                         $('.result-begin').addClass('none');
-                        $('.result-container').removeClass('none');
+                        $('.result-container').removeClass('none');*/
+
                     }
                     catch (e){
                         console.error(e)
@@ -363,7 +376,7 @@ function chooseUserFinds() {
                     districtNameStr.push($(currentOptinos[i]).text());
                 }
                 options['districtId'] = districtIdStr.join();
-                if(options['districtId'].split(",").length>=1){
+                if($('#option_distict').find('li.current').length > 0){
                     var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
                     $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
                     that.dialog_finish();

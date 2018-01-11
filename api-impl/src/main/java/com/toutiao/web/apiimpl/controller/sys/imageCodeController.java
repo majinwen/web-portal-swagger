@@ -52,7 +52,6 @@ public class imageCodeController {
             response.addCookie(cookie);
             //将验证码传输到页面中
             ImageIO.write(captcha.getImage(), "png", os);
-            System.out.println(patchca);
             os.flush();
             os.close();
         } catch (IOException e) {

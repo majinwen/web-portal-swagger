@@ -185,7 +185,7 @@
                                 ${map.buildArea}㎡
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                                / ${map.room}室${map.hall}厅
+                                / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
                             </#if>
                             <#if map.forwardName?exists>
                                 / ${map.forwardName}
@@ -232,7 +232,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?number) * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists) * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>

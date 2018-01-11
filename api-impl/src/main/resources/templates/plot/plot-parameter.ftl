@@ -32,8 +32,8 @@
                 </#if>
             </div>
             <div class="isopsophic-air-index">
-                <p>空气指数：暂无数据</p>
-                <p>噪音指数：暂无数据</p>
+                <#--<p>空气指数：暂无数据</p>-->
+                <#--<p>噪音指数：暂无数据</p>-->
             </div>
         </div>
         <ul class="primary-item">
