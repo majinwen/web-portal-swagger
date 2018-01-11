@@ -363,7 +363,7 @@ function chooseUserFinds() {
                     districtNameStr.push($(currentOptinos[i]).text());
                 }
                 options['districtId'] = districtIdStr.join();
-                if(options['districtId'].split(",").length>2){
+                if(options['districtId'].split(",").length>=1){
                     var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
                     $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
                     that.dialog_finish();
