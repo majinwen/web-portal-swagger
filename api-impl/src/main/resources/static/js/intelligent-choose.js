@@ -329,6 +329,8 @@ function chooseUserFinds() {
                 var currentChoose = $('.area-content').find('li.current').length;
                 if (currentChoose > 2) {
                     $('.area-content').find('li:not(.current)').removeClass('optional').addClass('disabled');
+                }
+                if (currentChoose >= 1) {
                     $('#submitArea').removeClass('disabled');
                 }
             });
@@ -345,6 +347,10 @@ function chooseUserFinds() {
                     });
                     $('#submitArea').addClass('disabled');
                 }
+                if (currentChoose >= 1) {
+                    $('#submitArea').removeClass('disabled');
+                }
+
             });
 
             $('#submitArea').unbind('click');
@@ -357,9 +363,11 @@ function chooseUserFinds() {
                     districtNameStr.push($(currentOptinos[i]).text());
                 }
                 options['districtId'] = districtIdStr.join();
-                var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
-                $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
-                that.dialog_finish();
+                if(options['districtId'].split(",").length>2){
+                    var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
+                    $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
+                    that.dialog_finish();
+                }
                 asyn_check.get(function () {
                     that.context=1
                     that.next();
