@@ -64,23 +64,18 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/queryMyReport")
     public String getMyReport(HttpServletRequest request, Model model) {
-
+        model.addAttribute("backUrl", request.getRequestURI());
         //从cookie中获取用户手机号码
         String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-        //String usePhone="15601676403";
         if (StringTool.isNotBlank(usePhone)) {
             //查询用户是否有报告数据
             List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
-            for (IntelligenceFhRes inte:userReport) {
-                inte.setPhone(Com35Aes.encrypt(Com35Aes.KEYCODE, inte.getPhone()));
-            }
             if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
             }else{
                 return "emptyReport";
             }
         } else {
-            model.addAttribute("report", Constant.report);
            return "/user/login";
         }
         //跳转到报告页
@@ -100,12 +95,10 @@ public class IntelligenceFindHouseController {
                                       @RequestParam("reportId") String reportId) {
 
         if (StringTool.isNotBlank(reportId)) {
-            //判断用户是否登陆
-            //从cookie中获取用户手机号码
             String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
             if (StringTool.isBlank(usePhone)) {
                 //前台判断状态 然后跳转到登陆页面
-                 return NashResult.build("fail");
+                 return NashResult.Fail("no-login","");
             }else {
                 //更改当前报告的状态
                 int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
@@ -113,31 +106,13 @@ public class IntelligenceFindHouseController {
                     //收藏成功
                     return NashResult.build("ok");
                 }else{
-                    return NashResult.build("cancel");
+                    return NashResult.Fail("cancel","");
                 }
             }
         }
-        return NashResult.build("cancel");
+        return NashResult.Fail("cancel","");
     }
 
-
-    /**
-     * 功能描述：删除报告
-     *
-     * @return java.lang.String
-     * @author zhw
-     * @date 2018/1/4 20:06
-     */
-    @RequestMapping("/deleteMyReport/{reportId}/{phone}")
-    public String deleteMyReport(@PathVariable("reportId") String reportId, @PathVariable("phone") String phone, Model model) {
-
-        //解密
-        int count = intelligenceFhResService.deleteMyReport(reportId, Com35Aes.decrypt(Com35Aes.KEYCODE, phone));
-        if (count != 0) {
-            model.addAttribute("message", "删除失败！");
-        }
-        return "redirect:/{citypath}/findhouse/queryMyReport";
-    }
     /**
      * 功能描述：取消收藏
      *
@@ -155,12 +130,12 @@ public class IntelligenceFindHouseController {
             if(count != 0){
                 return NashResult.build("ok");
             }else{
-                return NashResult.build("fail");
+                return NashResult.Fail("fail","");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return NashResult.build("fail");
+            return NashResult.Fail("fail","");
         }
     }
     /**
@@ -187,7 +162,7 @@ public class IntelligenceFindHouseController {
 
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
         if(StringTool.isNotBlank(intelligenceFh)){
-            if(intelligenceFh.getPlotCount()-5<5){//intelligenceFh.getPlotCount()-5<5
+            if(5>intelligenceFh.getPlotCount()){//intelligenceFh.getPlotCount()-5<5
                 intelligenceFh.setPlotCount(0);
             }
         }
@@ -211,47 +186,7 @@ public class IntelligenceFindHouseController {
         return NashResult.build(userType);
     }
 
-    /**
-     * 功能描述：异步根据价钱获取小区数量与相应的比率
-     *
-     * @param intelligenceQuery
-     * @return com.toutiao.web.common.restmodel.NashResult
-     * @author zhw
-     * @date 2017/12/18 21:05
-     */
-//    @RequestMapping("/goCheckPrice")
-//    @ResponseBody
-//    public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-//        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
-//        if(intelligenceFh.getPlotCount()-5<5){
-//            intelligenceFh.setPlotCount(0);
-//        }
-//        //获取根据用户条件筛选的小区数量和相应比率
-//        return NashResult.build(intelligenceFh);
-//    }
 
-
-    /**
-     * 功能描述：根据户型和总价查询小区数量
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 20:56
-     */
-//    @RequestMapping("/userCheckCategoryPage")
-//    @ResponseBody
-//    public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-//        //根据户型与总价条件赛选条件
-//        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
-//        if (StringTool.isNotBlank(intelligenceFh)) {
-//            intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
-//        }
-//        if(intelligenceFh.getPlotCount()-5<5){
-//            intelligenceFh.setPlotCount(0);
-//        }
-//        return NashResult.build(intelligenceFh);
-//    }
 
 
     /**
@@ -301,9 +236,15 @@ public class IntelligenceFindHouseController {
      * @date 2018/1/4 11:39
      */
     @RequestMapping("/showMyReport/{reportId}")
-    public String showUserPortrayal(@PathVariable("reportId") String reportId, Model model) {
+    public String showUserPortrayal(@PathVariable("reportId") String reportId,
+                                    @RequestParam(value = "title",required = false) String title,
+                                    Model model,HttpServletRequest request,HttpServletResponse response) {
         try {
             if (StringTool.isNotBlank(reportId)) {
+                if(StringTool.isNotBlank(title)){
+                    String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+                    intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
+                }
                 //查询用户是否有报告数据
                 IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
                 if (StringTool.isNotBlank(intelligenceFhRes)) {
@@ -325,6 +266,7 @@ public class IntelligenceFindHouseController {
                     model.addAttribute("fhtp", fhtp);
                     model.addAttribute("reportId", reportId);
                     model.addAttribute("intelligenceFhRes", intelligenceFhRes);
+                    model.addAttribute("backUrl", request.getRequestURI());
                     return "intelligent-report";
                 }
             }
@@ -368,26 +310,4 @@ public class IntelligenceFindHouseController {
     }
 
 
-    //测试
-
-    /**
-     * 功能描述：根据id查询报告页数据
-     *
-     * @param
-     * @return
-     * @author zengqingzhou
-     * @date 2018/1/3 17:45
-     */
-    @RequestMapping("/showMyReportData/{reportId}")
-    @ResponseBody
-    public NashResult find(@PathVariable("reportId") Integer id) {
-        Map map = new HashMap();
-        IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
-        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-        map.put("fhpt", fhpt);
-        map.put("fhtp", fhtp);
-        map.put("intelligenceFhRes", intelligenceFhRes);
-        return NashResult.build(map);
-    }
 }

@@ -21,7 +21,14 @@
         <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red"><#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if></em>左右的房源市场为您的目标市场 </p>
+                <p>根据您的检索条件<br>总价<em class="high-light-red">
+                <#if intelligenceFhRes?exists>
+                    <#if intelligenceFhRes['totalPrice']?number == 1500>
+                        ${intelligenceFhRes['totalPrice']?number?round}万以上
+                    <#else>
+                        ${intelligenceFhRes['totalPrice']?number?round}万左右
+                    </#if>
+                </#if></em>的房源市场为您的目标市场 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>
@@ -92,7 +99,15 @@
         <div class="page-content">
             <div class="header-summary-box">
                 <div class="header-summary">
-                    <p>根据您的检索条件，总价<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}万</#if>左右的房源市场为您的目标市场。</p>
+                    <p>根据您的检索条件，总价
+                    <#if intelligenceFhRes?exists>
+                        <#if intelligenceFhRes['totalPrice']?number == 1500>
+                        ${intelligenceFhRes['totalPrice']?number?round}万以上
+                        <#else>
+                        ${intelligenceFhRes['totalPrice']?number?round}万左右
+                        </#if>
+                    </#if>
+                        的房源市场为您的目标市场。</p>
                     <p>以下从市场行情，地理位置，宜居指数，交通及周边 配套设施等方面，为您挑选生活家</p>
                 </div>
             </div>
@@ -158,8 +173,16 @@
                     <div class="water-bg">
                         <div class="water-text-item">
                             <ul>
-                                <li>总价：<#if intelligenceFhRes?exists>${intelligenceFhRes['totalPrice']?number?round}</#if>万</li>
-                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district}</em></#list><#else ><em>-</em></#if></li>
+                                <#--这里的空格保留-->
+                                <li>总价：<#if intelligenceFhRes?exists>
+                                    <#if intelligenceFhRes['totalPrice']?number == 1500>
+                                    ${intelligenceFhRes['totalPrice']?number?round}万+
+                                    <#else>
+                                    ${intelligenceFhRes['totalPrice']?number?round}万
+                                    </#if>
+                                    </#if>
+                                </li>
+                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district} </em></#list><#else ><em>-</em></#if></li>
                                 <li>${intelligenceFhRes['layout']!""}居</li>
                             </ul>
                             <div class="tip-text">
@@ -191,30 +214,28 @@
                         <#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
-                                <li class="bgtype-${fhResult_index+1}">
-                                    <a class="clear" href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
-                                        <div>
-                                            <h4>${fhResult['projname']}</h4>
-                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
-                                                <p>${fhResult['esfPrice']?number?round}元/㎡</p>
-                                            <#else >
-                                                <p>${fhResult['price']?number?round}元/㎡</p>
-                                            </#if>
-                                            <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
-                                                <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
-                                            </#if>
-                                        <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
-                                            <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                <li class="bgtype-${fhResult_index+1}" data-href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                    <div>
+                                        <h4>${fhResult['projname']}</h4>
+                                        <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
+                                            <p>${fhResult['esfPrice']?number?round}元/㎡</p>
                                         <#else >
-                                            <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
-                                        </#if>-->
-                                        </div>
-                                        <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
-                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
-                                        <#else >
-                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                            <p>${fhResult['price']?number?round}元/㎡</p>
                                         </#if>
-                                    </a>
+                                        <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
+                                            <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
+                                        </#if>
+                                    <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                        <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                    <#else >
+                                        <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                    </#if>-->
+                                    </div>
+                                    <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
+                                        <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                    <#else >
+                                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                    </#if>
                                 </li>
                             </#list>
                         </#if>
@@ -571,6 +592,7 @@
 
         $('.collect-button').on('click', function () {
             var reportId = ${reportId};
+            var backUrl = "${backUrl}";
             $(this).find('.collect').toggleClass('active');
             if ($(this).find('.collect').hasClass('active')) {
                 // 收藏
@@ -580,17 +602,14 @@
                         async: true,
                         url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
                         data: reportId,
+                        dataType: "json",
                         success: function (data) {
-                            //改变状态
-                            if (data.data == "ok") {
-
-                            }
-                            if (data.data == "fail") {
+                            if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "/user/login?reportId=" + reportId;
+                                window.location.href = "/user/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
-                            if (data.data == "cancel") {
+                            if (data.code == "cancel") {
                                 $(this).find('.collect').removeClass('active');
                             }
                         }
@@ -603,12 +622,9 @@
                     async: true,
                     url: router_city('/findhouse/cancleMyReport/') + reportId,
                     data: reportId,
+                    dataType: "json",
                     success: function (data) {
-                        //改变状态
-                        if (data.data == "ok") {
-
-                        }
-                        if (data.data == "fail") {
+                        if (data.code == "cancel") {
                             // 取消收藏失败
                             $(this).find('.collect').removeClass('active');
                         }
@@ -1010,8 +1026,8 @@
         var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'));
         // 显示标题，图例和空的坐标
         var trafficSubwayGrid = {
-            left: 0,
-            right: '6%',
+            left: '-6.0%',
+            right: '0%',
             top: 0,
             bottom: '25%',
             containLabel: true

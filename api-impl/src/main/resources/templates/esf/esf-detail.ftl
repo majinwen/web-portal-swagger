@@ -12,7 +12,7 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="${houseDetail['housePhoto'][0]}">
+<img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -298,12 +298,10 @@
                     </#if>
                     <div class="picture-box">
                         <div class="picture-box">
-                            <#if map['housePhotoTitle']?exists>
-                                <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
-                                    <img src="${map.housePhotoTitle}" alt="">
-                                </#if>
-                            <#else >
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                                    <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                                <#else >
+                                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
                             <div class="bottom-text">
                                 <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
@@ -312,7 +310,8 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices?number?round}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>${map.room}室</#if>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices?number?round}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>
+                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>

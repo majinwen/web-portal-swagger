@@ -8,7 +8,7 @@
     <meta name="description" content="推荐你上头条房产看看【${village['rc']!'小区'}】的价格走势与小区详情">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/echarts.simple.min.js"></script>
+    <script src="${staticurl}/js/echarts.min.js"></script>
     <script>
         var locationnumber = '${village['location']}';
         var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
@@ -648,7 +648,7 @@
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
                             <#if village['parkingRate']??>
-                            ${village['parkingRate']?number?round}元/月
+                            ${village['parkingRate']}元/月
                             <#else >
                                 暂无数据
                             </#if>
@@ -816,20 +816,19 @@
                     name:'${village['area']!'区域'}价格',
                     type:'line',
                     data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                    showSymbol: false,
+                    showSymbol: false
                 },
                 {
                     name:'${village['tradingArea']!'商圈'}价格',
                     type:'line',
                     data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                    showSymbol: false,
+                    showSymbol: false
                 }
             ]
         };
-    <#if  (mouthList?size>0)>
+    <#if (mouthList?size>0)>
         myChartline.setOption(option);
     </#if>
-
 </script>
 <script>
     $(function () {
@@ -839,8 +838,6 @@
             $('#base-info').html(_divContent);
         }
     });
-
-
 </script>
 </body>
 </html>

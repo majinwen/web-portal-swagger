@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class PinyinServeContoller {
 
     @Autowired
-    private NewHouseService newHouseService;
-    @Autowired
     private PinyinService pinyinService;
 
 
@@ -35,18 +33,6 @@ public class PinyinServeContoller {
 
     }
 
-    /**
-     * 智能找房
-     *
-     * @return
-     */
-    @RequestMapping("/intelligent")
-    public String intelligent(Model model){
-
-        int t = 1;
-        model.addAttribute("t",t);
-        return "intelligent-find";
-    }
 
     /**
      * 404
