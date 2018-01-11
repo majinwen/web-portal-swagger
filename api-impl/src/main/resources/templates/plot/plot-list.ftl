@@ -214,7 +214,7 @@
                             </#if>
                         </div>
                         <div class="cont-block-price plot">
-                            <em>${plot['avgPrice']?number?round}元/㎡</em>
+                            <em>${plot['avgPrice']}元/㎡</em>
                         </div>
                     </div>
                 </div>
