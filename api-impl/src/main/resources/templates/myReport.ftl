@@ -115,9 +115,9 @@
 </div>
 <script>
     $('.slide-icon-button').on('click', function () {
-        console.log($(this).prev());
         $(this).parents('.report-item-content').toggleClass('animate-left');
         $(this).parents('.report-item-content').next('.more-menu').toggleClass('animate-left');
+        $(this).parents('.module-bottom-fill').next('.module-bottom-fill').addClass('none');
     });
     $('.recommond-plot').on('click', function () {
         $(this).toggleClass('current');

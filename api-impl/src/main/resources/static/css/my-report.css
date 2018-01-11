@@ -535,7 +535,9 @@ body {
       margin-top: -0.2933333333rem;
       background-image: url("/static/images/myreport/wdbg_icon_more.png");
       background-repeat: no-repeat;
-      background-position: center right; }
+      background-position: center;
+      -webkit-background-size: contain;
+      background-size: contain; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .my-report-item .report-item-content .slide-icon-button {
           background-image: url("/static/images/myreport/wdbg_icon_more@2x.png"); } }
@@ -575,10 +577,10 @@ body {
         width: 0.5866666667rem;
         height: 0.5866666667rem;
         margin-top: 0.0666666667rem; }
+      .my-report-item .more-menu li a {
+        color: #fff; }
       .my-report-item .more-menu li.examine-report {
         background-color: #747788; }
-        .my-report-item .more-menu li.examine-report a {
-          color: #fff; }
         .my-report-item .more-menu li.examine-report i {
           background-image: url("/static/images/myreport/wdbg_icon_ckbg.png");
           background-repeat: no-repeat;
