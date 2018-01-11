@@ -38,11 +38,9 @@
                                     <span>推荐小区</span>
                                     <i></i>
                                 </li>
-                                <li class="cancel-collection">
-                                    <a href="${router_city('/findhouse/deleteMyReport/'+myReport.id+'/'+myReport.phone)}">
+                                <li class="cancel-collection" id="report_${myReport.id}">
                                         <span>取消收藏</span>
                                         <i></i>
-                                    </a>
                                 </li>
                             </ul>
                         </div>
