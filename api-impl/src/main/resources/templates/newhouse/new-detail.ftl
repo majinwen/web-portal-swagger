@@ -90,12 +90,12 @@
             <li>
              <#if build['average_price']?exists && build['average_price'] gt 0>
                 <p>均价：<em class="high-light-red">
-                    ${build['average_price']?number?round}元/㎡
+                    ${build['average_price']}元/㎡
                 <#else>
                  <#if build['total_price']?exists && build['total_price'] gt 0>
                 <p>总价：<em class="high-light-red">
-                    ${build['total_price']?number?round}万元/套
-                 <#else>暂无价格
+                    ${build['total_price']}万元/套
+                 <#else>售价待定
                  </#if>
                 </#if>
                 </em></p>
@@ -209,7 +209,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em> <#if build['park_radio']??>
+                        <em> <#if build['park_radio']?exists>
                             ${build['park_radio']}
                               <#else>暂无数据
                              </#if></em>
@@ -603,7 +603,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
                         <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
-                            <span class="expand-price">${build['propertyfee']?number?round}元/㎡·月</span>
+                            <span class="expand-price">${build['propertyfee']}元/㎡·月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -613,7 +613,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
                         <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
-                            <span class="expand-price">${build['car_rent_price']?number?round}元/月</span>
+                            <span class="expand-price">${build['car_rent_price']}元/月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -671,9 +671,9 @@
                     <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
                     <h4 class="cont-last">
-                        <#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>均价：<em>${nearitem['average_price']?number?round}</em>元/㎡
+                        <#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>均价：<em>${nearitem['average_price']}</em>元/㎡
                             <#else >
-                                <#if nearitem['total_price']?exists&&nearitem['total_price']?number gt 0>总价：<em>${nearitem['total_price']?number?round}</em>万元/套
+                                <#if nearitem['total_price']?exists&&nearitem['total_price']?number gt 0>总价：<em>${nearitem['total_price']}</em>万元/套
                                     <#else ><em>售价待定</em>
                                 </#if>
                         </#if>

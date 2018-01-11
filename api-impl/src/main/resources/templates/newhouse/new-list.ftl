@@ -175,10 +175,10 @@
                         <p class="cont-block-2">
                             <em class="high-light-red">
                                 <#if map['average_price']?exists && map['average_price'] gt 0>
-                                ${map['average_price']?number?round}元/㎡
+                                ${map['average_price']}元/㎡
                                 <#else>
                                     <#if map['total_price']?exists && map['total_price'] gt 0>
-                                    ${map['total_price']?number?round}万元/套
+                                    ${map['total_price']}万元/套
                                     <#else>暂无价格
                                     </#if>
                                 </#if>
