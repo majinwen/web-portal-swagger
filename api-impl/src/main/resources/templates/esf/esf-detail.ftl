@@ -298,16 +298,14 @@
                     </#if>
                     <div class="picture-box">
                         <div class="picture-box">
-                            <#if map['housePhotoTitle']?exists>
-                                <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
-                                    <img src="${map.housePhotoTitle}" alt="">
-                                </#if>
-                            <#else >
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                                    <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                                <#else >
+                                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
-                            <div class="bottom-text">
+                            <#--<div class="bottom-text">
                                 <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="tilelist-content">
