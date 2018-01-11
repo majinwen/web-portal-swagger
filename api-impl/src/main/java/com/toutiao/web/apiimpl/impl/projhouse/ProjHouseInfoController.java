@@ -38,7 +38,6 @@ public class ProjHouseInfoController {
      * 功能描述：功能描述：根据房源的id以及小区的经度，维度查询房源详情，以及附近好房信息
      * <p>
      *
-     * @param [model, houseId, lat, lon]
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/15 11:06

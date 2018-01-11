@@ -49,9 +49,9 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     }
 
     @RequestMapping(produces = "text/html")
-    public ModelAndView handleHtml(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String handleHtml(HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        return "redirect:/404";
-        return new ModelAndView("404");
+        return "404";
     }
     @RequestMapping
     @ResponseBody

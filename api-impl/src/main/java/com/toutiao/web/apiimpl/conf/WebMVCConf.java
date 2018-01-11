@@ -1,10 +1,11 @@
 package com.toutiao.web.apiimpl.conf;
 
 import com.toutiao.web.apiimpl.conf.interceptor.LoginInterceptor;
-import org.apache.tomcat.util.descriptor.web.ErrorPage;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -20,19 +21,17 @@ import java.util.List;
  */
 @Configuration
 public class WebMVCConf extends WebMvcConfigurerAdapter {
-//    @Bean
-//    public EmbeddedServletContainerCustomizer containerCustomizer() {
-//        return new EmbeddedServletContainerCustomizer() {
-//            @Override
-//            public void customize(ConfigurableEmbeddedServletContainer container) {
-//                ErrorPage errorPage = new ErrorPage();
-//                errorPage.setErrorCode(HttpStatus.NOT_FOUND.value());
-//                errorPage.setLocation("/");
-//                container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
-//                container.addErrorPages(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/500"));
-//            }
-//        };
-//    }
+    @Bean
+    public EmbeddedServletContainerCustomizer containerCustomizer() {
+        return (container -> {
+//            ErrorPage error401Page = new ErrorPage(HttpStatus.UNAUTHORIZED, "/pinyin/404");
+//            ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/pinyin/404");
+//            ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/pinyin/404");
+            ErrorPage ftlErrorPage = new ErrorPage(TemplateException.class, "/pinyin/404");
+
+            container.addErrorPages(ftlErrorPage);
+        });
+    }
 
     @Autowired
     private LoginInterceptor loginInterceptor;
