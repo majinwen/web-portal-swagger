@@ -117,7 +117,7 @@
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists) * 10000}元/㎡
+                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)) * 10000}元/㎡
                 <#else>
                     暂无数据
                 </#if>
@@ -142,7 +142,7 @@
                         ${houseDetail.floor}楼层
                         </#if >
                         <#if houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0)>
-                            共${houseDetail.totalFloor}层
+                        共${houseDetail.totalFloor}层
                         </#if >
                         <#if (houseDetail.totalFloor??&&houseDetail.totalFloor==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
                             暂无数据

@@ -383,7 +383,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             sort.order(SortOrder.ASC);
             sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
             srb.addSort(sort);
-            SearchResponse searchResponse = srb.execute().actionGet();
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){
