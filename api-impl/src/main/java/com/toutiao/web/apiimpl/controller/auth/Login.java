@@ -44,10 +44,13 @@ public class Login {
      */
     @RequestMapping("/login")
     public String goLoginPage(Model model,@RequestParam(value = "report",required = false) String report,
-                              @RequestParam(value = "reportId",required = false) String reportId) {
+                              @RequestParam(value = "reportId",required = false) String reportId,HttpServletRequest request) {
         if(StringTool.isNotBlank(report)){
             model.addAttribute("report", report);
         }
+
+
+
         if(StringTool.isNotBlank(reportId)){
             model.addAttribute("reportResult", Constant.report_result);
             model.addAttribute("reportId", reportId);
