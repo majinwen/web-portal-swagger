@@ -303,9 +303,9 @@
                                 <#else >
                                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
-                            <#--<div class="bottom-text">
+                            <div class="bottom-text">
                                 <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                     <div class="tilelist-content">
