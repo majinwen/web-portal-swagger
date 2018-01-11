@@ -43,38 +43,33 @@ public class Login {
      * @date 2017/12/20 10:54
      */
     @RequestMapping("/login")
-    public String goLoginPage(Model model,@RequestParam(value = "report",required = false) String report,
-                              @RequestParam(value = "reportId",required = false) String reportId) {
-        if(StringTool.isNotBlank(report)){
-            model.addAttribute("report", report);
+    public String goLoginPage(Model model,@RequestParam(value = "backUrl",required = false) String backUrl,
+                                          @RequestParam(value = "title",required = false) String title,
+                              HttpServletRequest request) {
+        if(StringTool.isNotBlank(backUrl)){
+            model.addAttribute("backUrl", backUrl);
         }
-        if(StringTool.isNotBlank(reportId)){
-            model.addAttribute("reportResult", Constant.report_result);
-            model.addAttribute("reportId", reportId);
+        if(StringTool.isNotBlank(title)){
+            model.addAttribute("title", title);
         }
         return "login";
     }
 
     @RequestMapping(value = {"/tologin"}, method = {RequestMethod.POST})
     public String login(@RequestParam(value = "phone") String phone,
-                        @RequestParam(value = "report",required = false) String report,
-                        @RequestParam(value = "reportResult",required = false) String reportResult,
-                        @RequestParam(value = "reportId",required = false) String reportId,
+                        @RequestParam(value = "backUrl",required = false) String backUrl,
+                        @RequestParam(value = "title",required = false) String title,
                         @RequestParam(value = "code") String code,
                         HttpServletResponse response, HttpServletRequest request,
                         @RequestParam(value = "imageCode", required = false) String imageCode, ModelMap modelMap) {
         try {
-            //获取当前用户电话号码在缓存中的次数
-            int count = StringTool.getInteger(redisSession.getValue(phone + RedisNameUtil.separativeSignCount));
-
             modelMap.addAttribute("phone", phone);
-            modelMap.addAttribute("count", count);
-            if(StringTool.isNotBlank(report)){
-                modelMap.addAttribute("report", report);
+            modelMap.addAttribute("count", StringTool.getInteger(redisSession.getValue(phone + RedisNameUtil.separativeSignCount)));
+            if(StringTool.isNotBlank(backUrl)){
+                modelMap.addAttribute("backUrl", backUrl);
             }
-            if(StringTool.isNotBlank(reportResult)&&StringTool.isNotBlank(reportId)){
-                modelMap.addAttribute("reportResult", reportResult);
-                modelMap.addAttribute("reportId", reportId);
+            if(StringTool.isNotBlank(title)){
+                modelMap.addAttribute("title", title);
             }
             //判断页面传递过来的电话号码与短信验证码是否为空
             if (StringTool.isBlank(phone) || StringTool.isBlank(code)) {
@@ -103,7 +98,7 @@ public class Login {
                 return "login";
             }
             //从cookie中获取图片验证码与页面传递过来的验证码进行对比
-            if (count > Constant.LOGIN_ERROR_TIMES) {
+            if (StringTool.getInteger(redisSession.getValue(phone + RedisNameUtil.separativeSignCount)) > Constant.LOGIN_ERROR_TIMES) {
 
                 if (StringTool.isNotBlank(imageCode) && StringTool.isNotBlank(CookieUtils.getCookie(request, response,
                         "imageCode")) && !CookieUtils.getCookie(request, response,
@@ -123,11 +118,11 @@ public class Login {
             }
             //将用户登录信息放置到cookie中判断用户登录状态
             setCookieAndCache(phone, request, response);
-            if(StringTool.isNotBlank(report)&& report.equalsIgnoreCase(Constant.report)){
-                return "redirect:/bj/findhouse/queryMyReport";
+            if(StringTool.isNotBlank(backUrl)&&StringTool.isNotBlank(title)){
+                return "redirect:"+backUrl+"?title="+title;
             }
-            if(StringTool.isNotBlank(reportResult)&& reportResult.equalsIgnoreCase(Constant.report_result)&&StringTool.isNotBlank(reportId)){
-                return "redirect:/bj/findhouse/showMyReport/"+reportId;
+            if(StringTool.isNotBlank(backUrl)){
+                return "redirect:"+backUrl;
             }
         } catch (Exception e) {
             e.printStackTrace();

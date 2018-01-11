@@ -25,7 +25,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper">
                 <li class="swiper-slide">
-                    <img class="scaleImg" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
+                    <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -303,7 +303,7 @@
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/main.js?201801112016"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>

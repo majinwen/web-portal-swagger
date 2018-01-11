@@ -269,7 +269,7 @@ public class PlotServiceImpl implements PlotService {
                 String[] HeatingMode = heatingMode.split(",");
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
-
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
             //排序
             //均价
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
@@ -282,10 +282,10 @@ public class PlotServiceImpl implements PlotService {
             //小区默认排序
             //如果有关键字，优先按关键字查找
             if(StringTool.isNotBlank(villageRequest.getKeyword())){
-                srb.addSort("_score",SortOrder.DESC).addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                srb.addSort("_score",SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
             }else{
                 //先发布后发布 级别从小到大  分数由大到小
-                srb.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                srb.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
             }
 
 
@@ -388,8 +388,9 @@ public class PlotServiceImpl implements PlotService {
                     houseList = getPoltData(searchHists);
                     SearchResponse searchresponse = null;
                     BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);;
-                    srb1.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);
+                    srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
                             .setFrom((0) * pageSize)
                             .setSize(pageSize-hits.getHits().length)
@@ -401,8 +402,9 @@ public class PlotServiceImpl implements PlotService {
                     long es_from = (pageNum-1)*pageSize - oneKM_size;
                     SearchResponse searchresponse = null;
                     BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);;
-                    srb1.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+                    srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
                             .setFrom(Integer.valueOf((int) es_from))
                             .setSize(pageSize)
