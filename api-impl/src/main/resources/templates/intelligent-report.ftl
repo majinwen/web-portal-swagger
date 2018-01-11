@@ -1028,7 +1028,7 @@
         var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'));
         // 显示标题，图例和空的坐标
         var trafficSubwayGrid = {
-            left: '-6.5%',
+            left: '-6.0%',
             right: '0%',
             top: 0,
             bottom: '25%',
