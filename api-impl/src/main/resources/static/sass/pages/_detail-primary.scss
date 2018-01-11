@@ -312,15 +312,15 @@
 
         ul {
             width: 100%;
+            -webkit-display: flex;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             white-space: nowrap;
-            overflow-x: scroll;
 
             li {
                 position: relative;
-                display: inline-block;
-                width: 3em;
+                -webkit-flex: 1;
+                flex: 1;
                 margin: 0 rem(40);
                 @include font-dpr(26);
                 text-align: center;
@@ -332,8 +332,10 @@
                     height: rem(66);
                     margin: 0 auto rem(20);
                     background-position: left center;
-                    -webkit-background-size: auto 100%;
-                    background-size: auto 100%;
+                    -webkit-background-size: cover;
+                    background-size: cover;
+                    -webkit-border-radius: 50%;
+                    border-radius: 50%;
                 }
 
                 &.parent-child {
@@ -365,7 +367,7 @@
                 &:before {
                     content: '';
                     position: absolute;
-                    right: rem(70);
+                    right: 100%;
                     top: rem(26);
                     width: rem(78);
                     height: rem(17);

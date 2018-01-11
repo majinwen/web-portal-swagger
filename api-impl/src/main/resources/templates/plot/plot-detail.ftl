@@ -816,20 +816,19 @@
                     name:'${village['area']!'区域'}价格',
                     type:'line',
                     data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                    showSymbol: false,
+                    showSymbol: false
                 },
                 {
                     name:'${village['tradingArea']!'商圈'}价格',
                     type:'line',
                     data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                    showSymbol: false,
+                    showSymbol: false
                 }
             ]
         };
-    <#if  (mouthList?size>0)>
+    <#if (mouthList?size>0)>
         myChartline.setOption(option);
     </#if>
-
 </script>
 <script>
     $(function () {
@@ -839,8 +838,6 @@
             $('#base-info').html(_divContent);
         }
     });
-
-
 </script>
 </body>
 </html>
