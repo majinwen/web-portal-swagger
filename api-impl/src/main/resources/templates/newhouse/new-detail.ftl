@@ -209,7 +209,7 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em> <#if build['park_radio']??&&build['lift_door_radio']!=''>
+                        <em> <#if build['park_radio']?exists>
                             ${build['park_radio']}
                               <#else>暂无数据
                              </#if></em>
