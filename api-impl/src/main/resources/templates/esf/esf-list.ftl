@@ -228,11 +228,11 @@
                         </div>
                         <div class="cont-block-price">
                             <#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>
-                                <em>${map.houseTotalPrices?number?round}万</em>
+                                <em>${map.houseTotalPrices}万</em>
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?number?round) * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?number) * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>
