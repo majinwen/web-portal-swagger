@@ -229,6 +229,8 @@ function chooseUserFinds() {
                     var priceInit = $('.total-conent').find('.slide-text').text();
                     var totalPrice = parseInt(priceInit);
                     options['preconcTotal'] = totalPrice;
+                    options['downPayMent'] = null;
+                    options['monthPayMent'] = null;
                     var totalPriceHtml = '<p><span>总价：<em>' + priceInit + '</em></span></p>';
                     that.el.find('.result-animate').html(totalPriceHtml);
 
@@ -241,6 +243,7 @@ function chooseUserFinds() {
 
                     options['downPayMent'] = payPrice;
                     options['monthPayMent'] = monthPrice;
+                    options['preconcTotal'] = null;
                     var payPriceHtml = '<p><span>首付：<em>' + payInit + '</em></span><span>月供：<em>' + monthPrice + '元</em></span></p>';
                     that.el.find('.result-animate').html(payPriceHtml);
 
