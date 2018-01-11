@@ -447,7 +447,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         sort.point(lat, lon);
         srb.addSort(sort).setFetchSource(
                 new String[]{"building_name_id","building_name","average_price","city_id",
-                        "district_id","district_name","area_id","area_name","building_imgs"},
+                        "district_id","district_name","area_id","area_name","building_imgs","total_price"},
                 null);
 
         SearchResponse searchResponse = srb.execute().actionGet();

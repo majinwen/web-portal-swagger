@@ -670,7 +670,14 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearitem['building_name']!'暂无数据'}</p>
                     <p class="cont-center"><span>${nearitem['district_name']!'暂无数据'}</span><span>${nearitem['area_name']!'暂无数据'}</span></p>
-                    <h4 class="cont-last">均价：<em><#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>${nearitem['average_price']?number?round}元/㎡<#else >售价待定</#if></em></h4>
+                    <h4 class="cont-last">
+                        <#if nearitem['average_price']?exists&&nearitem['average_price']?number gt 0>均价：<em>${nearitem['average_price']?number?round}</em>元/㎡
+                            <#else >
+                                <#if nearitem['total_price']?exists&&nearitem['total_price']?number gt 0>总价：<em>${nearitem['total_price']?number?round}</em>万元/套
+                                    <#else ><em>售价待定</em>
+                                </#if>
+                        </#if>
+                    </h4>
                 </div>
             </a>
         </li>
