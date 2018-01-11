@@ -93,14 +93,25 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             userChooiseLayout(intelligenceFh);
         }
 
-        Integer count = 0;
+//        Integer count = 0;
         //通过总价和户型查询小区数量
-        if(!StringTool.isNotBlank(intelligenceFh.getDistrictId())){
+//        if(!StringTool.isNotBlank(intelligenceFh.getDistrictId())){
+//            count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
+//        }
+
+        List<DistictInfo> distictInfo = new ArrayList<>();
+        //获取该小区所在区域的信息
+        if(StringTool.isNotBlank(intelligenceFh.getLayOut())){
+            Integer count = 0;
+            distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
             count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
+            intelligenceFh.setPlotCount(count);
+        }else{
+            Integer count = 0;
+            count = intelligenceFindhouseMapper.queryPlotCount(plotTotalFirst, plotTotalEnd);
+            intelligenceFh.setPlotCount(count);
         }
 
-        //获取该小区所在区域的信息
-        List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
         intelligenceFh.setDistictInfo(distictInfo);
         //用户占比率
         if(!StringTool.isNotBlank(intelligenceFh.getLayOut())){
@@ -116,15 +127,17 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if(StringTool.isNotBlank(intelligenceFh.getDistrictId())){
 
             String[] split  = intelligenceFh.getDistrictId().split(",");
+            Integer count = 0;
             for (int i = 0; i < split.length; i++) {
                 //通过总价和户型查询小区数量
                 int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
                 count = count+count1;
             }
+            intelligenceFh.setPlotCount(count);
         }
 
         //小区数量
-        intelligenceFh.setPlotCount(count);
+//        intelligenceFh.setPlotCount(count);
         return intelligenceFh;
     }
 
