@@ -169,7 +169,7 @@
                         <#else>
                         <#if map['total_price']?exists && map['total_price'] gt 0>
                             <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
-                        <#else>售价待定
+                        <#else><p class="cont-block-2 high-light-red">售价待定</p>
                         </#if>
                     </#if>
                     </p>
