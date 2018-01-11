@@ -95,7 +95,7 @@
                  <#if build['total_price']?exists && build['total_price'] gt 0>
                 <p>总价：<em class="high-light-red">
                     ${build['total_price']}万元/套
-                 <#else>暂无价格
+                 <#else>售价待定
                  </#if>
                 </#if>
                 </em></p>
