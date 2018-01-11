@@ -185,7 +185,7 @@
                                 ${map.buildArea}㎡
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                                / ${map.room}室${map.hall}厅
+                                / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
                             </#if>
                             <#if map.forwardName?exists>
                                 / ${map.forwardName}
