@@ -66,7 +66,9 @@
             height: rem(44);
             margin-top: rem(-22);
             @include bg-image('/static/images/myreport/wdbg_icon_more');
-            background-position: center right;
+            background-position: center;
+            -webkit-background-size: contain;
+            background-size: contain;
         }
     }
 
@@ -105,12 +107,12 @@
                 margin-top: rem(5);
             }
 
+            a {
+                color: $baseWhite;
+            }
+
             &.examine-report {
                 background-color: #747788;
-
-                a {
-                    color: $baseWhite;
-                }
 
                 i {
                     @include bg-image('/static/images/myreport/wdbg_icon_ckbg');

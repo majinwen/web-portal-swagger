@@ -174,10 +174,13 @@
                         </h3>
                         <p class="cont-block-2">
                             <em class="high-light-red">
-                                <#if map['average_price']?exists && (map['average_price']>0)>
-                                    ${map['average_price']?number?round}元/㎡
+                                <#if map['average_price']?exists && map['average_price'] gt 0>
+                                ${map['average_price']}元/㎡
                                 <#else>
-                                    售价待定
+                                    <#if map['total_price']?exists && map['total_price'] gt 0>
+                                    ${map['total_price']}万元/套
+                                    <#else>暂无价格
+                                    </#if>
                                 </#if>
                             </em>
                         </p>
@@ -264,7 +267,11 @@
                     {{if $value.average_price != null && $value.average_price > 0}}
                         {{$value.average_price}}元/㎡
                     {{else}}
+                    {{if $value.total_price != null && $value.total_price > 0}}
+                    {{$value.total_price}}万元/套
+                    {{else}}
                         售价待定
+                    {{/if}}
                     {{/if}}
                 </em>
             </p>

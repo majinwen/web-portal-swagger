@@ -531,14 +531,14 @@ body {
     margin-bottom: 0.5333333333rem; }
     .expand-content .map-education-box ul {
       width: 100%;
+      -webkit-display: flex;
       display: flex;
-      justify-content: center;
-      white-space: nowrap;
-      overflow-x: scroll; }
+      justify-content: space-between;
+      white-space: nowrap; }
       .expand-content .map-education-box ul li {
         position: relative;
-        display: inline-block;
-        width: 3em;
+        -webkit-flex: 1;
+        flex: 1;
         margin: 0 0.5333333333rem;
         text-align: center;
         white-space: nowrap; }
@@ -554,8 +554,10 @@ body {
           height: 0.88rem;
           margin: 0 auto 0.2666666667rem;
           background-position: left center;
-          -webkit-background-size: auto 100%;
-          background-size: auto 100%; }
+          -webkit-background-size: cover;
+          background-size: cover;
+          -webkit-border-radius: 50%;
+          border-radius: 50%; }
         .expand-content .map-education-box ul li.parent-child i {
           background-image: url("/static/images/plot/xqxq_jy_icon1_w.png");
           background-repeat: no-repeat; }
@@ -604,7 +606,7 @@ body {
         .expand-content .map-education-box ul li:before {
           content: '';
           position: absolute;
-          right: 0.9333333333rem;
+          right: 100%;
           top: 0.3466666667rem;
           width: 1.04rem;
           height: 0.2266666667rem;

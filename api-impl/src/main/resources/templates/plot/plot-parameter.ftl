@@ -32,13 +32,13 @@
                 </#if>
             </div>
             <div class="isopsophic-air-index">
-                <p>空气指数：暂无数据</p>
-                <p>噪音指数：暂无数据</p>
+                <#--<p>空气指数：暂无数据</p>-->
+                <#--<p>噪音指数：暂无数据</p>-->
             </div>
         </div>
         <ul class="primary-item">
             <li>
-                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡ <#else>暂无数据</#if></p>
+                <p>参考均价：<#if village['avgPrice']?exists&&village['avgPrice']?number gt 0><em class="high-light-red">${village['avgPrice']}元</em>/㎡ <#else>暂无数据</#if></p>
             </li>
         </ul>
     </section>

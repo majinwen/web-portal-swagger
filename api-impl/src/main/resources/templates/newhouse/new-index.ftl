@@ -26,7 +26,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner.png" alt="一阙藏中国">
+                    <img src="${staticurl}/images/newindex/sy_banner.jpg" alt="美好新居 尽在头条">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -165,7 +165,7 @@
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            ${map['average_price']?number?round}/㎡
+                            ${map['average_price']}/㎡
                         <#else>
                             售价待定
                         </#if>

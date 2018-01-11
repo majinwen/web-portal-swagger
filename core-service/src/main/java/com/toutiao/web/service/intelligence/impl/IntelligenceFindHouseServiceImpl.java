@@ -67,11 +67,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         if (StringTool.isNotBlank(intelligenceFh.getDownPayMent()) && StringTool.
                 isNotBlank(intelligenceFh.getMonthPayMent())) {
             plotTotal = String.valueOf(Integer.valueOf(intelligenceFh.getDownPayMent()) + (Integer.valueOf(intelligenceFh.getMonthPayMent()) * 12 * 30 / 10000));
-        }
-        //选择总价
-        if (StringTool.isNotBlank(intelligenceFh.getPreconcTotal())) {
+        }else{
+            //选择总价
             plotTotal = intelligenceFh.getPreconcTotal();
         }
+
         String substring1 = plotTotal.substring(0, plotTotal.length()-1);
         if(Double.valueOf(substring1)<=1500){
             intelligenceFh.setPreconcTotal(plotTotal);
@@ -402,7 +402,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
         plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1));
         intelligenceFh.setMaxTotalPrice(plotTotalEnd);
         intelligenceFh.setMinTotalPrice(plotTotalFirst);
-
+        intelligenceFh.setTotalPrice(plotTotal);
+        intelligenceFh.setPreconcTotal(plotTotal);
         return intelligenceFh;
     }
 
