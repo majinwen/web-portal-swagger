@@ -5,6 +5,7 @@ import cn.org.rapid_framework.freemarker.directive.ExtendsDirective;
 import cn.org.rapid_framework.freemarker.directive.OverrideDirective;
 import com.toutiao.web.apiimpl.authentication.GetUserMethod;
 import com.toutiao.web.apiimpl.conf.freemarker.Router;
+import freemarker.template.TemplateExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class FreeMarkerConfig {
 
     @PostConstruct
     public void setSharedVariable(){
+        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setNumberFormat("#");
         configuration.setSharedVariable("block", new BlockDirective());
         configuration.setSharedVariable("override", new OverrideDirective());
