@@ -11,7 +11,7 @@
 <body>
 <h2>手机快捷登录</h2>
 <p class="registration-prompt">（未注册过的手机号将自动创建账号）</p>
-<form action="/user/tologin?backUrl="+${backUrl} id="myform" class="login-form" method="post">
+<form action="/user/tologin?backUrl=<#if backUrl?exists>${backUrl}</#if>" id="myform" class="login-form" method="post">
     <input type="hidden" name="count" id="count" value="<#if count?exists>${count}<#else >0</#if>">
     <input type="hidden" name="report" id="report" value="<#if report?exists>${report}</#if>">
     <div class="input-phone">

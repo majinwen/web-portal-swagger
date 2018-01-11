@@ -80,7 +80,7 @@ public class IntelligenceFindHouseController {
                 return "emptyReport";
             }
         } else {
-            model.addAttribute("report", Constant.report);
+            model.addAttribute("backUrl", "bj/findhouse/queryMyReport");
            return "/user/login";
         }
         //跳转到报告页
