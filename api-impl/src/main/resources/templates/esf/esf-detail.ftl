@@ -86,7 +86,7 @@
                         <span>总价</span>
                         <em>
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
-                        ${houseDetail.houseTotalPrices?number?round}万
+                        ${houseDetail.houseTotalPrices}万
                         <#else>
                             暂无数据
                         </#if>
@@ -255,7 +255,7 @@
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
                 </#if>
             </p>
         </div>
@@ -310,7 +310,7 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices?number?round}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>
                                 <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
@@ -343,7 +343,7 @@
                         <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
-                        <p class="cont-last"><em>${plotInfo.avgPrice?number?round}元</em>/㎡</p>
+                        <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
                     </#if>
                 </div>
             </a></li>

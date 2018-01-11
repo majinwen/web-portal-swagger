@@ -168,7 +168,7 @@
                             <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
                         <#else>
                         <#if map['total_price']?exists && map['total_price'] gt 0>
-                            <p class="cont-block-2 high-light-red">${map['total_price']?number?round}万元/套</p>
+                            <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
                         <#else>售价待定
                         </#if>
                     </#if>
