@@ -159,16 +159,22 @@ public class PlotConterller {
     public String parameter(VillageRequest villageRequest, Model model) {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
-        model.addAttribute("villageList", villageList);
-        return "plot/plot-parameter";
+        if (null!=villageList&&villageList.size()!=0){
+            model.addAttribute("villageList", villageList);
+            return "plot/plot-parameter";
+        }
+        return "404";
     }
 
     //获取小区地图
     @RequestMapping("/{id}/map.html")
     public String plotMap(VillageRequest villageRequest, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
+        if (null!= villageList&&villageList.size()!=0){
         VillageResponse village = (VillageResponse) villageList.get(0);
-        model.addAttribute("build", village);
-        return "map";
+            model.addAttribute("build", village);
+            return "map";
+        }
+        return "404";
     }
 }
