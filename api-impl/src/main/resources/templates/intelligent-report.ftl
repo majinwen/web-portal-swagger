@@ -580,17 +580,14 @@
                         async: true,
                         url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
                         data: reportId,
+                        dataType: "json"
                         success: function (data) {
-                            //改变状态
-                            if (data.data == "ok") {
-
-                            }
-                            if (data.data == "fail") {
+                            if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "/user/login?reportId=" + reportId;
+                                window.location.href = "/user/login?backUrl=/bj/findhouse/showMyReport/"+reportId;
                             }
                             // 收藏失败
-                            if (data.data == "cancel") {
+                            if (data.code == "cancel") {
                                 $(this).find('.collect').removeClass('active');
                             }
                         }
@@ -603,12 +600,9 @@
                     async: true,
                     url: router_city('/findhouse/cancleMyReport/') + reportId,
                     data: reportId,
+                    dataType: "json"
                     success: function (data) {
-                        //改变状态
-                        if (data.data == "ok") {
-
-                        }
-                        if (data.data == "fail") {
+                        if (data.code == "cancel") {
                             // 取消收藏失败
                             $(this).find('.collect').removeClass('active');
                         }

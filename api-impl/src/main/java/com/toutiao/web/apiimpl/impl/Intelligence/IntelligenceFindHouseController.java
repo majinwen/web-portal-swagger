@@ -105,7 +105,7 @@ public class IntelligenceFindHouseController {
             String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
             if (StringTool.isBlank(usePhone)) {
                 //前台判断状态 然后跳转到登陆页面
-                 return NashResult.build("fail");
+                 return NashResult.Fail("no-login","");
             }else {
                 //更改当前报告的状态
                 int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
@@ -113,11 +113,11 @@ public class IntelligenceFindHouseController {
                     //收藏成功
                     return NashResult.build("ok");
                 }else{
-                    return NashResult.build("cancel");
+                    return NashResult.Fail("cancel","");
                 }
             }
         }
-        return NashResult.build("cancel");
+        return NashResult.Fail("cancel","");
     }
 
 
@@ -211,47 +211,7 @@ public class IntelligenceFindHouseController {
         return NashResult.build(userType);
     }
 
-    /**
-     * 功能描述：异步根据价钱获取小区数量与相应的比率
-     *
-     * @param intelligenceQuery
-     * @return com.toutiao.web.common.restmodel.NashResult
-     * @author zhw
-     * @date 2017/12/18 21:05
-     */
-//    @RequestMapping("/goCheckPrice")
-//    @ResponseBody
-//    public NashResult plotCountByTotalPrice(IntelligenceQuery intelligenceQuery) {
-//        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPrice(intelligenceQuery);
-//        if(intelligenceFh.getPlotCount()-5<5){
-//            intelligenceFh.setPlotCount(0);
-//        }
-//        //获取根据用户条件筛选的小区数量和相应比率
-//        return NashResult.build(intelligenceFh);
-//    }
 
-
-    /**
-     * 功能描述：根据户型和总价查询小区数量
-     *
-     * @param intelligenceQuery, model
-     * @return java.lang.String
-     * @author zhw
-     * @date 2017/12/26 20:56
-     */
-//    @RequestMapping("/userCheckCategoryPage")
-//    @ResponseBody
-//    public NashResult queryPlotCountByCategory(IntelligenceQuery intelligenceQuery, Model model) {
-//        //根据户型与总价条件赛选条件
-//        IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserCheckPriceAndCategory(intelligenceQuery);
-//        if (StringTool.isNotBlank(intelligenceFh)) {
-//            intelligenceFh.setRatio(intelligenceFh.getRatio() / 1000);
-//        }
-//        if(intelligenceFh.getPlotCount()-5<5){
-//            intelligenceFh.setPlotCount(0);
-//        }
-//        return NashResult.build(intelligenceFh);
-//    }
 
 
     /**
@@ -368,26 +328,4 @@ public class IntelligenceFindHouseController {
     }
 
 
-    //测试
-
-    /**
-     * 功能描述：根据id查询报告页数据
-     *
-     * @param
-     * @return
-     * @author zengqingzhou
-     * @date 2018/1/3 17:45
-     */
-    @RequestMapping("/showMyReportData/{reportId}")
-    @ResponseBody
-    public NashResult find(@PathVariable("reportId") Integer id) {
-        Map map = new HashMap();
-        IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(id);
-        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-        map.put("fhpt", fhpt);
-        map.put("fhtp", fhtp);
-        map.put("intelligenceFhRes", intelligenceFhRes);
-        return NashResult.build(map);
-    }
 }
