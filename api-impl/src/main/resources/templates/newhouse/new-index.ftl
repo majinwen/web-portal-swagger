@@ -165,7 +165,7 @@
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
                         <#if map['total_price']?exists && map['total_price'] gt 0>
                             <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
