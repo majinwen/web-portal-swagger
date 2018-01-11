@@ -9,7 +9,7 @@ var BaseUrl = uu.val();
 $(function () {
     scaleImg();             // 大首页图片拖拽
 
-    describeAllShow();      // 描述展示全部
+    //describeAllShow();      // 描述展示全部
 
     detailContactState();   // 分享，收藏，咨询展示状态
 

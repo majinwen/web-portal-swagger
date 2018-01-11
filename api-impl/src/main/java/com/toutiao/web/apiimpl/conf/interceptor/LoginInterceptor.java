@@ -64,11 +64,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             request.setAttribute("userphone", validCookieValue1);
         }else{
             request.setAttribute("userphone", "请登录");
-
-
-
-
-
         }
         /*if (serializableData == null) {
             response.setContentType("application/json;charset=utf-8");

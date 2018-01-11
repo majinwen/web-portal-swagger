@@ -12,7 +12,7 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="${houseDetail['housePhoto'][0]}">
+<img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}-tt1200x640</#if>" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">

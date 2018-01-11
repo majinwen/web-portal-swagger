@@ -38,11 +38,11 @@
                                         <span>推荐小区</span>
                                         <i></i>
                                     </li>
-                                    <li class="cancel-collection">
-                                        <a href="${router_city('/findhouse/deleteMyReport/'+myReport.id+'/'+myReport.phone)}">
+                                    <li class="cancel-collection" id="report_${myReport.id}">
+                                        <#--<a href="${router_city('/findhouse/deleteMyReport/'+myReport.id)}">-->
                                             <span>取消收藏</span>
                                             <i></i>
-                                        </a>
+                                        <#--</a>-->
                                     </li>
                                 </ul>
                             </div>
@@ -113,6 +113,7 @@
         </#if>
     <#if message?exists> <p style="color: red">${message}</p></#if>
 </div>
+<script src="${staticurl}/js/URI.min.js"></script>
 <script>
     $('.slide-icon-button').on('click', function () {
         console.log($(this).prev());
@@ -123,6 +124,40 @@
         $(this).toggleClass('current');
         $(this).parents('.module-bottom-fill').next('.module-bottom-fill').toggleClass('none');
     })
+    $(".cancel-collection").on('click', function () {
+        var id=$(".cancel-collection").attr("id").split("_")[1];
+        $.ajax({
+            type: "GET",
+            async: true,
+            url: router_city('/findhouse/cancleMyReport/')+id,
+            dataType: "json",
+            success: function (data) {
+                if (data.code == "success") {
+                    //重定向到登陆页面
+                    window.location.href ="${backUrl}";
+                }
+                if(data.code="fail"){
+                    //取下失败给个提示
+
+                }
+            }
+        });
+    })
+    function router_city(urlparam) {
+        urlparam = urlparam || '';
+        if (urlparam[0] != '/') {
+            urlparam = '/' + urlparam
+        }
+        var uri = new URI(window.location.href);
+        var segmens = uri.segment();
+        var city = '';
+        if (segmens.length > 0) {
+            city = '/' + segmens[0]
+        }
+        return city + urlparam
+    }
+
+
 </script>
 </body>
 </html>

@@ -571,6 +571,7 @@
 
         $('.collect-button').on('click', function () {
             var reportId = ${reportId};
+            var backUrl = "${backUrl}";
             $(this).find('.collect').toggleClass('active');
             if ($(this).find('.collect').hasClass('active')) {
                 // 收藏
@@ -580,11 +581,11 @@
                         async: true,
                         url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
                         data: reportId,
-                        dataType: "json"
+                        dataType: "json",
                         success: function (data) {
                             if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "/user/login?backUrl=/bj/findhouse/showMyReport/"+reportId;
+                                window.location.href = "/user/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
                             if (data.code == "cancel") {
@@ -600,7 +601,7 @@
                     async: true,
                     url: router_city('/findhouse/cancleMyReport/') + reportId,
                     data: reportId,
-                    dataType: "json"
+                    dataType: "json",
                     success: function (data) {
                         if (data.code == "cancel") {
                             // 取消收藏失败

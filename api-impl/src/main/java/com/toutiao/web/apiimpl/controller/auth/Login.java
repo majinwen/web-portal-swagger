@@ -44,9 +44,13 @@ public class Login {
      */
     @RequestMapping("/login")
     public String goLoginPage(Model model,@RequestParam(value = "backUrl",required = false) String backUrl,
+                                          @RequestParam(value = "title",required = false) String title,
                               HttpServletRequest request) {
         if(StringTool.isNotBlank(backUrl)){
             model.addAttribute("backUrl", backUrl);
+        }
+        if(StringTool.isNotBlank(title)){
+            model.addAttribute("title", title);
         }
         return "login";
     }
@@ -54,14 +58,18 @@ public class Login {
     @RequestMapping(value = {"/tologin"}, method = {RequestMethod.POST})
     public String login(@RequestParam(value = "phone") String phone,
                         @RequestParam(value = "backUrl",required = false) String backUrl,
+                        @RequestParam(value = "title",required = false) String title,
                         @RequestParam(value = "code") String code,
                         HttpServletResponse response, HttpServletRequest request,
                         @RequestParam(value = "imageCode", required = false) String imageCode, ModelMap modelMap) {
         try {
             modelMap.addAttribute("phone", phone);
             modelMap.addAttribute("count", StringTool.getInteger(redisSession.getValue(phone + RedisNameUtil.separativeSignCount)));
-            if(StringTool.isNotBlank(backUrl)&&StringTool.isNotBlank(backUrl)){
+            if(StringTool.isNotBlank(backUrl)){
                 modelMap.addAttribute("backUrl", backUrl);
+            }
+            if(StringTool.isNotBlank(title)){
+                modelMap.addAttribute("title", title);
             }
             //判断页面传递过来的电话号码与短信验证码是否为空
             if (StringTool.isBlank(phone) || StringTool.isBlank(code)) {
@@ -110,8 +118,11 @@ public class Login {
             }
             //将用户登录信息放置到cookie中判断用户登录状态
             setCookieAndCache(phone, request, response);
+            if(StringTool.isNotBlank(backUrl)&&StringTool.isNotBlank(title)){
+                return "redirect:"+backUrl+"?title="+title;
+            }
             if(StringTool.isNotBlank(backUrl)){
-                return "redirect:/"+backUrl;
+                return "redirect:"+backUrl;
             }
         } catch (Exception e) {
             e.printStackTrace();
