@@ -45,6 +45,7 @@ public class ProjHouseInfoController {
      */
     @RequestMapping(value = "/{houseId}.html")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
+
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
             return "404";

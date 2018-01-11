@@ -4,13 +4,18 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.AbstractErrorController;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -27,12 +32,35 @@ import java.util.Set;
  */
 @ControllerAdvice
 @Component
-public class GlobalExceptionHandler {
+@Controller
+@RequestMapping("${server.error.path:${error.path:/error}}")
+public class GlobalExceptionHandler extends AbstractErrorController {
     Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 
     @Value("${exception.show}")
     private String showException="";
+
+    private ErrorAttributes  errorAttributes;
+    @Autowired
+    public GlobalExceptionHandler(ErrorAttributes errorAttributes) {
+        super(errorAttributes);
+        this.errorAttributes = errorAttributes;
+    }
+
+    @RequestMapping(produces = "text/html")
+    public ModelAndView handleHtml(HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        return "redirect:/404";
+        return new ModelAndView("404");
+    }
+    @RequestMapping
+    @ResponseBody
+    public Object handleJson(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        return NashResult.Fail("server-error");
+    }
+
+
+
 
 
     // 异常处理方法：
@@ -161,4 +189,8 @@ public class GlobalExceptionHandler {
         return stringBuffer.toString();
     }
 
+    @Override
+    public String getErrorPath() {
+        return null;
+    }
 }
