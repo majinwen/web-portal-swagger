@@ -581,13 +581,9 @@
                         url: router_city('/findhouse/collectMyReport') + "?reportId=" + reportId,
                         data: reportId,
                         success: function (data) {
-                            //改变状态
-                            if (data.data == "ok") {
-
-                            }
-                            if (data.data == "fail") {
-                                //重定向到登陆页面
-                                window.location.href = "/user/login?reportId=" + reportId;
+                            console.log(data)
+                            if(data.code=='no-login'){
+                                window.location.href = "/user/login?backUrl=/bj/findhouse/showMyReport/"+reportId;
                             }
                             // 收藏失败
                             if (data.data == "cancel") {
@@ -604,9 +600,9 @@
                     url: router_city('/findhouse/cancleMyReport/') + reportId,
                     data: reportId,
                     success: function (data) {
-                        //改变状态
-                        if (data.data == "ok") {
-
+                        console.log(data.code=='no-login','cancel')
+                        if(data.code=='no-login'){
+                            window.location.href = "/user/login?backUrl=/bj/findhouse/showMyReport/"+reportId;
                         }
                         if (data.data == "fail") {
                             // 取消收藏失败
