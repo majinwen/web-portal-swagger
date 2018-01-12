@@ -26,7 +26,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner.jpg" alt="美好新居 尽在头条">
+                    <img src="${staticurl}/images/newindex/sy_banner.jpg?v=${staticversion}" alt="美好新居 尽在头条">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
