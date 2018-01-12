@@ -489,7 +489,7 @@ body {
           text-align: center;
           background-color: #e0e0e0; }
         .page2 .page-content .module-item .plot-title-box .plot-title-block ul {
-          display: table-row;
+          display: table;
           float: right;
           width: 85.5%;
           text-align: center; }
