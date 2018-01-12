@@ -92,7 +92,7 @@
             <#assign split = village['address']?split('-')>
             <#if split?size gt 1>${split[1]}<#else >
             ${village['address']!''}</#if></#if></p>
-            <p>${village['trafficInformation']!''}</p>
+            <#--<p>${village['trafficInformation']!''}</p>-->
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
@@ -288,8 +288,16 @@
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
-                    <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >暂无数据</#if></span>
+                    <#--<p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>-->
+                    <#--<span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >暂无数据</#if></span>-->
+                    <#if village['trafficInformation']?exists>
+                        <#assign rounditems = village['trafficInformation']?split("$")>
+                        <#assign x = rounditems[2]?number/1000>
+                        <p id="subwayLine">${rounditems[1]}</p>
+                        <span id="subwayDistance">${rounditems[0]}</span>
+                    <#else >
+                        暂无数据
+                    </#if>
                 </div>
             </#if>
                 <div class="info-card-item">
