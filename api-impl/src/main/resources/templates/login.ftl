@@ -49,6 +49,8 @@
     });
     //获取短信验证码
     $('.code-btn-box').on('click', '#phone_code', function () {
+        $("#message").html("");
+        $("#mycode").val("");
         var bo = false;
         var msgInfo = '';
 
@@ -66,7 +68,6 @@
         if (bo) {
             $("#message").html(msgInfo);
         } else {
-            $("#message").html("");
             var seconds = 120;
             $('#phone_code').addClass('none');
             $('.disabled').removeClass('none');

@@ -66,10 +66,8 @@ public class MessageSendController {
                     nashResult = NashResult.Fail("fail", "此号码频繁发送验证码，请稍后再试！");
                 }else if(sendSmsMessage.equalsIgnoreCase("isv.MOBILE_NUMBER_ILLEGAL")){
                     nashResult = NashResult.Fail("fail", "非法手机号，请检查手机号码！");
-                }else {
-                    nashResult = NashResult.Fail("fail", "短信发送失败！");
                 }
-                return nashResult;
+                return nashResult = NashResult.Fail("fail", "");
             }
         } catch (Exception e) {
             e.printStackTrace();
