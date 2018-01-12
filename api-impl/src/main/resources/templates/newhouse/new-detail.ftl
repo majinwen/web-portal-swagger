@@ -15,7 +15,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}-ttfdc1200x640" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
