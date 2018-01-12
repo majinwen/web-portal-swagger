@@ -12,6 +12,7 @@ $(function () {
     $('.start-btn').on('click', function () {
         if (!$(this).hasClass('none')) {
             $.fn.fullpage.moveSectionDown();
+
             rada_animit.init();
             $.ajax({
                 type: "GET",
@@ -224,6 +225,7 @@ function chooseUserFinds() {
             });
             $("#submitPrice").unbind('click');
             $("#submitPrice").click(function () {
+                options['districtId']=null;
                 //选择总价
                 if ($('.total-price').hasClass('current')) {
                     var priceInit = $('.total-conent').find('.slide-text').text();
@@ -279,6 +281,7 @@ function chooseUserFinds() {
                     parent_check = false;
                 }
             }
+            //111111111111111
             var parent_change = this.parent_key!=current_parent_key;
             this.parent_key = current_parent_key;
             if(this.after_parent_check){
@@ -302,7 +305,7 @@ function chooseUserFinds() {
 
             $('#submitHouseType').unbind('click');
             $('#submitHouseType').on('click', function () {
-
+                options['districtId']=null;
 
                 options['layOut'] = $('#layOut').find('li.current').data('layout');
                 var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';

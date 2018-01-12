@@ -194,10 +194,10 @@
                             <#--<p class="cont-block-2 high-light-red">售价待定</p>-->
                         <#--</#if>-->
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
                             <#if map['total_price']?exists && map['total_price'] gt 0>
-                                <p class="cont-block-2 high-light-red">${map['total_price']?number?round}万元/套</p>
+                                <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
                             <#else><p class="cont-block-2 high-light-red">售价待定</p>
                             </#if>
                         </#if>
@@ -311,7 +311,7 @@
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js?201801112016"></script>
+<script src="${staticurl}/js/main.js?201801112233"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>

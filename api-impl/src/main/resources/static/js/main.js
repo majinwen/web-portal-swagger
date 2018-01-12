@@ -3,9 +3,6 @@
  * @type {string}
  * @private
  */
-var uu = $('#url');
-var BaseUrl = uu.val();
-
 $(function () {
     scaleImg();             // 大首页图片拖拽
 
@@ -53,7 +50,8 @@ function scaleImg() {
     var mybody = document.getElementsByTagName('body')[0];
     var startX, startY, moveEndX, moveEndY, X, Y, base;
     var idWidth = $('.scaleImg').width();
-    var idHeight = $('.scaleImg').height();
+    var idHeight = ($('.scaleImg').height()*3)/5;
+    $('.scaleImg').height(idHeight + 'px');
     mybody.addEventListener('touchstart', function(e) {
         // e.preventDefault();
         startX = e.touches[0].pageX;
@@ -79,7 +77,7 @@ function scaleImg() {
     mybody.addEventListener('touchend', function(e) {
         $('.scaleImg').animate({
             "width": '100%',
-            "height": '100%',
+            "height": idHeight,
             'margin-left': 0
         }, 100);
     });

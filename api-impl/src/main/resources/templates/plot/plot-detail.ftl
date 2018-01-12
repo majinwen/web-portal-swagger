@@ -712,7 +712,7 @@
                     <p class="cont-center">
                         <span>${nearviitem['area']!" "}</span><span>${nearviitem['tradingArea']!" "}</span>
                     </p>
-                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>元/㎡</h4>
                 </div>
             </a></li>
         </#list>
@@ -736,21 +736,21 @@
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']!''}</h4>
-                <#if builditem['average_price']?exists>
-                    <#if builditem['average_price']?number gt 0>
-                        <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
-                    <#else >
-                        <p class="cont-last">均价：<em>售价待定</em></p>
+                <#if builditem['average_price']?exists && builditem['average_price'] gt 0>
+                    <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                <#else>
+                    <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
+                        <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
+                    <#else><p class="cont-block-2 high-light-red">售价待定</p>
                     </#if>
-                <#else >
-                    <p class="cont-last">均价：<em>售价待定</em></p>
                 </#if>
+
             </div>
         </a></li>
     </#list>
     </ul>
 </section>
-
+<#--22222222222222-->
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>

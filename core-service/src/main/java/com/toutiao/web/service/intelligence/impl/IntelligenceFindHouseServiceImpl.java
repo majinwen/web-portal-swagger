@@ -72,39 +72,43 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             plotTotal = intelligenceFh.getPreconcTotal();
         }
 
-        String substring1 = plotTotal.substring(0, plotTotal.length()-1);
-        if(Double.valueOf(substring1)<=1500){
+//        String substring1 = plotTotal.substring(0, plotTotal.length()-1);
+        if(Double.valueOf(plotTotal)<=1500){
             intelligenceFh.setPreconcTotal(plotTotal);
             //上下浮动10%
-            plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1));
             intelligenceFh.setPlotTotalFirst(plotTotalFirst);
-            plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1));
             intelligenceFh.setPlotTotalEnd(plotTotalEnd);
         }else{
             intelligenceFh.setPreconcTotal(plotTotal);
-            plotTotalEnd = Double.valueOf(plotTotal) * 10000;
+            plotTotalEnd = Double.valueOf(plotTotal);
             intelligenceFh.setPlotTotalFirst(plotTotalEnd);
         }
 
 
-
-        //户型选择======
-        if (StringTool.isNotBlank(intelligenceFh.getLayOut())){
-            userChooiseLayout(intelligenceFh);
-        }
-
         Integer count = 0;
+        List<DistictInfo> distictInfo = new ArrayList<>();
         //通过总价和户型查询小区数量
         if(!StringTool.isNotBlank(intelligenceFh.getDistrictId())){
-            count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
+            count = intelligenceFindhouseMapper.queryUserChoice(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+            distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
         }
 
-        //获取该小区所在区域的信息
-        List<DistictInfo> distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut());
-        intelligenceFh.setDistictInfo(distictInfo);
-        //用户占比率
+        if(StringTool.isNotBlank(intelligenceFh.getDistrictId())){
+            String[] split  = intelligenceFh.getDistrictId().split(",");
+            for (int i = 0; i < split.length; i++) {
+                //通过总价和户型查询小区数量
+                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
+
+                count = count+count1;
+            }
+            distictInfo = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPrice1(plotTotalFirst, plotTotalEnd, intelligenceFh.getLayOut());
+        }
+
+        //价格用户占比率
         if(!StringTool.isNotBlank(intelligenceFh.getLayOut())){
-            Double totalPriceRate = totalListedRatioMapper.selectByTotalPrice(plotTotalFirst / 10000, plotTotalEnd / 10000);
+            Double totalPriceRate = totalListedRatioMapper.selectByTotalPrice(plotTotalFirst, plotTotalEnd);
             if (StringTool.isNotBlank(totalPriceRate)) {
                 //用户所对应的小区比率
                 intelligenceFh.setRatio(Double.valueOf(String.valueOf(totalPriceRate * 100)));
@@ -112,17 +116,12 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 intelligenceFh.setRatio(Double.valueOf(String.valueOf(0)));
             }
         }
-
-        if(StringTool.isNotBlank(intelligenceFh.getDistrictId())){
-
-            String[] split  = intelligenceFh.getDistrictId().split(",");
-            for (int i = 0; i < split.length; i++) {
-                //通过总价和户型查询小区数量
-                int count1 = intelligenceFindhouseMapper.queryPlotCountByCategoryAndPriceAndDistict(plotTotalFirst/10000, plotTotalEnd/10000, intelligenceFh.getLayOut(), Integer.valueOf(split[i]));
-                count = count+count1;
-            }
+        //户型选择
+        if (StringTool.isNotBlank(intelligenceFh.getLayOut())){
+            userChooiseLayout(intelligenceFh);
         }
 
+        intelligenceFh.setDistictInfo(distictInfo);
         //小区数量
         intelligenceFh.setPlotCount(count);
         return intelligenceFh;
@@ -144,7 +143,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             //获取相对应的比率
             Integer layOut = intelligenceFh.getLayOut();
             if (StringTool.isNotBlank(layOut) && layOut == 6) {
-                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(intelligenceFh.getPlotTotalFirst() / 10000, intelligenceFh.getPlotTotalEnd() / 10000, intelligenceFh.getLayOut());
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory1(intelligenceFh.getPlotTotalFirst(), intelligenceFh.getPlotTotalEnd(), intelligenceFh.getLayOut());
                 if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
                     if (roomRatio.size() > 1) {
                         Double plotRatio = 0.0;
@@ -172,7 +171,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 }
             } else {
                 //比率
-                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(intelligenceFh.getPlotTotalFirst() / 10000, intelligenceFh.getPlotTotalEnd() / 10000, intelligenceFh.getLayOut());
+                List<TotalRoomRatio> roomRatio = totalRoomRatioMapper.selectByTotalAndCategory(intelligenceFh.getPlotTotalFirst(), intelligenceFh.getPlotTotalEnd(), intelligenceFh.getLayOut());
                 if (StringTool.isNotBlank(roomRatio) && roomRatio.size() > 0) {
                     //用户画像类型
                     intelligenceFh.setUserPortrayalType(roomRatio.get(0).getUserPortrayalType());
@@ -228,8 +227,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
 
             }
             //上下浮动10%
-            Double plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1)) * 10000;
-            Double plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1)) * 10000;
+            Double plotTotalFirst = (Double.valueOf(plotTotal) - (Double.valueOf(plotTotal) * 0.1));
+            Double plotTotalEnd = (Double.valueOf(plotTotal) + (Double.valueOf(plotTotal) * 0.1));
 
             //区域的id
             String[] split = intelligenceFh.getDistrictId().split(",");
