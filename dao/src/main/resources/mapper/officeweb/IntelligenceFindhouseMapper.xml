@@ -194,6 +194,7 @@
             <if test="hospital != null">
                 AND <![CDATA[  has_medical = ${hospital} ]]>
             </if>
+            AND n_or_e = 1
         </where>
     </sql>
 
