@@ -196,7 +196,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(newHouseQuery.getSort()!=null&& newHouseQuery.getSort()==1){
 
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.ASC).addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.ASC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type","location","house_min_area","house_max_area","nearbysubway","total_price"},
                             null)
@@ -205,7 +205,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==2){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("average_price", SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway","total_price"},
@@ -438,6 +438,8 @@ public class NewHouseServiceImpl implements NewHouseService{
         BoolQueryBuilder boolQueryBuilder =boolQuery();
 
         boolQueryBuilder.mustNot(termQuery("building_name_id",buildingNameId));
+        boolQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+        boolQueryBuilder.must(termQuery("is_del", IS_DEL));
         boolQueryBuilder.filter(QueryBuilders.geoDistanceQuery("location").point(lat,lon).distance(distance, DistanceUnit.METERS));
         srb.setQuery(boolQueryBuilder);
         // 获取距离多少公里 这个才是获取点与点之间的距离的
@@ -450,7 +452,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                         "district_id","district_name","area_id","area_name","building_imgs","total_price"},
                 null);
 
-        SearchResponse searchResponse = srb.execute().actionGet();
+        SearchResponse searchResponse = srb.addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).execute().actionGet();
         SearchHits hits = searchResponse.getHits();
         List<Map<String,Object>> nearBy = new ArrayList<>();
         SearchHit[] searchHists = hits.getHits();
