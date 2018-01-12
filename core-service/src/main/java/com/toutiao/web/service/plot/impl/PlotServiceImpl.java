@@ -74,8 +74,10 @@ public class PlotServiceImpl implements PlotService {
             sort.order(SortOrder.ASC);
             sort.point(lat, lon);
             srb.addSort(sort);
-
-            SearchResponse searchResponse = srb.execute().actionGet();
+            BoolQueryBuilder queryBuilder = null;
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+            SearchResponse searchResponse = srb.setQuery(queryBuilder).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
