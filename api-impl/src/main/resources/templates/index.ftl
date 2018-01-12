@@ -305,7 +305,7 @@
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js?201801112233"></script>
+<script src="${staticurl}/js/main.js?2018011122333"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>
