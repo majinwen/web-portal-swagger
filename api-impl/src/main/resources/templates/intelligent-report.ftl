@@ -913,7 +913,7 @@
                 data: getJiagezoushiYuefen()
             },
             yAxis: [{
-                name: '元/m2',
+                name: '元/㎡',
             },{
                 type: 'value',
                 scale: true,
