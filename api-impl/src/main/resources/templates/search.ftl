@@ -106,6 +106,6 @@
     </div>
 </div>
 
-<script src="${staticurl}/js/search-localStorage.js"></script>
+<script src="${staticurl}/js/search-localStorage.js?v=${staticversion}"></script>
 
 

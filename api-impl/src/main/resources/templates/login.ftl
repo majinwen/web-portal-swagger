@@ -2,11 +2,11 @@
 <html>
 <head>
     <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/login.css">
+    <link rel="stylesheet" href="${staticurl}/css/login.css?v=${staticversion}">
     <title>登录页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
 </head>
 <body>
 <h2>手机快捷登录</h2>

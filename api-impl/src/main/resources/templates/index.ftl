@@ -2,13 +2,13 @@
 <html class="no-js">
 <head>
     <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/index.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/index.css?v=${staticversion}">
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <title>头条房产 发现美好</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="/static/js/modernizr.custom.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="/static/js/modernizr.custom.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
@@ -25,7 +25,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper">
                 <li class="swiper-slide">
-                    <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
+                    <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png?v=${staticversion}" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -309,9 +309,9 @@
 <#include "user.ftl">
 <#include "search.ftl">
 
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js?201801112233"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>

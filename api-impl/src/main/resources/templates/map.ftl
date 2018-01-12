@@ -6,8 +6,8 @@
     <title>地图页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <link rel="stylesheet" href="${staticurl}/css/map.css">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="${staticurl}/css/map.css?v=${staticversion}">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
 </head>
 <body>
 <ul id="mapTypeNav" class="map-type-nav">
