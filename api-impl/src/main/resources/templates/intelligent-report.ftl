@@ -823,7 +823,7 @@
     }
     function getMetroStation(index) {
         if (index < datajson.length) {
-                return datajson[index]["nearestSubwayDesc"].split("$") || ""
+            return datajson[index]["nearestSubwayDesc"].split("$") || ""
         }
         return "";
     }
@@ -1032,7 +1032,14 @@
                 color: '#666',
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-                    return params.data + "km\n" + getMetroStation(params.seriesIndex)[1]+"\n("+getMetroStation(params.seriesIndex)[0]+")"
+                    var para = '';
+                    if(params.data!=null&&params.data!=""){
+                        para = para+params.data + "km"
+                    }
+                    if(getMetroStation(params.seriesIndex)!=null&&getMetroStation(params.seriesIndex)!=""&&getMetroStation(params.seriesIndex).length==3){
+                        para = para +"\n"+getMetroStation(params.seriesIndex)[1]+"\n("+getMetroStation(params.seriesIndex)[0]+")"
+                    }
+                    return para;
                 }
 
             }
@@ -1121,7 +1128,17 @@
                 color: '#666',
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-                    return params.data + "km\n" + getNearbyQiao(params.seriesIndex) + "\n" + "(" + getNearbyRoad(params.seriesIndex) + ")"
+                    var para = '';
+                    if(params.data!=null&&params.data!=""){
+                        para = para+params.data + "km"
+                    }
+                    if(getNearbyQiao(params.seriesIndex)!=null&&getNearbyQiao(params.seriesIndex)!=""){
+                        para = para+"\n"+getNearbyQiao(params.seriesIndex)
+                    }
+                    if(getNearbyRoad(params.seriesIndex)!=null&&getNearbyRoad(params.seriesIndex)!=""){
+                        para = para+"\n" + "(" + getNearbyRoad(params.seriesIndex) + ")"
+                    }
+                    return para;
                 }
             }
         };
