@@ -82,7 +82,7 @@
                             <span data-info="2">公寓</span>
                             <span data-info="3">酒店式公寓</span>
                             <span data-info="4">花园洋房</span>
-                            <span data-info="5">商住楼</span>
+                            <#--<span data-info="5">商住楼</span>-->
                         </dd>
                     </dl>
                     <dl>
@@ -147,17 +147,17 @@
                             <#--<span data-info="3">板塔结合</span>-->
                         <#--</dd>-->
                     <#--</dl>-->
-                    <dl>
-                        <dt data-type="ownership">权属</dt>
-                        <dd>
-                            <span data-info="1">已购公房</span>
-                            <span data-info="2">商品房</span>
-                            <span data-info="3">空置房</span>
-                            <span data-info="4">使用权房</span>
-                            <span data-info="5">央产</span>
-                            <span data-info="6">经济适用房</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="ownership">权属</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">已购公房</span>-->
+                            <#--<span data-info="2">商品房</span>-->
+                            <#--<span data-info="3">空置房</span>-->
+                            <#--<span data-info="4">使用权房</span>-->
+                            <#--<span data-info="5">央产</span>-->
+                            <#--<span data-info="6">经济适用房</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>

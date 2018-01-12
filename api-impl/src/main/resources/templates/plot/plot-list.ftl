@@ -107,17 +107,17 @@
                         <#--<span data-info="4">砖楼</span>-->
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="saleType">销售状态</dt>
-                        <dd>
-                            <span data-info="1">售完</span>
-                            <span data-info="2">在售</span>
-                        <#--<span data-info="3">不在售</span>
-                        <span data-info="4">出租</span>
-                        <span data-info="5">待租</span>-->
-                            <span data-info="6">待售</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="saleType">销售状态</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">售完</span>-->
+                            <#--<span data-info="2">在售</span>-->
+                        <#--&lt;#&ndash;<span data-info="3">不在售</span>-->
+                        <#--<span data-info="4">出租</span>-->
+                        <#--<span data-info="5">待租</span>&ndash;&gt;-->
+                            <#--<span data-info="6">待售</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                     <dl>
                         <dt data-type="buildingFeature">楼盘特色</dt>
                         <dd>
@@ -125,20 +125,20 @@
                             <span data-info="2">花园洋房</span>
                             <span data-info="3">近地铁</span>
                             <span data-info="4">车位充足</span>
-                            <span data-info="5">低密度</span>
+                            <span data-info="9">500强房企</span>
                             <span data-info="6">高绿化</span>
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="deliverStyle">装修标准</dt>
-                        <dd>
-                            <span data-info="1">毛坯</span>
-                            <span data-info="2">普通装修</span>
-                            <span data-info="3">精装修</span>
-                            <span data-info="4">豪华装修</span>
-                            <span data-info="5">其他</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="deliverStyle">装修标准</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">毛坯</span>-->
+                            <#--<span data-info="2">普通装修</span>-->
+                            <#--<span data-info="3">精装修</span>-->
+                            <#--<span data-info="4">豪华装修</span>-->
+                            <#--<span data-info="5">其他</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
