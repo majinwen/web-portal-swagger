@@ -2,11 +2,11 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/parameter.css">
+    <link rel="stylesheet" href="${staticurl}/css/parameter.css?v=${staticversion}">
     <title>新房参数</title>
     <meta name="description" content="让美好生活 来找你">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -135,7 +135,7 @@
     </section>
 </div>
 </#if>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 </body>
 </html>

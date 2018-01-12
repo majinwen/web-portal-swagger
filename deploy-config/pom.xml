@@ -12,8 +12,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <toutiao.static.version>${maven.build.timestamp}</toutiao.static.version>
     </properties>
 
     <dependencies>
@@ -111,7 +113,7 @@
             </properties>
             <activation>
 
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
         </profile>
 
@@ -121,7 +123,7 @@
                 <environment>pro</environment>
             </properties>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
 

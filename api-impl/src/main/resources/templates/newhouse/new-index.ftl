@@ -2,12 +2,12 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/new-index.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/new-index.css?v=${staticversion}">
     <title>上头条 找新房</title>
     <meta name="description" content="让美好生活 来找你">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -26,7 +26,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner.png" alt="一阙藏中国">
+                    <img src="${staticurl}/images/newindex/sy_banner.jpg?v=${staticversion}" alt="美好新居 尽在头条">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -89,7 +89,7 @@
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image3.jpg" alt="90平小三居">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
                     <div class="topic-item-content">
                         <h5>万科楼盘</h5>
                         <p>品牌房企集中亮相</p>
@@ -165,10 +165,13 @@
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            ${map['average_price']}/㎡
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
-                            售价待定
+                        <#if map['total_price']?exists && map['total_price'] gt 0>
+                            <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
+                        <#else><p class="cont-block-2 high-light-red">售价待定</p>
                         </#if>
+                    </#if>
                     </p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
@@ -207,8 +210,8 @@
 <#include "../user.ftl">
 <#include "../search.ftl">
 
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 </body>
 </html>

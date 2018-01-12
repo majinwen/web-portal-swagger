@@ -2,16 +2,16 @@
 <html class="no-js">
 <head>
     <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
-    <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css">
+    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css?v=${staticversion}">
     <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#--<script src="${staticurl}/js/scrolloverflow.js"></script>-->
     <#--<script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>-->
-    <script src="${staticurl}/js/modernizr.custom.js"></script>
-    <script src="${staticurl}/js/echarts.min.js"></script>
+    <script src="${staticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
@@ -21,14 +21,7 @@
         <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red">
-                <#if intelligenceFhRes?exists>
-                    <#if intelligenceFhRes['totalPrice']?number == 1500>
-                        ${intelligenceFhRes['totalPrice']?number?round}万以上
-                    <#else>
-                        ${intelligenceFhRes['totalPrice']?number?round}万左右
-                    </#if>
-                </#if></em>的房源市场为您的目标市场 </p>
+                <p>将您的检索条件和 <em class="high-light-red">305586</em> 位购房用户的数据样本<br>相比较，生成您所处族群的用户画像 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>
@@ -578,10 +571,10 @@
     <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
     <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/draggabilly.pkgd.min.js"></script>
-<script src="${staticurl}/js/elastiStack.js"></script>
-<script src="${staticurl}/js/intelligent-report.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/draggabilly.pkgd.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/elastiStack.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/intelligent-report.js?v=${staticversion}"></script>
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
@@ -1039,7 +1032,7 @@
                 color: '#666',
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-                    return params.data + "km\n" + getMetroStation(params.seriesIndex)[1]
+                    return params.data + "km\n" + getMetroStation(params.seriesIndex)[1]+"\n("+getMetroStation(params.seriesIndex)[0]+")"
                 }
 
             }

@@ -2,13 +2,13 @@
 <html>
 <head>
 <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
-    <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
+    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/intelligent.css?v=${staticversion}">
     <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
 </head>
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
@@ -17,7 +17,7 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <h1>懂房帝</h1>
-            <p>智能人局 更懂人需<br>根据您的需求推荐最匹配的小区</p>
+            <p>智能人居 更懂人需<br>根据您的需求推荐最匹配的小区</p>
             <button type="button" class="button begin">开始体验</button>
         </div>
     </div>

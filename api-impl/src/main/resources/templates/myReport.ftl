@@ -2,11 +2,11 @@
 <html>
 <head>
     <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/my-report.css">
+    <link rel="stylesheet" href="${staticurl}/css/my-report.css?v=${staticversion}">
     <title>我的报告页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "StatisticsHeader.ftl">
 </head>
 <body>
@@ -38,11 +38,9 @@
                                     <span>推荐小区</span>
                                     <i></i>
                                 </li>
-                                <li class="cancel-collection">
-                                    <a href="${router_city('/findhouse/deleteMyReport/'+myReport.id+'/'+myReport.phone)}">
+                                <li class="cancel-collection" id="report_${myReport.id}">
                                         <span>取消收藏</span>
                                         <i></i>
-                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -113,7 +111,7 @@
         </#if>
     <#if message?exists> <p style="color: red">${message}</p></#if>
 </div>
-<script src="${staticurl}/js/URI.min.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script>
     $('.slide-icon-button').on('click', function () {
         $(this).parents('.report-item-content').toggleClass('animate-left');

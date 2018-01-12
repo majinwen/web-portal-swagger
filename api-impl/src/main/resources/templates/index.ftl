@@ -2,13 +2,13 @@
 <html class="no-js">
 <head>
     <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/index.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/index.css?v=${staticversion}">
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <title>头条房产 发现美好</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="/static/js/modernizr.custom.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="/static/js/modernizr.custom.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
@@ -22,13 +22,8 @@
 </header>
 <div class="module-bottom-fill">
     <section class="banner-index-box">
-        <div class="swiper-container carousel-swiper" id="index-swiper">
-            <ul class="swiper-wrapper">
-                <li class="swiper-slide">
-                    <img class="scaleImg" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
-                </li>
-            </ul>
-            <div class="swiper-pagination pictrue-index"></div>
+        <div class="carousel-swiper">
+            <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png?v=${staticversion}" alt="头条房产，重磅推出">
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
@@ -188,10 +183,18 @@
                             <span class="ellipsis">${map['building_name']}</span>
                             <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
                         </h3>
-                        <#if (map['average_price']?exists && map['average_price'] > 0)>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
-                        <#else >
-                            <p class="cont-block-2 high-light-red">售价待定</p>
+                        <#--<#if (map['average_price']?exists && map['average_price'] > 0)>-->
+                            <#--<p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>-->
+                        <#--<#else >-->
+                            <#--<p class="cont-block-2 high-light-red">售价待定</p>-->
+                        <#--</#if>-->
+                        <#if map['average_price']?exists && map['average_price'] gt 0>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
+                        <#else>
+                            <#if map['total_price']?exists && map['total_price'] gt 0>
+                                <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
+                            <#else><p class="cont-block-2 high-light-red">售价待定</p>
+                            </#if>
                         </#if>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>${map['nearsubway']}
@@ -301,9 +304,9 @@
 <#include "user.ftl">
 <#include "search.ftl">
 
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>

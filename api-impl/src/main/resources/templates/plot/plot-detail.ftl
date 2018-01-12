@@ -2,13 +2,13 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/plot-detail.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/plot-detail.css?v=${staticversion}">
     <title>来头条房产看【${village['rc']!'小区'}】</title>
     <meta name="description" content="推荐你上头条房产看看【${village['rc']!'小区'}】的价格走势与小区详情">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/echarts.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script>
         var locationnumber = '${village['location']}';
         var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
@@ -712,7 +712,7 @@
                     <p class="cont-center">
                         <span>${nearviitem['area']!" "}</span><span>${nearviitem['tradingArea']!" "}</span>
                     </p>
-                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>元/㎡</h4>
                 </div>
             </a></li>
         </#list>
@@ -736,28 +736,28 @@
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']!''}</h4>
-                <#if builditem['average_price']?exists>
-                    <#if builditem['average_price']?number gt 0>
-                        <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
-                    <#else >
-                        <p class="cont-last">均价：<em>售价待定</em></p>
+                <#if builditem['average_price']?exists && builditem['average_price'] gt 0>
+                    <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                <#else>
+                    <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
+                        <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
+                    <#else><em>售价待定</em>
                     </#if>
-                <#else >
-                    <p class="cont-last">均价：<em>售价待定</em></p>
                 </#if>
+
             </div>
         </a></li>
     </#list>
     </ul>
 </section>
-
+<#--22222222222222-->
 <!-------- photoswipe -------->
-<script src="${staticurl}/js/photoswipe.min.js"></script>
-<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
 <script>
     var chartGrid = {
         left: '2%',

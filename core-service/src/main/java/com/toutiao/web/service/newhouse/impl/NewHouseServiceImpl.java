@@ -235,7 +235,7 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else if(newHouseQuery.getSort()!=null && newHouseQuery.getSort()==0){
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
+                    .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway","total_price"},

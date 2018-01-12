@@ -2,12 +2,12 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/new-detail.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/new-detail.css?v=${staticversion}">
     <title>来头条看【${build['building_name']}】</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -95,7 +95,7 @@
                  <#if build['total_price']?exists && build['total_price'] gt 0>
                 <p>总价：<em class="high-light-red">
                     ${build['total_price']}万元/套
-                 <#else>暂无价格
+                 <#else>售价待定
                  </#if>
                 </#if>
                 </em></p>
@@ -699,12 +699,12 @@
     </div>
 </#if>
 <!-------- photoswipe -------->
-<script src="${staticurl}/js/photoswipe.min.js"></script>
-<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
 <#--<script>
     var myChartline = echarts.init(document.getElementById('newhousetrad'));
     option = {

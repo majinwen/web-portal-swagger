@@ -2,7 +2,7 @@
 <html>
 <head>
     <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/404.css">
+    <link rel="stylesheet" href="${staticurl}/css/404.css?v=${staticversion}">
     <title>我的报告页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">

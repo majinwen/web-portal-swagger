@@ -185,7 +185,7 @@
             <if test="layOut != null">
                 AND <![CDATA[  layout_range @> '{${layOut}}' ]]>
             </if>
-            <if test="districtId != null">
+            <if test="districtId != null and districtId != ''">
                 AND <![CDATA[   district_id IN (${districtId}) ]]>
             </if>
             <if test="school != null">
@@ -1303,12 +1303,11 @@
 
     <select id="queryPlotCount" parameterType="java.lang.Double" resultType="java.lang.Integer">
         select count(*) from intelligence_findhouse
-        <include refid="queryInfoPro"/>
-    <!--WHERE-->
-        <!--1=1-->
-        <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
-            <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
-        <!--</if>-->
+        WHERE
+        1=1
+        <if test="plotTotalEnd!=null and plotTotalFirst!=null ">
+            and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
+        </if>
     </select>
     <!--
        int queryPlotCountByCategoryAndPrice(@PathVariable("plotTotal") Double plotTotal,@PathVariable("categoryId") Integer categoryId);
@@ -1330,6 +1329,9 @@
         <!--<if test="plotTotalEnd!=null and plotTotalFirst!=null ">-->
             <!--and  <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>-->
         <!--</if>-->
+        <if test="categoryId==null and plotTotalEnd!=null and plotTotalFirst!=null">
+            and <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
+        </if>
         <if test="categoryId!=null">
             and layout_range @> ARRAY[#{categoryId}] and is_approve = 1
         </if>
@@ -1353,7 +1355,7 @@
         </if>
 
     </select>
-    <!--int queryPlotCountByCategoryAndPriceAndDistict(Map map);-->
+
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
 
         select count(*) from intelligence_findhouse
@@ -1367,6 +1369,9 @@
             </if>
             <if test="distictId!=null">
                 and district_id=#{distictId}
+            </if>
+            <if test="layOut==null and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
             </if>
             <if test="layOut!=null and layOut==1 and plotTotalEnd!=null and plotTotalFirst!=null">
                 and <![CDATA[layout_price1_min<= #{plotTotalEnd} and layout_price1_max >= #{plotTotalFirst}]]>
@@ -1400,6 +1405,9 @@
             <!--</if>-->
             <if test="layOut!=null">
                 and layout_range @> ARRAY[#{layOut}]  and is_approve = 1
+            </if>
+            <if test="layOut==null and plotTotalEnd!=null and plotTotalFirst!=null">
+                and <![CDATA[min_total_price<= #{plotTotalEnd} and max_total_price >= #{plotTotalFirst}]]>
             </if>
             <if test="layOut!=null and layOut==1 and plotTotalEnd!=null and plotTotalFirst!=null">
                 and <![CDATA[layout_price1_min<= #{plotTotalEnd} and layout_price1_max >= #{plotTotalFirst}]]>
