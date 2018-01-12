@@ -513,7 +513,7 @@
                 <div class="module-item type2">
                     <div class="report-title-type2">
                         <p>休闲购物</p>
-                        <span>3km生活圈，吃喝玩乐买买买</span>
+                        <span>1km生活圈，吃喝玩乐买买买</span>
                     </div>
                     <div class="echart-box nearby mb0">
                         <div id="shoppingChart"></div>
