@@ -8,7 +8,6 @@
     <meta name="keyword" content="">
     <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="/static/js/modernizr.custom.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>

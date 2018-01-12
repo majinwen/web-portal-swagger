@@ -13,7 +13,7 @@
         top: 0;
 
         img {
-            padding-top: rem(145);
+            padding-top: 13%;
         }
 
         > p {
@@ -27,7 +27,7 @@
     }
 
     > p {
-        margin-top: rem(50);
+        margin-top: 7%;
         color: #666;
         @include font-dpr(28);
     }
@@ -37,7 +37,7 @@
         width: rem(156);
         height: rem(52);
         line-height: rem(50);
-        margin: rem(90) auto 0;
+        margin: 12% auto 0;
         color: #0a0724;
         @include font-dpr(26);
         border: rem(1) solid #0a0724;
@@ -85,6 +85,23 @@
                 line-height: 1.5;
                 color: #999;
             }
+        }
+    }
+}
+
+@media (max-device-width: 325px) {
+    .page-empty {
+        &.report {
+            img {
+                padding-top: 10%;
+            }
+
+            > p {
+                margin-bottom: 6%;
+            }
+        }
+        a {
+            margin: 8% auto 0;
         }
     }
 }

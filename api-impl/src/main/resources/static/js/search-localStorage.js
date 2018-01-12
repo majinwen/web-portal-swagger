@@ -27,11 +27,11 @@ $(function(){
      */
     $('.search-link').on('focus', function () {
         init();
-        $('.search-page-wrapper').addClass('active');
+        $('.search-page-wrapper').removeClass('none');
         $('.key-words').focus();
     });
     $('.searchpage-search-btn').on('click', function () {
-        $('.search-page-wrapper').removeClass('active');
+        $('.search-page-wrapper').addClass('none');
     });
     $('.searchpage-current-item').on('click', function () {
         $('.type-menu-box').show();
@@ -96,7 +96,7 @@ $(function(){
 
     init();
 
-    $('.key-words').on({focus: focusFn, change: changeFn});
+    $('.key-words').on({focus: focusFn, search: changeFn});
 
     function focusFn() {
         if ($(this).val() != null && $.trim($(this).val()) != '') {

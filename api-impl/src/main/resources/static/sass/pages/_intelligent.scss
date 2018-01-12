@@ -34,8 +34,8 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        top: 12%;
-        height: 85%;
+        top: 10%;
+        height: 90%;
         text-align: center;
         @include box-sizing;
 
@@ -72,7 +72,7 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        padding-top: 10%;
+        padding-top: 5%;
         text-align: center;
         @include box-sizing;
 
@@ -88,7 +88,7 @@ $inteColorRed: #e42929;
 
         .choose-wrapper {
             width: rem(666);
-            margin: 10% auto 0;
+            margin: 9% auto 0;
 
             .clear {
                 margin-top: rem(129);
@@ -228,12 +228,16 @@ $inteColorRed: #e42929;
         button {
             position: absolute;
             left: 50%;
-            bottom: 2%;
+            bottom: 7%;
             width: rem(460);
             height: rem(90);
             line-height: rem(90);
             margin-left: rem(-230);
             @include font-dpr(30);
+
+            &.disabled {
+                background-color: #c5c5c5;
+            }
         }
     }
 }
@@ -246,7 +250,7 @@ $inteColorRed: #e42929;
             }
 
             button {
-                bottom: 2%;
+                bottom: 5%;
             }
         }
     }
@@ -794,6 +798,10 @@ $inteColorRed: #e42929;
                         text-align: center;
                         border: rem(1) solid #999;
                         @include box-sizing;
+
+                        &:last-child {
+                            @include font-dpr(20);
+                        }
 
                         &.disabled {
                             color: #999;

@@ -3,6 +3,7 @@
  * @type {string}
  * @private
  */
+
 $(function () {
     scaleImg();             // 大首页图片拖拽
 
@@ -32,24 +33,30 @@ $(function () {
               var hrefurl = $(this).attr('href');
               /*location.replace(hrefurl);*/
         location.href = hrefurl
-    })
+    });
+});
+
+$(window).resize(function () {
+    var idwidth = window.document.documentElement.getBoundingClientRect().width;
+    if (idwidth / dpr > 540) {
+        idwidth = 540 * dpr
+    }
+    scaleImg(idwidth);
 });
 
 function moreInfoClick() {
     $('.module-header-message h3').click(function () {
-        console.log($(this).parent().find('a').attr('class'));
         $(this).parent().find('a').click();
-
     });
 }
 
-function scaleImg() {
+function scaleImg(idWidth) {
     if (0 == $('.scaleImg').length) {
         return;
     }
     var mybody = document.getElementsByTagName('body')[0];
     var startX, startY, moveEndX, moveEndY, X, Y, base;
-    var idWidth = document.body.clientWidth;
+    // var idWidth = document.body.clientWidth;
     var idHeight = (idWidth * 3) / 5;
     $('.scaleImg').height(idHeight + 'px');
     $('.scaleImg').width(idWidth + 'px');
