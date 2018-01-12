@@ -224,12 +224,13 @@ function chooseUserFinds() {
             });
             $("#submitPrice").unbind('click');
             $("#submitPrice").click(function () {
+                options['districtId']=null;
                 //选择总价
                 if ($('.total-price').hasClass('current')) {
                     var priceInit = $('.total-conent').find('.slide-text').text();
                     var totalPrice = parseInt(priceInit);
                     options['preconcTotal'] = totalPrice;
-                    options['downPayMent'] = payPrice;
+                    options['downPayMent'] = null;
                     options['monthPayMent'] = null;
                     var totalPriceHtml = '<p><span>总价：<em>' + priceInit + '</em></span></p>';
                     that.el.find('.result-animate').html(totalPriceHtml);
@@ -279,6 +280,7 @@ function chooseUserFinds() {
                     parent_check = false;
                 }
             }
+            //111111111111111
             var parent_change = this.parent_key!=current_parent_key;
             this.parent_key = current_parent_key;
             if(this.after_parent_check){
@@ -302,8 +304,8 @@ function chooseUserFinds() {
 
             $('#submitHouseType').unbind('click');
             $('#submitHouseType').on('click', function () {
-
-
+                options['districtId']=null;
+                //TODO DDD
                 options['layOut'] = $('#layOut').find('li.current').data('layout');
                 var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';
                 that.el.find('.result-animate').html(layOutHtml);
