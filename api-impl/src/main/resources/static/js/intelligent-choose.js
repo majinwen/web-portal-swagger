@@ -632,9 +632,6 @@ function chooseUserFinds() {
             ele.unbind('touchstart');
         })
     }
-
-
-
 }
 
 function router_city(urlparam) {
