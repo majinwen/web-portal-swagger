@@ -319,6 +319,9 @@ public class PlotServiceImpl implements PlotService {
                     Class<VillageResponse> entityClass = VillageResponse.class;
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
+                    if(StringTool.isNotBlank(source.get("TrafficInformation"))){
+                        instance.setTrafficInformation(source.get("TrafficInformation").toString());
+                    }
                     instance.setKey(key);
                     if ("商电".equals(instance.getElectricSupply())) {
                         instance.setElectricFee("1.33");
