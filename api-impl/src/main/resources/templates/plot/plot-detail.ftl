@@ -741,7 +741,7 @@
                 <#else>
                     <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
                         <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
-                    <#else><p class="cont-last"><em>售价待定</em>/套</p>
+                    <#else><p class="cont-last"><em>售价待定</em></p>
                     </#if>
                 </#if>
 
