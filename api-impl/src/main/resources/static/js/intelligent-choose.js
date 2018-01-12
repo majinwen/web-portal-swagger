@@ -279,6 +279,7 @@ function chooseUserFinds() {
                     parent_check = false;
                 }
             }
+            //111111111111111
             var parent_change = this.parent_key!=current_parent_key;
             this.parent_key = current_parent_key;
             if(this.after_parent_check){
