@@ -22,13 +22,15 @@
 </header>
 <div class="module-bottom-fill">
     <section class="banner-index-box">
-        <div class="swiper-container carousel-swiper" id="index-swiper">
-            <ul class="swiper-wrapper">
+        <#--<img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">-->
+        <div class="carousel-swiper">
+            <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
+            <#--<ul class="swiper-wrapper">
                 <li class="swiper-slide">
                     <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
                 </li>
             </ul>
-            <div class="swiper-pagination pictrue-index"></div>
+            <div class="swiper-pagination pictrue-index"></div>-->
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
