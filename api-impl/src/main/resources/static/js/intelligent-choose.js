@@ -9,31 +9,6 @@ $(function () {
         $.fn.fullpage.moveSectionDown();
     });
 
-    $('.start-btn').on('click', function () {
-        if (!$(this).hasClass('none')) {
-            $.fn.fullpage.moveSectionDown();
-            rada_animit.init();
-            $.ajax({
-                type: "GET",
-                async: true,
-                url: router_city('/findhouse/showUserPortrayal'),
-                data: options,
-                success: function (dataInfo) {
-                    // console.log(dataInfo.data);
-                    try {
-                        rada_animit.id = dataInfo.data.id;
-                    }
-                    catch (e) {
-                        console.error(e)
-                    }
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.error(errorThrown)
-                }
-            })
-        }
-    });
 
     chooseUserType();   // 用户选择类型
 
