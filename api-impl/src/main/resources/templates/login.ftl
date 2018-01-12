@@ -66,6 +66,7 @@
         if (bo) {
             $("#message").html(msgInfo);
         } else {
+            $("#message").html("");
             var seconds = 120;
             $('#phone_code').addClass('none');
             $('.disabled').removeClass('none');

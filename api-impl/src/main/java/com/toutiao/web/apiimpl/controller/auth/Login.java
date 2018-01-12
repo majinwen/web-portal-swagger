@@ -71,23 +71,24 @@ public class Login {
             if(StringTool.isNotBlank(title)){
                 modelMap.addAttribute("title", title);
             }
-            //判断页面传递过来的电话号码与短信验证码是否为空
-            if (StringTool.isBlank(phone) || StringTool.isBlank(code)) {
-                modelMap.addAttribute("message", "短信验证码输入有误！");
+            //判断页面传递过来的电话号码与
+            if (StringTool.isBlank(phone)) {
+                modelMap.addAttribute("message", "请输入手机号码！");
+                return "login";
+            }
+            //短信验证码是否为空
+            if (StringTool.isBlank(code)) {
+                modelMap.addAttribute("message", "请输入短信验证码！");
                 return "login";
             }
             //判断传输过来的电话号码是否全是数字并且是否是手机号码
             if (!StringUtil.isCellphoneNo(phone)) {
-                modelMap.addAttribute("message", "手机号输入有误！");
+                modelMap.addAttribute("message", "输入的手机号格式有误！");
                 return "login";
             }
             //获取缓存中的手机号码判断是否有效
             boolean flag = redisSession.exists(phone);
             if (!flag) {
-                modelMap.addAttribute("message", "短信验证码失效！");
-                return "login";
-            }
-            if(StringTool.isBlank(redisSession.getValue(phone))){
                 modelMap.addAttribute("message", "短信验证码失效！");
                 return "login";
             }
@@ -159,7 +160,6 @@ public class Login {
         //清空redis中该手机号的失败次数
         redisSession.delKey(phone + RedisNameUtil.separativeSignCount);
         //删除保存的短信验证码
-        //清空redis中该手机号的失败次数
         redisSession.delKey(phone);
         // 设置登录会员的cookie信息
         StringBuilder sb = new StringBuilder();
