@@ -23,7 +23,7 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="carousel-swiper">
-            <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png?v=${staticversion}" alt="头条房产，重磅推出">
+            <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="头条房产，重磅推出">
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
@@ -104,21 +104,31 @@
             <div class="row clear">
                 <div class="cloumn">
                     <h6>昨日新房成交量</h6>
-                    <div><em>185</em>套<span class="high-light-red">24.20% ↓</span></div>
+                    <div><#if TradeQuotations['newHouse']?split(',')[0]?exists&&TradeQuotations['newHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['newHouse']?split(',')[0]}</em>套<#else >暂无数据</#if><span class="high-light-red">
+                    <#if TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number gt 0>${TradeQuotations['newHouse']?split(',')[1]}%↑
+                    <#elseif TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number lt 0> ${TradeQuotations['newHouse']?split(',')[1]}↓ <#else >/暂无数据</#if>
+                    </span></div>
                 </div>
                 <div class="cloumn">
                     <h6>上周新房成交均价</h6>
-                    <div><em>35270</em>元/㎡</div>
+                    <div><#if TradeQuotations['newHouse']?split(',')[2]?exists&&TradeQuotations['newHouse']?split(',')[2]?number gt 0 ><em>${TradeQuotations['newHouse']?split(',')[2]}</em><#else >暂无数据</#if>元/㎡</div>
                 </div>
             </div>
             <div class="row clear">
                 <div class="cloumn">
                     <h6>上周二手房房成交量</h6>
-                    <div><em>1865</em>套<span class="high-light-green">24.20% ↓</span></div>
+                    <div><#if TradeQuotations['esfHouse']?split(',')[0]?exists&&TradeQuotations['esfHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['esfHouse']?split(',')[0]}</em>套<#else >暂无数据</#if><span class="high-light-green">
+                    <#if TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number gt 0>${TradeQuotations['esfHouse']?split(',')[1]}%↑
+                    <#elseif TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number lt 0> ${TradeQuotations['esfHouse']?split(',')[1]}↓ <#else >/暂无数据</#if>
+                    </span></div>
+                    <#--<div><em>1865</em>套<span class="high-light-green">24.20% ↓</span></div>-->
                 </div>
                 <div class="cloumn">
-                    <h6>12月二手房参考均价</h6>
-                    <div><em>57650</em>元/㎡</div>
+                    <#if TradeQuotations['month']?exists&&TradeQuotations['month']?number gt 0>
+                    <h6>${TradeQuotations['month']}月二手房参考均价</h6>
+                    </#if>
+                    <div><#if TradeQuotations['esfHouse']?split(',')[2]?exists&&TradeQuotations['esfHouse']?split(',')[2]?number gt 0 ><em>${TradeQuotations['esfHouse']?split(',')[2]}</em><#else >暂无数据</#if>元/㎡</div>
+                    <#--<div><em>57650</em>元/㎡</div>-->
                 </div>
             </div>
         </div>
