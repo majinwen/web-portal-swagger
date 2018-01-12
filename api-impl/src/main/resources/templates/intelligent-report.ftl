@@ -190,7 +190,7 @@
                                     </#if>
                                 </li>
                                 <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district} </em></#list><#else ><em>-</em></#if></li>
-                                <li>${intelligenceFhRes['layout']!""}居</li>
+                                <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']?number gt 0>${intelligenceFhRes['layout']}居<#else >-</#if> </li>
                             </ul>
                             <div class="tip-text">
                                 <span>交通便利</span>
@@ -874,7 +874,7 @@
         locationBaseUrl = parseInt(locationUrl.substr(locationUrl.lastIndexOf('/') + 1));
 
         var chartGrid = {
-            top: 0,
+            top: '20%',
             left: '2%',
             right: '6%',
             bottom: 0,
@@ -912,13 +912,16 @@
                 axisLabel: {fontSize: baseFontSize - 4},
                 data: getJiagezoushiYuefen()
             },
-            yAxis: {
+            yAxis: [{
+                name: '元/m2',
+            },{
+                type: 'value',
                 scale: true,
                 axisLine: {show: true},
                 axisTick: {show: false},
-                axisLabel: {show: false},
+                axisLabel: {show: false,formatter: '{value}'},
                 splitLine: {show: false}
-            },
+            }],
             dataZoom: [
                 {
                     type: 'inside',
