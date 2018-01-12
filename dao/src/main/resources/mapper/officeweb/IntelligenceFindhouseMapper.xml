@@ -1353,7 +1353,7 @@
         <if test="categoryId!=null and categoryId==6  and plotTotalEnd!=null and plotTotalFirst!=null">
             and <![CDATA[layout_price6_min<= #{plotTotalEnd} and layout_price6_max >= #{plotTotalFirst}]]>
         </if>
-
+        and n_or_e = 1
     </select>
 
     <select id="queryPlotCountByCategoryAndPriceAndDistict" resultType="java.lang.Integer">
@@ -1391,6 +1391,7 @@
             <if test="layOut!=null and layOut==6  and plotTotalEnd!=null and plotTotalFirst!=null">
                 and <![CDATA[layout_price6_min<= #{plotTotalEnd} and layout_price6_max >= #{plotTotalFirst}]]>
             </if>
+            and n_or_e = 1
         </where>
     </select>
 
@@ -1427,6 +1428,7 @@
             <if test="layOut!=null and layOut==6  and plotTotalEnd!=null and plotTotalFirst!=null">
                 and <![CDATA[layout_price6_min<= #{plotTotalEnd} and layout_price6_max >= #{plotTotalFirst}]]>
             </if>
+            and n_or_e = 1
         </where>
     </select>
 
