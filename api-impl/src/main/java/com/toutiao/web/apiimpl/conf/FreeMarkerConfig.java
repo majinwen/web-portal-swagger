@@ -35,7 +35,7 @@ public class FreeMarkerConfig  {
     @PostConstruct
     public void setSharedVariable(){
 
-//        configuration.setTemplateExceptionHandler(new TemplateErrorHandler());
+        configuration.setTemplateExceptionHandler(new TemplateErrorHandler());
 
         configuration.setShowErrorTips(false);
         configuration.setNumberFormat("#");
