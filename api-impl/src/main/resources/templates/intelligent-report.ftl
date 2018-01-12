@@ -1032,7 +1032,7 @@
                 color: '#666',
                 fontSize: baseFontSize - 5,
                 formatter: function (params, ticket, callback) {
-                    return params.data + "km\n" + getMetroStation(params.seriesIndex)[1]
+                    return params.data + "km\n" + getMetroStation(params.seriesIndex)[1]+"\n("+getMetroStation(params.seriesIndex)[0]+")"
                 }
 
             }
