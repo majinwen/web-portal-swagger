@@ -185,7 +185,7 @@
             <if test="layOut != null">
                 AND <![CDATA[  layout_range @> '{${layOut}}' ]]>
             </if>
-            <if test="districtId != null">
+            <if test="districtId != null and districtId != ''">
                 AND <![CDATA[   district_id IN (${districtId}) ]]>
             </if>
             <if test="school != null">
