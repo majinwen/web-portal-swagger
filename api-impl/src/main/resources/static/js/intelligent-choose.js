@@ -12,6 +12,7 @@ $(function () {
     $('.start-btn').on('click', function () {
         if (!$(this).hasClass('none')) {
             $.fn.fullpage.moveSectionDown();
+            console.log('zqz')
             rada_animit.init();
             $.ajax({
                 type: "GET",
