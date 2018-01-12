@@ -34,6 +34,7 @@ public class MessageSendController {
     @ResponseBody
     public NashResult send(HttpServletRequest request, @RequestParam(value = "phone", required = true) String phone) {
         NashResult nashResult = new NashResult();
+        String  sendSmsMessage=null;
         try {
             //判断前台页面传递过来的手机号码是否存在
             //判断页面传递过来的电话号码与短信验证码是否为空
@@ -48,36 +49,32 @@ public class MessageSendController {
             }
             String code = StringUtil.randomFourDigits();
             //获取手机号码
-            SendSmsResponse sendSmsResponse = smsUtils.sendSms(phone, code);
-            if (sendSmsResponse.getCode() != null
-                    && sendSmsResponse.getCode().equals("OK")) {
+              sendSmsMessage = smsUtils.sendSms(phone, code);
+            if (StringTool.isEmpty(sendSmsMessage)) {
                 // 请求成功,将用户的手机号码与短信验证码存入redis缓存中
                 redisSession.set2(phone, MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix() + RedisNameUtil.separativeSign
                                 + code)),
                         RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
                 //记录每次发送一次验证码，缓存中相应的手机号码个数自增长
                 redisSession.incr(phone + RedisNameUtil.separativeSignCount);
-                //设置给手机号登陆次数时间5分钟
-                redisSession.setExpire(phone + RedisNameUtil.separativeSignCount,300);
                 //处理业务后续改一下
                 String phoneCount = redisSession.getValue(phone + RedisNameUtil.separativeSignCount);
                 nashResult = NashResult.build(phoneCount);
                 return nashResult;
-            } else if (sendSmsResponse.getCode().equals("isv.BUSINESS_LIMIT_CONTROL")) {
-                nashResult = NashResult.Fail("fail", "此号码频繁发送验证码，暂时不能获取！");
+            } else{
+                if(sendSmsMessage.equalsIgnoreCase("isv.BUSINESS_LIMIT_CONTROL")){
+                    nashResult = NashResult.Fail("fail", "此号码频繁发送验证码，请稍后再试！");
+                }else if(sendSmsMessage.equalsIgnoreCase("isv.MOBILE_NUMBER_ILLEGAL")){
+                    nashResult = NashResult.Fail("fail", "非法手机号，请检查手机号码！");
+                }else {
+                    nashResult = NashResult.Fail("fail", "短信发送失败！");
+                }
                 return nashResult;
             }
-        } catch (ServerException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (ClientException e) {
-            e.printStackTrace();
+            nashResult = NashResult.Fail("fail", "短信发送异常");
+            return nashResult;
         }
-        /*//获取缓存中同一个电话号码发送次数传递到页面
-        String phoneCount = redisSession.getValue(phone + RedisNameUtil.separativeSignCount);
-
-        if (Integer.valueOf(phoneCount) > 3) {
-            return NashResult.build(phoneCount);
-        }*/
-        return null;
     }
 }
