@@ -12,7 +12,7 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}-tt1200x640</#if>" alt="">
+<img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -86,7 +86,7 @@
                         <span>总价</span>
                         <em>
                         <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>
-                        ${houseDetail.houseTotalPrices?number?round}万
+                        ${houseDetail.houseTotalPrices}万
                         <#else>
                             暂无数据
                         </#if>
@@ -117,7 +117,7 @@
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?number?round) * 10000}元/㎡
+                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)) * 10000}元/㎡
                 <#else>
                     暂无数据
                 </#if>
@@ -136,13 +136,13 @@
                 <dl class="module-table-item">
                     <dd class="odd-item">楼层：<span>
                     <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0))>
-                    ${houseDetail.floor}楼层/${houseDetail.totalFloor}层
+                    ${houseDetail.floor}楼层/共${houseDetail.totalFloor}层
                     <#else >
                         <#if houseDetail.floor?exists&& (houseDetail.floor!='')>
                         ${houseDetail.floor}楼层
                         </#if >
                         <#if houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0)>
-                        ${houseDetail.totalFloor}层
+                        共${houseDetail.totalFloor}层
                         </#if >
                         <#if (houseDetail.totalFloor??&&houseDetail.totalFloor==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
                             暂无数据
@@ -255,7 +255,7 @@
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']?number?round}元</em>/㎡
+                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
                 </#if>
             </p>
         </div>
@@ -298,12 +298,10 @@
                     </#if>
                     <div class="picture-box">
                         <div class="picture-box">
-                            <#if map['housePhotoTitle']?exists>
-                                <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
-                                    <img src="${map.housePhotoTitle}" alt="">
-                                </#if>
-                            <#else >
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                                    <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                                <#else >
+                                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
                             <div class="bottom-text">
                                 <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
@@ -312,7 +310,8 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices?number?round}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>${map.room}室</#if>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>
+                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
@@ -344,7 +343,7 @@
                         <h4 class="cont-first">${plotInfo.rc}</h4>
                     </#if>
                     <#if plotInfo['avgPrice']?exists>
-                        <p class="cont-last"><em>${plotInfo.avgPrice?number?round}元</em>/㎡</p>
+                        <p class="cont-last"><em>${plotInfo.avgPrice}元</em>/㎡</p>
                     </#if>
                 </div>
             </a></li>

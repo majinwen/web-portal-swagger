@@ -10,6 +10,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -65,7 +66,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
            boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
-            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("3", DistanceUnit.KILOMETERS));
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("1.6", DistanceUnit.KILOMETERS));
             srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
 
             // 获取距离多少公里 这个才是获取点与点之间的距离的
@@ -75,6 +76,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             sort.unit(DistanceUnit.KILOMETERS);
 ////            sort.order(SortOrder.DESC);
             sort.point(lat, lon);
+            sort.geoDistance(GeoDistance.ARC);
             srb.addSort(scrip).addSort(sort);
             SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
@@ -88,7 +90,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 //获取距离值，并保留两位小数点
-                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[1]);
                 String distance1 = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
                 instance.setHousetToPlotDistance(distance1);
                 BeanUtils.populate(instance, buildings);
@@ -381,7 +383,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             sort.order(SortOrder.ASC);
             sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
             srb.addSort(sort);
-            SearchResponse searchResponse = srb.execute().actionGet();
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){

@@ -631,7 +631,7 @@
                     <#if village['propertyFee']?exists>
                         <span class="expand-price">
                             <#if village['propertyFee']?number gt 0>
-                            ${village['propertyFee']?number?round}元/㎡·月
+                            ${village['propertyFee']}元/㎡·月
                             <#else >
                                 暂无数据
                             </#if>
@@ -648,7 +648,7 @@
                     <#if village['parkingRate']?exists&&village['parkingRate']!=''>
                         <span class="expand-price">
                             <#if village['parkingRate']??>
-                            ${village['parkingRate']?number?round}元/月
+                            ${village['parkingRate']}元/月
                             <#else >
                                 暂无数据
                             </#if>
@@ -712,7 +712,7 @@
                     <p class="cont-center">
                         <span>${nearviitem['area']!" "}</span><span>${nearviitem['tradingArea']!" "}</span>
                     </p>
-                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']?number?round}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>元/㎡</h4>
                 </div>
             </a></li>
         </#list>
@@ -738,7 +738,7 @@
                 <h4 class="cont-first">${builditem['building_name']!''}</h4>
                 <#if builditem['average_price']?exists>
                     <#if builditem['average_price']?number gt 0>
-                        <p class="cont-last">均价：<em>${builditem['average_price']?number?round}元</em>/㎡</p>
+                        <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
                     <#else >
                         <p class="cont-last">均价：<em>售价待定</em></p>
                     </#if>

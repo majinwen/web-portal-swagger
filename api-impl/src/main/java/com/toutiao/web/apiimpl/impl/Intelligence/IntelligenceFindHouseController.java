@@ -162,7 +162,7 @@ public class IntelligenceFindHouseController {
 
         IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
         if(StringTool.isNotBlank(intelligenceFh)){
-            if(intelligenceFh.getPlotCount()-5<5){//intelligenceFh.getPlotCount()-5<5
+            if(5>intelligenceFh.getPlotCount()){//intelligenceFh.getPlotCount()-5<5
                 intelligenceFh.setPlotCount(0);
             }
         }

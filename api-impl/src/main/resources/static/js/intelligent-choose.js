@@ -107,12 +107,25 @@ function chooseUserFinds() {
                         if(options['userPortrayalType']!=7) {
                             options['userPortrayalType'] = data.data.userPortrayalType;
                         }
-                        var ratio = new Number(data.data.ratio / 100);
+                        if(data.data.plotCount==0){
+                            that.count=data.data.plotCount;
+                            $('.result-begin').removeClass('none').find('p').text("无匹配小区，换个条件看看").addClass('high-light-red');
+                            $('.result-container').addClass('none');
+                        }else{
+                            var ratio = new Number(data.data.ratio / 100);
+                            $('#plot_Count').find('em').text(data.data.plotCount);
+                            that.count=data.data.plotCount;
+                            $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
+                            $('.result-begin').addClass('none');
+                            $('.result-container').removeClass('none');
+                        }
+                        /*var ratio = new Number(data.data.ratio / 100);
                         $('#plot_Count').find('em').text(data.data.plotCount);
                         that.count=data.data.plotCount;
                         $('#plot_Ratio').find('em').text(ratio.toFixed(3) == '0.000' ? '0' + '%' : ratio.toFixed(3) + '%');
                         $('.result-begin').addClass('none');
-                        $('.result-container').removeClass('none');
+                        $('.result-container').removeClass('none');*/
+
                     }
                     catch (e){
                         console.error(e)
@@ -220,6 +233,7 @@ function chooseUserFinds() {
             });
             $("#submitPrice").unbind('click');
             $("#submitPrice").click(function () {
+                options['districtId']=null;
                 //选择总价
                 if ($('.total-price').hasClass('current')) {
                     var priceInit = $('.total-conent').find('.slide-text').text();
@@ -242,6 +256,7 @@ function chooseUserFinds() {
 
                     /*$('.list-item').find('li').eq(0).find('.result-animate').html(payPriceHtml);*/
                 }
+
                 that.dialog_finish();
                 asyn_check.get(function () {
                     that.context=1
@@ -273,7 +288,7 @@ function chooseUserFinds() {
 
             $('#submitHouseType').unbind('click');
             $('#submitHouseType').on('click', function () {
-
+                options['districtId']=null;
 
                 options['layOut'] = $('#layOut').find('li.current').data('layout');
                 var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';
@@ -329,6 +344,8 @@ function chooseUserFinds() {
                 var currentChoose = $('.area-content').find('li.current').length;
                 if (currentChoose > 2) {
                     $('.area-content').find('li:not(.current)').removeClass('optional').addClass('disabled');
+                }
+                if (currentChoose >= 1) {
                     $('#submitArea').removeClass('disabled');
                 }
             });
@@ -345,6 +362,10 @@ function chooseUserFinds() {
                     });
                     $('#submitArea').addClass('disabled');
                 }
+                if (currentChoose >= 1) {
+                    $('#submitArea').removeClass('disabled');
+                }
+
             });
 
             $('#submitArea').unbind('click');
@@ -357,9 +378,11 @@ function chooseUserFinds() {
                     districtNameStr.push($(currentOptinos[i]).text());
                 }
                 options['districtId'] = districtIdStr.join();
-                var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
-                $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
-                that.dialog_finish();
+                if($('#option_distict').find('li.current').length > 0){
+                    var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
+                    $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
+                    that.dialog_finish();
+                }
                 asyn_check.get(function () {
                     that.context=1
                     that.next();
@@ -508,7 +531,7 @@ function chooseUserFinds() {
             }
             var totalPrice = Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text())
 
-            if(totalPrice>1500&&thisDom.prev().text().split("万")[0]==100){
+            if(totalPrice>=1500&&thisDom.prev().text().split("万")[0]==100){
                 slideText.text('1500' + cm + '+')
             }else {
                 slideText.text(Math.ceil(parseInt(thisDom.css('left')) / trackWidth * price)+parseInt(thisDom.prev().children('em').text()) + cm)
