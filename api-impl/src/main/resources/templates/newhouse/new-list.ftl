@@ -123,7 +123,7 @@
                     <dd>
                         <span data-info="1">近地铁</span>
                         <span data-info="7">车位充足</span>
-                        <span data-info="8">低密度</span>
+                        <span data-info="9">500强房企</span>
                         <span data-info="10">优质物业</span>
                         <span data-info="11">购物方便</span>
                         <span data-info="12">教育配套</span>
