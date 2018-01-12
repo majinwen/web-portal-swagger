@@ -750,7 +750,7 @@
     </#list>
     </ul>
 </section>
-
+<#--22222222222222-->
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/photoswipe.min.js"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
