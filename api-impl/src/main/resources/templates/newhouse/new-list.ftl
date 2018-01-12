@@ -2,12 +2,12 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
-    <link rel="stylesheet" href="${staticurl}/css/list.css">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>来头条房产看新房</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -312,9 +312,9 @@
 </script>
 
 </body>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/dropload.min.js"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 </html>

@@ -864,6 +864,7 @@ body {
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .slider-thumb {
             position: absolute;
             top: 50%;
+            left: 0;
             display: block;
             width: 0.6666666667rem;
             height: 0.6666666667rem;
