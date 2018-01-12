@@ -89,7 +89,7 @@
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image3.jpg" alt="90平小三居">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
                     <div class="topic-item-content">
                         <h5>万科楼盘</h5>
                         <p>品牌房企集中亮相</p>
@@ -165,7 +165,7 @@
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
                         <#if map['total_price']?exists && map['total_price'] gt 0>
                             <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>

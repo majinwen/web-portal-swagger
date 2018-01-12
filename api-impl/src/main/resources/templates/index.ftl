@@ -22,13 +22,8 @@
 </header>
 <div class="module-bottom-fill">
     <section class="banner-index-box">
-        <div class="swiper-container carousel-swiper" id="index-swiper">
-            <ul class="swiper-wrapper">
-                <li class="swiper-slide">
-                    <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
-                </li>
-            </ul>
-            <div class="swiper-pagination pictrue-index"></div>
+        <div class="carousel-swiper">
+            <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
@@ -194,7 +189,7 @@
                             <#--<p class="cont-block-2 high-light-red">售价待定</p>-->
                         <#--</#if>-->
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
                             <#if map['total_price']?exists && map['total_price'] gt 0>
                                 <p class="cont-block-2 high-light-red">${map['total_price']?number?round}万元/套</p>
@@ -311,7 +306,7 @@
 
 <script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
 <script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js?201801112016"></script>
+<script src="${staticurl}/js/main.js?201801112233"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>
