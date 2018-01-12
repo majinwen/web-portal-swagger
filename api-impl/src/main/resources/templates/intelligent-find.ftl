@@ -373,10 +373,15 @@
                 seconds += 100;
                 if(seconds>=rada_animit.total_seconds/3){
                     clearInterval(timer)
+                    $('#center_circle_div em').eq(0).text('5394');
+                    $('#center_circle_div em').eq(1).text(31098);
+                    $('#center_circle_div em').eq(2).text(124);
                 }
-                $('#center_circle_div em').eq(0).text(rada_animit.random(10000, 8000));
-                $('#center_circle_div em').eq(1).text(rada_animit.random(15000, 30000));
-                $('#center_circle_div em').eq(2).text(rada_animit.random(150, 50));
+                else {
+                    $('#center_circle_div em').eq(0).text(rada_animit.random(10000, 8000));
+                    $('#center_circle_div em').eq(1).text(rada_animit.random(15000, 30000));
+                    $('#center_circle_div em').eq(2).text(rada_animit.random(150, 50));
+                }
             }, 100);
 
         },
@@ -396,9 +401,13 @@
                 seconds += 100;
                 if(seconds>=rada_animit.total_seconds/3){
                     clearInterval(timer)
+                    $('#left_circle_div em').eq(0).text(7);
+                    $('#left_circle_div em').eq(1).text(305586);
                 }
-                $('#left_circle_div em').eq(0).text(rada_animit.random(10, 1));
-                $('#left_circle_div em').eq(1).text(rada_animit.random(1000000, 500000));
+                else {
+                    $('#left_circle_div em').eq(0).text(rada_animit.random(10, 1));
+                    $('#left_circle_div em').eq(1).text(rada_animit.random(1000000, 500000));
+                }
 
             }, 100);
         },
@@ -418,8 +427,11 @@
                 seconds += 100;
                 if(seconds>=rada_animit.total_seconds/3){
                     clearInterval(timer)
+                    $('#right_circle_div em').eq(1).text(962837);
                 }
-                $('#right_circle_div em').eq(1).text(rada_animit.random(300000, 200000));
+                else {
+                    $('#right_circle_div em').eq(1).text(rada_animit.random(300000, 200000));
+                }
 
             }, 100);
 
