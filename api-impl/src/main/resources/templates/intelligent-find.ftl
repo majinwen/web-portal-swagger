@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="button" id="userTypeSubmit">确定</button>
+            <button type="button" class="button disabled" id="userTypeSubmit">确定</button>
         </div>
     </div>
     <div class="section page3">

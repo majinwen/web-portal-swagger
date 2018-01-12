@@ -3,8 +3,10 @@
  * @type {string}
  * @private
  */
+var idwidth;
 $(function () {
-    scaleImg();             // 大首页图片拖拽
+    idwidth = window.document.documentElement.getBoundingClientRect().width;
+    scaleImg(idwidth);             // 大首页图片拖拽
 
     //describeAllShow();      // 描述展示全部
 
@@ -29,27 +31,34 @@ $(function () {
     moreInfoClick();        // 获取更多信息
 
     $('#more-map-info-new').on('click',function () {
-              var hrefurl = $(this).attr('href');
-              /*location.replace(hrefurl);*/
+        var hrefurl = $(this).attr('href');
+        /*location.replace(hrefurl);*/
         location.href = hrefurl
-    })
+    });
+});
+
+$(window).resize(function () {
+    idwidth = window.document.documentElement.getBoundingClientRect().width;
+    if (idwidth / dpr > 540) {
+        idwidth = 540 * dpr
+    }
+    scaleImg(idwidth);
 });
 
 function moreInfoClick() {
     $('.module-header-message h3').click(function () {
-        console.log($(this).parent().find('a').attr('class'));
         $(this).parent().find('a').click();
-
     });
 }
 
-function scaleImg() {
+function scaleImg(idWidth) {
+    console.log(idWidth);
     if (0 == $('.scaleImg').length) {
         return;
     }
     var mybody = document.getElementsByTagName('body')[0];
     var startX, startY, moveEndX, moveEndY, X, Y, base;
-    var idWidth = document.body.clientWidth;
+    // var idWidth = document.body.clientWidth;
     var idHeight = (idWidth * 3) / 5;
     $('.scaleImg').height(idHeight + 'px');
     $('.scaleImg').width(idWidth + 'px');
@@ -65,7 +74,6 @@ function scaleImg() {
         X = moveEndX - startX;
         Y = moveEndY - startY;
         if( Math.abs(Y) > Math.abs(X) && Y > 0) {// down
-
             base = Y / 1000 + 1;
             $('.scaleImg').css({
                 'width': idWidth * base,
@@ -73,6 +81,7 @@ function scaleImg() {
                 'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
             });
         }
+        console.log(idHeight);
     });
 
     mybody.addEventListener('touchend', function(e) {

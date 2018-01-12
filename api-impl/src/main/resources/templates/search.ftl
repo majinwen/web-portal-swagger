@@ -1,4 +1,4 @@
-<div class="search-page-wrapper">
+<div class="search-page-wrapper none">
     <header class="searchpage-header">
         <div class="searchpage-search-box">
             <div class="type-tab-box none">
@@ -14,7 +14,9 @@
             </div>
             <div class="searchpage-search-content">
                 <i class="icon"></i>
-                <input type="text" placeholder="" class="key-words" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+                <form action="" onsubmit="return false;">
+                    <input type="search" placeholder="" class="key-words" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+                </form>
             </div>
         </div>
             <button type="button" class="searchpage-search-btn">取消</button>
