@@ -40,12 +40,7 @@ public class HomePageController {
      */
     @RequestMapping(value={"{citypath}"})
     public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
-//        Map<String,String> map = new HashMap();
-//        map.put("newHouse","11,22,33");
-//        map.put("esfHouse","11,22,33");
-//        map.put("month","1");
-//        map.put("homepagePicture","/images/index/dsy_banner.png");
-//        redisSession.addObject("TradeQuotations", map);
+
         String tradeQuotations = redisSession.getValue("TradeQuotations");
         JSONObject jsonObject = JSONObject.parseObject(tradeQuotations);
         model.addAttribute("TradeQuotations",jsonObject);

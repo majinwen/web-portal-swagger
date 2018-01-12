@@ -23,7 +23,7 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="carousel-swiper">
-            <img class="scaleImg" width="100%" src="${staticurl}${TradeQuotations['homepagePicture']!'/images/index/dsy_banner.png'}?v=${staticversion}" alt="头条房产，重磅推出">
+            <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="头条房产，重磅推出">
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
