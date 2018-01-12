@@ -289,7 +289,7 @@ function chooseUserFinds() {
             $('#submitHouseType').unbind('click');
             $('#submitHouseType').on('click', function () {
                 options['districtId']=null;
-
+                //TODO DDD
                 options['layOut'] = $('#layOut').find('li.current').data('layout');
                 var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';
                 that.el.find('.result-animate').html(layOutHtml);
