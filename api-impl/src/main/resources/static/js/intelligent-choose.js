@@ -141,19 +141,29 @@ function chooseUserFinds() {
     }
     var base_Model={
         parents:[],
-        childs:[],
-        context:null,
-        disable:function (reset) {
-            if(!reset)
-                return
+        has_choose:false,
+        key:0,
+        parent_key:0,
+        setParent:function (p,resetParentKey) {
+            this.parents = p;
+            this.parent_key=0;
+            for (var i = 0; i < this.parents.length; i++) {
+                this.parent_key += this.parents[i].key;
+            }
+            if(resetParentKey){
+                this.parent_key=0;
+            }
+        },
+        disable:function () {
+
             this.context=null
             this.el.unbind('click');
             this.el.removeClass('current');
             this.el.removeClass('optional');
             this.el.removeClass('choose-end');
         },
-        enable:function (reset) {
-            if(!reset)
+        enable:function () {
+            if(this.has_choose)
                 return
             this.el.addClass('current');
             this.el.addClass('optional');
@@ -161,48 +171,29 @@ function chooseUserFinds() {
             this.el.click(function () {
                 that.dialog_show();
             })
-        },
-        next:function (resetSelf,count) {
-            resetSelf = resetSelf || false
-            if(typeof(count) == "undefined"){
-                count=2
-            }
-            if(resetSelf) {
-                this.check(resetSelf, count>0, false);
-            }
-            for(var i=0;i<this.childs.length;i++){
-                this.childs[i].next(true,count-1);
-            }
-        },
-        check:function (reset,checkParent,needBubble) {
-            reset = reset || false
-            needBubble = needBubble || false
-            checkParent = checkParent || false
-            this.disable(reset);
-            var parent_check=true && checkParent;
-            if(checkParent) {
-                for (var i = 0; i < this.parents.length; i++) {
-                    if (!this.parents[i].check(reset && needBubble,checkParent && needBubble,needBubble)) {
-                        parent_check = false;
-                    }
-                }
-            }
-            if(parent_check){
-                if(this.after_parent_check){
-                    this.after_parent_check(reset,checkParent,needBubble);
-                }
-            }
-            var self_check=this.context;
-            //todo 验证自己的选择值是否正确
+        }
 
-            return  self_check;
-        },
     }
     var yusuan_model={
         el:$('.list-item li').eq(0),
+        check:function () {
+            var parent_check=true;
+            var current_parent_key=0
+            for (var i = 0; i < this.parents.length; i++) {
+                current_parent_key += this.parents[i].key;
+                if (!this.parents[i].has_choose) {
+                    parent_check = false;
+                }
+            }
+            var parent_change = this.parent_key!=current_parent_key;
+            this.parent_key = current_parent_key;
+            if(this.after_parent_check){
+                this.after_parent_check(parent_check,parent_change);
+            }
 
-        after_parent_check:function (reset, checkParent, needBubble) {
-            this.enable(reset);
+        },
+        after_parent_check:function (parent_check, parent_change) {
+            this.enable();
         },
         dialog_show:function () {
             var that = this;
@@ -233,12 +224,13 @@ function chooseUserFinds() {
             });
             $("#submitPrice").unbind('click');
             $("#submitPrice").click(function () {
-                options['districtId']=null;
                 //选择总价
                 if ($('.total-price').hasClass('current')) {
                     var priceInit = $('.total-conent').find('.slide-text').text();
                     var totalPrice = parseInt(priceInit);
                     options['preconcTotal'] = totalPrice;
+                    options['downPayMent'] = payPrice;
+                    options['monthPayMent'] = null;
                     var totalPriceHtml = '<p><span>总价：<em>' + priceInit + '</em></span></p>';
                     that.el.find('.result-animate').html(totalPriceHtml);
 
@@ -251,22 +243,24 @@ function chooseUserFinds() {
 
                     options['downPayMent'] = payPrice;
                     options['monthPayMent'] = monthPrice;
+                    options['preconcTotal'] = null;
                     var payPriceHtml = '<p><span>首付：<em>' + payInit + '</em></span><span>月供：<em>' + monthPrice + '元</em></span></p>';
                     that.el.find('.result-animate').html(payPriceHtml);
 
                     /*$('.list-item').find('li').eq(0).find('.result-animate').html(payPriceHtml);*/
                 }
-
                 that.dialog_finish();
                 asyn_check.get(function () {
                     that.context=1
-                    that.next();
+                    flow_instance.go();
                 })
 
 
             })
         },
         dialog_finish:function () {
+            this.has_choose=true;
+            this.key += 1;
             // this.el.siblings().removeClass('current');
             this.el.removeClass('current').addClass('choose-end');
             $('.layer1').addClass('none');
@@ -275,8 +269,28 @@ function chooseUserFinds() {
     yusuan_model = $.extend({},base_Model,yusuan_model)
     var huxing_model={
         el:$('.list-item li').eq(1),
-        after_parent_check:function (reset, checkParent, needBubble) {
-            this.enable(reset);
+        isfirsChoose:true,
+        check:function () {
+            var parent_check=true;
+            var current_parent_key=0
+            for (var i = 0; i < this.parents.length; i++) {
+                current_parent_key += this.parents[i].key;
+                if (!this.parents[i].has_choose) {
+                    parent_check = false;
+                }
+            }
+            var parent_change = this.parent_key!=current_parent_key;
+            this.parent_key = current_parent_key;
+            if(this.after_parent_check){
+                this.after_parent_check(parent_check,parent_change);
+            }
+
+        },
+        after_parent_check:function (parent_check,parent_change) {
+            if(parent_check){
+                this.enable();
+            }
+
         },
         dialog_show:function () {
             var that = this;
@@ -288,21 +302,28 @@ function chooseUserFinds() {
 
             $('#submitHouseType').unbind('click');
             $('#submitHouseType').on('click', function () {
-                options['districtId']=null;
+
 
                 options['layOut'] = $('#layOut').find('li.current').data('layout');
                 var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';
                 that.el.find('.result-animate').html(layOutHtml);
-
+                if(that.isfirsChoose) {
+                    that.isfirsChoose=false;
+                    quyu_model.setParent([yusuan_model, huxing_model])
+                }
                 that.dialog_finish();
+
                 asyn_check.get(function () {
+
                     that.context=1
-                    that.next();
+                    flow_instance.go();
                 })
             });
 
         },
         dialog_finish:function () {
+            this.has_choose=true;
+            this.key += 1;
             this.el.removeClass('current').addClass('choose-end');
             $('.layer2').addClass('none');
         }
@@ -310,27 +331,56 @@ function chooseUserFinds() {
     huxing_model = $.extend({},base_Model,huxing_model)
     var quyu_model={
         el:$('.list-item li').eq(2),
+        check:function () {
+            var parent_check=true;
+            var current_parent_key=0
+            for (var i = 0; i < this.parents.length; i++) {
+                current_parent_key += this.parents[i].key;
+                if (!this.parents[i].has_choose) {
+                    parent_check = false;
+                }
+            }
+            var parent_change = this.parent_key!=current_parent_key;
+            this.parent_key = current_parent_key;
+            if(this.after_parent_check){
+                this.after_parent_check(parent_check,parent_change);
+            }
+        },
         distictInfo:[],
-        after_parent_check:function (reset, checkParent, needBubble) {
-            var that=this;
-            $('#option_distict li').removeClass('current').removeClass('optional').addClass('disabled')
-            asyn_check.get(function (data) {
-                    if (data.data.distictInfo != null) {
-                        that.distictInfo = data.data.distictInfo;
-                        $('#option_distict').find('li.disabled').each(function (i, orgin) {
-                            $(data.data.distictInfo).each(function (index, item) {
-                                if ($(orgin).data('value') == item.districtId) {
-                                    $(orgin).removeClass('disabled').addClass('optional');
-                                    $('#submitArea').addClass('disabled');
-                                }
+        after_parent_check:function (parent_check,parent_change) {
+            // if(parent_check){
+            //     this.enable();
+            // }
+            if(parent_change){
+                this.disable();
+                this.has_choose=false;
+                var that=this;
+                $('#option_distict li').removeClass('current').removeClass('optional').addClass('disabled')
+                asyn_check.get(function (data) {
+                        if (data.data.distictInfo != null && data.data.distictInfo.length>0) {
+                            that.distictInfo = data.data.distictInfo;
+                            var canenable=false;
+                            $('#option_distict').find('li.disabled').each(function (i, orgin) {
+                                $(data.data.distictInfo).each(function (index, item) {
+                                    if ($(orgin).data('value') == item.districtId) {
+                                        canenable=true;
+                                        $(orgin).removeClass('disabled').addClass('optional');
+                                        $('#submitArea').addClass('disabled');
+                                    }
+                                });
                             });
-                        });
-                    }
-                    that.enable(reset);
-                },
-                function () {
-                    console.error(arguments)
-                })
+                            if(canenable) {
+                                that.enable();
+                            }
+                        }
+
+
+                    },
+                    function () {
+                        console.error(arguments)
+                    })
+            }
+
         },
 
         dialog_show:function () {
@@ -385,11 +435,13 @@ function chooseUserFinds() {
                 }
                 asyn_check.get(function () {
                     that.context=1
-                    that.next();
+                    flow_instance.go();
                 })
             });
         },
         dialog_finish:function () {
+            this.has_choose=true;
+            this.key += 1;
             this.el.removeClass('current').addClass('choose-end');
             $('.layer3').addClass('none');
         }
@@ -397,8 +449,29 @@ function chooseUserFinds() {
     quyu_model = $.extend({},base_Model,quyu_model)
     var jiating_model={
         el:$('.list-item li').eq(3),
-        after_parent_check:function (reset, checkParent, needBubble) {
-            this.enable(reset);
+        check:function () {
+            var parent_check=true;
+            var current_parent_key=0
+            for (var i = 0; i < this.parents.length; i++) {
+                current_parent_key += this.parents[i].key;
+                if (!this.parents[i].has_choose) {
+                    parent_check = false;
+                }
+            }
+            var parent_change = this.parent_key!=current_parent_key;
+            this.parent_key = current_parent_key;
+            if(this.after_parent_check){
+                this.after_parent_check(parent_check,parent_change);
+            }
+
+        },
+        after_parent_check:function (parent_check, parent_change) {
+            if(parent_check) {
+                this.enable();
+            }
+            else if(!this.has_choose){
+                this.disable();
+            }
         },
         dialog_show:function () {
             var that = this;
@@ -417,11 +490,13 @@ function chooseUserFinds() {
                 that.dialog_finish();
                 asyn_check.get(function () {
                     that.context=1
-                    that.next();
+                    flow_instance.go();
                 })
             });
         },
         dialog_finish:function () {
+            this.has_choose=true;
+            this.key += 1;
             this.el.removeClass('current').addClass('choose-end');
             $('.layer4').addClass('none');
         }
@@ -430,74 +505,85 @@ function chooseUserFinds() {
     var end_model={
         el:$('.start-btn'),
         parents:[],
-        childs:[],
         context:null,
-        disable:function (reset) {
-            if(!reset)
-                return
-            this.context=null
+        check:function () {
+            var parent_check=true;
+            var current_parent_key=0
+            for (var i = 0; i < this.parents.length; i++) {
+                current_parent_key += this.parents[i].key;
+                if (!this.parents[i].has_choose) {
+                    parent_check = false;
+                }
+            }
+            var parent_change = this.parent_key!=current_parent_key;
+            this.parent_key = current_parent_key;
+            if(this.after_parent_check){
+                this.after_parent_check(parent_check,parent_change);
+            }
+
+        },
+        disable:function () {
             this.el.addClass('none');
 
         },
-        enable:function (reset) {
-            if(!reset)
-                return
+        enable:function () {
             this.el.removeClass('none');
-            var that = this;
-            this.el.click(function () {
-            })
-
         },
-        next:function (resetSelf,count) {
-            resetSelf = resetSelf || false
-            count = count || 1
-            if(resetSelf) {
-                this.check(resetSelf, count>0, false);
-            }
-            for(var i=0;i<this.childs.length;i++){
-                this.childs[i].next(true,count-1);
-            }
-        },
-        check:function (reset,checkParent,needBubble) {
-            reset = reset || false
-            needBubble = needBubble || false
-            checkParent = checkParent || false
-            this.disable(reset);
-            var parent_check=true && checkParent;
-            if(checkParent) {
-                for (var i = 0; i < this.parents.length; i++) {
-                    if (!this.parents[i].check(reset && needBubble,checkParent && needBubble,needBubble)) {
-                        parent_check = false;
-                    }
-                }
-            }
+        after_parent_check:function (parent_check, parent_change) {
             if(parent_check && asyn_check.count>0){
-                var that=this;
-                that.enable(reset);
+                this.enable();
             }
-            var self_check=parent_check;
-            //todo 验证自己的选择值是否正确
-
-            return  self_check && asyn_check.count>0;
+            else {
+                this.disable();
+            }
         }
     }
+    end_model=$.extend({},base_Model,end_model)
+
+
+    var flow_instance={
+        init:function () {
+            yusuan_model.enable();
+            huxing_model.disable();
+            quyu_model.disable();
+            jiating_model.disable();
+            end_model.disable();
+            huxing_model.setParent([yusuan_model]);
+            quyu_model.setParent([huxing_model]);
+            jiating_model.setParent([quyu_model])
+            end_model.setParent([yusuan_model,huxing_model,quyu_model,jiating_model]);
+        },
+        go:function () {
+            yusuan_model.check();
+            huxing_model.check();
+            quyu_model.check();
+            jiating_model.check();
+            end_model.check();
+        }
+    }
+
+
     if(3 == options['userType']){
         options['userPortrayalType'] = 7;
-        yusuan_model.childs=[end_model]
-        end_model.parents=[yusuan_model]
+        flow_instance = $.extend({},flow_instance,{
+            init:function () {
+                yusuan_model.enable();
+                huxing_model.disable();
+                quyu_model.disable();
+                jiating_model.disable();
+                end_model.disable();
+
+                end_model.setParent([yusuan_model]);
+            },
+            go:function () {
+                yusuan_model.check();
+                end_model.check();
+            }});
     }
     else {
-        yusuan_model.childs=[quyu_model]
-        huxing_model.childs=[quyu_model]
-        quyu_model.parents=[yusuan_model,huxing_model]
-        quyu_model.childs=[end_model]
-        jiating_model.childs=[end_model]
-        end_model.parents=[quyu_model,jiating_model]
+        flow_instance = $.extend({},flow_instance)
     }
-
-    end_model.check(true,true,true);
-
-
+    flow_instance.init();
 
     /*
      * 滑块滑动
