@@ -25,7 +25,11 @@
     <#list layoutDetails as datail>
         <section class="room${datail['room']}">
         <div class="house-type-header">
-            <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['building_area']}㎡</p>
+            <#if datail['room'] gt 0 >
+                    <p>${datail['room']}室${datail['hall']}厅${datail['toilet']}卫/${datail['building_area']}㎡</p>
+                <#else>
+                    <p>${datail['building_area']}㎡</p>
+            </#if>
         </div>
         <div class="house-type-tag">
             <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
@@ -50,7 +54,7 @@
                 <span class="sale-state">${datail['is_sale']!'在售'}</span>
            </div>
         </div>
-          <div class="describe-box">
+          <#--<div class="describe-box">
              <div class="describe-header">户型描述</div>
                 <div class="describe-cont">
                     <#if datail['layout_desc']?exists>
@@ -59,7 +63,7 @@
                         <p>暂无描述</p>
                     </#if>
                 </div>
-          </div>
+          </div>-->
     </section>
     </#list>
 </#if>
