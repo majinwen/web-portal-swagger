@@ -56,6 +56,7 @@ function chooseUserType() {
     $('.choose-wrapper').on('click', '.choose-item-box', function () {
         $('.choose-wrapper').find('.choose-item-box').removeClass('current');
         $(this).addClass('current');
+        $('#userTypeSubmit').removeClass('disabled');
     });
     $('#userTypeSubmit').on('click', function () {
         if ($('.choose-wrapper').find('.current').length > 0) {
