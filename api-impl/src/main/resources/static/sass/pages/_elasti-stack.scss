@@ -75,10 +75,12 @@
 
                 div {
                     float: left;
+                    width: rem(270);
 
                     h4 {
                         margin-top: rem(21);
                         margin-bottom: rem(20);
+                        @include text-ellipses;
                         @include font-dpr(32);
                     }
 

@@ -1186,10 +1186,14 @@ body {
           -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.47, 1.515);
           transition-timing-function: cubic-bezier(0.175, 0.885, 0.47, 1.515); }
         .elastics-stack-box .elastics-stack-content .elastics-stack li div {
-          float: left; }
+          float: left;
+          width: 3.6rem; }
           .elastics-stack-box .elastics-stack-content .elastics-stack li div h4 {
             margin-top: 0.28rem;
-            margin-bottom: 0.2666666667rem; }
+            margin-bottom: 0.2666666667rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; }
             [data-dpr="1"] .elastics-stack-box .elastics-stack-content .elastics-stack li div h4 {
               font-size: 16px; }
             [data-dpr="2"] .elastics-stack-box .elastics-stack-content .elastics-stack li div h4 {
