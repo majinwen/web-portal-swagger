@@ -120,7 +120,7 @@
             </div>
             <#if fhpt?exists><div class="module-item">
                 <div class="report-title-type1">
-                    <p>目标市场价格走势</p>
+                    <p>目标市场均价走势</p>
                 </div>
                 <div class="report-caption">
                     <p>对比北京市场近1年整体价格情况，洞察目标房产的价格走势</p>
@@ -913,7 +913,7 @@
                 data: getJiagezoushiYuefen()
             },
             yAxis: [{
-                name: '元/m2',
+                name: '元/㎡',
             },{
                 type: 'value',
                 scale: true,
