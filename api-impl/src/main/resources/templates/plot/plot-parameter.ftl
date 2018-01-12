@@ -2,11 +2,11 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/parameter.css">
+    <link rel="stylesheet" href="${staticurl}/css/parameter.css?v=${staticversion}">
     <title>小区参数</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -91,7 +91,7 @@
         <li>
             <p>物业类型：<#if village['propertyTypeName']?exists&&village['propertyTypeName']!=''>${village['propertyTypeName']}<#else >暂无数据</#if></p>
             <p>物业公司：<#if village['property']?exists&&village['property']!=''>${village['property']}<#else >暂无数据</#if></p>
-            <p>物业费：<#if village['propertyFee']?exists&&village['propertyFee']!=''>${village['propertyFee']}元/㎡·月<#else >暂无数据</#if></p>
+            <p>物业费：<#if village['propertyFee']?exists&&village['propertyFee']?number gt 0>${village['propertyFee']}元/㎡·月<#else >暂无数据</#if></p>
             <p>供暖：<#if village['heatingMode']?exists&&village['heatingMode']!=''>${village['heatingMode']}<#else >暂无数据</#if></p>
             <p>供水：<#if village['waterSupply']?exists&&village['waterSupply']!=''>${village['waterSupply']}<#else >暂无数据</#if></p>
             <p>供电：<#if village['electricSupply']?exists&&village['electricSupply']!=''>${village['electricSupply']}<#else >暂无数据</#if></p>
@@ -108,7 +108,7 @@
         </div>
     </section>
 </div>-->
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 </body>
 </html>

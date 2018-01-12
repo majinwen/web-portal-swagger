@@ -2,12 +2,12 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/esf-detail.css?v=${staticversion}">
     <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
     <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -361,11 +361,11 @@
 </div>
 </#if>
 <!-------- photoswipe -------->
-<script src="${staticurl}/js/photoswipe.min.js"></script>
-<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $(function(){
         var text = $("tilePlotDesc").find("p").text();
