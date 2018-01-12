@@ -1,6 +1,8 @@
 package com.toutiao.web.apiimpl.impl.homepage;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.newhouse.NewHouseService;
@@ -23,6 +25,9 @@ public class HomePageController {
     private NewHouseService newHouseService;
     @Autowired
     private PlotService plotService;
+    @Autowired
+    private RedisSession redisSession;
+
 
     @RequestMapping(value={""})
     public String index(){
@@ -35,6 +40,15 @@ public class HomePageController {
      */
     @RequestMapping(value={"{citypath}"})
     public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
+//        Map<String,String> map = new HashMap();
+//        map.put("newHouse","11,22,33");
+//        map.put("esfHouse","11,22,33");
+//        map.put("month","1");
+//        map.put("homepagePicture","/images/index/dsy_banner.png");
+//        redisSession.addObject("TradeQuotations", map);
+        String tradeQuotations = redisSession.getValue("TradeQuotations");
+        JSONObject jsonObject = JSONObject.parseObject(tradeQuotations);
+        model.addAttribute("TradeQuotations",jsonObject);
         NewHouseQuery newHouseQuery=new NewHouseQuery();
         newHouseQuery.setSort(0);
 //        newHouseQuery.setPageNum(1);
@@ -44,7 +58,7 @@ public class HomePageController {
         model.addAttribute("villageList", villageList);
         model.addAttribute("newbuilds",builds);
         model.addAttribute("user","asds");
-//        model.addAttribute("searchType","projhouse");+
+//        model.addAttribute("searchType","projhouse");
         return "index";
 
     }
