@@ -914,12 +914,18 @@
             },
             yAxis: [{
                 name: '元/㎡',
+                max:function(value) {
+                    return value.max + 5000;
+                },
+                min:function(value) {
+                    return value.min - 10000;
+                }
             },{
                 type: 'value',
                 scale: true,
                 axisLine: {show: true},
                 axisTick: {show: false},
-                axisLabel: {show: false,formatter: '{value}'},
+                axisLabel: {show: false},
                 splitLine: {show: false}
             }],
             dataZoom: [
