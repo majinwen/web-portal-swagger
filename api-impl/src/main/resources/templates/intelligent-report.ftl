@@ -21,14 +21,7 @@
         <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
-                <p>根据您的检索条件<br>总价<em class="high-light-red">
-                <#if intelligenceFhRes?exists>
-                    <#if intelligenceFhRes['totalPrice']?number == 1500>
-                        ${intelligenceFhRes['totalPrice']?number?round}万以上
-                    <#else>
-                        ${intelligenceFhRes['totalPrice']?number?round}万左右
-                    </#if>
-                </#if></em>的房源市场为您的目标市场 </p>
+                <p>将您的检索条件和 <em class="high-light-red">305586</em> 位购房用户的数据样本<br>相比较，生成您所处族群的用户画像 </p>
             </div>
             <div class="user-header-box">
                 <div class="user-line-triangle"></div>

@@ -17,7 +17,7 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <h1>懂房帝</h1>
-            <p>智能人局 更懂人需<br>根据您的需求推荐最匹配的小区</p>
+            <p>智能人居 更懂人需<br>根据您的需求推荐最匹配的小区</p>
             <button type="button" class="button begin">开始体验</button>
         </div>
     </div>
