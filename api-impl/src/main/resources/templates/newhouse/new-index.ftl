@@ -89,7 +89,7 @@
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image3.jpg" alt="90平小三居">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
                     <div class="topic-item-content">
                         <h5>万科楼盘</h5>
                         <p>品牌房企集中亮相</p>
