@@ -104,6 +104,22 @@ public class CookieUtils {
         response.addCookie(newCookie);
         return newCookie;
     }
+    /**
+     *
+     * @param request
+     * @param response
+     * @param cookieName
+     * @param cookieValue
+     */
+    public static Cookie setCookieexp(HttpServletRequest request,
+                                   HttpServletResponse response, String cookieName,
+                                   String cookieValue) {
+        Cookie newCookie = new Cookie(cookieName, cookieValue);
+        newCookie.setMaxAge(120);
+        newCookie.setPath("/");
+        response.addCookie(newCookie);
+        return newCookie;
+    }
 
 
 
