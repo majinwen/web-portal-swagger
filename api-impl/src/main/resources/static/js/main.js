@@ -52,7 +52,7 @@ function moreInfoClick() {
 }
 
 function scaleImg(idWidth) {
-    console.log(idWidth);
+
     if (0 == $('.scaleImg').length) {
         return;
     }
@@ -81,7 +81,7 @@ function scaleImg(idWidth) {
                 'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
             });
         }
-        console.log(idHeight);
+
     });
 
     mybody.addEventListener('touchend', function(e) {
