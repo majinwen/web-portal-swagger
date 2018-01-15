@@ -694,7 +694,7 @@
     </script>
 </section>
 </#if>
-<#if build['saletelphone']?exists>
+<#if build['saletelphone']?exists&&build['saletelphone']!=''>
     <div class="detail-contact-wrapper">
         <section class="detail-contact-box" id="detailContactState">
             <div class="detail-contact-content">

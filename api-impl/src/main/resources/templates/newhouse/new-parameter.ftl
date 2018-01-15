@@ -124,7 +124,7 @@
     </#if>
     </table>
 </section>
-<#if discript['saletelphone']?exists>
+<#if discript['saletelphone']?exists&&discript['saletelphone']!=''>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
