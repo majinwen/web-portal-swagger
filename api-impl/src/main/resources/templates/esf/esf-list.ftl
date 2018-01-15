@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
-    <link rel="stylesheet" href="${staticurl}/css/list.css">
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>来头条房产二手房</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
-<img height="1px" width="1px" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
@@ -83,7 +82,7 @@
                             <span data-info="2">公寓</span>
                             <span data-info="3">酒店式公寓</span>
                             <span data-info="4">花园洋房</span>
-                            <span data-info="5">商住楼</span>
+                            <#--<span data-info="5">商住楼</span>-->
                         </dd>
                     </dl>
                     <dl>
@@ -140,25 +139,25 @@
                             <span class="only" data-info="2">无</span>
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="buildingTypeId">建筑类型</dt>
-                        <dd>
-                            <span data-info="1">板楼</span>
-                            <span data-info="2">塔楼</span>
-                            <span data-info="3">板塔结合</span>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt data-type="ownership">权属</dt>
-                        <dd>
-                            <span data-info="1">已购公房</span>
-                            <span data-info="2">商品房</span>
-                            <span data-info="3">空置房</span>
-                            <span data-info="4">使用权房</span>
-                            <span data-info="5">央产</span>
-                            <span data-info="6">经济适用房</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="buildingTypeId">建筑类型</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">板楼</span>-->
+                            <#--<span data-info="2">塔楼</span>-->
+                            <#--<span data-info="3">板塔结合</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
+                    <#--<dl>-->
+                        <#--<dt data-type="ownership">权属</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">已购公房</span>-->
+                            <#--<span data-info="2">商品房</span>-->
+                            <#--<span data-info="3">空置房</span>-->
+                            <#--<span data-info="4">使用权房</span>-->
+                            <#--<span data-info="5">央产</span>-->
+                            <#--<span data-info="6">经济适用房</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
@@ -186,7 +185,7 @@
                                 ${map.buildArea}㎡
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                                / ${map.room}室${map.hall}厅
+                                / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
                             </#if>
                             <#if map.forwardName?exists>
                                 / ${map.forwardName}
@@ -233,7 +232,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${((map.houseTotalPrices / map.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡</span>
+                                    <span>${((map.houseTotalPrices / map.buildArea)) * 10000}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>
@@ -319,9 +318,9 @@
     {{/each}}
 </script>
 </body>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/dropload.min.js"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 </html>

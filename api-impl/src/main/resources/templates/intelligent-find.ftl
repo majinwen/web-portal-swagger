@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css">
-    <link rel="stylesheet" href="${staticurl}/css/intelligent.css">
-    <title>智能找房 预见所想</title>
+<#include "staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/intelligent.css?v=${staticversion}">
+    <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
 </head>
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
@@ -17,7 +17,7 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <h1>懂房帝</h1>
-            <p>智能人需 更懂人居<br>根据您的需求推荐最匹配的小区</p>
+            <p>智能人局 更懂人需<br>根据您的需求推荐最匹配的小区</p>
             <button type="button" class="button begin">开始体验</button>
         </div>
     </div>
@@ -32,9 +32,8 @@
                     <div class="choose-item-cont">
                         <div class="dashed-line one"></div>
                         <p data-user-type="1">
-                            <span>自住</span>
-                            <span>刚需</span>
-                            <span>交通便利</span>
+                            <span>自住 刚需</span>
+                            <span>[首次购房]</span>
                         </p>
                     </div>
                 </div>
@@ -44,9 +43,8 @@
                         <div class="choose-item-cont">
                             <div class="dashed-line two"></div>
                             <p data-user-type="2">
-                                <span>自住</span>
-                                <span>改善</span>
-                                <span>配套完善</span>
+                                <span>自住 改善</span>
+                                <span>[居所升级]</span>
                             </p>
                         </div>
                     </div>
@@ -55,9 +53,8 @@
                         <div class="choose-item-cont">
                             <div class="dashed-line three"></div>
                             <p data-user-type="3">
-                                <span>出租</span>
-                                <span>保值</span>
-                                <span>回报率</span>
+                                <span>出租 持有</span>
+                                <span>[长远保值]</span>
                             </p>
                         </div>
                     </div>
@@ -82,7 +79,7 @@
                 </div>
             </div>
             <ul class="list-item">
-                <li class="current">
+                <li >
                     <div class="animate-box">
                         <div class="trangle-animate"></div>
                         <p>预算</p>
@@ -130,8 +127,8 @@
                                     <div class="slide-color"></div>
                                     <span class="min"><em>100</em>万</span>
                                     <span class="slider-thumb"></span>
-                                    <span class="max"><em>1500</em>万</span>
-                                    <span class="maxMore"><em>1500+</em>万</span>
+                                    <span class="max"><em>3000</em>万</span>
+                                    <span class="mid"><em>1500</em>万</span>
                                 </div>
                             </div>
                         </div>
@@ -188,10 +185,9 @@
             <div class="layer layer3 none">
                 <div class="layer-content">
                     <div class="layer-header">
-                        <p>选择您的意向区域</p>
+                        <p>您想住在哪里？</p>
                         <div class="area-tips">
-                            <span>意向区域不能点么</span>
-                            <button class="modify-reset">修改预算</button>
+                            <span>（最多可以选择3个意向区域）</span>
                         </div>
                     </div>
                     <ul id="option_distict" class="area-content clear">
@@ -249,10 +245,14 @@
                         </div>
                         <div class="old-man-box">
                             <label>老人</label>
+                            <ul class="content-list" id="oldMan">
+                                <li class="current" data-old-man='0'><span>无</span></li>
+                                <li data-old-man='1'><span>有</span></li>
+                            </ul><#--
                             <ul class="choose-radio" id="oldMan">
                                 <li data-old-man='0' class="current"><i></i><span>无</span></li>
                                 <li data-old-man='1'><i></i><span>有</span></li>
-                            </ul>
+                            </ul>-->
                         </div>
                     </div>
                     <div class="layer-footer">
@@ -261,7 +261,8 @@
                 </div>
             </div>
             <div class="start-btn none">
-                <p>启动</p>
+                <div class="start-triangle"></div>
+                <p><img src="/static/images/intelligent/znzf_icon_zw.png" alt="开启">开启</p>
             </div>
         </div>
     </div>
@@ -276,8 +277,7 @@
                     <div class="animate-big-box" id="left_circle_div">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box">
-                        <#-- 扫描红线（改变top） -->
-                            <div class="animate-line"></div>
+                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box" style="display: none;">
                                 <p><em>7</em>年</p>
                                 <p><em>305586</em>位</p>
@@ -296,8 +296,7 @@
                     <div class="animate-big-box">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box" id="center_circle_div">
-                            <#-- 扫描红线（改变top） -->
-                            <div class="animate-line"></div>
+                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box"  style="display: none">
                                 <p><em>8123</em>个社区</p>
                                 <p><em>40397</em>套房产</p>
@@ -316,8 +315,7 @@
                     <div class="animate-big-box" id="right_circle_div">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box">
-                        <#-- 扫描红线（改变top） -->
-                            <div class="animate-line"></div>
+                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box" style="display: none">
                                 <p><em>1</em>秒</p>
                                 <p><em>962837</em>次运算</p>
@@ -335,14 +333,14 @@
 
             <div class="button-bottom">
                 <a class="button-box" id="button_report" href="javascript:void(0)">
-                    <#-- 百分比进度显示 -->
+                <#-- 百分比进度显示 -->
                     <div class="loading-number">0%</div>
-                    <#-- 黑色进度条（改变width） -->
+                <#-- 黑色进度条（改变width） -->
                     <div class="button-mask-box">
                         <div class="button-mask"></div>
                     </div>
                     <div class="button"></div>
-                    <p class="loading-text">正在生成用户画像</p>
+                    <p class="loading-text">正在生成 专属用户画像</p>
                 </a>
             </div>
         </div>
@@ -357,6 +355,7 @@
         random: function (max, min) {
             return parseInt(Math.random() * max) + min;
         },
+        total_seconds:5000.0,
         center_process: function () {
             if (!rada_animit.center_process_start) {
                 rada_animit.center_process_start = true
@@ -369,15 +368,17 @@
             clearInterval($('#center_circle_div .animate-line').eq(0).data("lada_timer"));
             $('#center_circle_div .text-box').show();
             $('#center_circle_div').prev('.animate-ring-box').addClass("active");
+            var seconds=0
             var timer = setInterval(function () {
-
+                seconds += 100;
+                if(seconds>=rada_animit.total_seconds/3){
+                    clearInterval(timer)
+                }
                 $('#center_circle_div em').eq(0).text(rada_animit.random(10000, 8000));
                 $('#center_circle_div em').eq(1).text(rada_animit.random(15000, 30000));
                 $('#center_circle_div em').eq(2).text(rada_animit.random(150, 50));
             }, 100);
-            setTimeout(function () {
-                clearInterval(timer)
-            }, 4000)
+
         },
         left_process: function () {
             if (!rada_animit.left_process_start) {
@@ -390,14 +391,16 @@
             clearInterval($('#left_circle_div .animate-line').eq(0).data("lada_timer"));
             $('#left_circle_div .text-box').show();
             $('#left_circle_div .animate-ring-box').addClass("active");
+            var seconds=0;
             var timer = setInterval(function () {
+                seconds += 100;
+                if(seconds>=rada_animit.total_seconds/3){
+                    clearInterval(timer)
+                }
                 $('#left_circle_div em').eq(0).text(rada_animit.random(10, 1));
                 $('#left_circle_div em').eq(1).text(rada_animit.random(1000000, 500000));
 
             }, 100);
-            setTimeout(function () {
-                clearInterval(timer)
-            }, 4000)
         },
         right_process: function () {
             if (!rada_animit.right_process_start) {
@@ -410,13 +413,16 @@
             clearInterval($('#right_circle_div .animate-line').eq(0).data("lada_timer"));
             $('#right_circle_div .text-box').show();
             $('#right_circle_div .animate-ring-box').addClass("active");
+            var seconds=0;
             var timer = setInterval(function () {
+                seconds += 100;
+                if(seconds>=rada_animit.total_seconds/3){
+                    clearInterval(timer)
+                }
                 $('#right_circle_div em').eq(1).text(rada_animit.random(300000, 200000));
 
             }, 100);
-            setTimeout(function () {
-                clearInterval(timer)
-            }, 4000)
+
         },
         stop_all: function () {
             for (var i = 0; i < rada_animit.timers.length; i++) {
@@ -442,23 +448,44 @@
                 }, 100);
                 that.data("lada_timer", timer);
             });
+            var tips=[
+                "正在生成 目标市场分析",
+                "正在生成 智能推荐结果",
+                "正在生成 生活配套报告",
+                "已完成 敬请查阅"]
             var process = 0;
+            var seconds=0;
+            var steppx =parseInt($('#button_report').width())/ rada_animit.total_seconds*80;
             var process_timer = setInterval(function () {
-                $('.button-mask').width((process + 1) + 'px');
-                process += 4;
-                $('.loading-number').css('left', process + 'px');
-                var rate = parseInt(process * 100 / parseInt($('#button_report').width()));
-                if (rate > 10) {
+                process = process +steppx
+                seconds += 80;
+                if (seconds > 0) {
                     rada_animit.center_process();
                 }
-                if (rate > 25) {
+                if (seconds >= rada_animit.total_seconds/3 ) {
                     rada_animit.left_process();
                 }
-                if (rate > 40) {
+                if (seconds > rada_animit.total_seconds/3*2) {
                     rada_animit.right_process();
                 }
+                if(seconds >= rada_animit.total_seconds){
+                    $('.loading-text').text("已完成 敬请查阅");
+                }
+                else if(seconds >= rada_animit.total_seconds*3/4){
+                    $('.loading-text').text("正在生成 生活配套报告");
+                }
+                else if(seconds >= rada_animit.total_seconds*2/4){
+                    $('.loading-text').text("正在生成 智能推荐结果");
+                }
+                else if(seconds >= rada_animit.total_seconds*1/4){
+                    $('.loading-text').text("正在生成 目标市场分析");
+                }
+                $('.button-mask').width((process ) + 'px');
+
+                $('.loading-number').css('left', process + 'px');
                 $('.loading-number').text(parseInt(process * 100 / parseInt($('#button_report').width())) + '%');
-                if (process >= parseInt($('#button_report').width())) {
+
+                if (seconds>rada_animit.total_seconds) {
                     $('.button-mask').width($('#button_report').width());
                     if (rada_animit.id) {
                         $('.loading-number').hide();
@@ -470,6 +497,7 @@
                         });
                     }
                 }
+
             }, 80)
         }
     };

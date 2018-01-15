@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/house-type.css">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/house-type.css?v=${staticversion}">
     <title>户型详情</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -67,7 +67,7 @@
 <p class="bottom-tips">以上是全部户型</p>
 <div class="detail-contact-wrapper">
 <#assign discript = discript[0]>
-<#if discript['saletelphone']?exists>
+<#if discript['saletelphone']?exists&&discript['saletelphone']!=''>
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
             <#--<a href="#" class="contact-share"><i></i>分享</a>
@@ -77,7 +77,7 @@
     </section>
 </#if>
 </div>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 </body>
 </html>

@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/login.css">
+    <#include "staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/login.css?v=${staticversion}">
     <title>登录页</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
 </head>
 <body>
 <h2>手机快捷登录</h2>
 <p class="registration-prompt">（未注册过的手机号将自动创建账号）</p>
-<form action="/user/tologin" id="myform" class="login-form" method="post">
+<form action="/user/tologin?backUrl=<#if backUrl?exists>${backUrl}</#if>" id="myform" class="login-form" method="post">
     <input type="hidden" name="count" id="count" value="<#if count?exists>${count}<#else >0</#if>">
+    <input type="hidden" name="title" id="title" value="<#if title?exists>${title}</#if>">
     <div class="input-phone">
         <input type="tel" maxlength="11" id="user_phone" name="phone" placeholder="请输入手机号"
                value="<#if phone?exists>${phone}</#if>"

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/parameter.css">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/parameter.css?v=${staticversion}">
     <title>新房参数</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="description" content="让美好生活 来找你">
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -24,7 +24,6 @@
                         <#if item?exists><span>${item}</span></#if>
                     </#list><#else>暂无数据
                 </#if>
-
             </div>
         </div>
         <ul class="primary-item">
@@ -125,7 +124,7 @@
     </#if>
     </table>
 </section>
-<#if discript['saletelphone']?exists>
+<#if discript['saletelphone']?exists&&discript['saletelphone']!=''>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
@@ -136,7 +135,7 @@
     </section>
 </div>
 </#if>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 </body>
 </html>

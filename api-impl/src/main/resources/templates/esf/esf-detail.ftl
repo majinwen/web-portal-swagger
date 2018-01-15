@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/esf-detail.css">
-    <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>
-${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/esf-detail.css?v=${staticversion}">
+    <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
     <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img height="1px" width="1px" src="${houseDetail['housePhoto'][0]}">
+<img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -119,7 +117,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)?if_exists?string("##.0"))?number * 10000}元/㎡
+                ${((houseDetail.houseTotalPrices / houseDetail.buildArea)) * 10000}元/㎡
                 <#else>
                     暂无数据
                 </#if>
@@ -127,8 +125,8 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
             </li>
             <li>
                 <p>预算：
-                <#if houseDetail.houseBudget?exists>
-                ${houseDetail.houseBudget}元/㎡
+                <#if houseDetail.housingDeposit?exists&&houseDetail.houseMonthPayment?exists>
+                    参考首付${houseDetail.housingDeposit}万，月供${houseDetail.houseMonthPayment}元/月
                 <#else>
                     暂无数据
                 </#if>
@@ -138,13 +136,13 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                 <dl class="module-table-item">
                     <dd class="odd-item">楼层：<span>
                     <#if (houseDetail.floor?exists&& (houseDetail.floor!=''))&& (houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0))>
-                    ${houseDetail.floor}楼层/${houseDetail.totalFloor}层
+                    ${houseDetail.floor}楼层/共${houseDetail.totalFloor}层
                     <#else >
                         <#if houseDetail.floor?exists&& (houseDetail.floor!='')>
                         ${houseDetail.floor}楼层
                         </#if >
                         <#if houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0)>
-                        ${houseDetail.totalFloor}层
+                        共${houseDetail.totalFloor}层
                         </#if >
                         <#if (houseDetail.totalFloor??&&houseDetail.totalFloor==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
                             暂无数据
@@ -153,14 +151,15 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                     </span></dd>
                     <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}电梯<#else>暂无数据</#if></em></dd>
                     <dd class="odd-item">类别：
-                    <#if houseDetail.houseTypeName?exists&& (houseDetail.houseTypeName !='')>
-                        <em>${houseDetail.houseTypeName}</em>
+                    <#if houseDetail.buildCategoryName?exists&& (houseDetail.buildCategoryName !='')>
+                        <em>${houseDetail.buildCategoryName}</em>
                     <#else>
-                        <#if houseDetail.buildCategoryName?exists && (houseDetail.buildCategoryName!='') >
-                            <em>${houseDetail.buildCategoryName}</em>
+                       <#-- <#if houseDetail.houseTypeName?exists && (houseDetail.houseTypeName!='') >
+                            <em>${houseDetail.houseTypeName}</em>
                         <#else>
                             暂无数据
-                        </#if>
+                        </#if>-->
+                        暂无数据
                     </#if>
                     </dd>
                     <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无数据</#if></em>
@@ -189,7 +188,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
         <#if houseDetail.traffic?exists>
             <li>
                 <p>
-                    交通信息：${houseDetail.traffic}
+                    交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
                     <em class="primary-distance"></em>
                     <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="primary-map-icon"></a>
                     <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
@@ -220,7 +219,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
             <#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>
                 <div class="describe-cont">
                     <p>${houseDetail.houseDesc}</p>
-                    <span class="describe-show-btn">>>展开</span>
+                    <#--<span class="describe-show-btn">>>展开</span>-->
                 </div>
             </#if>
         </div>
@@ -252,7 +251,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                 </#if>
                 <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
-                <#if village['buildingStructure']?exists&&(village['buildingStructure']!='')>${village['buildingStructure']}</#if>
+                <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
             </p>
             <p>
                 <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
@@ -299,29 +298,22 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
                     </#if>
                     <div class="picture-box">
                         <div class="picture-box">
-                            <#if map['housePhotoTitle']?exists>
-                                <#if map.housePhotoTitle??&& map.housePhotoTitle!=''>
-                                    <img src="${map.housePhotoTitle}" alt="">
-                                </#if>
-                            <#else >
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                                    <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                                <#else >
+                                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
+                            </div>
                         </div>
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em>
-                                <#if map.houseTotalPrices?exists>
-                                    <#if map.houseTotalPrices==0>
-                                    </#if>
-                                <#else>
-                                ${map.houseTotalPrices}万
-                                </#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)> ${map.buildArea}㎡ </#if>
-                                <#if map.room?exists&&map.hall?exists>${map.room}室${map.hall}厅<#else></#if>
-                            </em>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>
+                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                         </p>
-                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}<#else></#if></h4>
+                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
                 </a></li>
             </#list>
@@ -336,12 +328,7 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
     </div>
     <ul class="tilelist">
         <#list plotList as plotInfo>
-            <li>
-                <#if plotInfo['id']?exists>
-                <a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
-                <#else >
-                <a href="#">
-                </#if>
+            <li><a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
@@ -374,11 +361,11 @@ ${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall
 </div>
 </#if>
 <!-------- photoswipe -------->
-<script src="${staticurl}/js/photoswipe.min.js"></script>
-<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $(function(){
         var text = $("tilePlotDesc").find("p").text();

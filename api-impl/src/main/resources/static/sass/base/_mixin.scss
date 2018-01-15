@@ -136,6 +136,16 @@ $FontSize: 16;
     @return $list;
 }
 
+body, input, button, textarea, select {
+    @include font-dpr(24);
+}
+
+body {
+    position: relative;
+    width: rem(750);
+    margin: 0 auto !important;
+}
+
 .module-bottom-fill {
     padding-bottom: rem(16);
     background-color: $baseModuleFillColor;
@@ -206,7 +216,12 @@ $FontSize: 16;
 
 .fixed-scroll {
     position: fixed;
-    width: 100%;
+    left: 50%;
+    width: rem(750);
     height: 100%;
+    margin-left: rem(-375) !important;
     overflow: hidden;
+}
+.shareTopImg {
+    position: absolute;
 }

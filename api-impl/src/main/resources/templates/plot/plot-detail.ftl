@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/plot-detail.css">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/plot-detail.css?v=${staticversion}">
     <title>来头条房产看【${village['rc']!'小区'}】</title>
     <meta name="description" content="推荐你上头条房产看看【${village['rc']!'小区'}】的价格走势与小区详情">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="${staticurl}/js/echarts.js"></script>
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script>
         var locationnumber = '${village['location']}';
         var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
@@ -21,14 +20,14 @@
 <#assign ptCD1 = tradeline['arealine']>
 <#assign ptCD2 = tradeline['tradearealine']>
 <#assign mouthList = tradeline['mouthList']>
-<img height="1px" width="1px" src="${qiniuimage}/${village['photo'][0]}-tt1200x640" alt="">
+<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-tt1200x640" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
         <#if village['photo']?exists&&(village['photo']?size gt 0)>
             <#list village['photo'] as vpphoto>
                 <li onclick="initphoto(this,${vpphoto_index})" class="swiper-slide">
-                    <img src="${qiniuimage}/${vpphoto}-tt1200x640" data-src="${qiniuimage}/${vpphoto}" alt="">
+                    <img src="${qiniuimage}/${vpphoto}-ttfdc1200x640" data-src="${qiniuimage}/${vpphoto}-ttfdc1200x640" alt="">
                 </li>
             </#list>
         <#else>
@@ -93,7 +92,7 @@
             <#assign split = village['address']?split('-')>
             <#if split?size gt 1>${split[1]}<#else >
             ${village['address']!''}</#if></#if></p>
-            <p>${village['trafficInformation']!''}</p>
+            <#--<p>${village['trafficInformation']!''}</p>-->
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
                 <#list village['label'] as label>
@@ -108,7 +107,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>市场行情<span class="subtitle">价格走势</span></h3>
+            <h3>市场行情<span class="subtitle">洞察价格走势</span></h3>
             <#--<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>-->
         </div>
         <div class="basic-information price-trend">
@@ -163,8 +162,8 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>推荐小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部房源<i class="arrows-right"></i></a>
+            <h3>小区好房</h3>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -200,7 +199,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>基本信息</h3>
+            <h3>基本信息<span class="subtitle">了解居住环境</span></h3>
             <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
@@ -239,7 +238,10 @@
                     <i class="item-two-2"></i>
                     <div class="info-item-text">
                         <p>车位配比</p>
-                        <em>${village['carPositionRatio']!'暂无数据'}</em>
+                        <em><#if village['carPositionRatio']??&&village['carPositionRatio']!=''>
+                           ${village['carPositionRatio']}
+                        <#else>暂无数据
+                        </#if></em>
                     </div>
                 </div>
             </div>
@@ -248,14 +250,20 @@
                     <i class="item-two-3"></i>
                     <div class="info-item-text">
                         <p>电梯配备</p>
-                        <em>${village['avgElevator']!'暂无数据'}</em>
+                        <em><#if village['avgElevator']??&&village['avgElevator']!=''>
+                          ${village['avgElevator']}
+                        <#else>暂无数据
+                        </#if></em>
                     </div>
                 </div>
                 <div class="info-card-item">
                     <i class="item-two-4"></i>
                     <div class="info-item-text">
                         <p>空气质量</p>
-                        <em>${village['airQuality']!'暂无数据'}</em>
+                        <em><#if village['airQuality']??&&village['airQuality']!=''>
+                           ${village['airQuality']}
+                        <#else>暂无数据
+                        </#if></em>
                     </div>
                 </div>
             </div>
@@ -266,7 +274,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>交通信息</h3>
+            <h3>交通信息<span class="subtitle">最便捷的出行方式</span></h3>
         </div>
         <div class="basic-information">
             <div class="column item-column-three">
@@ -280,8 +288,16 @@
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
-                    <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists>${datainfo["ditie"]["line"]}<#else >暂无数据</#if></span>
+                    <#--<p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>-->
+                    <#--<span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >暂无数据</#if></span>-->
+                    <#if village['trafficInformation']?exists>
+                        <#assign rounditems = village['trafficInformation']?split("$")>
+                        <#assign x = rounditems[2]?number/1000>
+                        <p id="subwayLine">${rounditems[1]}</p>
+                        <span id="subwayDistance">${rounditems[0]}</span>
+                    <#else >
+                        暂无数据
+                    </#if>
                 </div>
             </#if>
                 <div class="info-card-item">
@@ -310,7 +326,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>教育配套<span class="subtitle">看你发芽，陪你长大</span></h3>
+            <h3>教育配套<span class="subtitle">看你发芽 陪你长大</span></h3>
         </div>
         <div class="expand-content content-visible tab_jiaoyupeixun_info">
             <div class="map-education-box">
@@ -319,7 +335,7 @@
                     <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
                     <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
                     <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
-                    <li class="university" data-type="gaodeng"><i></i><span>大学</span></li>
+                    <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
                 </ul>
             </div>
             <ul class="result-data-expand" id="qinzi">
@@ -373,7 +389,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>休闲购物</h3>
+            <h3>休闲购物<span class="subtitle">3km内生活圈</span></h3>
         </div>
         <div class="expand-content content-visible tab_xiuxiangouwu_click">
             <div class="map-shopping-box">
@@ -537,18 +553,49 @@
 <div class="module-bottom-fill" id="hospitalListWrapper">
     <section>
         <div class="module-header-message">
-            <h3>医疗配套</h3>
+            <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
             <#assign yiliao=datainfo['yiliao'] />
             <ul class="result-data-expand" id="hospitalListDom">
-                <#list yiliao as item>
+            <#assign itnum = 0>
+            <#if (yiliao['zhuanke']?size>0)>
+                <#list yiliao['zhuanke'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
                     <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}</span></p>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
                         <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
                     </li>
+                    <#else><#break>
+                    </#if>
                 </#list>
+            </#if>
+            <#if (yiliao['zhensuo']?size>0)>
+                <#list yiliao['zhensuo'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
+                    <li>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                    <#else><#break>
+                    </#if>
+                </#list>
+            </#if>
+            <#if (yiliao['zonghe']?size>0)>
+                <#list yiliao['zonghe'] as item>
+                    <#if itnum<5>
+                        <#assign itnum=itnum+1>
+                    <li>
+                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
+                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                    </li>
+                    <#else><#break>
+                    </#if>
+                </#list>
+            </#if>
             </ul>
         </div>
     </section>
@@ -556,7 +603,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>生活成本</h3>
+            <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
             <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
@@ -645,7 +692,7 @@
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部待售<i class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -653,7 +700,7 @@
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
-            <h3>看了本楼盘的用户还看了</h3>
+            <h3>看了本小区的用户还看了</h3>
         </div>
         <ul class="tilelist">
         <#list nearvillage as nearviitem>
@@ -671,9 +718,9 @@
                 <div class="tilelist-content">
                     <p class="cont-first">${nearviitem['rc']}</p>
                     <p class="cont-center">
-                        <span><#if nearviitem['area']?exists>${nearviitem['area']}</#if></span><span>${nearviitem['address']}</span>
+                        <span>${nearviitem['area']!" "}</span><span>${nearviitem['tradingArea']!" "}</span>
                     </p>
-                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>/㎡</h4>
+                    <h4 class="cont-last">均价：<em>${nearviitem['avgPrice']}</em>元/㎡</h4>
                 </div>
             </a></li>
         </#list>
@@ -697,158 +744,97 @@
             </div>
             <div class="tilelist-content">
                 <h4 class="cont-first">${builditem['building_name']!''}</h4>
-                <#if builditem['average_price']?exists>
-                    <#if builditem['average_price']?number gt 0>
-                        <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
-                    <#else >
-                        <p class="cont-last">均价：<em>售价待定</em></p>
+                <#if builditem['average_price']?exists && builditem['average_price'] gt 0>
+                    <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                <#else>
+                    <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
+                        <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
+                    <#else><em>售价待定</em>
                     </#if>
-                <#else >
-                    <p class="cont-last">均价：<em>售价待定</em></p>
                 </#if>
+
             </div>
         </a></li>
     </#list>
     </ul>
 </section>
-
+<#--22222222222222-->
 <!-------- photoswipe -------->
-<script src="${staticurl}/js/photoswipe.min.js"></script>
-<script src="${staticurl}/js/photoswipe-ui-default.min.js"></script>
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/plot-detail-map-message.js"></script>
+<script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
 <script>
-    <#if  (mouthList?size>0)>
-    var myChartline = echarts.init(document.getElementById('village-price-trade'));
-    </#if>
-    option = {
-        tooltip: {
-            trigger: 'axis',
-            position: function (pos, params, dom, rect, size) {
-                // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
-                var obj = {top: 60};
-                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5;
-                return obj;
-            },
-           toolbox:{
-                 feature:{
-                     dataZoom:{
-                         show : true
-                     }
-                 }
-           },
-            textStyle:{
-                fontSize:30
-            },
-        },
-        legend: {
-          /*  data:['楼盘价格','区域价格','商圈价格']*/
-           data:['${village['rc']!'小区'}价格','${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
-            textStyle:{
-                fontSize:25
-            }
-        },
-        xAxis: [
-            {
-                type: 'category',
-                axisTick: {
-                    alignWithLabel: true,
-                },
-                data: [<#list  mouthList as item >'${item}',</#list>],
-                axisLabel: {
-                    fontSize:25,
-                   // interval:0
-                }
-            }
-        ],
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value}',
-                fontSize:21
-            },
-            scale:true
-        },
-    /*  缩放*/
-   /*  dataZoom: [
-          /!*  {
-                type: 'slider',
-                show: true,
-                xAxisIndex: [0],
-                start: 1,
-                end: 80
-            },*!/
-           {
-                type: 'slider',
-                show: true,
-                yAxisIndex: [0],
-                left: '93%',
-                start: 1,
-                end: 50
-            }
-        ],*/
-        series: [
-            <#if (ptCD0?size==0)>
-                {
-                    name: '${village['rc']!'小区'}价格',
-                    type: 'scatter',
-                    coordinateSystem:'cartesian2d',
-                    data:[ <#list mouthList as item >
-                            <#if (item_index == (mouthList?size-1))>
-                            ${village['avgPrice']},
-                            <#else>
-                                NaN,
-                            </#if>
-                         </#list>
-                    ],
-                    symbolSize:25,
-                },
-           <#else>
-               {
-                   name:'${village['rc']!'小区'}价格',
-                   type:'line',
-                   data:[<#list ptCD0 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                   symbolSize:10,
-                   itemStyle:{
-                       normal:{
-                           lineStyle:{
-                               width:4,
-                           },
-                       },
-                   },
-               },
-            </#if>
-            {
-                name:'${village['area']!'区域'}价格',
-                type:'line',
-                data:[<#list ptCD1 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
-                itemStyle:{
-                    normal:{
-                        lineStyle:{
-                            width:4,
-                        },
-                    },
-                },
-            },
-            {
-                name:'${village['tradingArea']!'商圈'}价格',
-                type:'line',
-                data:[<#list ptCD2 as item ><#if item['price'] != 0>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                symbolSize:10,
-                itemStyle:{
-                       normal:{
-                           lineStyle:{
-                                width:4,
-                           },
-                       },
-                },
-            },
-        ]
+    var chartGrid = {
+        left: '2%',
+        right: '6%',
+        bottom: 0,
+        containLabel: true
     };
+    var baseFontSize = 12 * dpr;
+    var baseItemWidth = 25 * dpr;
     <#if  (mouthList?size>0)>
+    var myChartline = echarts.init(document.getElementById('village-price-trade'), null, {renderer: 'svg'}, {
+        devicePixelRatio: dpr,
+        width: '100%',
+        height: '100%'
+    });
+    </#if>
+        option = {
+            textStyle: {fontSize: baseFontSize},
+            tooltip: {
+                trigger: 'axis',
+                textStyle: {fontSize: baseFontSize}
+            },
+            legend: {
+                itemGap: 20,
+                itemWidth: baseItemWidth,
+                data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
+            },
+            grid: chartGrid,
+            xAxis:
+                {
+                    show: true,
+                    boundaryGap: false,
+                    scale: true,
+                    axisLabel: {fontSize: baseFontSize - 4},
+                    data: [<#list  mouthList as item >'${item}',</#list>],
+                },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}',
+                    fontSize:8
+                },
+                scale:true
+            },
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 50,
+                    end: 100,
+                    filterMode: 'empty',
+                    zoomLock: true
+                }
+            ],
+            series: [
+                {
+                    name:'${village['area']!'区域'}价格',
+                    type:'line',
+                    data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                    showSymbol: false
+                },
+                {
+                    name:'${village['tradingArea']!'商圈'}价格',
+                    type:'line',
+                    data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                    showSymbol: false
+                }
+            ]
+        };
+    <#if (mouthList?size>0)>
         myChartline.setOption(option);
     </#if>
 </script>
@@ -860,8 +846,6 @@
             $('#base-info').html(_divContent);
         }
     });
-
-
 </script>
 </body>
 </html>

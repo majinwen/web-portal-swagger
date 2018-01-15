@@ -3,6 +3,7 @@ package com.toutiao.web.service.plot.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntity;
@@ -73,8 +74,10 @@ public class PlotServiceImpl implements PlotService {
             sort.order(SortOrder.ASC);
             sort.point(lat, lon);
             srb.addSort(sort);
-
-            SearchResponse searchResponse = srb.execute().actionGet();
+            BoolQueryBuilder queryBuilder = null;
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+            SearchResponse searchResponse = srb.setQuery(queryBuilder).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
@@ -130,19 +133,20 @@ public class PlotServiceImpl implements PlotService {
             //小区名称
             if (null != villageRequest.getKeyword()) {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
-                AnalyzeResponse response = esClientTools.init().admin().indices()
-                        .prepareAnalyze(villageRequest.getKeyword())//内容
-                        .setAnalyzer("ik_smart")//指定分词器3`3
-                        .execute().actionGet();//执行
-                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
-                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
+//                AnalyzeResponse response = esClientTools.init().admin().indices()
+//                        .prepareAnalyze(villageRequest.getKeyword())//内容
+//                        .setAnalyzer("ik_smart")//指定分词器3`3
+//                        .execute().actionGet();//执行
+//                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+//                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
                     queryBuilder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.fuzzyQuery("rc", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("area", analyzeToken.getTerm()))
-                            .should(QueryBuilders.fuzzyQuery("tradingArea", analyzeToken.getTerm()));
+                            .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()).boost(2))
+                            .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()));
 
-                    queryBuilder = boolQueryBuilder.should(queryBuilder);
-                }
+                    queryBuilder = boolQueryBuilder.must(queryBuilder);
+//                }
 
 
             }
@@ -267,7 +271,7 @@ public class PlotServiceImpl implements PlotService {
                 String[] HeatingMode = heatingMode.split(",");
                 queryBuilder = boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
-
+                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
             //排序
             //均价
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {
@@ -278,8 +282,14 @@ public class PlotServiceImpl implements PlotService {
                 srb.addSort("avgPrice", SortOrder.DESC);
             }
             //小区默认排序
-            //先发布后发布 级别从小到大  分数由大到小
-            srb.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            //如果有关键字，优先按关键字查找
+            if(StringTool.isNotBlank(villageRequest.getKeyword())){
+                srb.addSort("_score",SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            }else{
+                //先发布后发布 级别从小到大  分数由大到小
+                srb.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+            }
+
 
             //级别为1-4
 //            Integer level = villageRequest.getLevel();
@@ -309,6 +319,9 @@ public class PlotServiceImpl implements PlotService {
                     Class<VillageResponse> entityClass = VillageResponse.class;
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
+                    if(StringTool.isNotBlank(source.get("TrafficInformation"))){
+                        instance.setTrafficInformation(source.get("TrafficInformation").toString());
+                    }
                     instance.setKey(key);
                     if ("商电".equals(instance.getElectricSupply())) {
                         instance.setElectricFee("1.33");
@@ -365,7 +378,9 @@ public class PlotServiceImpl implements PlotService {
             sort.order(SortOrder.ASC);
             sort.point(villageRequest.getLat(), villageRequest.getLon());
             srb.addSort(sort);
-            SearchResponse searchResponse = srb.execute().actionGet();
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
+            booleanQuery.must(QueryBuilders.termQuery("is_approve", 1));
+            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){
@@ -380,8 +395,9 @@ public class PlotServiceImpl implements PlotService {
                     houseList = getPoltData(searchHists);
                     SearchResponse searchresponse = null;
                     BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);;
-                    srb1.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);
+                    srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
                             .setFrom((0) * pageSize)
                             .setSize(pageSize-hits.getHits().length)
@@ -393,8 +409,9 @@ public class PlotServiceImpl implements PlotService {
                     long es_from = (pageNum-1)*pageSize - oneKM_size;
                     SearchResponse searchresponse = null;
                     BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);;
-                    srb1.addSort("is_approve", SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
+                    SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+                    srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
                             .setFrom(Integer.valueOf((int) es_from))
                             .setSize(pageSize)

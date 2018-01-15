@@ -4,11 +4,13 @@ package com.toutiao.web.apiimpl.impl.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.map.MapService;
 import com.toutiao.web.service.newhouse.NewHouseService;
+import org.apache.commons.collections.map.HashedMap;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -109,9 +111,24 @@ public class NewHouseController {
 //        Map<String ,Object> priceTrendList = priceTrendService.priceTrendList(buildingId,discId,areaId);
         //查询地图信息
         MapInfo mapInfo = mapService.getMapInfo(buildingId);
-        JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+
+            JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            model.addAttribute("datainfo",datainfo);
+       /* Map yiliao = (Map) datainfo.get("yiliao");
+        Map<String ,Object> zhuanke= new HashMap<>();
+        Map<String ,Object> zhensuo = new HashMap<>();
+        Map<String ,Object> zonghe = new HashMap<>();
+        zhuanke.put("专科",yiliao.get("zhuanke"));
+        zhuanke.put("诊所",yiliao.get("zhensuo"));
+        zhuanke.put("综合",yiliao.get("zonghe"));
+
+        List<Map> yiliaoList= new ArrayList<>();
+        yiliaoList.add(zhuanke);
+        yiliaoList.add(zhensuo);
+        yiliaoList.add(zonghe);*/
+
+
         model.addAttribute("mapInfo", mapInfo);
-        model.addAttribute("datainfo",datainfo);
         model.addAttribute("build",build);
         model.addAttribute("layout", details.get("layout"));
         model.addAttribute("nearbybuild",details.get("nearbybuild"));

@@ -103,9 +103,12 @@
                 margin-left: rem(20);
                 height: rem(34);
                 line-height: rem(34);
-                color: #666;
                 @include font-dpr(24);
                 @include text-ellipses;
+
+                a {
+                    color: #666;
+                }
 
                 .scroll-text-tag {
                     padding: 0 rem(6);

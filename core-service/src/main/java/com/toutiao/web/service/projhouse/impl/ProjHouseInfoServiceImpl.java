@@ -10,13 +10,16 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +27,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 
 @Service
@@ -50,7 +56,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @date 2017/12/15 11:50
      */
     @Override
-    public List queryProjHouseByhouseIdandLocation(String houseId, double lat, double lon) {
+    public List queryProjHouseByhouseIdandLocation(String newhouse, double lat, double lon) {
 
 
         Map<String, Object> result = null;
@@ -59,10 +65,20 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.METERS));
+           boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("1.6", DistanceUnit.KILOMETERS));
             srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
-            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
 
+            // 获取距离多少公里 这个才是获取点与点之间的距离的
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
+            Script script = new Script("Math.random()");
+            ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+            sort.unit(DistanceUnit.KILOMETERS);
+////            sort.order(SortOrder.DESC);
+            sort.point(lat, lon);
+            sort.geoDistance(GeoDistance.ARC);
+            srb.addSort(scrip).addSort(sort);
+            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 
@@ -73,11 +89,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 //排除自身
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
+                //获取距离值，并保留两位小数点
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[1]);
+                String distance1 = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                instance.setHousetToPlotDistance(distance1);
                 BeanUtils.populate(instance, buildings);
                 buildinglist.add(instance);
-                if (instance.getHouseId().equals(houseId)) {
-                    buildinglist.remove(instance);
-                }
+//                if (instance.getHouseId().equals(houseId)) {
+//                    buildinglist.remove(instance);
+//                }
+
             }
             if(buildinglist!=null&&buildinglist.size()>0){
                 return buildinglist;
@@ -110,9 +131,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //关键字搜索
             if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
                  booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())).boost(2));
+                         .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
+                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                         .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
@@ -167,8 +189,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //面积
-            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaId())) {
-                String area = projHouseInfoRequest.getHouseAreaId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+            if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseAreaSize())) {
+                String area = projHouseInfoRequest.getHouseAreaSize().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 String[] layoutId = area.split(",");
                 for (int i = 0; i < layoutId.length; i = i + 2) {
@@ -264,10 +286,19 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         .setSize(pageSize)
                         .execute().actionGet();
             } else {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
+                //如果含有关键字查询，优先显示关键字
+                if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.ASC)
+                            .setFrom((pageNum - 1) * pageSize)
+                            .setSize(pageSize)
+                            .execute().actionGet();
+                }else{
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.ASC)
+                            .setFrom((pageNum - 1) * pageSize)
+                            .setSize(pageSize)
+                            .execute().actionGet();
+                }
+
             }
             SearchHits hits = searchresponse.getHits();
             List houseList = new ArrayList();
@@ -352,7 +383,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             sort.order(SortOrder.ASC);
             sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
             srb.addSort(sort);
-            SearchResponse searchResponse = srb.execute().actionGet();
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){
@@ -445,6 +478,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             List houseList = new ArrayList();
             for (SearchHit hit : searchHists) {
                 Map<String, Object> buildings = hit.getSource();
+                buildings.put("housingDeposit",buildings.get("HousingDeposit"));
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);

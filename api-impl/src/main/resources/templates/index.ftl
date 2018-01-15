@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/index.css">
+    <#include "staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/index.css?v=${staticversion}">
     <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
     <title>头条房产 发现美好</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
-    <script src="/static/js/modernizr.custom.js"></script>
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="/static/js/modernizr.custom.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 </head>
 <body>
@@ -26,7 +25,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper">
                 <li class="swiper-slide">
-                    <img class="scaleImg" src="${staticurl}/images/index/dsy_banner.png" alt="头条房产，重磅推出">
+                    <img class="scaleImg" width="100%" src="${staticurl}/images/index/dsy_banner.png?v=${staticversion}" alt="头条房产，重磅推出">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -54,9 +53,8 @@
         <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
         <div class="text-scroll index-text">
             <ul>
-                <li><em class="scroll-text-tag">市场</em>北京二手房现全面“砍价”全年成交13.4万</li>
-                <li><em class="scroll-text-tag">市场</em>猛犸温泉高档小区开盘在即，各大商铺积极响猛犸温泉高档小区开盘在即，各大商铺积极响</li>
-                <li><em class="scroll-text-tag">市场</em>猛犸温泉高档小区开盘在即，各大商铺猛犸温泉高档小区开盘在即，各大商铺积极响铺积极响铺积极响</li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/"><em class="scroll-text-tag">导购</em>北京城市副中心正式启用 看看还有哪些“正经”盘可以买</a></li>
             </ul>
         </div>
     </section>
@@ -68,35 +66,35 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
+                <div class="hot-topic-item index-topic-item"><a href="https://www.toutiao.com/i6506676833080050184/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143248&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content">
-                        <h5>新开通地铁旁楼盘</h5>
-                        <p>地铁盘推荐 </p>
+                        <h5>2018房价是涨是降？</h5>
+                        <p>市场预测</p>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="地铁盘推荐">
+                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场预测">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseLabelId=6')}">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
                     <div class="topic-item-content">
-                        <h5>满五税少房推荐</h5>
-                        <p>每日热推</p>
+                        <h5>房贷知识知多少</h5>
+                        <p>热门问答</p>
                     </div>
-                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="每日热推">
+                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="热门问答">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?beginPrice=350.0&endPrice=400.0&districtId=105037')}">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588564480256007/">
                     <div class="topic-item-content">
-                        <h5>西城区400万房源</h5>
-                        <p>热点专区</p>
+                        <h5>最美样板间实景VR</h5>
+                        <p>VR+房产</p>
                     </div>
-                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="热点专区">
+                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="VR+房产">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="${router_city('/esf?houseYearId=[0-5]')}">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
                     <div class="topic-item-content">
-                        <h5>5年内楼龄房源</h5>
-                        <p>品质小区</p>
+                        <h5>新开通地铁沿线盘</h5>
+                        <p>精选导购</p>
                     </div>
-                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="品质小区">
+                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="精选导购">
                 </a></div>
             </div>
         </div>
@@ -190,10 +188,18 @@
                             <span class="ellipsis">${map['building_name']}</span>
                             <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
                         </h3>
-                        <#if (map['average_price']?exists && map['average_price'] > 0)>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>
-                        <#else >
-                            <p class="cont-block-2 high-light-red">售价待定</p>
+                        <#--<#if (map['average_price']?exists && map['average_price'] > 0)>-->
+                            <#--<p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>-->
+                        <#--<#else >-->
+                            <#--<p class="cont-block-2 high-light-red">售价待定</p>-->
+                        <#--</#if>-->
+                        <#if map['average_price']?exists && map['average_price'] gt 0>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
+                        <#else>
+                            <#if map['total_price']?exists && map['total_price'] gt 0>
+                                <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
+                            <#else><p class="cont-block-2 high-light-red">售价待定</p>
+                            </#if>
                         </#if>
                         <p class="cont-block-3">
                             <#if map['nearsubway']??>${map['nearsubway']}
@@ -303,9 +309,9 @@
 <#include "user.ftl">
 <#include "search.ftl">
 
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $('.type-tab-box').removeClass('none');
 </script>

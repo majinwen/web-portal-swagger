@@ -10,23 +10,22 @@
     <result column="user_type" property="userType" jdbcType="INTEGER" />
     <result column="total_price" property="totalPrice" jdbcType="INTEGER" />
     <result column="layout" property="layout" jdbcType="INTEGER" />
-    <result column="has_child" property="hasChild" jdbcType="INTEGER" />
-    <result column="has_oldman" property="hasOldman" jdbcType="INTEGER" />
+    <result column="has_child" property="hasChild" jdbcType="VARCHAR" />
+    <result column="has_oldman" property="hasOldman" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="collect_status" property="collecttatus" jdbcType="INTEGER" />
+    <result column="collect_status" property="collectStatus" jdbcType="INTEGER" />
     <result column="district_id" property="districtId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
-    has_child, has_oldman,create_time,user_portrait,district_id
+    has_child, has_oldman,create_time,user_portrait,district_id,collect_status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from intelligence_fh_res
-    where id = #{id,jdbcType=INTEGER} and status=0 and collect_status=0
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <!--List<IntelligenceFhRes> selectByUserPhone(String userPhone);-->
   <select id="selectByUserPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -34,7 +33,7 @@
     <!--<include refid="Base_Column_List" />-->
     <include refid="Base_Column_List" />
     from intelligence_fh_res
-    where phone = #{userPhone} and status=0 and collect_status=1
+    where phone = #{userPhone}  and collect_status=1 ORDER by id DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from intelligence_fh_res
@@ -47,8 +46,8 @@
       has_oldman,create_time,user_portrait,district_id)
     values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{fhResult,jdbcType=OTHER}, 
       #{downPayment,jdbcType=INTEGER}, #{monthPayment,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
-      #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=INTEGER}, 
-      #{hasOldman,jdbcType=INTEGER},#{createTime},jdbcType=VARCHAR),#{userPortrait,jdbcType=INTEGER},#{districtId,jdbcType=VARCHAR})
+      #{totalPrice,jdbcType=INTEGER}, #{layout,jdbcType=INTEGER}, #{hasChild,jdbcType=VARCHAR},
+      #{hasOldman,jdbcType=VARCHAR},#{createTime},jdbcType=VARCHAR),#{userPortrait,jdbcType=INTEGER},#{districtId,jdbcType=VARCHAR})
   </insert>
 
   <insert id="saveData" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" useGeneratedKeys="true" keyProperty="id">
@@ -123,10 +122,10 @@
         #{layout,jdbcType=INTEGER},
       </if>
       <if test="hasChild != null" >
-        #{hasChild,jdbcType=INTEGER},
+        #{hasChild,jdbcType=VARCHAR},
       </if>
       <if test="hasOldman != null" >
-        #{hasOldman,jdbcType=INTEGER},
+        #{hasOldman,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=VARCHAR},
@@ -209,10 +208,10 @@
         #{layout,jdbcType=INTEGER},
       </if>
       <if test="hasChild != null" >
-        #{hasChild,jdbcType=INTEGER},
+        #{hasChild,jdbcType=VARCHAR},
       </if>
       <if test="hasOldman != null" >
-        #{hasOldman,jdbcType=INTEGER},
+        #{hasOldman,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=VARCHAR},
@@ -250,10 +249,10 @@
         layout = #{layout,jdbcType=INTEGER},
       </if>
       <if test="hasChild != null" >
-        has_child = #{hasChild,jdbcType=INTEGER},
+        has_child = #{hasChild,jdbcType=VARCHAR},
       </if>
       <if test="hasOldman != null" >
-        has_oldman = #{hasOldman,jdbcType=INTEGER},
+        has_oldman = #{hasOldman,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=VARCHAR},
@@ -276,8 +275,8 @@
       user_type = #{userType,jdbcType=INTEGER},
       total_price = #{totalPrice,jdbcType=INTEGER},
       layout = #{layout,jdbcType=INTEGER},
-      has_child = #{hasChild,jdbcType=INTEGER},
-      has_oldman = #{hasOldman,jdbcType=INTEGER},
+      has_child = #{hasChild,jdbcType=VARCHAR},
+      has_oldman = #{hasOldman,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       user_portrait = #{userPortrait,jdbcType=INTEGER},
       district_id= #{districtId,jdbcType=VARCHAR}
@@ -285,10 +284,10 @@
   </update>
   <!--int  deleteMyReport(@Param("reportId") Integer reportId,@Param("phone") String phone);-->
   <update id="deleteMyReport">
-    UPDATE intelligence_fh_res set status=1 where id=#{reportId} and phone=#{phone} and collect_status=1
+    UPDATE intelligence_fh_res set collect_status=0 where id=#{reportId} and phone=#{phone} and collect_status=1
   </update>
   <!--int updateMyReportCollectStatus(@Param("reportId") Integer integer,@Param("usePhone") String usePhone);-->
   <update id="updateMyReportCollectStatus">
-    UPDATE intelligence_fh_res set collect_status=1 where id=#{reportId} and phone=#{usePhone} and status=0
+    UPDATE intelligence_fh_res set collect_status=1,phone = #{usePhone} where id=#{reportId}
   </update>
 </mapper>

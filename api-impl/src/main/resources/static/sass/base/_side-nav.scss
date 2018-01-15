@@ -47,6 +47,8 @@
                     width: rem(46);
                     height: 100%;
                     background-position: center;
+                    -webkit-background-size: contain;
+                    background-size: contain;
 
                     &.icon-index {
                         @include bg-image('../images/global/grcl_icon_sy');

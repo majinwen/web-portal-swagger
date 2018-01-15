@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css">
-    <link rel="stylesheet" href="${staticurl}/css/new-index.css">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/new-index.css?v=${staticversion}">
     <title>上头条 找新房</title>
     <meta name="description" content="让美好生活 来找你">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
@@ -27,7 +26,7 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner.png" alt="一阙藏中国">
+                    <img src="${staticurl}/images/newindex/sy_banner.jpg?v=${staticversion}" alt="美好新居 尽在头条">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
@@ -53,9 +52,8 @@
         <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt=""></div>
         <div class="text-scroll">
             <ul>
-                <li>猛犸温泉高档小区开盘在即，各大商铺积极响</li>
-                <li>猛犸温泉高档小区开盘在即，各大商铺积极响猛犸温泉高档小区开盘在即，各大商铺积极响</li>
-                <li>猛犸温泉高档小区开盘在即，各大商铺猛犸温泉高档小区开盘在即，各大商铺积极响铺积极响铺积极响</li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586541609479182/"><em class="scroll-text-tag">问答</em>如果你现在有50万，是买房还是存着？</a></li>
             </ul>
         </div>
     </section>
@@ -68,19 +66,19 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
+                <div class="hot-topic-item"><a href="https://www.toutiao.com/i6507390085581767176/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143399&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content">
-                        <h5>万科楼盘</h5>
-                        <p>品牌房企集中亮相</p>
+                        <h5>房价排行榜</h5>
+                        <p>2017年房价排行榜出炉</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="万科楼盘">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="房价排行榜">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587898856414222/">
+                <div class="hot-topic-item"><a href="https://www.toutiao.com/i6507035043548889607/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143385&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content">
-                        <h5>豪宅10万起</h5>
-                        <p>解密北京豪宅楼盘</p>
+                        <h5>图说豪宅</h5>
+                        <p>北京豪宅震撼大片</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image2.jpg" alt="豪宅10万起">
+                    <img src="${staticurl}/images/newindex/xf_zt_image2.jpg" alt="图说豪宅">
                 </a></div>
             </div>
             <div class="column">
@@ -93,15 +91,15 @@
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587905703017485/">
                     <div class="topic-item-content">
-                        <h5>新发预售证</h5>
-                        <p>入市新盘全掌握</p>
+                        <h5>万科楼盘</h5>
+                        <p>品牌房企集中亮相</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="新发预售证">
+                    <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="万科楼盘">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587895837527054/">
                     <div class="topic-item-content">
                         <h5>下一站南五环</h5>
-                        <p>南五环热门楼盘盘点</p>
+                        <p>南五环热盘盘点</p>
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image5.jpg" alt="下一站南五环">
                 </a></div>
@@ -167,10 +165,13 @@
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
-                            ${map['average_price']}/㎡
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
-                            售价待定
+                        <#if map['total_price']?exists && map['total_price'] gt 0>
+                            <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
+                        <#else><p class="cont-block-2 high-light-red">售价待定</p>
                         </#if>
+                    </#if>
                     </p>
                     <p class="cont-block-3">
                         <#if map['nearsubway']??>
@@ -209,8 +210,8 @@
 <#include "../user.ftl">
 <#include "../search.ftl">
 
-<script src="${staticurl}/js/swiper-3.4.2.min.js"></script>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
+<script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 </body>
 </html>

@@ -38,13 +38,13 @@ public class ProjHouseInfoController {
      * 功能描述：功能描述：根据房源的id以及小区的经度，维度查询房源详情，以及附近好房信息
      * <p>
      *
-     * @param [model, houseId, lat, lon]
      * @return java.lang.String
      * @author zhw
      * @date 2017/12/15 11:06
      */
     @RequestMapping(value = "/{houseId}.html")
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
+
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
             return "404";
@@ -59,7 +59,7 @@ public class ProjHouseInfoController {
             List village = plotService.findVillageByConditions(villageRequest);
             model.addAttribute("village",village.get(0));
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(houseId.toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(data_house.getNewcode().toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }

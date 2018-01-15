@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
@@ -81,12 +82,6 @@ public class PlotConterller {
         }else{
             villageList = plotService.findVillageByConditions(villageRequest);
         }
-        if (null!=villageList&&villageList.size()!=0&&villageList.get(0).getKey()!=null){
-            for (VillageResponse polt : villageList){
-                String[] str = ((String) polt.getMetroWithPlotsDistance().get(polt.getKey())).split("\\$");
-                polt.getMetroWithPlotsDistance().put(polt.getKey(),str);
-            }
-        }
         return NashResult.build(villageList);
     }
 
@@ -136,9 +131,11 @@ public class PlotConterller {
             model.addAttribute("newbuilds", newbuildrecomed);
             //查询地图信息
             MapInfo mapInfo = mapService.getMapInfo(villageRequest.getId());
-            JSONObject datainfo=JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-            model.addAttribute("mapInfo", mapInfo);
-            model.addAttribute("datainfo",datainfo);
+            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            if(StringTool.isNotBlank(mapInfo)&&StringTool.isNotBlank(datainfo)){
+                model.addAttribute("mapInfo", mapInfo);
+                model.addAttribute("datainfo",datainfo);
+            }
             return "plot/plot-detail";
         }
         return "404";
@@ -162,16 +159,22 @@ public class PlotConterller {
     public String parameter(VillageRequest villageRequest, Model model) {
         List villageList = null;
         villageList = plotService.findVillageByConditions(villageRequest);
-        model.addAttribute("villageList", villageList);
-        return "plot/plot-parameter";
+        if (null!=villageList&&villageList.size()!=0){
+            model.addAttribute("villageList", villageList);
+            return "plot/plot-parameter";
+        }
+        return "404";
     }
 
     //获取小区地图
     @RequestMapping("/{id}/map.html")
     public String plotMap(VillageRequest villageRequest, Model model) {
         List villageList = plotService.findVillageByConditions(villageRequest);
+        if (null!= villageList&&villageList.size()!=0){
         VillageResponse village = (VillageResponse) villageList.get(0);
-        model.addAttribute("build", village);
-        return "map";
+            model.addAttribute("build", village);
+            return "map";
+        }
+        return "404";
     }
 }

@@ -117,7 +117,7 @@ public class IntelligenceFindhouse {
     /**
      * 绿化率(%)
      */
-    private BigDecimal virescencerate;
+    private BigDecimal virescencerate = new BigDecimal(0.0);
 
     /**
      * 楼层状况
@@ -142,7 +142,7 @@ public class IntelligenceFindhouse {
     /**
      * 停车位租价
      */
-    private BigDecimal carRentPrice;
+    private BigDecimal carRentPrice = new BigDecimal(0.0);
 
     /**
      * 停车位售价
@@ -152,7 +152,7 @@ public class IntelligenceFindhouse {
     /**
      * 物业管理费
      */
-    private BigDecimal propertyfee;
+    private BigDecimal propertyfee = new BigDecimal(0.0);
 
     /**
      * 物业管理费价格单位
@@ -182,7 +182,7 @@ public class IntelligenceFindhouse {
     /**
      * 竣工时间
      */
-    private Date finishdate;
+    private Date finishdate = new Date();
 
     /**
      * 开盘时间
@@ -407,17 +407,17 @@ public class IntelligenceFindhouse {
     /**
      * 供暖方式(0-未知，1-集中供暖，2-自供暖）
      */
-    private Integer heatingMode;
+    private Integer heatingMode = 0;
 
     /**
      * 梯户比
      */
-    private String liftDoorRadio;
+    private String liftDoorRadio = "";
 
     /**
      * 车位配比
      */
-    private String parkRadio;
+    private String parkRadio = "";
 
     /**
      * 物业类别/业态：（1-住宅,2-别墅,3-写字楼，4-商铺，5-底商，6-住宅底商，7=办公别墅，8-标准写字楼，9-酒店写字楼，10-写字楼商铺，11-市场类商铺，12-商务型公寓，13-购物中心，14-企业独栋，15-商业，16-总部园区）
@@ -707,7 +707,7 @@ public class IntelligenceFindhouse {
     /**
      * 距离最近的环线米
      */
-    private Integer nearbyRoadMeter;
+    private Integer nearbyRoadMeter = 2000000000;
 
     /**
      * 最低总价
@@ -765,6 +765,13 @@ public class IntelligenceFindhouse {
      * 地图信息最大数量
      */
     private Object typeCount;
-
+    /**
+     * 默认排序编号
+     */
+    private Integer sortInex;
+    /**
+     * 地铁和小区的距离
+     */
+    private Integer metroWithPlotDistance = 2000000000;
 
 }

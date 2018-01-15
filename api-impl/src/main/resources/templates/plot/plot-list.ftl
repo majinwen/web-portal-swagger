@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
-    <link rel="stylesheet" href="${staticurl}/css/list.css">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>头条房产看二手房小区</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img height="1px" width="1px" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/xiaoqu')}">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
+        <input type="text"  class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -108,17 +107,17 @@
                         <#--<span data-info="4">砖楼</span>-->
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="saleType">销售状态</dt>
-                        <dd>
-                            <span data-info="1">售完</span>
-                            <span data-info="2">在售</span>
-                        <#--<span data-info="3">不在售</span>
-                        <span data-info="4">出租</span>
-                        <span data-info="5">待租</span>-->
-                            <span data-info="6">待售</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="saleType">销售状态</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">售完</span>-->
+                            <#--<span data-info="2">在售</span>-->
+                        <#--&lt;#&ndash;<span data-info="3">不在售</span>-->
+                        <#--<span data-info="4">出租</span>-->
+                        <#--<span data-info="5">待租</span>&ndash;&gt;-->
+                            <#--<span data-info="6">待售</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                     <dl>
                         <dt data-type="buildingFeature">楼盘特色</dt>
                         <dd>
@@ -126,20 +125,20 @@
                             <span data-info="2">花园洋房</span>
                             <span data-info="3">近地铁</span>
                             <span data-info="4">车位充足</span>
-                            <span data-info="5">低密度</span>
+                            <span data-info="9">500强房企</span>
                             <span data-info="6">高绿化</span>
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="deliverStyle">装修标准</dt>
-                        <dd>
-                            <span data-info="1">毛坯</span>
-                            <span data-info="2">普通装修</span>
-                            <span data-info="3">精装修</span>
-                            <span data-info="4">豪华装修</span>
-                            <span data-info="5">其他</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="deliverStyle">装修标准</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">毛坯</span>-->
+                            <#--<span data-info="2">普通装修</span>-->
+                            <#--<span data-info="3">精装修</span>-->
+                            <#--<span data-info="4">豪华装修</span>-->
+                            <#--<span data-info="5">其他</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
@@ -282,9 +281,9 @@
     {{/each}}
 </script>
 </body>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/dropload.min.js"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 </html>

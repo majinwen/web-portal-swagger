@@ -21,7 +21,7 @@ public class VillageResponse {
     private Map metroWithPlotsDistance;  //地铁站与小区的距离
     private String[] subwayLineId;  //地铁线路编号
     private String[] subwayLine;  //地铁线路
-    private String trafficInformation;  //交通信息
+    private String TrafficInformation;  //交通信息
     private String[] labelId;  //标签编号
     private String[] label;  //标签
     private String[] saleHouse;  //待售房源

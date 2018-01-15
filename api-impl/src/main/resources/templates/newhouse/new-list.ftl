@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <script src="${staticurl}/js/flexible.js"></script>
-    <meta name="renderer" content="webkit">
-    <link rel="stylesheet" href="${staticurl}/css/dropload.css">
-    <link rel="stylesheet" href="${staticurl}/css/list.css">
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <#include "../staticHeader.ftl">
+    <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>来头条房产看新房</title>
-    <script src="${staticurl}/js/jquery-2.1.4.min.js"></script>
+    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img height="1px" width="1px" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
@@ -124,7 +123,7 @@
                     <dd>
                         <span data-info="1">近地铁</span>
                         <span data-info="7">车位充足</span>
-                        <span data-info="8">低密度</span>
+                        <span data-info="9">500强房企</span>
                         <span data-info="10">优质物业</span>
                         <span data-info="11">购物方便</span>
                         <span data-info="12">教育配套</span>
@@ -175,10 +174,13 @@
                         </h3>
                         <p class="cont-block-2">
                             <em class="high-light-red">
-                                <#if map['average_price']?exists && (map['average_price']>0)>
-                                    ${map['average_price']}元/㎡
+                                <#if map['average_price']?exists && map['average_price'] gt 0>
+                                ${map['average_price']}元/㎡
                                 <#else>
-                                    售价待定
+                                    <#if map['total_price']?exists && map['total_price'] gt 0>
+                                    ${map['total_price']}万元/套
+                                    <#else>暂无价格
+                                    </#if>
                                 </#if>
                             </em>
                         </p>
@@ -265,7 +267,11 @@
                     {{if $value.average_price != null && $value.average_price > 0}}
                         {{$value.average_price}}元/㎡
                     {{else}}
+                    {{if $value.total_price != null && $value.total_price > 0}}
+                    {{$value.total_price}}万元/套
+                    {{else}}
                         售价待定
+                    {{/if}}
                     {{/if}}
                 </em>
             </p>
@@ -306,9 +312,9 @@
 </script>
 
 </body>
-<script src="${staticurl}/js/URI.min.js"></script>
-<script src="${staticurl}/js/main.js"></script>
-<script src="${staticurl}/js/dropload.min.js"></script>
-<script src="${staticurl}/js/list-category.js"></script>
-<script src="${staticurl}/js/template-web.js"></script>
+<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 </html>
