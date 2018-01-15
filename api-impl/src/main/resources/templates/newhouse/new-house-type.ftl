@@ -71,7 +71,7 @@
 <p class="bottom-tips">以上是全部户型</p>
 <div class="detail-contact-wrapper">
 <#assign discript = discript[0]>
-<#if discript['saletelphone']?exists>
+<#if discript['saletelphone']?exists&&discript['saletelphone']!=''>
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
             <#--<a href="#" class="contact-share"><i></i>分享</a>
