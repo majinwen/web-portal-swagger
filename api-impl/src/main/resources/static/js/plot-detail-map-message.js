@@ -8,11 +8,17 @@ $('.map-message-btn').on('click', 'li', function () {
     $(this).addClass('current').siblings().removeClass('current');
     var text = $(this).attr('data-type');
     var parentText = $(this).parent().attr('data-type');
-
     if (parentText == '教育培训') {
+        zhuge.track("小区-点击教育配套",{
+            教育培训:text
+        });
         $(this).removeClass('choose');
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
+    }else{
+        zhuge.track("小区-点击休闲配套",{
+            休闲购物:text
+        });
     }
     $(this).parents('.expand-content').find('ul.result-data-expand').addClass('none');
     $('#'+text).removeClass('none');

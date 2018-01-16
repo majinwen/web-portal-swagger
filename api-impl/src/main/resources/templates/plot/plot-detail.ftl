@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../staticHeader.ftl">
+<#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/plot-detail.css?v=${staticversion}">
     <title>来头条房产看【${village['rc']!'小区'}】</title>
@@ -79,19 +79,19 @@
         <div class="plot-primary-text">
             <h2>${village['rc']!''}</h2>
             <p><#if village['area']?exists&&village['area']!=''&&village['tradingArea']?exists&&village['tradingArea']!=''>
-                        ${'['+village['area']}${'-'+village['tradingArea']+']'}
-                <#else>
-                    <#if village['area']?exists&&village['area']!=''>
-                        ${'['+village['area']+']'}
-                    </#if>
-                    <#if village['tradingArea']?exists&&village['tradingArea']!=''>
-                        ${'['+village['tradingArea']+']'}
-                    </#if>
+            ${'['+village['area']}${'-'+village['tradingArea']+']'}
+            <#else>
+                <#if village['area']?exists&&village['area']!=''>
+                ${'['+village['area']+']'}
                 </#if>
+                <#if village['tradingArea']?exists&&village['tradingArea']!=''>
+                ${'['+village['tradingArea']+']'}
+                </#if>
+            </#if>
             <#if village['address']?exists&&village['address']!=''>
-            <#assign split = village['address']?split('-')>
-            <#if split?size gt 1>${split[1]}<#else >
-            ${village['address']!''}</#if></#if></p>
+                <#assign split = village['address']?split('-')>
+                <#if split?size gt 1>${split[1]}<#else >
+                ${village['address']!''}</#if></#if></p>
             <p>${village['trafficInformation']!''}</p>
             <div class="house-labelling gray">
             <#if village['label']?exists&&(village['label']?size gt 0)>
@@ -101,14 +101,14 @@
             </#if>
             </div>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a onclick="zhuge.track('小区-点击地址')" href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>市场行情<span class="subtitle">洞察价格走势</span></h3>
-            <#--<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>-->
+        <#--<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>-->
         </div>
         <div class="basic-information price-trend">
             <div class="column item-column-three">
@@ -151,7 +151,7 @@
             <#--</div>-->
             <#if  (mouthList?size>0)>
                 <div class="echarts-box">
-                    <div class="echarts-content" id="village-price-trade" ></div>
+                    <div class="echarts-content" id="village-price-trade"></div>
                 </div>
             </#if>
             </div>
@@ -159,11 +159,11 @@
     </section>
 </div>
 <#if (reViHouse?exists) && (reViHouse?size>0)>
-<div class="module-bottom-fill">
+<div id="plot_nearby_esf" class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>小区好房</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
+            <a onclick="see_all_esfInfo(this)" href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist">
             <#list reViHouse as reitem>
@@ -171,26 +171,30 @@
                     <#break >
                 </#if>
                 <#assign itemLocation=reitem['housePlotLocation']>
-                <li><a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
-                    <div class="picture-box">
-                        <#if reitem['housePhoto']?exists>
-                            <#assign photoitem=reitem['housePhoto']>
-                            <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <li id="${reitem_index+1}">
+                    <a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
+                        <div class="picture-box">
+                            <#if reitem['housePhoto']?exists>
+                                <#assign photoitem=reitem['housePhoto']>
+                                <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                                <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                </#if>
+                            <#--<#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>-->
                             </#if>
-                        <#--<#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>-->
-                        </#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <p class="cont-first text-center"><em>
-                            <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if></em>
-                        <#--<#if reitem['forwardName']?exists>${reitem.forwardName}</#if>-->
-                        <#if reitem['buildArea']?exists><#--<p class="bottom-text">-->${reitem['buildArea']}㎡<#--</p>--></#if>
-                        <#if reitem['room']?exists&&reitem['room']?number gt 0>${reitem.room+'室'}</#if>
-                        <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${reitem.hall+'厅'}</#if>
-                        </p>
-                    </div>
-                </a></li>
+                        </div>
+                        <div class="tilelist-content">
+                            <p class="cont-first text-center">
+                                <em>
+                                    <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if>
+                                <#--<#if reitem['forwardName']?exists>${reitem.forwardName}</#if>-->
+                                    <#if reitem['buildArea']?exists><#--<p class="bottom-text">-->${reitem['buildArea']}㎡<#--</p>--></#if>
+                                    <#if reitem['room']?exists&&reitem['room']?number gt 0>${reitem.room+'室'}</#if>
+                                    <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${reitem.hall+'厅'}</#if>
+                                </em>
+                            </p>
+                        </div>
+                    </a>
+                </li>
             </#list>
         </ul>
     </section>
@@ -200,7 +204,7 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息<span class="subtitle">了解居住环境</span></h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a onclick="plot_basic_info(this)" href="${router_city('/xiaoqu/'+village['id']+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-only-one">
@@ -239,7 +243,7 @@
                     <div class="info-item-text">
                         <p>车位配比</p>
                         <em><#if village['carPositionRatio']??&&village['carPositionRatio']!=''>
-                           ${village['carPositionRatio']}
+                        ${village['carPositionRatio']}
                         <#else>暂无数据
                         </#if></em>
                     </div>
@@ -251,7 +255,7 @@
                     <div class="info-item-text">
                         <p>电梯配备</p>
                         <em><#if village['avgElevator']??&&village['avgElevator']!=''>
-                          ${village['avgElevator']}
+                        ${village['avgElevator']}
                         <#else>暂无数据
                         </#if></em>
                     </div>
@@ -261,7 +265,7 @@
                     <div class="info-item-text">
                         <p>空气质量</p>
                         <em><#if village['airQuality']??&&village['airQuality']!=''>
-                           ${village['airQuality']}
+                        ${village['airQuality']}
                         <#else>暂无数据
                         </#if></em>
                     </div>
@@ -282,14 +286,15 @@
                 <div class="info-card-item">
                     <i class="item-three-1"></i>
                     <em>公交</em>
-                        <p id="busStation"><#if datainfo["gongjiao"]["name"]?exists>${datainfo["gongjiao"]["name"]}<#else >暂无数据</#if></p>
-                        <span id="busStationNumber"><#if datainfo["gongjiao"]["lines"]?exists>${datainfo["gongjiao"]["lines"]}条线路<#else >暂无数据</#if></span>
+                    <p id="busStation"><#if datainfo["gongjiao"]["name"]?exists>${datainfo["gongjiao"]["name"]}<#else >暂无数据</#if></p>
+                    <span id="busStationNumber"><#if datainfo["gongjiao"]["lines"]?exists>${datainfo["gongjiao"]["lines"]}条线路<#else >暂无数据</#if></span>
                 </div>
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
                     <p id="subwayLine"><#if datainfo["ditie"]["name"]?exists>${datainfo["ditie"]["name"]}<#else >暂无数据</#if></p>
-                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >暂无数据</#if></span>
+                    <span id="subwayDistance"><#if datainfo["ditie"]["line"]?exists><#if datainfo["ditie"]["line"]?substring(0,2) == '地铁'>${ datainfo["ditie"]["line"]?substring(2)}<#else>${ datainfo["ditie"]["line"]}</#if><#else >
+                        暂无数据</#if></span>
                 </div>
             </#if>
                 <div class="info-card-item">
@@ -327,53 +332,53 @@
                     <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
                     <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
                     <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
-                    <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
+                <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
                 </ul>
             </div>
             <ul class="result-data-expand" id="qinzi">
-                <#assign qinzi=datainfo['jiaoyu']['qinzi'] />
-                <#list qinzi as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+            <#assign qinzi=datainfo['jiaoyu']['qinzi'] />
+            <#list qinzi as item>
+                <li>
+                    <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand none" id="youeryuan">
-                <#assign youeryuan=datainfo['jiaoyu']['youeryuan'] />
-                <#list youeryuan as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+            <#assign youeryuan=datainfo['jiaoyu']['youeryuan'] />
+            <#list youeryuan as item>
+                <li>
+                    <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand none" id="xiaoxue">
-                <#assign xiaoxue=datainfo['jiaoyu']['xiaoxue'] />
-                <#list xiaoxue as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+            <#assign xiaoxue=datainfo['jiaoyu']['xiaoxue'] />
+            <#list xiaoxue as item>
+                <li>
+                    <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand none" id="zhongxue">
-                <#assign zhongxue=datainfo['jiaoyu']['zhongxue'] />
-                <#list zhongxue as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+            <#assign zhongxue=datainfo['jiaoyu']['zhongxue'] />
+            <#list zhongxue as item>
+                <li>
+                    <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand none" id="gaodeng">
-                <#assign gaodeng=datainfo['jiaoyu']['gaodeng'] />
-                <#list gaodeng as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+            <#assign gaodeng=datainfo['jiaoyu']['gaodeng'] />
+            <#list gaodeng as item>
+                <li>
+                    <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
         </div>
     </section>
@@ -395,41 +400,41 @@
                 <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
             </div>
             <ul class="result-data-expand height-type" id="caishichang">
-                <#assign caishichang=datainfo["xiuxian"]["caishichang"]/>
-                <#list caishichang as item>
-                    <li>
-                        <p>
-                            <i class="expand-icon expand-radius">${item_index+1}</i>
-                            <span class="expand-name">
+            <#assign caishichang=datainfo["xiuxian"]["caishichang"]/>
+            <#list caishichang as item>
+                <li>
+                    <p>
+                        <i class="expand-icon expand-radius">${item_index+1}</i>
+                        <span class="expand-name">
                                 <em>${item.name}</em>
                                 <em class="star-box">
                                     <#if item.star?exists&& (item.star??)>
                                         <#assign star=item.star?number/>
-                                            <#if star gt 0>
-                                                    <#list 1..5 as i>
-                                                        <#if star gt i>
-                                                            <i class="red-star"></i>
-                                                        <#else >
-                                                            <i class="star-icon"></i>
-                                                        </#if>
-                                                    </#list>
-                                                <#else>
-                                            </#if>
+                                        <#if star gt 0>
+                                            <#list 1..5 as i>
+                                                <#if star gt i>
+                                                    <i class="red-star"></i>
+                                                <#else >
+                                                    <i class="star-icon"></i>
+                                                </#if>
+                                            </#list>
+                                        <#else>
+                                        </#if>
                                     </#if>
                                 </em>
                             </span>
-                        </p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+                    </p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="chaoshi">
-                <#assign chaoshi=datainfo["xiuxian"]["chaoshi"]/>
-                <#list chaoshi as item>
-                    <li>
-                        <p>
-                            <i class="expand-icon expand-radius">${item_index+1}</i>
-                            <span class="expand-name">
+            <#assign chaoshi=datainfo["xiuxian"]["chaoshi"]/>
+            <#list chaoshi as item>
+                <li>
+                    <p>
+                        <i class="expand-icon expand-radius">${item_index+1}</i>
+                        <span class="expand-name">
                                 <em>${item.name}</em>
                                 <em class="star-box">
                                     <#if item.star?exists&& (item.star??)>
@@ -447,18 +452,18 @@
                                     </#if>
                                 </em>
                             </span>
-                        </p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+                    </p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="shangchang">
-                <#assign shangchang=datainfo["xiuxian"]["shangchang"]/>
-                <#list shangchang as item>
-                    <li>
-                        <p>
-                            <i class="expand-icon expand-radius">${item_index+1}</i>
-                            <span class="expand-name">
+            <#assign shangchang=datainfo["xiuxian"]["shangchang"]/>
+            <#list shangchang as item>
+                <li>
+                    <p>
+                        <i class="expand-icon expand-radius">${item_index+1}</i>
+                        <span class="expand-name">
                                 <em>${item.name}</em>
                                 <em class="star-box">
                                     <#if item.star?exists&& (item.star??)>
@@ -476,18 +481,18 @@
                                     </#if>
                                 </em>
                             </span>
-                        </p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+                    </p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="canting">
-                <#assign canting=datainfo["xiuxian"]["canting"]/>
-                <#list canting as item>
-                    <li>
-                        <p>
-                            <i class="expand-icon expand-radius">${item_index+1}</i>
-                            <span class="expand-name">
+            <#assign canting=datainfo["xiuxian"]["canting"]/>
+            <#list canting as item>
+                <li>
+                    <p>
+                        <i class="expand-icon expand-radius">${item_index+1}</i>
+                        <span class="expand-name">
                                 <em>${item.name}</em>
                                 <em class="star-box">
                                     <#if item.star?exists&& (item.star??)>
@@ -505,18 +510,18 @@
                                     </#if>
                                 </em>
                             </span>
-                        </p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+                    </p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="jianshenzhongxin">
-                <#assign jianshenzhongxin=datainfo["xiuxian"]["jianshenzhongxin"]/>
-                <#list jianshenzhongxin as item>
-                    <li>
-                        <p>
-                            <i class="expand-icon expand-radius">${item_index+1}</i>
-                            <span class="expand-name">
+            <#assign jianshenzhongxin=datainfo["xiuxian"]["jianshenzhongxin"]/>
+            <#list jianshenzhongxin as item>
+                <li>
+                    <p>
+                        <i class="expand-icon expand-radius">${item_index+1}</i>
+                        <span class="expand-name">
                                 <em>${item.name}</em>
                                 <em class="star-box">
                                     <#if item.star?exists&& (item.star??)>
@@ -534,10 +539,10 @@
                                     </#if>
                                 </em>
                             </span>
-                        </p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
+                    </p>
+                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                </li>
+            </#list>
             </ul>
         </div>
     </section>
@@ -546,20 +551,20 @@
     <section>
         <div class="module-header-message">
             <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
-            <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+            <a onclick="zhuge.track('小区-点击医疗配套')" href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
-            <#assign yiliao=datainfo['yiliao'] />
+        <#assign yiliao=datainfo['yiliao'] />
             <ul class="result-data-expand" id="hospitalListDom">
             <#assign itnum = 0>
             <#if (yiliao['zhuanke']?size>0)>
                 <#list yiliao['zhuanke'] as item>
                     <#if itnum<5>
                         <#assign itnum=itnum+1>
-                    <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
+                        <li>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【专科】</span></p>
+                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                        </li>
                     <#else><#break>
                     </#if>
                 </#list>
@@ -568,10 +573,10 @@
                 <#list yiliao['zhensuo'] as item>
                     <#if itnum<5>
                         <#assign itnum=itnum+1>
-                    <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
+                        <li>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【诊所】</span></p>
+                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                        </li>
                     <#else><#break>
                     </#if>
                 </#list>
@@ -580,10 +585,10 @@
                 <#list yiliao['zonghe'] as item>
                     <#if itnum<5>
                         <#assign itnum=itnum+1>
-                    <li>
-                        <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
+                        <li>
+                            <p><i class="expand-icon medical-treatment"></i><span class="expand-name">${item.name}【综合】</span></p>
+                            <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
+                        </li>
                     <#else><#break>
                     </#if>
                 </#list>
@@ -596,7 +601,7 @@
     <section>
         <div class="module-header-message">
             <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
-            <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+            <a onclick="zhuge.track('小区-点击生活成本')" href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
             <ul class="result-data-expand">
@@ -666,16 +671,16 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a onclick="zhuge.track('小区-点击配套地图')" href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
+        <a onclick="zhuge.track('小区-点击配套地图')" href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
-            <#if village['location']?exists>
-                <#assign locationIp = village['location'] ? split(",")>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
-            <#else>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
-            </#if>
+        <#if village['location']?exists>
+            <#assign locationIp = village['location'] ? split(",")>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locationIp[1]},${locationIp[0]}&&zoom=16" alt="">
+        <#else>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+        </#if>
         </a>
     </section>
 </div>
@@ -689,7 +694,7 @@
     </section>
 </div>
 </#if>
-<div class="module-bottom-fill">
+<div id="user_see_plot" class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>看了本小区的用户还看了</h3>
@@ -699,7 +704,7 @@
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
-            <li><a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
+            <li id="${nearviitem_index}"><a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
@@ -719,34 +724,36 @@
         </ul>
     </section>
 </div>
-<section>
+<section id="plot_new_desc">
     <div class="module-header-message">
         <h3>新房推荐</h3>
     </div>
     <ul class="tilelist">
     <#list newbuilds as builditem>
-        <li><a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">
-            <div class="picture-box">
-                <#assign imglist = builditem['building_title_img']>
-                <#if imglist?exists >
-                    <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">
+        <li id="${builditem_index}" data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">
+            <a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">
+                <div class="picture-box">
+                    <#assign imglist = builditem['building_title_img']>
+                    <#if imglist?exists >
+                        <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">
                         <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
                     </#if>
-                </#if>
-            </div>
-            <div class="tilelist-content">
-                <h4 class="cont-first">${builditem['building_name']!''}</h4>
-                <#if builditem['average_price']?exists && builditem['average_price'] gt 0>
-                    <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
-                <#else>
-                    <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
-                        <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
-                    <#else><p class="cont-last"><em>售价待定</em></p>
+                </div>
+                <div class="tilelist-content">
+                    <h4 class="cont-first">${builditem['building_name']!''}</h4>
+                    <#if builditem['average_price']?exists && builditem['average_price'] gt 0>
+                        <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
+                    <#else>
+                        <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
+                            <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
+                        <#else><p class="cont-last"><em>售价待定</em></p>
+                        </#if>
                     </#if>
-                </#if>
 
-            </div>
-        </a></li>
+                </div>
+            </a>
+        </li>
     </#list>
     </ul>
 </section>
@@ -774,19 +781,19 @@
         height: '100%'
     });
     </#if>
-        option = {
-            textStyle: {fontSize: baseFontSize},
-            tooltip: {
-                trigger: 'axis',
-                textStyle: {fontSize: baseFontSize}
-            },
-            legend: {
-                itemGap: 20,
-                itemWidth: baseItemWidth,
-                data:['${village['area']!'区域'}价格','${village['tradingArea']!'商圈'}价格'],
-            },
-            grid: chartGrid,
-            xAxis:
+    option = {
+        textStyle: {fontSize: baseFontSize},
+        tooltip: {
+            trigger: 'axis',
+            textStyle: {fontSize: baseFontSize}
+        },
+        legend: {
+            itemGap: 20,
+            itemWidth: baseItemWidth,
+            data: ['${village['area']!'区域'}价格', '${village['tradingArea']!'商圈'}价格'],
+        },
+        grid: chartGrid,
+        xAxis:
                 {
                     show: true,
                     boundaryGap: false,
@@ -794,41 +801,51 @@
                     axisLabel: {fontSize: baseFontSize - 4},
                     data: [<#list  mouthList as item >'${item}',</#list>],
                 },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value}',
-                    fontSize:8
-                },
-                scale:true
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value}',
+                fontSize: 8
             },
-            dataZoom: [
-                {
-                    type: 'inside',
-                    start: 50,
-                    end: 100,
-                    filterMode: 'empty',
-                    zoomLock: true
-                }
-            ],
-            series: [
-                {
-                    name:'${village['area']!'区域'}价格',
-                    type:'line',
-                    data:[<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                    showSymbol: false
-                },
-                {
-                    name:'${village['tradingArea']!'商圈'}价格',
-                    type:'line',
-                    data:[<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
-                    showSymbol: false
-                }
-            ]
-        };
+            scale: true
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 50,
+                end: 100,
+                filterMode: 'empty',
+                zoomLock: true
+            }
+        ],
+        series: [
+            {
+                name: '${village['area']!'区域'}价格',
+                type: 'line',
+                data: [<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                showSymbol: false
+            },
+            {
+                name: '${village['tradingArea']!'商圈'}价格',
+                type: 'line',
+                data: [<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                showSymbol: false
+            }
+        ]
+    };
     <#if (mouthList?size>0)>
-        myChartline.setOption(option);
+    myChartline.setOption(option);
     </#if>
+    myChartline.on("click", function (param) {
+        var plot_first_name = option.series[0].name;
+        var plot_second_name = option.series[1].name;
+        var first_result = option.series[0].data[param.dataIndex];
+        var second_result = option.series[1].data[param.dataIndex];
+        zhuge.track('小区-点击折线图上的点', {
+            plot_first_name: plot_first_name+":"+first_result,
+            plot_second_name: plot_second_name+":"+second_result
+        });
+    });
 </script>
 <script>
     $(function () {
@@ -838,6 +855,73 @@
             $('#base-info').html(_divContent);
         }
     });
+    zhuge.track('小区-进入小区详情页', {
+        '区域': '${village['area']}',
+        '商圈': '${village['tradingArea']}',
+        '小区名称': '${village['rc']}',
+        '页面来源URL': window.location.href,
+        '均价': '${village['avgPrice']}' + '元/㎡',
+        'ID': '${village['id']}'
+    });
+    $("#plot_new_desc").on('click', 'li', function () {
+        var link = $(this);
+        zhuge.track('小区-点击推荐新房', {
+            "楼盘名称": link.find('.tilelist-content').find('h4.cont-first').text(),
+            "参考均价": link.find('.tilelist-content').find('p.cont-last').text(),
+            "位置信息": link.attr("data-type"),
+            "页面位置序号": link.attr('id'),
+            "是否为广告位": "否"
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+    $("#user_see_plot").on('click', 'li', function () {
+        var link = $(this);
+        zhuge.track('小区-点击推荐小区', {
+            "小区名称": link.find('div.tilelist-content').find('p.cont-first').text(),
+            "参考均价": link.find('div.tilelist-content').find('h4.cont-last').text(),
+            "位置信息": link.find('div.tilelist-content').find('p.cont-center').text(),
+            "页面位置序号": link.attr('id'),
+            "是否为广告位": "否"
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+    $("#plot_nearby_esf").on('click', 'li', function () {
+        var link = $(this);
+        zhuge.track('小区-点击推荐二手房', {
+            "面积": link.find('div.tilelist-content').find('p.cont-first.text-center').find('em').text().split("万")[1].split("㎡")[0] + "㎡",
+            "居室": link.find('div.tilelist-content').find('p.cont-first.text-center').find('em').text().split("万")[1].split("㎡")[1],
+            "页面位置序号": link.attr('id')
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+
+    function see_all_esfInfo(esf) {
+        var link = $(esf);
+        console.log(link.val("href"))
+        zhuge.track('小区-点击查看全部二手房', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
+    function plot_basic_info(plot) {
+        var link = $(plot);
+        console.log(link.val("href"))
+        zhuge.track('小区-查看详细信息', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
+
 </script>
 </body>
 </html>

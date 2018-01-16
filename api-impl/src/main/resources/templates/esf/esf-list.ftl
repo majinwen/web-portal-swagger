@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../staticHeader.ftl">
+<#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>来头条房产二手房</title>
@@ -9,14 +9,14 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-    <#include "../StatisticsHeader.ftl">
+<#include "../StatisticsHeader.ftl">
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
 <img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="esf_title(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
@@ -139,14 +139,14 @@
                             <span class="only" data-info="2">无</span>
                         </dd>
                     </dl>
-                    <#--<dl>-->
-                        <#--<dt data-type="buildingTypeId">建筑类型</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">板楼</span>-->
-                            <#--<span data-info="2">塔楼</span>-->
-                            <#--<span data-info="3">板塔结合</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="buildingTypeId">建筑类型</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">板楼</span>-->
+                <#--<span data-info="2">塔楼</span>-->
+                <#--<span data-info="3">板塔结合</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
                     <dl>
                         <dt data-type="ownership">权属</dt>
                         <dd>
@@ -168,24 +168,27 @@
     </div>
 </section>
 <section id="result-section">
-    <#if builds?exists><ul id="valueList">
+<#if builds?exists>
+    <ul id="valueList">
         <#list builds as map>
-            <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+            <li>
+                <a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
                         <#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
+                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>
                         <p class="cont-block-2">
                             <#if map.buildArea?exists&&(map.buildArea>0)>
-                                ${map.buildArea}㎡
+                            ${map.buildArea}㎡
                             </#if>
                             <#if map.room?exists&&map.hall?exists>
-                                / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
+                                / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室
+                                 <#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
                             </#if>
                             <#if map.forwardName?exists>
                                 / ${map.forwardName}
@@ -209,7 +212,8 @@
                                     </p>
                                 </#if>
                             <#else>
-                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}
+                                    -${map.houseBusinessName}<#else></#if></p>
                             </#if>
                         <#else >
                             <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>
@@ -263,59 +267,95 @@
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
-                    <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
+                <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
                 {{else}}
-                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
             </div>
             <div class="list-item-cont">
                 <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
                 <p class="cont-block-2">
                     {{if $value.buildArea && $value.buildArea > 0}}
-                        {{$value.buildArea}}㎡
+                    {{$value.buildArea}}㎡
                     {{/if}}
                     {{if $value.room && $value.hall}}
-                        / {{$value.room}}室{{$value.hall}}厅
+                    / {{$value.room}}室{{$value.hall}}厅
                     {{/if}}
                     {{if $value.forwardName}}
-                        / {{$value.forwardName}}
+                    / {{$value.forwardName}}
                     {{/if}}
                     {{if $value.plotName}}
-                        / {{$value.plotName}}
+                    / {{$value.plotName}}
                     {{/if}}
                 </p>
                 <p class="cont-block-3 distance">
                     <i class="icon"></i>
 
                     {{if $value.subwayDesc}}
-                        {{$value.subwayDesc}}
+                    {{$value.subwayDesc}}
                     {{else}}
-                        {{if $value.area && $value.houseBusinessName}}
-                            {{$value.area}}-{{$value.houseBusinessName}}
-                        {{/if}}
+                    {{if $value.area && $value.houseBusinessName}}
+                    {{$value.area}}-{{$value.houseBusinessName}}
+                    {{/if}}
                     {{/if}}
                 </p>
                 <div class="cont-block-4 house-labelling gray middle esf">
                     {{if $value.tagsName}}
-                        {{each $value.tagsName value index}}
-                            <span>{{value}}</span>
-                        {{/each}}
+                    {{each $value.tagsName value index}}
+                    <span>{{value}}</span>
+                    {{/each}}
                     {{/if}}
                 </div>
                 <div class="cont-block-price">
                     {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
-                        <em>{{$value.houseTotalPrices}}万</em>
+                    <em>{{$value.houseTotalPrices}}万</em>
                     {{/if}}
                     {{if $value.houseTotalPrices && $value.buildArea}}
-                        {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
-                            <span>{{$value.unitCost}}元/㎡</span>
-                        {{/if}}
+                    {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
+                    <span>{{$value.unitCost}}元/㎡</span>
+                    {{/if}}
                     {{/if}}
                 </div>
             </div>
         </div>
     </a></li>
     {{/each}}
+</script>
+<script>
+    function esf_title(a) {
+        var link = $(a);
+        console.log(link.val("href"))
+        zhuge.track('点击二手房头条logo', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
+
+    /**
+     *
+     * 318㎡/4室2厅/ 南北/ 美伦堡
+     */
+    $("#result-section").on('click','li',function () {
+        var link = $(this);
+        zhuge.track('二手房-点击列表二手房', {
+            "楼盘名称":link.find('img').attr('alt'),
+            "总价":link.find('div.cont-block-price').find('em').text(),
+            "单价":link.find('div.cont-block-price').find('span').text(),
+            "面积":link.find('p.cont-block-2').text().split("/")[0],
+            "户型":link.find('p.cont-block-2').text().split("/")[1],
+            "朝向":link.find('p.cont-block-2').text().split("/")[2],
+            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
+            "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
+            "第几屏":pageNum,
+            "是否为广告":"否",
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+
 </script>
 </body>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>

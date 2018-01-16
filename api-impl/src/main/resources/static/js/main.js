@@ -149,6 +149,9 @@ function carouselSwiper() {
 }
 
 function initphoto(a, i) {
+
+    zhuge.track("小区-点击图片");
+
     if (typeof i == 'undefined') {
         i = 0;
     }
