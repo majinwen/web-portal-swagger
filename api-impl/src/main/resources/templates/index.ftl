@@ -9,10 +9,11 @@
     <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header gradient">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo" ><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="">
@@ -105,9 +106,9 @@
             <div class="row clear">
                 <div class="cloumn">
                     <h6>昨日新房成交量</h6>
-                    <div><#if TradeQuotations['newHouse']?split(',')[0]?exists&&TradeQuotations['newHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['newHouse']?split(',')[0]}</em>套<#else >暂无数据</#if><span class="high-light-red">
-                    <#if TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number gt 0>${TradeQuotations['newHouse']?split(',')[1]}%↑
-                    <#elseif TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number lt 0> ${TradeQuotations['newHouse']?split(',')[1]}%↓ <#else >/暂无数据</#if>
+                    <div><#if TradeQuotations['newHouse']?split(',')[0]?exists&&TradeQuotations['newHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['newHouse']?split(',')[0]}</em>套<#else >暂无数据</#if>
+                    <#if TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number gt 0><span class="high-light-green">${TradeQuotations['newHouse']?split(',')[1]}%↑
+                    <#elseif TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number lt 0><span class="high-light-red"> ${TradeQuotations['newHouse']?split(',')[1]?number?abs}%↓ <#else >/暂无数据</#if>
                     </span></div>
                 </div>
                 <div class="cloumn">
@@ -120,11 +121,10 @@
             <div class="row clear">
                 <div class="cloumn">
                     <h6>上周二手房房成交量</h6>
-                    <div><#if TradeQuotations['esfHouse']?split(',')[0]?exists&&TradeQuotations['esfHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['esfHouse']?split(',')[0]}</em>套<#else >暂无数据</#if><span class="high-light-green">
-                    <#if TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number gt 0>${TradeQuotations['esfHouse']?split(',')[1]}%↑
-                    <#elseif TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number lt 0> ${TradeQuotations['esfHouse']?split(',')[1]}%↓ <#else >/暂无数据</#if>
+                    <div><#if TradeQuotations['esfHouse']?split(',')[0]?exists&&TradeQuotations['esfHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['esfHouse']?split(',')[0]}</em>套<#else >暂无数据</#if>
+                    <#if TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number gt 0><span class="high-light-green">${TradeQuotations['esfHouse']?split(',')[1]}%↑
+                    <#elseif TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number lt 0><span class="high-light-red"> ${TradeQuotations['esfHouse']?split(',')[1]?number?abs}%↓ <#else >/暂无数据</#if>
                     </span></div>
-                    <#--<div><em>1865</em>套<span class="high-light-green">24.20% ↓</span></div>-->
                 </div>
                 <div class="cloumn">
                     <#if TradeQuotations['month']?exists&&TradeQuotations['month']?number gt 0>
@@ -324,6 +324,31 @@
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $('.type-tab-box').removeClass('none');
+</script>
+<script>
+    $('.index-xinfang').on('click',function(){
+        var link = $(this);
+        zhuge.track('新房-进入房屋列表页',{'页面来源URL':window.location.href},function () {
+            location.href = link.attr('href')
+        });
+        return false;
+    });
+
+    $('.index-xiaoqu').on('click',function(){
+        var link = $(this);
+        zhuge.track('小区-进入小区列表页',{'页面来源URL':window.location.href},function () {
+            location.href = link.attr('href')
+        });
+        return false;
+    });
+
+    $('.index-esf').on('click',function(){
+        var link = $(this);
+        zhuge.track('二手房-进入二手房列表页',{'页面来源URL':window.location.href},function () {
+            location.href = link.attr('href')
+        });
+        return false;
+    });
 </script>
 </body>
 </html>

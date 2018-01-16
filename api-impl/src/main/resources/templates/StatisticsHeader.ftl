@@ -42,5 +42,12 @@
             window.zhuge._init(b, x)
         }
     };
-    window.zhuge.load('7ade0caffb294025964cda0cfed2156a');//配置应用的AppKey
+    window.zhuge.load('7ade0caffb294025964cda0cfed2156a',{debug:true});//配置应用的AppKey
+//    zhuge.identify('0202033', {
+//        name: '张三',
+//        //预定义属性
+//        avatar: '头像地址',
+//        //预定义属性
+//        '行业': '互联⽹网' //⾃自定义属性
+//    });
 </script>

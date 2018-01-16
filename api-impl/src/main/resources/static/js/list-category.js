@@ -3,6 +3,14 @@ var url;
 var submitClickState = false;
 var req = GetRequest();
 var _localHref = window.location.pathname;
+var quyu;
+var shangquan;
+var diteixian;
+var diteizhan;
+var junjia = [];
+var huxing = [];
+var louling = [];
+var moreChooseZhuge = [];
 $(function () {
     var disStr = '<li id="district-option">区域</li>';
     var subStr = '<li id="subway-option">地铁</li>';
@@ -477,7 +485,18 @@ function submitPlace(e) {
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, '区域');
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+            houseName = '二手房';
+        }
+    if (_localHref=='/bj/xinfang'){
+            houseName = '新房';
+        }
     $.get(url, function () {
+        zhuge.track(houseName+'-按区域筛选',{'区域位置':'不限'});
         location.replace(url) ;
     })
 }
@@ -499,8 +518,20 @@ function submitDirstrict(districtid, e) {
     req['districtId'] = districtid;
     var params = joinParams(req);
     url = _localHref + params;
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
     tabTextReplace(e);
+    quyu = $('#level2').find('li.current').text();
     $.get(url, function () {
+        zhuge.track(houseName+'-按区域筛选',{'区域位置':quyu});
         location.replace(url);
     });
 }
@@ -524,7 +555,20 @@ function submitBussiness(districtid, areaId, e) {
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e);
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
+    quyu = $('#level2').find('li.current').text();
+    shangquan = e.currentTarget.innerText;
     $.get(url, function () {
+        zhuge.track(houseName+'-按区域筛选',{'区域位置': quyu +'-'+shangquan});
         location.replace(url);
     });
 }
@@ -580,7 +624,18 @@ function submitSubway(e) {
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, '地铁');
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
     $.get(url, function () {
+        zhuge.track(houseName+'-按区域筛选',{'地铁位置':'不限'});
         location.replace(url);
     })
 }
@@ -638,7 +693,21 @@ function submitSubwayLine(subwayid, e) {
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e);
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
+
+    diteixian =$('#level2').find('li.current').text();
+    console.log($('.place-list').find('li.current').text())
     $.get(url, function () {
+        zhuge.track(houseName+'-按区域筛选',{'地铁位置':diteixian});
         location.replace(url);
     })
 }
@@ -658,9 +727,22 @@ function submitStation(subwayid, subwayStationId, e) {
     req['subwayStationId']=subwayStationId;
     params = joinParams(req);
     url = _localHref + params;
-
     tabTextReplace(e);
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
+    diteixian = $('#level2').find('li.current').text();
+    diteizhan = e.currentTarget.innerText;
+    console.log(diteixian+'-'+diteizhan);
     $.get(url, function () {
+        zhuge.track(houseName+'-按区域筛选',{'地铁位置':diteixian+'-'+diteizhan});
         location.replace(url);
     });
 }
@@ -686,8 +768,25 @@ $('.price-list').on('click', 'li', function (e) {
     req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
     tabTextReplace(e, $(this).text());
+    junjia.push($('.price-list').find('li.current').text())
     $.get(url, function () {
+        var split = url.split('?');
+        if (split.length == 1){
+            zhuge.track(houseName+'-按均价筛选',{'均价范围':'不限'});
+        }else {
+            zhuge.track(houseName+'-按均价筛选',{'均价范围':junjia[0]});
+        }
         location.replace(url);
     })
 });
@@ -710,8 +809,25 @@ $('.age-list').on('click', 'li', function (e) {
     req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
     tabTextReplace(e, $(this).text());
+    louling.push($('.age-list').find('li.current').text());
     $.get(url, function () {
+        var split = url.split('?');
+        if (split.length == 1){
+            zhuge.track(houseName+'-按楼龄筛选',{'楼龄':'不限'});
+        }else {
+            zhuge.track(houseName+'-按楼龄筛选',{'楼龄':louling[0]});
+        }
         location.replace(url);
     })
 });
@@ -746,7 +862,18 @@ $('#typeSubmit').on('click', function (e) {
         req['lon'] = null;
         params = joinParams(req);
         url = _localHref + params;
+        var houseName = null;
+        if (_localHref=='/bj/xiaoqu'){
+            houseName = '小区';
+        }
+        if (_localHref=='/bj/esf'){
+            houseName = '二手房';
+        }
+        if (_localHref=='/bj/xinfang'){
+            houseName = '新房';
+        }
         $.get(url, function () {
+            zhuge.track(houseName+'-按户型筛选',{'户型':'不限'});
             location.replace(url);
         });
         return;
@@ -767,7 +894,26 @@ $('#typeSubmit').on('click', function (e) {
     req['layoutId'] = layoutTextArr.join(',');
     params = joinParams(req);
     url = _localHref + params;
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/loupan'){
+        houseName = '新房';
+    }
+    huxing = $('.type-list').find('li.current').text().split(' ');
+    console.log($('.type-list').find('li.current').text())
     $.get(url, function () {
+        if (huxing.length == 1) {
+            zhuge.track(houseName + '-按户型筛选', {'户型': huxing[0]});
+        } else {
+            for (var i = 0; i < huxing.length - 1; i++) {
+                zhuge.track(houseName + '-按户型筛选', {'户型': huxing[i]});
+            }
+        }
         location.replace(url);
     })
 });
@@ -815,7 +961,28 @@ $('#moreSubmit').on('click', function (e) {
     req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
+    var houseName = null;
+    if (_localHref=='/bj/xiaoqu'){
+        houseName = '小区';
+    }
+    if (_localHref=='/bj/esf'){
+        houseName = '二手房';
+    }
+    if (_localHref=='/bj/xinfang'){
+        houseName = '新房';
+    }
+    $('.more-list').find('span.current').each(function () {
+        moreChooseZhuge.push($(this).text())
+    });
+
     $.get(url, function () {
+        if (moreChooseZhuge.length == 0){
+            zhuge.track(houseName+'-更多筛选条件',{'筛选条件':'不限'});
+        }else {
+            for(var i = 0;i<moreChooseZhuge.length;i++){
+                zhuge.track(houseName+'-更多筛选条件',{'筛选条件':moreChooseZhuge[i]});
+            }
+        }
         location.replace(url);
     });
 });
