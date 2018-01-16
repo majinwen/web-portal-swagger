@@ -856,12 +856,12 @@
         }
     });
     zhuge.track('小区-进入小区详情页', {
-        '区域': '${village['area']}',
-        '商圈': '${village['tradingArea']}',
-        '小区名称': '${village['rc']}',
+        '区域': '<#if village['area']?exists&&village['area']!=''>${village['area']}</#if>',
+        '商圈': '<#if village['tradingArea']?exists&&village['tradingArea']!=''>${village['tradingArea']}</#if>',
+        '小区名称': '<#if village['rc']?exists>${village['rc']}</#if>',
         '页面来源URL': window.location.href,
-        '均价': '${village['avgPrice']}' + '元/㎡',
-        'ID': '${village['id']}'
+        '均价': '<#if village['avgPrice']?exists>${village['avgPrice']}元/㎡'</#if>,
+        'ID': '<#if village['id']?exists>${village['id']}</#if>'
     });
     $("#plot_new_desc").on('click', 'li', function () {
         var link = $(this);

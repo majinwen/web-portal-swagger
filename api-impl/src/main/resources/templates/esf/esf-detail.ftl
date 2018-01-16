@@ -384,19 +384,19 @@
         }
     })
     zhuge.track('二手房-进入二手房详情页', {
-        '区域' : '${houseDetail.area}',
-        '商圈' : '${houseDetail.houseBusinessName}',
-        '小区名称' : '${houseDetail.plotName}',
-        '总价' : '${houseDetail.houseTotalPrices}'+"万",
-        '面积' : '${houseDetail.buildArea}'+"㎡",
-        '户型' : '${houseDetail.room}室${houseDetail.hall}厅',
-        '经济公司' : '${houseDetail.ofCompany}',
-        'ID' : '${houseDetail.houseId}'
+        '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
+        '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
+        '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
+        '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+        '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
+        '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+        'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
-            "经纪人电话": ${houseDetail.houseProxyPhone}
+            "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>'
         }, function () {
             location.href = link.attr('href');
         });
@@ -464,7 +464,6 @@
     }
     function esf_map_2(a) {
         var link = $(a);
-        console.log(link.attr('href'))
         zhuge.track('二手房-点击配套地图', {
             "二手房配套地图来源": link.attr('href')
         }, function () {
