@@ -99,9 +99,11 @@ var Map = {
                         distanceStr = parseInt(_distance) + 'm';
                     }
                     s.push({
-                        'title': temp.title, 'content': temp.address, 'x': temp.point.lng, 'y': temp.point.lat, 'distance': distanceStr
+                        'title': temp.title, 'content': temp.address, 'x': temp.point.lng, 'y': temp.point.lat, 'distance': distanceStr,'_sort':_distance
                     });
                 }
+                s.sort(function(a,b){
+                    return a["_sort"]-b["_sort"]});
                 self.results = s;
 
                 if (obj) {
