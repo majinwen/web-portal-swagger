@@ -8,6 +8,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/login_cookie.js?v=${staticversion}"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <h2>手机快捷登录</h2>
@@ -120,8 +121,7 @@
                 }
             });
         }
-    })
-    ;
+    });
 
     //切换图片
     function changeImg() {
