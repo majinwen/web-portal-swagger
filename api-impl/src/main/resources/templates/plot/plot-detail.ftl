@@ -118,31 +118,39 @@
                 </div>
                 <div class="info-card-item">
                     <em>环比上月</em>
-                    <p class="green">
+
                     <#if village['huanbi']?exists&&(village['huanbi'] gt 0)>
                         <#assign x = village['huanbi']?abs * 100>
+                    <p class="red">
                         ↑ ${x?string("#.##")}%
+                    </p>
                     <#elseif village['huanbi']?exists&&village['huanbi'] lt 0>
                         <#assign x = village['huanbi']?abs * 100>
-                        ↓ ${x?string("#.##")}%
+                        <p class="green">
+                            ↓ ${x?string("#.##")}%
+                        </p>
                     <#else>
                         暂无数据
                     </#if>
-                    </p>
+
                 </div>
                 <div class="info-card-item">
                     <em>同比去年</em>
-                    <p class="green">
+
                     <#if village['tongbi']?exists&&(village['tongbi'] gt 0)>
                         <#assign x = village['tongbi']?abs * 100>
-                        ↑ ${x?string("#.##")}%
+                        <p class="red">
+                            ↑ ${x?string("#.##")}%
+                        </p>
                     <#elseif village['tongbi']?exists&&village['tongbi'] lt 0>
                         <#assign x = village['tongbi']?abs * 100>
-                        ↓ ${x?string("#.##")}%
+                        <p class="green">
+                            ↓ ${x?string("#.##")}%
+                        </p>
                     <#else>
                         暂无数据
                     </#if>
-                    </p>
+
                 </div>
             </div>
             <div>
@@ -174,9 +182,9 @@
                 <li id="${reitem_index+1}">
                     <a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
                         <div class="picture-box">
-                            <#if reitem['housePhoto']?exists>
-                                <#assign photoitem=reitem['housePhoto']>
-                                <#if photoitem[0]?? && photoitem[0] != ''><img src="${photoitem[0]}" alt="">
+                            <#if reitem['housePhotoTitle']?exists>
+                                <#assign photoitem=reitem['housePhotoTitle']>
+                                <#if photoitem?? && photoitem != ''><img src="${photoitem}" alt="">
                                 <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                 </#if>
                             <#--<#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>-->

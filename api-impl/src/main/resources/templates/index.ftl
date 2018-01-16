@@ -106,8 +106,8 @@
                 <div class="cloumn">
                     <h6>昨日新房成交量</h6>
                     <div><#if TradeQuotations['newHouse']?split(',')[0]?exists&&TradeQuotations['newHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['newHouse']?split(',')[0]}</em>套<#else >暂无数据</#if>
-                    <#if TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number gt 0><span class="high-light-green">${TradeQuotations['newHouse']?split(',')[1]}%↑
-                    <#elseif TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number lt 0><span class="high-light-red"> ${TradeQuotations['newHouse']?split(',')[1]?number?abs}%↓ <#else >/暂无数据</#if>
+                    <#if TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number gt 0><span class="high-light-red">${TradeQuotations['newHouse']?split(',')[1]}%↑
+                    <#elseif TradeQuotations['newHouse']?split(',')[1]?exists&&TradeQuotations['newHouse']?split(',')[1]?number lt 0><span class="high-light-green"> ${TradeQuotations['newHouse']?split(',')[1]?number?abs}%↓ <#else >/暂无数据</#if>
                     </span></div>
                 </div>
                 <div class="cloumn">
@@ -121,8 +121,8 @@
                 <div class="cloumn">
                     <h6>上周二手房房成交量</h6>
                     <div><#if TradeQuotations['esfHouse']?split(',')[0]?exists&&TradeQuotations['esfHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['esfHouse']?split(',')[0]}</em>套<#else >暂无数据</#if>
-                    <#if TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number gt 0><span class="high-light-green">${TradeQuotations['esfHouse']?split(',')[1]}%↑
-                    <#elseif TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number lt 0><span class="high-light-red"> ${TradeQuotations['esfHouse']?split(',')[1]?number?abs}%↓ <#else >/暂无数据</#if>
+                    <#if TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number gt 0><span class="high-light-red">${TradeQuotations['esfHouse']?split(',')[1]}%↑
+                    <#elseif TradeQuotations['esfHouse']?split(',')[1]?exists&&TradeQuotations['esfHouse']?split(',')[1]?number lt 0><span class="high-light-green"> ${TradeQuotations['esfHouse']?split(',')[1]?number?abs}%↓ <#else >/暂无数据</#if>
                     </span></div>
                 </div>
                 <div class="cloumn">
