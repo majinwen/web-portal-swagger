@@ -3,6 +3,7 @@ $(function () {
     pageTurning();  // 页面翻页
 
     $('.share-button').on('click', function () {
+        zhuge.track('分享报告_懂房帝');
         $('.share-pop').removeClass('none');
     });
     $('#off-share').on('click', function () {

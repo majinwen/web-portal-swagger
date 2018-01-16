@@ -667,7 +667,105 @@ body {
         .page2 .page-content .module-item table tr td:nth-child(1) {
           width: 1.3333333333rem; }
           .page2 .page-content .module-item table tr td:nth-child(1) em {
+            line-height: 1.4;
             white-space: nowrap; }
+      .page2 .page-content .module-item table.table-live tr td i {
+        display: block;
+        width: 0.5866666667rem;
+        height: 0.5866666667rem;
+        margin: 0 auto;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        .page2 .page-content .module-item table.table-live tr td i.live-age {
+          background-image: url("/static/images/intelligent/bgy_icon_ll.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .module-item table.table-live tr td i.live-age {
+              background-image: url("/static/images/intelligent/bgy_icon_ll@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .module-item table.table-live tr td i.live-age {
+              background-image: url("/static/images/intelligent/bgy_icon_ll@3x.png"); } }
+        .page2 .page-content .module-item table.table-live tr td i.live-greening {
+          background-image: url("/static/images/intelligent/bgy_icon_hjlh.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .module-item table.table-live tr td i.live-greening {
+              background-image: url("/static/images/intelligent/bgy_icon_hjlh@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .module-item table.table-live tr td i.live-greening {
+              background-image: url("/static/images/intelligent/bgy_icon_hjlh@3x.png"); } }
+        .page2 .page-content .module-item table.table-live tr td i.live-parking {
+          background-image: url("/static/images/intelligent/bgy_icon_cwb.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .module-item table.table-live tr td i.live-parking {
+              background-image: url("/static/images/intelligent/bgy_icon_cwb@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .module-item table.table-live tr td i.live-parking {
+              background-image: url("/static/images/intelligent/bgy_icon_cwb@3x.png"); } }
+        .page2 .page-content .module-item table.table-live tr td i.live-air {
+          background-image: url("/static/images/intelligent/bgy_icon_kqzl.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .module-item table.table-live tr td i.live-air {
+              background-image: url("/static/images/intelligent/bgy_icon_kqzl@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .module-item table.table-live tr td i.live-air {
+              background-image: url("/static/images/intelligent/bgy_icon_kqzl@3x.png"); } }
+        .page2 .page-content .module-item table.table-live tr td i.live-elevator {
+          background-image: url("/static/images/intelligent/bgy_icon_yjdt.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .module-item table.table-live tr td i.live-elevator {
+              background-image: url("/static/images/intelligent/bgy_icon_yjdt@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .module-item table.table-live tr td i.live-elevator {
+              background-image: url("/static/images/intelligent/bgy_icon_yjdt@3x.png"); } }
+        .page2 .page-content .module-item table.table-live tr td i.live-heating {
+          background-image: url("/static/images/intelligent/bgy_icon_gn.png");
+          background-repeat: no-repeat; }
+          @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+            .page2 .page-content .module-item table.table-live tr td i.live-heating {
+              background-image: url("/static/images/intelligent/bgy_icon_gn@2x.png"); } }
+          @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+            .page2 .page-content .module-item table.table-live tr td i.live-heating {
+              background-image: url("/static/images/intelligent/bgy_icon_gn@3x.png"); } }
+      .page2 .page-content .module-item table.table-life tr td {
+        padding: 0.1333333333rem; }
+        .page2 .page-content .module-item table.table-life tr td i {
+          display: block;
+          width: 0.5333333333rem;
+          height: 0.4rem;
+          margin: 0.0266666667rem auto;
+          -webkit-background-size: contain;
+          background-size: contain; }
+          .page2 .page-content .module-item table.table-life tr td i.life-property {
+            background-image: url("/static/images/intelligent/bgy_icon_wyf.png");
+            background-repeat: no-repeat; }
+            @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+              .page2 .page-content .module-item table.table-life tr td i.life-property {
+                background-image: url("/static/images/intelligent/bgy_icon_wyf@2x.png"); } }
+            @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+              .page2 .page-content .module-item table.table-life tr td i.life-property {
+                background-image: url("/static/images/intelligent/bgy_icon_wyf@3x.png"); } }
+          .page2 .page-content .module-item table.table-life tr td i.life-electricity {
+            background-image: url("/static/images/intelligent/bgy_icon_sdf.png");
+            background-repeat: no-repeat; }
+            @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+              .page2 .page-content .module-item table.table-life tr td i.life-electricity {
+                background-image: url("/static/images/intelligent/bgy_icon_sdf@2x.png"); } }
+            @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+              .page2 .page-content .module-item table.table-life tr td i.life-electricity {
+                background-image: url("/static/images/intelligent/bgy_icon_sdf@3x.png"); } }
+          .page2 .page-content .module-item table.table-life tr td i.life-parking {
+            background-image: url("/static/images/intelligent/bgy_icon_tcf.png");
+            background-repeat: no-repeat; }
+            @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+              .page2 .page-content .module-item table.table-life tr td i.life-parking {
+                background-image: url("/static/images/intelligent/bgy_icon_tcf@2x.png"); } }
+            @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+              .page2 .page-content .module-item table.table-life tr td i.life-parking {
+                background-image: url("/static/images/intelligent/bgy_icon_tcf@3x.png"); } }
     .page2 .page-content .module-item .water-wrapper {
       position: relative;
       width: 100%;
