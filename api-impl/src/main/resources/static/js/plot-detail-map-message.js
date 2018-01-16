@@ -13,8 +13,10 @@ $('.map-message-btn').on('click', 'li', function () {
 
     var text = $(this).attr('data-type');
     var parentText = $(this).parent().attr('data-type');
-
     if (parentText == '教育培训') {
+        zhuge.track("小区-点击教育配套",{
+            教育培训:text
+        });
         $(this).removeClass('choose');
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
@@ -24,6 +26,9 @@ $('.map-message-btn').on('click', 'li', function () {
     }else{
         zhuge.track('新房-点击休闲配套', {
             '配套内容' : zhuge_maidian
+        });
+        zhuge.track("小区-点击休闲配套",{
+            休闲购物:text
         });
     }
     $(this).parents('.expand-content').find('ul.result-data-expand').addClass('none');

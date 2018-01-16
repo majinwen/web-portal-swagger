@@ -318,6 +318,42 @@
 <script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
+    $(function () {
+        var url = document.referrer;
+        if(url.indexOf("/xinfang") > 0){
+            zhuge.track("搜索_新房",{
+                "关键词":GetQueryString("keyword"),
+               "返回结果数量":$("input['name['total']']").val()
+            })
+        }else{
+            zhuge.track("搜索_大首页",{
+                "搜索类型":"新房",
+                "关键词":GetQueryString("keyword"),
+               "返回结果数量":$("input['name['total']']").val()
+            })
+        }
+    });
+    function GetQueryString(name) {
+        var r = decodeURI(req[name]);
+        if(r!=null)return r; return null;
+    }
+    function joinParams(req) {
+        var targetUrl = '';
+
+        for (var key in req) {
+            if (null != req[key]) {
+                targetUrl += '&' + key + "=" + req[key];
+            }
+        }
+
+        if (targetUrl.length > 1) {
+            targetUrl = '?' + targetUrl.substring(1);
+        }
+
+        return targetUrl;
+    }
+</script>
+<script>
     $('.sort-content-box').on('click', function (){
         var sortZhuge;
         if(joinParams(req, true).split('=')[1]==1){

@@ -13,7 +13,7 @@
 </head>
 <body>
 <header class="main-top-header gradient">
-    <a href="/" class="header-logo" ><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="dashouyelogo(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="">
@@ -197,11 +197,6 @@
                             <span class="ellipsis">${map['building_name']}</span>
                             <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
                         </h3>
-                        <#--<#if (map['average_price']?exists && map['average_price'] > 0)>-->
-                            <#--<p class="cont-block-2 high-light-red">${map['average_price']}/㎡</p>-->
-                        <#--<#else >-->
-                            <#--<p class="cont-block-2 high-light-red">售价待定</p>-->
-                        <#--</#if>-->
                         <#if map['average_price']?exists && map['average_price'] gt 0>
                             <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
                         <#else>
@@ -241,7 +236,7 @@
     </#if>
     </ul>
 </section>
-<section>
+<section id="plot_desc">
     <div class="index-module-header">
         <h3>小区推荐</h3>
     </div>
@@ -280,7 +275,7 @@
             <#if map_index==5>
                 <#break>
             </#if>
-            <li><a class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
+            <li><a id="${map_index+1}" class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}-tt400x300" alt="${map['rc']}">
@@ -291,11 +286,11 @@
                         <input type="hidden" value="${map['id']}">
                         <h3 class="cont-block-1">${map['rc']}</h3>
                         <#if map['abbreviatedAge']?exists>
-                            <p class="cont-block-2">${map['abbreviatedAge']}年建成</p>
+                            <p class="cont-block-2 build_year">${map['abbreviatedAge']}年建成</p>
                         </#if>
 
                         <p class="cont-block-3 distance"><i class="icon"></i>${map['area']}-${map['tradingArea']}</p>
-                        <div class="cont-block-4 house-labelling gray middle">
+                        <div class="cont-block-4 house-labelling gray middle plot_lable">
                             <#if (map['label']??)&&(map['label']?size>0)>
                             <#list map['label'] as label>
                                 <#if label?exists><span>${label}</span></#if>
@@ -359,6 +354,31 @@
         });
         return false;
     });
+    $("#plot_desc").on('click', 'li', function () {
+        var link = $(this);
+        zhuge.track('大首页-点击小区推荐',{
+            "小区名称":link.find('img').attr('alt'),
+            "建成年代":link.find('div.list-item-cont').find('p.build_year').text(),
+            "参考均价":link.find('div.cont-block-price.plot').find('em').text(),
+            "位置信息":link.find('p.cont-block-3.distance').find('i.icon').text(),
+            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.plot_lable').text(),
+            "页面位置序号":link.find('a').attr('id'),
+            "是否为广告位":"否"
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+
+    function dashouyelogo(dashouye) {
+        var link = $(dashouye);
+        zhuge.track('大首页-进入大首页logo', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
 </script>
 </body>
 </html>

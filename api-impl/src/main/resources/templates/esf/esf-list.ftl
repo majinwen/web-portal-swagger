@@ -16,7 +16,7 @@
 <img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="esf_title(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
@@ -170,12 +170,13 @@
 <section id="result-section">
     <#if builds?exists><ul id="valueList">
         <#list builds as map>
-            <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+            <li>
+                <a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
                         <#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
+                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -316,6 +317,76 @@
         </div>
     </a></li>
     {{/each}}
+</script>
+<script>
+    $(function () {
+        var url = document.referrer;
+        if(url.indexOf("/esf") > 0){
+            zhuge.track("搜索_二手房",{
+                "关键词":GetQueryString("keyword"),
+               "返回结果数量":$("input['name['total']']").val()
+            })
+        }else{
+            console.log(1);
+            zhuge.track("搜索_大首页",{
+                "搜索类型":"二手房",
+                "关键词":GetQueryString("keyword"),
+               "返回结果数量":$("input['name['total']']").val()
+            })
+        }
+    });
+    function esf_title(a) {
+        var link = $(a);
+        zhuge.track('点击二手房头条logo', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
+
+    /**
+     *
+     * 318㎡/4室2厅/ 南北/ 美伦堡
+     */
+    $("#result-section").on('click','li',function () {
+        var link = $(this);
+        zhuge.track('二手房-点击列表二手房', {
+            "楼盘名称":link.find('img').attr('alt'),
+            "总价":link.find('div.cont-block-price').find('em').text(),
+            "单价":link.find('div.cont-block-price').find('span').text(),
+            "面积":link.find('p.cont-block-2').text().split("/")[0],
+            "户型":link.find('p.cont-block-2').text().split("/")[1],
+            "朝向":link.find('p.cont-block-2').text().split("/")[2],
+            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
+            "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
+            "第几屏":pageNum,
+            "是否为广告":"否"
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    });
+
+    function GetQueryString(name) {
+        var r = decodeURI(req[name]);
+        if(r!=null)return r; return null;
+    }
+    function joinParams(req) {
+        var targetUrl = '';
+
+        for (var key in req) {
+            if (null != req[key]) {
+                targetUrl += '&' + key + "=" + req[key];
+            }
+        }
+
+        if (targetUrl.length > 1) {
+            targetUrl = '?' + targetUrl.substring(1);
+        }
+
+        return targetUrl;
+    }
 </script>
 </body>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>

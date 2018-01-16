@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../staticHeader.ftl">
+<#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css?v=${staticversion}">
-    <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>${houseDetail.buildArea}㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
-    <meta name="description" content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
+    <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>${houseDetail.buildArea}
+        ㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
+    <meta name="description"
+          content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-    <#include "../StatisticsHeader.ftl">
+<#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>" alt="">
@@ -142,7 +144,7 @@
                         ${houseDetail.floor}楼层
                         </#if >
                         <#if houseDetail.totalFloor?exists&&(houseDetail.totalFloor!=0)>
-                        共${houseDetail.totalFloor}层
+                            共${houseDetail.totalFloor}层
                         </#if >
                         <#if (houseDetail.totalFloor??&&houseDetail.totalFloor==0)&&(houseDetail.floor??&&houseDetail.floor=='')>
                             暂无数据
@@ -154,11 +156,11 @@
                     <#if houseDetail.buildCategoryName?exists&& (houseDetail.buildCategoryName !='')>
                         <em>${houseDetail.buildCategoryName}</em>
                     <#else>
-                       <#-- <#if houseDetail.houseTypeName?exists && (houseDetail.houseTypeName!='') >
-                            <em>${houseDetail.houseTypeName}</em>
-                        <#else>
-                            暂无数据
-                        </#if>-->
+                    <#-- <#if houseDetail.houseTypeName?exists && (houseDetail.houseTypeName!='') >
+                         <em>${houseDetail.houseTypeName}</em>
+                     <#else>
+                         暂无数据
+                     </#if>-->
                         暂无数据
                     </#if>
                     </dd>
@@ -187,11 +189,12 @@
             </li>
         <#if houseDetail.traffic?exists>
             <li>
-                <p>
+                <p id="traffic_info">
                     交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
-                    <em class="primary-distance"></em>
-                    <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="primary-map-icon"></a>
-                    <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
+                    <em class="primary-distance">
+                        <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="primary-map-icon"></a>
+                        <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
+                    </em>
                 </p>
             </li></#if>
         </ul>
@@ -219,7 +222,7 @@
             <#if houseDetail.houseDesc?exists&&houseDetail.houseDesc!=''>
                 <div class="describe-cont">
                     <p>${houseDetail.houseDesc}</p>
-                    <#--<span class="describe-show-btn">>>展开</span>-->
+                <#--<span class="describe-show-btn">>>展开</span>-->
                 </div>
             </#if>
         </div>
@@ -227,39 +230,41 @@
 </div>
 </#if>
 <#if houseDetail.newcode?exists || houseDetail['plotPhoto']?exists|| houseDetail.plotName?exists|| houseDetail.plotdesc?exists>
-<div class="module-bottom-fill">
+<div  class="module-bottom-fill">
     <section>
         <#if houseDetail.newcode?exists>
-            <div class="module-header-message">
+            <div  class="module-header-message">
                 <h3>小区信息</h3>
-                <a href="${router_city('/xiaoqu/'+houseDetail.newcode)+'.html'}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+                <a onclick="plotDetailInfo_1(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode)+'.html'}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
             </div>
         <ul class="tilelist row">
-        <li><a href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
-        </#if>
-        <div class="picture-box">
-            <#assign item=houseDetail['plotPhoto']>
-            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
-        </div>
-        <div id="tilePlotDesc" class="tilelist-content">
-            <h4>
-                <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
-            </h4>
-            <p>
-                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
-                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
-                </#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
-                <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
-            </p>
-            <p>
-                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
-                </#if>
-            </p>
-        </div>
-    </a></li>
+                <li>
+                    <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
+                            </#if>
+                            <div class="picture-box">
+                                <#assign item=houseDetail['plotPhoto']>
+                                <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                            </div>
+                            <div id="tilePlotDesc" class="tilelist-content">
+                                <h4>
+                                    <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
+                                </h4>
+                                <p>
+                                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                                        <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
+                                    </#if>
+                                    <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                                    <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
+                                    <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
+                                </p>
+                                <p>
+                                    <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
+                                        参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                                    </#if>
+                                </p>
+                            </div>
+                        </a>
+        </li>
     </ul>
     </section>
 </div>
@@ -270,13 +275,14 @@
         <#if houseDetail.newcode?exists>
             <div class="module-header-message">
                 <h3>配套地图</h3>
-                <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+                <a onclick="esf_map_1(this)" href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
             </div>
         </#if>
-        <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
+        <a onclick="esf_map_2(this)" href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16" alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
+                     alt="">
             <#else >
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
@@ -285,7 +291,7 @@
 </div>
 </#if>
 <#if plot?exists>
-<div class="module-bottom-fill">
+<div id="nearbynewesf" class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>附近好房</h3>
@@ -299,9 +305,9 @@
                     <div class="picture-box">
                         <div class="picture-box">
                             <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
-                                    <img src="${map.housePhotoTitle}" alt="${map.plotName}">
-                                <#else >
-                                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
                             <div class="bottom-text">
                                 <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
@@ -310,8 +316,11 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em>/</#if><#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>/<#if map.room?exists&&map.hall?exists>
-                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                        <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
+                            <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
+                            <#if map.room?exists&&map.hall?exists>
+                            <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                        </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
@@ -322,7 +331,7 @@
 </div>
 </#if>
 <#if plotList?exists>
-<section>
+<section id="nearbypLOT">
     <div class="module-header-message">
         <h3>附近小区</h3>
     </div>
@@ -367,12 +376,109 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
-    $(function(){
+    $(function () {
         var text = $("tilePlotDesc").find("p").text();
-        if(text.indexOf(",")==0){
+        if (text.indexOf(",") == 0) {
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
+    })
+    zhuge.track('二手房-进入二手房详情页', {
+        '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
+        '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
+        '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
+        '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+        '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
+        '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+        'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
+    });
+    $(".describe-header").on('click', 'a', function () {
+        var link = $(this);
+        zhuge.track('二手房-点击拨打电话', {
+            "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>'
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    })
+    $(".detail-contact-content").on('click', 'a', function () {
+        var link = $(this);
+        zhuge.track('二手房-点击拨打电话', {
+            "位置": "底部/经纪人描述旁"
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    })
+    $("#nearbynewesf").on('click', 'li', function () {
+        var link = $(this);
+        zhuge.track('二手房-点击查看推荐房源', {
+            "户型":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[1],
+            "面积":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[0]+"㎡",
+            "价格":link.find('.tilelist-content').find('em').text().split("万/")[0]+"万",
+            "距离":link.find('.bottom-text').text(),
+            "页面位置序号":link.index()+1
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+    $("#nearbypLOT").on('click', 'li', function () {
+        var link = $(this);
+        zhuge.track('二手房-点击查看推荐小区', {
+            "小区名称":link.find('.tilelist-content').find('.cont-first').text(),
+            "价格":link.find('.tilelist-content').find('.cont-last').text(),
+            "页面位置序号":link.index()+1
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    })
+    function plotDetailInfo_1(a) {
+        var link = $(a);
+        zhuge.track('二手房-点击查看小区详情', {
+            "二手房-点击查看小区详情": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    function plotDetailInfo_2(a) {
+        var link = $(a);
+        zhuge.track('二手房-点击查看小区详情', {
+            "二手房-点击查看小区详情": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    function esf_map_1(a) {
+        var link = $(a);
+        zhuge.track('二手房-点击配套地图', {
+            "二手房配套地图来源": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    function esf_map_2(a) {
+        var link = $(a);
+        zhuge.track('二手房-点击配套地图', {
+            "二手房配套地图来源": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    $("#traffic_info .primary-distance").on('click','a',function () {
+        var link = $(this);
+        zhuge.track('二手房-点击查看交通详情', {
+            "二手房-点击查看交通详情":link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
     })
 </script>
 </body>

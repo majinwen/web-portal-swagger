@@ -9,6 +9,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -151,7 +152,7 @@
 <section id="result-section">
     <#if villageList?exists><ul id="valueList">
         <#list villageList as plot>
-            <li><a class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
+            <li><a onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
@@ -280,11 +281,71 @@
     </a></li>
     {{/each}}
 </script>
+<script>
+    $(function () {
+        var url = document.referrer;
+        if(url.indexOf("/xiaoqu") > 0){
+            zhuge.track("搜索_小区",{
+                "关键词":GetQueryString("keyword"),
+                "返回结果数量":$("input['name['total']']").val()
+            })
+        }else{
+            zhuge.track("搜索_大首页",{
+                "搜索类型":"小区",
+                "关键词":GetQueryString("keyword"),
+                "返回结果数量":$("input['name['total']']").val()
+            })
+        }
+    });
+    function plot_title(a) {
+        var link = $(a);
+        zhuge.track('点击小区列表页头条logo', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
+    $("#result-section").on('click','li',function () {
+        var link = $(this);
+        zhuge.track('小区-点击小区', {
+            "小区名称":link.find('div.list-item-img-box').find('img').attr('alt'),
+            "建成年代":link.find('div.list-item-cont').find('p.cont-block-2.plot').find('em').text(),
+            "参考均价":link.find('div.cont-block-price.plot').find('em').text(),
+            "标签":link.find('div.cont-block-4.house-labelling.gray').text(),
+            "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
+            "第几屏":pageNum,
+            "是否为广告":"否"
+        }, function () {
+            location.href = link.find('a').attr('href');
+        });
+        return false;
+    });
+
+    function GetQueryString(name) {
+        var r = decodeURI(req[name]);
+        if(r!=null)return r; return null;
+    }
+    function joinParams(req) {
+        var targetUrl = '';
+
+        for (var key in req) {
+            if (null != req[key]) {
+                targetUrl += '&' + key + "=" + req[key];
+            }
+        }
+
+        if (targetUrl.length > 1) {
+            targetUrl = '?' + targetUrl.substring(1);
+        }
+
+        return targetUrl;
+    }
+</script>
 </body>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
     $('.sort-content-box').on('click', function (){

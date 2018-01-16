@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "staticHeader.ftl">
+<#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/login.css?v=${staticversion}">
     <title>登录页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/login_cookie.js?v=${staticversion}"></script>
 </head>
 <body>
 <h2>手机快捷登录</h2>
@@ -28,7 +29,7 @@
                value="<#if imageCode?exists>${imageCode}</#if>" placeholder="请输入图片验证码">
         <div id="infoDiv" class="show"></div>
         <a href="javascript:changeImg();">
-            <img width="200" height="80" class="code-btn-box" id="checkcode" src="/code/imageCode"/>
+            <img width="134" height="55" class="code-btn-box" id="checkcode" src="/code/imageCode"/>
         </a>
     </div>
     <input class="code-text" type="number" id="mycode" name="code" maxlength="4" placeholder="请输入验证码">
@@ -40,6 +41,14 @@
     $(document).ready(function () {
         $("#image_code").val('');
         $("#infoDiv").html('');
+        v_time = getCookieValue("secondsremained");//获取cookie值
+        if (v_time > 0) {
+            settime($("#phone_code"));//开始倒计时
+        }
+        v_phone = getcookie("secondsremainedphone");//获取cookie值
+        if (v_phone != null) {
+            $("input[name='phone']").val(v_phone);
+        }
         var count = $("#count").val();
         if (count <= 3) {
             $(".code-pic-box").hide();
@@ -47,6 +56,14 @@
             $(".code-pic-box").show();
         }
     });
+    //获取cookie中的值
+    function getcookie(objname){//获取指定名称的cookie的值
+        var arrstr = document.cookie.split("; ");
+        for(var i = 0;i < arrstr.length;i ++){
+            var temp = arrstr[i].split("=");
+            if(temp[0] == objname) return unescape(temp[1]);
+        }
+    }
     //获取短信验证码
     $('.code-btn-box').on('click', '#phone_code', function () {
         $("#message").html("");
@@ -54,21 +71,21 @@
         var bo = false;
         var msgInfo = '';
 
-        var user_phone = $("#user_phone").val();
-
+        var user_phone = $("input[name='phone']").val();
         if (user_phone.trim() == null || user_phone.trim() == '') {
 
             msgInfo += "输入的手机号不能为空！<br/>";
             bo = true;
         }
-        if (user_phone.match("^[0](13|15)[0-9]{9}$")) {
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        if (!myreg.test(user_phone)) {
             msgInfo += "输入的手机号格式不符！<br/>";
             bo = true;
         }
         if (bo) {
             $("#message").html(msgInfo);
         } else {
-            var seconds = 120;
+            /*var seconds = 120;
             $('#phone_code').addClass('none');
             $('.disabled').removeClass('none');
             timer = setInterval(function () {
@@ -79,8 +96,10 @@
                     $('#phone_code').removeClass('none');
                     $('.disabled').addClass('none')
                 }
-            }, 1000);
-
+            }, 1000);*/
+            var obj = $("#phone_code");
+            addCookie("secondsremained", 120, 120);//添加cookie记录,有效时间60s
+            settime(obj);//开始倒计时
             $.ajax({
                 type: "post",
                 url: "/message/getCode",
@@ -101,7 +120,9 @@
                 }
             });
         }
-    });
+    })
+    ;
+
     //切换图片
     function changeImg() {
         $("#image_code").val('');
@@ -163,13 +184,14 @@
         }
         var count = $("#count").val();
         if (count > 3) {
-            if($("#image_code").val()==null&& $("#image_code").val().trim()=='') {
+            if ($("#image_code").val() == null && $("#image_code").val().trim() == '') {
                 //判断图片验证码是否存在
                 msgInfo += "图片验证码不能为空！<br/>";
                 bo = true;
             }
         }
-        if (user_phone.match("^[0](13|15)[0-9]{9}$")) {
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        if (!myreg.test(user_phone)) {
             msgInfo += "输入的手机号格式不符！<br/>";
             bo = true;
         }

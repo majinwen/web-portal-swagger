@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -32,10 +33,12 @@ public class MessageSendController {
      */
     @RequestMapping("/getCode")
     @ResponseBody
-    public NashResult send(HttpServletRequest request, @RequestParam(value = "phone", required = true) String phone) {
+    public NashResult send(HttpServletResponse response,HttpServletRequest request, @RequestParam(value = "phone", required = true) String phone) {
         NashResult nashResult = new NashResult();
         String  sendSmsMessage=null;
         try {
+            //保存手机到cookie中
+            CookieUtils.setCookieexp(request,response,"secondsremainedphone",phone);
             //判断前台页面传递过来的手机号码是否存在
             //判断页面传递过来的电话号码与短信验证码是否为空
             if (StringTool.isBlank(phone)) {
