@@ -20,14 +20,14 @@ $(function () {
         Map.search(_word, function (results) {
             $('#' + text).html('');
             var _resultHtml = '';
-            var _end = results.length>5?5:results.length;
+            var _end = results.length > 5 ? 5 : results.length;
             for (var rIndex in results) {
                 if (rIndex < _end) {
                     var _num = parseInt(rIndex) + 1;
                     var result = results[rIndex];
                     _resultHtml += '<li>' +
-                        '<p><i class="expand-icon expand-radius">' + _num + '</i><span class="expand-name">'+ result['title'] +'</span></p>' +
-                        '<span class="expand-distance">'+ result['distance'] + '</span>' +
+                        '<p><i class="expand-icon expand-radius">' + _num + '</i><span class="expand-name">' + result['title'] + '</span></p>' +
+                        '<span class="expand-distance">' + result['distance'] + '</span>' +
                         '</li>';
                 }
             }
@@ -35,28 +35,36 @@ $(function () {
         });
 
         var zhuge_maidian = $(this).attr('data-zhuge');
+        var url = window.location.href;
         if (parentText == '教育培训') {
-            zhuge.track("小区-点击教育配套",{
-                教育培训:text
-            });
-            $(this).removeClass('choose');
-            $(this).prevAll().addClass('choose');
-            $(this).nextAll().removeClass('choose');
-            zhuge.track('新房-点击教育配套', {
-                '配套内容' : zhuge_maidian
-            });
-        }else{
-            zhuge.track('新房-点击休闲配套', {
-                '配套内容' : zhuge_maidian
-            });
-            zhuge.track("小区-点击休闲配套",{
-                休闲购物:text
-            });
-        }
-        $(this).parents('.expand-content').find('ul.result-data-expand').addClass('none');
-        $('#'+text).removeClass('none');
-    });
+            if(url.indexOf("/xiaoqu") > 0){
+                zhuge.track("小区-点击教育配套", {
+                    教育培训: text
+                });
+            }else{
+                zhuge.track('新房-点击教育配套', {
+                    '配套内容': zhuge_maidian
+                });
+            }
+        } else {
+            if(url.indexOf("/xiaoqu") > 0){
+                zhuge.track("小区-点击休闲配套", {
+                    休闲购物: text
+                });
+            }else{
+                zhuge.track('新房-点击休闲配套', {
+                    '配套内容': zhuge_maidian
+                });
+            }
 
+        }
+        $(this).removeClass('choose');
+        $(this).prevAll().addClass('choose');
+        $(this).nextAll().removeClass('choose');
+        $(this).parents('.expand-content').find('ul.result-data-expand').addClass('none');
+        $('#' + text).removeClass('none');
+    });
+});
 /*function renderDom(data, parentType) {
     var str = '';
     var star;

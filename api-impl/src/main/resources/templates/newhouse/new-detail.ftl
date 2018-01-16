@@ -23,11 +23,11 @@
             <#list build['building_imgs']?split(",") as item>
             <#if item?exists>
                 <#if item?? && item!= ''>
-                    <li onclick="initphoto(this,${item_index})" class="swiper-slide">
+                    <li onclick="initphoto(this,${item_index},window.location.href)" class="swiper-slide">
                         <img src="${qiniuimage}/${item}-ttfdc1200x640" data-src="${qiniuimage}/${item}-ttfdc1200x640" alt="${build['building_name']}">
                     </li>
                 <#else >
-                    <li onclick="initphoto(this,0)" class="swiper-slide">
+                    <li onclick="initphoto(this,0,window.location.href)" class="swiper-slide">
                         <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="${build['building_name']}">
                     </li>
                 </#if>

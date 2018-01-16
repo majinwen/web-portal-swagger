@@ -9,7 +9,6 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-    <script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -152,7 +151,7 @@
 <section id="result-section">
     <#if villageList?exists><ul id="valueList">
         <#list villageList as plot>
-            <li><a onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
+            <li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
             <input type="hidden" name="total" value="${plot.total}">
                 <div class="clear">
                     <#if plot['photo']?exists>
@@ -241,7 +240,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>">
+    <li><a id="{{$value.total}}" class="list-item" href="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.photo && $value.photo.length > 0}}
@@ -286,16 +285,20 @@
     $(function () {
         var url = document.referrer;
         if(url.indexOf("/xiaoqu") > 0){
-            zhuge.track("搜索_小区",{
-                "关键词":GetQueryString("keyword"),
-                "返回结果数量":$("input['name['total']']").val()
-            })
+            if(GetQueryString("keyword")!='undefined'){
+                zhuge.track("搜索_小区",{
+                    "关键词":GetQueryString("keyword"),
+                    "返回结果数量":$("#result-section").find("li").find('a').attr("id")
+                })
+            }
         }else{
-            zhuge.track("搜索_大首页",{
-                "搜索类型":"小区",
-                "关键词":GetQueryString("keyword"),
-                "返回结果数量":$("input['name['total']']").val()
-            })
+            if(GetQueryString("keyword")!='undefined'){
+                zhuge.track("搜索_大首页",{
+                    "搜索类型":"小区",
+                    "关键词":GetQueryString("keyword"),
+                    "返回结果数量":$("#result-section").find("li").find('a').attr("id")
+                })
+            }
         }
     });
     function plot_title(a) {
@@ -327,34 +330,21 @@
         var r = decodeURI(req[name]);
         if(r!=null)return r; return null;
     }
-    function joinParams(req) {
-        var targetUrl = '';
 
-        for (var key in req) {
-            if (null != req[key]) {
-                targetUrl += '&' + key + "=" + req[key];
-            }
-        }
-
-        if (targetUrl.length > 1) {
-            targetUrl = '?' + targetUrl.substring(1);
-        }
-
-        return targetUrl;
-    }
 </script>
 </body>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
     $('.sort-content-box').on('click', function (){
         var sortZhuge;
-        if(joinParams(req, true).split('=')[1]==1){
+        if(GetQueryString('sort')==1){
             sortZhuge = '价格由高到低';
         }
-        if(joinParams(req, true).split('=')[1]==2){
+        if(GetQueryString('sort')==2){
             sortZhuge = '价格由低到高';
         }
         var link = $(this);

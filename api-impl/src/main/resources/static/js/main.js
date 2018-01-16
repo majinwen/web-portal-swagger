@@ -153,14 +153,14 @@ function carouselSwiper() {
     }
 }
 
-function initphoto(a, i) {
+function initphoto(a, i, url) {
+        console.log(url);
+    if(url.indexOf("/xiaoqu") > 0){
+        zhuge.track("小区-点击图片");
+    }else{
+        zhuge.track('新房-点击图片');
+    }
 
-    zhuge.track('新房-点击图片', {
-
-    })
-
-
-    zhuge.track("小区-点击图片");
 
     if (typeof i == 'undefined') {
         i = 0;
@@ -313,6 +313,7 @@ function showfujian() {
     var executed = false;
 
     $(".index-esf").click(function () {
+        zhuge.track('导航_大首页',{'导航名称':'二手房'})
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -330,6 +331,7 @@ function showfujian() {
         });
     });
     $(".index-xiaoqu").click(function () {
+        zhuge.track('导航_大首页',{'导航名称':'小区'})
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {

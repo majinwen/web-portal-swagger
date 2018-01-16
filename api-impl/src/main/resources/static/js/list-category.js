@@ -492,7 +492,7 @@ function submitPlace(e) {
     if (_localHref=='/bj/esf'){
             houseName = '二手房';
         }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
             houseName = '新房';
         }
     $.get(url, function () {
@@ -525,7 +525,7 @@ function submitDirstrict(districtid, e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     tabTextReplace(e);
@@ -562,7 +562,7 @@ function submitBussiness(districtid, areaId, e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     quyu = $('#level2').find('li.current').text();
@@ -631,7 +631,7 @@ function submitSubway(e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     $.get(url, function () {
@@ -700,7 +700,7 @@ function submitSubwayLine(subwayid, e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
 
@@ -735,7 +735,7 @@ function submitStation(subwayid, subwayStationId, e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     diteixian = $('#level2').find('li.current').text();
@@ -775,7 +775,7 @@ $('.price-list').on('click', 'li', function (e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     tabTextReplace(e, $(this).text());
@@ -816,7 +816,7 @@ $('.age-list').on('click', 'li', function (e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     tabTextReplace(e, $(this).text());
@@ -869,7 +869,7 @@ $('#typeSubmit').on('click', function (e) {
         if (_localHref=='/bj/esf'){
             houseName = '二手房';
         }
-        if (_localHref=='/bj/xinfang'){
+        if (_localHref=='/bj/loupan'){
             houseName = '新房';
         }
         $.get(url, function () {
@@ -968,7 +968,7 @@ $('#moreSubmit').on('click', function (e) {
     if (_localHref=='/bj/esf'){
         houseName = '二手房';
     }
-    if (_localHref=='/bj/xinfang'){
+    if (_localHref=='/bj/loupan'){
         houseName = '新房';
     }
     $('.more-list').find('span.current').each(function () {

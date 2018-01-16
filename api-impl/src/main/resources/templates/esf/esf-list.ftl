@@ -170,8 +170,7 @@
 <section id="result-section">
     <#if builds?exists><ul id="valueList">
         <#list builds as map>
-            <input type="hidden" name="total" value="${map.total}">
-            <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+            <li><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
@@ -260,7 +259,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
+    <li><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
@@ -322,17 +321,20 @@
     $(function () {
         var url = document.referrer;
         if(url.indexOf("/esf") > 0){
-            zhuge.track("搜索_二手房",{
-                "关键词":GetQueryString("keyword"),
-               "返回结果数量":$("input['name['total']']").val()
-            })
+            if(GetQueryString("keyword")!='undefined'){
+                zhuge.track("搜索_二手房",{
+                    "关键词":GetQueryString("keyword"),
+                    "返回结果数量":$("#result-section").find("li").find('a').attr("id")
+                })
+            }
         }else{
-            console.log(1);
-            zhuge.track("搜索_大首页",{
-                "搜索类型":"二手房",
-                "关键词":GetQueryString("keyword"),
-               "返回结果数量":$("input['name['total']']").val()
-            })
+            if(GetQueryString("keyword")!='undefined'){
+                zhuge.track("搜索_大首页",{
+                    "搜索类型":"二手房",
+                    "关键词":GetQueryString("keyword"),
+                    "返回结果数量":$("#result-section").find("li").find('a').attr("id")
+                })
+            }
         }
     });
     function esf_title(a) {
@@ -372,21 +374,6 @@
         var r = decodeURI(req[name]);
         if(r!=null)return r; return null;
     }
-    function joinParams(req) {
-        var targetUrl = '';
-
-        for (var key in req) {
-            if (null != req[key]) {
-                targetUrl += '&' + key + "=" + req[key];
-            }
-        }
-
-        if (targetUrl.length > 1) {
-            targetUrl = '?' + targetUrl.substring(1);
-        }
-
-        return targetUrl;
-    }
 </script>
 </body>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
@@ -397,14 +384,14 @@
 <script>
     $('.sort-content-box').on('click', function (){
         var sortZhuge;
-        if(joinParams(req, true).split('=')[1]==1){
+        if(GetQueryString('sort')==1){
             sortZhuge = '价格由高到低';
         }
-        if(joinParams(req, true).split('=')[1]==2){
+        if(GetQueryString('sort')==2){
             sortZhuge = '价格由低到高';
         }
         var link = $(this);
-        zhuge.track('小区-排序',{'排序方式':sortZhuge},function () {
+        zhuge.track('二手房-排序',{'排序方式':sortZhuge},function () {
         });
 //        return false;
     });

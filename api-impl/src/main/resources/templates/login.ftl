@@ -78,7 +78,7 @@
             msgInfo += "输入的手机号不能为空！<br/>";
             bo = true;
         }
-        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        var myreg = /^1[3|4|5|8|7][0-9]\d{4,8}$/;
         if (!myreg.test(user_phone)) {
             msgInfo += "输入的手机号格式不符！<br/>";
             bo = true;
@@ -190,7 +190,7 @@
                 bo = true;
             }
         }
-        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        var myreg = /^1[3|4|5|8|7][0-9]\d{4,8}$/;
         if (!myreg.test(user_phone)) {
             msgInfo += "输入的手机号格式不符！<br/>";
             bo = true;

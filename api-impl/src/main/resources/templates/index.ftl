@@ -30,10 +30,10 @@
             <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房'})">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu" onclick="zhuge.track('导航_大首页',{'导航名称':'小区'})">
+            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a class="index-esf" onclick="zhuge.track('导航_大首页',{'导航名称':'二手房'})">
+            <div class="banner-nav-item index-nav-item"><a class="index-esf">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝'})">
@@ -331,29 +331,7 @@
     })
 </script>
 <script>
-    $('.index-xinfang').on('click',function(){
-        var link = $(this);
-        zhuge.track('新房-进入房屋列表页',{'页面来源URL':window.location.href},function () {
-            location.href = link.attr('href')
-        });
-        return false;
-    });
 
-    $('.index-xiaoqu').on('click',function(){
-        var link = $(this);
-        zhuge.track('小区-进入小区列表页',{'页面来源URL':window.location.href},function () {
-            location.href = link.attr('href')
-        });
-        return false;
-    });
-
-    $('.index-esf').on('click',function(){
-        var link = $(this);
-        zhuge.track('二手房-进入二手房列表页',{'页面来源URL':window.location.href},function () {
-            location.href = link.attr('href')
-        });
-        return false;
-    });
     $("#plot_desc").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('大首页-点击小区推荐',{
