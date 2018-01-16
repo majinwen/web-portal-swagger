@@ -575,23 +575,6 @@ function chooseUserFinds() {
 
     if(3 == options['userType']){
         options['userPortrayalType'] = 7;
-        flow_instance = $.extend({},flow_instance,{
-            init:function () {
-                yusuan_model.enable();
-                huxing_model.disable();
-                quyu_model.disable();
-                jiating_model.disable();
-                end_model.disable();
-
-                end_model.setParent([yusuan_model]);
-            },
-            go:function () {
-                yusuan_model.check();
-                end_model.check();
-            }});
-    }
-    else {
-        flow_instance = $.extend({},flow_instance)
     }
     flow_instance.init();
 
