@@ -232,7 +232,7 @@
                             </#if>
                             <#if map.houseTotalPrices?exists && map.buildArea?exists>
                                 <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                    <span>${((map.houseTotalPrices / map.buildArea)) * 10000}元/㎡</span>
+                                    <span>${(((map.houseTotalPrices?number / (map.buildArea?number))) * 10000)}元/㎡</span>
                                 </#if>
                             </#if>
                         </div>
@@ -323,4 +323,19 @@
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
+<script>
+    $('.sort-content-box').on('click', function (){
+        var sortZhuge;
+        if(joinParams(req, true).split('=')[1]==1){
+            sortZhuge = '价格由高到低';
+        }
+        if(joinParams(req, true).split('=')[1]==2){
+            sortZhuge = '价格由低到高';
+        }
+        var link = $(this);
+        zhuge.track('小区-排序',{'排序方式':sortZhuge},function () {
+        });
+//        return false;
+    });
+</script>
 </html>
