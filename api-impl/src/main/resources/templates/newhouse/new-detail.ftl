@@ -308,49 +308,14 @@
                 </ul>
             </div>
             <ul class="result-data-expand" id="qinzi">
-                <#assign qinzi=datainfo['jiaoyu']['qinzi'] />
-                <#list qinzi as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
             </ul>
             <ul class="result-data-expand none" id="youeryuan">
-                <#assign youeryuan=datainfo['jiaoyu']['youeryuan'] />
-                <#list youeryuan as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
             </ul>
             <ul class="result-data-expand none" id="xiaoxue">
-                <#assign xiaoxue=datainfo['jiaoyu']['xiaoxue'] />
-                <#list xiaoxue as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
             </ul>
             <ul class="result-data-expand none" id="zhongxue">
-                <#assign zhongxue=datainfo['jiaoyu']['zhongxue'] />
-                <#list zhongxue as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
             </ul>
             <ul class="result-data-expand none" id="gaodeng">
-                <#assign gaodeng=datainfo['jiaoyu']['gaodeng'] />
-                <#list gaodeng as item>
-                    <li>
-                        <p><i class="expand-icon expand-radius">${item_index+1}</i><span class="expand-name">${item.name}</span></p>
-                        <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                    </li>
-                </#list>
             </ul>
         </div>
     </section>
@@ -372,149 +337,14 @@
                 <img src="${staticurl}/images/plot/xqxq_xxgw_tu@3x.png" width="100%" alt="">
             </div>
             <ul class="result-data-expand height-type" id="caishichang">
-            <#assign caishichang=datainfo["xiuxian"]["caishichang"]/>
-            <#list caishichang as item>
-                <li>
-                    <p>
-                        <i class="expand-icon expand-radius">${item_index+1}</i>
-                        <span class="expand-name">
-                            <em>${item.name}</em>
-                            <em class="star-box">
-                                <#if item.star?exists&& (item.star??)>
-                                    <#assign star=item.star?number/>
-                                    <#if star gt 0>
-                                        <#list 1..5 as i>
-                                            <#if star gt i>
-                                                <i class="red-star"></i>
-                                            <#else >
-                                                <i class="star-icon"></i>
-                                            </#if>
-                                        </#list>
-                                    <#else>
-                                    </#if>
-                                </#if>
-                            </em>
-                        </span>
-                    </p>
-                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                </li>
-            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="chaoshi">
-            <#assign chaoshi=datainfo["xiuxian"]["chaoshi"]/>
-            <#list chaoshi as item>
-                <li>
-                    <p>
-                        <i class="expand-icon expand-radius">${item_index+1}</i>
-                        <span class="expand-name">
-                            <em>${item.name}</em>
-                            <em class="star-box">
-                                <#if item.star?exists&& (item.star??)>
-                                    <#assign star=item.star?number/>
-                                    <#if star gt 0>
-                                        <#list 1..5 as i>
-                                            <#if star gt i>
-                                                <i class="red-star"></i>
-                                            <#else >
-                                                <i class="star-icon"></i>
-                                            </#if>
-                                        </#list>
-                                    <#else>
-                                    </#if>
-                                </#if>
-                            </em>
-                        </span>
-                    </p>
-                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                </li>
-            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="shangchang">
-            <#assign shangchang=datainfo["xiuxian"]["shangchang"]/>
-            <#list shangchang as item>
-                <li>
-                    <p>
-                        <i class="expand-icon expand-radius">${item_index+1}</i>
-                        <span class="expand-name">
-                            <em>${item.name}</em>
-                            <em class="star-box">
-                                <#if item.star?exists&& (item.star??)>
-                                    <#assign star=item.star?number/>
-                                    <#if star gt 0>
-                                        <#list 1..5 as i>
-                                            <#if star gt i>
-                                                <i class="red-star"></i>
-                                            <#else >
-                                                <i class="star-icon"></i>
-                                            </#if>
-                                        </#list>
-                                    <#else>
-                                    </#if>
-                                </#if>
-                            </em>
-                        </span>
-                    </p>
-                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                </li>
-            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="canting">
-            <#assign canting=datainfo["xiuxian"]["canting"]/>
-            <#list canting as item>
-                <li>
-                    <p>
-                        <i class="expand-icon expand-radius">${item_index+1}</i>
-                        <span class="expand-name">
-                            <em>${item.name}</em>
-                            <em class="star-box">
-                                <#if item.star?exists&& (item.star??)>
-                                    <#assign star=item.star?number/>
-                                    <#if star gt 0>
-                                        <#list 1..5 as i>
-                                            <#if star gt i>
-                                                <i class="red-star"></i>
-                                            <#else >
-                                                <i class="star-icon"></i>
-                                            </#if>
-                                        </#list>
-                                    <#else>
-                                    </#if>
-                                </#if>
-                            </em>
-                        </span>
-                    </p>
-                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                </li>
-            </#list>
             </ul>
             <ul class="result-data-expand height-type none" id="jianshenzhongxin">
-            <#assign jianshenzhongxin=datainfo["xiuxian"]["jianshenzhongxin"]/>
-            <#list jianshenzhongxin as item>
-                <li>
-                    <p>
-                        <i class="expand-icon expand-radius">${item_index+1}</i>
-                        <span class="expand-name">
-                            <em>${item.name}</em>
-                            <em class="star-box">
-                                <#if item.star?exists&& (item.star??)>
-                                    <#assign star=item.star?number/>
-                                    <#if star gt 0>
-                                        <#list 1..5 as i>
-                                            <#if star gt i>
-                                                <i class="red-star"></i>
-                                            <#else >
-                                                <i class="star-icon"></i>
-                                            </#if>
-                                        </#list>
-                                    <#else>
-                                    </#if>
-                                </#if>
-                            </em>
-                        </span>
-                    </p>
-                    <span class="expand-distance">${(item.distance/1000)?string("0.##")}km</span>
-                </li>
-            </#list>
             </ul>
         </div>
     </section>
@@ -637,7 +467,7 @@
             <i class="map-marker-icon"></i>
             <#if build['location']?exists>
                 <#assign locations = build['location']?split(",")>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locations[1]},${locations[0]}&&zoom=16" alt="">
+                <img id="map-img" data-lat="${locations[0]}" data-lng="${locations[1]}" src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${locations[1]},${locations[0]}&&zoom=16" alt="${build['building_name']}">
             <#else ><img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
         </a>
@@ -688,10 +518,6 @@
         </li>
     </#list>
     </ul>
-    <script>
-        var locationnumber = '${build['location']}';
-        var mapBaiduNumber = locationnumber.split(",").indexOf(1) + locationnumber.split(",").indexOf(0)
-    </script>
 </section>
 </#if>
 <#if build['saletelphone']?exists&&build['saletelphone']!=''>
@@ -704,53 +530,16 @@
     </div>
 </#if>
 <!-------- photoswipe -------->
+
+<div id="mapContainer" style="display: none;"> </div>
 <script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+<script type="text/javascript" src="${staticurl}/js/base-map.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
-<#--<script>
-    var myChartline = echarts.init(document.getElementById('newhousetrad'));
-    option = {
-        brushLink:null,
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data:['楼盘价格','区域价格','商圈价格']
-        },
-        textStyle: {
-            fontSize: 28
-        },
-        xAxis:  {
-            type: 'category',
-            boundaryGap: false,
-            data: [<#list  mouthList as item >'${item}',</#list>]
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value}'
-            }
-        },
-        series: [
-            {
-            name:'楼盘价格',
-            type:'line',
-            data:[<#list ptCD0 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-            symbolSize:14,
-        },
-            {
-                name:'区域价格',
-                type:'line',
-                data:[<#list ptCD1 as item ><#if item['price']?number != 0>${item['price']}<#else>NaN</#if>,</#list>],
-                symbolSize:14,
-            },
-        ]
-    };
-    myChartline.setOption(option);
-</script>-->
 </body>
 </html>
 <script>
