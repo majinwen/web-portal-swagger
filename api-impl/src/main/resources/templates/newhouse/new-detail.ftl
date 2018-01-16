@@ -190,7 +190,7 @@
     <section>
         <div class="module-header-message">
             <h3>基本信息<span class="subtitle">了解居住环境</span></h3>
-            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/loupan/'+build['building_name_id']?c+'/desc.html')}" onclick="zhugebaseinfo()" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <div class="basic-information">
             <div class="column item-column-two">
@@ -300,10 +300,10 @@
         <div class="expand-content content-visible tab_jiaoyupeixun_info">
             <div class="map-education-box">
                 <ul class="map-message-btn clear" data-type="教育培训">
-                    <li class="parent-child" data-type="qinzi"><i></i><span>亲子</span></li>
-                    <li class="kindergarten" data-type="youeryuan"><i></i><span>幼儿园</span></li>
-                    <li class="primary-school" data-type="xiaoxue"><i></i><span>小学</span></li>
-                    <li class="middle-school" data-type="zhongxue"><i></i><span>中学</span></li>
+                    <li class="parent-child" data-zhuge="亲子" data-type="qinzi"><i></i><span>亲子</span></li>
+                    <li class="kindergarten" data-zhuge="幼儿园" data-type="youeryuan"><i></i><span>幼儿园</span></li>
+                    <li class="primary-school" data-zhuge="小学" data-type="xiaoxue"><i></i><span>小学</span></li>
+                    <li class="middle-school" data-zhuge="中学" data-type="zhongxue"><i></i><span>中学</span></li>
                     <#--<li class="university" data-type="gaodeng"><i></i><span>大学</span></li>-->
                 </ul>
             </div>
@@ -523,7 +523,7 @@
     <section>
         <div class="module-header-message">
             <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
-            <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+            <a href="javascript:;" data-zg="医疗配套" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
         <#assign yiliao=datainfo['yiliao'] />
@@ -576,7 +576,7 @@
     <section>
         <div class="module-header-message">
             <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
-            <a href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+            <a href="javascript:;" data-zg="生活成本" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
             <ul class="result-data-expand">
@@ -663,7 +663,7 @@
     <ul class="tilelist">
     <#list nearbybuild as nearitem>
         <li>
-            <a href="${router_city('/loupan/'+nearitem['building_name_id']?c+'.html')}">
+            <a class="newzhugetuijian"  data-zg="${nearitem['building_name']!'暂无'}+${nearitem['average_price']!'暂无'}+${nearitem['district_name']!'暂无'}+${nearitem_index+1}" href="${router_city('/loupan/'+nearitem['building_name_id']?c+'.html')}">
                 <div class="picture-box">
                     <#if nearitem['building_imgs']?exists>
                     <#assign imgt = nearitem['building_imgs']?split(",")>
@@ -753,3 +753,40 @@
 </script>-->
 </body>
 </html>
+<script>
+    $(function () {
+        zhuge.track('进入新房详情页', {
+            '页面来源' : window.location.href,
+            '区域' : '${build['district_name']!''}',
+            '商圈' : '${build['area_name']!''}',
+            '均价' : '${build['average_price']!''}',
+            'id' : '${build['building_name_id']!''}',
+            '楼盘名称' : '${build['building_name']!''}'
+        });
+
+        function zhugebaseinfo(){
+            zhuge.track('新房-点击基本信息', {
+                '新房基本信息' : '新房基本信息'
+            });
+        }
+
+        $(".newzhugetuijian").click(function() {
+            /*console.log($(this).attr('data-zg'));*/
+            var zg = $(this).attr('data-zg');
+           var zgs = zg.split('+');
+           var url = $(this).attr('href');
+/*           console.log(url);*/
+            zhuge.track('新房-点击推荐新房', {
+                        '楼盘名称': zgs[0],
+                        '参考均价': zgs[1],
+                        '位置信息': zgs[2],
+                        '页面位置序号': zgs[3]
+                    },
+                    function() {
+                        location.href = url; //继续跳转到目标页面
+                    });
+            return false;
+        });
+
+    })
+</script>

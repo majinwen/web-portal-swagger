@@ -112,7 +112,7 @@
         <h3>新房推荐</h3>
         <a href="${router_city('/loupan')}" class="more-arrows"><i class="arrows-right"></i></a>
     </div>
-    <ul><#if newbuilds?exists>
+    <ul id="newHouse-list"><#if newbuilds?exists>
     <#assign builds = newbuilds['data']>
     <#list builds as map>
         <#--<#if map_index==2>-->
@@ -147,7 +147,15 @@
         <#if map_index==5>
             <#break>
         </#if>
-        <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
+        <li data-zg=" ${map['average_price']!"暂无"}元/㎡+${map['district_name']!"暂无"}+ <#if map['house_min_area']??&&map['house_max_area']??>${map['house_min_area']}㎡-${map['house_max_area']}㎡<#else>暂无面积</#if>+
+              <#if map['building_tags']?exists>
+                            <#assign item =  map['building_tags']>
+                            <#list item as itemValue>
+                                ${itemValue},
+                            </#list>
+                      <#else>暂无
+              </#if>+${map['activity_desc']!"暂无活动"}+${map_index+1}
+              "><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
             <div class="clear">
                 <div class="list-item-img-box">
                     <#if map['building_title_img']?exists>
@@ -161,7 +169,7 @@
                     <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
                     <h3 class="cont-block-1">
                         <span class="ellipsis">${map['building_name']}</span>
-                        <em>${map['property_type']}</em>
+                        <em class="newhouse_property">${map['property_type']!""}</em>
                     </h3>
                     <p class="cont-block-2 high-light-red">
                         <#if map['average_price']?exists && map['average_price'] gt 0>
@@ -227,3 +235,49 @@
 </script>
 </body>
 </html>
+<script>
+    $(function () {
+        $("#newHouse-list").find('li').each(function () {
+            $(this).on('click', function () {
+                var text =$(this);
+                var property = text.find(".newhouse_property").text();
+                var name =   text.find(".ellipsis").text();
+
+                console.log(property);
+                console.log(name);
+
+                var zg = $(this).attr('data-zg');
+                var zgs = zg.split('+');
+                console.log(zgs);
+
+                zhuge.track('新房-点击新房推荐房屋', {
+                            '房屋类型': property,
+                            '参考均价': zgs[0],
+                            '区域': zgs[1],
+                            '面积范围': zgs[2],
+                            '标签': zgs[3],
+                            '业态':"",
+                            '优惠活动': zgs[4],
+                            '楼盘名称': name,
+                            '页面位置及序号': zgs[5]
+                        });
+                console.log("a");
+            });
+        });
+
+    /*$(".list-item new").click(function() {
+        /!*console.log($(this).attr('data-zg'));*!/
+                   console.log(this);
+        /!*zhuge.track('新房-点击推荐新房', {
+                    '楼盘名称': zgs[0],
+                    '参考均价': zgs[1],
+                    '位置信息': zgs[2],
+                    '页面位置序号': zgs[3]
+                },
+                function() {
+                    location.href = url; //继续跳转到目标页面
+                });*!/
+        return false;
+    });*/
+    })
+</script>

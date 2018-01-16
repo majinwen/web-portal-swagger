@@ -6,6 +6,11 @@ $(function () {
 
 $('.map-message-btn').on('click', 'li', function () {
     $(this).addClass('current').siblings().removeClass('current');
+    var zhuge_maidian = $(this).attr('data-zhuge');
+  /*  console.log($(this).attr('data-zhuge'));*/
+
+
+
     var text = $(this).attr('data-type');
     var parentText = $(this).parent().attr('data-type');
 
@@ -13,6 +18,13 @@ $('.map-message-btn').on('click', 'li', function () {
         $(this).removeClass('choose');
         $(this).prevAll().addClass('choose');
         $(this).nextAll().removeClass('choose');
+        zhuge.track('新房-点击教育配套', {
+            '配套内容' : zhuge_maidian
+        });
+    }else{
+        zhuge.track('新房-点击休闲配套', {
+            '配套内容' : zhuge_maidian
+        });
     }
     $(this).parents('.expand-content').find('ul.result-data-expand').addClass('none');
     $('#'+text).removeClass('none');
