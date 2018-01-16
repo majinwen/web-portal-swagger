@@ -322,9 +322,24 @@
     {{/each}}
 </script>
 <script>
+    $(function () {
+        var url = document.referrer;
+        if(url.indexOf("/esf") > 0){
+            zhuge.track("搜索_二手房",{
+                "关键词":GetQueryString("keyword"),
+               "返回结果数量":$("input['name['total']']").val()
+            })
+        }else{
+            console.log(1);
+            zhuge.track("搜索_大首页",{
+                "搜索类型":"二手房",
+                "关键词":GetQueryString("keyword"),
+               "返回结果数量":$("input['name['total']']").val()
+            })
+        }
+    });
     function esf_title(a) {
         var link = $(a);
-        console.log(link.val("href"))
         zhuge.track('点击二手房头条logo', {
             "页面来源URL": window.location.href
         }, function () {
@@ -349,13 +364,32 @@
             "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
             "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
             "第几屏":pageNum,
-            "是否为广告":"否",
+            "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');
         });
         return false;
-    })
+    });
 
+    function GetQueryString(name) {
+        var r = decodeURI(req[name]);
+        if(r!=null)return r; return null;
+    }
+    function joinParams(req) {
+        var targetUrl = '';
+
+        for (var key in req) {
+            if (null != req[key]) {
+                targetUrl += '&' + key + "=" + req[key];
+            }
+        }
+
+        if (targetUrl.length > 1) {
+            targetUrl = '?' + targetUrl.substring(1);
+        }
+
+        return targetUrl;
+    }
 </script>
 </body>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>

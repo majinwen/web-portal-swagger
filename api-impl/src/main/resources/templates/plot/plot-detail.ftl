@@ -704,7 +704,7 @@
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
-            <li id="${nearviitem_index}"><a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
+            <li><a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
@@ -730,7 +730,7 @@
     </div>
     <ul class="tilelist">
     <#list newbuilds as builditem>
-        <li id="${builditem_index}" data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">
+        <li data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">
             <a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">
                 <div class="picture-box">
                     <#assign imglist = builditem['building_title_img']>
@@ -869,7 +869,7 @@
             "楼盘名称": link.find('.tilelist-content').find('h4.cont-first').text(),
             "参考均价": link.find('.tilelist-content').find('p.cont-last').text(),
             "位置信息": link.attr("data-type"),
-            "页面位置序号": link.attr('id'),
+            "页面位置序号": link.index()+1,
             "是否为广告位": "否"
         }, function () {
             location.href = link.find('a').attr('href');
@@ -882,7 +882,7 @@
             "小区名称": link.find('div.tilelist-content').find('p.cont-first').text(),
             "参考均价": link.find('div.tilelist-content').find('h4.cont-last').text(),
             "位置信息": link.find('div.tilelist-content').find('p.cont-center').text(),
-            "页面位置序号": link.attr('id'),
+            "页面位置序号": link.index()+1,
             "是否为广告位": "否"
         }, function () {
             location.href = link.find('a').attr('href');
@@ -894,7 +894,7 @@
         zhuge.track('小区-点击推荐二手房', {
             "面积": link.find('div.tilelist-content').find('p.cont-first.text-center').find('em').text().split("万")[1].split("㎡")[0] + "㎡",
             "居室": link.find('div.tilelist-content').find('p.cont-first.text-center').find('em').text().split("万")[1].split("㎡")[1],
-            "页面位置序号": link.attr('id')
+            "页面位置序号": link.index()+1
         }, function () {
             location.href = link.find('a').attr('href');
         });

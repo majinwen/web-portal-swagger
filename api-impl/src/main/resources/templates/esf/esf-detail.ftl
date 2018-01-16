@@ -299,7 +299,7 @@
         <ul class="tilelist">
             <#list plot as map>
                 <li>
-                    <#if map.houseId?exists><a id="${map_index+1}" href="${router_city('/esf/'+map.houseId+'.html')}">
+                    <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
                     <#else><a href="#">
                     </#if>
                     <div class="picture-box">
@@ -337,7 +337,7 @@
     </div>
     <ul class="tilelist">
         <#list plotList as plotInfo>
-            <li><a id="${plotInfo_index+1}" href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
+            <li><a href="${router_city('/xiaoqu/'+plotInfo['id']+'.html')}">
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
@@ -418,7 +418,7 @@
             "面积":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[0]+"㎡",
             "价格":link.find('.tilelist-content').find('em').text().split("万/")[0]+"万",
             "距离":link.find('.bottom-text').text(),
-            "页面位置序号":link.find('a').attr('id'),
+            "页面位置序号":link.index()+1
         }, function () {
             location.href = link.find('a').attr('href');
         });
@@ -429,7 +429,7 @@
         zhuge.track('二手房-点击查看推荐小区', {
             "小区名称":link.find('.tilelist-content').find('.cont-first').text(),
             "价格":link.find('.tilelist-content').find('.cont-last').text(),
-            "页面位置序号":llink.find('a').attr('id'),
+            "页面位置序号":link.index()+1
         }, function () {
             location.href = link.find('a').attr('href');
         });
@@ -437,7 +437,6 @@
     })
     function plotDetailInfo_1(a) {
         var link = $(a);
-        console.log(link.val('href'))
         zhuge.track('二手房-点击查看小区详情', {
             "二手房-点击查看小区详情": link.attr('href')
         }, function () {
@@ -447,7 +446,6 @@
     }
     function plotDetailInfo_2(a) {
         var link = $(a);
-        console.log(link.attr('href'))
         zhuge.track('二手房-点击查看小区详情', {
             "二手房-点击查看小区详情": link.attr('href')
         }, function () {
@@ -457,7 +455,6 @@
     }
     function esf_map_1(a) {
         var link = $(a);
-        console.log(link.attr('href'))
         zhuge.track('二手房-点击配套地图', {
             "二手房配套地图来源": link.attr('href')
         }, function () {

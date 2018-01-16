@@ -12,7 +12,7 @@
 </head>
 <body>
 <header class="main-top-header gradient">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="dashouyelogo(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="">
@@ -256,11 +256,15 @@
         return false;
     })
 
-
-
-
-
-
+    function dashouyelogo(dashouye) {
+        var link = $(dashouye);
+        zhuge.track('大首页-进入大首页logo', {
+            "页面来源URL": window.location.href
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false
+    }
 </script>
 </body>
 </html>
