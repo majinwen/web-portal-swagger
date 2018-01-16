@@ -42,5 +42,5 @@
             window.zhuge._init(b, x)
         }
     };
-    window.zhuge.load('7ade0caffb294025964cda0cfed2156a',{debug:true});//配置应用的AppKey
+    window.zhuge.load('7ade0caffb294025964cda0cfed2156a');//配置应用的AppKey
 </script>
