@@ -1,4 +1,5 @@
 $(function () {
+    zhuge.track('进入懂房帝页面');
     $('#superContainer').fullpage({
         fitToSection: true,
         resize: false
@@ -6,11 +7,13 @@ $(function () {
     $.fn.fullpage.setAllowScrolling(false, 'up, down');
 
     $('.begin').on('click', function () {
+        zhuge.track('开始体验_懂房帝');
         $.fn.fullpage.moveSectionDown();
     });
 
     $('.start-btn').on('click', function () {
         if (!$(this).hasClass('none')) {
+            zhuge.track('开启_懂房帝');
             $.fn.fullpage.moveSectionDown();
 
             rada_animit.init();
@@ -61,6 +64,7 @@ function chooseUserType() {
     $('#userTypeSubmit').on('click', function () {
         if ($('.choose-wrapper').find('.current').length > 0) {
             $.fn.fullpage.moveSectionDown();
+            zhuge.track('购房目的_懂房帝',{'目的': $('.choose-wrapper').find('.choose-item-box.current').find('p').find('span:first-child').text()});
             var userTypeParams = $('.choose-wrapper').find('.choose-item-box.current').find('p').data('user-type');
 
             options['userType'] = userTypeParams;
@@ -236,7 +240,7 @@ function chooseUserFinds() {
                     options['monthPayMent'] = null;
                     var totalPriceHtml = '<p><span>总价：<em>' + priceInit + '</em></span></p>';
                     that.el.find('.result-animate').html(totalPriceHtml);
-
+                    zhuge.track('选择预算_懂房帝', {'总价': priceInit});
                 }
                 //首付+月供
                 else {
@@ -249,12 +253,11 @@ function chooseUserFinds() {
                     options['preconcTotal'] = null;
                     var payPriceHtml = '<p><span>首付：<em>' + payInit + '</em></span><span>月供：<em>' + monthPrice + '元</em></span></p>';
                     that.el.find('.result-animate').html(payPriceHtml);
-
-                    /*$('.list-item').find('li').eq(0).find('.result-animate').html(payPriceHtml);*/
+                    zhuge.track('选择预算_懂房帝', {'首付': payInit, '月供': monthPrice + '元'});
                 }
                 that.dialog_finish();
                 asyn_check.get(function () {
-                    that.context=1
+                    that.context=1;
                     flow_instance.go();
                 })
 
@@ -311,6 +314,7 @@ function chooseUserFinds() {
                 options['layOut'] = $('#layOut').find('li.current').data('layout');
                 var layOutHtml = '<p><span>' + $('#layOut').find('li.current').find('span').text() + '</span></p>';
                 that.el.find('.result-animate').html(layOutHtml);
+                zhuge.track('选择户型_懂房帝',{'户型': $('#layOut').find('li.current').find('span').text()});
                 if(that.isfirsChoose) {
                     that.isfirsChoose=false;
                     quyu_model.setParent([yusuan_model, huxing_model])
@@ -435,6 +439,7 @@ function chooseUserFinds() {
                 if($('#option_distict').find('li.current').length > 0){
                     var districtHtml = '<p><span>' + districtNameStr.join(' ') + '</span></p>';
                     $('.list-item').find('li').eq(2).find('.result-animate').html(districtHtml);
+                    zhuge.track('选择区域_懂房帝',{'区域': districtNameStr.join(' ')});
                     that.dialog_finish();
                 }
                 asyn_check.get(function () {
@@ -491,6 +496,7 @@ function chooseUserFinds() {
                 var familyHtml = '<p><span>孩子：<em>' + $('#hasChild').find('li.current').find('span').text() + '</em></span>' +
                     '<span>老人：<em>' + $('#oldMan').find('li.current').find('span').text() + '</em></span></p>';
                 $('.list-item').find('li').eq(3).find('.result-animate').html(familyHtml);
+                zhuge.track('选择家庭_懂房帝',{'是否有老人': $('#oldMan').find('li.current').find('span').text(),'是否有孩子': $('#hasChild').find('li.current').find('span').text()});
                 that.dialog_finish();
                 asyn_check.get(function () {
                     that.context=1

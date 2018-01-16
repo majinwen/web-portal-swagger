@@ -568,11 +568,16 @@ body {
       .searchpage-header .searchpage-search-box .searchpage-search-content form {
         position: absolute;
         top: 0;
+        right: 0;
         width: 100%;
         height: 100%;
         padding-left: 0.5333333333rem;
         box-sizing: border-box; }
         .searchpage-header .searchpage-search-box .searchpage-search-content form input {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding-left: 0.5333333333rem;
           width: 100%;
           height: 100%;
           background-color: transparent;

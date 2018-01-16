@@ -13,6 +13,7 @@
     <script src="${staticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
@@ -330,10 +331,10 @@
                     <p>宜居</p>
                     <span>住的舒服点，从空气质量到景观，从人口密度到车位</span>
                 </div>
-                <table>
+                <table class="table-live">
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="live-age"></i>
                             <em>楼龄</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -352,7 +353,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="live-greening"></i>
                             <em>绿化率</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -368,7 +369,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="live-parking"></i>
                             <em>车位比</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -384,7 +385,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="live-air"></i>
                             <em>空气质量</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -396,7 +397,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="live-elevator"></i>
                             <em>电梯</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -412,7 +413,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="live-heating"></i>
                             <em>供暖</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -439,10 +440,10 @@
                     <p>生活成本</p>
                     <span>处处都要钱，那一个亿的小目标，看来得快点实现啊</span>
                 </div>
-                <table>
+                <table class="table-life">
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="life-property"></i>
                             <em>物业费<br>(/㎡·月)</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -458,7 +459,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="life-electricity"></i>
                             <em>水电费<br>(/吨)<br>(/度)</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -486,7 +487,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <i></i>
+                            <i class="life-parking"></i>
                             <em>停车费<br>(/年)</em>
                         </td>
                         <#if intelligenceFhRes?exists>
@@ -603,6 +604,7 @@
             $(this).find('.collect').toggleClass('active');
             if ($(this).find('.collect').hasClass('active')) {
                 // 收藏
+                zhuge.track('收藏报告_懂房帝');
                 if (reportId != "" && reportId != null) {
                     $.ajax({
                         type: "GET",

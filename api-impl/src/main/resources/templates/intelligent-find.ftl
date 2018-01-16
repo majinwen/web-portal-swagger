@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<#include "staticHeader.ftl">
+    <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css?v=${staticversion}">
     <title>懂房帝</title>
@@ -9,6 +9,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
@@ -332,7 +333,7 @@
             </div>
 
             <div class="button-bottom">
-                <a class="button-box" id="button_report" href="javascript:void(0)">
+                <a class="button-box" id="button_report" href="javascript:void(0)" onclick="zhuge.track('查看报告_懂房帝')">
                 <#-- 百分比进度显示 -->
                     <div class="loading-number">0%</div>
                 <#-- 黑色进度条（改变width） -->

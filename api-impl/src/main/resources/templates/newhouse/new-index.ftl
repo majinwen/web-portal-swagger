@@ -26,19 +26,19 @@
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
                 <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner1.jpg?v=${staticversion}" alt="美好新居 尽在头条">
+                    <img src="${staticurl}/images/newindex/sy_banner1.jpg?v=${staticversion}" alt="美好新居 尽在头条" onclick="zhuge.track('banner_新房',{'banner名称':'美好新居 尽在头条'})">
                 </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item"><a href="${router_city('/loupan')}">
+            <div class="banner-nav-item"><a href="${router_city('/loupan')}" onclick="zhuge.track('导航_新房',{'导航名称':'全部楼盘'})">
                 <i class="all-buildings"></i><p>全部楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=1')}">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=1')}" onclick="zhuge.track('导航_新房',{'导航名称':'在售楼盘'})">
                 <i class="featured-properties"></i><p>在售楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}" onclick="zhuge.track('导航_新房',{'导航名称':'即将开盘'})">
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
             <#--<div class="banner-nav-item"><a href="#">
@@ -52,8 +52,8 @@
         <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt=""></div>
         <div class="text-scroll">
             <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586541609479182/"><em class="scroll-text-tag">问答</em>如果你现在有50万，是买房还是存着？</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('房产头条_新房',{'头条类别':'政策','头条名称':'2018年五险一金将迎来5个变化 每个都是好消息！'})"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586541609479182/" onclick="zhuge.track('房产头条_新房',{'头条类别':'问答','头条名称':'如果你现在有50万，是买房还是存着？'})"><em class="scroll-text-tag">问答</em>如果你现在有50万，是买房还是存着？</a></li>
             </ul>
         </div>
     </section>
@@ -67,14 +67,14 @@
         <div class="hot-topic">
             <div class="column">
                 <div class="hot-topic-item"><a href="https://www.toutiao.com/i6507390085581767176/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143399&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="1">
                         <h5>房价排行榜</h5>
                         <p>2017年房价排行榜出炉</p>
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image1.jpg" alt="房价排行榜">
                 </a></div>
                 <div class="hot-topic-item"><a href="https://www.toutiao.com/i6507035043548889607/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143385&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="2">
                         <h5>图说豪宅</h5>
                         <p>北京豪宅震撼大片</p>
                     </div>
@@ -83,21 +83,21 @@
             </div>
             <div class="column">
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587903362775054/">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="3">
                         <h5>90平小三居</h5>
                         <p>改善族买房标配</p>
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image3.jpg" alt="90平小三居">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587833021142029/">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="4">
                         <h5>万科楼盘</h5>
                         <p>品牌房企集中亮相</p>
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image4.jpg" alt="万科楼盘">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587895837527054/">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="5">
                         <h5>下一站南五环</h5>
                         <p>南五环热盘盘点</p>
                     </div>
@@ -213,5 +213,17 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script>
+    $('.hot-topic-item').on('click', 'a', function () {
+        var link = $(this);
+        zhuge.track('热门主题_新房', {
+            '主题名称': link.find('.topic-item-content').find('h5').text(),
+            '主题位置': link.find('.topic-item-content').attr('data-index')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    })
+</script>
 </body>
 </html>

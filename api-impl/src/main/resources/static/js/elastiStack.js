@@ -296,6 +296,7 @@
     ElastiStack.prototype._onDragEnd = function (instance, event, pointer) {
         var toHref = instance.element.dataset.href;
         if (this.isMove && toHref) {
+            zhuge.track('报告页推荐小区_懂房帝',{'小区名称': instance.element.getElementsByTagName('h4')[0].innerText});
             window.location.href = toHref;
         }
         if (this._outOfBounds(instance)) return;

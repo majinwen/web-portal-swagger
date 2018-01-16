@@ -9,6 +9,7 @@
     <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header gradient">
@@ -22,21 +23,20 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="carousel-swiper">
-            <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="头条房产，重磅推出">
+            <img class="scaleImg" width="100%" src="${staticurl}/${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}">
+            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房'})">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
-
-            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
+            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu" onclick="zhuge.track('导航_大首页',{'导航名称':'小区'})">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a class="index-esf">
+            <div class="banner-nav-item index-nav-item"><a class="index-esf" onclick="zhuge.track('导航_大首页',{'导航名称':'二手房'})">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}">
+            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝'})">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -45,10 +45,10 @@
 <div class="module-bottom-fill">
     <section class="bulletin-board">
         <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
-        <div class="text-scroll index-text">
+        <div class="text-scroll index-text" id="shoppingGuide">
             <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/"><em class="scroll-text-tag">导购</em>北京城市副中心正式启用 看看还有哪些“正经”盘可以买</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'政策','指南名称':'2018年五险一金将迎来5个变化 每个都是好消息！'})"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'导购','指南名称':'北京城市副中心正式启用 看看还有哪些“正经”盘可以买'})"><em class="scroll-text-tag">导购</em>北京城市副中心正式启用 看看还有哪些“正经”盘可以买</a></li>
             </ul>
         </div>
     </section>
@@ -61,14 +61,14 @@
         <div class="hot-topic pt0">
             <div class="column">
                 <div class="hot-topic-item index-topic-item"><a href="https://www.toutiao.com/i6506676833080050184/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143248&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="1">
                         <h5>2018房价是涨是降？</h5>
                         <p>市场预测</p>
                     </div>
                     <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场预测">
                 </a></div>
                 <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="2">
                         <h5>房贷知识知多少</h5>
                         <p>热门问答</p>
                     </div>
@@ -77,14 +77,14 @@
             </div>
             <div class="column">
                 <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588564480256007/">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="3">
                         <h5>最美样板间实景VR</h5>
                         <p>VR+房产</p>
                     </div>
                     <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="VR+房产">
                 </a></div>
                 <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
-                    <div class="topic-item-content">
+                    <div class="topic-item-content" data-index="4">
                         <h5>新开通地铁沿线盘</h5>
                         <p>精选导购</p>
                     </div>
@@ -324,6 +324,17 @@
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $('.type-tab-box').removeClass('none');
+    $('.index-topic-item').on('click', 'a', function () {
+        var link = $(this);
+        zhuge.track('精选主题_大首页',{
+            '主题类别': link.find('.topic-item-content').find('p').text(),
+            '主题名称': link.find('.topic-item-content').find('h5').text(),
+            '顺序': link.find('.topic-item-content').attr('data-index')
+        },function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    })
 </script>
 </body>
 </html>

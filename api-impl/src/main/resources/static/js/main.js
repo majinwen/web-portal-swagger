@@ -52,7 +52,6 @@ function moreInfoClick() {
 }
 
 function scaleImg(idWidth) {
-    console.log(idWidth);
     if (0 == $('.scaleImg').length) {
         return;
     }

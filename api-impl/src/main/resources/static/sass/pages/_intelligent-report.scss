@@ -498,7 +498,68 @@ $inteTextColorRed: #f25a5a;
                             width: rem(100);
 
                             em {
+                                line-height: 1.4;
                                 white-space: nowrap;
+                            }
+                        }
+                    }
+                }
+
+                &.table-live {
+                    tr {
+                        td {
+                            i {
+                                display: block;
+                                width: rem(44);
+                                height: rem(44);
+                                margin: 0 auto;
+                                -webkit-background-size: contain;
+                                background-size: contain;
+
+                                &.live-age {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_ll');
+                                }
+                                &.live-greening {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_hjlh');
+                                }
+                                &.live-parking {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_cwb');
+                                }
+                                &.live-air {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_kqzl');
+                                }
+                                &.live-elevator {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_yjdt');
+                                }
+                                &.live-heating {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_gn');
+                                }
+                            }
+                        }
+                    }
+                }
+                &.table-life {
+                    tr {
+                        td {
+                            padding: rem(10);
+
+                            i {
+                                display: block;
+                                width: rem(40);
+                                height: rem(30);
+                                margin: rem(2) auto;
+                                -webkit-background-size: contain;
+                                background-size: contain;
+
+                                &.life-property {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_wyf');
+                                }
+                                &.life-electricity {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_sdf');
+                                }
+                                &.life-parking {
+                                    @include bg-image('/static/images/intelligent/bgy_icon_tcf');
+                                }
                             }
                         }
                     }
