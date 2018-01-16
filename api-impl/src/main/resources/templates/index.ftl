@@ -9,6 +9,7 @@
     <title>头条房产 发现美好</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header gradient">

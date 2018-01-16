@@ -844,6 +844,7 @@ $('#moreReset').on('click', function () {
 /**
  * 排序
  */
+
 function listSortTab() {
 
     if ($('.sort-icon').length > 0) {
@@ -900,6 +901,7 @@ function pullUpAction() {
                 async: true,
                 dataType:'json',
                 success: function (data) {
+
                     if (data.code == 'success') {
                         pageNum++;
                         if(data.data!=null){
@@ -992,6 +994,7 @@ function pullUpAction() {
                             me.noData();
                         }else{
                             if (dataCon.length <= 0) {
+
                                 // $('.tip-box').removeClass('none');
                                 // 锁定
                                 me.lock();

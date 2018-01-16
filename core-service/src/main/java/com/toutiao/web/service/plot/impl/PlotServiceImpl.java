@@ -346,8 +346,8 @@ public class PlotServiceImpl implements PlotService {
                     PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
                     instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                     instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                    instance.setTotal(response.getHits().totalHits);
                     houseList.add(instance);
-//            System.out.println(instance);
                 }
             }
         } catch
@@ -388,11 +388,69 @@ public class PlotServiceImpl implements PlotService {
                 if(reslocationinfo == 10){
                     SearchHits hits = searchResponse.getHits();
                     SearchHit[] searchHists = hits.getHits();
-                    houseList = getPoltData(searchHists);
+                    for (SearchHit hit : searchHists) {
+                        Map<String, Object> buildings = hit.getSource();
+                        Class<VillageResponse> entityClass = VillageResponse.class;
+                        VillageResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        if ("商电".equals(instance.getElectricSupply())) {
+                            instance.setElectricFee("1.33");
+                        } else {
+                            instance.setElectricFee("0.48");
+                        }
+                        if ("商水".equals(instance.getWaterSupply())) {
+                            instance.setWaterFee("6");
+                        } else {
+                            instance.setWaterFee("5");
+                        }
+                        if ("0".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("未知");
+                        }
+                        if ("1".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("集中供暖");
+                        }
+                        if ("2".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("自供暖");
+                        }
+                        PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        instance.setTotal(hits.totalHits);
+                        houseList.add(instance);
+                    }
                 }else if(reslocationinfo < 10 && reslocationinfo>0){
                     SearchHits hits = searchResponse.getHits();
                     SearchHit[] searchHists = hits.getHits();
-                    houseList = getPoltData(searchHists);
+                    for (SearchHit hit : searchHists) {
+                        Map<String, Object> buildings = hit.getSource();
+                        Class<VillageResponse> entityClass = VillageResponse.class;
+                        VillageResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        if ("商电".equals(instance.getElectricSupply())) {
+                            instance.setElectricFee("1.33");
+                        } else {
+                            instance.setElectricFee("0.48");
+                        }
+                        if ("商水".equals(instance.getWaterSupply())) {
+                            instance.setWaterFee("6");
+                        } else {
+                            instance.setWaterFee("5");
+                        }
+                        if ("0".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("未知");
+                        }
+                        if ("1".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("集中供暖");
+                        }
+                        if ("2".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("自供暖");
+                        }
+                        PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        instance.setTotal(hits.totalHits);
+                        houseList.add(instance);
+                    }
                     SearchResponse searchresponse = null;
                     BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                     booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
@@ -404,7 +462,36 @@ public class PlotServiceImpl implements PlotService {
                             .execute().actionGet();
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
-                    houseList = getPoltData(poltSearchHists);
+                    for (SearchHit hit : poltSearchHists) {
+                        Map<String, Object> buildings = hit.getSource();
+                        Class<VillageResponse> entityClass = VillageResponse.class;
+                        VillageResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        if ("商电".equals(instance.getElectricSupply())) {
+                            instance.setElectricFee("1.33");
+                        } else {
+                            instance.setElectricFee("0.48");
+                        }
+                        if ("商水".equals(instance.getWaterSupply())) {
+                            instance.setWaterFee("6");
+                        } else {
+                            instance.setWaterFee("5");
+                        }
+                        if ("0".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("未知");
+                        }
+                        if ("1".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("集中供暖");
+                        }
+                        if ("2".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("自供暖");
+                        }
+                        PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        instance.setTotal(hits.totalHits);
+                        houseList.add(instance);
+                    }
                 }else if(reslocationinfo == 0){
                     long es_from = (pageNum-1)*pageSize - oneKM_size;
                     SearchResponse searchresponse = null;
@@ -419,7 +506,34 @@ public class PlotServiceImpl implements PlotService {
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
                     for (SearchHit hit : poltSearchHists) {
-                        houseList = getPoltData(poltSearchHists);
+                        Map<String, Object> buildings = hit.getSource();
+                        Class<VillageResponse> entityClass = VillageResponse.class;
+                        VillageResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        if ("商电".equals(instance.getElectricSupply())) {
+                            instance.setElectricFee("1.33");
+                        } else {
+                            instance.setElectricFee("0.48");
+                        }
+                        if ("商水".equals(instance.getWaterSupply())) {
+                            instance.setWaterFee("6");
+                        } else {
+                            instance.setWaterFee("5");
+                        }
+                        if ("0".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("未知");
+                        }
+                        if ("1".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("集中供暖");
+                        }
+                        if ("2".equals(instance.getHeatingMode())) {
+                            instance.setHeatingMode("自供暖");
+                        }
+                        PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
+                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        instance.setTotal(polthits.totalHits);
+                        houseList.add(instance);
                     }
                 }
             }

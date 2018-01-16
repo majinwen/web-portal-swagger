@@ -170,6 +170,7 @@
 <section id="result-section">
     <#if builds?exists><ul id="valueList">
         <#list builds as map>
+            <input type="hidden" name="total" value="${map.total}">
             <li><a class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">

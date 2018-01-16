@@ -152,6 +152,7 @@
 <section id="result-section">
     <ul id="valueList"><#if builds?exists>
         <#list builds as map>
+            <input type="hidden" name="total" value="${map.total}">
             <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">

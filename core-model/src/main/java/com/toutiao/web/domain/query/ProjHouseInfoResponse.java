@@ -304,4 +304,6 @@ public class ProjHouseInfoResponse {
 
     private String housetToPlotDistance;
 
+    private Long total;
+
 }

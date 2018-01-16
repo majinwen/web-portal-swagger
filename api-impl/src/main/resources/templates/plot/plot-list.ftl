@@ -151,6 +151,7 @@
 <section id="result-section">
     <#if villageList?exists><ul id="valueList">
         <#list villageList as plot>
+            <input type="hidden" name="total" value="${plot.total}">
             <li><a class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
                 <div class="clear">
                     <#if plot['photo']?exists>

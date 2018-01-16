@@ -8,6 +8,7 @@
     <meta name="keyword" content="">
     <link rel="stylesheet" href="${staticurl}/css/map.css?v=${staticversion}">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <ul id="mapTypeNav" class="map-type-nav">

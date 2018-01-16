@@ -13,6 +13,7 @@
     <script src="${staticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">

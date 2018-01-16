@@ -9,6 +9,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
+<#include "StatisticsHeader.ftl">
 </head>
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
