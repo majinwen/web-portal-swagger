@@ -152,7 +152,7 @@
     <#if villageList?exists><ul id="valueList">
         <#list villageList as plot>
             <li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
-            <input type="hidden" name="total" value="${plot.total}">
+            <#--<input type="hidden" name="total" value="${plot.total}">-->
                 <div class="clear">
                     <#if plot['photo']?exists>
                         <div class="list-item-img-box">
