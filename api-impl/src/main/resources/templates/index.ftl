@@ -23,7 +23,9 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="carousel-swiper">
+            <a href="${TradeQuotations['homepagePictureHref']}?v=${staticversion}">
             <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
+            </a>
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
