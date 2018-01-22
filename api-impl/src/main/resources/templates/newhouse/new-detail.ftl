@@ -577,5 +577,15 @@
             return false;
         });
 
+        $(".detail-contact-content").on('click', 'a', function () {
+            var link = $(this);
+            zhuge.track('新房-点击拨打电话',{
+                "经纪人电话": '<#if build.saletelphone?exists&& build.saletelphone!="">${build.saletelphone}</#if>',
+                "位置": "底部"
+            }, function () {
+                location.href = link.attr('href');
+            });
+            return false;
+        })
     })
 </script>

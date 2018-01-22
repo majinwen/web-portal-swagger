@@ -23,13 +23,20 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="carousel-swiper">
-            <a href="${TradeQuotations['homepagePictureHref']}">
-            <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
-            </a>
-            <input type="hidden" id="url" value="${router_city()}">
+            <#if TradeQuotations['homepagePictureTime']?exists&&TradeQuotations['homepagePictureTime']!=''&&TradeQuotations['homepagePictureTime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['homepagePictureTime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                <a href="${TradeQuotations['homepagePictureHref']}">
+                <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
+                </a>
+                <input type="hidden" id="url" value="${router_city()}">
+            <#else>
+                <a href="http://www.chengzijianzhan.com/tetris/page/1589893112548355/?from=singlemessage&isappinstalled=0">
+                    <img class="scaleImg" width="100%" src="http://m.toutiaofangchan.com/static/images/index/dsy_banner.png?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
+                </a>
+                <input type="hidden" id="url" value="/bj/">
+            </#if>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房'})">
+            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href}})">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
@@ -38,7 +45,7 @@
             <div class="banner-nav-item index-nav-item"><a class="index-esf">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝'})">
+            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -55,6 +62,7 @@
         </div>
     </section>
 </div>
+
 <div class="module-bottom-fill">
     <section>
         <div class="index-module-header border-bot-none">
@@ -62,36 +70,52 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
+                <#if TradeQuotations['ADleftuptime']?exists&&TradeQuotations['ADleftuptime']!=''&&TradeQuotations['ADleftuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                    ${TradeQuotations['ADleftup']}
+                <#else >
+                    <div class="hot-topic-item index-topic-item"><a href="https://www.toutiao.com/i6506676833080050184/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143248&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
                     <div class="topic-item-content" data-index="1">
                         <h5>逐猎长租公寓市场</h5>
                         <p>市场热点</p>
                     </div>
                     <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场热点">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589189022309390/">
-                    <div class="topic-item-content" data-index="2">
-                        <h5>房产投资20问</h5>
-                        <p>热门问答</p>
-                    </div>
-                    <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="热门问答">
-                </a></div>
+                </#if>
+                <#if TradeQuotations['ADrightuptime']?exists&&TradeQuotations['ADrightuptime']!=''&&TradeQuotations['ADrightuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                    ${TradeQuotations['ADrightup']}
+                <#else >
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
+                        <div class="topic-item-content" data-index="2">
+                            <h5>房产投资20问</h5>
+                            <p>热门问答</p>
+                        </div>
+                        <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="热门问答">
+                    </a></div>
+                </#if>
             </div>
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589829418704900/">
-                    <div class="topic-item-content" data-index="3">
-                        <h5>寻找最美装饰风</h5>
-                        <p>名企样板间</p>
-                    </div>
-                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="名企样板间">
-                </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589891452648462/">
-                    <div class="topic-item-content" data-index="4">
-                        <h5>北京1月新开楼盘</h5>
-                        <p>精选导购</p>
-                    </div>
-                    <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="精选导购">
-                </a></div>
+                <#if TradeQuotations['ADleftdowntime']?exists&&TradeQuotations['ADleftdowntime']!=''&&TradeQuotations['ADleftdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                    ${TradeQuotations['ADleftdown']}
+                <#else >
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589829418704900/">
+                        <div class="topic-item-content" data-index="3">
+                            <h5>寻找最美装饰风</h5>
+                            <p>名企样板间</p>
+                        </div>
+                        <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="名企样板间">
+                    </a></div>
+                </#if>
+                <#if TradeQuotations['ADrightdowntime']?exists&&TradeQuotations['ADrightdowntime']!=''&&TradeQuotations['ADrightdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                    ${TradeQuotations['ADrightdown']}
+                <#else >
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589891452648462/">
+                        <div class="topic-item-content" data-index="4">
+                            <h5>北京1月新开楼盘</h5>
+                            <p>精选导购</p>
+                        </div>
+                        <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="精选导购">
+                    </a></div>
+                </#if>
             </div>
         </div>
     </section>
@@ -359,6 +383,9 @@
         });
         return false
     }
+    $(function () {
+        zhuge.track('大首页-进入大首页',{"页面来源URL":document.referrer});
+    })
 </script>
 </body>
 </html>

@@ -396,7 +396,8 @@
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
-            "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>'
+            "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
+            "位置": "经纪人描述旁"
         }, function () {
             location.href = link.attr('href');
         });
@@ -405,7 +406,8 @@
     $(".detail-contact-content").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
-            "位置": "底部/经纪人描述旁"
+            "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
+            "位置": "底部"
         }, function () {
             location.href = link.attr('href');
         });
