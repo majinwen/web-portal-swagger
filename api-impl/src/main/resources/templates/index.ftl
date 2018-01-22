@@ -78,7 +78,7 @@
                         <h5>逐猎长租公寓市场</h5>
                         <p>市场热点</p>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场热点">
+                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png?123" alt="市场热点">
                 </a></div>
                 </#if>
                 <#if TradeQuotations['ADrightuptime']?exists&&TradeQuotations['ADrightuptime']!=''&&TradeQuotations['ADrightuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
@@ -89,7 +89,7 @@
                             <h5>房产投资20问</h5>
                             <p>热门问答</p>
                         </div>
-                        <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="热门问答">
+                        <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png?123" alt="热门问答">
                     </a></div>
                 </#if>
             </div>
@@ -102,7 +102,7 @@
                             <h5>寻找最美装饰风</h5>
                             <p>名企样板间</p>
                         </div>
-                        <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="名企样板间">
+                        <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png?123" alt="名企样板间">
                     </a></div>
                 </#if>
                 <#if TradeQuotations['ADrightdowntime']?exists&&TradeQuotations['ADrightdowntime']!=''&&TradeQuotations['ADrightdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
@@ -113,7 +113,7 @@
                             <h5>北京1月新开楼盘</h5>
                             <p>精选导购</p>
                         </div>
-                        <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="精选导购">
+                        <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png?123" alt="精选导购">
                     </a></div>
                 </#if>
             </div>
