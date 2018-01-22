@@ -49,8 +49,8 @@
         <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
         <div class="text-scroll index-text" id="shoppingGuide">
             <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'政策','指南名称':'2018年五险一金将迎来5个变化 每个都是好消息！'})"><em class="scroll-text-tag">政策</em>2018年五险一金将迎来5个变化 每个都是好消息！</a></li>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'导购','指南名称':'北京城市副中心正式启用 看看还有哪些“正经”盘可以买'})"><em class="scroll-text-tag">导购</em>北京城市副中心正式启用 看看还有哪些“正经”盘可以买</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'政策','指南名称':'国土资源部：政府将不再垄断住房供地'})"><em class="scroll-text-tag">政策</em>国土资源部：政府将不再垄断住房供地</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'导购','指南名称':'北京楼市1月新开楼盘'})"><em class="scroll-text-tag">导购</em>北京楼市1月新开楼盘</a></li>
             </ul>
         </div>
     </section>
@@ -62,32 +62,32 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="https://www.toutiao.com/i6506676833080050184/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143248&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
                     <div class="topic-item-content" data-index="1">
-                        <h5>2018房价是涨是降？</h5>
-                        <p>市场预测</p>
+                        <h5>逐猎长租公寓市场</h5>
+                        <p>市场热点</p>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场预测">
+                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png" alt="市场热点">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589189022309390/">
                     <div class="topic-item-content" data-index="2">
-                        <h5>房贷知识知多少</h5>
+                        <h5>房产投资20问</h5>
                         <p>热门问答</p>
                     </div>
                     <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png" alt="热门问答">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588564480256007/">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589829418704900/">
                     <div class="topic-item-content" data-index="3">
-                        <h5>最美样板间实景VR</h5>
-                        <p>VR+房产</p>
+                        <h5>寻找最美装饰风</h5>
+                        <p>名企样板间</p>
                     </div>
-                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="VR+房产">
+                    <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png" alt="名企样板间">
                 </a></div>
-                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1587830184804366/">
+                <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589891452648462/">
                     <div class="topic-item-content" data-index="4">
-                        <h5>新开通地铁沿线盘</h5>
+                        <h5>北京1月新开楼盘</h5>
                         <p>精选导购</p>
                     </div>
                     <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png" alt="精选导购">

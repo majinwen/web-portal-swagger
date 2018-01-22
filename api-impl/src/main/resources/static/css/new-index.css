@@ -1324,7 +1324,8 @@ body {
           text-overflow: ellipsis; }
         .hot-topic .column .hot-topic-item .topic-item-content p {
           position: relative;
-          display: inline-block; }
+          display: inline-block;
+          z-index: 1; }
       .hot-topic .column .hot-topic-item img {
         width: 100%; }
       .hot-topic .column .hot-topic-item.index-topic-item {
@@ -1358,12 +1359,18 @@ body {
           position: absolute;
           bottom: 0;
           left: 50%; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-1, .hot-topic .column .hot-topic-item.index-topic-item img.item-2, .hot-topic .column .hot-topic-item.index-topic-item img.item-3 {
+          .hot-topic .column .hot-topic-item.index-topic-item img.item-1 {
+            width: 1.5066666667rem;
+            margin-left: -0.7533333333rem; }
+          .hot-topic .column .hot-topic-item.index-topic-item img.item-2 {
             width: 2.2666666667rem;
             margin-left: -1.1333333333rem; }
+          .hot-topic .column .hot-topic-item.index-topic-item img.item-3 {
+            width: 1.4266666667rem;
+            margin-left: -0.7133333333rem; }
           .hot-topic .column .hot-topic-item.index-topic-item img.item-4 {
-            width: 1.9733333333rem;
-            margin-left: -0.9866666667rem; }
+            width: 2.5466666667rem;
+            margin-left: -1.2733333333rem; }
 
 .banner-index-box {
   padding: 0.1866666667rem 0.4rem 0.4133333333rem; }
