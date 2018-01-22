@@ -359,6 +359,8 @@
         });
         return false
     }
+
+    zhuge.track('大首页-进入大首页',{"页面来源URL":document.referrer});
 </script>
 </body>
 </html>
