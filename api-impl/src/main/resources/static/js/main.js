@@ -313,7 +313,7 @@ function showfujian() {
     var executed = false;
 
     $(".index-esf").click(function () {
-        zhuge.track('导航_大首页',{'导航名称':'二手房'})
+        zhuge.track('导航_大首页',{'导航名称':'二手房','页面来源URL':window.location.href})
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -331,7 +331,7 @@ function showfujian() {
         });
     });
     $(".index-xiaoqu").click(function () {
-        zhuge.track('导航_大首页',{'导航名称':'小区'})
+        zhuge.track('导航_大首页',{'导航名称':'小区','页面来源URL':window.location.href})
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {

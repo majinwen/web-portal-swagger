@@ -29,7 +29,7 @@
             <input type="hidden" id="url" value="${router_city()}">
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房'})">
+            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href}})">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
@@ -38,7 +38,7 @@
             <div class="banner-nav-item index-nav-item"><a class="index-esf">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝'})">
+            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>

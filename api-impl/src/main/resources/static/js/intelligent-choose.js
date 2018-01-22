@@ -1,5 +1,5 @@
 $(function () {
-    zhuge.track('进入懂房帝页面');
+    zhuge.track('进入懂房帝页面',{"目标来源url":window.location.href});
     $('#superContainer').fullpage({
         fitToSection: true,
         resize: false
