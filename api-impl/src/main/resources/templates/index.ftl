@@ -73,7 +73,7 @@
                 <#if TradeQuotations['ADleftuptime']?exists&&TradeQuotations['ADleftuptime']!=''&&TradeQuotations['ADleftuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADleftup']}
                 <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="https://www.toutiao.com/i6506676833080050184/?tt_from=weixin&utm_campaign=client_share&timestamp=1515143248&app=news_article&utm_source=weixin&iid=22476244001&utm_medium=toutiao_ios&wxshare_count=1">
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
                     <div class="topic-item-content" data-index="1">
                         <h5>逐猎长租公寓市场</h5>
                         <p>市场热点</p>
