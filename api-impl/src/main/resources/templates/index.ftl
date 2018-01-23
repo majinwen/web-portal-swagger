@@ -23,7 +23,7 @@
 <div class="module-bottom-fill">
     <section class="banner-index-box">
         <div class="carousel-swiper">
-            <#if TradeQuotations['homepagePictureTime']?exists&&TradeQuotations['homepagePictureTime']!=''&&TradeQuotations['homepagePictureTime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['homepagePictureTime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+            <#if TradeQuotations['homepagePictureTime']?exists&&TradeQuotations['homepagePictureTime']!=''&&TradeQuotations['homepagePictureTime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['homepagePictureTime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                 <a href="${TradeQuotations['homepagePictureHref']}">
                 <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
                 </a>
@@ -70,7 +70,7 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <#if TradeQuotations['ADleftuptime']?exists&&TradeQuotations['ADleftuptime']!=''&&TradeQuotations['ADleftuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                <#if TradeQuotations['ADleftuptime']?exists&&TradeQuotations['ADleftuptime']!=''&&TradeQuotations['ADleftuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADleftup']}
                 <#else >
                     <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
@@ -81,7 +81,7 @@
                     <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png?123" alt="市场热点">
                 </a></div>
                 </#if>
-                <#if TradeQuotations['ADrightuptime']?exists&&TradeQuotations['ADrightuptime']!=''&&TradeQuotations['ADrightuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                <#if TradeQuotations['ADrightuptime']?exists&&TradeQuotations['ADrightuptime']!=''&&TradeQuotations['ADrightuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADrightup']}
                 <#else >
                     <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
@@ -94,7 +94,7 @@
                 </#if>
             </div>
             <div class="column">
-                <#if TradeQuotations['ADleftdowntime']?exists&&TradeQuotations['ADleftdowntime']!=''&&TradeQuotations['ADleftdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                <#if TradeQuotations['ADleftdowntime']?exists&&TradeQuotations['ADleftdowntime']!=''&&TradeQuotations['ADleftdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADleftdown']}
                 <#else >
                     <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589829418704900/">
@@ -105,7 +105,7 @@
                         <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png?123" alt="名企样板间">
                     </a></div>
                 </#if>
-                <#if TradeQuotations['ADrightdowntime']?exists&&TradeQuotations['ADrightdowntime']!=''&&TradeQuotations['ADrightdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte .now?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte .now?string?date('yyyy-MM-dd HH:mm:ss')>
+                <#if TradeQuotations['ADrightdowntime']?exists&&TradeQuotations['ADrightdowntime']!=''&&TradeQuotations['ADrightdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADrightdown']}
                 <#else >
                     <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589891452648462/">

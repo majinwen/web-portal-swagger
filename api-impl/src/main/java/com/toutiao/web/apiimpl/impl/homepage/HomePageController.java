@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,8 @@ public class HomePageController {
      */
     @RequestMapping(value={"{citypath}"})
     public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
-
+        Date data = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String tradeQuotations = redisSession.getValue("TradeQuotations");
         JSONObject jsonObject = JSONObject.parseObject(tradeQuotations);
         model.addAttribute("TradeQuotations",jsonObject);
@@ -53,6 +56,7 @@ public class HomePageController {
         model.addAttribute("villageList", villageList);
         model.addAttribute("newbuilds",builds);
         model.addAttribute("user","asds");
+        model.addAttribute("currentTime",sdf.format(data));
 //        model.addAttribute("searchType","projhouse");
         return "index";
 
