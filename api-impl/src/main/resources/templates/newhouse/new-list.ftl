@@ -363,7 +363,8 @@
     $(function () {
         var herf = window.location.href.split('/')
         if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
-            zhuge.track('新房-进入房屋列表页',{'页面来源URL'：document.referrer})
+            zhuge.track('新房-进入房屋列表页',{'页面来源URL':document.referrer})
+
         }
     })
 </script>
