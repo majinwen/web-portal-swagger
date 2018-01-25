@@ -314,6 +314,8 @@
 </script>
 
 </body>
+<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
@@ -363,7 +365,7 @@
     $(function () {
         var herf = window.location.href.split('/')
         if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
-            zhuge.track('新房-进入房屋列表页',{'页面来源URL'：document.referrer})
+            zhuge.track('新房-进入房屋列表页',{'页面来源URL':document.referrer})
         }
     })
 </script>
