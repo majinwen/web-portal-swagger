@@ -553,11 +553,7 @@
             '楼盘名称' : '${build['building_name']!''}'
         });
 
-        function zhugebaseinfo(){
-            zhuge.track('新房-点击基本信息', {
-                '新房基本信息' : '新房基本信息'
-            });
-        }
+
 
         $(".newzhugetuijian").click(function() {
             /*console.log($(this).attr('data-zg'));*/
@@ -588,4 +584,10 @@
             return false;
         })
     })
+
+    function zhugebaseinfo(){
+        zhuge.track('新房-点击基本信息', {
+            '新房基本信息' : '新房基本信息'
+        });
+    }
 </script>

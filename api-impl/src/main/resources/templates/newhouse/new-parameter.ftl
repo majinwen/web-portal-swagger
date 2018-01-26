@@ -63,9 +63,9 @@
                 <p>产权年限：<#if (discript['building_life']?exists && discript['building_life']>0)>${discript['building_life']}<#else>暂无数据</#if></p>
                 <p>占地面积：<#if (discript['ground_area']?exists && discript['ground_area']>0)>${discript['ground_area']}㎡<#else>暂无数据</#if></p>
                 <p>建筑面积：<#if (discript['purpose_area']?exists && discript['purpose_area']>0)>${discript['purpose_area']}㎡<#else>暂无数据</#if></p>
-                <p>容积率：<#if discript['dimension']?exists>${discript['dimension']}<#else>暂无数据</#if></p>
+                <p>容积率：<#if discript['dimension']?exists && discript['dimension']?number gt 0>${discript['dimension']}<#else>暂无数据</#if></p>
                 <p>绿化率：<#if (discript['virescencerate']?exists && discript['virescencerate']>0)>${discript['virescencerate']?string("#.##")}%<#else>暂无数据</#if></p>
-                <p>规划户数：<#if discript['totaldoor']?exists>${discript['totaldoor']}<#else>暂无数据</#if></p>
+                <p>规划户数：<#if discript['totaldoor']?exists && (discript['totaldoor']?number gt 0)>${discript['totaldoor']}<#else>暂无数据</#if></p>
                 <p>规划车位：<#if (discript['park_space']?exists && discript['park_space']>0)>${discript['park_space']}<#else>暂无数据</#if></p>
                 <p>车位配比：<#if discript['park_radio']?exists && discript['park_radio']!="">${discript['park_radio']}<#else>暂无数据</#if></p>
             </li>
@@ -81,7 +81,7 @@
             <li>
                 <p>物业类型：<#if discript['property_type']?exists>${discript['property_type']}<#else>暂无数据</#if></p>
                 <p>物业公司：<#if discript['propertymanage']?exists && discript['propertymanage']!=''>${discript['propertymanage']}<#else>暂无数据</#if></p>
-                <p>物业费：<#if discript['propertyfee']?exists>${discript['propertyfee']}<#else>暂无数据</#if></p>
+                <p>物业费：<#if discript['propertyfee']?exists&&discript['propertyfee']?number gt 0>${discript['propertyfee']}元/㎡·月<#else>暂无数据</#if></p>
                 <p>供暖：<#if discript['heating_type']?exists && discript['heating_type'] == 0>未知
                     <#if discript['heating_type']?exists && discript['heating_type'] == 1>
                         集中供暖
