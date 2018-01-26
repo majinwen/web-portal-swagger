@@ -393,11 +393,14 @@
         '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+        '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
+        '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
+            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
             "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
             "位置": "经纪人描述旁"
         }, function () {
@@ -408,6 +411,7 @@
     $(".detail-contact-content").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
+            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
             "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
             "位置": "底部"
         }, function () {

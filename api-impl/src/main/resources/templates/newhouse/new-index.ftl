@@ -242,7 +242,7 @@
 
         var referer = document.referrer||''
         if(referer.indexOf(".toutiao.com")>0){
-            zhuge.track('头条-进入新房大首页页',{'导航名称':'新房','页面来源URL':referer});
+            zhuge.track('头条-进入新房大首页',{'导航名称':'新房大首页','页面来源URL':referer});
         }
 
         $("#newHouse-list").find('li').each(function () {
