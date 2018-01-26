@@ -113,9 +113,10 @@
                 <dl>
                     <dt data-type="saleType">销售状态</dt>
                     <dd>
-                        <span data-info="0">售完</span>
                         <span data-info="1">在售</span>
                         <span data-info="5">待售</span>
+                        <span data-info="6">待租</span>
+                        <span data-info="0">售完</span>
                     </dd>
                 </dl>
                 <dl>

@@ -1,6 +1,9 @@
 var idwidth;
 $(function() {
-    FastClick.attach(document.body);
+
+    if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+        FastClick.attach(document.body);
+    }
     scaleImgInit();
 });
 

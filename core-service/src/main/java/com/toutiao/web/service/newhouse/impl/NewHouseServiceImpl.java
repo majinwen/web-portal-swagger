@@ -164,7 +164,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         if(StringUtil.isNotNullString(newHouseQuery.getSaleType())){
             booleanQueryBuilder.must(termQuery("sale_status_id", newHouseQuery.getSaleType()));
         }else{
-            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5}));
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
