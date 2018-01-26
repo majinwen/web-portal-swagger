@@ -273,6 +273,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             if (projHouseInfoRequest.getPageNum() != null && projHouseInfoRequest.getPageNum() > 1) {
                 pageNum = projHouseInfoRequest.getPageNum();
             }
+            if (projHouseInfoRequest.getPageSize() != null && projHouseInfoRequest.getPageSize()>= 10) {
+                pageSize = projHouseInfoRequest.getPageSize();
+            }
+
 //            System.out.println(booleanQueryBuilder);
 
             if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
@@ -315,6 +319,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 }
                 instance.setTotal(hits.totalHits);
+                instance.setPageNum(projHouseInfoRequest.getPageNum());
                 houseList.add(instance);
             }
             if (houseList!=null&&houseList.size()>0){
@@ -372,6 +377,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo < 10 && reslocationinfo>0){
@@ -388,6 +394,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                     SearchResponse searchresponse = null;
@@ -411,6 +418,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(esfhits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo == 0){
@@ -436,6 +444,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(esfhits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }

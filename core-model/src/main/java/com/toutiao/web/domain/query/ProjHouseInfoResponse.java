@@ -306,4 +306,11 @@ public class ProjHouseInfoResponse {
 
     private Long total;
 
+    /**
+     * 当前页数
+     */
+    private Integer pageNum;
+
+
+
 }

@@ -170,7 +170,7 @@
 <section id="result-section">
     <#if builds?exists><ul id="valueList">
         <#list builds as map>
-            <li><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+            <li><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'/'+map.pageNum+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
@@ -259,7 +259,8 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
+    <li><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}/{{$value.pageNum}}.html')}">
+
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
@@ -317,6 +318,7 @@
     </a></li>
     {{/each}}
 </script>
+
 <script>
     $(function () {
         var url = document.referrer;
