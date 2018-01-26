@@ -37,7 +37,7 @@ function scaleImg(idWidth) {
 
         var element = document.elementFromPoint(e.originalEvent.touches[0].clientX, e.originalEvent.touches[0].clientY);
 
-        if ($(element).parents().is('.tilelist')) {
+        if ($(element).parents().is('.tilelist') || $(element).parents().is('.search-box') || $(element).parents().is('.searchpage-search-content')) {
             status = false;
         } else {
             status = true;

@@ -68,10 +68,10 @@
             <div class="column">
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589636255213571/">
                     <div class="topic-item-content" data-index="1">
-                        <h5>围栏”之争</h5>
+                        <h5>“围栏”之争</h5>
                         <p>配建制度下的围栏之争</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="围栏”之争">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="“围栏”之争">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
                     <div class="topic-item-content" data-index="2">
