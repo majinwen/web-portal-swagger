@@ -324,11 +324,6 @@
 <script>
     $(function () {
 
-        var referer = document.referrer||''
-        if(referer.indexOf(".toutiao.com")>0){
-            zhuge.track('头条-进入新房大首页页',{'导航名称':'新房','页面来源URL':referer})
-        }
-
         var count=$("#result-section").find("li").find('a').attr("id");
         var url = document.referrer;
         if(url.indexOf("/loupan") > 0){
