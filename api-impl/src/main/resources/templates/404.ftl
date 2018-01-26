@@ -14,7 +14,7 @@
     <p>这个页面拆迁了，换一个吧！</p>
     <a href="javascript:history.go(-1)">返回</a>
 </div>
-<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 </body>
 </html>

@@ -28,7 +28,7 @@
     </div>
     <a class="link-intelligent" href="${router_city('/findhouse/')}">获取报告</a>
 </div>
-<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 </body>
 </html>

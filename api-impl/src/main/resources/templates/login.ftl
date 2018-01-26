@@ -38,7 +38,7 @@
     <button type="button" id="log_in_button" class="submit-btn">登录</button>
 </form>
 <p class="fixed-bottom-tips">注册/登录即代表同意《头条房产用户使用协议》</p>
-<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script>
     $(document).ready(function () {

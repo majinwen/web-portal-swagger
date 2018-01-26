@@ -111,7 +111,7 @@
         </#if>
     <#if message?exists> <p style="color: red">${message}</p></#if>
 </div>
-<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script>
