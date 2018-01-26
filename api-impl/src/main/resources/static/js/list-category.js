@@ -1046,8 +1046,8 @@ function listSortTab() {
 
 var href = window.location.href.split('&')
 
+var pageNum = 2;
 function pullUpAction() {
-    pageNum = 2;
     if (href.length>1){
         name = href[href.length-1].split('=')[0]
         if(name =='pageNum'){
@@ -1202,9 +1202,8 @@ function pullUpAction() {
  * 上拉分页
  * @param pageNumber
  */
-var pageNum = null;
 function pullDownAction() {
-    pageNum = 1;
+   var pageNum = 0;
     // $(window).scroll(function() {
     //     if($(window).scrollTop()==0){
     //
@@ -1216,6 +1215,7 @@ function pullDownAction() {
             pageNum = parseInt(href[href.length-1].split('=')[1])-1
         }
     }
+    if (pageNum>0){
     $('#result-section').dropload({
         scrollArea : window,
         domUp : {
@@ -1361,4 +1361,5 @@ function pullDownAction() {
             me.resetload();
         }
     });
+    }
 };
