@@ -327,19 +327,6 @@
         var referer = document.referrer||''
         if(referer.indexOf(".toutiao.com")>0){
             zhuge.track('头条-进入新房大首页页',{'导航名称':'新房','页面来源URL':referer})
-            var geolocation = new BMap.Geolocation();
-            geolocation.getCurrentPosition(function (r) {
-                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    executed = true;
-                    lon = r.point.lng;
-                    lat = r.point.lat;
-                    var point = new BMap.Point(lon, lat);//创建点坐标
-                    var gc = new BMap.Geocoder();
-                    gc.getLocation(point, function (rs) {
-                        location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
-                    });
-                }
-            });
         }
 
         var count=$("#result-section").find("li").find('a').attr("id");
