@@ -345,6 +345,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             if (projHouseInfoRequest.getPageNum() != null && projHouseInfoRequest.getPageNum() > 1) {
                 pageNum = projHouseInfoRequest.getPageNum();
             }
+            if (projHouseInfoRequest.getPageSize()!=null&&projHouseInfoRequest.getPageSize()>10){
+                pageSize = projHouseInfoRequest.getPageSize();
+            }
 
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             //从该坐标查询距离为distance

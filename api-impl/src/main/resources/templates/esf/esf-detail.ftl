@@ -484,6 +484,7 @@
     })
 
     var page = ${pageNum}
+    var houseId = ${houseId}
     $(document).ready(function (e) {
         if (window.history && window.history.pushState) {
             $(window).on('popstate', function () {
@@ -497,7 +498,6 @@
                 }else if (href.split('?').length>1){
                     window.location.href=href+'&pageNum='+page;
                 }
-
             });
         }
         window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
