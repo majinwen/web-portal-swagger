@@ -370,6 +370,8 @@
 </div>
 </#if>
 <!-------- photoswipe -------->
+<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
@@ -382,7 +384,7 @@
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
-    })
+    });
     zhuge.track('二手房-进入二手房详情页', {
         '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',

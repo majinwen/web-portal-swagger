@@ -384,6 +384,8 @@
     }
 </script>
 </body>
+<script src="${staticurl}/js/fastclick.js"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
@@ -404,9 +406,9 @@
 //        return false;
     });
     $(function () {
-        var herf = window.location.href.split('/')
+        var herf = window.location.href.split('/');
         if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
-            zhuge.track('二手房-进入二手房列表页',{'页面来源URL'：document.referrer})
+            zhuge.track('二手房-进入二手房列表页',{'页面来源URL': document.referrer});
         }
     })
 </script>

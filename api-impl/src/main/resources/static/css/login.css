@@ -212,6 +212,13 @@ body {
 .shareTopImg {
   position: absolute; }
 
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
 h2 {
   margin-top: 1.0666666667rem;
   text-align: center;
