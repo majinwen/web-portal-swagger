@@ -618,7 +618,9 @@ body {
     width: 0.4rem;
     height: 1.2rem;
     background-image: url("/static/images/global/refresh-clear-icon.png");
-    background-repeat: no-repeat; }
+    background-repeat: no-repeat;
+    -webkit-background-size: auto 0.3866666667rem;
+    background-size: auto 0.3866666667rem; }
     @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
       .searchpage-content-header a {
         background-image: url("/static/images/global/refresh-clear-icon@2x.png"); } }

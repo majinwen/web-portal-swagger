@@ -169,6 +169,8 @@
         width: rem(30);
         height: rem(90);
         @include bg-image('/static/images/global/refresh-clear-icon');
+        -webkit-background-size: auto rem(29);
+        background-size: auto rem(29);
 
         &.refresh-icon {
             background-position: left center;

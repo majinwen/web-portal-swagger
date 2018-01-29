@@ -38,6 +38,7 @@
             height: rem(90);
             @include bg-image('/static/images/global/arrows_right_icon');
             background-position: right center;
+            background-size: 40%;
         }
     }
 }
