@@ -92,26 +92,42 @@ $(function () {
      * @param req
      */
     function districtArea(req) {
-        $.getJSON('/static/mock/circle.json',function (districtList) {
-            var _districtId = req['districtId'] || [];
-            var _areaId = req['areaId'] || [];
 
-            var _circle, _districtName, _circleName;
-            for (var i in districtList) {
-                if (_districtId == districtList[i].districtId) {
-                    _districtName = districtList[i].name;
-                    _circle = districtList[i].children;
+        if ((_localHref.indexOf('/loupan')) > 0) {
+            $.getJSON('/static/mock/xfcircle.json',function (districtList) {
+                var _districtId = req['districtId'] || [];
+                var _districtName;
+                for (var i in districtList) {
+                    if (_districtId == districtList[i].districtId) {
+                        _districtName = districtList[i].name;
+                    }
                 }
-            }
+                $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_districtName);
+            });
+        }else{
+            $.getJSON('/static/mock/circle.json',function (districtList) {
+                var _districtId = req['districtId'] || [];
+                var _areaId = req['areaId'] || [];
 
-            for (var index in _circle) {
-                if (_areaId == _circle[index].circle) {
-                    _circleName = _circle[index].name;
+                var _circle, _districtName, _circleName;
+                for (var i in districtList) {
+                    if (_districtId == districtList[i].districtId) {
+                        _districtName = districtList[i].name;
+                        _circle = districtList[i].children;
+                    }
                 }
-            }
 
-            $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_circleName?_circleName:_districtName);
-        });
+                for (var index in _circle) {
+                    if (_areaId == _circle[index].circle) {
+                        _circleName = _circle[index].name;
+                    }
+                }
+
+
+                $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_circleName?_circleName:_districtName);
+            });
+        }
+
     }
 
     /**
@@ -411,7 +427,7 @@ function showDistrict(districtId, circleId) {
  * 新房只显示区域
  * */
 function showOnlyDistrict(districtId) {
-    $.getJSON('/static/mock/circle.json', function (districtList) {
+    $.getJSON('/static/mock/xfcircle.json', function (districtList) {
         circleData = districtList;
         $('#level2').removeClass('none');
         $('#level3').addClass('none');
