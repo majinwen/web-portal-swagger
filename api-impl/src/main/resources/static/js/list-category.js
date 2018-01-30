@@ -122,8 +122,6 @@ $(function () {
                         _circleName = _circle[index].name;
                     }
                 }
-
-
                 $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_circleName?_circleName:_districtName);
             });
         }
