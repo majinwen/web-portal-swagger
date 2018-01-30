@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface PartialMatchingService {
 
-    Map Search(String keyword,String houseProperty);
+    Map search(String keyword,String houseProperty);
 }

@@ -1,6 +1,6 @@
 <style>
     #automatedWord .click_work {padding: 34px 0; border-bottom: 1px solid #efefef;}
-    #automatedWord .click_work em {float: right; color: #bcbcbc; }
+    /*#automatedWord .click_work em {float: right; color: #bcbcbc; }*/
 </style>
 <div class="search-page-wrapper none">
     <header class="searchpage-header">

@@ -11,16 +11,16 @@ import java.util.Map;
 @Controller
 @RequestMapping("/{citypath}")
 public class PartialMatchingController {
-
     @Autowired
     private PartialMatchingService partialMatchingService;
 
+    Map searchMap = null;
+
     @RequestMapping("/search")
     @ResponseBody
-    public Map PartialMatching(String keyword,String houseProperty){
-        Map searchMap = null;
+    public Map indexPartialMatching(String keyword,String houseProperty){
         try {
-            searchMap = partialMatchingService.Search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,houseProperty);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -29,10 +29,9 @@ public class PartialMatchingController {
 
     @RequestMapping("/xiaoqu/search")
     @ResponseBody
-    public Map PartialMatchingXiaoqu(String keyword,String houseProperty){
-        Map searchMap = null;
+    public Map plotPartialMatching(String keyword,String houseProperty){
         try {
-            searchMap = partialMatchingService.Search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,houseProperty);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -41,10 +40,9 @@ public class PartialMatchingController {
 
     @RequestMapping("/esf/search")
     @ResponseBody
-    public Map PartialMatchingEsf(String keyword,String houseProperty){
-        Map searchMap = null;
+    public Map esfPartialMatchingEsf(String keyword,String houseProperty){
         try {
-            searchMap = partialMatchingService.Search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,houseProperty);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -53,10 +51,9 @@ public class PartialMatchingController {
 
     @RequestMapping("/xinfang/search")
     @ResponseBody
-    public Map PartialMatchingLoupan(String keyword,String houseProperty){
-        Map searchMap = null;
+    public Map newHousePartialMatchingLoupan(String keyword,String houseProperty){
         try {
-            searchMap = partialMatchingService.Search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,houseProperty);
         }catch (Exception e){
             e.printStackTrace();
         }

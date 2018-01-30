@@ -188,6 +188,7 @@ $(function(){
      */
     $('.key-words').on('input',function () {
         var _keyword = $('.key-words').val();
+
         if (_keyword=='') { $('#automatedWord').hide(); return };
         if (_keyword!=null&&_keyword.length>0){
 
@@ -201,8 +202,9 @@ $(function(){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=小区"
             }else if(herf.indexOf('/esf')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=二手房"
-            }else if(herf.indexOf('/xinfang')>0){
+            }else if(herf.indexOf('/loupan')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=新房"
+                url = url.replace('loupan','xinfang')
             }else {
                 url = herf+"/search?keyword="+_keyword
             }
@@ -216,41 +218,41 @@ $(function(){
                     if (data.total>0){
                         $('#automatedWord').empty().show();
                         for(var i = 0;i<data.list.length;i++){
-                            $('#automatedWord').append('<li id='+data.list[i].village_id+' class="click_work" >'+ data.list[i].projname+' <em>'+data.list[i].house_property+'</em></li>');
+                            $('#automatedWord').append('<li id='+data.list[i].village_id+' class="click_work" >'+ data.list[i].villageName+' <em style="float: right; color: #bcbcbc;">'+data.list[i].house_property+'</em></li>');
                         }
                         $('.click_work').on('click',function(){
                             var word = $(this).text();
                             var id = $(this).attr('id')
-                            var projname = word.split(' ')[0].trim()
+                            var village = word.split(' ')[0].trim()
                             var house_property = word.split(' ')[1].trim()
                             var url = window.location.href.split('?')[0]
                             if (url.indexOf('xiaoqu')>0){
-                                plotStorageArray.push(projname);
+                                plotStorageArray.push(village);
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = url+'?keyword='+projname
+                                window.location.href = url+'?keyword='+village
                             }
                             if (house_property=='小区'&&url.indexOf('xiaoqu')==-1){
-                                plotStorageArray.push(projname);
+                                plotStorageArray.push(village);
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = url+'/xiaoqu?keyword='+projname
+                                window.location.href = url+'/xiaoqu?keyword='+village
                             }
                             if (url.indexOf('esf')>0){
-                                esfStorageArray.push(projname);
+                                esfStorageArray.push(village);
                                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
-                                window.location.href = url+'?keyword='+projname
+                                window.location.href = url+'?keyword='+village
                             }
                             if (house_property=='二手房'&&url.indexOf('esf')==-1){
-                                esfStorageArray.push(projname);
+                                esfStorageArray.push(village);
                                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
-                                window.location.href = url+'/esf?keyword='+projname
+                                window.location.href = url+'/esf?keyword='+village
                             }
                             if (house_property=='loupan'){
-                                newHouseStorageArray.push(projname);
+                                newHouseStorageArray.push(village);
                                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                                 window.location.href = url+'/'+id+'.html'
                             }
                             if (house_property=='新房'&&url.indexOf('xinfang')==-1&&url.indexOf('loupan')==-1){
-                                newHouseStorageArray.push(projname);
+                                newHouseStorageArray.push(village);
                                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                                 window.location.href = url+'/loupan/'+id+'.html'
                             }
