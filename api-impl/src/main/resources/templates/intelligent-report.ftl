@@ -586,6 +586,8 @@
     <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
     <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/draggabilly.pkgd.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/elastiStack.js?v=${staticversion}"></script>

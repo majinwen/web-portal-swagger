@@ -339,6 +339,8 @@
 <#include "user.ftl">
 <#include "search.ftl">
 
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
@@ -357,7 +359,6 @@
     })
 </script>
 <script>
-
     $("#plot_desc").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('大首页-点击小区推荐',{
@@ -372,7 +373,7 @@
             location.href = link.find('a').attr('href');
         });
         return false;
-    })
+    });
 
     function dashouyelogo(dashouye) {
         var link = $(dashouye);
@@ -384,7 +385,7 @@
         return false
     }
     $(function () {
-        zhuge.track('大首页-进入大首页',{"页面来源URL":document.referrer});
+        zhuge.track('大首页-进入大首页',{"页面来源URL": document.referrer});
     })
 </script>
 </body>

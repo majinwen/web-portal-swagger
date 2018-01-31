@@ -68,10 +68,10 @@
             <div class="column">
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589636255213571/">
                     <div class="topic-item-content" data-index="1">
-                        <h5>围栏”之争</h5>
+                        <h5>“围栏”之争</h5>
                         <p>配建制度下的围栏之争</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="围栏”之争">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="“围栏”之争">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
                     <div class="topic-item-content" data-index="2">
@@ -218,6 +218,8 @@
 <#include "../user.ftl">
 <#include "../search.ftl">
 
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
@@ -237,6 +239,12 @@
 </html>
 <script>
     $(function () {
+
+        var referer = document.referrer||''
+        if(referer.indexOf(".toutiao.com")>0){
+            zhuge.track('头条-进入新房大首页',{'导航名称':'新房大首页','页面来源URL':referer});
+        }
+
         $("#newHouse-list").find('li').each(function () {
             $(this).on('click', function () {
                 var text =$(this);

@@ -6,6 +6,7 @@
     <title>我的报告页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
 </head>
 <body>
 <div class="page-empty report">
@@ -27,5 +28,7 @@
     </div>
     <a class="link-intelligent" href="${router_city('/findhouse/')}">获取报告</a>
 </div>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 </body>
 </html>

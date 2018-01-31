@@ -113,9 +113,10 @@
                 <dl>
                     <dt data-type="saleType">销售状态</dt>
                     <dd>
-                        <span data-info="0">售完</span>
                         <span data-info="1">在售</span>
                         <span data-info="5">待售</span>
+                        <span data-info="6">待租</span>
+                        <span data-info="0">售完</span>
                     </dd>
                 </dl>
                 <dl>
@@ -314,6 +315,8 @@
 </script>
 
 </body>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
@@ -321,6 +324,7 @@
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
     $(function () {
+
         var count=$("#result-section").find("li").find('a').attr("id");
         var url = document.referrer;
         if(url.indexOf("/loupan") > 0){
@@ -364,7 +368,6 @@
         var herf = window.location.href.split('/')
         if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
             zhuge.track('新房-进入房屋列表页',{'页面来源URL':document.referrer})
-
         }
     })
 </script>

@@ -370,6 +370,8 @@
 </div>
 </#if>
 <!-------- photoswipe -------->
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
@@ -382,7 +384,7 @@
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
-    })
+    });
     zhuge.track('二手房-进入二手房详情页', {
         '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
@@ -391,11 +393,14 @@
         '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+        '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
+        '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
+            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
             "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
             "位置": "经纪人描述旁"
         }, function () {
@@ -406,6 +411,7 @@
     $(".detail-contact-content").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
+            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
             "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
             "位置": "底部"
         }, function () {

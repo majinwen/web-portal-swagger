@@ -532,6 +532,8 @@
 <!-------- photoswipe -------->
 
 <div id="mapContainer" style="display: none;"> </div>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
@@ -553,11 +555,7 @@
             '楼盘名称' : '${build['building_name']!''}'
         });
 
-        function zhugebaseinfo(){
-            zhuge.track('新房-点击基本信息', {
-                '新房基本信息' : '新房基本信息'
-            });
-        }
+
 
         $(".newzhugetuijian").click(function() {
             /*console.log($(this).attr('data-zg'));*/
@@ -588,4 +586,10 @@
             return false;
         })
     })
+
+    function zhugebaseinfo(){
+        zhuge.track('新房-点击基本信息', {
+            '新房基本信息' : '新房基本信息'
+        });
+    }
 </script>
