@@ -33,6 +33,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
 
 
     @Override
+
     public Map search(String keyword,String houseProperty) {
         Map map = new HashMap();
         List list = new ArrayList();

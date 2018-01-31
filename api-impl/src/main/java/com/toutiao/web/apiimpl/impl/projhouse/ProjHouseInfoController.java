@@ -141,6 +141,8 @@ public class ProjHouseInfoController {
             builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
         }
 
+        model.addAttribute("id",projHouseInfoQuery.getId());
+
         if (StringTool.isNotEmpty(builds) && builds.size() > 0) {
             model.addAttribute("builds", builds);
         }

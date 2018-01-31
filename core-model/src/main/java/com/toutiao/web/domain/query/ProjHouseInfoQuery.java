@@ -118,4 +118,9 @@ public class ProjHouseInfoQuery {
      * 搜索关键词
      */
     private String keyword;
+
+    /**
+     * 二手房id
+     */
+    private Integer id;
 }

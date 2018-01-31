@@ -29,11 +29,13 @@ $(function(){
      */
     $('.search-link').on('focus', function () {
         init();
+        $('body').addClass('fixed-scroll');
         $('.search-page-wrapper').removeClass('none');
         $('.key-words').focus();
     });
     $('.searchpage-search-btn').on('click', function () {
         $('.search-page-wrapper').addClass('none');
+        $('body').removeClass('fixed-scroll');
     });
     $('.searchpage-current-item').on('click', function () {
         $('.type-menu-box').show();
@@ -202,7 +204,7 @@ $(function(){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=小区"
             }else if(herf.indexOf('/esf')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=二手房"
-            }else if(herf.indexOf('/loupan')>0){
+            }else if(herf.indexOf('/loupan')>0||herf.indexOf('/xinfang')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=新房"
                 url = url.replace('loupan','xinfang')
             }else {
@@ -218,7 +220,7 @@ $(function(){
                     if (data.total>0){
                         $('#automatedWord').empty().show();
                         for(var i = 0;i<data.list.length;i++){
-                            $('#automatedWord').append('<li id='+data.list[i].village_id+' class="click_work" >'+ data.list[i].villageName+' <em style="float: right; color: #bcbcbc;">'+data.list[i].house_property+'</em></li>');
+                            $('#automatedWord').append('<li id='+data.list[i].village_id+' class="click_work" >'+ data.list[i].village+' <em style="float: right; color: #bcbcbc;">'+data.list[i].house_property+'</em></li>');
                         }
                         $('.click_work').on('click',function(){
                             var word = $(this).text();
@@ -246,9 +248,10 @@ $(function(){
                                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                                 window.location.href = url+'/esf?keyword='+village
                             }
-                            if (house_property=='loupan'){
+                            if (url.indexOf('xinfang')>0||url.indexOf('loupan')>0){
                                 newHouseStorageArray.push(village);
                                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
+                                url = url.replace('xinfang','loupan')
                                 window.location.href = url+'/'+id+'.html'
                             }
                             if (house_property=='新房'&&url.indexOf('xinfang')==-1&&url.indexOf('loupan')==-1){
