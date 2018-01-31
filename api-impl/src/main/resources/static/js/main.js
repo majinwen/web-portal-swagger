@@ -316,36 +316,29 @@ function showfujian() {
         zhuge.track('导航_大首页',{'导航名称':'二手房','页面来源URL':window.location.href})
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
-            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                executed = true;
-                lon = r.point.lng;
-                lat = r.point.lat;
-                var point = new BMap.Point(lon, lat);//创建点坐标
-                var gc = new BMap.Geocoder();
-                gc.getLocation(point, function (rs) {
-                    location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
-                });
-            }
-            else {
-            }
+            executed = true;
+            lon = r.point.lng;
+            lat = r.point.lat;
+            var point = new BMap.Point(lon, lat);//创建点坐标
+            var gc = new BMap.Geocoder();
+            gc.getLocation(point, function (rs) {
+                location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
+            });
         });
     });
     $(".index-xiaoqu").click(function () {
         zhuge.track('导航_大首页',{'导航名称':'小区','页面来源URL':window.location.href})
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
-            if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                executed = true;
-                lon = r.point.lng;
-                lat = r.point.lat;
-                var point = new BMap.Point(lon, lat);//创建点坐标
-                var gc = new BMap.Geocoder();
-                gc.getLocation(point, function (rs) {
-                    location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
-                });
-            }
-            else {
-            }
+
+            executed = true;
+            lon = r.point.lng;
+            lat = r.point.lat;
+            var point = new BMap.Point(lon, lat);//创建点坐标
+            var gc = new BMap.Geocoder();
+            gc.getLocation(point, function (rs) {
+                location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
+            });
         });
     })
 
