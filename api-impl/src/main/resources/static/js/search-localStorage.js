@@ -134,6 +134,10 @@ $(function(){
         }
     }
 
+    var plotNum;
+    var esfNum;
+    var newHouseNum;
+
     function changeFn() {
 
         if ($(this).val() != null && $.trim($(this).val()) != '') {
@@ -157,14 +161,48 @@ $(function(){
                 esfStorageArray.push(_keyword);
                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                 location.href= router_city('/esf?keyword=') + $.trim($(this).val());
-            } else if(_localHref.indexOf('loupan')>0){
+            } else if(_localHref.indexOf('loupan')>0||_localHref.indexOf('xinfang')>0){
 
                 newHouseStorageArray.push(_keyword);
                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
+            }else {
+                if (_keyword!=null&&_keyword!=''){
+                    $('#automatedWord').addClass('none');
+                    if (newHouseNum>0){
+                        $('#indexWord').append('<li id="3" class="click_index" >'+'新房'+' <em style="float: right; color: #bcbcbc;">约'+newHouseNum+'条></em></li>');
+                    }
+                    if (esfNum>0){
+                        $('#indexWord').append('<li id="2" class="click_index" >'+'二手房'+' <em style="float: right; color: #bcbcbc;">约'+esfNum+'条></em></li>');
+                    }
+                    if (plotNum>0){
+                        $('#indexWord').append('<li id="1" class="click_index" >'+'小区'+' <em style="float: right; color: #bcbcbc;">约'+plotNum+'条></em></li>');
+                    }
+
+                    $('.click_index').on('click',function () {
+                        var id = $(this).attr('id')
+                        var url = window.location.href;
+                        if(id == 1){
+                            plotStorageArray.push(_keyword);
+                            localStorage.setItem('plot', JSON.stringify(plotStorageArray));
+                            window.location.href= url+'/xiaoqu?keyword='+_keyword
+                        }
+                        if(id == 2){
+                            esfStorageArray.push(_keyword);
+                            localStorage.setItem('esf', JSON.stringify(esfStorageArray));
+                            window.location.href = url+'/esf?keyword='+_keyword
+                        }
+                        if(id == 3){
+                            newHouseStorageArray.push(_keyword);
+                            localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
+                            window.location.href = url+'/loupan?keyword='+_keyword
+                        }
+                    })
+                }
             }
         }
     }
+
 
     /**
      * 清除历史记录
@@ -190,6 +228,9 @@ $(function(){
      */
     $('.key-words').on('input',function () {
         var _keyword = $('.key-words').val();
+
+        $('#automatedWord').removeClass('none')
+        $('#indexWord').html('')
 
         if (_keyword=='') { $('#automatedWord').hide(); return };
         if (_keyword!=null&&_keyword.length>0){
@@ -218,6 +259,9 @@ $(function(){
                 dataType:'json',
                 success: function (data) {
                     if (data.total>0){
+                        plotNum = data.plotNum;
+                        esfNum = data.esfNum;
+                        newHouseNum = data.newHouseNum;
                         $('#automatedWord').empty().show();
                         for(var i = 0;i<data.list.length;i++){
                             $('#automatedWord').append('<li id='+data.list[i].village_id+' class="click_work" >'+ data.list[i].village+' <em style="float: right; color: #bcbcbc;">'+data.list[i].house_property+'</em></li>');
@@ -231,12 +275,12 @@ $(function(){
                             if (url.indexOf('xiaoqu')>0){
                                 plotStorageArray.push(village);
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = url+'?keyword='+village
+                                window.location.href = url+'/'+id+'.html'
                             }
                             if (house_property=='小区'&&url.indexOf('xiaoqu')==-1){
                                 plotStorageArray.push(village);
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = url+'/xiaoqu?keyword='+village
+                                window.location.href = url+'/xiaoqu/'+id+'.html'
                             }
                             if (url.indexOf('esf')>0){
                                 esfStorageArray.push(village);

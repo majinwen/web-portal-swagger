@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -14,7 +15,7 @@ public class PartialMatchingController {
     @Autowired
     private PartialMatchingService partialMatchingService;
 
-    Map searchMap = null;
+    Map searchMap = new HashMap();
 
     @RequestMapping("/search")
     @ResponseBody
@@ -40,7 +41,7 @@ public class PartialMatchingController {
 
     @RequestMapping("/esf/search")
     @ResponseBody
-    public Map esfPartialMatchingEsf(String keyword,String houseProperty){
+    public Map esfPartialMatching(String keyword,String houseProperty){
         try {
             searchMap = partialMatchingService.search(keyword,houseProperty);
         }catch (Exception e){
@@ -51,7 +52,7 @@ public class PartialMatchingController {
 
     @RequestMapping("/xinfang/search")
     @ResponseBody
-    public Map newHousePartialMatchingLoupan(String keyword,String houseProperty){
+    public Map newHousePartialMatching(String keyword,String houseProperty){
         try {
             searchMap = partialMatchingService.search(keyword,houseProperty);
         }catch (Exception e){
