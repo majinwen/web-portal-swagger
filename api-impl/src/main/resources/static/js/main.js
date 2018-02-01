@@ -3,10 +3,7 @@
  * @type {string}
  * @private
  */
-var idwidth;
 $(function () {
-    idwidth = window.document.documentElement.getBoundingClientRect().width;
-    scaleImg(idwidth);             // 大首页图片拖拽
 
     //describeAllShow();      // 描述展示全部
 
@@ -17,7 +14,7 @@ $(function () {
     houseTypeState();       // 户型类型切换
 
     textSlider();           // 首页头条公告滚动
-
+    
     $('.header-user').click(function () {
         userSideNav();      // 个人中心导航
     });
@@ -37,14 +34,6 @@ $(function () {
     });
 });
 
-$(window).resize(function () {
-    idwidth = window.document.documentElement.getBoundingClientRect().width;
-    if (idwidth / dpr > 540) {
-        idwidth = 540 * dpr
-    }
-    scaleImg(idwidth);
-});
-
 function moreInfoClick() {
     $('.module-header-message h3').click(function () {
         if ($(this).text()=="配套地图"){
@@ -53,48 +42,6 @@ function moreInfoClick() {
             });
         }
         $(this).parent().find('a').click();
-    });
-}
-
-function scaleImg(idWidth) {
-
-    if (0 == $('.scaleImg').length) {
-        return;
-    }
-    var mybody = document.getElementsByTagName('body')[0];
-    var startX, startY, moveEndX, moveEndY, X, Y, base;
-    // var idWidth = document.body.clientWidth;
-    var idHeight = (idWidth * 3) / 5;
-    $('.scaleImg').height(idHeight + 'px');
-    $('.scaleImg').width(idWidth + 'px');
-    mybody.addEventListener('touchstart', function(e) {
-        // e.preventDefault();
-        startX = e.touches[0].pageX;
-        startY = e.touches[0].pageY;
-    }, false);
-    mybody.addEventListener('touchmove', function(e) {
-        // e.preventDefault();
-        moveEndX = e.changedTouches[0].pageX;
-        moveEndY = e.changedTouches[0].pageY;
-        X = moveEndX - startX;
-        Y = moveEndY - startY;
-        if( Math.abs(Y) > Math.abs(X) && Y > 0) {// down
-            base = Y / 1000 + 1;
-            $('.scaleImg').css({
-                'width': idWidth * base,
-                'height': idHeight * base,
-                'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
-            });
-        }
-
-    });
-
-    mybody.addEventListener('touchend', function(e) {
-        $('.scaleImg').animate({
-            "width": idWidth,
-            "height": idHeight,
-            'margin-left': 0
-        }, 100);
     });
 }
 
@@ -154,13 +101,13 @@ function carouselSwiper() {
 }
 
 function initphoto(a, i, url) {
-    console.log(url);
-    if(url.indexOf("/xiaoqu") > 0){
-        zhuge.track("小区-点击图片");
-    }else{
-        zhuge.track('新房-点击图片');
+    if (typeof url != 'undefined') {
+        if (url.indexOf("/xiaoqu") > 0) {
+            zhuge.track("小区-点击图片");
+        } else {
+            zhuge.track('新房-点击图片');
+        }
     }
-
 
     if (typeof i == 'undefined') {
         i = 0;
@@ -313,7 +260,7 @@ function showfujian() {
     var executed = false;
 
     $(".index-esf").click(function () {
-        zhuge.track('导航_大首页',{'导航名称':'二手房','页面来源URL':window.location.href})
+        zhuge.track('导航_大首页', {'导航名称': '二手房', '页面来源URL': window.location.href});
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -326,12 +273,10 @@ function showfujian() {
                     location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
                 });
             }
-            else {
-            }
         });
     });
     $(".index-xiaoqu").click(function () {
-        zhuge.track('导航_大首页',{'导航名称':'小区','页面来源URL':window.location.href})
+        zhuge.track('导航_大首页', {'导航名称': '小区', '页面来源URL': window.location.href});
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
@@ -343,8 +288,6 @@ function showfujian() {
                 gc.getLocation(point, function (rs) {
                     location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
                 });
-            }
-            else {
             }
         });
     })
