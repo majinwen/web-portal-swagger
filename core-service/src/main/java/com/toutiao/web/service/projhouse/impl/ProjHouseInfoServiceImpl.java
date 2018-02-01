@@ -65,7 +65,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-           boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
+            boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("1.6", DistanceUnit.KILOMETERS));
             srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
 
@@ -130,11 +130,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             String key = null;
             //关键字搜索
             if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
-                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                         .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
-                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
-                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                         .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
@@ -273,6 +273,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             if (projHouseInfoRequest.getPageNum() != null && projHouseInfoRequest.getPageNum() > 1) {
                 pageNum = projHouseInfoRequest.getPageNum();
             }
+            if (projHouseInfoRequest.getPageSize() != null && projHouseInfoRequest.getPageSize()>= 10) {
+                pageSize = projHouseInfoRequest.getPageSize();
+            }
+
 //            System.out.println(booleanQueryBuilder);
 
             if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
@@ -310,11 +314,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
                 if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                     //小区坐标
+                    //小区坐标
                     instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                     instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 }
                 instance.setTotal(hits.totalHits);
+                instance.setPageNum(projHouseInfoRequest.getPageNum());
                 houseList.add(instance);
             }
             if (houseList!=null&&houseList.size()>0){
@@ -339,6 +344,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             int pageSize = 10;
             if (projHouseInfoRequest.getPageNum() != null && projHouseInfoRequest.getPageNum() > 1) {
                 pageNum = projHouseInfoRequest.getPageNum();
+            }
+            if (projHouseInfoRequest.getPageSize()!=null&&projHouseInfoRequest.getPageSize()>10){
+                pageSize = projHouseInfoRequest.getPageSize();
             }
 
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
@@ -372,6 +380,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo < 10 && reslocationinfo>0){
@@ -388,6 +397,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                     SearchResponse searchresponse = null;
@@ -411,6 +421,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(esfhits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo == 0){
@@ -436,6 +447,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                         }
                         instance.setTotal(esfhits.totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }

@@ -238,33 +238,33 @@
                 <a onclick="plotDetailInfo_1(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode)+'.html'}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
             </div>
         <ul class="tilelist row">
-                <li>
-                    <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
-                            </#if>
-                            <div class="picture-box">
-                                <#assign item=houseDetail['plotPhoto']>
-                                <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
-                            </div>
-                            <div id="tilePlotDesc" class="tilelist-content">
-                                <h4>
-                                    <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
-                                </h4>
-                                <p>
-                                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
-                                        <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
-                                    </#if>
-                                    <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                                    <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
-                                    <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
-                                </p>
-                                <p>
-                                    <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                                        参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
-                                    </#if>
-                                </p>
-                            </div>
-                        </a>
-        </li>
+        <li>
+        <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
+        </#if>
+        <div class="picture-box">
+            <#assign item=houseDetail['plotPhoto']>
+            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+        </div>
+        <div id="tilePlotDesc" class="tilelist-content">
+            <h4>
+                <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
+            </h4>
+            <p>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                    <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
+                </#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
+                <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
+            </p>
+            <p>
+                <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
+                    参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                </#if>
+            </p>
+        </div>
+    </a>
+    </li>
     </ul>
     </section>
 </div>
@@ -316,11 +316,11 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                        <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
-                            <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
-                            <#if map.room?exists&&map.hall?exists>
-                            <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
-                        </em>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                            </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
@@ -370,8 +370,6 @@
 </div>
 </#if>
 <!-------- photoswipe -------->
-<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
@@ -384,23 +382,20 @@
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
-    });
+    })
     zhuge.track('二手房-进入二手房详情页', {
         '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
         '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
-        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
-        '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
-        '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
-            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
             "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
             "位置": "经纪人描述旁"
         }, function () {
@@ -411,7 +406,6 @@
     $(".detail-contact-content").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
-            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
             "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
             "位置": "底部"
         }, function () {
@@ -488,6 +482,29 @@
         });
         return false;
     })
+
+    var page = ${pageNum}
+    var houseId = ${houseId}
+            $(document).ready(function (e) {
+                if (window.history && window.history.pushState) {
+                    $(window).on('popstate', function () {
+                        var href = document.referrer
+                        if(href.indexOf('/esf')>0){
+                            if(href.split('&').length>1&&href.split('&')[href.split('&').length-1].split('=')[0]=='pageNum'){
+                                var len = href.split('&')[href.split('&').length-1].length
+                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
+                                window.location.href=lianjie+'pageNum='+page;
+                            }else if (href.split('&').length>1){
+                                window.location.href=href+'&pageNum='+page;
+                            }/*else if (href.split('?').length>1){
+                        window.location.href=href+'&pageNum='+page;
+                    }*/
+                        }
+                    });
+                }
+                window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+                window.history.forward(1);
+            });
 </script>
 </body>
 </html>
