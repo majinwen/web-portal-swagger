@@ -170,13 +170,13 @@ $(function(){
                 if (_keyword!=null&&_keyword!=''){
                     $('#automatedWord').addClass('none');
                     if (newHouseNum>0){
-                        $('#indexWord').append('<li id="3" class="click_index" >'+'新房'+' <em style="float: right; color: #bcbcbc;">约'+newHouseNum+'条></em></li>');
+                        $('#indexWord').append('<li id="3" class="click_index" >'+'新房'+/*' <em style="float: right; color: #bcbcbc;">约'+newHouseNum+'条></em>*/'</li>');
                     }
                     if (esfNum>0){
-                        $('#indexWord').append('<li id="2" class="click_index" >'+'二手房'+' <em style="float: right; color: #bcbcbc;">约'+esfNum+'条></em></li>');
+                        $('#indexWord').append('<li id="2" class="click_index" >'+'二手房'+/*' <em style="float: right; color: #bcbcbc;">约'+esfNum+'条></em>*/'</li>');
                     }
                     if (plotNum>0){
-                        $('#indexWord').append('<li id="1" class="click_index" >'+'小区'+' <em style="float: right; color: #bcbcbc;">约'+plotNum+'条></em></li>');
+                        $('#indexWord').append('<li id="1" class="click_index" >'+'小区'+/*' <em style="float: right; color: #bcbcbc;">约'+plotNum+'条></em>*/'</li>');
                     }
 
                     $('.click_index').on('click',function () {
