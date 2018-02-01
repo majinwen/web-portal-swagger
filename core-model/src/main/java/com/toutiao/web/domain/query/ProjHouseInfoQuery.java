@@ -95,7 +95,7 @@ public class ProjHouseInfoQuery {
     /**
      * 页码
      */
-    private Integer pageNum;
+    private Integer pageNum = 1;
     /**
      * 每页数量
      */
