@@ -496,9 +496,9 @@
                                 window.location.href=lianjie+'pageNum='+page;
                             }else if (href.split('&').length>1){
                                 window.location.href=href+'&pageNum='+page;
-                            }/*else if (href.split('?').length>1){
-                        window.location.href=href+'&pageNum='+page;
-                    }*/
+                            }else if (href.split('?').length>1){
+                                window.location.href=href+'&pageNum='+page;
+                            }
                         }
                     });
                 }
