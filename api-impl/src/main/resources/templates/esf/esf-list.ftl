@@ -320,8 +320,12 @@
 <script>
     $(function () {
 
-        var referer = document.referrer||''
-        if(referer.indexOf(".toutiao.com")>0){
+        var referer = window.location.href;
+        if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
+                referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
+                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0){
+
+        }else{
             zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
@@ -336,11 +340,12 @@
                     });
                 }
             });
-        }else if(referer.indexOf("/xiaoqu")>0){
-            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer})
         }
 
         var url = document.referrer;
+        if(url.indexOf("/xiaoqu")>0){
+            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer})
+        }
         if(url.indexOf("/esf") > 0){
             if(GetQueryString("keyword")!='undefined'){
                 zhuge.track("搜索_二手房",{
