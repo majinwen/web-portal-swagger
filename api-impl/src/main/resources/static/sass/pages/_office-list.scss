@@ -222,6 +222,8 @@ $textGrayColor: #888;
     width: rem(112);
     height: rem(112);
     @include bg-image('/static/images/global/base_sort_icon');
+    -webkit-background-size: contain;
+    background-size: contain;
 }
 .sort-content-box {
     display: none;

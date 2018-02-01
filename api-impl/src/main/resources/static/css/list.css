@@ -1099,7 +1099,9 @@ body {
   width: 1.4933333333rem;
   height: 1.4933333333rem;
   background-image: url("/static/images/global/base_sort_icon.png");
-  background-repeat: no-repeat; }
+  background-repeat: no-repeat;
+  -webkit-background-size: contain;
+  background-size: contain; }
   @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
     .sort-icon {
       background-image: url("/static/images/global/base_sort_icon@2x.png"); } }
