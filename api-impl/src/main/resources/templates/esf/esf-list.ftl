@@ -319,26 +319,24 @@
 </script>
 <script>
     $(function () {
-
         var referer = window.location.href;
         if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
                 referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
-                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0){
+                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0
+                ||referer.indexOf("keyword")>0){
 
         }else{
             zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
-                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    executed = true;
-                    lon = r.point.lng;
-                    lat = r.point.lat;
-                    var point = new BMap.Point(lon, lat);//创建点坐标
-                    var gc = new BMap.Geocoder();
-                    gc.getLocation(point, function (rs) {
-                        location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
-                    });
-                }
+                executed = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function (rs) {
+                    location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
+                });
             });
         }
 
