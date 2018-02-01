@@ -503,11 +503,10 @@
                         var lianjie = href.split('pageNum')[0]
                         window.location.href=lianjie+'id='+houseId+'&pageNum='+page;
                     }else if (href.split('&').length>1){
-//                        window.location.href=href+'&pageNum='+page+'&id='+houseId;
                         window.location.href=href+'&pageNum='+page;
-                    }/*else if (href.split('?').length>1){
+                    }else if (href.split('?').length>1){
                         window.location.href=href+'&pageNum='+page;
-                    }*/
+                    }
                 }
             });
         }
