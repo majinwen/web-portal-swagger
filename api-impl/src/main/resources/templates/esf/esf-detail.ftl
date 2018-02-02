@@ -496,9 +496,10 @@
                                 window.location.href=lianjie+'pageNum='+page;
                             }else if (href.split('&').length>1){
                                 window.location.href=href+'&pageNum='+page;
-                            }else if (href.split('?').length>1){
-                                window.location.href=href+'&pageNum='+page;
-                            }
+                            }else if (href.split('?').length>1&&href.split('?')[href.split('?').length-1].split('=')[0]=='pageNum'){
+                                var len = href.split('?')[href.split('?').length-1].length
+                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
+                                window.location.href=lianjie+'pageNum='+page;
                         }
                     });
                 }

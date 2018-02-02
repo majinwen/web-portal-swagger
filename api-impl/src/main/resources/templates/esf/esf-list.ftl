@@ -340,10 +340,10 @@
                 gc.getLocation(point, function (rs) {
                     location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
                 });
+
             },);
             setTimeout(location.replace = router_city('/esf')+"?pageNum=1",2000);
         }
-
 
         var url = document.referrer;
         if(url.indexOf("/xiaoqu")>0){
