@@ -102,9 +102,9 @@ function carouselSwiper() {
 
 function initphoto(a, i, url) {
     if (typeof url != 'undefined') {
-        if (url.indexOf("/xiaoqu") > 0) {
+        if(url.indexOf("/xiaoqu") > 0){
             zhuge.track("小区-点击图片");
-        } else {
+        }else{
             zhuge.track('新房-点击图片');
         }
     }
@@ -122,6 +122,7 @@ function initphoto(a, i, url) {
     });
     a = document.querySelectorAll(".pswp")[0];
     (new PhotoSwipe(a, PhotoSwipeUI_Default, b, {
+        history: false,
         index: i, addCaptionHTMLFn: function (a, b, c) {
             if (!a.title)return b.children[0].innerHTML = "", !1;
             b.children[0].innerHTML = a.title;

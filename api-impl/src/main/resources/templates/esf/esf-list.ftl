@@ -170,7 +170,7 @@
 <section id="result-section">
 <#if builds?exists><ul id="valueList">
     <#list builds as map>
-        <li><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?pageNum='+map.pageNum)}">
+        <li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">
             <div class="clear">
                 <div class="list-item-img-box">
                     <#assign item=map['housePhotoTitle']>
@@ -259,7 +259,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html?pageNum={{$value.pageNum}}')}">
+    <li id="{{$value.houseId}}"><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html?_esflit=1&pageNum={{$value.pageNum}}')}">
 
         <div class="clear">
             <div class="list-item-img-box">

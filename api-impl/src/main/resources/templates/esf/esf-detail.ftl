@@ -5,16 +5,20 @@
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/esf-detail.css?v=${staticversion}">
     <title><#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>  <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>${houseDetail.buildArea}
-        ㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
+        ㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}
+        厅</#if></title>
     <meta name="description"
           content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
+    <script type="text/javascript"
+            src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>" alt="">
+<img class="shareTopImg" height="0" width="0"
+     src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>"
+     alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -26,7 +30,8 @@
             </#list>
         <#else >
             <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                <img src="${staticurl}/images/global/tpzw_banner_image.png"
+                     data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
             </li>
         </#if>
         </ul>
@@ -151,7 +156,8 @@
                         </#if >
                     </#if>
                     </span></dd>
-                    <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}电梯<#else>暂无数据</#if></em></dd>
+                    <dd class="even-item">电梯：<em><#if houseDetail.elevatorName?exists>${houseDetail.elevatorName}
+                        电梯<#else>暂无数据</#if></em></dd>
                     <dd class="odd-item">类别：
                     <#if houseDetail.buildCategoryName?exists&& (houseDetail.buildCategoryName !='')>
                         <em>${houseDetail.buildCategoryName}</em>
@@ -164,7 +170,8 @@
                         暂无数据
                     </#if>
                     </dd>
-                    <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>暂无数据</#if></em>
+                    <dd class="even-item">建成年代：<em><#if houseDetail.year?exists>${houseDetail.year}年<#else>
+                        暂无数据</#if></em>
                     </dd>
                 <#if houseDetail.plotName?exists&&houseDetail.plotName!=''>
                     <dt>小区：
@@ -208,7 +215,8 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}"
+                     alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
@@ -230,12 +238,13 @@
 </div>
 </#if>
 <#if houseDetail.newcode?exists || houseDetail['plotPhoto']?exists|| houseDetail.plotName?exists|| houseDetail.plotdesc?exists>
-<div  class="module-bottom-fill">
+<div class="module-bottom-fill">
     <section>
         <#if houseDetail.newcode?exists>
-            <div  class="module-header-message">
+            <div class="module-header-message">
                 <h3>小区信息</h3>
-                <a onclick="plotDetailInfo_1(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode)+'.html'}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
+                <a onclick="plotDetailInfo_1(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode)+'.html'}"
+                   class="more-arrows">小区详情<i class="arrows-right"></i></a>
             </div>
         <ul class="tilelist row">
         <li>
@@ -243,7 +252,8 @@
         </#if>
         <div class="picture-box">
             <#assign item=houseDetail['plotPhoto']>
-            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+            <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img
+                    src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
         </div>
         <div id="tilePlotDesc" class="tilelist-content">
             <h4>
@@ -253,8 +263,10 @@
                 <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
                     <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
                 </#if>
-                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
+                <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em
+                        class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}
+                    户)</#if>
                 <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
             </p>
             <p>
@@ -275,7 +287,8 @@
         <#if houseDetail.newcode?exists>
             <div class="module-header-message">
                 <h3>配套地图</h3>
-                <a onclick="esf_map_1(this)" href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+                <a onclick="esf_map_1(this)" href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}"
+                   class="more-arrows"><i class="arrows-right"></i></a>
             </div>
         </#if>
         <a onclick="esf_map_2(this)" href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
@@ -284,7 +297,8 @@
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
                      alt="">
             <#else >
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16"
+                     alt="">
             </#if>
         </a>
     </section>
@@ -316,10 +330,12 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}
+                                万/</#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
                                 <#if map.room?exists&&map.hall?exists>
-                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>
+                                    室</#if>
                             </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
@@ -341,7 +357,8 @@
                 <div class="picture-box">
                     <#if plotInfo['photo']?exists>
                         <#assign plotImage=plotInfo['photo'] >
-                        <#if plotImage[0]?exists><img src="${qiniuimage}/${plotImage[0]}-tt400x300" alt="${plotInfo.rc}">
+                        <#if plotImage[0]?exists><img src="${qiniuimage}/${plotImage[0]}-tt400x300"
+                                                      alt="${plotInfo.rc}">
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="${plotInfo.rc}">
                         </#if >
@@ -386,14 +403,14 @@
         }
     })
     zhuge.track('二手房-进入二手房详情页', {
-        '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
-        '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
-        '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
-        '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
-    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
-        '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
-        '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
-        'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
+        '区域': '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
+        '商圈': '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
+        '小区名称': '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
+        '总价': '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>' + '万',
+    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+ "㎡"</#if>,
+        '户型': '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
+        '经济公司': '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+        'ID': '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
@@ -418,11 +435,11 @@
     $("#nearbynewesf").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('二手房-点击查看推荐房源', {
-            "户型":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[1],
-            "面积":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[0]+"㎡",
-            "价格":link.find('.tilelist-content').find('em').text().split("万/")[0]+"万",
-            "距离":link.find('.bottom-text').text(),
-            "页面位置序号":link.index()+1
+            "户型": link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[1],
+            "面积": link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[0] + "㎡",
+            "价格": link.find('.tilelist-content').find('em').text().split("万/")[0] + "万",
+            "距离": link.find('.bottom-text').text(),
+            "页面位置序号": link.index() + 1
         }, function () {
             location.href = link.find('a').attr('href');
         });
@@ -431,14 +448,15 @@
     $("#nearbypLOT").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('二手房-点击查看推荐小区', {
-            "小区名称":link.find('.tilelist-content').find('.cont-first').text(),
-            "价格":link.find('.tilelist-content').find('.cont-last').text(),
-            "页面位置序号":link.index()+1
+            "小区名称": link.find('.tilelist-content').find('.cont-first').text(),
+            "价格": link.find('.tilelist-content').find('.cont-last').text(),
+            "页面位置序号": link.index() + 1
         }, function () {
             location.href = link.find('a').attr('href');
         });
         return false;
     })
+
     function plotDetailInfo_1(a) {
         var link = $(a);
         zhuge.track('二手房-点击查看小区详情', {
@@ -448,6 +466,7 @@
         });
         return false;
     }
+
     function plotDetailInfo_2(a) {
         var link = $(a);
         zhuge.track('二手房-点击查看小区详情', {
@@ -457,6 +476,7 @@
         });
         return false;
     }
+
     function esf_map_1(a) {
         var link = $(a);
         zhuge.track('二手房-点击配套地图', {
@@ -466,6 +486,7 @@
         });
         return false;
     }
+
     function esf_map_2(a) {
         var link = $(a);
         zhuge.track('二手房-点击配套地图', {
@@ -475,10 +496,11 @@
         });
         return false;
     }
-    $("#traffic_info .primary-distance").on('click','a',function () {
+
+    $("#traffic_info .primary-distance").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击查看交通详情', {
-            "二手房-点击查看交通详情":link.attr('href')
+            "二手房-点击查看交通详情": link.attr('href')
         }, function () {
             location.href = link.attr('href');
         });
@@ -487,28 +509,75 @@
 
     var page = ${pageNum}
     var houseId = ${houseId}
-            $(document).ready(function (e) {
-                if (window.history && window.history.pushState) {
-                    $(window).on('popstate', function () {
-                        var href = document.referrer
-                        if(href.indexOf('/esf')>0){
-                            if(href.split('&').length>1&&href.split('&')[href.split('&').length-1].split('=')[0]=='pageNum'){
-                                var len = href.split('&')[href.split('&').length-1].length
-                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
-                                window.location.href=lianjie+'pageNum='+page;
-                            }else if (href.split('&').length>1){
-                                window.location.href=href+'&pageNum='+page;
-                            }else if (href.split('?').length>1&&href.split('?')[href.split('?').length-1].split('=')[0]=='pageNum' && href.indexOf('&')==-1){
-                                var len = href.split('?')[href.split('?').length-1].length
-                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
-                                window.location.href=lianjie+'pageNum='+page;
-                            }
-                        }
-                    });
+        function SetPageNumParam(url) {
+            url = url || '';
+            var pre = url.split('?');
+            var path = pre[0];
+            var params = pre.length > 1 ? pre[1].split('&') : [];
+            var match = false;
+            for (var i = 0; i < params.length; i++) {
+                if (params[i].indexOf('pageNum=') == 0) {
+                    params[i] = 'pageNum=' + page;
+                    match = true;
+                    break;
                 }
-                window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
-                window.history.forward(1);
-            });
+            }
+            if (!match) {
+                params.push('pageNum=' + page)
+            }
+            return path + '?' + params.join('&');
+
+        }
+    var href = document.referrer || '/bj/esf';
+    if (${reffer}>
+    0
+    )
+    {
+        $(function () {
+            var index = 0;
+            var historyLength = window.history.length;
+            var initHash = window.location.hash;
+            var hashtimer = setInterval(function () {
+                initHash = window.location.hash;
+                var newurl = window.location.href.replace(/#.*/, '');
+                newurl = newurl + '#hackdetail' + index;
+                window.location.href = newurl;
+                if (historyLength < window.history.length) {
+                    clearInterval(hashtimer);
+                    var timer = setInterval(function () {
+                        if (initHash == window.location.hash) {
+                            window.location.replace(SetPageNumParam(href));
+                            clearInterval(timer);
+                        }
+                    }, 50)
+                }
+                index = index + 1;
+            }, 100);
+        });
+    }
+
+    //            $(document).ready(function (e) {
+    //                if (window.history && window.history.pushState) {
+    //                    $(window).on('popstate', function () {
+    //                        var href = document.referrer
+    //                        if(href.indexOf('/esf')>0){
+    //                            if(href.split('&').length>1&&href.split('&')[href.split('&').length-1].split('=')[0]=='pageNum'){
+    //                                var len = href.split('&')[href.split('&').length-1].length
+    //                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
+    //                                window.location.href=lianjie+'pageNum='+page;
+    //                            }else if (href.split('&').length>1){
+    //                                window.location.href=href+'&pageNum='+page;
+    //                            }else if (href.split('?').length>1&&href.split('?')[href.split('?').length-1].split('=')[0]=='pageNum' && href.indexOf('&')==-1){
+    //                                var len = href.split('?')[href.split('?').length-1].length
+    //                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
+    //                                window.location.href=lianjie+'pageNum='+page;
+    //                            }
+    //                        }
+    //                    });
+    //                }
+    //                window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+    //                window.history.forward(1);
+    //            });
 </script>
 </body>
 </html>
