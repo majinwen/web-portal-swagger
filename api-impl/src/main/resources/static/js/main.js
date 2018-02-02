@@ -272,6 +272,10 @@ function showfujian() {
                 location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
             });
         });
+
+        setTimeout(function(){
+            location.href = router_city('/esf')+"?pageNum=1";
+        },2000);
     });
     $(".index-xiaoqu").click(function () {
         zhuge.track('导航_大首页', {'导航名称': '小区', '页面来源URL': window.location.href});
@@ -286,6 +290,9 @@ function showfujian() {
                 location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
             });
         });
+        setTimeout(function(){
+            location.href = router_city('/xiaoqu');
+        },2000);
     })
 
 }

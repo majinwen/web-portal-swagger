@@ -340,11 +340,16 @@
                 gc.getLocation(point, function (rs) {
                     location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
                 });
-            });
+            },);
+            setTimeout(location.replace = router_city('/esf')+"?pageNum=1",2000);
         }
 
 
         var url = document.referrer;
+        if(url.indexOf("/xiaoqu")>0){
+            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer})
+        }
+
         if(url.indexOf("/esf") > 0){
             if(GetQueryString("keyword")!='undefined'){
                 zhuge.track("搜索_二手房",{
