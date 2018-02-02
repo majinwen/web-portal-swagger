@@ -370,6 +370,8 @@
 </div>
 </#if>
 <!-------- photoswipe -------->
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/photoswipe-ui-default.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
