@@ -149,79 +149,81 @@
     </div>
 </section>
 <section id="result-section">
-    <#if villageList?exists><ul id="valueList">
-        <#list villageList as plot>
-            <li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
-            <#--<input type="hidden" name="total" value="${plot.total}">-->
-                <div class="clear">
-                    <#if plot['photo']?exists>
-                        <div class="list-item-img-box">
-                            <#if plot['photo']?exists>
-                                <#assign photo = plot['photo']>
-                                <#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">
-                                    <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
-                                </#if>
-                            </#if>
-                        </div>
-                    </#if>
-                    <div class="list-item-cont">
-                        <h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>
-                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>
-                        <#if plot['metroWithPlotsDistance']?exists>
-                            <#assign map = plot['metroWithPlotsDistance']>
-                            <#if plot['key']?exists>
-                                <#if map[plot['key']]?exists>
-                                    <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance">
-                                        <i class="icon"></i>
-                                        <#if split[2]?number gt 1000>
-                                            <#assign x = split[2]?number/1000>
-                                            距离${split[1]}[${split[0]}] ${x?string("#.#")}km
-                                        <#else>
-                                            距离${split[1]}[${split[0]}] ${split[2]}m
-                                        </#if>
-                                    </p>
-                                <#else>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>
-                                        <#if plot['area']?exists&&plot['area']!=''>
-                                        ${plot['area']}${'-'+plot['tradingArea']}
-                                        <#else>
-                                            <#if plot['tradingArea']?exists&&plot['tradingArea']!=''>
-                                            ${plot['tradingArea']}
-                                            </#if>
-                                        </#if>
-                                    </p>
-                                </#if>
-                            <#else>
-                                <#if plot['tradingArea']?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
-                                </#if>
-                            </#if>
-                        <#else>
-                            <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
-                            </#if>
-                        </#if>
-                        <div class="cont-block-4 house-labelling gray">
-                            <#if plot['label']?exists>
-                                <#assign item =  plot['label']>
-                                <#list item as itemValue>
-                                    <#if itemValue?exists>
-                                        <#if itemValue_index lt 3>
-                                            <span>${itemValue}</span>
-                                        </#if>
-                                    </#if>
-                                </#list>
-                            </#if>
-                        </div>
-                        <div class="cont-block-price plot">
-                            <em>${plot['avgPrice']}元/㎡</em>
-                        </div>
-                    </div>
-                </div>
-            </a></li>
-        </#list>
-    </ul></#if>
+<ul id="valueList">
+    <#--<#if villageList?exists>-->
+        <#--<#list villageList as plot>-->
+            <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->
+            <#--&lt;#&ndash;<input type="hidden" name="total" value="${plot.total}">&ndash;&gt;-->
+                <#--<div class="clear">-->
+                    <#--<#if plot['photo']?exists>-->
+                        <#--<div class="list-item-img-box">-->
+                            <#--<#if plot['photo']?exists>-->
+                                <#--<#assign photo = plot['photo']>-->
+                                <#--<#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">-->
+                                    <#--<#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">-->
+                                <#--</#if>-->
+                            <#--</#if>-->
+                        <#--</div>-->
+                    <#--</#if>-->
+                    <#--<div class="list-item-cont">-->
+                        <#--<h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>-->
+                        <#--<p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>-->
+                        <#--<#if plot['metroWithPlotsDistance']?exists>-->
+                            <#--<#assign map = plot['metroWithPlotsDistance']>-->
+                            <#--<#if plot['key']?exists>-->
+                                <#--<#if map[plot['key']]?exists>-->
+                                    <#--<#assign split=map[plot['key']]?split("$")/>-->
+                                    <#--<p class="cont-block-3 distance">-->
+                                        <#--<i class="icon"></i>-->
+                                        <#--<#if split[2]?number gt 1000>-->
+                                            <#--<#assign x = split[2]?number/1000>-->
+                                            <#--距离${split[1]}[${split[0]}] ${x?string("#.#")}km-->
+                                        <#--<#else>-->
+                                            <#--距离${split[1]}[${split[0]}] ${split[2]}m-->
+                                        <#--</#if>-->
+                                    <#--</p>-->
+                                <#--<#else>-->
+                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>-->
+                                        <#--<#if plot['area']?exists&&plot['area']!=''>-->
+                                        <#--${plot['area']}${'-'+plot['tradingArea']}-->
+                                        <#--<#else>-->
+                                            <#--<#if plot['tradingArea']?exists&&plot['tradingArea']!=''>-->
+                                            <#--${plot['tradingArea']}-->
+                                            <#--</#if>-->
+                                        <#--</#if>-->
+                                    <#--</p>-->
+                                <#--</#if>-->
+                            <#--<#else>-->
+                                <#--<#if plot['tradingArea']?exists>-->
+                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
+                                <#--</#if>-->
+                            <#--</#if>-->
+                        <#--<#else>-->
+                            <#--<#if plot['tradingArea']?exists>-->
+                                <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                        <#--<div class="cont-block-4 house-labelling gray">-->
+                            <#--<#if plot['label']?exists>-->
+                                <#--<#assign item =  plot['label']>-->
+                                <#--<#list item as itemValue>-->
+                                    <#--<#if itemValue?exists>-->
+                                        <#--<#if itemValue_index lt 3>-->
+                                            <#--<span>${itemValue}</span>-->
+                                        <#--</#if>-->
+                                    <#--</#if>-->
+                                <#--</#list>-->
+                            <#--</#if>-->
+                        <#--</div>-->
+                        <#--<div class="cont-block-price plot">-->
+                            <#--<em>${plot['avgPrice']}元/㎡</em>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</div>-->
+            <#--</a></li>-->
+        <#--</#list>-->
+    <#--</#if>-->
+    </ul>
     <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -318,7 +320,7 @@
             "参考均价":link.find('div.cont-block-price.plot').find('em').text(),
             "标签":link.find('div.cont-block-4.house-labelling.gray').text(),
             "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
-            "第几屏":pageNum,
+            "第几屏":getDefaultPageNum(),
             "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');

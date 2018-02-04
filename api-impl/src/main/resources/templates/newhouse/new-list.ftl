@@ -152,9 +152,9 @@
 </section>
 <section id="result-section">
     <ul id="valueList">
-    <#if builds?exists>
+    <#--<#if builds?exists>
         <#list builds as map>
-            <#--<input type="hidden" name="total" value="${total}">-->
+            &lt;#&ndash;<input type="hidden" name="total" value="${total}">&ndash;&gt;
             <li ><a id="${total}" class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
@@ -228,7 +228,8 @@
                 </#if>
             </a></li>
         </#list>
-    </#if></ul>
+    </#if>-->
+    </ul>
     <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 
