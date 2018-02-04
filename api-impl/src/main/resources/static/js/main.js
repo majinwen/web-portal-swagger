@@ -275,7 +275,7 @@ function showfujian() {
         });
 
         setTimeout(function(){
-            location.href = router_city('/esf')+"?pageNum=1";
+            location.href = router_city('/esf')/*+"?pageNum=1"*/;
         },2000);
     });
     $(".index-xiaoqu").click(function () {

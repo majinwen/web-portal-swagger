@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../staticHeader.ftl">
+<#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>头条房产看二手房小区</title>
@@ -9,7 +9,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-    <#include "../StatisticsHeader.ftl">
+<#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
@@ -107,17 +107,17 @@
                         <#--<span data-info="4">砖楼</span>-->
                         </dd>
                     </dl>
-                    <#--<dl>-->
-                        <#--<dt data-type="saleType">销售状态</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">售完</span>-->
-                            <#--<span data-info="2">在售</span>-->
-                        <#--&lt;#&ndash;<span data-info="3">不在售</span>-->
-                        <#--<span data-info="4">出租</span>-->
-                        <#--<span data-info="5">待租</span>&ndash;&gt;-->
-                            <#--<span data-info="6">待售</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="saleType">销售状态</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">售完</span>-->
+                <#--<span data-info="2">在售</span>-->
+                <#--&lt;#&ndash;<span data-info="3">不在售</span>-->
+                <#--<span data-info="4">出租</span>-->
+                <#--<span data-info="5">待租</span>&ndash;&gt;-->
+                <#--<span data-info="6">待售</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
                     <dl>
                         <dt data-type="buildingFeature">楼盘特色</dt>
                         <dd>
@@ -129,16 +129,16 @@
                             <span data-info="6">高绿化</span>
                         </dd>
                     </dl>
-                    <#--<dl>-->
-                        <#--<dt data-type="deliverStyle">装修标准</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">毛坯</span>-->
-                            <#--<span data-info="2">普通装修</span>-->
-                            <#--<span data-info="3">精装修</span>-->
-                            <#--<span data-info="4">豪华装修</span>-->
-                            <#--<span data-info="5">其他</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="deliverStyle">装修标准</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">毛坯</span>-->
+                <#--<span data-info="2">普通装修</span>-->
+                <#--<span data-info="3">精装修</span>-->
+                <#--<span data-info="4">豪华装修</span>-->
+                <#--<span data-info="5">其他</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
@@ -149,79 +149,81 @@
     </div>
 </section>
 <section id="result-section">
-    <#if villageList?exists><ul id="valueList">
-        <#list villageList as plot>
-            <li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">
-            <#--<input type="hidden" name="total" value="${plot.total}">-->
-                <div class="clear">
-                    <#if plot['photo']?exists>
-                        <div class="list-item-img-box">
-                            <#if plot['photo']?exists>
-                                <#assign photo = plot['photo']>
-                                <#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">
-                                    <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
-                                </#if>
-                            </#if>
-                        </div>
-                    </#if>
-                    <div class="list-item-cont">
-                        <h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>
-                        <p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>
-                        <#if plot['metroWithPlotsDistance']?exists>
-                            <#assign map = plot['metroWithPlotsDistance']>
-                            <#if plot['key']?exists>
-                                <#if map[plot['key']]?exists>
-                                    <#assign split=map[plot['key']]?split("$")/>
-                                    <p class="cont-block-3 distance">
-                                        <i class="icon"></i>
-                                        <#if split[2]?number gt 1000>
-                                            <#assign x = split[2]?number/1000>
-                                            距离${split[1]}[${split[0]}] ${x?string("#.#")}km
-                                        <#else>
-                                            距离${split[1]}[${split[0]}] ${split[2]}m
-                                        </#if>
-                                    </p>
-                                <#else>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>
-                                        <#if plot['area']?exists&&plot['area']!=''>
-                                        ${plot['area']}${'-'+plot['tradingArea']}
-                                        <#else>
-                                            <#if plot['tradingArea']?exists&&plot['tradingArea']!=''>
-                                            ${plot['tradingArea']}
-                                            </#if>
-                                        </#if>
-                                    </p>
-                                </#if>
-                            <#else>
-                                <#if plot['tradingArea']?exists>
-                                    <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
-                                </#if>
-                            </#if>
-                        <#else>
-                            <#if plot['tradingArea']?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>
-                            </#if>
-                        </#if>
-                        <div class="cont-block-4 house-labelling gray">
-                            <#if plot['label']?exists>
-                                <#assign item =  plot['label']>
-                                <#list item as itemValue>
-                                    <#if itemValue?exists>
-                                        <#if itemValue_index lt 3>
-                                            <span>${itemValue}</span>
-                                        </#if>
-                                    </#if>
-                                </#list>
-                            </#if>
-                        </div>
-                        <div class="cont-block-price plot">
-                            <em>${plot['avgPrice']}元/㎡</em>
-                        </div>
-                    </div>
-                </div>
-            </a></li>
-        </#list>
-    </ul></#if>
+    <ul id="valueList">
+    <#--<#if villageList?exists>-->
+        <#--<#list villageList as plot>-->
+            <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->
+            <#--&lt;#&ndash;<input type="hidden" name="total" value="${plot.total}">&ndash;&gt;-->
+                <#--<div class="clear">-->
+                    <#--<#if plot['photo']?exists>-->
+                        <#--<div class="list-item-img-box">-->
+                            <#--<#if plot['photo']?exists>-->
+                                <#--<#assign photo = plot['photo']>-->
+                                <#--<#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">-->
+                                    <#--<#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">-->
+                                <#--</#if>-->
+                            <#--</#if>-->
+                        <#--</div>-->
+                    <#--</#if>-->
+                    <#--<div class="list-item-cont">-->
+                        <#--<h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>-->
+                        <#--<p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>-->
+                        <#--<#if plot['metroWithPlotsDistance']?exists>-->
+                            <#--<#assign map = plot['metroWithPlotsDistance']>-->
+                            <#--<#if plot['key']?exists>-->
+                                <#--<#if map[plot['key']]?exists>-->
+                                    <#--<#assign split=map[plot['key']]?split("$")/>-->
+                                    <#--<p class="cont-block-3 distance">-->
+                                        <#--<i class="icon"></i>-->
+                                        <#--<#if split[2]?number gt 1000>-->
+                                            <#--<#assign x = split[2]?number/1000>-->
+                                            <#--距离${split[1]}[${split[0]}] ${x?string("#.#")}km-->
+                                        <#--<#else>-->
+                                            <#--距离${split[1]}[${split[0]}] ${split[2]}m-->
+                                        <#--</#if>-->
+                                    <#--</p>-->
+                                <#--<#else>-->
+                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>-->
+                                        <#--<#if plot['area']?exists&&plot['area']!=''>-->
+                                        <#--${plot['area']}${'-'+plot['tradingArea']}-->
+                                        <#--<#else>-->
+                                            <#--<#if plot['tradingArea']?exists&&plot['tradingArea']!=''>-->
+                                            <#--${plot['tradingArea']}-->
+                                            <#--</#if>-->
+                                        <#--</#if>-->
+                                    <#--</p>-->
+                                <#--</#if>-->
+                            <#--<#else>-->
+                                <#--<#if plot['tradingArea']?exists>-->
+                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
+                                <#--</#if>-->
+                            <#--</#if>-->
+                        <#--<#else>-->
+                            <#--<#if plot['tradingArea']?exists>-->
+                                <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                        <#--<div class="cont-block-4 house-labelling gray">-->
+                            <#--<#if plot['label']?exists>-->
+                                <#--<#assign item =  plot['label']>-->
+                                <#--<#list item as itemValue>-->
+                                    <#--<#if itemValue?exists>-->
+                                        <#--<#if itemValue_index lt 3>-->
+                                            <#--<span>${itemValue}</span>-->
+                                        <#--</#if>-->
+                                    <#--</#if>-->
+                                <#--</#list>-->
+                            <#--</#if>-->
+                        <#--</div>-->
+                        <#--<div class="cont-block-price plot">-->
+                            <#--<em>${plot['avgPrice']}元/㎡</em>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</div>-->
+            <#--</a></li>-->
+        <#--</#list>-->
+    <#--</#if>-->
+    </ul>
     <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -318,7 +320,7 @@
             "参考均价":link.find('div.cont-block-price.plot').find('em').text(),
             "标签":link.find('div.cont-block-4.house-labelling.gray').text(),
             "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
-            "第几屏":pageNum,
+            "第几屏":getDefaultPageNum(),
             "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');
