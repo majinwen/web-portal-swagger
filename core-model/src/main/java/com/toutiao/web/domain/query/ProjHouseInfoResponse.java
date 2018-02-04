@@ -184,7 +184,7 @@ public class ProjHouseInfoResponse {
     private String buildCategory;
 
     private String buildCategoryName;
-    
+
 
     /**
      * 建筑形式1：低层，2：多层，3：小高层，4：高层，5：超高层

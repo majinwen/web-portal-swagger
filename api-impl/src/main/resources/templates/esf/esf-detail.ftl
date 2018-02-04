@@ -491,28 +491,75 @@
 
     var page = ${pageNum}
     var houseId = ${houseId}
-    $(document).ready(function (e) {
-        if (window.history && window.history.pushState) {
-            $(window).on('popstate', function () {
-                var href = document.referrer
-                if(href.indexOf('/esf')>0){
-                    if(href.split('&').length>1&&href.split('&')[href.split('&').length-1].split('=')[0]=='pageNum'){
-                        var len = href.split('&')[href.split('&').length-1].length
-                        var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
-                        window.location.href=lianjie+'pageNum='+page;
-                    }else if (href.split('&').length>1){
-                        window.location.href=href+'&pageNum='+page;
-                    }else if (href.split('?').length>1&&href.split('?')[href.split('?').length-1].split('=')[0]=='pageNum'){
-                        var len = href.split('?')[href.split('?').length-1].length
-                        var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
-                        window.location.href=lianjie+'pageNum='+page;
-                    }
+        function SetPageNumParam(url) {
+            url = url || '';
+            var pre = url.split('?');
+            var path = pre[0];
+            var params = pre.length > 1 ? pre[1].split('&') : [];
+            var match = false;
+            for (var i = 0; i < params.length; i++) {
+                if (params[i].indexOf('pageNum=') == 0) {
+                    params[i] = 'pageNum=' + page;
+                    match = true;
+                    break;
                 }
-            });
+            }
+            if (!match) {
+                params.push('pageNum=' + page)
+            }
+            return path + '?' + params.join('&');
+
         }
-        window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
-        window.history.forward(1);
-    });
+    var href = document.referrer || '/bj/esf';
+    if (${reffer}>
+    0
+    )
+    {
+        $(function () {
+            var index = 0;
+            var historyLength = window.history.length;
+            var initHash = window.location.hash;
+            var hashtimer = setInterval(function () {
+                initHash = window.location.hash;
+                var newurl = window.location.href.replace(/#.*/, '');
+                newurl = newurl + '#hackdetail' + index;
+                window.location.href = newurl;
+                if (historyLength < window.history.length) {
+                    clearInterval(hashtimer);
+                    var timer = setInterval(function () {
+                        if (initHash == window.location.hash) {
+                            window.location.replace(SetPageNumParam(href));
+                            clearInterval(timer);
+                        }
+                    }, 50)
+                }
+                index = index + 1;
+            }, 100);
+        });
+    }
+
+    //            $(document).ready(function (e) {
+    //                if (window.history && window.history.pushState) {
+    //                    $(window).on('popstate', function () {
+    //                        var href = document.referrer
+    //                        if(href.indexOf('/esf')>0){
+    //                            if(href.split('&').length>1&&href.split('&')[href.split('&').length-1].split('=')[0]=='pageNum'){
+    //                                var len = href.split('&')[href.split('&').length-1].length
+    //                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
+    //                                window.location.href=lianjie+'pageNum='+page;
+    //                            }else if (href.split('&').length>1){
+    //                                window.location.href=href+'&pageNum='+page;
+    //                            }else if (href.split('?').length>1&&href.split('?')[href.split('?').length-1].split('=')[0]=='pageNum' && href.indexOf('&')==-1){
+    //                                var len = href.split('?')[href.split('?').length-1].length
+    //                                var lianjie = href.substring(0,(parseInt(href.length)-parseInt(len)))
+    //                                window.location.href=lianjie+'pageNum='+page;
+    //                            }
+    //                        }
+    //                    });
+    //                }
+    //                window.history.pushState('forward', null, '#'); //在IE中必须得有这两行
+    //                window.history.forward(1);
+    //            });
 </script>
 </body>
 </html>

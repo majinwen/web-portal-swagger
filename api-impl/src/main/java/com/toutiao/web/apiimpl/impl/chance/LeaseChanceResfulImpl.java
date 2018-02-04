@@ -43,7 +43,6 @@ public class LeaseChanceResfulImpl implements LeaseChanceService{
             @RequestParam(value = "projectId", required = false, defaultValue = "-1")Integer projectId,
             Integer productTypeId, Integer stage, String name, String phone,Integer status) {
 
-
         return NashResult.build(0);
     }
 

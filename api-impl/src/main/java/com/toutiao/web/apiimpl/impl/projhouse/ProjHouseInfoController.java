@@ -10,12 +10,12 @@ import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -35,7 +35,6 @@ public class ProjHouseInfoController {
     private PlotService plotService;
 
 
-
     /**
      * 功能描述：功能描述：根据房源的id以及小区的经度，维度查询房源详情，以及附近好房信息
      * <p>
@@ -45,7 +44,8 @@ public class ProjHouseInfoController {
      * @date 2017/12/15 11:06
      */
     @RequestMapping(value = "/{houseId}.html")
-    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId,String pageNum) {
+    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId, @RequestParam(value = "_esflit",required = false,defaultValue = "0")Integer reffer, @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum) {
+        model.addAttribute("reffer",reffer);
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
             return "404";
@@ -53,9 +53,7 @@ public class ProjHouseInfoController {
         //房源详情
         Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
         if (StringTool.isNotBlank(houseDetails)) {
-            if (pageNum!=null){
-                model.addAttribute("pageNum",pageNum);
-            }
+            model.addAttribute("pageNum",pageNum);
             model.addAttribute("houseId",houseId);
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");

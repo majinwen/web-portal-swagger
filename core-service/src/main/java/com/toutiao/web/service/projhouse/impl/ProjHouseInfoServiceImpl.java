@@ -65,7 +65,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-           boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
+            boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("1.6", DistanceUnit.KILOMETERS));
             srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName"}, null).execute().actionGet();
 
@@ -130,11 +130,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             String key = null;
             //关键字搜索
             if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
-                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                         .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
-                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
-                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                         .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
             }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
@@ -314,7 +314,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
                 if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                     //小区坐标
+                    //小区坐标
                     instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                     instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                 }
