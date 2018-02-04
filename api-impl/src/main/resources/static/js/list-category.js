@@ -25,7 +25,7 @@ $(function () {
         pullDownAction();
     }
     //下拉分页
-    if ($('#valueList').find('li').length>=10) {
+    if (true) {//$('#valueList').find('li').length>=10
         pullUpAction();
     } else {
         $('.tip-box').removeClass('none');
@@ -1058,21 +1058,56 @@ function listSortTab() {
  * @param pageNumber
  */
 
-var href;
-if(window.location.href.indexOf('&')){
-    href = window.location.href.split('&')
-}else if (window.location.href.indexOf('?')){
-    href = window.location.href.split('?')
+function getDefaultPageNum() {
+    var hash = window.location.href.split('#');
+    hash = hash[1] || '';
+    hash = hash.split('&');
+    var pageNum=1;
+    $.each(hash,function (index,ele) {
+        try {
+            if (ele.indexOf('pageNum=') == 0) {
+                pageNum = parseInt(ele.split('=')[1]) || 1;
+                return false;
+            }
+        }
+        catch (e){}
+    })
+    return pageNum;
 }
 
-var pageNum = 2;
-function pullUpAction() {
-    if (href.length>1){
-        name = href[href.length-1].split('=')[0]
-        if(name =='pageNum'){
-            pageNum = parseInt(href[href.length-1].split('=')[1])+1
-        }
+var pageNumDown = getDefaultPageNum();
+var pageNumUp =pageNumDown;
+var initLoad_pageNum=pageNumDown;
+function setPageNum(page) {
+    if(page<1){
+        return;
     }
+    var hash = window.location.href.split('#');
+    hash = hash[1] || '';
+    hash = hash.split('&');
+    var res=[];
+    var hasPageNum=false;
+    $.each(hash,function (index,ele) {
+        if($.trim(ele)==''){
+            return true;
+        }
+        try {
+            if (ele.indexOf('pageNum=') == 0) {
+                hasPageNum = true;
+                ele = 'pageNum='+page;
+            }
+        }
+        catch (e){}
+        res.push(ele);
+    });
+    if(!hasPageNum){
+        res.push('pageNum='+page);
+    }
+    window.location.hash=res.join('&');
+}
+
+function pullUpAction() {
+
     $('#result-section').dropload({
         scrollArea : window,
         domDown : {                                                          // 下方DOM
@@ -1083,7 +1118,7 @@ function pullUpAction() {
         },
         loadDownFn : function(me){
             var paramData = req;
-            paramData['pageNum'] = pageNum;
+            paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
             params = joinParams(paramData);
 
             if (_localHref.indexOf('/loupan') > 0) {
@@ -1103,7 +1138,14 @@ function pullUpAction() {
                 success: function (data) {
 
                     if (data.code == 'success') {
-                        pageNum++;
+                        //第一次加载
+                        if(initLoad_pageNum!=pageNumUp) {
+                            pageNumUp++;
+                            setPageNum(pageNumUp);
+                        }
+                        else {
+                            initLoad_pageNum = -1;
+                        }
                         if(data.data!=null){
                             var dataCon = data.data.data || [];
                             for (var i = 0; i < dataCon.length; i++) {
@@ -1204,7 +1246,7 @@ function pullUpAction() {
                         }
 
                         var html = template('listContent', data.data);
-                        $('#valueList li:last-child').after(html);
+                        $('#valueList ').append(html);
                         // 每次数据插入，必须重置
                         me.resetload();
                     }
@@ -1224,29 +1266,29 @@ function pullUpAction() {
  * @param pageNumber
  */
 function pullDownAction() {
-    var pageNum = 0;
     // $(window).scroll(function() {
     //     if($(window).scrollTop()==0){
     //
     //     }
     // })
-    if (href.length>1){
-        name = href[href.length-1].split('=')[0]
-        if(name =='pageNum'){
-            pageNum = parseInt(href[href.length-1].split('=')[1])-1
-        }
-    }
-    if (pageNum>0){
+    // if (href.length>1){
+    //     name = href[href.length-1].split('=')[0]
+    //     if(name =='pageNum'){
+    //         pageNum = parseInt(href[href.length-1].split('=')[1])-1
+    //     }
+    // }
+    if (pageNumDown>1){
         $('#result-section').dropload({
             scrollArea : window,
             domUp : {
                 domClass   : 'tip-box',
+                autoLoad:false,
                 domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
                 domUpdate : '<div class="dropload-update">↑释放更新</div>',
             },
             loadUpFn : function(me){
                 var paramData = req;
-                paramData['pageNum'] = pageNum;
+                paramData['pageNum'] = pageNumDown-1;
                 params = joinParams(paramData);
                 if (_localHref.indexOf('/loupan') > 0) {
                     url = router_city('/loupan' + params);
@@ -1263,8 +1305,9 @@ function pullDownAction() {
                     dataType:'json',
                     success: function (data) {
                         if (data.code == 'success') {
-                            pageNum--;
-                            if (pageNum<1){
+                            pageNumDown--;
+                            setPageNum(pageNumDown);
+                            if (pageNumDown<2){
                                 me.lock()
                             }
 

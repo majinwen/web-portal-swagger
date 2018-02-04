@@ -168,79 +168,81 @@
     </div>
 </section>
 <section id="result-section">
-<#if builds?exists><ul id="valueList">
-    <#list builds as map>
-        <li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">
-            <div class="clear">
-                <div class="list-item-img-box">
-                    <#assign item=map['housePhotoTitle']>
-                    <#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">
-                    <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
-                    </#if>
-                </div>
-                <div class="list-item-cont">
-                    <h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>
-                    <p class="cont-block-2">
-                        <#if map.buildArea?exists&&(map.buildArea>0)>
-                        ${map.buildArea}㎡
-                        </#if>
-                        <#if map.room?exists&&map.hall?exists>
-                            / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
-                        </#if>
-                        <#if map.forwardName?exists>
-                            / ${map.forwardName}
-                        </#if>
-                        <#if map.plotName?exists>
-                            / ${map.plotName}
-                        </#if>
-                    </p>
-                    <#if map['subwayDistince']?exists>
-                        <#assign item=map['subwayDistince']>
-                        <#if map['key']?exists>
-                            <#if item[map['key']]?exists>
-                                <p class="cont-block-3 distance"><i class="icon"></i>
-                                    <#assign rounditems=item[map['key']]?split("$")>
-                                    <#if rounditems[2]?number gt 1000>
-                                        <#assign x = rounditems[2]?number/1000>
-                                        距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
-                                    <#else>
-                                        距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
-                                    </#if>
-                                </p>
-                            </#if>
-                        <#else>
-                            <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>
-                        </#if>
-                    <#else >
-                        <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>
-                    </#if>
-                    <div class="cont-block-4 house-labelling gray middle esf">
-                        <#if map['tagsName']?exists>
-                            <#assign item =map['tagsName']>
-                            <#list item as itemValue>
-                                <#if itemValue?exists>
-                                    <span>${itemValue}</span>
-                                </#if>
-                            <#else >
-                            </#list>
-                        <#else >
-                        </#if>
-                    </div>
-                    <div class="cont-block-price">
-                        <#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>
-                            <em>${map.houseTotalPrices}万</em>
-                        </#if>
-                        <#if map.houseTotalPrices?exists && map.buildArea?exists>
-                            <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
-                                <span>${(((map.houseTotalPrices?number / (map.buildArea?number))) * 10000)}元/㎡</span>
-                            </#if>
-                        </#if>
-                    </div>
-                </div>
-            </div>
-        </a></li>
-    </#list>
-</ul></#if>
+<#--<#if builds?exists>-->
+    <ul id="valueList">
+    <#--<#list builds as map>-->
+        <#--<li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">-->
+            <#--<div class="clear">-->
+                <#--<div class="list-item-img-box">-->
+                    <#--<#assign item=map['housePhotoTitle']>-->
+                    <#--<#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">-->
+                    <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">-->
+                    <#--</#if>-->
+                <#--</div>-->
+                <#--<div class="list-item-cont">-->
+                    <#--<h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>-->
+                    <#--<p class="cont-block-2">-->
+                        <#--<#if map.buildArea?exists&&(map.buildArea>0)>-->
+                        <#--${map.buildArea}㎡-->
+                        <#--</#if>-->
+                        <#--<#if map.room?exists&&map.hall?exists>-->
+                            <#--/ <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅-->
+                        <#--</#if>-->
+                        <#--<#if map.forwardName?exists>-->
+                            <#--/ ${map.forwardName}-->
+                        <#--</#if>-->
+                        <#--<#if map.plotName?exists>-->
+                            <#--/ ${map.plotName}-->
+                        <#--</#if>-->
+                    <#--</p>-->
+                    <#--<#if map['subwayDistince']?exists>-->
+                        <#--<#assign item=map['subwayDistince']>-->
+                        <#--<#if map['key']?exists>-->
+                            <#--<#if item[map['key']]?exists>-->
+                                <#--<p class="cont-block-3 distance"><i class="icon"></i>-->
+                                    <#--<#assign rounditems=item[map['key']]?split("$")>-->
+                                    <#--<#if rounditems[2]?number gt 1000>-->
+                                        <#--<#assign x = rounditems[2]?number/1000>-->
+                                        <#--距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km-->
+                                    <#--<#else>-->
+                                        <#--距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m-->
+                                    <#--</#if>-->
+                                <#--</p>-->
+                            <#--</#if>-->
+                        <#--<#else>-->
+                            <#--<p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>-->
+                        <#--</#if>-->
+                    <#--<#else >-->
+                        <#--<p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>-->
+                    <#--</#if>-->
+                    <#--<div class="cont-block-4 house-labelling gray middle esf">-->
+                        <#--<#if map['tagsName']?exists>-->
+                            <#--<#assign item =map['tagsName']>-->
+                            <#--<#list item as itemValue>-->
+                                <#--<#if itemValue?exists>-->
+                                    <#--<span>${itemValue}</span>-->
+                                <#--</#if>-->
+                            <#--<#else >-->
+                            <#--</#list>-->
+                        <#--<#else >-->
+                        <#--</#if>-->
+                    <#--</div>-->
+                    <#--<div class="cont-block-price">-->
+                        <#--<#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>-->
+                            <#--<em>${map.houseTotalPrices}万</em>-->
+                        <#--</#if>-->
+                        <#--<#if map.houseTotalPrices?exists && map.buildArea?exists>-->
+                            <#--<#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>-->
+                                <#--<span>${(((map.houseTotalPrices?number / (map.buildArea?number))) * 10000)}元/㎡</span>-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                    <#--</div>-->
+                <#--</div>-->
+            <#--</div>-->
+        <#--</a></li>-->
+    <#--</#list>-->
+</ul>
+<#--</#if>-->
     <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -259,7 +261,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li id="{{$value.houseId}}"><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html?_esflit=1&pageNum={{$value.pageNum}}')}">
+    <li id="{{$value.houseId}}"><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
 
         <div class="clear">
             <div class="list-item-img-box">
@@ -389,7 +391,7 @@
             "朝向":link.find('p.cont-block-2').text().split("/")[2],
             "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
             "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
-            "第几屏":pageNum,
+            "第几屏":getDefaultPageNum(),
             "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');

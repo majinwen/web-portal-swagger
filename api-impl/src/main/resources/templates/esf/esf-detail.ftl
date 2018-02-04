@@ -239,8 +239,9 @@
             </div>
         <ul class="tilelist row">
                 <li>
+        </#if>
                     <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
-                            </#if>
+
                             <div class="picture-box">
                                 <#assign item=houseDetail['plotPhoto']>
                                 <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
@@ -489,54 +490,54 @@
         return false;
     })
 
-    var page = ${pageNum}
-    var houseId = ${houseId}
-        function SetPageNumParam(url) {
-            url = url || '';
-            var pre = url.split('?');
-            var path = pre[0];
-            var params = pre.length > 1 ? pre[1].split('&') : [];
-            var match = false;
-            for (var i = 0; i < params.length; i++) {
-                if (params[i].indexOf('pageNum=') == 0) {
-                    params[i] = 'pageNum=' + page;
-                    match = true;
-                    break;
-                }
-            }
-            if (!match) {
-                params.push('pageNum=' + page)
-            }
-            return path + '?' + params.join('&');
+    <#--var page = ${pageNum}-->
+    <#--var houseId = ${houseId}-->
+        <#--function SetPageNumParam(url) {-->
+            <#--url = url || '';-->
+            <#--var pre = url.split('?');-->
+            <#--var path = pre[0];-->
+            <#--var params = pre.length > 1 ? pre[1].split('&') : [];-->
+            <#--var match = false;-->
+            <#--for (var i = 0; i < params.length; i++) {-->
+                <#--if (params[i].indexOf('pageNum=') == 0) {-->
+                    <#--params[i] = 'pageNum=' + page;-->
+                    <#--match = true;-->
+                    <#--break;-->
+                <#--}-->
+            <#--}-->
+            <#--if (!match) {-->
+                <#--params.push('pageNum=' + page)-->
+            <#--}-->
+            <#--return path + '?' + params.join('&');-->
 
-        }
-    var href = document.referrer || '/bj/esf';
-    if (${reffer}>
-    0
-    )
-    {
-        $(function () {
-            var index = 0;
-            var historyLength = window.history.length;
-            var initHash = window.location.hash;
-            var hashtimer = setInterval(function () {
-                initHash = window.location.hash;
-                var newurl = window.location.href.replace(/#.*/, '');
-                newurl = newurl + '#hackdetail' + index;
-                window.location.href = newurl;
-                if (historyLength < window.history.length) {
-                    clearInterval(hashtimer);
-                    var timer = setInterval(function () {
-                        if (initHash == window.location.hash) {
-                            window.location.replace(SetPageNumParam(href));
-                            clearInterval(timer);
-                        }
-                    }, 50)
-                }
-                index = index + 1;
-            }, 100);
-        });
-    }
+        <#--}-->
+    <#--var href = document.referrer || '/bj/esf';-->
+    <#--if (${reffer}>-->
+    <#--0-->
+    <#--)-->
+    <#--{-->
+        <#--$(function () {-->
+            <#--var index = 0;-->
+            <#--var historyLength = window.history.length;-->
+            <#--var initHash = window.location.hash;-->
+            <#--var hashtimer = setInterval(function () {-->
+                <#--initHash = window.location.hash;-->
+                <#--var newurl = window.location.href.replace(/#.*/, '');-->
+                <#--newurl = newurl + '#hackdetail' + index;-->
+                <#--window.location.href = newurl;-->
+                <#--if (historyLength < window.history.length) {-->
+                    <#--clearInterval(hashtimer);-->
+                    <#--var timer = setInterval(function () {-->
+                        <#--if (initHash == window.location.hash) {-->
+                            <#--window.location.replace(SetPageNumParam(href));-->
+                            <#--clearInterval(timer);-->
+                        <#--}-->
+                    <#--}, 50)-->
+                <#--}-->
+                <#--index = index + 1;-->
+            <#--}, 100);-->
+        <#--});-->
+    <#--}-->
 
     //            $(document).ready(function (e) {
     //                if (window.history && window.history.pushState) {
