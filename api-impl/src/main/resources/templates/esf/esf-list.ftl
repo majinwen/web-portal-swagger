@@ -243,6 +243,8 @@
     <#--</#list>-->
 </ul>
 <#--</#if>-->
+
+
     <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -342,7 +344,7 @@
                 });
 
             },);
-            setTimeout(location.replace = router_city('/esf')+"?pageNum=1",2000);
+            setTimeout(location.replace = router_city('/esf'),2000);
         }
 
         var url = document.referrer;

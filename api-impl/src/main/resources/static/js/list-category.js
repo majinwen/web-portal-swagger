@@ -1237,7 +1237,7 @@ function pullUpAction() {
                         }else{
                             if (dataCon.length <= 0) {
 
-                                // $('.tip-box').removeClass('none');
+                                $('.tip-box').removeClass('none');
                                 // 锁定
                                 me.lock();
                                 // 无数据
@@ -1282,7 +1282,6 @@ function pullDownAction() {
             scrollArea : window,
             domUp : {
                 domClass   : 'tip-box',
-                autoLoad:false,
                 domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
                 domUpdate : '<div class="dropload-update">↑释放更新</div>',
             },
@@ -1402,7 +1401,7 @@ function pullDownAction() {
                             }else{
                                 if (dataCon.length <= 0) {
 
-                                    // $('.tip-box').removeClass('none');
+                                    $('.tip-box').removeClass('none');
                                     // 锁定
                                     me.lock();
                                     // 无数据
