@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,8 @@ public class ProjHouseInfoController {
      * @date 2017/12/15 11:06
      */
     @RequestMapping(value = "/{houseId}.html")
-    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId, @RequestParam(value = "_esflit",required = false,defaultValue = "0")Integer reffer, @RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNum) {
-        model.addAttribute("reffer",reffer);
+    public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
+
         //判断传递的二手房id是否是数字
         if (!RegexUtils.checkIsNum(houseId)) {
             return "404";
@@ -53,7 +54,7 @@ public class ProjHouseInfoController {
         //房源详情
         Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
         if (StringTool.isNotBlank(houseDetails)) {
-            model.addAttribute("pageNum",pageNum);
+//            model.addAttribute("pageNum",pageNum);
             model.addAttribute("houseId",houseId);
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");

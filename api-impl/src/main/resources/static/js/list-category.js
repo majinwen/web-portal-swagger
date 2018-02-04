@@ -1122,9 +1122,9 @@ function pullUpAction() {
             params = joinParams(paramData);
 
             if (_localHref.indexOf('/loupan') > 0) {
-                url = router_city('/loupan' + params);
+                url = router_city('/loupan') + params;
             } else if (_localHref.indexOf('/esf') > 0) {
-                url = router_city('/esf' + params);
+                url = router_city('/esf' )+ params;
             } else if (_localHref.indexOf('/xiaoqu') > 0){
                 url = router_city('/xiaoqu') + params;
             };
@@ -1291,9 +1291,9 @@ function pullDownAction() {
                 paramData['pageNum'] = pageNumDown-1;
                 params = joinParams(paramData);
                 if (_localHref.indexOf('/loupan') > 0) {
-                    url = router_city('/loupan' + params);
+                    url = router_city('/loupan') + params;
                 } else if (_localHref.indexOf('/esf') > 0) {
-                    url = router_city('/esf' + params);
+                    url = router_city('/esf' )+ params;
                 } else if (_localHref.indexOf('/xiaoqu') > 0){
                     url = router_city('/xiaoqu') + params;
                 };
