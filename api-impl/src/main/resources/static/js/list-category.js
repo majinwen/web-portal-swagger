@@ -1110,6 +1110,8 @@ function pullUpAction() {
 
     $('#result-section').dropload({
         scrollArea : window,
+        autoLoad:true,
+
         domDown : {                                                          // 下方DOM
             domClass   : 'tip-box',
             domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
@@ -1117,8 +1119,6 @@ function pullUpAction() {
             domNoData  : '<p class="tip-box">有新上房源，我们会及时通知您哦！</p>'
         },
         loadDownFn : function(me){
-            // console.log('sssssss'+window.location.hash)
-            // if(window.location.href.indexOf("#pageNum=1")==-1||(window.location.href.indexOf("#pageNum=1")>-1&&window.location.hash!=undefined)){
             var paramData = req;
             paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
             params = joinParams(paramData);
@@ -1239,7 +1239,7 @@ function pullUpAction() {
                         }else{
                             if (dataCon.length <= 0) {
 
-                                // $('.tip-box').removeClass('none');
+                                $('.tip-box').removeClass('none');
                                 // 锁定
                                 me.lock();
                                 // 无数据
@@ -1249,6 +1249,11 @@ function pullUpAction() {
 
                         var html = template('listContent', data.data);
                         $('#valueList ').append(html);
+                        // setTimeout(function () {
+                        //     $(document).scrollTop(0);
+                        // },500)
+
+                        me.opts.hasfirstload = true;
                         // 每次数据插入，必须重置
                         me.resetload();
                     }
@@ -1260,7 +1265,6 @@ function pullUpAction() {
                 }
             });
         }
-        // }
     });
 };
 
@@ -1283,9 +1287,9 @@ function pullDownAction() {
     if (pageNumDown>1){
         $('#result-section').dropload({
             scrollArea : window,
+            autoLoad:false,
             domUp : {
                 domClass   : 'tip-box',
-                autoLoad:false,
                 domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
                 domUpdate : '<div class="dropload-update">↑释放更新</div>',
             },
@@ -1405,7 +1409,7 @@ function pullDownAction() {
                             }else{
                                 if (dataCon.length <= 0) {
 
-                                    // $('.tip-box').removeClass('none');
+                                    $('.tip-box').removeClass('none');
                                     // 锁定
                                     me.lock();
                                     // 无数据
