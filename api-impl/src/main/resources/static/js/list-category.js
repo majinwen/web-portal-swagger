@@ -1083,6 +1083,7 @@ function setPageNum(page) {
         return;
     }
     var hash = window.location.href.split('#');
+    var path = hash[0];
     hash = hash[1] || '';
     hash = hash.split('&');
     var res=[];
@@ -1103,7 +1104,7 @@ function setPageNum(page) {
     if(!hasPageNum){
         res.push('pageNum='+page);
     }
-    window.location.hash=res.join('&');
+    window.location.replace(path+'#'+res.join('&'));
 }
 
 function pullUpAction() {
