@@ -250,7 +250,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li id='{{total}}'><a class="list-item new" href="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>">
+    <li id='{{total}}'><a class="list-item new" data-id = "{{$value.pageNum}}" onclick="new_list(this)" href="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>">
 
         <div class="clear">
             <div class="list-item-img-box">
@@ -371,5 +371,8 @@
             zhuge.track('新房-进入房屋列表页',{'页面来源URL':document.referrer})
         }
     })
+    function new_list(e) {
+        setPageNum($(e).attr('data-id'))
+    }
 </script>
 </html>

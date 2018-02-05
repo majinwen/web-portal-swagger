@@ -243,6 +243,8 @@
     <#--</#list>-->
     </ul>
 <#--</#if>-->
+
+
     <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
 </section>
 <#include "../user.ftl">
@@ -261,89 +263,91 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li id="{{$value.houseId}}"><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
-
-        <div class="clear">
-            <div class="list-item-img-box">
-                {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
-                <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
-                {{else}}
-                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                {{/if}}
-            </div>
-            <div class="list-item-cont">
-                <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
-                <p class="cont-block-2">
-                    {{if $value.buildArea && $value.buildArea > 0}}
-                    {{$value.buildArea}}㎡
-                    {{/if}}
-                    {{if $value.room && $value.hall}}
-                    / {{$value.room}}室{{$value.hall}}厅
-                    {{/if}}
-                    {{if $value.forwardName}}
-                    / {{$value.forwardName}}
-                    {{/if}}
-                    {{if $value.plotName}}
-                    / {{$value.plotName}}
-                    {{/if}}
-                </p>
-                <p class="cont-block-3 distance">
-                    <i class="icon"></i>
-
-                    {{if $value.subwayDesc}}
-                    {{$value.subwayDesc}}
+    <li>
+        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="esf_list(this)" href="${router_city('/esf/{{$value.houseId}}.html')}">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
+                    <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
                     {{else}}
-                    {{if $value.area && $value.houseBusinessName}}
-                    {{$value.area}}-{{$value.houseBusinessName}}
-                    {{/if}}
-                    {{/if}}
-                </p>
-                <div class="cont-block-4 house-labelling gray middle esf">
-                    {{if $value.tagsName}}
-                    {{each $value.tagsName value index}}
-                    <span>{{value}}</span>
-                    {{/each}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     {{/if}}
                 </div>
-                <div class="cont-block-price">
-                    {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
-                    <em>{{$value.houseTotalPrices}}万</em>
-                    {{/if}}
-                    {{if $value.houseTotalPrices && $value.buildArea}}
-                    {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
-                    <span>{{$value.unitCost}}元/㎡</span>
-                    {{/if}}
-                    {{/if}}
+                <div class="list-item-cont">
+                    <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
+                    <p class="cont-block-2">
+                        {{if $value.buildArea && $value.buildArea > 0}}
+                        {{$value.buildArea}}㎡
+                        {{/if}}
+                        {{if $value.room && $value.hall}}
+                        / {{$value.room}}室{{$value.hall}}厅
+                        {{/if}}
+                        {{if $value.forwardName}}
+                        / {{$value.forwardName}}
+                        {{/if}}
+                        {{if $value.plotName}}
+                        / {{$value.plotName}}
+                        {{/if}}
+                    </p>
+                    <p class="cont-block-3 distance">
+                        <i class="icon"></i>
+
+                        {{if $value.subwayDesc}}
+                        {{$value.subwayDesc}}
+                        {{else}}
+                        {{if $value.area && $value.houseBusinessName}}
+                        {{$value.area}}-{{$value.houseBusinessName}}
+                        {{/if}}
+                        {{/if}}
+                    </p>
+                    <div class="cont-block-4 house-labelling gray middle esf">
+                        {{if $value.tagsName}}
+                        {{each $value.tagsName value index}}
+                        <span>{{value}}</span>
+                        {{/each}}
+                        {{/if}}
+                    </div>
+                    <div class="cont-block-price">
+                        {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
+                        <em>{{$value.houseTotalPrices}}万</em>
+                        {{/if}}
+                        {{if $value.houseTotalPrices && $value.buildArea}}
+                        {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
+                        <span>{{$value.unitCost}}元/㎡</span>
+                        {{/if}}
+                        {{/if}}
+                    </div>
                 </div>
             </div>
-        </div>
-    </a></li>
+        </a>
+    </li>
     {{/each}}
 </script>
 <script>
+
     $(function () {
 
         var referer = window.location.href;
-//        if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
-//                referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
-//                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0){
-//
-//        }else{
-//            zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
-//            var geolocation = new BMap.Geolocation();
-//            geolocation.getCurrentPosition(function (r) {
-//
-//                lon = r.point.lng;
-//                lat = r.point.lat;
-//                var point = new BMap.Point(lon, lat);//创建点坐标
-//                var gc = new BMap.Geocoder();
-//                gc.getLocation(point, function (rs) {
-//                    location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
-//                });
-//
-//            },);
-//            setTimeout(location.replace = router_city('/esf'),2000);
-//        }
+        if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
+                referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
+                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0){
+
+        }else{
+            zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function (rs) {
+                    location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
+                });
+
+            },);
+            setTimeout(location.replace = router_city('/esf'),2000);
+        }
 
         var url = document.referrer;
         if(url.indexOf("/xiaoqu")>0){
@@ -403,6 +407,8 @@
         var r = decodeURI(req[name]);
         if(r!=null)return r; return null;
     }
+
+
 </script>
 </body>
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
@@ -424,13 +430,11 @@
         var link = $(this);
         zhuge.track('二手房-排序',{'排序方式':sortZhuge},function () {
         });
-//        return false;
     });
-    //    $(function () {
-    //        var herf = window.location.href.split('/');
-    //        if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
-    //            zhuge.track('二手房-进入二手房列表页',{'页面来源URL': document.referrer});
-    //        }
-    //    })
+    function esf_list(e) {
+        setPageNum($(e).attr('data-id'))
+    }
+
 </script>
+
 </html>

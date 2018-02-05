@@ -61,7 +61,7 @@ public class VillageRequest {
     private String heatingMode;  //供暖方式
     private String sdr;  //供需关系
     private Integer level;  //楼盘级别
-    private Integer pageNum;  //起始条数
+    private Integer pageNum = 1;  //起始条数
     private Integer size;  //每页显示条数
     private String villageCharacteristics;  //楼盘特色
     private String cityId;  //城市编号

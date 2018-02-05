@@ -242,7 +242,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a id="{{$value.total}}" class="list-item" href="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>">
+    <li><a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="plot_list(this)" href="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.photo && $value.photo.length > 0}}
@@ -362,5 +362,8 @@
             zhuge.track('小区-进入小区列表页',{'页面来源URL':document.referrer})
         }
     })
+    function plot_list(e) {
+        setPageNum($(e).attr('data-id'))
+    }
 </script>
 </html>
