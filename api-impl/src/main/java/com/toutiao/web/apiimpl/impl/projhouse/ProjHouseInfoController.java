@@ -119,7 +119,6 @@ public class ProjHouseInfoController {
         }else{
             builds = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
         }
-
         return NashResult.build(builds);
     }
     /**

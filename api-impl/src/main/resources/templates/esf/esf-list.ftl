@@ -263,8 +263,8 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li id="{{$value.houseId}}"><a id="{{$value.total}}" class="list-item" href="${router_city('/esf/{{$value.houseId}}.html')}">
-
+    <li>
+        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="esf_list(this)" href="${router_city('/esf/{{$value.houseId}}.html')}">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
@@ -319,10 +319,12 @@
                 </div>
             </div>
         </div>
-    </a></li>
+    </a>
+    </li>
     {{/each}}
 </script>
 <script>
+
     $(function () {
 
         var referer = window.location.href;
@@ -405,6 +407,8 @@
         var r = decodeURI(req[name]);
         if(r!=null)return r; return null;
     }
+
+
 </script>
 </body>
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
@@ -426,13 +430,11 @@
         var link = $(this);
         zhuge.track('二手房-排序',{'排序方式':sortZhuge},function () {
         });
-//        return false;
     });
-//    $(function () {
-//        var herf = window.location.href.split('/');
-//        if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
-//            zhuge.track('二手房-进入二手房列表页',{'页面来源URL': document.referrer});
-//        }
-//    })
+    function esf_list(e) {
+        setPageNum($(e).attr('data-id'))
+    }
+
 </script>
+
 </html>

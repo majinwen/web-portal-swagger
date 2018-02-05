@@ -1110,6 +1110,8 @@ function pullUpAction() {
 
     $('#result-section').dropload({
         scrollArea : window,
+        autoLoad:true,
+
         domDown : {                                                          // 下方DOM
             domClass   : 'tip-box',
             domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
@@ -1247,6 +1249,11 @@ function pullUpAction() {
 
                         var html = template('listContent', data.data);
                         $('#valueList ').append(html);
+                        // setTimeout(function () {
+                        //     $(document).scrollTop(0);
+                        // },500)
+
+                        me.opts.hasfirstload = true;
                         // 每次数据插入，必须重置
                         me.resetload();
                     }
@@ -1280,6 +1287,7 @@ function pullDownAction() {
     if (pageNumDown>1){
         $('#result-section').dropload({
             scrollArea : window,
+            autoLoad:false,
             domUp : {
                 domClass   : 'tip-box',
                 domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',

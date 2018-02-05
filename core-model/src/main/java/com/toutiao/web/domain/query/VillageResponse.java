@@ -70,6 +70,7 @@ public class VillageResponse {
     private Double tongbi;  //同比
     private Double huanbi;  //环比
     private Long total;
+    private Integer pageNum;
 
 //    private Double pm;  //pm2.5
 //    private Double noiseindex;  //噪声指数

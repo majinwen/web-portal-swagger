@@ -276,6 +276,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             String ddd = fff.get(keys);
             Map<String,Object> buildings = hit.getSourceAsMap();
             buildings.put("nearsubway",ddd);
+            buildings.put("pageNum",newHouseQuery.getPageNum());
             buildinglist.add(buildings);
         }
         Map<String,Object> result = new HashMap<>();

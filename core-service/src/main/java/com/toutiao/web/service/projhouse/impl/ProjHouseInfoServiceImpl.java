@@ -313,6 +313,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
                 instance.setKey(key);
+                instance.setPageNum(projHouseInfoRequest.getPageNum());
                 if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
                     //小区坐标
                     instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));

@@ -351,6 +351,7 @@ public class PlotServiceImpl implements PlotService {
                     instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                     instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                     instance.setTotal(response.getHits().totalHits);
+                    instance.setPageNum(villageRequest.getPageNum());
                     houseList.add(instance);
                 }
             }
@@ -420,6 +421,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo < 10 && reslocationinfo>0){
@@ -453,6 +455,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
                     }
                     SearchResponse searchresponse = null;
@@ -494,6 +497,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(hits.totalHits);
+                        instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo == 0){
@@ -537,6 +541,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(polthits.totalHits);
+                        instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
                     }
                 }
