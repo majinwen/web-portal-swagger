@@ -169,6 +169,7 @@
 </section>
 <section id="result-section">
 <#--<#if builds?exists>-->
+    <#--<p class="dropload-up none"></p>-->
     <ul id="valueList">
     <#--<#list builds as map>-->
         <#--<li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">-->
@@ -244,8 +245,7 @@
     </ul>
 <#--</#if>-->
 
-
-    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
+    <#--<p class="dropload-down none"></p>-->
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
