@@ -267,15 +267,22 @@ function showfujian() {
         zhuge.track('导航_大首页', {'导航名称': '二手房', '页面来源URL': window.location.href});
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
-            executed = true;
-            lon = r.point.lng;
-            lat = r.point.lat;
-            var point = new BMap.Point(lon, lat);//创建点坐标
-            var gc = new BMap.Geocoder();
-            gc.getLocation(point, function (rs) {
-                clearTimeout(timeout);
-                location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
-            });
+            if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                executed = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                var point = new BMap.Point(lon, lat);//创建点坐标
+                var gc = new BMap.Geocoder();
+                gc.getLocation(point, function (rs) {
+                    clearTimeout(timeout);
+                    //console.log(lon,lat);
+                    if(lon==116.40387397 && lat == 39.91488908){
+                        location.href = router_city('/esf');
+                    }else{
+                        location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
+                    }
+                });
+            }
         });
 
 
@@ -295,7 +302,13 @@ function showfujian() {
             var gc = new BMap.Geocoder();
             gc.getLocation(point, function (rs) {
                 clearTimeout(timeout);
-                location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
+                if(lon==116.40387397 && lat == 39.91488908){
+                    location.href = router_city('/xiaoqu');
+                }else{
+                    location.href = router_city('/xiaoqu') + "?lat=" + lat + "&lon=" + lon;
+                }
+
+
             });
         });
     })

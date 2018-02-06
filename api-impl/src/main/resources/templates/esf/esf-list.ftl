@@ -348,7 +348,11 @@
                 var gc = new BMap.Geocoder();
                 gc.getLocation(point, function (rs) {
                     clearTimeout(timeout);
-                    location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
+                    if(lon==116.40387397 && lat == 39.91488908){
+                        location.href = router_city('/esf');
+                    }else{
+                        location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
+                    }
                 });
 
             },);
