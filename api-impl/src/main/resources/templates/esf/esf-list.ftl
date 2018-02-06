@@ -327,7 +327,7 @@
 
     $(function () {
 
-//        var referer = window.location.href;
+        var referer = window.location.href;
 ////
 //        if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
 //                referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
