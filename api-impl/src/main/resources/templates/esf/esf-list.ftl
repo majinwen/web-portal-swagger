@@ -324,44 +324,50 @@
     {{/each}}
 </script>
 <script>
+    //二手房拦截默认的下拉加载
+    window["$toutiao_customer_pullUpAction"]=true;
 
     $(function () {
 
-        var referer = window.location.href;
-////
-//        if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
-//                referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
-//                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0
-//                || referer.indexOf("sort") > 0 || referer.indexOf("keyword")>0){
-//
-//        }else{
-//
-//            var timeout =  setTimeout(function(){
-//                location.href = router_city('/esf');
-//            },2000);
-//            zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
-//            var geolocation = new BMap.Geolocation();
-//            geolocation.getCurrentPosition(function (r) {
-//
-//                lon = r.point.lng;
-//                lat = r.point.lat;
-//                var point = new BMap.Point(lon, lat);//创建点坐标
-//                var gc = new BMap.Geocoder();
-//                gc.getLocation(point, function (rs) {
-//                    clearTimeout(timeout);
-//                    if(lon==116.40387397 && lat == 39.91488908){
-//
-//                    }else{
-//                        location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
-//                    }
-//                });
-//
-//            },);
-//        }
 
+        var urlparam =GetRequest();
+        if(urlparam["lat"] && urlparam["lon"]){
+            window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
+            pullUpAction();
+        }else {
+            var hasTimeOut=false;
+            var timeout = setTimeout(function () {
+
+                if(hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                pullUpAction();
+            }, 2000);
+
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                clearTimeout(timeout);
+                if(hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+
+                if (lon == 116.40387397 && lat == 39.91488908) {
+                    pullUpAction();
+                } else {
+                    window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+//                    location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
+                    pullUpAction();
+                }
+            });
+        }
         var url = document.referrer;
+        zhuge.track('进入二手房列表页',{'导航名称':'二手房','页面来源URL':url});
         if(url.indexOf("/xiaoqu")>0){
-            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer})
+            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':url})
         }
         if(url.indexOf("/esf") > 0){
             if(GetQueryString("keyword")!='undefined'){

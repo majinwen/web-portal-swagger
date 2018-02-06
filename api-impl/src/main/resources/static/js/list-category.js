@@ -26,7 +26,11 @@ $(function () {
     }
     //下拉分页
     if (true) {//$('#valueList').find('li').length>=10
-        pullUpAction();
+        // 拦截默认的下拉加载
+        if(!window["$toutiao_customer_pullUpAction"]){
+            pullUpAction();
+        }
+
     } else {
         $('.tip-box').removeClass('none');
     }
@@ -724,7 +728,7 @@ function submitSubwayLine(subwayid, e) {
     }
 
     diteixian =$('#level2').find('li.current').text();
-    console.log($('.place-list').find('li.current').text())
+    // console.log($('.place-list').find('li.current').text())
     $.get(url, function () {
         zhuge.track(houseName+'-按区域筛选',{'地铁位置':diteixian});
         location.replace(url);
@@ -759,7 +763,7 @@ function submitStation(subwayid, subwayStationId, e) {
     }
     diteixian = $('#level2').find('li.current').text();
     diteizhan = e.currentTarget.innerText;
-    console.log(diteixian+'-'+diteizhan);
+    // console.log(diteixian+'-'+diteizhan);
     $.get(url, function () {
         zhuge.track(houseName+'-按区域筛选',{'地铁位置':diteixian+'-'+diteizhan});
         location.replace(url);
@@ -924,7 +928,7 @@ $('#typeSubmit').on('click', function (e) {
         houseName = '新房';
     }
     huxing = $('.type-list').find('li.current').text().split(' ');
-    console.log($('.type-list').find('li.current').text())
+    // console.log($('.type-list').find('li.current').text())
     $.get(url, function () {
         if (huxing.length == 1) {
             zhuge.track(houseName + '-按户型筛选', {'户型': huxing[0]});
@@ -1104,7 +1108,12 @@ function setPageNum(page) {
     if(!hasPageNum){
         res.push('pageNum='+page);
     }
-    window.location.replace(path+'#'+res.join('&'));
+    if(!!(window.history && history.replaceState)){
+        window.history.replaceState({}, document.title,path+'#'+res.join('&'));
+    } else {
+        window.location.replace(path+'#'+res.join('&'));
+    }
+
 }
 
 function pullUpAction() {
@@ -1121,6 +1130,12 @@ function pullUpAction() {
         loadDownFn : function(me){
             var paramData = req;
             paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
+            if (window["$toutiao_customer_pullUpAction_latlon"]) {
+
+                    paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
+                    paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
+
+            }
             params = joinParams(paramData);
 
             if (_localHref.indexOf('/loupan') > 0) {
