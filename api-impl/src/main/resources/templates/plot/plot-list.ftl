@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../staticHeader.ftl">
+<#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>头条房产看二手房小区</title>
@@ -9,7 +9,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-    <#include "../StatisticsHeader.ftl">
+<#include "../StatisticsHeader.ftl">
 </head>
 <body>
 <img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
@@ -107,17 +107,17 @@
                         <#--<span data-info="4">砖楼</span>-->
                         </dd>
                     </dl>
-                    <#--<dl>-->
-                        <#--<dt data-type="saleType">销售状态</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">售完</span>-->
-                            <#--<span data-info="2">在售</span>-->
-                        <#--&lt;#&ndash;<span data-info="3">不在售</span>-->
-                        <#--<span data-info="4">出租</span>-->
-                        <#--<span data-info="5">待租</span>&ndash;&gt;-->
-                            <#--<span data-info="6">待售</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="saleType">销售状态</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">售完</span>-->
+                <#--<span data-info="2">在售</span>-->
+                <#--&lt;#&ndash;<span data-info="3">不在售</span>-->
+                <#--<span data-info="4">出租</span>-->
+                <#--<span data-info="5">待租</span>&ndash;&gt;-->
+                <#--<span data-info="6">待售</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
                     <dl>
                         <dt data-type="buildingFeature">楼盘特色</dt>
                         <dd>
@@ -129,16 +129,16 @@
                             <span data-info="6">高绿化</span>
                         </dd>
                     </dl>
-                    <#--<dl>-->
-                        <#--<dt data-type="deliverStyle">装修标准</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">毛坯</span>-->
-                            <#--<span data-info="2">普通装修</span>-->
-                            <#--<span data-info="3">精装修</span>-->
-                            <#--<span data-info="4">豪华装修</span>-->
-                            <#--<span data-info="5">其他</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="deliverStyle">装修标准</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">毛坯</span>-->
+                <#--<span data-info="2">普通装修</span>-->
+                <#--<span data-info="3">精装修</span>-->
+                <#--<span data-info="4">豪华装修</span>-->
+                <#--<span data-info="5">其他</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
@@ -149,7 +149,7 @@
     </div>
 </section>
 <section id="result-section">
-<ul id="valueList">
+    <ul id="valueList">
     <#--<#if villageList?exists>-->
         <#--<#list villageList as plot>-->
             <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->

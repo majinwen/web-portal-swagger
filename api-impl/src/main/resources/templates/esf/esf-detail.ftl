@@ -239,34 +239,34 @@
                 <a onclick="plotDetailInfo_1(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode)+'.html'}" class="more-arrows">小区详情<i class="arrows-right"></i></a>
             </div>
         <ul class="tilelist row">
-                <li>
+        <li>
         </#if>
-                    <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
+        <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
 
-                            <div class="picture-box">
-                                <#assign item=houseDetail['plotPhoto']>
-                                <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
-                            </div>
-                            <div id="tilePlotDesc" class="tilelist-content">
-                                <h4>
-                                    <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
-                                </h4>
-                                <p>
-                                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
-                                        <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
-                                    </#if>
-                                    <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
-                                    <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
-                                    <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
-                                </p>
-                                <p>
-                                    <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
-                                        参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
-                                    </#if>
-                                </p>
-                            </div>
-                        </a>
-        </li>
+            <div class="picture-box">
+                <#assign item=houseDetail['plotPhoto']>
+                <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+            </div>
+            <div id="tilePlotDesc" class="tilelist-content">
+                <h4>
+                    <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
+                </h4>
+                <p>
+                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                        <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
+                    </#if>
+                    <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
+                    <#if village['sumHousehold']?exists&&village['sumHousehold']?number gt 0>(${village['sumHousehold']}户)</#if>
+                    <#if village['buildCategoryName']?exists&&(village['buildCategoryName']!='')>${village['buildCategoryName']}</#if>
+                </p>
+                <p>
+                    <#if village['avgPrice']?exists&&(village['avgPrice']?number gt 0)>
+                        参考均价<em class="high-light-red">${village['avgPrice']}元</em>/㎡
+                    </#if>
+                </p>
+            </div>
+        </a>
+    </li>
     </ul>
     </section>
 </div>
@@ -318,11 +318,11 @@
                     </div>
                     <div class="tilelist-content">
                         <p class="cont-first">
-                        <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
-                            <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
-                            <#if map.room?exists&&map.hall?exists>
-                            <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
-                        </em>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                            </em>
                         </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
                     </div>
@@ -392,7 +392,7 @@
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
         '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
-        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
         '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
@@ -493,51 +493,51 @@
 
     <#--var page = ${pageNum}-->
     <#--var houseId = ${houseId}-->
-        <#--function SetPageNumParam(url) {-->
-            <#--url = url || '';-->
-            <#--var pre = url.split('?');-->
-            <#--var path = pre[0];-->
-            <#--var params = pre.length > 1 ? pre[1].split('&') : [];-->
-            <#--var match = false;-->
-            <#--for (var i = 0; i < params.length; i++) {-->
-                <#--if (params[i].indexOf('pageNum=') == 0) {-->
-                    <#--params[i] = 'pageNum=' + page;-->
-                    <#--match = true;-->
-                    <#--break;-->
-                <#--}-->
-            <#--}-->
-            <#--if (!match) {-->
-                <#--params.push('pageNum=' + page)-->
-            <#--}-->
-            <#--return path + '?' + params.join('&');-->
+    <#--function SetPageNumParam(url) {-->
+    <#--url = url || '';-->
+    <#--var pre = url.split('?');-->
+    <#--var path = pre[0];-->
+    <#--var params = pre.length > 1 ? pre[1].split('&') : [];-->
+    <#--var match = false;-->
+    <#--for (var i = 0; i < params.length; i++) {-->
+    <#--if (params[i].indexOf('pageNum=') == 0) {-->
+    <#--params[i] = 'pageNum=' + page;-->
+    <#--match = true;-->
+    <#--break;-->
+    <#--}-->
+    <#--}-->
+    <#--if (!match) {-->
+    <#--params.push('pageNum=' + page)-->
+    <#--}-->
+    <#--return path + '?' + params.join('&');-->
 
-        <#--}-->
+    <#--}-->
     <#--var href = document.referrer || '/bj/esf';-->
     <#--if (${reffer}>-->
     <#--0-->
     <#--)-->
     <#--{-->
-        <#--$(function () {-->
-            <#--var index = 0;-->
-            <#--var historyLength = window.history.length;-->
-            <#--var initHash = window.location.hash;-->
-            <#--var hashtimer = setInterval(function () {-->
-                <#--initHash = window.location.hash;-->
-                <#--var newurl = window.location.href.replace(/#.*/, '');-->
-                <#--newurl = newurl + '#hackdetail' + index;-->
-                <#--window.location.href = newurl;-->
-                <#--if (historyLength < window.history.length) {-->
-                    <#--clearInterval(hashtimer);-->
-                    <#--var timer = setInterval(function () {-->
-                        <#--if (initHash == window.location.hash) {-->
-                            <#--window.location.replace(SetPageNumParam(href));-->
-                            <#--clearInterval(timer);-->
-                        <#--}-->
-                    <#--}, 50)-->
-                <#--}-->
-                <#--index = index + 1;-->
-            <#--}, 100);-->
-        <#--});-->
+    <#--$(function () {-->
+    <#--var index = 0;-->
+    <#--var historyLength = window.history.length;-->
+    <#--var initHash = window.location.hash;-->
+    <#--var hashtimer = setInterval(function () {-->
+    <#--initHash = window.location.hash;-->
+    <#--var newurl = window.location.href.replace(/#.*/, '');-->
+    <#--newurl = newurl + '#hackdetail' + index;-->
+    <#--window.location.href = newurl;-->
+    <#--if (historyLength < window.history.length) {-->
+    <#--clearInterval(hashtimer);-->
+    <#--var timer = setInterval(function () {-->
+    <#--if (initHash == window.location.hash) {-->
+    <#--window.location.replace(SetPageNumParam(href));-->
+    <#--clearInterval(timer);-->
+    <#--}-->
+    <#--}, 50)-->
+    <#--}-->
+    <#--index = index + 1;-->
+    <#--}, 100);-->
+    <#--});-->
     <#--}-->
 
     //            $(document).ready(function (e) {

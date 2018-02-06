@@ -45,7 +45,7 @@ import java.util.Map;
 
 @Service
 public class PlotServiceImpl implements PlotService {
-//    @Value("${plot.index}")
+    //    @Value("${plot.index}")
     private String index = "village_test";
     @Value("${plot.parent.type}")
     private String parentType;
@@ -139,13 +139,13 @@ public class PlotServiceImpl implements PlotService {
 //                        .execute().actionGet();//执行
 //                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
 //                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
-                    queryBuilder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()).boost(2))
-                            .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()))
-                            .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()))
-                            .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()));
+                queryBuilder = QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()))
+                        .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()));
 
-                    boolQueryBuilder.must(queryBuilder);
+                boolQueryBuilder.must(queryBuilder);
 //                }
 
 
@@ -275,7 +275,7 @@ public class PlotServiceImpl implements PlotService {
                 String[] HeatingMode = heatingMode.split(",");
                 boolQueryBuilder.must(QueryBuilders.termsQuery("heatingMode", HeatingMode));
             }
-                boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
             //排序
             //均价
             if (villageRequest.getSort() != null && villageRequest.getSort().equals("2")) {

@@ -12,3 +12,21 @@
     @include font-dpr(24);
     background-color: #f2f2f2;
 }
+
+.dropload-down {
+    text-align: center;
+    color: #999;
+    height: rem(78);
+    line-height: rem(78);
+    @include font-dpr(24);
+    background-color: #f2f2f2;
+}
+
+.dropload-up {
+    text-align: center;
+    color: #999;
+    height: rem(78);
+    line-height: rem(78);
+    @include font-dpr(24);
+    background-color: #f2f2f2;
+}

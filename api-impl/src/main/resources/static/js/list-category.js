@@ -1083,6 +1083,7 @@ function setPageNum(page) {
         return;
     }
     var hash = window.location.href.split('#');
+    var path = hash[0];
     hash = hash[1] || '';
     hash = hash.split('&');
     var res=[];
@@ -1103,7 +1104,7 @@ function setPageNum(page) {
     if(!hasPageNum){
         res.push('pageNum='+page);
     }
-    window.location.hash=res.join('&');
+    window.location.replace(path+'#'+res.join('&'));
 }
 
 function pullUpAction() {
@@ -1111,9 +1112,8 @@ function pullUpAction() {
     $('#result-section').dropload({
         scrollArea : window,
         autoLoad:true,
-
         domDown : {                                                          // 下方DOM
-            domClass   : 'tip-box',
+            domClass   : 'dropload-down',
             domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
             domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
             domNoData  : '<p class="tip-box">有新上房源，我们会及时通知您哦！</p>'
@@ -1239,7 +1239,7 @@ function pullUpAction() {
                         }else{
                             if (dataCon.length <= 0) {
 
-                                $('.tip-box').removeClass('none');
+                                // $('.tip-box').removeClass('none');
                                 // 锁定
                                 me.lock();
                                 // 无数据
@@ -1289,7 +1289,7 @@ function pullDownAction() {
             scrollArea : window,
             autoLoad:false,
             domUp : {
-                domClass   : 'tip-box',
+                domClass   : 'dropload-up',
                 domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
                 domUpdate : '<div class="dropload-update">↑释放更新</div>',
             },
@@ -1408,8 +1408,7 @@ function pullDownAction() {
                                 me.noData();
                             }else{
                                 if (dataCon.length <= 0) {
-
-                                    $('.tip-box').removeClass('none');
+                                    // $('.tip-box').removeClass('none');
                                     // 锁定
                                     me.lock();
                                     // 无数据

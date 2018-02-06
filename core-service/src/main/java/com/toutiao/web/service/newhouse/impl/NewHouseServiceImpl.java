@@ -72,14 +72,14 @@ public class NewHouseServiceImpl implements NewHouseService{
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
-                queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()));
+            queryBuilder = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).boost(2))
+                    .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()))
+                    .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
+                    .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()));
 
-                booleanQueryBuilder.must(queryBuilder);
-        //    booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()))).boost(2);
+            booleanQueryBuilder.must(queryBuilder);
+            //    booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()))).boost(2);
         }
 
         //城市

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <#include "../staticHeader.ftl">
+<#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
     <title>来头条房产二手房</title>
@@ -9,7 +9,7 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-    <#include "../StatisticsHeader.ftl">
+<#include "../StatisticsHeader.ftl">
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
@@ -82,7 +82,7 @@
                             <span data-info="2">公寓</span>
                             <span data-info="3">酒店式公寓</span>
                             <span data-info="4">花园洋房</span>
-                            <#--<span data-info="5">商住楼</span>-->
+                        <#--<span data-info="5">商住楼</span>-->
                         </dd>
                     </dl>
                     <dl>
@@ -139,25 +139,25 @@
                             <span class="only" data-info="2">无</span>
                         </dd>
                     </dl>
-                    <#--<dl>-->
-                        <#--<dt data-type="buildingTypeId">建筑类型</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">板楼</span>-->
-                            <#--<span data-info="2">塔楼</span>-->
-                            <#--<span data-info="3">板塔结合</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
-                    <#--<dl>-->
-                        <#--<dt data-type="ownership">权属</dt>-->
-                        <#--<dd>-->
-                            <#--<span data-info="1">已购公房</span>-->
-                            <#--<span data-info="2">商品房</span>-->
-                            <#--<span data-info="3">空置房</span>-->
-                            <#--<span data-info="4">使用权房</span>-->
-                            <#--<span data-info="5">央产</span>-->
-                            <#--<span data-info="6">经济适用房</span>-->
-                        <#--</dd>-->
-                    <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="buildingTypeId">建筑类型</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">板楼</span>-->
+                <#--<span data-info="2">塔楼</span>-->
+                <#--<span data-info="3">板塔结合</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
+                <#--<dl>-->
+                <#--<dt data-type="ownership">权属</dt>-->
+                <#--<dd>-->
+                <#--<span data-info="1">已购公房</span>-->
+                <#--<span data-info="2">商品房</span>-->
+                <#--<span data-info="3">空置房</span>-->
+                <#--<span data-info="4">使用权房</span>-->
+                <#--<span data-info="5">央产</span>-->
+                <#--<span data-info="6">经济适用房</span>-->
+                <#--</dd>-->
+                <#--</dl>-->
                 </div>
                 <div class="submit-wrapper">
                     <a href="javascript:;" class="operation-button more-reset" id="moreReset">重置</a>
@@ -169,6 +169,7 @@
 </section>
 <section id="result-section">
 <#--<#if builds?exists>-->
+    <#--<p class="dropload-up none"></p>-->
     <ul id="valueList">
     <#--<#list builds as map>-->
         <#--<li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">-->
@@ -241,11 +242,10 @@
             <#--</div>-->
         <#--</a></li>-->
     <#--</#list>-->
-</ul>
+    </ul>
 <#--</#if>-->
 
-
-    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
+    <#--<p class="dropload-down none"></p>-->
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
@@ -265,61 +265,61 @@
     {{each data}}
     <li>
         <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="esf_list(this)" href="${router_city('/esf/{{$value.houseId}}.html')}">
-        <div class="clear">
-            <div class="list-item-img-box">
-                {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
+            <div class="clear">
+                <div class="list-item-img-box">
+                    {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
                     <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
-                {{else}}
-                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                {{/if}}
-            </div>
-            <div class="list-item-cont">
-                <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
-                <p class="cont-block-2">
-                    {{if $value.buildArea && $value.buildArea > 0}}
-                        {{$value.buildArea}}㎡
-                    {{/if}}
-                    {{if $value.room && $value.hall}}
-                        / {{$value.room}}室{{$value.hall}}厅
-                    {{/if}}
-                    {{if $value.forwardName}}
-                        / {{$value.forwardName}}
-                    {{/if}}
-                    {{if $value.plotName}}
-                        / {{$value.plotName}}
-                    {{/if}}
-                </p>
-                <p class="cont-block-3 distance">
-                    <i class="icon"></i>
-
-                    {{if $value.subwayDesc}}
-                        {{$value.subwayDesc}}
                     {{else}}
-                        {{if $value.area && $value.houseBusinessName}}
-                            {{$value.area}}-{{$value.houseBusinessName}}
-                        {{/if}}
-                    {{/if}}
-                </p>
-                <div class="cont-block-4 house-labelling gray middle esf">
-                    {{if $value.tagsName}}
-                        {{each $value.tagsName value index}}
-                            <span>{{value}}</span>
-                        {{/each}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     {{/if}}
                 </div>
-                <div class="cont-block-price">
-                    {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
-                        <em>{{$value.houseTotalPrices}}万</em>
-                    {{/if}}
-                    {{if $value.houseTotalPrices && $value.buildArea}}
-                        {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
-                            <span>{{$value.unitCost}}元/㎡</span>
+                <div class="list-item-cont">
+                    <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
+                    <p class="cont-block-2">
+                        {{if $value.buildArea && $value.buildArea > 0}}
+                        {{$value.buildArea}}㎡
                         {{/if}}
-                    {{/if}}
+                        {{if $value.room && $value.hall}}
+                        / {{$value.room}}室{{$value.hall}}厅
+                        {{/if}}
+                        {{if $value.forwardName}}
+                        / {{$value.forwardName}}
+                        {{/if}}
+                        {{if $value.plotName}}
+                        / {{$value.plotName}}
+                        {{/if}}
+                    </p>
+                    <p class="cont-block-3 distance">
+                        <i class="icon"></i>
+
+                        {{if $value.subwayDesc}}
+                        {{$value.subwayDesc}}
+                        {{else}}
+                        {{if $value.area && $value.houseBusinessName}}
+                        {{$value.area}}-{{$value.houseBusinessName}}
+                        {{/if}}
+                        {{/if}}
+                    </p>
+                    <div class="cont-block-4 house-labelling gray middle esf">
+                        {{if $value.tagsName}}
+                        {{each $value.tagsName value index}}
+                        <span>{{value}}</span>
+                        {{/each}}
+                        {{/if}}
+                    </div>
+                    <div class="cont-block-price">
+                        {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
+                        <em>{{$value.houseTotalPrices}}万</em>
+                        {{/if}}
+                        {{if $value.houseTotalPrices && $value.buildArea}}
+                        {{if $value.houseTotalPrices > 0 && $value.buildArea > 0}}
+                        <span>{{$value.unitCost}}元/㎡</span>
+                        {{/if}}
+                        {{/if}}
+                    </div>
                 </div>
             </div>
-        </div>
-    </a>
+        </a>
     </li>
     {{/each}}
 </script>
@@ -330,9 +330,14 @@
         var referer = window.location.href;
         if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
                 referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
-                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0){
+                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0
+                || referer.indexOf("sort") > 0 || referer.indexOf("keyword")>0){
 
         }else{
+
+            var timeout =  setTimeout(function(){
+                location.href = router_city('/esf');
+            },2000);
             zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
@@ -342,11 +347,11 @@
                 var point = new BMap.Point(lon, lat);//创建点坐标
                 var gc = new BMap.Geocoder();
                 gc.getLocation(point, function (rs) {
+                    clearTimeout(timeout);
                     location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
                 });
 
             },);
-            setTimeout(location.replace = router_city('/esf'),2000);
         }
 
         var url = document.referrer;

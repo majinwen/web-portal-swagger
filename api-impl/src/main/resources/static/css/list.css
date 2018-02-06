@@ -1157,4 +1157,29 @@ body {
   [data-dpr="3"] .tip-box {
     font-size: 36px; }
 
+.dropload-down {
+  text-align: center;
+  color: #999;
+  height: 1.04rem;
+  line-height: 1.04rem;
+  background-color: #f2f2f2; }
+[data-dpr="1"] .dropload-down {
+  font-size: 12px; }
+[data-dpr="2"] .dropload-down {
+  font-size: 24px; }
+[data-dpr="3"] .dropload-down {
+  font-size: 36px; }
+
+.dropload-up {
+  text-align: center;
+  color: #999;
+  height: 1.04rem;
+  line-height: 1.04rem;
+  background-color: #f2f2f2; }
+[data-dpr="1"] .dropload-up {
+  font-size: 12px; }
+[data-dpr="2"] .dropload-up {
+  font-size: 24px; }
+[data-dpr="3"] .dropload-up {
+  font-size: 36px; }
 /*# sourceMappingURL=list.css.map */
