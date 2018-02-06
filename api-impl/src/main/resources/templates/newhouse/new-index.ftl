@@ -49,11 +49,11 @@
 </div>
 <div class="module-bottom-fill">
     <section class="bulletin-board">
-        <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt=""></div>
+        <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt="房产头条"></div>
         <div class="text-scroll">
             <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('房产头条_新房',{'头条类别':'政策','头条名称':'国土资源部：政府将不再垄断住房供地'})"><em class="scroll-text-tag">政策</em>国土资源部：政府将不再垄断住房供地</a></li>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/" onclick="zhuge.track('房产头条_新房',{'头条类别':'导购','头条名称':'北京楼市1月新开楼盘'})"><em class="scroll-text-tag">导购</em>北京楼市1月新开楼盘</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('房产头条_新房',{'头条类别':'资讯','头条名称':'万科换总裁，万达获340亿投资，最近房企动作有点多'})"><em class="scroll-text-tag">资讯</em>万科换总裁，万达获340亿投资，最近房企动作有点多</a></li>
+                <li><a href="http://www.chengzijianzhan.com/tetris/page/1590542303724552/" onclick="zhuge.track('房产头条_新房',{'头条类别':'导购','头条名称':'首付仅需93万 北京刚需上车盘都在这里了'})"><em class="scroll-text-tag">导购</em>首付仅需93万 北京刚需上车盘都在这里了</a></li>
             </ul>
         </div>
     </section>
@@ -66,42 +66,42 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589636255213571/">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591177440422925/">
                     <div class="topic-item-content" data-index="1">
-                        <h5>“围栏”之争</h5>
-                        <p>配建制度下的围栏之争</p>
+                        <h5>地产大拜年</h5>
+                        <p>头条房产年终策划</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="“围栏”之争">
+                    <img src="${staticurl}/images/newindex/xf_zt_image1.png?20180206" alt="地产大拜年">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
+                <div class="hot-topic-item"><a href="http://www.chengzijianzhan.com/tetris/page/1590556018600973/">
                     <div class="topic-item-content" data-index="2">
-                        <h5>长租火了</h5>
-                        <p>逐猎长租公寓市场</p>
+                        <h5>租购并举</h5>
+                        <p>聚焦租购并举举措</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image2.png" alt="长租火了">
+                    <img src="${staticurl}/images/newindex/xf_zt_image2.png?20180206" alt="租购并举">
                 </a></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589916541713411/">
+                <div class="hot-topic-item"><a href="http://www.chengzijianzhan.com/tetris/page/1590533389682702/">
                     <div class="topic-item-content" data-index="3">
-                        <h5>三环新盘</h5>
-                        <p>三环内在售新盘</p>
+                        <h5>配套升级</h5>
+                        <p>这些盘最受益</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image3.png" alt="三环新盘">
+                    <img src="${staticurl}/images/newindex/xf_zt_image3.png?20180206" alt="配套升级">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589730966862855/">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590542303724552/">
                     <div class="topic-item-content" data-index="4">
-                        <h5>首开楼盘</h5>
-                        <p>品牌房企集中亮相</p>
+                        <h5>刚需热盘</h5>
+                        <p>刚需上车盘都在这了</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image4.png" alt="首开楼盘">
+                    <img src="${staticurl}/images/newindex/xf_zt_image4.png?20180206" alt="刚需热盘">
                 </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589819080209412/">
+                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591179219693571/">
                     <div class="topic-item-content" data-index="5">
-                        <h5>热点区域</h5>
-                        <p>北七家&未来科学城</p>
+                        <h5>品牌新盘</h5>
+                        <p>融创北京在售新盘</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="热点区域">
+                    <img src="${staticurl}/images/newindex/xf_zt_image5.png?20180206" alt="品牌新盘">
                 </a></div>
             </div>
         </div>

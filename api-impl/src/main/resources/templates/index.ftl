@@ -56,8 +56,8 @@
         <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
         <div class="text-scroll index-text" id="shoppingGuide">
             <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'政策','指南名称':'国土资源部：政府将不再垄断住房供地'})"><em class="scroll-text-tag">政策</em>国土资源部：政府将不再垄断住房供地</a></li>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'导购','指南名称':'北京楼市1月新开楼盘'})"><em class="scroll-text-tag">导购</em>北京楼市1月新开楼盘</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':'万科换总裁，万达获340亿投资，最近房企动作有点多'})"><em class="scroll-text-tag">资讯</em>万科换总裁，万达获340亿投资，最近房企动作有点多</a></li>
+                <li><a href="http://www.chengzijianzhan.com/tetris/page/1590542303724552/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'导购','指南名称':'首付仅需93万 北京刚需上车盘都在这里了'})"><em class="scroll-text-tag">导购</em>首付仅需93万 北京刚需上车盘都在这里了</a></li>
             </ul>
         </div>
     </section>
@@ -73,23 +73,23 @@
                 <#if TradeQuotations['ADleftuptime']?exists&&TradeQuotations['ADleftuptime']!=''&&TradeQuotations['ADleftuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADleftup']}
                 <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590534824003598/">
                     <div class="topic-item-content" data-index="1">
-                        <h5>逐猎长租公寓市场</h5>
+                        <h5>地产股飙升的背后</h5>
                         <p>市场热点</p>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png?123" alt="市场热点">
+                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png?20180206" alt="市场热点">
                 </a></div>
                 </#if>
                 <#if TradeQuotations['ADrightuptime']?exists&&TradeQuotations['ADrightuptime']!=''&&TradeQuotations['ADrightuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADrightup']}
                 <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1588549788609539/">
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591265211756557/">
                         <div class="topic-item-content" data-index="2">
-                            <h5>房产投资20问</h5>
-                            <p>热门问答</p>
+                            <h5>聚焦万科总裁换帅</h5>
+                            <p>市场热点</p>
                         </div>
-                        <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png?123" alt="热门问答">
+                        <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png?20180206" alt="市场热点">
                     </a></div>
                 </#if>
             </div>
@@ -97,23 +97,23 @@
                 <#if TradeQuotations['ADleftdowntime']?exists&&TradeQuotations['ADleftdowntime']!=''&&TradeQuotations['ADleftdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADleftdown']}
                 <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589829418704900/">
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590555685184519/">
                         <div class="topic-item-content" data-index="3">
-                            <h5>寻找最美装饰风</h5>
-                            <p>名企样板间</p>
+                            <h5>南北5-6环楼盘PK</h5>
+                            <p>精选导购</p>
                         </div>
-                        <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png?123" alt="名企样板间">
+                        <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png?20180206" alt="精选导购">
                     </a></div>
                 </#if>
                 <#if TradeQuotations['ADrightdowntime']?exists&&TradeQuotations['ADrightdowntime']!=''&&TradeQuotations['ADrightdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
                     ${TradeQuotations['ADrightdown']}
                 <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589891452648462/">
+                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590542303724552/">
                         <div class="topic-item-content" data-index="4">
-                            <h5>北京1月新开楼盘</h5>
+                            <h5>北京刚需上车盘</h5>
                             <p>精选导购</p>
                         </div>
-                        <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png?123" alt="精选导购">
+                        <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png?20180206" alt="精选导购">
                     </a></div>
                 </#if>
             </div>
