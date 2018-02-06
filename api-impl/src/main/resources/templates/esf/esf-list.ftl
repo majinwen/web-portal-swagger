@@ -328,6 +328,7 @@
     $(function () {
 
         var referer = window.location.href;
+//
         if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
                 referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
                 referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0
@@ -349,7 +350,7 @@
                 gc.getLocation(point, function (rs) {
                     clearTimeout(timeout);
                     if(lon==116.40387397 && lat == 39.91488908){
-                        location.href = router_city('/esf');
+
                     }else{
                         location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
                     }
