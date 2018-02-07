@@ -109,7 +109,7 @@ $(function(){
                 }else if(history[3]==2){
                     $('.searchpage-history').append('<a href="' + router_city('/loupan?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
                 }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan/' + history[1] )+'.html' + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan/' + history[1] )+'.html' + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
                 }
             }
         } else {
@@ -181,16 +181,16 @@ $(function(){
 
 
             if(_localHref.indexOf('xiaoqu')>0){
-                hashPush(plotStorageArray,_keyword);
+                hashPush(plotStorageArray,_keyword+',,小区,');
                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
                 location.href= router_city('/xiaoqu?keyword=') + $.trim($(this).val());
             } else if(_localHref.indexOf('esf')>0){
-                hashPush(esfStorageArray,_keyword);
+                hashPush(esfStorageArray,_keyword+',,二手房,');
                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                 location.href= router_city('/esf?keyword=') + $.trim($(this).val());
             } else if(_localHref.indexOf('loupan')>0||_localHref.indexOf('xinfang')>0){
-
-                hashPush(newHouseStorageArray,_keyword);
+                console.log('aaaaaaa')
+                hashPush(newHouseStorageArray,_keyword+',,新房,');
                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
             }else {
@@ -210,17 +210,17 @@ $(function(){
                         var id = $(this).attr('id')
                         var url = window.location.href;
                         if(id == 1){
-                            hashPush(plotStorageArray,_keyword);
+                            hashPush(plotStorageArray,_keyword+',,小区,');
                             localStorage.setItem('plot', JSON.stringify(plotStorageArray));
                             window.location.href= url+'/xiaoqu?keyword='+_keyword
                         }
                         if(id == 2){
-                            hashPush(esfStorageArray,_keyword);
+                            hashPush(esfStorageArray,_keyword+',,二手房,');
                             localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                             window.location.href = url+'/esf?keyword='+_keyword
                         }
                         if(id == 3){
-                            hashPush(newHouseStorageArray,_keyword);
+                            hashPush(newHouseStorageArray,_keyword+',,新房,');
                             localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                             window.location.href = url+'/loupan?keyword='+_keyword
                         }
