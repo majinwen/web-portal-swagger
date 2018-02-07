@@ -433,7 +433,7 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category-0207.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
     $('.sort-content-box').on('click', function (){
