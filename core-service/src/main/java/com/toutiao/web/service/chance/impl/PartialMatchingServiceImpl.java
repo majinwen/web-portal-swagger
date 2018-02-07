@@ -78,10 +78,11 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         if (property!=null){
             boolQueryBuilder.must(QueryBuilders.multiMatchQuery(property,"search_type"));
         }
-        srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type", "小区")))
-           .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type", "二手房")))
-           .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type", "新房")));
-
+        if(property==null){
+            srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type", "小区")))
+                    .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type", "二手房")))
+                    .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type", "新房")));
+        }
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
         srbEngines.highlighter(highlightBuilder);

@@ -69,11 +69,11 @@ $(function(){
                 var _history = plotStorageArray.pop();
                 var history = _history.split(',');
                 if (history[2]=='区县'){
-                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
                 }else if(history[2]=='商圈'){
-                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
                 }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu/' + history[1] )+'.html' + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
                 }
             }
 
@@ -87,11 +87,11 @@ $(function(){
                 var _history = esfStorageArray.pop();
                 var history = _history.split(',');
                 if (history[2]=='区县'){
-                    $('.searchpage-history').append('<a href="' + router_city('/esf?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/esf?districtId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
                 }else if(history[2]=='商圈'){
-                    $('.searchpage-history').append('<a href="' + router_city('/esf?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/esf?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
                 }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + history[0] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
                 }
             }
 
@@ -105,11 +105,11 @@ $(function(){
                 var _history = newHouseStorageArray.pop();
                 var history = _history.split(',');
                 if (history[2]=='区县'){
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan?districtId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
                 }else if(history[2]=='商圈'){
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
                 }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan/' + history[1] )+'.html' + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[3]+'</em></a>')
                 }
             }
         } else {
@@ -139,11 +139,13 @@ $(function(){
                 styleText = '新房'
             }
             if (history[2]=='区县'){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
             }else if(history[2]=='商圈'){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
+            }else if(urlText=='esf'){
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
             }else {
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'/' + history[1] )+'.html' + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[3]+'</em></a>')
             }
             // $('.searchpage-history').append('<a href="' + router_city('/' + urlText + '?keyword=' + _history ) + '" class="word-break">' + _history + '<em style="float:right">'+ styleText +'</em></a>')
         }
@@ -318,7 +320,6 @@ $(function(){
                 async: true,
                 dataType:'json',
                 success: function (data) {
-                    if (data.total>0){
                         plotNum = data.plotNum;
                         esfNum = data.esfNum;
                         newHouseNum = data.newHouseNum;
@@ -395,7 +396,6 @@ $(function(){
                                 }
                             }
                         })
-                    }
                 }
             })
         }
