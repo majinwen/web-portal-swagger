@@ -25,9 +25,6 @@
     <section class="banner-index-box">
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
-                <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner1.jpg?v=${staticversion}" alt="美好新居 尽在头条" onclick="zhuge.track('banner_新房',{'banner名称':'美好新居 尽在头条'})">
-                </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
@@ -66,43 +63,13 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591177440422925/">
-                    <div class="topic-item-content" data-index="1">
-                        <h5>地产大拜年</h5>
-                        <p>头条房产年终策划</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png?20180206" alt="地产大拜年">
-                </a></div>
-                <div class="hot-topic-item"><a href="http://www.chengzijianzhan.com/tetris/page/1590556018600973/">
-                    <div class="topic-item-content" data-index="2">
-                        <h5>租购并举</h5>
-                        <p>聚焦租购并举举措</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image2.png?20180206" alt="租购并举">
-                </a></div>
+                <div class="hot-topic-item" id="left"></div>
+                <div class="hot-topic-item" id="right"></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.chengzijianzhan.com/tetris/page/1590533389682702/">
-                    <div class="topic-item-content" data-index="3">
-                        <h5>配套升级</h5>
-                        <p>这些盘最受益</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image3.png?20180206" alt="配套升级">
-                </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590542303724552/">
-                    <div class="topic-item-content" data-index="4">
-                        <h5>刚需热盘</h5>
-                        <p>刚需上车盘都在这了</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image4.png?20180206" alt="刚需热盘">
-                </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591179219693571/">
-                    <div class="topic-item-content" data-index="5">
-                        <h5>品牌新盘</h5>
-                        <p>融创北京在售新盘</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png?20180206" alt="品牌新盘">
-                </a></div>
+                <div class="hot-topic-item" id="secleft"></div>
+                <div class="hot-topic-item" id="secmid"></div>
+                <div class="hot-topic-item" id="secright"></div>
             </div>
         </div>
     </section>
@@ -223,6 +190,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>
 <script>
     $('.hot-topic-item').on('click', 'a', function () {
         var link = $(this);
@@ -283,4 +251,12 @@
         return false;
     });*/
     })
+    config=[
+        {"pid":6,"jqid":"#left"},
+        {"pid":7,"jqid":"#right"},
+        {"pid":8,"jqid":"#secleft"},
+        {"pid":9,"jqid":"#secmid"},
+        {"pid":10,"jqid":"#secright"},
+        {"pid":11,"jqid":"#house-pic-container"}]
+    $com.toutiao.ad.json(config);
 </script>

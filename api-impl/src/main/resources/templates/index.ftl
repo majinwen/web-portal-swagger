@@ -22,18 +22,8 @@
 </header>
 <div class="module-bottom-fill">
     <section class="banner-index-box">
-        <div class="carousel-swiper">
-            <#if TradeQuotations['homepagePictureTime']?exists&&TradeQuotations['homepagePictureTime']!=''&&TradeQuotations['homepagePictureTime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['homepagePictureTime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
-                <a href="${TradeQuotations['homepagePictureHref']}">
-                <img class="scaleImg" width="100%" src="${TradeQuotations['homepagePicture']}?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
-                </a>
-                <input type="hidden" id="url" value="${router_city()}">
-            <#else>
-                <a href="http://www.chengzijianzhan.com/tetris/page/1589893112548355/?from=singlemessage&isappinstalled=0">
-                    <img class="scaleImg" width="100%" src="http://m.toutiaofangchan.com/static/images/index/dsy_banner.png?v=${staticversion}" alt="智能人居更懂人需" onclick="zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})">
-                </a>
-                <input type="hidden" id="url" value="/bj/">
-            </#if>
+        <div class="carousel-swiper" id="topbanner">
+           
         </div>
         <div class="banner-nav">
             <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})">
@@ -70,52 +60,16 @@
         </div>
         <div class="hot-topic pt0">
             <div class="column">
-                <#if TradeQuotations['ADleftuptime']?exists&&TradeQuotations['ADleftuptime']!=''&&TradeQuotations['ADleftuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
-                    ${TradeQuotations['ADleftup']}
-                <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590534824003598/">
-                    <div class="topic-item-content" data-index="1">
-                        <h5>地产股飙升的背后</h5>
-                        <p>市场热点</p>
+                    <div class="hot-topic-item index-topic-item" id='ad-positon-lefttop'>
                     </div>
-                    <img class="item-1" src="${staticurl}/images/index/dsy_jxzt_image1.png?20180206" alt="市场热点">
-                </a></div>
-                </#if>
-                <#if TradeQuotations['ADrightuptime']?exists&&TradeQuotations['ADrightuptime']!=''&&TradeQuotations['ADrightuptime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightuptime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
-                    ${TradeQuotations['ADrightup']}
-                <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591265211756557/">
-                        <div class="topic-item-content" data-index="2">
-                            <h5>聚焦万科总裁换帅</h5>
-                            <p>市场热点</p>
+                    <div class="hot-topic-item index-topic-item" id='ad-positon-leftright'>
                         </div>
-                        <img class="item-2" src="${staticurl}/images/index/dsy_jxzt_image2.png?20180206" alt="市场热点">
-                    </a></div>
-                </#if>
             </div>
             <div class="column">
-                <#if TradeQuotations['ADleftdowntime']?exists&&TradeQuotations['ADleftdowntime']!=''&&TradeQuotations['ADleftdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADleftdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
-                    ${TradeQuotations['ADleftdown']}
-                <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590555685184519/">
-                        <div class="topic-item-content" data-index="3">
-                            <h5>南北5-6环楼盘PK</h5>
-                            <p>精选导购</p>
-                        </div>
-                        <img class="item-3" src="${staticurl}/images/index/dsy_jxzt_image3.png?20180206" alt="精选导购">
-                    </a></div>
-                </#if>
-                <#if TradeQuotations['ADrightdowntime']?exists&&TradeQuotations['ADrightdowntime']!=''&&TradeQuotations['ADrightdowntime']?split(',')[0]?string?date('yyyy-MM-dd HH:mm:ss') lte currentTime?string?date('yyyy-MM-dd HH:mm:ss')&&TradeQuotations['ADrightdowntime']?split(',')[1]?string?date('yyyy-MM-dd HH:mm:ss') gte currentTime?string?date('yyyy-MM-dd HH:mm:ss')>
-                    ${TradeQuotations['ADrightdown']}
-                <#else >
-                    <div class="hot-topic-item index-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1590542303724552/">
-                        <div class="topic-item-content" data-index="4">
-                            <h5>北京刚需上车盘</h5>
-                            <p>精选导购</p>
-                        </div>
-                        <img class="item-4" src="${staticurl}/images/index/dsy_jxzt_image4.png?20180206" alt="精选导购">
-                    </a></div>
-                </#if>
+                    <div class="hot-topic-item index-topic-item" id='ad-positon-leftbottom'>
+                       </div>
+                    <div class="hot-topic-item index-topic-item" id="ad-positon-rightbottom">
+                    </div>
             </div>
         </div>
     </section>
@@ -344,6 +298,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>
 <script>
     $('.type-tab-box').removeClass('none');
     $('.index-topic-item').on('click', 'a', function () {
@@ -387,6 +342,22 @@
     $(function () {
         zhuge.track('大首页-进入大首页',{"页面来源URL": document.referrer});
     })
+</script>
+
+<script>
+
+    var config=[{"pid":1,"jqid":"#ad-positon-lefttop"}
+    ,{"pid":2,"jqid":"#ad-positon-leftright"},
+        {"pid":3,"jqid":"#ad-positon-leftbottom"},
+        {"pid":4,"jqid":"#ad-positon-rightbottom"},
+        {"pid":5,"jqid":"#topbanner",callback:function (html) {
+            html.click(function () {
+             zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})
+         })
+    }}];
+
+    $com.toutiao.ad.json(config);
+
 </script>
 </body>
 </html>
