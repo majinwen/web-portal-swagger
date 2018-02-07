@@ -1140,7 +1140,6 @@ function pullUpAction() {
                     }
                     paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
                     paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
-                    alert(hasAnotherParam)
                     if(hasAnotherParam){
                         delete paramData["lat"];
                         delete paramData["lon"];
