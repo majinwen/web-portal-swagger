@@ -46,17 +46,17 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         BoolQueryBuilder boolQueryBuilderScope = QueryBuilders.boolQuery();
         boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
         if (property!=null){
-            String village_type = null;
+            String search_type = null;
             if (property.equals("新房")){
-                village_type = "0";
+                search_type = "0";
             }
             if (property.equals("小区")){
-                village_type = "1";
+                search_type = "1";
             }
             if (property.equals("二手房")){
-                village_type = "2";
+                search_type = "2";
             }
-            boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(village_type,"village_type"));
+            boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(search_type,"search_type_sings"));
         }
         srbScope.addSort("search_sort",SortOrder.ASC);
         SearchResponse searchResponseScope = srbScope.setQuery(boolQueryBuilderScope).execute().actionGet();
@@ -74,17 +74,17 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(1,"is_approve"));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(0,"is_del"));
         if (property!=null){
-            String village_type = null;
+            String search_type = null;
             if (property.equals("新房")){
-                village_type = "0";
+                search_type = "0";
             }
             if (property.equals("小区")){
-                village_type = "1";
+                search_type = "1";
             }
             if (property.equals("二手房")){
-                village_type = "2";
+                search_type = "2";
             }
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(village_type,"search_type_sings"));
+            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(search_type,"search_type_sings"));
         }
 
         srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", "1")))
