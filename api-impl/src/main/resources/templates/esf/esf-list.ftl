@@ -347,6 +347,7 @@
 
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
+
                 clearTimeout(timeout);
                 if(hasTimeOut) {
                     return
