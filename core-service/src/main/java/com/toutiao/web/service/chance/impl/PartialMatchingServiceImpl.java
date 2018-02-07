@@ -68,21 +68,29 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             }
         }
 
-
-
         SearchRequestBuilder srbEngines = client.prepareSearch("search_engines").setTypes("search_engines_type");
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(1,"is_approve"));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(0,"is_del"));
         if (property!=null){
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(property,"search_type"));
+            String village_type = null;
+            if (property.equals("新房")){
+                village_type = "0";
+            }
+            if (property.equals("小区")){
+                village_type = "1";
+            }
+            if (property.equals("二手房")){
+                village_type = "2";
+            }
+            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(village_type,"search_type_sings"));
         }
-        if(property==null){
-            srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type", "小区")))
-                    .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type", "二手房")))
-                    .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type", "新房")));
-        }
+
+        srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", "1")))
+                .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", "2")))
+                .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", "0")));
+
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
         srbEngines.highlighter(highlightBuilder);
