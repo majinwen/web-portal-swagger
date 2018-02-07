@@ -331,14 +331,16 @@
 
 
         var urlparam =GetRequest();
-        if(urlparam["lat"] && urlparam["lon"]){
+
+
+        if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
             pullUpAction();
-        }else {
-            var hasTimeOut=false;
+        } else {
+            var hasTimeOut = false;
             var timeout = setTimeout(function () {
 
-                if(hasTimeOut) {
+                if (hasTimeOut) {
                     return
                 }
                 hasTimeOut = true;
@@ -349,7 +351,7 @@
             geolocation.getCurrentPosition(function (r) {
 
                 clearTimeout(timeout);
-                if(hasTimeOut) {
+                if (hasTimeOut) {
                     return
                 }
                 hasTimeOut = true;
@@ -365,6 +367,7 @@
                 }
             });
         }
+
         var url = document.referrer;
         zhuge.track('进入二手房列表页',{'导航名称':'二手房','页面来源URL':url});
         if(url.indexOf("/xiaoqu")>0){
