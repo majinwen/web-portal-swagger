@@ -1130,11 +1130,10 @@ function pullUpAction() {
         loadDownFn : function(me){
             var paramData = req;
             paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
-            alert(window["$toutiao_customer_pullUpAction_latlon"])
             if (window["$toutiao_customer_pullUpAction_latlon"]) {
                     var hasAnotherParam=false;
                     for(var key in paramData){
-                        if(!$.inArray(key,['lat','lon'])){
+                        if($.inArray(key,['lat','lon'])>-1){
                             hasAnotherParam = true;
                         }
                     }
