@@ -15,18 +15,25 @@ $com.toutiao.ad.json=function (config) {
     config = config || [];
     $.each(config,function (index, ele) {
         if(ele) {
-            $.get('/ad/jsapi/json', data = {"positionid": ele["pid"]}, function (data) {
-                $(ele["jqid"]).html(data.html);
-                if(ele["callback"]){
-                    try {
-                        ele.callback($(data.html));
+            $.ajax({
+                url: '/ad/jsapi/json',
+                data: {"positionid": ele["pid"]},
+                cache:false,
+                success: function (data) {
+                    $(ele["jqid"]).html(data.html);
+                    if(ele["callback"]){
+                        try {
+                            ele.callback($(data.html));
+                        }
+                        catch (error){
+                            console.error(error);
+                        }
                     }
-                    catch (error){
-                        console.error(error);
-                    }
-                }
 
+                },
+                dataType: 'json'
             });
+
         }
     })
 };
