@@ -1134,7 +1134,7 @@ function pullUpAction() {
                     var hasAnotherParam=false;
                     for(var key in paramData){
                         // alert(key+'='+$.inArray(key,['lat','lon']))
-                        if($.trim(key)!='' && $.inArray(key,['lat','lon'])<0){
+                        if($.trim(key)!='' && key!='pageNum' && $.inArray(key,['lat','lon'])<0){
                             hasAnotherParam = true;
                         }
                     }
