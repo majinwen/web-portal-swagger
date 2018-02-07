@@ -15,7 +15,7 @@ $com.toutiao.ad.json=function (config) {
     config = config || [];
     $.each(config,function (index, ele) {
         if(ele) {
-            $.get('http://ad.sim.toutiaofangchan.com/jsapi/json', data = {"positionid": ele["pid"]}, function (data) {
+            $.get('/ad/jsapi/json', data = {"positionid": ele["pid"]}, function (data) {
                 $(ele["jqid"]).html(data.html);
                 if(ele["callback"]){
                     try {
