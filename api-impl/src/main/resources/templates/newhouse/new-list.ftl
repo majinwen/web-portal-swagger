@@ -230,7 +230,7 @@
         </#list>
     </#if>-->
     </ul>
-    <p class="tip-box none">有新上房源，我们会及时通知您哦！</p>
+    <#--<p class="tip-box none">有新上房源，我们会及时通知您哦！</p>-->
 </section>
 
 <div class="sort-icon"></div>

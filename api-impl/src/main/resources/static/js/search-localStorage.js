@@ -67,7 +67,14 @@ $(function(){
             var end = plotStorageArray.length;
             for (var i=start;i<end;i++) {
                 var _history = plotStorageArray.pop();
-                $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?keyword=' + _history ) + '" class="word-break">' + _history + '</a>')
+                var history = _history.split(',');
+                if (history[2]=='区县'){
+                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                }else if(history[2]=='商圈'){
+                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                }else {
+                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                }
             }
 
         } else if(_localHref.indexOf('esf')>0){
@@ -78,7 +85,14 @@ $(function(){
             var end = esfStorageArray.length;
             for (var i=start; i<end; i++) {
                 var _history = esfStorageArray.pop();
-                $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + _history ) + '" class="word-break">' + _history + '</a>')
+                var history = _history.split(',');
+                if (history[2]=='区县'){
+                    $('.searchpage-history').append('<a href="' + router_city('/esf?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                }else if(history[2]=='商圈'){
+                    $('.searchpage-history').append('<a href="' + router_city('/esf?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                }else {
+                    $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                }
             }
 
         }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0){
@@ -89,7 +103,14 @@ $(function(){
             var end = newHouseStorageArray.length;
             for (var i=start; i<end; i++) {
                 var _history = newHouseStorageArray.pop();
-                $('.searchpage-history').append('<a href="' + router_city('/loupan?keyword=' + _history ) + '" class="word-break">' + _history + '</a>')
+                var history = _history.split(',');
+                if (history[2]=='区县'){
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                }else if(history[2]=='商圈'){
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+                }else {
+                    $('.searchpage-history').append('<a href="' + router_city('/loupan?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+                }
             }
         } else {
             getLocalstorageMsg('plot');
@@ -104,6 +125,7 @@ $(function(){
         var end = indexStorageArray.length;
         for (var i = start; i < end; i++) {
             var _history = indexStorageArray.pop();
+            var history = _history.split(',');
             var styleText = '';
             var urlText = '';
             if (styleArray == 'plot') {
@@ -116,7 +138,14 @@ $(function(){
                 urlText = 'loupan';
                 styleText = '新房'
             }
-            $('.searchpage-history').append('<a href="' + router_city('/' + urlText + '?keyword=' + _history ) + '" class="word-break">' + _history + '<em style="float:right">'+ styleText +'</em></a>')
+            if (history[2]=='区县'){
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+            }else if(history[2]=='商圈'){
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '</a>')
+            }else {
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '</a>')
+            }
+            // $('.searchpage-history').append('<a href="' + router_city('/' + urlText + '?keyword=' + _history ) + '" class="word-break">' + _history + '<em style="float:right">'+ styleText +'</em></a>')
         }
     }
     
@@ -217,6 +246,37 @@ $(function(){
         $('.search-page-wrapper').removeClass('active');
     });
 
+    function getUrl(url,search_type,search_id,search_name,house_type) {
+        var href = '';
+        if (house_type == '小区'){
+            if (search_type == '区县'){
+                href = url+'?districtId='+search_id
+            }else if (search_type =='商圈'){
+                href = url+'?areaId='+search_id
+            }else {
+                href = url+'/'+search_id+'.html'
+            }
+        }
+        if (house_type == '二手房'){
+            if (search_type == '区县'){
+                href = url+'?districtId='+search_id
+            }else if (search_type =='商圈'){
+                href = url+'?areaId='+search_id
+            }else {
+                href = url+'?keyword='+search_name
+            }
+        }
+        if (house_type == '新房'){
+            if (search_type == '区县'){
+                href = url+'?districtId='+search_id
+            }else if (search_type =='商圈'){
+                href = url+'?areaId='+search_id
+            }else {
+                href = url+'/'+search_id+'.html'
+            }
+        }
+        return href;
+    }
     /**
      *
      * @Description：搜索
@@ -242,11 +302,11 @@ $(function(){
             var url = null
             var herf = window.location.href;
             if(herf.indexOf('/xiaoqu')>0){
-                url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=小区"
+                url = herf.split('?')[0]+"/search?keyword="+_keyword+"&property=小区"
             }else if(herf.indexOf('/esf')>0){
-                url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=二手房"
+                url = herf.split('?')[0]+"/search?keyword="+_keyword+"&property=二手房"
             }else if(herf.indexOf('/loupan')>0||herf.indexOf('/xinfang')>0){
-                url = herf.split('?')[0]+"/search?keyword="+_keyword+"&houseProperty=新房"
+                url = herf.split('?')[0]+"/search?keyword="+_keyword+"&property=新房"
                 url = url.replace('loupan','xinfang')
             }else {
                 url = herf+"/search?keyword="+_keyword
@@ -264,44 +324,75 @@ $(function(){
                         newHouseNum = data.newHouseNum;
                         $('#automatedWord').empty().show();
                         for(var i = 0;i<data.list.length;i++){
-                            $('#automatedWord').append('<li id='+data.list[i].village_id+' class="click_work" >'+ data.list[i].village+' <em style="float: right; color: #bcbcbc;">'+data.list[i].house_property+'</em></li>');
+                            var villageType = data.list[i].village_type||-1
+                            var searchType = data.list[i].search_type
+                            if(villageType==0){
+                                $('#automatedWord').append('<li id='+data.list[i].search_id+' class="click_work" search_type='+searchType+'>'+ data.list[i].search_name+' <em style="float: right; color: #bcbcbc;">'+'新房'+'</em></li>');
+                            }else if (villageType==1){
+                                $('#automatedWord').append('<li id='+data.list[i].search_id+' class="click_work" search_type='+searchType+'>'+ data.list[i].search_name+' <em style="float: right; color: #bcbcbc;">'+'小区'+'</em></li>');
+                            }else if (villageType==2){
+                                $('#automatedWord').append('<li id='+data.list[i].search_id+' class="click_work" search_type='+searchType+'>'+ data.list[i].search_name+' <em style="float: right; color: #bcbcbc;">'+'二手房'+'</em></li>');
+                            }else if (villageType==-1){
+                                $('#automatedWord').append('<li id='+data.list[i].search_id+' class="click_work" search_type='+searchType+'>'+ data.list[i].search_name+' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>');
+                            }
                         }
                         $('.click_work').on('click',function(){
                             var word = $(this).text();
-                            var id = $(this).attr('id')
-                            var village = word.split(' ')[0].trim()
-                            var house_property = word.split(' ')[1].trim()
+                            var search_id = $(this).attr('id')
+                            var search_type = $(this).attr('search_type')
+                            var search_name = word.split(' ')[0].trim()
+                            var house_type = word.split(' ')[word.split(' ').length-1].trim()
                             var url = window.location.href.split('?')[0]
                             if (url.indexOf('xiaoqu')>0){
-                                plotStorageArray.push(village);
+                                plotStorageArray.push(search_name+','+search_id+','+search_type+','+house_type);
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = url+'/'+id+'.html'
-                            }
-                            if (house_property=='小区'&&url.indexOf('xiaoqu')==-1){
-                                plotStorageArray.push(village);
-                                localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = url+'/xiaoqu/'+id+'.html'
+                                window.location.href = getUrl(url,search_type,search_id,search_name,house_type);
                             }
                             if (url.indexOf('esf')>0){
-                                esfStorageArray.push(village);
+                                esfStorageArray.push(search_name+','+search_id+','+search_type+','+house_type);
                                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
-                                window.location.href = url+'?keyword='+village
-                            }
-                            if (house_property=='二手房'&&url.indexOf('esf')==-1){
-                                esfStorageArray.push(village);
-                                localStorage.setItem('esf', JSON.stringify(esfStorageArray));
-                                window.location.href = url+'/esf?keyword='+village
+                                window.location.href = getUrl(url,search_type,search_id,search_name,house_type);
                             }
                             if (url.indexOf('xinfang')>0||url.indexOf('loupan')>0){
-                                newHouseStorageArray.push(village);
+                                newHouseStorageArray.push(search_name+','+search_id+','+search_type+','+house_type);
                                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                                 url = url.replace('xinfang','loupan')
-                                window.location.href = url+'/'+id+'.html'
+                                window.location.href = getUrl(url,search_type,search_id,search_name,house_type);
                             }
-                            if (house_property=='新房'&&url.indexOf('xinfang')==-1&&url.indexOf('loupan')==-1){
-                                newHouseStorageArray.push(village);
-                                localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
-                                window.location.href = url+'/loupan/'+id+'.html'
+                            if (url.indexOf('xinfang')==-1&&url.indexOf('loupan')==-1&&url.indexOf('esf')==-1&&url.indexOf('xiaoqu')==-1){
+                                if (house_type == '新房'){
+                                    newHouseStorageArray.push(search_name+','+search_id+','+search_type+','+house_type);
+                                    localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
+                                    if(search_type == '区县'){
+                                        window.location.href = url+'/loupan?districtId='+search_id
+                                    }else if(search_type == '商圈'){
+                                        window.location.href = url+'/loupan?areaId='+search_id
+                                    }else {
+                                        window.location.href = url+'/loupan/'+search_id+'.html'
+                                    }
+                                }
+                                if(house_type == '小区'){
+                                    plotStorageArray.push(search_name+','+search_id+','+search_type+','+house_type);
+                                    localStorage.setItem('plot', JSON.stringify(plotStorageArray));
+                                    if(search_type == '区县'){
+                                        window.location.href = url+'/xiaoqu?districtId='+search_id
+                                    }else if(search_type == '商圈'){
+                                        window.location.href = url+'/xiaoqu?areaId='+search_id
+                                    }else {
+                                        window.location.href = url+'/xiaoqu/'+search_id+'.html'
+                                    }
+                                }
+                                if(house_type == '二手房'){
+                                    esfStorageArray.push(search_name+','+search_id+','+search_type+','+house_type);
+                                    localStorage.setItem('esf', JSON.stringify(esfStorageArray));
+                                    if(search_type == '区县'){
+                                        window.location.href = url+'/esf?districtId='+search_id
+                                    }else if(search_type == '商圈'){
+                                        window.location.href = url+'/esf?areaId='+search_id
+                                    }else {
+                                        window.location.href = url+'/esf?keyword='+search_name
+                                    }
+                                }
                             }
                         })
                     }

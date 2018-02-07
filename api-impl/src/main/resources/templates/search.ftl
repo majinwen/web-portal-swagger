@@ -7,17 +7,17 @@
     <div style="position: absolute; width: 100%; height: 100%; overflow-y: auto">
         <header class="searchpage-header">
             <div class="searchpage-search-box">
-                <div class="type-tab-box none">
-                    <p class="searchpage-current-item">二手房</p>
-                    <div class="type-menu-box">
-                        <i class="triangle-top"></i>
-                        <div class="type-menu">
-                            <span id="nhouse" data-value="${router_city('/loupan')}?keyword=">新房</span>
-                            <span id="erhouse" data-value="${router_city('/esf')}?keyword=" class="current">二手房</span>
-                            <span id="plot" data-value="${router_city('/xiaoqu')}?keyword=">小区</span>
-                        </div>
-                    </div>
-                </div>
+                <#--<div class="type-tab-box none">-->
+                    <#--<p class="searchpage-current-item">二手房</p>-->
+                    <#--<div class="type-menu-box">-->
+                        <#--<i class="triangle-top"></i>-->
+                        <#--<div class="type-menu">-->
+                            <#--<span id="nhouse" data-value="${router_city('/loupan')}?keyword=">新房</span>-->
+                            <#--<span id="erhouse" data-value="${router_city('/esf')}?keyword=" class="current">二手房</span>-->
+                            <#--<span id="plot" data-value="${router_city('/xiaoqu')}?keyword=">小区</span>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</div>-->
                 <div class="searchpage-search-content">
                     <i class="icon"></i>
                     <form action="" onsubmit="return false;">
@@ -29,8 +29,8 @@
             <button type="button" class="searchpage-search-btn">取消</button>
         </header>
 
-        <ul id="automatedWord" style="padding: 0 45px;background-color:#fff;"></ul>
         <ul id="indexWord" style="padding: 0 45px;background-color:#fff;"></ul>
+        <ul id="automatedWord" style="padding: 0 45px;background-color:#fff;"></ul>
         <div id="search-container-wrapper">
             <#--index start-->
             <div id="search-index" class="search-container-item none">

@@ -15,13 +15,14 @@ public class PartialMatchingController {
     @Autowired
     private PartialMatchingService partialMatchingService;
 
-    Map searchMap = new HashMap();
+
 
     @RequestMapping("/search")
     @ResponseBody
-    public Map indexPartialMatching(String keyword,String houseProperty){
+    public Map indexPartialMatching(String keyword,String property){
+        Map searchMap = new HashMap();
         try {
-            searchMap = partialMatchingService.search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,property);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -30,9 +31,10 @@ public class PartialMatchingController {
 
     @RequestMapping("/xiaoqu/search")
     @ResponseBody
-    public Map plotPartialMatching(String keyword,String houseProperty){
+    public Map plotPartialMatching(String keyword,String property){
+        Map searchMap = new HashMap();
         try {
-            searchMap = partialMatchingService.search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,property);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -41,9 +43,10 @@ public class PartialMatchingController {
 
     @RequestMapping("/esf/search")
     @ResponseBody
-    public Map esfPartialMatching(String keyword,String houseProperty){
+    public Map esfPartialMatching(String keyword,String property){
+        Map searchMap = new HashMap();
         try {
-            searchMap = partialMatchingService.search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,property);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -52,9 +55,10 @@ public class PartialMatchingController {
 
     @RequestMapping("/xinfang/search")
     @ResponseBody
-    public Map newHousePartialMatching(String keyword,String houseProperty){
+    public Map newHousePartialMatching(String keyword,String property){
+        Map searchMap = new HashMap();
         try {
-            searchMap = partialMatchingService.search(keyword,houseProperty);
+            searchMap = partialMatchingService.search(keyword,property);
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package com.toutiao.web.service.chance.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.service.chance.PartialMatchingService;
+import org.apache.ibatis.javassist.runtime.Desc;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -18,6 +19,8 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,33 +37,64 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
 
     @Override
 
-    public Map search(String keyword,String houseProperty) {
+    public Map search(String keyword,String property) {
         Map map = new HashMap();
         List list = new ArrayList();
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch("search_index").setTypes("search_type");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"village").minimumShouldMatch("80%"));
-        if (houseProperty!=null){
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(houseProperty,"house_property"));
+
+        SearchRequestBuilder srbScope = client.prepareSearch("search_scope").setTypes("search_scope_type");
+        BoolQueryBuilder boolQueryBuilderScope = QueryBuilders.boolQuery();
+        boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
+        if (property!=null){
+            String village_type = null;
+            if (property.equals("新房")){
+                village_type = "0";
+            }
+            if (property.equals("小区")){
+                village_type = "1";
+            }
+            if (property.equals("二手房")){
+                village_type = "2";
+            }
+            boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(village_type,"village_type"));
         }
-        srb.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("house_property", "小区")))
-           .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("house_property", "二手房")))
-           .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("house_property", "新房")));
+        srbScope.addSort("search_sort",SortOrder.ASC);
+        SearchResponse searchResponseScope = srbScope.setQuery(boolQueryBuilderScope).execute().actionGet();
+        if (searchResponseScope!=null){
+            SearchHit[] hits = searchResponseScope.getHits().getHits();
+            for (SearchHit hit :hits) {
+                Map<String, Object> source = hit.getSource();
+                list.add(source);
+            }
+        }
+
+
+
+        SearchRequestBuilder srbEngines = client.prepareSearch("search_engines").setTypes("search_engines_type");
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(1,"is_approve"));
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(0,"is_del"));
+        if (property!=null){
+            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(property,"search_type"));
+        }
+        srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type", "小区")))
+           .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type", "二手房")))
+           .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type", "新房")));
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
-        highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("village");
-        srb.highlighter(highlightBuilder);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+        highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
+        srbEngines.highlighter(highlightBuilder);
+        SearchResponse searchResponse = srbEngines.setQuery(boolQueryBuilder).execute().actionGet();
         if(searchResponse !=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit :hits) {
                 Map<String, Object> source = hit.getSource();
                 Map<String, HighlightField> highlightFields = hit.getHighlightFields();
-                HighlightField village = highlightFields.get("village");
+                HighlightField village = highlightFields.get("search_name");
                 Text[] fragments = village.fragments();
                 String name = String.valueOf(fragments[0]);
-                source.put("villageName",name);
+                source.put("em_search_name",name);
                 list.add(source);
             }
             map.put("total",searchResponse.getHits().getTotalHits());
@@ -69,6 +103,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
             map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
         }
+
         return map;
     }
 }

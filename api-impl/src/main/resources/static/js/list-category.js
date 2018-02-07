@@ -1114,7 +1114,7 @@ function pullUpAction() {
         autoLoad:true,
         domDown : {                                                          // 下方DOM
             domClass   : 'dropload-down',
-            domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
+            // domRefresh : '<div class="dropload-refresh">↑上拉加载更多</div>',
             domLoad    : '<div class="dropload-load"><span class="loading"></span>加载中...</div>',
             domNoData  : '<p class="tip-box">有新上房源，我们会及时通知您哦！</p>'
         },
