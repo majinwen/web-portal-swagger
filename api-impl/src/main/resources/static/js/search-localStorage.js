@@ -349,7 +349,7 @@ $(function(){
                         esfNum = data.esfNum;
                         newHouseNum = data.newHouseNum;
                         $('#automatedWord').empty().show();
-                        if (data.list.length>0){
+                        if (data.list!='undefined'&&data.list!=null&&data.list!=''){
                             for(var i = 0;i<data.list.length;i++){
                                 var searchType = data.list[i].search_type
                                 var locationTypeSings = data.list[i].location_type_sings||-1
