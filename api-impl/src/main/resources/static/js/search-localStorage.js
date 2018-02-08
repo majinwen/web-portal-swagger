@@ -61,57 +61,60 @@ $(function(){
 
         if(_localHref.indexOf('xiaoqu')>0){
 
-            var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
-
-            var start = (plotStorageArray.length-5)>0?(plotStorageArray.length-5):0;
-            var end = plotStorageArray.length;
-            for (var i=start;i<end;i++) {
-                var _history = plotStorageArray.pop();
-                var history = _history.split(',');
-                if (history[3]==1){
-                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
-                }else if(history[3]==2){
-                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
-                }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/xiaoqu/' + history[1] )+'.html' + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
-                }
-            }
+            // var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
+            //
+            // var start = (plotStorageArray.length-5)>0?(plotStorageArray.length-5):0;
+            // var end = plotStorageArray.length;
+            // for (var i=start;i<end;i++) {
+            //     var _history = plotStorageArray.pop();
+            //     var history = _history.split(',');
+            //     if (history[3]==1){
+            //         $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }else if(history[3]==2){
+            //         $('.searchpage-history').append('<a href="' + router_city('/xiaoqu?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }else {
+            //         $('.searchpage-history').append('<a href="' + router_city('/xiaoqu/' + history[1] )+'.html' + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }
+            // }
+            getLocalstorageMsg('plot');
 
         } else if(_localHref.indexOf('esf')>0){
 
-            var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
-
-            var start = (esfStorageArray.length-5)>0?(esfStorageArray.length-5):0;
-            var end = esfStorageArray.length;
-            for (var i=start; i<end; i++) {
-                var _history = esfStorageArray.pop();
-                var history = _history.split(',');
-                if (history[3]==1){
-                    $('.searchpage-history').append('<a href="' + router_city('/esf?districtId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
-                }else if(history[3]==2){
-                    $('.searchpage-history').append('<a href="' + router_city('/esf?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
-                }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + history[0] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
-                }
-            }
+            // var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
+            //
+            // var start = (esfStorageArray.length-5)>0?(esfStorageArray.length-5):0;
+            // var end = esfStorageArray.length;
+            // for (var i=start; i<end; i++) {
+            //     var _history = esfStorageArray.pop();
+            //     var history = _history.split(',');
+            //     if (history[3]==1){
+            //         $('.searchpage-history').append('<a href="' + router_city('/esf?districtId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }else if(history[3]==2){
+            //         $('.searchpage-history').append('<a href="' + router_city('/esf?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }else {
+            //         $('.searchpage-history').append('<a href="' + router_city('/esf?keyword=' + history[0] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }
+            // }
+            getLocalstorageMsg('esf');
 
         }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0){
 
-            var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
-
-            var start = (newHouseStorageArray.length-5)>0?(newHouseStorageArray.length-5):0;
-            var end = newHouseStorageArray.length;
-            for (var i=start; i<end; i++) {
-                var _history = newHouseStorageArray.pop();
-                var history = _history.split(',');
-                if (history[3]==1){
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan?districtId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
-                }else if(history[3]==2){
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
-                }else {
-                    $('.searchpage-history').append('<a href="' + router_city('/loupan/' + history[1] )+'.html' + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
-                }
-            }
+            // var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
+            //
+            // var start = (newHouseStorageArray.length-5)>0?(newHouseStorageArray.length-5):0;
+            // var end = newHouseStorageArray.length;
+            // for (var i=start; i<end; i++) {
+            //     var _history = newHouseStorageArray.pop();
+            //     var history = _history.split(',');
+            //     if (history[3]==1){
+            //         $('.searchpage-history').append('<a href="' + router_city('/loupan?districtId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }else if(history[3]==2){
+            //         $('.searchpage-history').append('<a href="' + router_city('/loupan?areaId=' + history[1] ) + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }else {
+            //         $('.searchpage-history').append('<a href="' + router_city('/loupan/' + history[1] )+'.html' + '" class="word-break">' + history[0] +  '<em style="float: right">'+ history[2]+'</em></a>')
+            //     }
+            // }
+            getLocalstorageMsg('newHouse');
         } else {
             getLocalstorageMsg('plot');
             getLocalstorageMsg('esf');
@@ -193,7 +196,6 @@ $(function(){
                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                 location.href= router_city('/esf?keyword=') + $.trim($(this).val());
             } else if(_localHref.indexOf('loupan')>0||_localHref.indexOf('xinfang')>0){
-                console.log('aaaaaaa')
                 hashPush(newHouseStorageArray,_keyword+',,新房,');
                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
@@ -356,7 +358,7 @@ $(function(){
                             var word = $(this).text();
                             var search_id = $(this).attr('id')
                             var location_type_sings = $(this).attr('location_type_sings')||''
-                            var search_type_sings = $(this).attr('search_type_sings')||''
+                            // var search_type_sings = $(this).attr('search_type_sings')||''
                             var search_name = word.split(' ')[0].trim()
                             var search_type = word.split(' ')[word.split(' ').length-1].trim()
                             var url = window.location.href.split('?')[0]
@@ -374,7 +376,7 @@ $(function(){
                                 hashPush(newHouseStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
                                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                                 url = url.replace('xinfang','loupan')
-                                window.location.href = getUrl(url,search_type,search_id,search_name,house_type);
+                                window.location.href = getUrl(url,search_type,search_id,search_name,location_type_sings);
                             }
                             if (url.indexOf('xinfang')==-1&&url.indexOf('loupan')==-1&&url.indexOf('esf')==-1&&url.indexOf('xiaoqu')==-1){
                                 if (search_type == '新房'){

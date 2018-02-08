@@ -68,6 +68,9 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             }
         }
 
+
+
+
         SearchRequestBuilder srbEngines = client.prepareSearch("search_engines").setTypes("search_engines_type");
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
