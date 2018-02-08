@@ -19,7 +19,6 @@
                         <input type="search" placeholder="" class="key-words" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
                     </form>
                 </div>
-
             </div>
             <button type="button" class="searchpage-search-btn">取消</button>
         </header>

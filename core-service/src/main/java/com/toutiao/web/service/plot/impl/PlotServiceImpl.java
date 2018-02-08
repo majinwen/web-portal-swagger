@@ -45,8 +45,8 @@ import java.util.Map;
 
 @Service
 public class PlotServiceImpl implements PlotService {
-    //    @Value("${plot.index}")
-    private String index = "village_test";
+    @Value("${plot.index}")
+    private String index ;
     @Value("${plot.parent.type}")
     private String parentType;
     @Value("${plot.child.type}")
