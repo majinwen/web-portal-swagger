@@ -665,7 +665,7 @@ body {
   .automated-word li {
     display: block;
     padding: 0.24rem 0;
-    color: #000000; }
+    color: #3a3a3a; }
     [data-dpr="1"] .automated-word li {
       font-size: 13px; }
     [data-dpr="2"] .automated-word li {
