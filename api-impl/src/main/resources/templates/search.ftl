@@ -1,8 +1,3 @@
-<style>
-    /*#automatedWord .click_work {padding: 34px 0; border-bottom: 1px solid #efefef;}*/
-    #indexWord .click_index {padding: 34px 0; border-bottom: 1px solid #efefef;}
-    /*#automatedWord .click_work em {float: right; color: #bcbcbc; }*/
-</style>
 <div class="search-page-wrapper none">
     <div style="position: absolute; width: 100%; height: 100%; overflow-y: auto">
         <header class="searchpage-header">
@@ -29,8 +24,7 @@
             <button type="button" class="searchpage-search-btn">取消</button>
         </header>
 
-        <ul id="indexWord" style="padding: 0 45px;background-color:#fff;"></ul>
-        <#--<ul id="automatedWord" style="padding: 0 45px;background-color:#fff;"></ul>-->
+        <ul id="indexWord" class="index-word"></ul>
         <ul id="automatedWord" class="automated-word"></ul>
         <div id="search-container-wrapper">
             <#--index start-->
