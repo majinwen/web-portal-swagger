@@ -115,7 +115,7 @@
                 </div>
                 <div class="piece-module">
                     <div class="report-caption echart-title">
-                        <p>总价<em class="high-light-red"><#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万</em>以上<#else>${intelligenceFhRes['totalPrice']?number?round}万</em>左右</#if></#if>的房源市场为您的目标市场，<br>对比北京市场近一年整体价格情况，<br>洞察目标房产的价格走势</p>
+                        <p>总价<strong class="high-light-red"><#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万</strong>以上<#else>${intelligenceFhRes['totalPrice']?number?round}万</strong>左右</#if></#if>的房源市场为您的<em class="high-light-red">目标市场</em>，<br>对比北京市场近一年整体价格情况，<br>洞察目标房产的价格走势</p>
                     </div>
                     <ul class="echarts-legend">
                         <li>北京市场</li>
@@ -143,7 +143,7 @@
                 </div>
                 <div class="piece-module">
                     <div class="report-caption echart-title">
-                        <p>总价<em class="high-light-red"><#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万</em>以上<#else>${intelligenceFhRes['totalPrice']?number?round}万</em>左右</#if></#if>的房源市场为您的目标市场，<br>对比北京市场近一年整体成交情况，<br>把握目标房产的成交量变化</p>
+                        <p>总价<strong class="high-light-red"><#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万</strong>以上<#else>${intelligenceFhRes['totalPrice']?number?round}万</strong>左右</#if></#if>的房源市场为您的<em class="high-light-red">目标市场</em>，<br>对比北京市场近一年整体成交情况，<br>把握目标房产的成交量变化</p>
                     </div>
                     <ul class="echarts-legend">
                         <li>北京市场</li>
@@ -301,14 +301,14 @@
                                             <div class="traffic-text">
                                                 <div class="traffice-table-row">
                                                     <span>TOP.01</span>
-                                                    <p>${fhResult['projname']}离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>，约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p>
+                                                    <p><strong>${fhResult['projname']}</strong> 离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>，约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p>
                                                 </div>
                                             </div>
                                         <#else >
                                             <div class="traffic-text">
                                                 <div class="traffice-table-row">
                                                     <span>TOP.02</span>
-                                                    <p>${fhResult['projname']}次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>，约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p>
+                                                    <p><strong>${fhResult['projname']}</strong> 次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>，约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p>
                                                 </div>
                                             </div>
                                         </#if>
@@ -334,14 +334,14 @@
                                             <div class="traffic-text">
                                                 <div class="traffice-table-row">
                                                     <span>TOP.01</span>
-                                                    <p>${fhResult['projname']}离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p>
+                                                    <p><strong>${fhResult['projname']}</strong> 离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>，驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p>
                                                 </div>
                                             </div>
                                         <#else >
                                             <div class="traffic-text">
                                                 <div class="traffice-table-row">
                                                     <span>TOP.02</span>
-                                                    <p>${fhResult['projname']}次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p>
+                                                    <p><strong>${fhResult['projname']}</strong> 次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>，驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p>
                                                 </div>
                                             </div>
                                         </#if>
@@ -589,7 +589,7 @@
                                                         <#assign youers = fhResult['dataInfo']['jiaoyu']['youeryuan']>
                                                         <#if (youers?size >0)>
                                                             <#list youers as youeritem>
-                                                            <li><span>${youeritem['name']}</span><em>${youeritem['distance']}m</em></li>
+                                                            <li><span>${youeritem['name']}</span><em>${(youeritem['distance']?float/1000)?string("#.#")}km</em></li>
                                                             </#list>
                                                         <#else ><li><span>1km内暂无幼儿园</span></li>
                                                         </#if>
@@ -612,7 +612,7 @@
                                                     <ul class="item-list">
                                                         <#if (xiaoxue?size >0)>
                                                             <#list xiaoxue as xiaoxueitem>
-                                                                <li><span>${xiaoxueitem['name']}</span><em>${xiaoxueitem['distance']}m</em></li>
+                                                                <li><span>${xiaoxueitem['name']}</span><em>${(xiaoxueitem['distance']?float/1000)?string("#.#")}km</em></li>
                                                             </#list>
                                                         <#else ><li><span>1km内暂无小学</span></li>
                                                         </#if>
@@ -635,7 +635,7 @@
                                                     <ul class="item-list">
                                                         <#if (zhongxue?size >0)>
                                                             <#list zhongxue as zhongxueitem>
-                                                                <li><span>${zhongxueitem['name']}</span><em>${zhongxueitem['distance']}m</em></li>
+                                                                <li><span>${zhongxueitem['name']}</span><em>${(zhongxueitem['distance']?float/1000)?string("#.#")}km</em></li>
                                                             </#list>
                                                         <#else ><li><span>1km内暂无中学</span></li>
                                                         </#if>
@@ -651,7 +651,7 @@
                                 <div class="piece-title">
                                     <div class="piece-title-border">
                                         <p>医疗配套</p>
-                                        <span>3km内医疗配套，为您的健康保驾护航</span>
+                                        <span>3km医疗配套，为您的健康保驾护航</span>
                                     </div>
                                 </div>
                                 <section class="folding-slider-wrapper">
@@ -668,7 +668,7 @@
                                                     <ul class="item-list">
                                                      <#if (zonghe?size >0)>
                                                        <#list zonghe as zongheitem>
-                                                        <li><span>${zongheitem['name']}</span><em>${zongheitem['distance']?number/1000}km</em></li>
+                                                        <li><span>${zongheitem['name']}</span><em>${(zongheitem['distance']?float/1000)?string("#.#")}km</em></li>
                                                        </#list>
                                                      </#if>
                                                     </ul>
@@ -1147,6 +1147,7 @@
         // 显示标题，图例和空的坐标
         var trafficSubwayGrid = {
             right: '0%',
+            left: '5%',
             top: 0,
             bottom: '20%',
             containLabel: true
@@ -1188,7 +1189,7 @@
                     name: getPlotName()[0],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1202,7 +1203,7 @@
                     name: getPlotName()[1],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1216,7 +1217,7 @@
                     name: getPlotName()[2],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1230,7 +1231,7 @@
                     name: getPlotName()[3],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1244,7 +1245,7 @@
                     name: getPlotName()[4],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1302,7 +1303,7 @@
                     name: getPlotName()[0],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1316,7 +1317,7 @@
                     name: getPlotName()[1],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1330,7 +1331,7 @@
                     name: getPlotName()[2],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1344,7 +1345,7 @@
                     name: getPlotName()[3],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
@@ -1358,7 +1359,7 @@
                     name: getPlotName()[4],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 6,
+                    barGap: 7,
                     barWidth: barBarWidth,
                     itemStyle: {
                         normal: {
