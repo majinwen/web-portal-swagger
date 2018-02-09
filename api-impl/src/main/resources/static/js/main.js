@@ -176,7 +176,7 @@ function textSlider() {
     if ($length > 1) {
         window["index_lunbo_guanggao"] = setInterval(function () {
             window["index_lunbo_guanggao"] = (window["index_lunbo_guanggao"] || 0) + 1;
-            if(window["index_lunbo_guanggao"]>$length){
+            if(window["index_lunbo_guanggao"]>=$length){
                 window["index_lunbo_guanggao"] = 0;
             }
             $ul.addClass('animate').css('-webkit-transform', 'translateY(-' + $lilength * (window["index_lunbo_guanggao"]) + 'px)');
