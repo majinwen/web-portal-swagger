@@ -264,7 +264,7 @@
 <script id="listContent" type="text/html">
     {{each data}}
     <li>
-        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="esf_list(this)" href="${router_city('/esf/{{$value.houseId}}.html')}">
+        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}" onclick="esf_list(this)" url="${router_city('/esf/{{$value.houseId}}.html')}"  href="javascript:void(0);">
             <div class="clear">
                 <div class="list-item-img-box">
                     {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
@@ -453,6 +453,7 @@
     });
     function esf_list(e) {
         setPageNum($(e).attr('data-id'))
+        window.location.href = $(e).attr('url')
     }
 
 </script>

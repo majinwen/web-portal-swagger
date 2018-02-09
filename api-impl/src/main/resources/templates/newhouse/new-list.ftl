@@ -250,7 +250,7 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li id='{{total}}'><a class="list-item new" data-id = "{{$value.pageNum}}" onclick="new_list(this)" href="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>">
+    <li id='{{total}}'><a class="list-item new" data-id = "{{$value.pageNum}}" onclick="new_list(this)"  url="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>" href="javascript:void(0);">
 
         <div class="clear">
             <div class="list-item-img-box">
@@ -363,16 +363,12 @@
         var link = $(this);
         zhuge.track('新房-排序',{'排序方式':sortZhuge},function () {
         });
-//        return false;
+        return false;
     });
-    $(function () {
-        var herf = window.location.href.split('/')
-        if (document.referrer != (herf[0]+'//'+herf[2]+'/'+herf[3]+'/')){
-            zhuge.track('新房-进入房屋列表页',{'页面来源URL':document.referrer})
-        }
-    })
+
     function new_list(e) {
         setPageNum($(e).attr('data-id'))
+        window.location.href = $(e).attr('url')
     }
 </script>
 </html>
