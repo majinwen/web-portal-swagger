@@ -54,11 +54,24 @@ function scaleImg(idWidth) {
             } else if (swipeY && Math.abs(moveEndX - startX) - Math.abs(moveEndY - startY) < 0) { // 上下滑动
                 status = false;
                 base = Y / 1000 + 1;
+                var endWidth = idwidth * base;
+                var endHeight = idHeight * base;
+                if (Y < 0) {
+                    Y = 0;
+                }
+                var endLeft = (idWidth * (Y / 1000) * 0.5) * -1;
+
+                if (endWidth < idWidth) {
+                    endWidth = idWidth
+                }
+                if (endHeight < idHeight) {
+                    endHeight = idHeight
+                }
                 if ($(document).scrollTop() <= 0) {
                     $('.scaleImg').css({
-                        'width': idWidth * base,
-                        'height': idHeight * base,
-                        'margin-left': (idWidth * (Y / 1000) * 0.5) * -1
+                        'width': endWidth,
+                        'height': endHeight,
+                        'margin-left': endLeft
                     });
                 }
                 swipeX = false;
