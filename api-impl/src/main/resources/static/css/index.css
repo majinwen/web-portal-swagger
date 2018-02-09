@@ -1201,6 +1201,8 @@ body {
   .markets-quotations .row {
     padding: 0.4rem;
     border-top: 0.0133333333rem solid #e8e8e8; }
+    .markets-quotations .row .cloumn div {
+      color: #3a3a3a; }
     .markets-quotations .row .cloumn:first-child {
       float: left;
       width: 4.2rem; }

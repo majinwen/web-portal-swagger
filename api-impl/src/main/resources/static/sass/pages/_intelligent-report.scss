@@ -1102,13 +1102,12 @@ body {
                     color: #444A52;
 
                     li {
-                        float: left;
                         position: relative;
-                        display: block;
+                        display: table-cell;
                         width: rem(123);
                         line-height: rem(33);
                         min-height: rem(100);
-                        padding: rem(25) rem(15) rem(10);
+                        padding: rem(25) rem(10) rem(10);
                         border-right: rem(1) solid $baseBorderColor;
                         @include box-sizing;
 

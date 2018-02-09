@@ -1248,13 +1248,12 @@ body {
         margin-left: 1.4266666667rem;
         color: #444A52; }
         .page2 .page-content .module-item .plot-title-block ul li {
-          float: left;
           position: relative;
-          display: block;
+          display: table-cell;
           width: 1.64rem;
           line-height: 0.44rem;
           min-height: 1.3333333333rem;
-          padding: 0.3333333333rem 0.2rem 0.1333333333rem;
+          padding: 0.3333333333rem 0.1333333333rem 0.1333333333rem;
           border-right: 0.0133333333rem solid #e8e8e8;
           box-sizing: border-box; }
           .page2 .page-content .module-item .plot-title-block ul li:before {
