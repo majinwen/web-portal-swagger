@@ -59,8 +59,10 @@ function pageTurning() {
             var navTop = $('.plot-title-box').offset().top;
             var scrollTop = $(document).scrollTop();
             if (scrollTop > navTop) {
+                $('.plot-title-block').removeClass('none');
                 $('.plot-title-block').addClass('fixed');
             } else {
+                $('.plot-title-block').addClass('none');
                 $('.plot-title-block').removeClass('fixed');
             }
         }

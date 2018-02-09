@@ -1136,32 +1136,32 @@ body {
       -webkit-background-size: contain;
       background-size: contain; }
       .banner-nav .banner-nav-item i.all-buildings {
-        background-image: url("/static/images/newindex/zf_icon_qblp.png");
+        background-image: url("/static/images/newindex/newindex-nav-icon-newyear1.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.all-buildings {
-            background-image: url("/static/images/newindex/zf_icon_qblp@2x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-newyear1@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.all-buildings {
-            background-image: url("/static/images/newindex/zf_icon_qblp@3x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-newyear1@3x.png"); } }
       .banner-nav .banner-nav-item i.featured-properties {
-        background-image: url("/static/images/newindex/zf_icon_zslp.png");
+        background-image: url("/static/images/newindex/newindex-nav-icon-newyear2.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.featured-properties {
-            background-image: url("/static/images/newindex/zf_icon_zslp@2x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-newyear2@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.featured-properties {
-            background-image: url("/static/images/newindex/zf_icon_zslp@3x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-newyear2@3x.png"); } }
       .banner-nav .banner-nav-item i.houses-open {
-        background-image: url("/static/images/newindex/zf_icon_jjkp.png");
+        background-image: url("/static/images/newindex/newindex-nav-icon-newyear3.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.houses-open {
-            background-image: url("/static/images/newindex/zf_icon_jjkp@2x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-newyear3@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.houses-open {
-            background-image: url("/static/images/newindex/zf_icon_jjkp@3x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-newyear3@3x.png"); } }
       .banner-nav .banner-nav-item i.houses-intelligent {
         background-image: url("/static/images/newindex/zf_icon_znzf.png");
         background-repeat: no-repeat; }
@@ -1172,41 +1172,41 @@ body {
           .banner-nav .banner-nav-item i.houses-intelligent {
             background-image: url("/static/images/newindex/zf_icon_znzf@3x.png"); } }
       .banner-nav .banner-nav-item i.index-esf-icon {
-        background-image: url("/static/images/index/dsy_icon_esf.png");
+        background-image: url("/static/images/index/index-nav-icon-newyear3.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/dsy_icon_esf@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear3@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/dsy_icon_esf@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear3@3x.png"); } }
       .banner-nav .banner-nav-item i.index-plot-icon {
-        background-image: url("/static/images/index/dsy_icon_xq.png");
+        background-image: url("/static/images/index/index-nav-icon-newyear2.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-plot-icon {
-            background-image: url("/static/images/index/dsy_icon_xq@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear2@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-plot-icon {
-            background-image: url("/static/images/index/dsy_icon_xq@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear2@3x.png"); } }
       .banner-nav .banner-nav-item i.index-new-icon {
-        background-image: url("/static/images/index/dsy_icon_xf.png");
+        background-image: url("/static/images/index/index-nav-icon-newyear1.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-new-icon {
-            background-image: url("/static/images/index/dsy_icon_xf@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear1@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-new-icon {
-            background-image: url("/static/images/index/dsy_icon_xf@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear1@3x.png"); } }
       .banner-nav .banner-nav-item i.index-intelligent-icon {
-        background-image: url("/static/images/index/dsy_icon_zn.png");
+        background-image: url("/static/images/index/index-nav-icon-newyear4.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-intelligent-icon {
-            background-image: url("/static/images/index/dsy_icon_zn@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear4@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-intelligent-icon {
-            background-image: url("/static/images/index/dsy_icon_zn@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-newyear4@3x.png"); } }
     .banner-nav .banner-nav-item p {
       margin-top: 0.2266666667rem;
       color: #444;
@@ -1304,8 +1304,8 @@ body {
         width: 100%;
         height: 100%;
         padding: 0.2666666667rem;
-        color: #fff;
-        background-color: rgba(69, 73, 95, 0.5);
+        color: #858585;
+        background-color: #f2f2f2;
         box-sizing: border-box; }
         [data-dpr="1"] .hot-topic .column .hot-topic-item .topic-item-content {
           font-size: 11px; }
@@ -1315,7 +1315,7 @@ body {
           font-size: 33px; }
         .hot-topic .column .hot-topic-item .topic-item-content h5 {
           display: block;
-          margin-bottom: 0.2133333333rem; }
+          margin-bottom: 0.1333333333rem; }
           [data-dpr="1"] .hot-topic .column .hot-topic-item .topic-item-content h5 {
             font-size: 14px; }
           [data-dpr="2"] .hot-topic .column .hot-topic-item .topic-item-content h5 {
@@ -1331,50 +1331,14 @@ body {
           display: inline-block;
           z-index: 1; }
       .hot-topic .column .hot-topic-item img {
-        width: 100%; }
+        position: relative;
+        width: 100%;
+        z-index: 2; }
       .hot-topic .column .hot-topic-item.index-topic-item {
-        height: 2.6666666667rem;
-        text-align: center; }
+        height: 2.6666666667rem; }
         .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content {
           padding: 0.4rem;
-          color: #3a3a3a;
-          background-color: #f2f2f2; }
-          .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p {
-            overflow: inherit;
-            color: #999; }
-            [data-dpr="1"] .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p {
-              font-size: 11px; }
-            [data-dpr="2"] .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p {
-              font-size: 22px; }
-            [data-dpr="3"] .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p {
-              font-size: 33px; }
-            .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p:before, .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p:after {
-              content: '';
-              position: absolute;
-              top: 0.1466666667rem;
-              width: 0.3333333333rem;
-              height: 0.0133333333rem;
-              background-color: #999; }
-            .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p:before {
-              left: -0.6666666667rem; }
-            .hot-topic .column .hot-topic-item.index-topic-item .topic-item-content p:after {
-              right: -0.6666666667rem; }
-        .hot-topic .column .hot-topic-item.index-topic-item img {
-          position: absolute;
-          bottom: 0;
-          left: 50%; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-1 {
-            width: 2.2rem;
-            margin-left: -1.1rem; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-2 {
-            width: 2.5733333333rem;
-            margin-left: -1.2866666667rem; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-3 {
-            width: 2.68rem;
-            margin-left: -1.34rem; }
-          .hot-topic .column .hot-topic-item.index-topic-item img.item-4 {
-            width: 2.32rem;
-            margin-left: -1.16rem; }
+          color: #3a3a3a; }
 
 .banner-index-box {
   padding: 0.1866666667rem 0.4rem 0.4133333333rem; }

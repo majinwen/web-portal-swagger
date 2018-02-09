@@ -24,14 +24,14 @@
                 width: 100%;
                 height: 100%;
                 padding: rem(20);
-                color: $baseWhite;
+                color: #858585;
                 @include font-dpr(22);
-                background-color: rgba(69, 73, 95, 0.5);
+                background-color: #f2f2f2;
                 @include box-sizing;
 
                 h5 {
                     display: block;
-                    margin-bottom: rem(16);
+                    margin-bottom: rem(10);
                     @include font-dpr(28);
                 }
 
@@ -46,64 +46,17 @@
             }
 
             img {
+                position: relative;
                 width: 100%;
+                z-index: 2;
             }
 
             &.index-topic-item {
                 height: rem(200);
-                text-align: center;
 
                 .topic-item-content {
                     padding: rem(30);
                     color: $baseBlack;
-                    background-color: #f2f2f2;
-
-                    p {
-                        overflow: inherit;
-                        @include font-dpr(22);
-                        color: #999;
-
-                        &:before, &:after {
-                            content: '';
-                            position: absolute;
-                            top: rem(11);
-                            width: rem(25);
-                            height: rem(1);
-                            background-color: #999;
-                        }
-
-                        &:before {
-                            left: rem(-50);
-                        }
-
-                        &:after {
-                            right: rem(-50);
-                        }
-
-                    }
-                }
-
-                img {
-                    position: absolute;
-                    bottom: 0;
-                    left: 50%;
-
-                    &.item-1 {
-                        width: rem(165);
-                        margin-left: rem(-82.5);
-                    }
-                    &.item-2 {
-                        width: rem(193);
-                        margin-left: rem(-96.5);
-                    }
-                    &.item-3 {
-                        width: rem(201);
-                        margin-left: rem(-100.5);
-                    }
-                    &.item-4 {
-                        width: rem(174);
-                        margin-left: rem(-87);
-                    }
                 }
             }
         }
