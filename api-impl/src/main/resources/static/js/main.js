@@ -13,8 +13,7 @@ $(function () {
 
     houseTypeState();       // 户型类型切换
 
-    textSlider();           // 首页头条公告滚动
-    
+
     $('.header-user').click(function () {
         userSideNav();      // 个人中心导航
     });
@@ -161,28 +160,26 @@ function houseTypeState() {
 }
 
 function textSlider() {
+    if(window["index_lunbo_guanggao"]){
+        clearInterval(window["index_lunbo_guanggao"]);
+    }
     var scrollDom = $('.text-scroll'),
         $ul = scrollDom.find('ul'),
         $li = scrollDom.find('li'),
         $length = $li.length,
-        $lilength = $li.height(),
-        num = 0;
+        $lilength = $li.height();
 
     if (scrollDom.length === 0) {
         return;
     }
 
     if ($length > 1) {
-        $ul.append($li.eq(0).clone());
-        setInterval(function () {
-            num++;
-            $ul.addClass('animate').css('-webkit-transform', 'translateY(-' + $lilength * (num) + 'px)');
-            setTimeout(function () {
-                if (num == $length) {
-                    $ul.removeClass('animate').css('-webkit-transform', 'translateY(0)');
-                    num = 0;
-                }
-            }, 300)
+        window["index_lunbo_guanggao"] = setInterval(function () {
+            window["index_lunbo_guanggao"] = (window["index_lunbo_guanggao"] || 0) + 1;
+            if(window["index_lunbo_guanggao"]>$length){
+                window["index_lunbo_guanggao"] = 0;
+            }
+            $ul.addClass('animate').css('-webkit-transform', 'translateY(-' + $lilength * (window["index_lunbo_guanggao"]) + 'px)');
         }, 3000);
     }
 }

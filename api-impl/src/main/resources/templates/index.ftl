@@ -45,7 +45,7 @@
     <section class="bulletin-board">
         <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
         <div class="text-scroll index-text" id="shoppingGuide">
-            <ul>
+            <ul id="ul_index_lunbo_guanggao">
                 <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':'万科换总裁，万达获340亿投资，最近房企动作有点多'})"><em class="scroll-text-tag">资讯</em>万科换总裁，万达获340亿投资，最近房企动作有点多</a></li>
                 <li><a href="http://www.chengzijianzhan.com/tetris/page/1590542303724552/" onclick="zhuge.track('购房指南_大首页',{'指南类别':'导购','指南名称':'首付仅需93万 北京刚需上车盘都在这里了'})"><em class="scroll-text-tag">导购</em>首付仅需93万 北京刚需上车盘都在这里了</a></li>
             </ul>
@@ -357,6 +357,14 @@
     }}];
 
     $com.toutiao.ad.json(config);
+    var lunbo = [
+        {"pid":12,callback:function (html) {
+            $("#shoppingGuide").append(html);
+            textSlider();
+            zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':html.text()});
+        }}
+    ]
+    $com.toutiao.ad.json_chain(lunbo);
 
 </script>
 </body>

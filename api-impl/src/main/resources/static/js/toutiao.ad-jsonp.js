@@ -20,10 +20,13 @@ $com.toutiao.ad.json=function (config) {
                 data: {"positionid": ele["pid"]},
                 cache:false,
                 success: function (data) {
-                    $(ele["jqid"]).html(data.html);
+                    var dom=$(data.html);
+                    if(ele["jqid"]) {
+                        $(ele["jqid"]).html(dom);
+                    }
                     if(ele["callback"]){
                         try {
-                            ele.callback($(data.html));
+                            ele.callback(dom);
                         }
                         catch (error){
                             console.error(error);
@@ -39,13 +42,33 @@ $com.toutiao.ad.json=function (config) {
 };
 
 
-$com.toutiao.ad.json_preview=function (config) {
+$com.toutiao.ad.json_chain = function (config) {
     config = config || [];
     $.each(config,function (index, ele) {
         if(ele) {
-            $.get('/jsapi/json_preview', data = {"adcode": ele["adcode"],"tmp":ele["tmp"]}, function (data) {
-                $(ele["jqid"]).html(data.html);
+            $.ajax({
+                url: '/ad/jsapi/json',
+                data: {"positionid": ele["pid"]},
+                cache:false,
+                async:false,
+                success: function (data) {
+                    var dom=$(data.html);
+                    if(ele["jqid"]) {
+                        $(ele["jqid"]).html(dom);
+                    }
+                    if(ele["callback"]){
+                        try {
+                            ele.callback(dom);
+                        }
+                        catch (error){
+                            console.error(error);
+                        }
+                    }
+
+                },
+                dataType: 'json'
             });
+
         }
     })
 };
