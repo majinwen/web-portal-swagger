@@ -528,7 +528,7 @@
                                 <div class="piece-title">
                                     <div class="piece-title-border">
                                         <p>休闲购物</p>
-                                        <span>3km生活圈，吃喝玩乐买买买</span>
+                                        <span>1km生活圈，吃喝玩乐买买买</span>
                                     </div>
                                 </div>
                                 <div class="level-slider-box">
@@ -537,7 +537,7 @@
                                        <#if fhResult_index < 3>
                                         <div class="level-slider-item prev">
                                             <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">${fhResult['areaName']}</div>
+                                                <div class="level-item-title">${fhResult['projname']}</div>
                                                 <ul class="item-list">
                                                     <li><i></i><span>超市</span><em>${fhResult['typeCount']['xiuxian']['chaoshi']}个</em></li>
                                                     <li><i></i><span>商场</span><em>${fhResult['typeCount']['xiuxian']['shangchang']}个</em></li>
@@ -554,7 +554,7 @@
                                     <#if (fhResult_index > 2)>
                                         <div class="level-slider-item last">
                                             <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">${fhResult['areaName']}</div>
+                                                <div class="level-item-title">${fhResult['projname']}</div>
                                                 <ul class="item-list">
                                                     <li><i></i><span>超市</span><em>${fhResult['typeCount']['xiuxian']['chaoshi']}个</em></li>
                                                     <li><i></i><span>商场</span><em>${fhResult['typeCount']['xiuxian']['shangchang']}个</em></li>
@@ -572,7 +572,7 @@
                                 <div class="piece-title">
                                     <div class="piece-title-border">
                                         <p>教育配套</p>
-                                        <span>3km内教育配套，就这样陪你长大</span>
+                                        <span>1km内教育配套，就这样陪你长大</span>
                                     </div>
                                 </div>
                                 <section class="folding-slider-wrapper">
@@ -584,13 +584,14 @@
                                           <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <div class="folding-item-title">${fhResult['projname']}</div>
                                                     <ul class="item-list">
                                                         <#assign youers = fhResult['dataInfo']['jiaoyu']['youeryuan']>
                                                         <#if (youers?size >0)>
                                                             <#list youers as youeritem>
-                                                        <li><span>${youeritem['name']}</span><em>${youeritem['distance']}m</em></li>
+                                                            <li><span>${youeritem['name']}</span><em>${youeritem['distance']}m</em></li>
                                                             </#list>
+                                                        <#else ><li><span>1km内暂无幼儿园</span></li>
                                                         </#if>
                                                     </ul>
                                                 </div>
@@ -606,13 +607,14 @@
                                           <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <div class="folding-item-title">${fhResult['projname']}</div>
                                                     <#assign xiaoxue = fhResult['dataInfo']['jiaoyu']['xiaoxue']>
                                                     <ul class="item-list">
                                                         <#if (xiaoxue?size >0)>
                                                             <#list xiaoxue as xiaoxueitem>
                                                                 <li><span>${xiaoxueitem['name']}</span><em>${xiaoxueitem['distance']}m</em></li>
                                                             </#list>
+                                                        <#else ><li><span>1km内暂无小学</span></li>
                                                         </#if>
                                                     </ul>
                                                 </div>
@@ -628,13 +630,14 @@
                                           <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <div class="folding-item-title">${fhResult['projname']}</div>
                                                     <#assign zhongxue = fhResult['dataInfo']['jiaoyu']['zhongxue']>
                                                     <ul class="item-list">
                                                         <#if (zhongxue?size >0)>
                                                             <#list zhongxue as zhongxueitem>
                                                                 <li><span>${zhongxueitem['name']}</span><em>${zhongxueitem['distance']}m</em></li>
                                                             </#list>
+                                                        <#else ><li><span>1km内暂无中学</span></li>
                                                         </#if>
                                                     </ul>
                                                 </div>
@@ -660,12 +663,12 @@
                                           <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <div class="folding-item-title">${fhResult['projname']}</div>
                                                     <#assign zonghe = fhResult['dataInfo']['yiliao']['zonghe']>
                                                     <ul class="item-list">
                                                      <#if (zonghe?size >0)>
                                                        <#list zonghe as zongheitem>
-                                                        <li><span>${zongheitem['name']}</span><em>${zongheitem['distance']}m</em></li>
+                                                        <li><span>${zongheitem['name']}</span><em>${zongheitem['distance']?number/1000}km</em></li>
                                                        </#list>
                                                      </#if>
                                                     </ul>
