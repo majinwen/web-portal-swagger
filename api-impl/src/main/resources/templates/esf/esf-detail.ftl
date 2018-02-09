@@ -39,7 +39,7 @@
         <div class="pswp__bg"></div>
         <div class="pswp__scroll-wrap">
             <div class="pswp__container">
-                <div class="ps wp__item"></div>
+                <div class="pswp__item"></div>
                 <div class="pswp__item"></div>
                 <div class="pswp__item"></div>
             </div>
