@@ -204,13 +204,13 @@ $(function(){
                     $('#automatedWord').addClass('none');
                     $('#indexWord').html('');
                     if (newHouseNum>0){
-                        $('#indexWord').append('<li id="3" class="click_index" >'+'新房'+/*' <em style="float: right; color: #bcbcbc;">约'+newHouseNum+'条></em>*/'</li>');
+                        $('#indexWord').append('<li id="3" class="click_index" >'+'查看包含"'+_keyword+'"新房'+/*' <em style="float: right; color: #bcbcbc;">约'+newHouseNum+'条></em>*/'</li>');
                     }
                     if (esfNum>0){
-                        $('#indexWord').append('<li id="2" class="click_index" >'+'二手房'+/*' <em style="float: right; color: #bcbcbc;">约'+esfNum+'条></em>*/'</li>');
+                        $('#indexWord').append('<li id="2" class="click_index" >'+'查看包含"'+_keyword+'"二手房'+/*' <em style="float: right; color: #bcbcbc;">约'+esfNum+'条></em>*/'</li>');
                     }
                     if (plotNum>0){
-                        $('#indexWord').append('<li id="1" class="click_index" >'+'小区'+/*' <em style="float: right; color: #bcbcbc;">约'+plotNum+'条></em>*/'</li>');
+                        $('#indexWord').append('<li id="1" class="click_index" >'+'查看包含"'+_keyword+'"小区'+/*' <em style="float: right; color: #bcbcbc;">约'+plotNum+'条></em>*/'</li>');
                     }
 
                     $('.click_index').on('click',function () {
@@ -350,6 +350,7 @@ $(function(){
                         newHouseNum = data.newHouseNum;
                         $('#automatedWord').empty().show();
                         if (data.list.length>0){
+                            $('#automatedWord').append('<li  >'+'猜您可能在找：'+'</li>');
                             for(var i = 0;i<data.list.length;i++){
                                 var searchType = data.list[i].search_type
                                 var locationTypeSings = data.list[i].location_type_sings||-1
