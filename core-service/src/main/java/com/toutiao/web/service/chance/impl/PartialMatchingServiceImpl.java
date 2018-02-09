@@ -22,6 +22,7 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,6 +32,14 @@ import java.util.Map;
 
 @Service
 public class PartialMatchingServiceImpl implements PartialMatchingService {
+    @Value("${tt.search.engines}")
+    private String search_engines_index ;
+    @Value("${tt.search.scope}")
+    private String search_scope_index;
+    @Value("${tt.search.engines.type}")
+    private String search_engines_type;
+    @Value("${tt.search.scope.type}")
+    private String search_scope_type;
     @Autowired
     private ESClientTools esClientTools;
 
@@ -42,7 +51,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         List list = new ArrayList();
         TransportClient client = esClientTools.init();
 
-        SearchRequestBuilder srbScope = client.prepareSearch("search_scope").setTypes("search_scope_type");
+        SearchRequestBuilder srbScope = client.prepareSearch(search_scope_index).setTypes(search_scope_type);
         BoolQueryBuilder boolQueryBuilderScope = QueryBuilders.boolQuery();
         boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
         if (property!=null){
@@ -71,7 +80,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
 
 
 
-        SearchRequestBuilder srbEngines = client.prepareSearch("search_engines").setTypes("search_engines_type");
+        SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("80%"));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(1,"is_approve"));
