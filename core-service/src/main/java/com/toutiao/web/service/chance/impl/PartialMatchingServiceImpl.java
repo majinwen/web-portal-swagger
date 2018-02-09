@@ -124,7 +124,6 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
             map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
         }
-
         return map;
     }
 }

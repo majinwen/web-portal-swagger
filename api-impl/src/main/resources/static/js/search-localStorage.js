@@ -313,7 +313,14 @@ $(function(){
      * @Author zengqingzhou
      * @Date 2018/2/7 16:11
      */
-    $('.key-words').on('input',function () {
+    var evTimeStamp = 0;
+    $('.key-words').bind('input',function () {
+
+        var now = +new Date();
+        if (now - evTimeStamp < 100) {
+             return;
+        }
+        evTimeStamp = now;
         var _keyword = $('.key-words').val();
 
         $('#automatedWord').removeClass('none')
@@ -350,6 +357,7 @@ $(function(){
                         newHouseNum = data.newHouseNum;
                         $('#automatedWord').empty().show();
                         if (data.list.length>0){
+                            $('#automatedWord').html('')
                             $('#automatedWord').append('<li  >'+'猜您可能在找：'+'</li>');
                             for(var i = 0;i<data.list.length;i++){
                                 var searchType = data.list[i].search_type
