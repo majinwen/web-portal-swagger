@@ -39,7 +39,7 @@
         <div class="pswp__bg"></div>
         <div class="pswp__scroll-wrap">
             <div class="pswp__container">
-                <div class="pswp__item"></div>
+                <div class="ps wp__item"></div>
                 <div class="pswp__item"></div>
                 <div class="pswp__item"></div>
             </div>
@@ -97,7 +97,7 @@
                     <li>
                         <span>户型</span>
                         <em><#if houseDetail.room?exists&&houseDetail.hall?exists>
-                        ${houseDetail.room}室${houseDetail.hall}厅
+                        ${houseDetail.room}室${houseDetail.hall}厅<#if houseDetail.forwardName?exists>/${houseDetail.forwardName} </#if>
                         <#else>
                             暂无数据
                         </#if>

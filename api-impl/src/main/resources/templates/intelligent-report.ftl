@@ -505,7 +505,7 @@
                     </section>
 
                     <#if intelligenceFhRes?exists>
-                        <#assign fhResults = intelligenceFhRes['fhResult']?eval>
+                            <#assign fhResults = intelligenceFhRes['fhResult']?eval>
                         <#assign xiuxian = 0>
                         <#assign jiaoyu = 0>
                         <#assign yiliao = 0>
@@ -533,63 +533,38 @@
                                 </div>
                                 <div class="level-slider-box">
                                     <div class="level-slider">
+                                       <#list fhResults as fhResult>
+                                       <#if fhResult_index < 3>
                                         <div class="level-slider-item prev">
                                             <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <div class="level-item-title">${fhResult['areaName']}</div>
                                                 <ul class="item-list">
-                                                    <li><i></i><span>超市</span><em>5个</em></li>
-                                                    <li><i></i><span>商场</span><em>5个</em></li>
-                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
-                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                    <li><i></i><span>超市</span><em>${fhResult['typeCount']['xiuxian']['chaoshi']}个</em></li>
+                                                    <li><i></i><span>商场</span><em>${fhResult['typeCount']['xiuxian']['shangchang']}个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>${fhResult['typeCount']['xiuxian']['caishichang']}个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>${fhResult['typeCount']['xiuxian']['canting']}个</em></li>
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="level-slider-item prev">
-                                            <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">中粮万科长阳半岛</div>
-                                                <ul class="item-list">
-                                                    <li><i></i><span>超市</span><em>5个</em></li>
-                                                    <li><i></i><span>商场</span><em>5个</em></li>
-                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
-                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="level-slider-item prev">
-                                            <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">中粮万科长阳半岛</div>
-                                                <ul class="item-list">
-                                                    <li><i></i><span>超市</span><em>5个</em></li>
-                                                    <li><i></i><span>商场</span><em>5个</em></li>
-                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
-                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                       </#if>
+                                       </#list>
                                     </div>
                                     <div class="level-slider">
+                                    <#list fhResults as fhResult>
+                                    <#if (fhResult_index > 2)>
                                         <div class="level-slider-item last">
                                             <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <div class="level-item-title">${fhResult['areaName']}</div>
                                                 <ul class="item-list">
-                                                    <li><i></i><span>超市</span><em>5个</em></li>
-                                                    <li><i></i><span>商场</span><em>5个</em></li>
-                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
-                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                    <li><i></i><span>超市</span><em>${fhResult['typeCount']['xiuxian']['chaoshi']}个</em></li>
+                                                    <li><i></i><span>商场</span><em>${fhResult['typeCount']['xiuxian']['shangchang']}个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>${fhResult['typeCount']['xiuxian']['caishichang']}个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>${fhResult['typeCount']['xiuxian']['canting']}个</em></li>
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="level-slider-item last">
-                                            <div class="level-item-content-wrapper">
-                                                <div class="level-item-title">中粮万科长阳半岛</div>
-                                                <ul class="item-list">
-                                                    <li><i></i><span>超市</span><em>5个</em></li>
-                                                    <li><i></i><span>商场</span><em>5个</em></li>
-                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
-                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                    </#if>
+                                </#list>
                                     </div>
                                 </div>
                             </section></#if>
@@ -606,66 +581,21 @@
                                             <i class="youeryuan"></i><span>幼 儿 园</span>
                                         </div>
                                         <div class="folding-item-box">
+                                          <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
                                                     <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                        <#assign youers = fhResult['dataInfo']['jiaoyu']['youeryuan']>
+                                                        <#if (youers?size >0)>
+                                                            <#list youers as youeritem>
+                                                        <li><span>${youeritem['name']}</span><em>${youeritem['distance']}m</em></li>
+                                                            </#list>
+                                                        </#if>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                          </#list>
                                         </div>
                                     </div>
                                     <div class="folding-slider-box">
@@ -673,66 +603,21 @@
                                             <i class="xiaoxue"></i><span>小 学</span>
                                         </div>
                                         <div class="folding-item-box">
+                                          <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <#assign xiaoxue = fhResult['dataInfo']['jiaoyu']['xiaoxue']>
                                                     <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                        <#if (xiaoxue?size >0)>
+                                                            <#list xiaoxue as xiaoxueitem>
+                                                                <li><span>${xiaoxueitem['name']}</span><em>${xiaoxueitem['distance']}m</em></li>
+                                                            </#list>
+                                                        </#if>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                          </#list>
                                         </div>
                                     </div>
                                     <div class="folding-slider-box">
@@ -740,66 +625,21 @@
                                             <i class="zhongxue"></i><span>中 学</span>
                                         </div>
                                         <div class="folding-item-box">
+                                          <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <#assign zhongxue = fhResult['dataInfo']['jiaoyu']['zhongxue']>
                                                     <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                        <#if (zhongxue?size >0)>
+                                                            <#list zhongxue as zhongxueitem>
+                                                                <li><span>${zhongxueitem['name']}</span><em>${zhongxueitem['distance']}m</em></li>
+                                                            </#list>
+                                                        </#if>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                          </#list>
                                         </div>
                                     </div>
                                 </section>
@@ -817,78 +657,21 @@
                                             <i class="yiyuan"></i><span>综 合 医 院</span>
                                         </div>
                                         <div class="folding-item-box">
+                                          <#list fhResults as fhResult>
                                             <div class="folding-item">
                                                 <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <div class="folding-item-title">${fhResult['areaName']}</div>
+                                                    <#assign zonghe = fhResult['dataInfo']['yiliao']['zonghe']>
                                                     <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                     <#if (zonghe?size >0)>
+                                                       <#list zonghe as zongheitem>
+                                                        <li><span>${zongheitem['name']}</span><em>${zongheitem['distance']}m</em></li>
+                                                       </#list>
+                                                     </#if>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="folding-item">
-                                                <div class="folding-content-wrapper">
-                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
-                                                    <ul class="item-list">
-                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
-                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
-                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
-                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
-                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                          </#list>
                                         </div>
                                     </div>
                                 </section>
@@ -1037,6 +820,8 @@
 </script>
 <script src="${staticurl}/js/raphael.min.js"></script>
 <script type="text/javascript">
+
+
     //水滴的效果
     function waterSharp(pool, laywidth, i) {
         this.pool = pool;
