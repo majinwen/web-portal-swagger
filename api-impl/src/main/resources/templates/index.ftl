@@ -366,6 +366,16 @@
                 zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':html.text()});
             })
 
+        }},
+        {"pid":13,callback:function (html) {
+            var parent=$('<li></li>');
+            parent.append(html);
+            $("#ul_index_lunbo_guanggao").append(parent);
+            textSlider();
+            html.click(function () {
+                zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':html.text()});
+            })
+
         }}
     ]
     $com.toutiao.ad.json_chain(lunbo);
