@@ -18,15 +18,14 @@
         <div class="bgbox bg1"></div>
         <div class="page-content">
             <h1>懂房帝</h1>
-            <p>智能人居 更懂人需<br>根据您的需求推荐最匹配的小区</p>
-            <button type="button" class="button begin">开始体验</button>
+            <p>大数据算法为您智能匹配所需房源<br>5千余个小区，3万余套房源，现已准备就绪<br>好房子 来找你</p>
+            <button type="button" class="button begin">立即开启</button>
         </div>
     </div>
     <div class="section page2">
         <div class="bgbox bg2"></div>
         <div class="page-content">
             <h2>请选择购房目的</h2>
-            <p>方便为您提供更精准的服务</p>
             <div class="choose-wrapper">
                 <div class="choose-item-box">
                     <div class="box-line-triangle"></div>
@@ -114,9 +113,7 @@
                     <div class="layer-header">
                         <p>告诉我您的预算</p>
                         <div class="price-tab">
-                            <span class="total-price current">总价</span>
-                            <span>|</span>
-                            <span class="month-price">首付+月供</span>
+                            <span class="total-price current">总价</span><span class="month-price">首付+月供</span>
                         </div>
                     </div>
                     <div class="total-conent">
@@ -128,7 +125,7 @@
                                     <div class="slide-color"></div>
                                     <span class="min"><em>100</em>万</span>
                                     <span class="slider-thumb"></span>
-                                    <span class="max"><em>3000</em>万</span>
+                                    <span class="max"><em>2100</em>万</span>
                                     <span class="mid"><em>1500</em>万</span>
                                 </div>
                             </div>

@@ -68,14 +68,14 @@
             <div class="column">
                 <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1591177440422925/">
                     <div class="topic-item-content" data-index="1">
-                        <h5>地产大拜年</h5>
+                        <h5 class="high-light-red">地产大拜年</h5>
                         <p>头条房产年终策划</p>
                     </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png?20180206" alt="地产大拜年">
+                    <img src="${staticurl}/images/index/dsy_jxzt_image1.png?20180206" alt="地产大拜年">
                 </a></div>
                 <div class="hot-topic-item"><a href="http://www.chengzijianzhan.com/tetris/page/1590556018600973/">
                     <div class="topic-item-content" data-index="2">
-                        <h5>租购并举</h5>
+                        <h5 class="high-light-red">租购并举</h5>
                         <p>聚焦租购并举举措</p>
                     </div>
                     <img src="${staticurl}/images/newindex/xf_zt_image2.png?20180206" alt="租购并举">

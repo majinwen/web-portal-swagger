@@ -1,66 +1,39 @@
 .elastics-stack-box {
-    padding-left: rem(30);
-    padding-right: rem(30);
+    padding-left: rem(11);
+    padding-right: rem(11);
 
     .elastics-stack-content {
-        padding-top: rem(30);
+        padding-top: rem(36);
         padding-bottom: rem(40);
-        border-bottom: rem(1) solid $baseBorderColor;
 
+        $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
         .elastics-stack {
             position: relative;
             width: rem(690);
-            height: rem(190);
+            height: rem(385);
             margin: 0 auto;
             -webkit-perspective: rem(690);
             perspective: rem(690);
-            -webkit-perspective-origin: 150% 50%;
-            perspective-origin: 150% 50%;
             @include box-sizing;
 
             li {
                 position: absolute;
                 z-index: 1;
-                width: rem(630);
+                width: rem(500);
                 height: rem(190);
-                padding: rem(15) rem(15) rem(15) rem(30);
                 cursor: pointer;
                 opacity: 0;
                 overflow: hidden;
-                -webkit-border-radius: rem(10);
-                border-radius: rem(10);
-                -webkit-box-shadow: 0 rem(16) rem(16) 0 rgba(137, 136, 136, 0.24);
-                        box-shadow: 0 rem(16) rem(16) 0 rgba(137, 136, 136, 0.24);
+                -webkit-border-radius: rem(16);
+                border-radius: rem(16);
+                background-color: $baseWhite;
+                border: rem(6) solid $baseWhite;
+                -webkit-box-shadow: 0 rem(10) rem(30) 0 rgba(157, 173, 203, 0.17);
+                        box-shadow: 0 rem(10) rem(30) 0 rgba(157, 173, 203, 0.17);
                 -webkit-transform: translate3d(0, 0, rem(-180));
                         transform: translate3d(0, 0, rem(-180));
                 -webkit-transform-style: preserve-3d;
                         transform-style: preserve-3d;
-                @include box-sizing;
-
-                &.bgtype-1 {
-                    background-color: #f4f0e5;
-                    color: #99622d;
-                    a {
-                        display: block;
-                        color: #99622d;
-                    }
-                }
-                &.bgtype-2 {
-                    background-color: #d1e2e1;
-                    color: #4c8477;
-                    a {
-                        display: block;
-                        color: #4c8477;
-                    }
-                }
-                &.bgtype-3 {
-                    background-color: #e5dde7;
-                    color: #704b70;
-                    a {
-                        display: block;
-                        color: #704b70;
-                    }
-                }
 
                 &.animate {
                     -webkit-transition: all 0.3s ease-out;
@@ -75,49 +48,48 @@
 
                 div {
                     float: left;
-                    width: rem(270);
+                    width: rem(263);
+                    height: rem(190);
+                    padding-left: rem(20);
+                    padding-top: rem(18);
+                    @include box-sizing;
 
                     h4 {
-                        margin-top: rem(21);
-                        margin-bottom: rem(20);
+                        line-height: rem(42);
+                        margin-bottom: rem(29);
                         @include text-ellipses;
-                        @include font-dpr(32);
+                        @include font-dpr(26);
                     }
 
                     p {
-                        margin-top: rem(15);
-                        @include font-dpr(24)
+                        margin-bottom: rem(28);
+                        line-height: 1;
+                        @include font-dpr(24);
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
                     }
                 }
 
                 img {
                     float: right;
-                    width: rem(280);
-                    height: rem(160);
-                    padding: rem(5);
-                    background-color: #fff;
-                    @include box-sizing;
+                    width: rem(231);
+                    height: rem(190);
                 }
             }
 
             &.report {
+                $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
                 li {
                     color: $baseWhite;
 
-                    &.bgtype-1 {
-                        background-color: #8a98a4;
-                    }
-                    &.bgtype-2 {
-                        background-color: #e9b8b8;
-                    }
-                    &.bgtype-3 {
-                        background-color: #d6c093;
-                    }
-                    &.bgtype-4 {
-                        background-color: #bcbcbc;
-                    }
-                    &.bgtype-5 {
-                        background-color: #7f9cb5;
+                    @for $i from 1 to 6 {
+                        &:nth-child(#{$i}) {
+                            div {
+                                background-color: nth($itemListColor, $i);
+                            }
+                        }
                     }
                 }
             }

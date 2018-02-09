@@ -8,8 +8,6 @@
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
-    <#--<script src="${staticurl}/js/scrolloverflow.js"></script>-->
-    <#--<script src="${staticurl}/js/jquery.fullpage.min.new.js"></script>-->
     <script src="${staticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
@@ -22,70 +20,69 @@
         <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
-                <p>将您的检索条件和 <em class="high-light-red">305586</em> 位购房用户的数据样本<br>相比较，生成您所处族群的用户画像 </p>
+                <p>将您的检索条件和305586位购房用户<br>的数据样本比较<br>生成您所处族群的用户画像 </p>
             </div>
             <div class="user-header-box">
-                <div class="user-line-triangle"></div>
                 <img src="/static/images/intelligent/user-header.png" alt="用户头像">
             </div>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 1>
             <div class="word-cont" data-user-type="1">
-                <p>繁华都市中，每个人都想有自己的空间。多年打拼后，您终于开始寻找第一个家园。我们明白，您挣的每分每厘都得来不易，凝聚无数的早起通勤和深夜加班。因此我们根据您的条件，为您精心挑选最具性价比的社区，可以让你拥有第一个舒适小家，争取做到：</p>
+                <p>繁华都市中，每个人都想拥有属于自己的独立空间。多年打拼后，您终于开始寻找第一个家。我们明白，您挣的每分每厘都得来不易。因此我们根据您的条件，为您精心挑选，争取做到：</p>
                 <ol>
-                    <li>- 尽量离交通站近，睡多一点</li>
-                    <li>- 餐饮便利，到家能吃口热饭</li>
-                    <li>- 有休闲地儿，周末看场大片</li>
+                    <li>尽量离交通站近，睡多一点</li>
+                    <li>餐饮便利，到家能吃口热饭</li>
+                    <li>有休闲地儿，周末看场大片</li>
                 </ol>
             </div>
         </#if>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 2>
             <div class="word-cont" data-user-type="2">
-                <p>我们深知您买房的每一分钱，都来自全家打拼，甚至还有亲友支援。为这第一个家，您大概找寻了很久，已有多次挑选。因此我们尽量给你更多信息，为您精心挑选最具生活价值的社区，让这第一个“幸福家”争取做到：</p>
+                <p>我们深知您买房的每一分钱，都来自全家打拼，甚至还有亲友支援。为这第一个家，您大概找寻了很久，已有多次挑选。因此我们尽量给您更多信息，争取做到：</p>
                 <ol>
-                    <li>- 下班回家，社区清静又安全</li>
-                    <li>- 尽量离交通站近，睡多一点</li>
-                    <li>- 好商圈，让家人享受生活时间</li>
+                    <li>下班回家，社区清静又安全</li>
+                    <li>尽量离交通站近，睡多一点</li>
+                    <li>好商圈，让家人享受生活时间</li>
                 </ol>
             </div>
         </#if>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 3>
             <div class="word-cont" data-user-type="3">
-                <p>恭喜您经过多年打拼，事业终有所成！今天，您以无数汗滴换来的一丝安逸，将凝聚在这第一套本地房子——它区位好品质高、既时尚又便利。我们根据您的条件，为您精心挑选社区，争取做到：</p>
+                <p>恭喜您经过多年打拼，事业终有所成！今天，您以无数汗水换来的一丝安逸，将凝聚在这第一套房子——它区位好、品质高、既时尚又便利。我们根据您的条件，为您精心挑选，争取做到：</p>
                 <ol>
-                    <li>- 离市区近，尊享都市时尚繁华</li>
-                    <li>- 或者单位近，下班轻松就到家</li>
-                    <li>- 社区配套好，烦恼琐事全放下</li>
+                    <li>离市区近，尊享都市时尚繁华</li>
+                    <li>或者单位近，下班轻松就到家</li>
+                    <li>社区配套好，烦恼琐事全放下</li>
                 </ol>
             </div>
         </#if>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 4>
             <div class="word-cont" data-user-type="4">
-                <p>您日夜操劳，只为家人安好。现在选房，是让上老下小，有更大的生活空间和更好的周边配套。为改善家庭居住条件，您大概找寻了很长时间，我们将根据您的需求，帮您仔细对比各种社区，争取做到：</p>
+                <p>您日夜操劳，只为家人安好。现在选房，是让老人小孩有更大的生活空间和更好的周边配套。为改善家庭居住条件，您大概找寻了很长时间，我们根据您的条件，为您精心挑选，争取做到：</p>
                 <ol>
-                    <li>- 学校近，确保孩子未来成长</li>
-                    <li>- 或者有医院，呵护老人健康</li>
-                    <li>- 业态多样，轻松生活不抓狂</li>
+                    <li>学校近，确保孩子未来成长</li>
+                    <li>或者有医院，呵护老人健康</li>
+                    <li>业态多样，轻松生活不抓狂</li>
                 </ol>
             </div>
         </#if>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 5>
             <div class="word-cont" data-user-type="5">
-                <p>为了让更多家庭成员和远来亲友，居住得更宽敞、更舒适；同时也能让老人和孩子，能在社区里安心的行走和奔跑——您已左选右挑，辛劳多日。我们理解您的需求，因此帮您仔细地搜寻对比各种可能合适的社区，争取做到：</p>
+                <p>为了让更多家庭成员和远来亲友，居住得更宽敞、更舒适，同时也能让老人和小孩能在社区里安心地行走和奔跑，您已左选右挑，辛劳多日。我们根据您的条件，为您精心挑选，争取做到：</p>
                 <ol>
-                    <li>- 抚幼养老，备好教育医疗</li>
-                    <li>- 安享无忧，选好社区安保</li>
-                    <li>- 休闲解压，找好生活配套</li>
+                    <li>抚幼养老，备好教育医疗</li>
+                    <li>安享无忧，选好社区安保</li>
+                    <li>休闲解压，找好生活配套</li>
                 </ol>
             </div>
         </#if>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 6>
             <div class="word-cont" data-user-type="6">
-                <p>恭喜您事业有成！多年辛劳，终于有时间享受人生。平时您很忙，但也注重片刻的静思明月、小酌清风；同时，您大概也想着让整个乐享生活，自在从容。我们将帮助您搜寻和对比各种社区，争取做到：</p>
+                <p>恭喜您事业有成！多年辛劳，终于有时间享受人生。平时虽忙，但也注重片刻的静思明月、小酌清风。我们将帮助您搜寻和对比各种社区，争取做到：</p>
                 <ol>
-                    <li>- 物业服务高端，开发商品牌知名</li>
-                    <li>- 有绿地能让孩子们自由奔行</li>
-                    <li>- 有绿荫能让老人们促膝谈心</li>
-                    <li>- 有会所空间，与友人一道品茗</li>
+                    <li>物业服务高端，开发商品牌知名</li>
+                    <li>有绿地能让孩子们自由奔行</li>
+                    <li>有绿荫能让老人们促膝谈心</li>
+                    <li>有会所空间，与友人一道品茗</li>
                 </ol>
             </div>
         </#if>
@@ -93,9 +90,9 @@
             <div class="word-cont" data-user-type="7">
                 <p>房产，在全球都是家庭资产配置重要一环，长远看，是让您今天不懈的奋斗带来明天稳定的收益。您肯定希望在周边小区价格、换手率和历史成交量价曲线等角度，看到清晰的数据对比，以做好投资决策。我们争取做到：</p>
                 <ol>
-                    <li>- 帮您对比目标社区的周边价格</li>
-                    <li>- 给您提供该社区的换手率信息</li>
-                    <li>- 为您提供该社区的历史成交数据</li>
+                    <li>帮您对比目标社区的周边价格</li>
+                    <li>给您提供该社区的换手率信息</li>
+                    <li>为您提供该社区的历史成交数据</li>
                 </ol>
             </div>
         </#if>
@@ -107,159 +104,159 @@
         <div class="page-content">
             <div class="header-summary-box">
                 <div class="header-summary">
-                    <p>根据您的检索条件，总价
-                    <#if intelligenceFhRes?exists>
-                        <#if intelligenceFhRes['totalPrice']?number == 1500>
-                        ${intelligenceFhRes['totalPrice']?number?round}万以上
-                        <#else>
-                        ${intelligenceFhRes['totalPrice']?number?round}万左右
-                        </#if>
-                    </#if>
-                        的房源市场为您的目标市场。</p>
-                    <p>以下从市场行情，地理位置，宜居指数，交通及周边 配套设施等方面，为您挑选生活家</p>
+                    <p>根据您的检索条件<br>总价<#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万以上<#else>${intelligenceFhRes['totalPrice']?number?round}万左右</#if></#if>的房源市场<br>为您的目标市场。</p>
+                    <p>以下从市场行情，地理位置，宜居指数，交通及周边配套设施等方面，为您挑选生活家</p>
                 </div>
             </div>
             <#if fhpt?exists><div class="module-item">
-                <div class="report-title-type1">
+                <div class="report-title">
+                    <i class="icon-title-price"></i>
                     <p>目标市场均价走势</p>
                 </div>
-                <div class="report-caption">
-                    <p>对比北京市场近1年整体价格情况，洞察目标房产的价格走势</p>
-                </div>
-
-                <div class="echart-box">
-                    <div id="priceChart"></div>
-                </div>
-
-                <ul class="results-contrast">
-                    <#if fhpt['maxTarget']?exists&&fhpt['target']?exists ><li>
-                        <span class="contrast-mark type-red">涨</span>
-                        <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
-                    </li></#if>
-                    <#if fhpt['minTarget']?exists&&fhpt['target']?exists ><li>
-                        <span class="contrast-mark type-dark-green">跌 </span>
-                        <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
-                    </li></#if>
-                </ul>
-            </div></#if>
-            <#if fhtp?exists><div class="module-item">
-                <div class="report-title-type1">
-                    <p>目标市场成交行情</p>
-                </div>
-                <div class="report-caption">
-                    <p>对比北京市场近1年整体成交情况，把握目标房产的成交量变化</p>
-                </div>
-
-                <div class="echart-box">
-                    <div id="marketChart"></div>
-                </div>
-
-                <#if fhtp['ratio']?exists&&fhtp['ratio']!=''><ul class="results-contrast">
-                    <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists><li>
-                        <span class="contrast-mark type-red">高</span>
-                        <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>套，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
-                    </li></#if>
-                    <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists><li>
-                        <span class="contrast-mark type-dark-green">低</span>
-                        <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>套，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
-                    </li></#if>
-                    <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists><li>
-                        <span class="contrast-mark type-yellow">均</span>
-                        <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>套，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
-                    </li></#if>
-                </ul></#if>
-            </div></#if>
-            <div class="module-item">
-                <div class="report-title-type1">
-                    <p>智能推荐结果</p>
-                </div>
-                <div class="report-caption">
-                    <p>根据您的检索条件，在5394个小区中，为您推荐5个小区，作为您所属族群的理想家</p>
-                </div>
-                <div class="water-wrapper">
-                    <div id="collieContainer"><#--水滴  的容器--></div>
-                    <div class="water-bg">
-                        <div class="water-text-item">
-                            <ul>
-                                <#--这里的空格保留-->
-                                <li>总价：<#if intelligenceFhRes?exists>
-                                    <#if intelligenceFhRes['totalPrice']?number == 1500>
-                                    ${intelligenceFhRes['totalPrice']?number?round}万+
-                                    <#else>
-                                    ${intelligenceFhRes['totalPrice']?number?round}万
-                                    </#if>
-                                    </#if>
-                                </li>
-                                <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district} </em></#list><#else ><em>-</em></#if></li>
-                                <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']?number gt 0>${intelligenceFhRes['layout']}居<#else >-</#if> </li>
-                            </ul>
-                            <div class="tip-text">
-                                <span>交通便利</span>
-                                <span>楼龄</span>
-                                <span>绿化率</span>
-                                <span>宜居性</span>
-                                <span>电梯</span>
-                                <span>性价比高</span>
-                                <span>空气质量</span>
-                                <span>配套设施</span>
-                            </div>
-                        </div>
+                <div class="piece-module">
+                    <div class="report-caption echart-title">
+                        <p>总价<em class="high-light-red"><#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万</em>以上<#else>${intelligenceFhRes['totalPrice']?number?round}万</em>左右</#if></#if>的房源市场为您的目标市场，<br>对比北京市场近一年整体价格情况，<br>洞察目标房产的价格走势</p>
                     </div>
-                    <ul class="water-item">
-                    <#list intelligenceFhRes['fhResult']?eval as intelligenceFhRe>
-                        <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
-                            <li class="plot_class" data-type="${intelligenceFhRe.coordX?c}_${intelligenceFhRe.coordY?c}_${intelligenceFhRe_index}">
-                                <p>${intelligenceFhRe['projname']}</p>
-                            </li><#else ><li>-</li>
-                        </#if>
-                    </#list>
+                    <ul class="echarts-legend">
+                        <li>北京市场</li>
+                        <li>目标市场(总价<#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万<#else>${intelligenceFhRes['totalPrice']?number?round}万</#if></#if>)</li>
+                    </ul>
+                    <div class="echart-box">
+                        <div id="priceChart"></div>
+                    </div>
+                    <ul class="results-contrast">
+                        <#if fhpt['maxTarget']?exists&&fhpt['target']?exists ><li>
+                            <span class="contrast-mark type-red">涨</span>
+                            <p>目标市场 环比最高涨幅为<em class="inte-color-red" id="maxTarget">${fhpt['maxTarget']?string('#.##')}%</em>，<em id="priceMaxCompare"><#if fhpt['maxTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价涨幅</p>
+                        </li></#if>
+                        <#if fhpt['minTarget']?exists&&fhpt['target']?exists ><li>
+                            <span class="contrast-mark type-dark-green">跌 </span>
+                            <p>目标市场 环比最高跌幅为<em class="inte-color-red" id="minTarget">${fhpt['minTarget']?abs?string('#.##')}%</em>，<em id="priceMinCompare"><#if fhpt['minTarget'] gte fhpt['target']>高<#else>低</#if></em>于北京市场均价跌幅</p>
+                        </li></#if>
                     </ul>
                 </div>
-                <#--<div id="allmap" class="echart-box"></div>-->
-                <section class="elastics-stack-box">
-                    <div class="elastics-stack-content">
-                        <ul id="elastics-stack" class="elastics-stack report">
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <li class="bgtype-${fhResult_index+1}" data-href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
-                                    <div>
-                                        <h4>${fhResult['projname']}</h4>
-                                        <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
-                                            <p>${fhResult['esfPrice']?number?round}元/㎡</p>
-                                        <#else >
-                                            <p>${fhResult['price']?number?round}元/㎡</p>
+            </div></#if>
+            <#if fhtp?exists><div class="module-item">
+                <div class="report-title">
+                    <i class="icon-title-marker"></i>
+                    <p>目标市场成交行情</p>
+                </div>
+                <div class="piece-module">
+                    <div class="report-caption echart-title">
+                        <p>总价<em class="high-light-red"><#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万</em>以上<#else>${intelligenceFhRes['totalPrice']?number?round}万</em>左右</#if></#if>的房源市场为您的目标市场，<br>对比北京市场近一年整体成交情况，<br>把握目标房产的成交量变化</p>
+                    </div>
+                    <ul class="echarts-legend">
+                        <li>北京市场</li>
+                        <li>目标市场(总价<#if intelligenceFhRes?exists><#if intelligenceFhRes['totalPrice']?number == 1500>${intelligenceFhRes['totalPrice']?number?round}万<#else>${intelligenceFhRes['totalPrice']?number?round}万</#if></#if>)</li>
+                    </ul>
+                    <div class="echart-box">
+                        <div id="marketChart"></div>
+                    </div>
+                    <#if fhtp['ratio']?exists&&fhtp['ratio']!=''><ul class="results-contrast">
+                        <#if fhtp['ratio']['maxVolume']?exists&&fhtp['ratio']['maxVolumeRatio']?exists><li>
+                            <span class="contrast-mark type-red">高</span>
+                            <p>目标市场 月度最高成交量为<em id="maxVolume" class="inte-color-red">${fhtp['ratio']['maxVolume']}</em>套，为北京市场的<em id="maxVolumeRatio" class="inte-color-red">${fhtp['ratio']['maxVolumeRatio']}</em></p>
+                        </li></#if>
+                        <#if fhtp['ratio']['minVolume']?exists&&fhtp['ratio']['minVolumeRatio']?exists><li>
+                            <span class="contrast-mark type-dark-green">低</span>
+                            <p>目标市场 月度最低成交量为<em id="minVolume" class="inte-color-red">${fhtp['ratio']['minVolume']}</em>套，为北京市场的<em id="minVolumeRatio" class="inte-color-red">${fhtp['ratio']['minVolumeRatio']}</em></p>
+                        </li></#if>
+                        <#if fhtp['ratio']['averageVolume']?exists&&fhtp['ratio']['averageVolumeRatio']?exists><li>
+                            <span class="contrast-mark type-yellow">均</span>
+                            <p>目标市场 年平均成交量为<em id="averageVolume" class="inte-color-red">${fhtp['ratio']['averageVolume']}</em>套，为北京市场的<em id="averageVolumeRatio" class="inte-color-red">${fhtp['ratio']['averageVolumeRatio']}</em></p>
+                        </li></#if>
+                    </ul></#if>
+                </div>
+            </div></#if>
+            <div class="module-item">
+                <div class="report-title">
+                    <i class="icon-title-result"></i>
+                    <p>智能推荐结果</p>
+                </div>
+                <div class="piece-module">
+                    <div class="report-caption">
+                        <p>根据您的检索条件，在5394个小区中，<br>为您推荐5个小区，作为您所属族群的理想家</p>
+                    </div>
+                    <div class="water-wrapper">
+                        <div id="collieContainer"><#--水滴  的容器--></div>
+                        <div class="water-bg">
+                            <div class="water-text-item">
+                                <ul>
+                                <#--这里的空格保留-->
+                                    <li>总价：<#if intelligenceFhRes?exists>
+                                        <#if intelligenceFhRes['totalPrice']?number == 1500>
+                                        ${intelligenceFhRes['totalPrice']?number?round}万+
+                                        <#else>
+                                        ${intelligenceFhRes['totalPrice']?number?round}万
                                         </#if>
-                                        <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
-                                            <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
-                                        </#if>
-                                    <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
-                                        <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
-                                    <#else >
-                                        <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
-                                    </#if>-->
-                                    </div>
-                                    <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
-                                        <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
-                                    <#else >
-                                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                     </#if>
-                                </li>
-                            </#list>
-                        </#if>
+                                    </li>
+                                    <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district} </em></#list><#else ><em>-</em></#if></li>
+                                    <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']?number gt 0>${intelligenceFhRes['layout']}居<#else >-</#if> </li>
+                                </ul>
+                                <div class="tip-text">
+                                    <span>交通便利</span>
+                                    <span>楼龄</span>
+                                    <span>绿化率</span>
+                                    <span>宜居性</span>
+                                    <span>电梯</span>
+                                    <span>性价比高</span>
+                                    <span>空气质量</span>
+                                    <span>配套设施</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="water-item">
+                        <#list intelligenceFhRes['fhResult']?eval as intelligenceFhRe>
+                            <#if intelligenceFhRe['projname']?exists&&intelligenceFhRe['projname']!=''>
+                                <li class="plot_class" data-type="${intelligenceFhRe.coordX?c}_${intelligenceFhRe.coordY?c}_${intelligenceFhRe_index}">
+                                    <p><span>0${intelligenceFhRe_index+1}</span>${intelligenceFhRe['projname']}</p>
+                                </li><#else ><li>-</li>
+                            </#if>
+                        </#list>
                         </ul>
                     </div>
-                </section>
+                    <section class="elastics-stack-box">
+                        <div class="elastics-stack-content">
+                            <ul id="elastics-stack" class="elastics-stack report">
+                            <#if intelligenceFhRes?exists>
+                                <#assign fhResults =intelligenceFhRes['fhResult']>
+                                <#list fhResults?eval as fhResult>
+                                    <li class="bgtype-${fhResult_index+1}" data-href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                        <div>
+                                            <h4>${fhResult['projname']}</h4>
+                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
+                                                <p>${fhResult['esfPrice']?number?round}元/㎡</p>
+                                            <#else >
+                                                <p>${fhResult['price']?number?round}元/㎡</p>
+                                            </#if>
+                                            <#if fhResult['districtName']?exists&&fhResult['areaName']?exists>
+                                                <p>${fhResult['districtName']}-${fhResult['areaName']}</p>
+                                            </#if>
+                                        <#--<#if fhResult['newhRangeS']?exists&&fhResult['newhRangeS']?number gt 0>
+                                            <p>${fhResult['newhRangeS']}㎡-${fhResult['newhRangeE']}㎡</p>
+                                        <#else >
+                                            <p>${fhResult['villageRangeS']}㎡-${fhResult['villageRangeE']}㎡</p>
+                                        </#if>-->
+                                        </div>
+                                        <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
+                                            <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
+                                        <#else >
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                        </#if>
+                                    </li>
+                                </#list>
+                            </#if>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
             </div>
             <div class="module-item">
-                <div class="report-title-type1">
-                    <p>针对这${intelligenceFhRes['fhResult']?eval?size!''}个小区<br>为您做详细的分析和对比</p>
-                </div>
                 <div class="plot-title-box">
-                    <div class="plot-title-block">
-                        <div>小区</div>
-                        <ul>
-                        <#if intelligenceFhRes?exists>
+                    <div class="plot-title-block none">
+                        <div><i></i>小区</div>
+                        <ul class="clear"><#if intelligenceFhRes?exists>
                             <#assign fhResults =intelligenceFhRes['fhResult']>
                             <#list fhResults?eval as fhResult>
                                 <#if fhResult['projname']?exists&&fhResult['projname']!=''>
@@ -273,312 +270,671 @@
                     </div>
                 </div>
             </div>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>交通</p>
-                    <span>交通便利，赶得上节奏，跑得过大盘</span>
+            <div class="module-item">
+                <div class="report-title">
+                    <i class="icon-title-contrast"></i>
+                    <p>针对这${intelligenceFhRes['fhResult']?eval?size!''}个小区为<br>您做详细的分析和对比</p>
                 </div>
-                <div class="traffic-box">
-                    <div class="left-line"></div>
-                    <div>
-                        <div class="traffic-title">
-                            <h5>地铁出行，感谢您为环保事业做出的努力</h5>
+                <div class="piece-module">
+                    <section>
+                        <div class="piece-title mt0">
+                            <div class="piece-title-border">
+                                <p>交通</p>
+                                <span>交通便利，赶得上节奏，跑得过大盘</span>
+                            </div>
                         </div>
-                        <div class="echart-wrapper subway">
-                            <div class="echart-box">
+                        <section>
+                            <div class="traffic-title-box">
+                                <div class="traffic-title ditie">
+                                    <p>地铁<br>出行</p>
+                                    <div>感谢您为环保事业做出的努力</div>
+                                </div>
+                            </div>
+                            <div class="echart-box mb0">
                                 <div id="trafficSubwayChart"></div>
                             </div>
-                        </div>
-                        <#if intelligenceFhRes?exists><div class="traffic-text-box">
-                            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
-                             <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
-                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
-                                <#if fhResult_index == 0>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
-                                <#else >
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>,约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p></div>
-                                </#if>
-                                </#if>
-                            </#list>
-                        </div></#if>
-                    </div>
-                    <div class="vertical-line">
-                        <div class="traffic-title">
-                            <h5>自驾出行，快去最近的环线桥</h5>
-                        </div>
-                        <div class="echart-wrapper rond">
-                            <div class="echart-box">
+                            <#if intelligenceFhRes?exists><div class="traffic-text-box">
+                                <#assign fhResults = intelligenceFhRes['fhResult']?eval>
+                                <#list fhResults?sort_by('metroWithPlotDistance') as fhResult>
+                                    <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearestSubwayDesc']?exists&&fhResult['nearestSubwayDesc']!=''&&fhResult_index lt 2>
+                                        <#if fhResult_index == 0>
+                                            <div class="traffic-text">
+                                                <div class="traffice-table-row">
+                                                    <span>TOP.01</span>
+                                                    <p>${fhResult['projname']}离地铁最近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>，约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p>
+                                                </div>
+                                            </div>
+                                        <#else >
+                                            <div class="traffic-text">
+                                                <div class="traffice-table-row">
+                                                    <span>TOP.02</span>
+                                                    <p>${fhResult['projname']}次近，距${fhResult['nearestSubwayDesc']?split('$')[1]}<em>${(fhResult['nearestSubwayDesc']?split('$')[2]?number/1000)?string('#.#')}km</em>，约步行<em>${fhResult['nearestSubwayDesc']?split('$')[2]?number/90?round}</em>分钟</p>
+                                                </div>
+                                            </div>
+                                        </#if>
+                                    </#if>
+                                </#list>
+                            </div></#if>
+                        </section>
+                        <section>
+                            <div class="traffic-title-box">
+                                <div class="traffic-title zijia">
+                                    <p>自驾<br>出行</p>
+                                    <div>快去最近的环线桥</div>
+                                </div>
+                            </div>
+                            <div class="echart-box mb0">
                                 <div id="trafficRondChart"></div>
                             </div>
-                        </div>
-                        <#if intelligenceFhRes?exists><div class="traffic-text-box mb0">
-                            <#assign fhResults =intelligenceFhRes['fhResult']?eval>
-                            <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
-                                <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
-                                <#if fhResult_index == 0>
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
-                                <#else >
-                                    <div class="traffic-text"><span class="type${fhResult['sortInex']}">${fhResult_index?number+1}</span><p>${fhResult['projname']}次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p></div>
-                                </#if>
-                                </#if>
-                            </#list>
-                        </div></#if>
-                    </div>
-                </div>
-            </div>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>宜居</p>
-                    <span>住的舒服点，从空气质量到景观，从人口密度到车位</span>
-                </div>
-                <table class="table-live">
-                    <tr>
-                        <td>
-                            <i class="live-age"></i>
-                            <em>楼龄</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
-                                    <#assign date = .now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number>
-                                    <#if date?exists&&date gt 0>
-                                    <td>${date}年</td>
-                                    <#else >
-                                        <td>-</td>
-                                    </#if>
-                                </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="live-greening"></i>
-                            <em>绿化率</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                            <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
-                                <td>${fhResult['virescencerate']+'%'}</td>
-                            <#else >
-                                <td>-</td>
-                            </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="live-parking"></i>
-                            <em>车位比</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                            <#if fhResult['parkRadio']?exists&&fhResult['parkRadio']!=''>
-                                <td>${fhResult['parkRadio']}</td>
-                            <#else >
-                                <td>-</td>
-                            </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="live-air"></i>
-                            <em>空气质量</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <td>${fhResult['airQuality']!'-'}</td>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="live-elevator"></i>
-                            <em>电梯</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                            <#if fhResult['liftDoorRadio']?exists&&fhResult['liftDoorRadio']!=''>
-                                <td>${fhResult['liftDoorRadio']}</td>
-                            <#else >
-                                <td>-</td>
-                            </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="live-heating"></i>
-                            <em>供暖</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <#if fhResult['heatingMode']?exists>
-                                    <#if fhResult['heatingMode']?number == 0>
-                                        <td>未知</td>
-                                    <#elseif fhResult['heatingMode']?number == 1>
-                                        <td>集中供暖</td>
-                                    <#elseif fhResult['heatingMode']?number == 2>
-                                        <td>自供暖</td>
-                                    <#else >
-                                        <td>-</td>
-                                    </#if>
-                                </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                </table>
-            </div>
-            <div class="module-item type2">
-                <div class="report-title-type2">
-                    <p>生活成本</p>
-                    <span>处处都要钱，那一个亿的小目标，看来得快点实现啊</span>
-                </div>
-                <table class="table-life">
-                    <tr>
-                        <td>
-                            <i class="life-property"></i>
-                            <em>物业费<br>(/㎡·月)</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
-                                    <td>${fhResult['propertyfee']}元</td>
-                                <#else >
-                                    <td>-</td>
-                                </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="life-electricity"></i>
-                            <em>水电费<br>(/吨)<br>(/度)</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <td>
-                                    <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
-                                        <#if fhResult['waterSupply'] == '商水'>
-                                            <span>6元</span>
+                            <#if intelligenceFhRes?exists><div class="traffic-text-box mb0">
+                                <#assign fhResults =intelligenceFhRes['fhResult']?eval>
+                                <#list fhResults?sort_by('nearbyRoadMeter') as fhResult>
+                                    <#if fhResult['projname']?exists&&fhResult['projname']!=''&&fhResult['nearbyQiao']?exists&&fhResult['nearbyQiao']!='' &&fhResult_index lt 2>
+                                        <#if fhResult_index == 0>
+                                            <div class="traffic-text">
+                                                <div class="traffice-table-row">
+                                                    <span>TOP.01</span>
+                                                    <p>${fhResult['projname']}离环线桥最近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p>
+                                                </div>
+                                            </div>
                                         <#else >
-                                            <span>5元</span>
+                                            <div class="traffic-text">
+                                                <div class="traffice-table-row">
+                                                    <span>TOP.02</span>
+                                                    <p>${fhResult['projname']}次近，距${fhResult['nearbyQiao']}<em>${(fhResult['nearbyRoadMeter']?number/1000)?string('#.#')}km</em>,驾车约<em>${(fhResult['nearbyRoadMeter']?number/800)?ceiling}</em>分钟</p>
+                                                </div>
+                                            </div>
                                         </#if>
                                     </#if>
-                                    <hr>
-                                    <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
-                                        <#if fhResult['electricSupply'] == '商电'>
-                                            <span>1.33元</span>
-                                        <#else >
-                                            <span>0.48元</span>
+                                </#list>
+                            </div></#if>
+                        </section>
+                    </section>
+                    <section>
+                        <div class="piece-title">
+                            <div class="piece-title-border">
+                                <p>宜居</p>
+                                <span>住的舒服点，从空气质量到景观，从人口密度到车位</span>
+                            </div>
+                        </div>
+                        <table class="table-live">
+                            <tr>
+                                <td><em>楼龄</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['finishdate']?exists&&fhResult['finishdate']!=''>
+                                            <#assign date = .now?string("yyyy年MM月dd日")?substring(0,4)?number - fhResult['finishdate']?date("yyyy")?string("yyyy年MM月dd日")?substring(0,4)?number>
+                                            <#if date?exists&&date gt 0>
+                                                <td>${date}年</td>
+                                            <#else >
+                                                <td>-</td>
+                                            </#if>
                                         </#if>
-                                    </#if>
-                                </td>
-                            </#list>
-                        </#if>
-                    </tr>
-                    <tr>
-                        <td>
-                            <i class="life-parking"></i>
-                            <em>停车费<br>(/年)</em>
-                        </td>
-                        <#if intelligenceFhRes?exists>
-                            <#assign fhResults =intelligenceFhRes['fhResult']>
-                            <#list fhResults?eval as fhResult>
-                                <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
-                                    <td>${fhResult['carRentPrice']?number?round}元</td>
-                                <#else >
-                                    <td>-</td>
+                                    </#list>
                                 </#if>
-                            </#list>
-                        </#if>
-                    </tr>
-                </table>
+                            </tr>
+                            <tr>
+                                <td><em>绿化率</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['virescencerate']?exists&&fhResult['virescencerate']?number gt 0>
+                                            <td>${fhResult['virescencerate']+'%'}</td>
+                                        <#else >
+                                            <td>-</td>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </tr>
+                            <tr>
+                                <td><em>车位比</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['parkRadio']?exists&&fhResult['parkRadio']!=''>
+                                            <td>${fhResult['parkRadio']}</td>
+                                        <#else >
+                                            <td>-</td>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </tr>
+                            <tr>
+                                <td><em>空气<br>质量</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <td>${fhResult['airQuality']!'-'}</td>
+                                    </#list>
+                                </#if>
+                            </tr>
+                            <tr>
+                                <td><em>电梯</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['liftDoorRadio']?exists&&fhResult['liftDoorRadio']!=''>
+                                            <td>${fhResult['liftDoorRadio']}</td>
+                                        <#else >
+                                            <td>-</td>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </tr>
+                            <tr>
+                                <td><em>供暖</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['heatingMode']?exists>
+                                            <#if fhResult['heatingMode']?number == 0>
+                                                <td>未知</td>
+                                            <#elseif fhResult['heatingMode']?number == 1>
+                                                <td>集中供暖</td>
+                                            <#elseif fhResult['heatingMode']?number == 2>
+                                                <td>自供暖</td>
+                                            <#else >
+                                                <td>-</td>
+                                            </#if>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <div class="piece-title">
+                            <div class="piece-title-border">
+                                <p>生活成本</p>
+                                <span>处处都要钱，那一个亿的小目标，看来得快点实现啊</span>
+                            </div>
+                        </div>
+                        <table class="table-life">
+                            <tr>
+                                <td><em>物业费<br>(/㎡·月)</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['propertyfee']?exists&&fhResult['propertyfee']?number gt 0>
+                                            <td>${fhResult['propertyfee']}元</td>
+                                        <#else >
+                                            <td>-</td>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </tr>
+                            <tr>
+                                <td><em>水电费<br>(/吨)<br>(/度)</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults =intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <td>
+                                            <#if fhResult['waterSupply']?exists&&fhResult['waterSupply']!=''>
+                                                <#if fhResult['waterSupply'] == '商水'>
+                                                    <span>6元</span>
+                                                <#else >
+                                                    <span>5元</span>
+                                                </#if>
+                                            </#if>
+                                            <#if fhResult['electricSupply']?exists&&fhResult['electricSupply']!=''>
+                                                <#if fhResult['electricSupply'] == '商电'>
+                                                    <span>1.33元</span>
+                                                <#else >
+                                                    <span>0.48元</span>
+                                                </#if>
+                                            </#if>
+                                        </td>
+                                    </#list>
+                                </#if>
+                            </tr>
+                            <tr>
+                                <td><em>停车费<br>(/年)</em></td>
+                                <#if intelligenceFhRes?exists>
+                                    <#assign fhResults = intelligenceFhRes['fhResult']>
+                                    <#list fhResults?eval as fhResult>
+                                        <#if fhResult['carRentPrice']?exists&&fhResult['carRentPrice']?number gt 0>
+                                            <td>${fhResult['carRentPrice']?number?round}元</td>
+                                        <#else >
+                                            <td>-</td>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </tr>
+                        </table>
+                    </section>
+
+                    <#if intelligenceFhRes?exists>
+                        <#assign fhResults = intelligenceFhRes['fhResult']?eval>
+                        <#assign xiuxian = 0>
+                        <#assign jiaoyu = 0>
+                        <#assign yiliao = 0>
+                        <#list fhResults as fhResult>
+                            <#if fhResult['typeCount']?exists>
+                                <#if fhResult['typeCount']['xiuxian']?exists>
+                                    <#assign xiuxian = xiuxian+1>
+                                    <#assign fhResultXiuxian = fhResult['typeCount']['xiuxian']>
+                                </#if>
+                                <#if fhResult['typeCount']['jiaoyu']?exists>
+                                    <#assign jiaoyu = jiaoyu+1>
+                                </#if>
+                                <#if fhResult['typeCount']['yiliao']?exists>
+                                    <#assign yiliao = yiliao+1>
+                                </#if>
+                            </#if>
+                        </#list>
+                        <section>
+                            <#if xiuxian != 0><section>
+                                <div class="piece-title">
+                                    <div class="piece-title-border">
+                                        <p>休闲购物</p>
+                                        <span>3km生活圈，吃喝玩乐买买买</span>
+                                    </div>
+                                </div>
+                                <div class="level-slider-box">
+                                    <div class="level-slider">
+                                        <div class="level-slider-item level-slider-item1 prev">
+                                            <div class="level-item-content-wrapper">
+                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <ul class="item-list">
+                                                    <li><i></i><span>超市</span><em>5个</em></li>
+                                                    <li><i></i><span>商场</span><em>5个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="level-slider-item level-slider-item2 prev">
+                                            <div class="level-item-content-wrapper">
+                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <ul class="item-list">
+                                                    <li><i></i><span>超市</span><em>5个</em></li>
+                                                    <li><i></i><span>商场</span><em>5个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="level-slider-item level-slider-item3 prev">
+                                            <div class="level-item-content-wrapper">
+                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <ul class="item-list">
+                                                    <li><i></i><span>超市</span><em>5个</em></li>
+                                                    <li><i></i><span>商场</span><em>5个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="level-slider">
+                                        <div class="level-slider-item level-slider-item4 last">
+                                            <div class="level-item-content-wrapper">
+                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <ul class="item-list">
+                                                    <li><i></i><span>超市</span><em>5个</em></li>
+                                                    <li><i></i><span>商场</span><em>5个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="level-slider-item level-slider-item5 last">
+                                            <div class="level-item-content-wrapper">
+                                                <div class="level-item-title">中粮万科长阳半岛</div>
+                                                <ul class="item-list">
+                                                    <li><i></i><span>超市</span><em>5个</em></li>
+                                                    <li><i></i><span>商场</span><em>5个</em></li>
+                                                    <li><i></i><span>菜市场</span><em>5个</em></li>
+                                                    <li><i></i><span>餐厅</span><em>5个</em></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section></#if>
+                            <#if jiaoyu !=0><section>
+                                <div class="piece-title">
+                                    <div class="piece-title-border">
+                                        <p>教育配套</p>
+                                        <span>3km内教育配套，就这样陪你长大</span>
+                                    </div>
+                                </div>
+                                <section class="folding-slider-wrapper">
+                                    <div class="folding-slider-box">
+                                        <div class="side-title">
+                                            <i class="youeryuan"></i><span>幼 儿 园</span>
+                                        </div>
+                                        <div class="folding-item-box">
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="folding-slider-box">
+                                        <div class="side-title">
+                                            <i class="xiaoxue"></i><span>小 学</span>
+                                        </div>
+                                        <div class="folding-item-box">
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="folding-slider-box">
+                                        <div class="side-title">
+                                            <i class="zhongxue"></i><span>中 学</span>
+                                        </div>
+                                        <div class="folding-item-box">
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </section></#if>
+                            <#if yiliao !=0><section>
+                                <div class="piece-title">
+                                    <div class="piece-title-border">
+                                        <p>医疗配套</p>
+                                        <span>3km内医疗配套，为您的健康保驾护航</span>
+                                    </div>
+                                </div>
+                                <section class="folding-slider-wrapper">
+                                    <div class="folding-slider-box">
+                                        <div class="side-title">
+                                            <i class="yiyuan"></i><span>综 合 医 院</span>
+                                        </div>
+                                        <div class="folding-item-box">
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="folding-item">
+                                                <div class="folding-content-wrapper">
+                                                    <div class="folding-item-title">中粮万科长阳半岛</div>
+                                                    <ul class="item-list">
+                                                        <li><span>东华门幼儿园</span><em>500m</em></li>
+                                                        <li><span>商务部幼儿园</span><em>1.4km</em></li>
+                                                        <li><span>前门幼儿园</span><em>2.1km</em></li>
+                                                        <li><span>财政部幼儿园</span><em>2.2km</em></li>
+                                                        <li><span>大方家回民幼儿园大方家回民幼儿园</span><em>2.5km</em></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </section></#if>
+                        </section>
+                    </#if>
+                </div>
             </div>
-            <#if intelligenceFhRes?exists>
-                <#assign fhResults =intelligenceFhRes['fhResult']?eval>
-                <div class="report-title-type3 mt0">
-                    <p>工作再忙，也要享受生活，看看3km内生活圈</p>
+            <div class="module-item">
+                <div class="report-title">
+                    <i class="icon-title-review"></i>
+                    <p>为您甄选的5个小区还满意吗？</p>
                 </div>
-                <#assign xiuxian = 0>
-                <#assign jiaoyu = 0>
-                <#assign yiliao = 0>
-                <#list fhResults as fhResult>
-                <#if fhResult['typeCount']?exists>
-                    <#if fhResult['typeCount']['xiuxian']?exists>
-                        <#assign xiuxian = xiuxian+1>
-                    </#if>
-                    <#if fhResult['typeCount']['jiaoyu']?exists>
-                        <#assign jiaoyu = jiaoyu+1>
-                    </#if>
-                    <#if fhResult['typeCount']['yiliao']?exists>
-                        <#assign yiliao = yiliao+1>
-                    </#if>
-                </#if>
-                </#list>
-                <#if xiuxian != 0>
-                <div class="module-item type2">
-                    <div class="report-title-type2">
-                        <p>休闲购物</p>
-                        <span>1km生活圈，吃喝玩乐买买买</span>
-                    </div>
-                    <div class="echart-box nearby mb0">
-                        <div id="shoppingChart"></div>
-                    </div>
+                <div class="piece-module">
+                    <#if intelligenceFhRes?exists><ul class="reviwe–item-box clear">
+                        <#assign fhResults = intelligenceFhRes['fhResult']>
+                        <#list fhResults?eval as fhResult>
+                            <li><a href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
+                                <div class="review-img-box">
+                                    <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
+                                        <img width="100%" src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${fhResult['projname']}">
+                                    <#else >
+                                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                    </#if>
+                                </div>
+                                <p>${fhResult['projname']}</p>
+                            </a></li>
+                        </#list>
+                    </ul></#if>
                 </div>
-                </#if>
-                <#if jiaoyu !=0>
-                <div class="module-item type2">
-                    <div class="report-title-type2">
-                        <p>教育配套</p>
-                        <span>3km内教育配套，就这样陪你长大</span>
+            </div>
+            <div class="module-item">
+                <div class="report-end-word">
+                    <p>选房就是选生活</p>
+                    <p>发现美好家园 就在头条房产</p>
+                </div>
+                <div class="report-bottom-button">
+                    <div class="report-button collect-button">
+                        <i class="collect"></i><span>收藏</span>
                     </div>
-                    <#--<i class="show-echart-detail"></i>-->
-                    <div class="echart-box nearby mb0">
-                        <div id="educationChart"></div>
+                    <div class="report-button share-button">
+                        <span>分享</span>
                     </div>
                 </div>
-                </#if>
-                <#if yiliao !=0>
-                <div class="module-item type2">
-                    <div class="report-title-type2">
-                        <p>医疗配套</p>
-                        <span>3km内医疗配套，为您的健康保驾护航</span>
-                    </div>
-                    <#--<i class="show-echart-detail"></i>-->
-                    <div class="echart-box nearby mb0">
-                        <div id="medicalChart"></div>
-                    </div>
-                </div>
-                </#if>
-                <div class="end-bottom">
-                    <p class="end-text">End</p>
-                    <div class="end-bottom-content">
-                        <div class="collect-tips">
-                            <p>选房就是选生活<br>愿您选到心仪的居家和生活环境</p>
-                            <p>发现美好家园 就在头条房产</p>
-                        </div>
-                        <div class="report-bottom-button">
-                            <div class="collect-button">
-                                <i class="collect"></i>
-                                <span>收藏</span>
-                            </div>
-                            <div class="share-button">
-                                <i class="share"></i>
-                                <span>分享</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </#if>
+                <img src="/static/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在头条房产">
+            </div>
         </div>
     </div>
 </div>
@@ -599,6 +955,35 @@
         if (status == 1) {
             $('.collect-button').find('.collect').toggleClass('active');
         }
+
+        $('.folding-item').click(function() {
+            $(this).prevAll().addClass('folding-item-small');
+            $(this).nextAll().removeClass('folding-item-small');
+            $(this).removeClass('folding-item-small');
+        });
+        $('.level-slider-item1').click(function () {
+            $('.level-slider-item1').css('z-index', 3);
+            $('.level-slider-item2').css('z-index', 2);
+            $('.level-slider-item3').css('z-index', 1)
+        });
+        $('.level-slider-item2').click(function () {
+            $('.level-slider-item1').css('z-index', 2);
+            $('.level-slider-item2').css('z-index', 3);
+            $('.level-slider-item3').css('z-index', 2)
+        });
+        $('.level-slider-item3').click(function () {
+            $('.level-slider-item1').css('z-index', 1);
+            $('.level-slider-item2').css('z-index', 2);
+            $('.level-slider-item3').css('z-index', 3)
+        });
+        $('.level-slider-item4').click(function () {
+            $('.level-slider-item4').css('z-index', 2);
+            $('.level-slider-item5').css('z-index', 1)
+        });
+        $('.level-slider-item5').click(function () {
+            $('.level-slider-item4').css('z-index', 1);
+            $('.level-slider-item5').css('z-index', 2)
+        });
 
         $('.collect-button').on('click', function () {
             var reportId = ${reportId};
@@ -728,7 +1113,7 @@
     var trend = ${trend};
 
     var baseFontSize = 12 * dpr;
-    var baseItemWidth = 25 * dpr;
+    var barBarWidth = 8 * dpr;
 
     function getJiagezoushiYuefen() {
         var res = [];
@@ -786,47 +1171,6 @@
         return res;
     }
 
-    function dict_getValueOrDefault(obj, key, default_value) {
-        obj = obj || {};
-        var v = obj[key];
-        if (typeof(v) == "undefined") {
-            return default_value
-        }
-        return v
-    }
-
-    function getXiuxiangouwu() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i], "typeCount", {})
-            var xiuxian = dict_getValueOrDefault(typecount, "xiuxian", {})
-            res.push([dict_getValueOrDefault(xiuxian, "caishichang", 0), dict_getValueOrDefault(xiuxian, "chaoshi", 0), dict_getValueOrDefault(xiuxian, "shangchang", 0), dict_getValueOrDefault(xiuxian, "canting", 0)])
-        }
-        return res;
-    }
-
-    function getJiaoyupeitao() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var jiaoyu=dict_getValueOrDefault(typecount,"jiaoyu",{})
-            res.push([dict_getValueOrDefault(jiaoyu,"youeryuan",0),dict_getValueOrDefault(jiaoyu,"xiaoxue",0),dict_getValueOrDefault(jiaoyu,"zhongxue",0)])
-        }
-        return res;
-    }
-
-    function getYiliaopeitao() {
-        var res = [];
-        for (var i = 0; i < datajson.length; i++) {
-            var typecount = dict_getValueOrDefault(datajson[i],"typeCount",{})
-            var yiliao=dict_getValueOrDefault(typecount,"yiliao",0)
-//            res.push([dict_getValueOrDefault(yiliao,"zonghe",0),dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0)])
-            res.push([dict_getValueOrDefault(yiliao,"zhensuo",0),dict_getValueOrDefault(yiliao,"zhuanke",0),dict_getValueOrDefault(yiliao,"zonghe",0)])
-
-        }
-        return res;
-    }
-
     function getSubway() {
 
         var res = [];
@@ -879,10 +1223,10 @@
 
         var chartGrid = {
             top: '20%',
-            left: '2%',
-            right: '6%',
-            bottom: 0,
-            containLabel: true
+            left: '13%',
+            right: '7%',
+            bottom: '10%',
+            containLabel: false
         };
 
         /**
@@ -897,20 +1241,10 @@
                 trigger: 'axis',
                 textStyle: {fontSize: baseFontSize}
             },
-            legend: {
-                itemGap: 20,
-                itemWidth: baseItemWidth,
-                data: [{
-                    name: '北京市场',
-                    icon: 'line'
-                }, {
-                    name: '目标市场',
-                    icon: 'line'
-                }]
-            },
             grid: chartGrid,
             xAxis: {
                 show: true,
+                axisTick: {show: false},
                 boundaryGap: false,
                 scale: true,
                 axisLabel: {fontSize: baseFontSize - 4},
@@ -918,6 +1252,9 @@
             },
             yAxis: [{
                 name: '元/㎡',
+                axisLine: {show: false},
+                axisTick: {show: false},
+                axisLabel: {fontSize: baseFontSize - 4},
                 max:function(value) {
                     return value.max + 5000;
                 },
@@ -927,7 +1264,7 @@
             },{
                 type: 'value',
                 scale: true,
-                axisLine: {show: true},
+                axisLine: {show: false},
                 axisTick: {show: false},
                 axisLabel: {show: false},
                 splitLine: {show: false}
@@ -967,23 +1304,18 @@
                 textStyle: {fontSize: baseFontSize},
                 axisPointer: {type: 'shadow'}
             },
-            legend: {
-                itemGap: 20,
-                itemWidth: baseItemWidth,
-                data: [{
-                    name: '北京市场',
-                    icon: 'line'
-                }, {
-                    name: '目标市场',
-                    icon: 'line'
-                }]
+            grid: {
+                top: '15%',
+                left: '5%',
+                right: '5%',
+                bottom: '10%',
+                containLabel: false
             },
-            grid: chartGrid,
             yAxis: {
                 type: 'value',
                 axisTick: {show: false},
                 axisLine: {show: false},
-                splitLine: {show: false},
+                splitLine: {show: true},
                 axisLabel: {show: false}
             },
             xAxis: [
@@ -993,32 +1325,22 @@
                     axisLine: {show: true},
                     axisLabel: {fontSize: baseFontSize - 4},
                     data: getGongxuqingkuangYuefen()
-                }, {
-                    type: 'category',
-                    axisLine: {show: false},
-                    axisTick: {show: false},
-                    axisLabel: {show: false},
-                    splitArea: {show: false},
-                    splitLine: {show: false},
-                    data: getGongxuqingkuangYuefen()
                 }
             ],
             series: [
                 {
                     name: '北京市场',
                     type: 'bar',
-                    xAxisIndex: 1,
                     itemStyle: {
                         normal: {
                             show: true,
-                            color: '#455765',
-                            barBorderRadius: 10,
-                            borderWidth: 0,
-                            borderColor: '#333'
+                            color: '#747788',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0],
+                            borderWidth: 0
                         }
                     },
-                    barGap: 0,
-                    barCategoryGap: '70%',
+                    barGap: 0.2,
+                    barWidth: barBarWidth,
                     data: getGongxuqingkuangBeijing()
                 },
                 {
@@ -1027,14 +1349,13 @@
                     itemStyle: {
                         normal: {
                             show: true,
-                            color: '#f25a5a',
-                            barBorderRadius: 10,
-                            borderWidth: 0,
-                            borderColor: '#333'
+                            color: '#EA5956',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0],
+                            borderWidth: 0
                         }
                     },
-                    barGap: 0,
-                    barCategoryGap: '70%',
+                    barGap: 0.2,
+                    barWidth: barBarWidth,
                     data: getGongxuqingkuangMuBiao()
                 }
             ]
@@ -1046,10 +1367,9 @@
         var trafficSubwayChart = echarts.init(document.getElementById('trafficSubwayChart'));
         // 显示标题，图例和空的坐标
         var trafficSubwayGrid = {
-            left: '-6.0%',
             right: '0%',
             top: 0,
-            bottom: '25%',
+            bottom: '20%',
             containLabel: true
         };
         var trafficSubwayLabel = {
@@ -1072,26 +1392,30 @@
             }
         };
         trafficSubwayChart.setOption({
-            color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
-            textStyle: {fontSize: baseFontSize},
+            textStyle: { fontSize: baseFontSize },
             grid: trafficSubwayGrid,
             xAxis: {
-                show: false,
+                show: true,
                 data: []
             },
             yAxis: {
-                show: false,
-                inverse: true
+                show: true,
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                axisTick: {show: false}
             },
             series: [
                 {
                     name: getPlotName()[0],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#455765' }
+                        normal: {
+                            color: '#34B99B',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getSubway()[0]
                 },
@@ -1099,10 +1423,13 @@
                     name: getPlotName()[1],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#f25a5a' }
+                        normal: {
+                            color: '#8C45CE',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getSubway()[1]
                 },
@@ -1110,10 +1437,13 @@
                     name: getPlotName()[2],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#fece6c' }
+                        normal: {
+                            color: '#F76284',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getSubway()[2]
                 },
@@ -1121,10 +1451,13 @@
                     name: getPlotName()[3],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#7f7f7f' }
+                        normal: {
+                            color: '#EE8C49',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getSubway()[3]
                 },
@@ -1132,10 +1465,13 @@
                     name: getPlotName()[4],
                     type: 'bar',
                     label: trafficSubwayLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#4a7aa3' }
+                        normal: {
+                            color: '#6B92F2',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getSubway()[4]
                 }
@@ -1170,26 +1506,30 @@
             }
         };
         trafficRondChart.setOption({
-            color: ['#455765', '#f25a5a', '#fece6c', '#7f7f7f', '#4a7aa3'],
             textStyle: {fontSize: baseFontSize},
             grid: trafficSubwayGrid,
             xAxis: {
-                show: false,
+                show: true,
                 data: []
             },
             yAxis: {
-                show: false,
-                inverse: true
+                show: true,
+                splitLine: {show: false},
+                axisLabel: {show: false},
+                axisTick: {show: false}
             },
             series: [
                 {
                     name: getPlotName()[0],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#455765' }
+                        normal: {
+                            color: '#34B99B',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getNearbyRoadMeter()[0]
                 },
@@ -1197,10 +1537,13 @@
                     name: getPlotName()[1],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#f25a5a' }
+                        normal: {
+                            color: '#8C45CE',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getNearbyRoadMeter()[1]
                 },
@@ -1208,10 +1551,13 @@
                     name: getPlotName()[2],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#fece6c' }
+                        normal: {
+                            color: '#F76284',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getNearbyRoadMeter()[2]
                 },
@@ -1219,10 +1565,13 @@
                     name: getPlotName()[3],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#7f7f7f' }
+                        normal: {
+                            color: '#EE8C49',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getNearbyRoadMeter()[3]
                 },
@@ -1230,340 +1579,19 @@
                     name: getPlotName()[4],
                     type: 'bar',
                     label: trafficRondLabel,
-                    barGap: 1.5,
-                    barWidth: '8%',
+                    barGap: 6,
+                    barWidth: barBarWidth,
                     itemStyle: {
-                        normal: { color: '#4a7aa3' }
+                        normal: {
+                            color: '#6B92F2',
+                            barBorderRadius: [barBarWidth, barBarWidth, 0, 0]
+                        }
                     },
                     data: getNearbyRoadMeter()[4]
                 }
             ]
         });
-
-        var nearbyChartGrid = {
-            top: 0,
-            left: '3%',
-            right: '4%',
-            bottom: 0,
-            containLabel: true
-        };
-        /**
-         * 休闲购物
-         * */
-        var shoppingChart = echarts.init(document.getElementById('shoppingChart'));
-        // 显示标题，图例和空的坐标
-        shoppingChart.setOption({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                },
-                textStyle: {fontSize: baseFontSize}
-            },
-            grid: nearbyChartGrid,
-            xAxis: {
-                type: 'value',
-                axisLabel: {fontSize: baseFontSize - 4}
-            },
-            yAxis: {
-                type: 'category',
-                axisLabel: {fontSize: baseFontSize - 4},
-                data: ['菜市场', '超市', '购物中心', '餐饮']
-            },
-            series: [
-                {
-                    name: getPlotName()[0],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#455765' }
-                    },
-                    data: getXiuxiangouwu()[0]
-                },
-                {
-                    name: getPlotName()[1],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#f25a5a' }
-                    },
-                    data: getXiuxiangouwu()[1]
-                },
-                {
-                    name: getPlotName()[2],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#fece6c' }
-                    },
-                    data: getXiuxiangouwu()[2]
-                },
-                {
-                    name: getPlotName()[3],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#7f7f7f' }
-                    },
-                    data: getXiuxiangouwu()[3]
-                },
-                {
-                    name: getPlotName()[4],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#4a7aa3' }
-                    },
-                    data: getXiuxiangouwu()[4]
-                }
-            ]
-        });
-
-        /**
-         * 教育配套
-         * */
-        var educationChart = echarts.init(document.getElementById('educationChart'));
-        // 显示标题，图例和空的坐标
-        educationChart.setOption({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                },
-                textStyle: {fontSize: baseFontSize}
-            },
-            grid: nearbyChartGrid,
-            xAxis: {
-                type: 'value',
-                axisLabel: {fontSize: baseFontSize - 4}
-            },
-            yAxis: {
-                type: 'category',
-                axisLabel: {fontSize: baseFontSize - 4},
-                data: ['幼儿园', '小学', '中学']
-            },
-            series: [
-                {
-                    name: getPlotName()[0],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#455765' }
-                    },
-                    data: getJiaoyupeitao()[0]
-                },
-                {
-                    name: getPlotName()[1],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#f25a5a' }
-                    },
-                    data: getJiaoyupeitao()[1]
-                },
-                {
-                    name: getPlotName()[2],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#fece6c' }
-                    },
-                    data: getJiaoyupeitao()[2]
-                },
-                {
-                    name: getPlotName()[3],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#7f7f7f' }
-                    },
-                    data: getJiaoyupeitao()[3]
-                },
-                {
-                    name: getPlotName()[4],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#4a7aa3' }
-                    },
-                    data: getJiaoyupeitao()[4]
-                }
-            ]
-        });
-
-        /**
-         * 医疗配套
-         * */
-        var medicalChart = echarts.init(document.getElementById('medicalChart'));
-        // 显示标题，图例和空的坐标
-        medicalChart.setOption({
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                },
-                textStyle: {fontSize: baseFontSize}
-            },
-            grid: nearbyChartGrid,
-            xAxis: {
-                type: 'value',
-                axisLabel: {fontSize: baseFontSize - 4}
-            },
-            yAxis: {
-                type: 'category',
-                axisLabel: {fontSize: baseFontSize - 4},
-//                data: ['综合','诊所','专科']
-                data: ['诊所','专科医院','综合医院']
-            },
-            series: [
-                {
-                    name: getPlotName()[0],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#455765' }
-                    },
-                    data: getYiliaopeitao()[0]
-                },
-                {
-                    name: getPlotName()[1],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#f25a5a' }
-                    },
-                    data: getYiliaopeitao()[1]
-                },
-                {
-                    name: getPlotName()[2],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#fece6c' }
-                    },
-                    data: getYiliaopeitao()[2]
-                },
-                {
-                    name: getPlotName()[3],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#7f7f7f' }
-                    },
-                    data: getYiliaopeitao()[3]
-                },
-                {
-                    name: getPlotName()[4],
-                    type: 'bar',
-                    stack: '总量',
-                    itemStyle: {
-                        normal: { color: '#4a7aa3' }
-                    },
-                    data: getYiliaopeitao()[4]
-                }
-            ]
-        });
-    });
+    })
 </script>
-<#--<script>
-    var datajson =${datajson};
-    var res = [];
-    for (var i = 0; i < datajson.length; i++) {
-        res.push(datajson[i]['coordX'] + "&" + datajson[i]['coordY'])
-    }
-
-    // 百度地图API功能
-    var map = new BMap.Map("allmap", {
-        minZoom: 1,
-        maxZoom: 18
-    });
-    var point = new BMap.Point(116.404, 39.915);
-    map.centerAndZoom(point, 12);
-    map.enableScrollWheelZoom(true);
-
-    var ctrlNav = new window.BMap.NavigationControl({
-        anchor: BMAP_ANCHOR_TOP_LEFT,
-        type: BMAP_NAVIGATION_CONTROL_LARGE
-    });
-    map.addControl(ctrlNav);
-    var ctrlOve = new window.BMap.OverviewMapControl({
-        anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
-        isOpen: 1
-    });
-    map.addControl(ctrlOve);
-    var ctrlSca = new window.BMap.ScaleControl({
-        anchor: BMAP_ANCHOR_BOTTOM_LEFT
-    });
-    map.addControl(ctrlSca);
-    //页面刚进来显示5个小区在地图上的地理坐标信息
-    if (res.length > 0) {
-        for (var i = 0; i < res.length; i++) {
-            var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
-            addMarker(point);
-        }
-    }
-
-    // 添加标注
-    function addMarker(point) {
-        var myIcon = new BMap.Icon("/static/images/map/bgy_icon_zb1.png",
-                new BMap.Size(23, 25), {
-                    anchor: new BMap.Size(10, 30)
-                });
-        var marker_first = new BMap.Marker(point, {icon: myIcon});
-        //marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-        map.addOverlay(marker_first);
-        return marker_first;
-    }
-
-    // 添加定位控件
-    var geolocationControl = new BMap.GeolocationControl();
-    geolocationControl.addEventListener("locationSuccess", function (e) {
-        // 定位成功事件
-        var address = '';
-        address += e.addressComponent.province;
-        address += e.addressComponent.city;
-        address += e.addressComponent.district;
-        address += e.addressComponent.street;
-        address += e.addressComponent.streetNumber;
-        alert("当前定位地址为：" + address);
-    });
-    geolocationControl.addEventListener("locationError", function (e) {
-        // 定位失败事件
-        alert(e.message);
-    });
-    map.addControl(geolocationControl);
-    $('.water-item').on('click', 'li', function () {
-        var attr = $(this).attr('data-type');
-        var myIcon = new BMap.Icon("/static/images/map/bgy_icon_zb2.png",
-                new BMap.Size(23, 25), {
-                    anchor: new BMap.Size(10, 30)
-                });
-        var myIcon1 = new BMap.Icon("/static/images/map/bgy_icon_zb1.png",
-                new BMap.Size(23, 25), {
-                    anchor: new BMap.Size(10, 30)
-                });
-        var point = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
-        map.centerAndZoom(point, 12);
-        var allOverlay = map.getOverlays();
-        var point2 = new BMap.Point(attr.split("_")[0], attr.split("_")[1]);
-        map.removeOverlay(new BMap.Marker(point2, {icon: myIcon1}));
-        map.addOverlay(new BMap.Marker(point2, {icon: myIcon}));
-        addMarker(attr.split("_")[0], attr.split("_")[1]);
-        new BMap.Marker(point2, {icon: myIcon}).setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-        map.removeOverlay();
-
-        if (res.length > 0) {
-            for (var i = 0; i < res.length; i++) {
-                var point = new BMap.Point(res[i].split("&")[0], res[i].split("&")[1]);
-
-                if (point.lat != point2.lat) {
-                    map.removeOverlay(new BMap.Marker(point, {icon: myIcon1}));
-                    addMarker(point);
-                }
-            }
-        }
-
-    });
-</script>-->
 </body>
 </html>
