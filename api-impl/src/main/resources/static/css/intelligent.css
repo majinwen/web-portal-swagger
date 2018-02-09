@@ -293,15 +293,15 @@ body {
     .page2 .bg2 {
       background-image: url("/static/images/intelligent/znzf_gjcy_bg@3x.png"); } }
 .page2 .page-content {
-  padding-top: 5%;
+  padding-top: 8%;
   text-align: center;
   box-sizing: border-box; }
   [data-dpr="1"] .page2 .page-content h2 {
-    font-size: 18px; }
+    font-size: 23px; }
   [data-dpr="2"] .page2 .page-content h2 {
-    font-size: 36px; }
+    font-size: 46px; }
   [data-dpr="3"] .page2 .page-content h2 {
-    font-size: 54px; }
+    font-size: 69px; }
   .page2 .page-content p {
     margin-top: 0.4rem;
     color: #999; }
@@ -313,7 +313,7 @@ body {
       font-size: 42px; }
   .page2 .page-content .choose-wrapper {
     width: 8.88rem;
-    margin: 9% auto 0; }
+    margin: 10% auto 0; }
     .page2 .page-content .choose-wrapper .clear {
       margin-top: 1.72rem; }
       .page2 .page-content .choose-wrapper .clear .choose-item-box:first-child {
@@ -785,9 +785,16 @@ body {
         height: 100%;
         line-height: 1.3333333333rem; }
         .page3 .page-content .layer .layer-content .layer-header .price-tab span {
-          color: #888; }
+          color: #888;
+          padding: 0.1333333333rem 0.2rem;
+          border: 0.0133333333rem solid #e42929; }
+          .page3 .page-content .layer .layer-content .layer-header .price-tab span:first-child {
+            border-right: none; }
+          .page3 .page-content .layer .layer-content .layer-header .price-tab span:last-child {
+            border-left: none; }
           .page3 .page-content .layer .layer-content .layer-header .price-tab span.current {
-            color: #e42929; }
+            color: #e42929;
+            background-color: rgba(251, 57, 57, 0.1); }
       .page3 .page-content .layer .layer-content .layer-header .area-tips {
         float: left;
         height: 1.3333333333rem;
@@ -854,7 +861,7 @@ body {
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .min {
             left: 0; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .mid {
-            left: 42%; }
+            left: 70%; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .max {
             right: -20%; }
           .page3 .page-content .layer .layer-content .slide-item .slide-line .slider-track .slide-color {

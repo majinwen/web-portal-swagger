@@ -6,7 +6,12 @@ $(function () {
     });
     $.fn.fullpage.setAllowScrolling(false, 'up, down');
 
+    var t = setTimeout(function () {
+        $.fn.fullpage.moveSectionDown();
+    }, 2000);
+
     $('.begin').on('click', function () {
+        clearTimeout(t);
         zhuge.track('开始体验_懂房帝');
         $.fn.fullpage.moveSectionDown();
     });
@@ -40,8 +45,6 @@ $(function () {
     });
 
     chooseUserType();   // 用户选择类型
-
-
 
     // reportEchartAssemble(); // 报考页图表集合
 });

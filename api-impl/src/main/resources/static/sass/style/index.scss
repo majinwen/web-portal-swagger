@@ -51,6 +51,10 @@
 
         .cloumn {
 
+            div {
+                color: $baseBlack;
+            }
+
             &:first-child {
                 float: left;
                 width: rem(315);

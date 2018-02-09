@@ -20,7 +20,6 @@
         }
         return a;
     }
-
     // support
     var is3d = !!getStyleProperty('perspective'),
         supportTransitions = Modernizr.csstransitions,
@@ -52,7 +51,7 @@
         // distDragBack: if the user stops dragging the image in a area that does not exceed [distDragBack]px for either x or y then the image goes back to the stack
         distDragBack: 350,
         // distDragMax: if the user drags the image in a area that exceeds [distDragMax]px for either x or y then the image moves away from the stack
-        distDragMax: 150,
+        distDragMax: 100 * dpr,
         // callback
         onUpdateStack: function (current) {
             return false;
@@ -88,36 +87,35 @@
             self._onDragEnd(i, e, p);
         });
     };
-
     ElastiStack.prototype._setStackStyle = function () {
         var item1 = this._firstItem(), item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
 
         if (item1) {
             item1.style.opacity = 1;
             item1.style.zIndex = 4;
-            setTransformStyle(item1, is3d ? 'translate3d(0,0,0)' : 'translate(0,0)');
+            setTransformStyle(item1, is3d ? 'translate3d('+ (170/75) + 'rem,0,0)' : 'translate('+ (170/75) + 'rem,0)');
         }
 
         if (item2) {
             item2.style.opacity = 1;
             item2.style.zIndex = 3;
-            setTransformStyle(item2, is3d ? 'translate3d(0,0,-30px)' : 'translate(0,0)');
+            setTransformStyle(item2, is3d ? 'translate3d('+ (85/75) +'rem, '+ (45/75) +'rem, 0)' : 'translate('+ (85/75) +'rem, '+ (45/75) +'rem)');
         }
 
         if (item3) {
             item3.style.opacity = 1;
             item3.style.zIndex = 2;
-            setTransformStyle(item3, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)');
+            setTransformStyle(item3, is3d ? 'translate3d('+ (0/75) +'rem, '+ (90/75) +'rem, 0)' : 'translate('+ (0/75) +'rem, '+ (90/75) +'rem)');
         }
         if (item4) {
             item4.style.opacity = 1;
             item4.style.zIndex = 1;
-            setTransformStyle(item4, is3d ? 'translate3d(0,0,-90px)' : 'translate(0,0)');
+            setTransformStyle(item4, is3d ? 'translate3d('+ (85/75) +'rem, '+ (135/75) +'rem, 0)' : 'translate('+ (85/75) +'rem, '+ (135/75) +'rem)');
         }
         if (item5) {
             item5.style.opacity = 1;
             item5.style.zIndex = 0;
-            setTransformStyle(item5, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)');
+            setTransformStyle(item5, is3d ? 'translate3d('+ (170/75) +'rem, '+ (180/75) +'rem, 0)' : 'translate('+ (170/75) +'rem, '+ (180/75) +'rem)');
         }
     };
 
@@ -132,7 +130,7 @@
         var tVal = this._getTranslateVal(instance);
 
         // apply it
-        setTransformStyle(instance.element, is3d ? 'translate3d(' + tVal.x + 'px,' + tVal.y + 'px, 0px)' : 'translate(' + tVal.x + 'px,' + tVal.y + 'px)');
+        setTransformStyle(instance.element, is3d ? 'translate3d('+ (170/75) + 'rem,0,0)' : 'translate('+ (170/75) + 'rem,0)');
 
         // item also fades out
         instance.element.style.opacity = 0;
@@ -143,22 +141,22 @@
         if (item2) {
             classie.add(item2, 'move-back');
             classie.add(item2, 'animate');
-            setTransformStyle(item2, is3d ? 'translate3d(0,0,-30px)' : 'translate(0,0)');
+            setTransformStyle(item2, is3d ? 'translate3d('+ (85/75) +'rem, '+ (45/75) +'rem,0)' : 'translate('+ (85/75) +'rem, '+ (45/75) +'rem)');
         }
         if (item3) {
             classie.add(item3, 'move-back');
             classie.add(item3, 'animate');
-            setTransformStyle(item3, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)');
+            setTransformStyle(item3, is3d ? 'translate3d('+ (0/75) +'rem, '+ (90/75) +'rem,0)' : 'translate('+ (0/75) +'rem, '+ (90/75) +'rem)');
         }
         if (item4) {
             classie.add(item4, 'move-back');
             classie.add(item4, 'animate');
-            setTransformStyle(item4, is3d ? 'translate3d(0,0,-90px)' : 'translate(0,0)');
+            setTransformStyle(item4, is3d ? 'translate3d('+ (85/75) +'rem, '+ (135/75) +'rem,0)' : 'translate('+ (85/75) +'rem, '+ (135/75) +'rem)');
         }
         if (item5) {
             classie.add(item5, 'move-back');
             classie.add(item5, 'animate');
-            setTransformStyle(item5, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)');
+            setTransformStyle(item5, is3d ? 'translate3d('+ (170/75) +'rem, '+ (180/75) +'rem,0' : 'translate('+ (170/75) +'rem, '+ (180/75) +'rem)');
         }
 
         // after transition ends..
@@ -167,7 +165,7 @@
                 instance.element.removeEventListener(transEndEventName, onEndTransFn);
 
                 // reset first item
-                setTransformStyle(instance.element, is3d ? 'translate3d(0,0,-180px)' : 'translate(0,0,0)');
+                setTransformStyle(instance.element, is3d ? 'translate3d('+ (170/75) +'rem, '+ (180/75) +'rem, 0)' : 'translate('+ (170/75) +'rem, '+ (180/75) +'rem)');
                 instance.element.style.left = instance.element.style.top = '0px';
                 instance.element.style.zIndex = -1;
                 classie.remove(instance.element, 'animate');
@@ -218,29 +216,29 @@
 
         classie.add(instance.element, 'move-back');
         classie.add(instance.element, 'animate');
-        setTransformStyle(instance.element, is3d ? 'translate3d(0,0,0)' : 'translate(0,0)');
+        setTransformStyle(instance.element, is3d ? 'translate3d('+ (170/75) +'rem, 0,0)' : 'translate('+ (170/75) +'rem, 0)');
         instance.element.style.left = '0px';
         instance.element.style.top = '0px';
 
         if (item2) {
             classie.add(item2, 'move-back');
             classie.add(item2, 'animate');
-            setTransformStyle(item2, is3d ? 'translate3d(0,0,-30px)' : 'translate(0,0)');
+            setTransformStyle(item2, is3d ? 'translate3d('+ (85/75) +'rem, '+ (45/75) +'rem, 0)' : 'translate('+ (85/75) +'rem, '+ (45/75) +'rem)');
         }
         if (item3) {
             classie.add(item3, 'move-back');
             classie.add(item3, 'animate');
-            setTransformStyle(item3, is3d ? 'translate3d(0,0,-60px)' : 'translate(0,0)');
+            setTransformStyle(item3, is3d ? 'translate3d('+ (0/75) +'rem, '+ (90/75) +'rem, 0)' : 'translate('+ (0/75) +'rem, '+ (90/75) +'rem)');
         }
         if (item4) {
             classie.add(item4, 'move-back');
             classie.add(item4, 'animate');
-            setTransformStyle(item4, is3d ? 'translate3d(0,0,-90px)' : 'translate(0,0)');
+            setTransformStyle(item4, is3d ? 'translate3d('+ (85/75) +'rem, '+ (135/75) +'rem, 0)' : 'translate('+ (85/75) +'rem, '+ (135/75) +'rem)');
         }
         if (item5) {
             classie.add(item5, 'move-back');
             classie.add(item5, 'animate');
-            setTransformStyle(item5, is3d ? 'translate3d(0,0,-120px)' : 'translate(0,0)');
+            setTransformStyle(item5, is3d ? 'translate3d('+ (170/75) +'rem, '+ (180/75) +'rem, 0)' : 'translate('+ (170/75) +'rem, '+ (180/75) +'rem)');
         }
     };
     ElastiStack.prototype._onDragStart = function (instance, event, pointer) {
@@ -279,16 +277,16 @@
             // the second and third items also move
             var item2 = this._secondItem(), item3 = this._thirdItem(), item4 = this._fourItem(), item5 = this._fiveItem();
             if (item2) {
-                setTransformStyle(item2, is3d ? 'translate3d(' + ( instance.position.x * .6 ) + 'px,' + ( instance.position.y * .6 ) + 'px, -30px)' : 'translate(' + ( instance.position.x * .6 ) + 'px,' + ( instance.position.y * .6 ) + 'px)');
+                setTransformStyle(item2, is3d ? 'translate3d('+ (85/75) +'rem, '+ (45/75) +'rem, 0)' : 'translate('+ (85/75) +'rem, '+ (45/75) +'rem)');
             }
             if (item3) {
-                setTransformStyle(item3, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -60px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)');
+                setTransformStyle(item3, is3d ? 'translate3d('+ (0/75) +'rem, '+ (90/75) +'rem, 0)' : 'translate('+ (0/75) +'rem, '+ (90/75) +'rem)');
             }
             if (item4) {
-                setTransformStyle(item4, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -90px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)');
+                setTransformStyle(item4, is3d ? 'translate3d('+ (85/75) +'rem, '+ (135/75) +'rem, 0)' : 'translate('+ (85/75) +'rem, '+ (135/75) +'rem)');
             }
             if (item5) {
-                setTransformStyle(item5, is3d ? 'translate3d(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px, -120px)' : 'translate(' + ( instance.position.x * .3 ) + 'px,' + ( instance.position.y * .3 ) + 'px)');
+                setTransformStyle(item5, is3d ? 'translate3d('+ (170/75) +'rem, '+ (180/75) +'rem, 0)' : 'translate('+ (170/75) +'rem, '+ (180/75) +'rem)');
             }
         }
     };

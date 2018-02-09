@@ -72,12 +72,12 @@ $inteColorRed: #e42929;
     }
 
     .page-content {
-        padding-top: 5%;
+        padding-top: 8%;
         text-align: center;
         @include box-sizing;
 
         h2 {
-            @include font-dpr(36);
+            @include font-dpr(46);
         }
 
         p {
@@ -88,7 +88,7 @@ $inteColorRed: #e42929;
 
         .choose-wrapper {
             width: rem(666);
-            margin: 9% auto 0;
+            margin: 10% auto 0;
 
             .clear {
                 margin-top: rem(129);
@@ -595,9 +595,19 @@ $inteColorRed: #e42929;
 
                         span {
                             color: #888;
+                            padding: rem(10) rem(15);
+                            border: rem(1) solid $inteColorRed;
+
+                            &:first-child {
+                                border-right: none;
+                            }
+                            &:last-child {
+                                border-left: none;
+                            }
 
                             &.current {
                                 color: $inteColorRed;
+                                background-color: rgba(251, 57, 57, 0.1);
                             }
                         }
                     }
@@ -674,7 +684,7 @@ $inteColorRed: #e42929;
                                 left: 0;
                             }
                             .mid {
-                                left: 42%;
+                                left: 70%;
                             }
                             .max {
                                 right: -20%;
