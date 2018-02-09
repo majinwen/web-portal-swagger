@@ -187,6 +187,7 @@
                     <dt>更新时间：${houseDetail.updateTime}</dt></#if>
                 </dl>
             </li>
+
         <#if houseDetail.traffic?exists>
             <li>
                 <p id="traffic_info">
