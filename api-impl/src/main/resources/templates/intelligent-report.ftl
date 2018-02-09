@@ -533,7 +533,7 @@
                                 </div>
                                 <div class="level-slider-box">
                                     <div class="level-slider">
-                                        <div class="level-slider-item level-slider-item1 prev">
+                                        <div class="level-slider-item prev">
                                             <div class="level-item-content-wrapper">
                                                 <div class="level-item-title">中粮万科长阳半岛</div>
                                                 <ul class="item-list">
@@ -544,7 +544,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="level-slider-item level-slider-item2 prev">
+                                        <div class="level-slider-item prev">
                                             <div class="level-item-content-wrapper">
                                                 <div class="level-item-title">中粮万科长阳半岛</div>
                                                 <ul class="item-list">
@@ -555,7 +555,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="level-slider-item level-slider-item3 prev">
+                                        <div class="level-slider-item prev">
                                             <div class="level-item-content-wrapper">
                                                 <div class="level-item-title">中粮万科长阳半岛</div>
                                                 <ul class="item-list">
@@ -568,7 +568,7 @@
                                         </div>
                                     </div>
                                     <div class="level-slider">
-                                        <div class="level-slider-item level-slider-item4 last">
+                                        <div class="level-slider-item last">
                                             <div class="level-item-content-wrapper">
                                                 <div class="level-item-title">中粮万科长阳半岛</div>
                                                 <ul class="item-list">
@@ -579,7 +579,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        <div class="level-slider-item level-slider-item5 last">
+                                        <div class="level-slider-item last">
                                             <div class="level-item-content-wrapper">
                                                 <div class="level-item-title">中粮万科长阳半岛</div>
                                                 <ul class="item-list">
@@ -961,28 +961,19 @@
             $(this).nextAll().removeClass('folding-item-small');
             $(this).removeClass('folding-item-small');
         });
-        $('.level-slider-item1').click(function () {
-            $('.level-slider-item1').css('z-index', 3);
-            $('.level-slider-item2').css('z-index', 2);
-            $('.level-slider-item3').css('z-index', 1)
-        });
-        $('.level-slider-item2').click(function () {
-            $('.level-slider-item1').css('z-index', 2);
-            $('.level-slider-item2').css('z-index', 3);
-            $('.level-slider-item3').css('z-index', 2)
-        });
-        $('.level-slider-item3').click(function () {
-            $('.level-slider-item1').css('z-index', 1);
-            $('.level-slider-item2').css('z-index', 2);
-            $('.level-slider-item3').css('z-index', 3)
-        });
-        $('.level-slider-item4').click(function () {
-            $('.level-slider-item4').css('z-index', 2);
-            $('.level-slider-item5').css('z-index', 1)
-        });
-        $('.level-slider-item5').click(function () {
-            $('.level-slider-item4').css('z-index', 1);
-            $('.level-slider-item5').css('z-index', 2)
+
+        $('.level-slider').on('click', '.level-slider-item', function () {
+            var index = $(this).index();
+            var parentList = $(this).parent().children();
+            for (var i = 0; i<parentList.length; i++) {
+                if (index === i) {
+                    parentList[i].style.zIndex = parentList.length;
+                }else if (i < index) {
+                    parentList[i].style.zIndex = i + 1;
+                }else if (i > index) {
+                    parentList[i].style.zIndex = parentList.length - i;
+                }
+            }
         });
 
         $('.collect-button').on('click', function () {
