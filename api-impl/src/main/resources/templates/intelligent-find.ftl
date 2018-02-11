@@ -344,8 +344,16 @@
         </div>
     </div>
 </div>
+<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/intelligent-choose.js"></script>
+<script>
+    $(function () {
+        if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            FastClick.attach(document.body);
+        }
+    })
+</script>
 <script type="text/javascript">
     var rada_animit = {
         timers: [],
