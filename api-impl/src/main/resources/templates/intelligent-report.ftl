@@ -16,7 +16,7 @@
 <body>
 <img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
 <div id="superContainer">
-    <div class="section page1 active">
+    <div class="section page1 active none">
         <div class="bgbox bg1">
         <div class="page-content">
             <div class="user-header-title">
@@ -742,26 +742,6 @@
             $('.collect-button').find('.collect').toggleClass('active');
         }
 
-        $('.folding-item').click(function() {
-            $(this).prevAll().addClass('folding-item-small');
-            $(this).nextAll().removeClass('folding-item-small');
-            $(this).removeClass('folding-item-small');
-        });
-
-        $('.level-slider').on('click', '.level-slider-item', function () {
-            var index = $(this).index();
-            var parentList = $(this).parent().children();
-            for (var i = 0; i<parentList.length; i++) {
-                if (index === i) {
-                    parentList[i].style.zIndex = parentList.length;
-                }else if (i < index) {
-                    parentList[i].style.zIndex = i + 1;
-                }else if (i > index) {
-                    parentList[i].style.zIndex = parentList.length - i;
-                }
-            }
-        });
-
         $('.collect-button').on('click', function () {
             var reportId = ${reportId};
             var backUrl = "${backUrl}";
@@ -823,8 +803,6 @@
 </script>
 <script src="${staticurl}/js/raphael.min.js"></script>
 <script type="text/javascript">
-
-
     //水滴的效果
     function waterSharp(pool, laywidth, i) {
         this.pool = pool;

@@ -1,5 +1,12 @@
 $(function () {
 
+    if (location.href.indexOf('#') > 0) {
+        $('.page1').removeClass('active');
+        $('.page2').addClass('active');
+    } else {
+        $('.page1').removeClass('none');
+    }
+
     pageTurning();  // 页面翻页
 
     $('.share-button').on('click', function () {
@@ -9,11 +16,32 @@ $(function () {
     $('#off-share').on('click', function () {
         $('.share-pop').addClass('none');
     });
+
+    $('.folding-item').click(function() {
+        $(this).prevAll().addClass('folding-item-small');
+        $(this).nextAll().removeClass('folding-item-small');
+        $(this).removeClass('folding-item-small');
+    });
+
+    $('.level-slider').on('click', '.level-slider-item', function () {
+        var index = $(this).index();
+        var parentList = $(this).parent().children();
+        for (var i = 0; i<parentList.length; i++) {
+            if (index === i) {
+                parentList[i].style.zIndex = parentList.length;
+            }else if (i < index) {
+                parentList[i].style.zIndex = i + 1;
+            }else if (i > index) {
+                parentList[i].style.zIndex = parentList.length - i;
+            }
+        }
+    });
 });
 
 function pageTurning() {
     if ($('.page1').hasClass('active')) {
         $('body').addClass('fixed-scroll');
+        // 点击
         function GetSlideDirection(startX, startY, endX, endY) {
             var dy = startY - endY;
             //var dx = endX - startX;
@@ -27,12 +55,12 @@ function pageTurning() {
         }
         //滑动处理
         var startX, startY;
-        document.addEventListener('touchstart', function (ev) {
+        document.getElementsByClassName('page1')[0].addEventListener('touchstart', function (ev) {
             startX = ev.touches[0].pageX;
             startY = ev.touches[0].pageY;
         }, false);
 
-        document.addEventListener('touchend', function (ev) {
+        document.getElementsByClassName('page1')[0].addEventListener('touchend', function (ev) {
             var endX, endY;
             endX = ev.changedTouches[0].pageX;
             endY = ev.changedTouches[0].pageY;
@@ -47,6 +75,7 @@ function pageTurning() {
                         $('.page1').addClass('none').removeClass('active');
                         $('body').removeClass('fixed-scroll');
                         $('.page2').addClass('active');
+                        window.location.replace(location.href + '#active');
                     }, 500);
                     break;
                 default:
