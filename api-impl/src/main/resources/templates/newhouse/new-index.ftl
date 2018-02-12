@@ -48,9 +48,7 @@
     <section class="bulletin-board">
         <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt="房产头条"></div>
         <div class="text-scroll">
-            <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('房产头条_新房',{'头条类别':'资讯','头条名称':'万科换总裁，万达获340亿投资，最近房企动作有点多'})"><em class="scroll-text-tag">资讯</em>万科换总裁，万达获340亿投资，最近房企动作有点多</a></li>
-                <li><a href="http://www.chengzijianzhan.com/tetris/page/1590542303724552/" onclick="zhuge.track('房产头条_新房',{'头条类别':'导购','头条名称':'首付仅需93万 北京刚需上车盘都在这里了'})"><em class="scroll-text-tag">导购</em>首付仅需93万 北京刚需上车盘都在这里了</a></li>
+            <ul id="ul_index_lunbo_guanggao">
             </ul>
         </div>
     </section>
@@ -259,6 +257,31 @@
         {"pid":10,"jqid":"#secright"},
         {"pid":11,"jqid":"#house-pic-container"}];
     $com.toutiao.ad.json(config);
+
+    var lunbo = [
+        {"pid":14,callback:function (html) {
+            var parent=$('<li></li>');
+            parent.append(html);
+            $("#ul_index_lunbo_guanggao").append(parent);
+            textSlider();
+            html.click(function () {
+                zhuge.track('房产头条_新房',{'指南类别':'资讯','指南名称':html.text()});
+            })
+
+        }},
+        {"pid":15,callback:function (html) {
+            var parent=$('<li></li>');
+            parent.append(html);
+            $("#ul_index_lunbo_guanggao").append(parent);
+            textSlider();
+            html.click(function () {
+                zhuge.track('房产头条_新房',{'指南类别':'资讯','指南名称':html.text()});
+            })
+
+        }}
+    ]
+    $com.toutiao.ad.json_chain(lunbo);
+
     var addHeight;
     window.onscroll = function(){
         if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
