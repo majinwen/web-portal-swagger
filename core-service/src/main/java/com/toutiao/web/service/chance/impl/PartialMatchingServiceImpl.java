@@ -112,13 +112,22 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
                     list.add(source);
                 }
                 map.put("total",searchResponse.getHits().getTotalHits());
-                map.put("list",list.subList(0,10));
+                if(list.size()<10){
+                    map.put("list",list);
+                }else{
+                    map.put("list",list.subList(0,10));
+                }
+
                 map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
                 map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
                 map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
             }
         }else {
-            map.put("list",list.subList(0,10));
+            if(list.size()<10){
+                map.put("list",list);
+            }else{
+                map.put("list",list.subList(0,10));
+            }
         }
 
         return map;
