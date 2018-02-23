@@ -110,13 +110,15 @@
             <th>发证时间</th>
             <th>绑定楼栋</th>
         </tr>
-    <#if discript['sell_licence']?exists&&(discript['sell_licence']?size>0)>
-        <#assign tags = discript['sell_licence']>
+    <#if discript['sales_license']?exists&&(discript['sales_license']?size>0)>
+        <#assign tag = discript['sales_license']>
+        <#list tag as tags>
             <tr>
                 <td>${tags['licenseName']!'暂无数据'}</td>
                 <td>${tags['time']?substring(0,10)!'暂无数据'}</td>
                 <td>${tags['buildInfo']!'暂无数据'}</td>
             </tr>
+        </#list>
          <#else>
              <tr>
                  <td>暂无数据</td>

@@ -122,9 +122,10 @@
             <li>
                 <p>最新开盘：${build['opened_time']!'暂无数据'}</p>
                 <p>交房时间：${build['deliver_time']!'暂无数据'}</p>
-                <p>售楼许可证：<#if (build['sell_licence']?exists)&&(build['sell_licence']?size>0)>
-                    <#assign item = build['sell_licence'] >
-                    <#if item['licenseName']?exists><span>${item['licenseName']}</span></#if>
+                <p>售楼许可证：<#if (build['sales_license']?exists)&&(build['sales_license']?size>0)>
+                    <#assign items = build['sales_license'] >
+                    <#assign itemsize = build['sales_license']?size-1>
+                    <#if items[itemsize]['licenseName']?exists><span>${items[itemsize]['licenseName']}</span></#if>
                 </#if></p>
             </li>
         </ul>
