@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
@@ -72,14 +73,20 @@ public class NewHouseServiceImpl implements NewHouseService{
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
         if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
-            queryBuilder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).boost(2))
-                    .should(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()))
-                    .should(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
-                    .should(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()));
+            if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseQuery.getKeyword()))){
+                queryBuilder = QueryBuilders.disMaxQuery()
+                        .add(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()).analyzer("ik_smart"))
+                        .add(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()).analyzer("ik_smart"))
+                        .add(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()).analyzer("ik_smart")).tieBreaker(0.3f);
+            } else {
+            queryBuilder = QueryBuilders.disMaxQuery()
+                    .add(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).boost(2))
+                    .add(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()).analyzer("ik_max_word"))
+                    .add(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
+                    .add(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword())).tieBreaker(0.3f);
+            }
 
             booleanQueryBuilder.must(queryBuilder);
-            //    booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()))).boost(2);
         }
 
         //城市
@@ -245,15 +252,28 @@ public class NewHouseServiceImpl implements NewHouseService{
                     .execute().actionGet();
         }else {
             if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
-                searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                        .setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
-                                new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                        "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
-                                        "location","house_min_area","house_max_area","nearbysubway","total_price"},
-                                null)
-                        .setFrom((pageNum-1)*newHouseQuery.getPageSize())
-                        .setSize(newHouseQuery.getPageSize())
-                        .execute().actionGet();
+                if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseQuery.getKeyword()))){
+                    searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+                            .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).addSort("_score",SortOrder.DESC).setFetchSource(
+                                    new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+                                            "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
+                                            "location","house_min_area","house_max_area","nearbysubway","total_price"},
+                                    null)
+                            .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                            .setSize(newHouseQuery.getPageSize())
+                            .execute().actionGet();
+                }else{
+                    searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+                            .setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
+                                    new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+                                            "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
+                                            "location","house_min_area","house_max_area","nearbysubway","total_price"},
+                                    null)
+                            .setFrom((pageNum-1)*newHouseQuery.getPageSize())
+                            .setSize(newHouseQuery.getPageSize())
+                            .execute().actionGet();
+                }
+
             }else{
                 searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
                         .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
