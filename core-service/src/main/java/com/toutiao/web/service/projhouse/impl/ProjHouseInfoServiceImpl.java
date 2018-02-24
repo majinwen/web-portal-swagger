@@ -3,6 +3,8 @@ package com.toutiao.web.service.projhouse.impl;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.sources.beijing.AreaMap;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
@@ -129,13 +131,35 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
             //关键字搜索
-            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
-                booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())) {
+                if (StringUtil.isNotNullString(DistrictMap.getDistricts(projHouseInfoRequest.getKeyword()))) {
+                    booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()).analyzer("ik_smart").boost(2))
+                            .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()).analyzer("ik_smart"))
+                            .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).analyzer("ik_smart")));
+
+                } else if (StringUtil.isNotNullString(AreaMap.getAreas(projHouseInfoRequest.getKeyword()))) {
+                    booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()).analyzer("ik_smart"))
+                            .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()).analyzer("ik_max_word").boost(2))
+                            .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).analyzer("ik_smart").boost(2)));
+                } else {
+                    booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
+                            .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+                }
             }
+//            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
+//                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+//                        .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
+//                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
+//                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
+//                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+//            }
             //商圈名称
             if (StringTool.isNotEmpty(projHouseInfoRequest.getHouseBusinessName())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", projHouseInfoRequest.getHouseBusinessName()));
