@@ -1167,14 +1167,15 @@ function pullUpAction() {
 
                     if (data.code == 'success') {
                         //第一次加载
-                        if(initLoad_pageNum!=pageNumUp) {
-                            pageNumUp++;
-                            setPageNum(pageNumUp);
-                        }
-                        else {
-                            initLoad_pageNum = -1;
-                        }
-                        if(data.data!=null){
+
+                        if(data.data!=null  && data.data.total > 0){
+                            if(initLoad_pageNum!=pageNumUp) {
+                                pageNumUp++;
+                                setPageNum(pageNumUp);
+                            }
+                            else {
+                                initLoad_pageNum = -1;
+                            }
                             var dataCon = data.data.data || [];
                             for (var i = 0; i < dataCon.length; i++) {
 
@@ -1263,7 +1264,7 @@ function pullUpAction() {
                             // 无数据
                             me.noData();
                         }else{
-                            if (dataCon.length <= 0) {
+                            if (data.data.total <= 0) {
 
                                 // $('.tip-box').removeClass('none');
                                 // 锁定
