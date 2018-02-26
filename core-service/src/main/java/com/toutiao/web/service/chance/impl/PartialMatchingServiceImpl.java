@@ -70,54 +70,46 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
 
 
 
-        if(list.size()<10){
-            SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
+        SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
 
-            if (property!=null){
-                String searchType = getSearchType(property);
-                boolQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+        if (property!=null){
+            String searchType = getSearchType(property);
+            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+        }
+
+        srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
+                .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
+                .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)));
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
+        srbEngines.highlighter(highlightBuilder);
+        SearchResponse searchResponse = srbEngines.setQuery(boolQueryBuilder).execute().actionGet();
+        if(searchResponse !=null){
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            for (SearchHit hit :hits) {
+                Map<String, Object> source = hit.getSource();
+                Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+                HighlightField village = highlightFields.get("search_name");
+                Text[] fragments = village.fragments();
+                String name = String.valueOf(fragments[0]);
+                source.put("em_search_name",name);
+                list.add(source);
             }
-
-            srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
-                    .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
-                    .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)));
-
-            HighlightBuilder highlightBuilder = new HighlightBuilder();
-            highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
-            srbEngines.highlighter(highlightBuilder);
-            SearchResponse searchResponse = srbEngines.setQuery(boolQueryBuilder).execute().actionGet();
-            if(searchResponse !=null){
-                SearchHit[] hits = searchResponse.getHits().getHits();
-                for (SearchHit hit :hits) {
-                    Map<String, Object> source = hit.getSource();
-                    Map<String, HighlightField> highlightFields = hit.getHighlightFields();
-                    HighlightField village = highlightFields.get("search_name");
-                    Text[] fragments = village.fragments();
-                    String name = String.valueOf(fragments[0]);
-                    source.put("em_search_name",name);
-                    list.add(source);
-                }
-                map.put("total",searchResponse.getHits().getTotalHits());
-                if(list.size()<10){
-                    map.put("list",list);
-                }else{
-                    map.put("list",list.subList(0,10));
-                }
-
-                map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
-                map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
-                map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
-            }
-        }else {
+            map.put("total",searchResponse.getHits().getTotalHits());
             if(list.size()<10){
                 map.put("list",list);
             }else{
                 map.put("list",list.subList(0,10));
             }
+
+            map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
+            map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
+            map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
         }
         return map;
     }
