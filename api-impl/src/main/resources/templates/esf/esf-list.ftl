@@ -264,7 +264,7 @@
 <script id="listContent" type="text/html">
     {{each data}}
     <li>
-        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="esf_list(this)" href="${router_city('/esf/{{$value.houseId}}.html')}">
+        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}" onclick="esf_list(this)" url="${router_city('/esf/{{$value.houseId}}.html')}"  href="javascript:void(0);">
             <div class="clear">
                 <div class="list-item-img-box">
                     {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
@@ -324,39 +324,54 @@
     {{/each}}
 </script>
 <script>
+    //二手房拦截默认的下拉加载
+    window["$toutiao_customer_pullUpAction"]=true;
 
     $(function () {
 
-        var referer = window.location.href;
-        if(referer.indexOf("?lat")>0 || referer.indexOf("districtId")>0 ||referer.indexOf("areaId")>0 ||
-                referer.indexOf("subwayLineId")>0 ||referer.indexOf("subwayStationId")>0 ||referer.indexOf("beginPrice")>0 ||referer.indexOf("layoutId")>0 ||
-                referer.indexOf("propertyTypeId")>0 ||referer.indexOf("age")>0 ||referer.indexOf("elevatorFlag")>0 ||referer.indexOf("newcode")>0
-                || referer.indexOf("sort") > 0 || referer.indexOf("keyword")>0){
 
-        }else{
+        var urlparam =GetRequest();
 
-            var timeout =  setTimeout(function(){
-                location.href = router_city('/esf');
-            },2000);
-            zhuge.track('头条-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer});
+
+        if (urlparam["lat"] && urlparam["lon"]) {
+            window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
+            pullUpAction();
+        } else {
+            var hasTimeOut = false;
+            var timeout = setTimeout(function () {
+
+                if (hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                pullUpAction();
+            }, 2000);
+
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
 
+                clearTimeout(timeout);
+                if (hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
                 lon = r.point.lng;
                 lat = r.point.lat;
-                var point = new BMap.Point(lon, lat);//创建点坐标
-                var gc = new BMap.Geocoder();
-                gc.getLocation(point, function (rs) {
-                    clearTimeout(timeout);
-                    location.replace(router_city('/esf') + "?lat=" + lat + "&lon=" + lon);
-                });
 
-            },);
+                if (lon == 116.40387397 && lat == 39.91488908) {
+                    pullUpAction();
+                } else {
+                    window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+//                    location.href = router_city('/esf') + "?lat=" + lat + "&lon=" + lon;
+                    pullUpAction();
+                }
+            });
         }
 
         var url = document.referrer;
+        zhuge.track('进入二手房列表页',{'导航名称':'二手房','页面来源URL':url});
         if(url.indexOf("/xiaoqu")>0){
-            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':referer})
+            zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':url})
         }
         if(url.indexOf("/esf") > 0){
             if(GetQueryString("keyword")!='undefined'){
@@ -421,7 +436,7 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/dropload.min.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/list-category-0207.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
     $('.sort-content-box').on('click', function (){
@@ -438,6 +453,7 @@
     });
     function esf_list(e) {
         setPageNum($(e).attr('data-id'))
+        window.location.href = $(e).attr('url')
     }
 
 </script>

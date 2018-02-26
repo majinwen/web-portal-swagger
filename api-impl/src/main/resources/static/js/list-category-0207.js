@@ -1133,12 +1133,13 @@ function pullUpAction() {
             if (window["$toutiao_customer_pullUpAction_latlon"]) {
                     var hasAnotherParam=false;
                     for(var key in paramData){
-                        if(!$.inArray(key,['lat','lon'])){
+                        // alert(key+'='+$.inArray(key,['lat','lon']))
+                        if($.trim(key)!='' && key!='pageNum' && $.inArray(key,['lat','lon'])<0){
                             hasAnotherParam = true;
                         }
                     }
-                paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
-                paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
+                    paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
+                    paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
                     if(hasAnotherParam){
                         delete paramData["lat"];
                         delete paramData["lon"];

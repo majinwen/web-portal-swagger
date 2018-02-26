@@ -25,9 +25,6 @@
     <section class="banner-index-box">
         <div class="swiper-container carousel-swiper" id="index-swiper">
             <ul class="swiper-wrapper" id="house-pic-container">
-                <li class="swiper-slide">
-                    <img src="${staticurl}/images/newindex/sy_banner1.jpg?v=${staticversion}" alt="美好新居 尽在头条" onclick="zhuge.track('banner_新房',{'banner名称':'美好新居 尽在头条'})">
-                </li>
             </ul>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
@@ -49,11 +46,11 @@
 </div>
 <div class="module-bottom-fill">
     <section class="bulletin-board">
-        <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt=""></div>
+        <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt="房产头条"></div>
         <div class="text-scroll">
             <ul>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('房产头条_新房',{'头条类别':'政策','头条名称':'国土资源部：政府将不再垄断住房供地'})"><em class="scroll-text-tag">政策</em>国土资源部：政府将不再垄断住房供地</a></li>
-                <li><a href="http://www.toutiaopage.com/tetris/page/1586483105661965/" onclick="zhuge.track('房产头条_新房',{'头条类别':'导购','头条名称':'北京楼市1月新开楼盘'})"><em class="scroll-text-tag">导购</em>北京楼市1月新开楼盘</a></li>
+                <li><a href="http://www.toutiaopage.com/tetris/page/1586114170135565/" onclick="zhuge.track('房产头条_新房',{'头条类别':'资讯','头条名称':'万科换总裁，万达获340亿投资，最近房企动作有点多'})"><em class="scroll-text-tag">资讯</em>万科换总裁，万达获340亿投资，最近房企动作有点多</a></li>
+                <li><a href="http://www.chengzijianzhan.com/tetris/page/1590542303724552/" onclick="zhuge.track('房产头条_新房',{'头条类别':'导购','头条名称':'首付仅需93万 北京刚需上车盘都在这里了'})"><em class="scroll-text-tag">导购</em>首付仅需93万 北京刚需上车盘都在这里了</a></li>
             </ul>
         </div>
     </section>
@@ -66,43 +63,13 @@
         </div>
         <div class="hot-topic">
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589636255213571/">
-                    <div class="topic-item-content" data-index="1">
-                        <h5>“围栏”之争</h5>
-                        <p>配建制度下的围栏之争</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image1.png" alt="“围栏”之争">
-                </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589986192184324/">
-                    <div class="topic-item-content" data-index="2">
-                        <h5>长租火了</h5>
-                        <p>逐猎长租公寓市场</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image2.png" alt="长租火了">
-                </a></div>
+                <div class="hot-topic-item" id="left"></div>
+                <div class="hot-topic-item" id="right"></div>
             </div>
             <div class="column">
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589916541713411/">
-                    <div class="topic-item-content" data-index="3">
-                        <h5>三环新盘</h5>
-                        <p>三环内在售新盘</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image3.png" alt="三环新盘">
-                </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589730966862855/">
-                    <div class="topic-item-content" data-index="4">
-                        <h5>首开楼盘</h5>
-                        <p>品牌房企集中亮相</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image4.png" alt="首开楼盘">
-                </a></div>
-                <div class="hot-topic-item"><a href="http://www.toutiaopage.com/tetris/page/1589819080209412/">
-                    <div class="topic-item-content" data-index="5">
-                        <h5>热点区域</h5>
-                        <p>北七家&未来科学城</p>
-                    </div>
-                    <img src="${staticurl}/images/newindex/xf_zt_image5.png" alt="热点区域">
-                </a></div>
+                <div class="hot-topic-item" id="secleft"></div>
+                <div class="hot-topic-item" id="secmid"></div>
+                <div class="hot-topic-item" id="secright"></div>
             </div>
         </div>
     </section>
@@ -223,6 +190,7 @@
 <script src="${staticurl}/js/swiper-3.4.2.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>
 <script>
     $('.hot-topic-item').on('click', 'a', function () {
         var link = $(this);
@@ -283,4 +251,12 @@
         return false;
     });*/
     })
+    config=[
+        {"pid":6,"jqid":"#left"},
+        {"pid":7,"jqid":"#right"},
+        {"pid":8,"jqid":"#secleft"},
+        {"pid":9,"jqid":"#secmid"},
+        {"pid":10,"jqid":"#secright"},
+        {"pid":11,"jqid":"#house-pic-container"}]
+    $com.toutiao.ad.json(config);
 </script>
