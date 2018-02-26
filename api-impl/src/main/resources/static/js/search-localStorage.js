@@ -313,7 +313,7 @@ $(function(){
      * @Author zengqingzhou
      * @Date 2018/2/7 16:11
      */
-    var evTimeStamp = 0;
+
     // $('.key-words').bind('input',function () {
     //
     //     var now = +new Date();
@@ -433,6 +433,7 @@ $(function(){
     // })
 
     // $('.key-words').on({
+    //
     //     keyup : function(e){
     //         console.log('keyup','e.target.isNeedPrevent:'+e.target.isNeedPrevent)
     //         var flag = e.target.isNeedPrevent;
@@ -464,9 +465,15 @@ $(function(){
     //
     //     }
     // })
+    var evTimeStamp = 0;
     var cpLock = false;
     $('.key-words').on({
         input : function(e){
+            if(!cpLock){
+                response()
+            }
+        },
+        propertychange : function () {
             if(!cpLock){
                 response()
             }

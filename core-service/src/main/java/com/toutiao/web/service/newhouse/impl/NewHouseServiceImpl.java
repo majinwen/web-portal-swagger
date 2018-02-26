@@ -87,6 +87,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             }
 
             booleanQueryBuilder.must(queryBuilder);
+            //    booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()))).boost(2);
         }
 
         //城市
