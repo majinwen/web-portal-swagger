@@ -549,7 +549,7 @@ body {
       float: left;
       display: inline-block;
       margin-left: 0.3333333333rem;
-      width: 67%; }
+      width: 95%; }
       .searchpage-header .searchpage-search-box .searchpage-search-content .icon {
         display: inline-block;
         width: 0.32rem;
@@ -658,6 +658,32 @@ body {
     [data-dpr="2"] .searchpage-history a {
       font-size: 26px; }
     [data-dpr="3"] .searchpage-history a {
+      font-size: 39px; }
+
+.automated-word {
+  padding: 0.1333333333rem 0.4rem 0; }
+  .automated-word li {
+    display: block;
+    padding: 0.24rem 0;
+    color: #3a3a3a; }
+    [data-dpr="1"] .automated-word li {
+      font-size: 13px; }
+    [data-dpr="2"] .automated-word li {
+      font-size: 26px; }
+    [data-dpr="3"] .automated-word li {
+      font-size: 39px; }
+
+.index-word {
+  padding: 0.1333333333rem 0.4rem 0; }
+  .index-word li {
+    display: block;
+    padding: 0.24rem 0;
+    color: #3a3a3a; }
+    [data-dpr="1"] .index-word li {
+      font-size: 13px; }
+    [data-dpr="2"] .index-word li {
+      font-size: 26px; }
+    [data-dpr="3"] .index-word li {
       font-size: 39px; }
 
 .search-page-wrapper {

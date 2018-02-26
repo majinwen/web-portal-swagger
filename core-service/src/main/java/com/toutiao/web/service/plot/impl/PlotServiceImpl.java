@@ -10,6 +10,8 @@ import com.toutiao.web.dao.entity.admin.VillageEntity;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.dao.entity.officeweb.PlotRatio;
 import com.toutiao.web.dao.mapper.officeweb.PlotRatioMapper;
+import com.toutiao.web.dao.sources.beijing.AreaMap;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
@@ -46,7 +48,7 @@ import java.util.Map;
 @Service
 public class PlotServiceImpl implements PlotService {
     @Value("${plot.index}")
-    private String index;
+    private String index ;
     @Value("${plot.parent.type}")
     private String parentType;
     @Value("${plot.child.type}")
@@ -139,11 +141,26 @@ public class PlotServiceImpl implements PlotService {
 //                        .execute().actionGet();//执行
 //                List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
 //                for (AnalyzeResponse.AnalyzeToken analyzeToken : tokens) {
-                queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()))
-                        .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()));
+                if(StringUtil.isNotNullString(DistrictMap.getDistricts(villageRequest.getKeyword()))){
+                    queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()).analyzer("ik_smart"))
+                            .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()).analyzer("ik_smart").boost(2))
+                            .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()).analyzer("ik_smart"));
+                }else if(StringUtil.isNotNullString(AreaMap.getAreas(villageRequest.getKeyword()))){
+                    queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()).analyzer("ik_smart"))
+                            .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()).analyzer("ik_smart"))
+                            .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()).analyzer("ik_max_word").boost(2));
+                }else {
+                    queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("rc_accurate", villageRequest.getKeyword()).boost(2))
+                            .should(QueryBuilders.matchQuery("rc", villageRequest.getKeyword()).analyzer("ik_max_word"))
+                            .should(QueryBuilders.matchQuery("area", villageRequest.getKeyword()))
+                            .should(QueryBuilders.matchQuery("tradingArea",villageRequest.getKeyword()));
+                }
+
 
                 boolQueryBuilder.must(queryBuilder);
 //                }

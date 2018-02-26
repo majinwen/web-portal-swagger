@@ -299,7 +299,7 @@
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>
 <script>
-    $('.type-tab-box').removeClass('none');
+//    $('.type-tab-box').removeClass('none');
     $('.index-topic-item').on('click', 'a', function () {
         var link = $(this);
         zhuge.track('精选主题_大首页',{
