@@ -171,10 +171,6 @@ $(function(){
         }
     }
 
-    var plotNum;
-    var esfNum;
-    var newHouseNum;
-
     function changeFn() {
 
         if ($(this).val() != null && $.trim($(this).val()) != '') {
@@ -185,7 +181,9 @@ $(function(){
             var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
             var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
             var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
-
+            var plotNum = localStorage.getItem('plotNum')||'';
+            var esfNum = localStorage.getItem('esfNum')||'';
+            var newHouseNum = localStorage.getItem('newHouseNum')||'';
 
             if(_localHref.indexOf('xiaoqu')>0){
                 hashPush(plotStorageArray,_keyword+',,小区,');
@@ -304,6 +302,21 @@ $(function(){
         }
         return href;
     }
+
+    /**
+     *  
+     * @Description：添加房源个数缓存
+     *
+     * @Param 
+     * @Return 
+     * @Author zengqingzhou
+     * @Date 2018/2/26 18:13
+     */
+    function setLocalStorage(name,value) {
+        localStorage.removeItem(name);
+        localStorage.setItem(name,value);
+    }
+
     /**
      *
      * @Description：搜索
@@ -525,9 +538,9 @@ $(function(){
                 async: true,
                 dataType:'json',
                 success: function (data) {
-                    plotNum = data.plotNum;
-                    esfNum = data.esfNum;
-                    newHouseNum = data.newHouseNum;
+                    setLocalStorage('plotNum',data.plotNum)
+                    setLocalStorage('esfNum',data.esfNum)
+                    setLocalStorage('newHouseNum',data.newHouseNum)
                     $('#automatedWord').empty().show();
                     if (data.list.length>0){
                         $('#automatedWord').html('')
