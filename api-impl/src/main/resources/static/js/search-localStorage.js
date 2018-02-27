@@ -144,7 +144,22 @@ $(function(){
             if (history[3]==1){
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(history[3]==2){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                var districtId = '';
+                $.getJSON('/static/mock/district_area.json',function (districtList) {
+                    var flag = false;
+                    $.ajaxSettings.async = false;
+                    for(var i in districtList){
+                        if (history[1]==districtList[i].area){
+                            districtId = districtList[i].district
+                            flag = true
+                        }
+                    }
+                    if(flag){
+                        $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId='+districtId+'&areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                    }else {
+                        $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                    }
+                })
             }else if(urlText=='esf'){
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(urlText=='xiaoqu'&&history[3]==''){
@@ -271,13 +286,51 @@ $(function(){
         }
     }
 
+    function getUrlWithDistrictIdByAreaId(search_id,url) {
+        var districtId = '';
+        $.getJSON('/static/mock/district_area.json',function (districtList) {
+            var flag = false;
+            // $.ajaxSettings.async = false;
+            for(var i in districtList){
+                if (search_id==districtList[i].area){
+                    districtId = districtList[i].district
+                    flag = true
+                }
+            }
+            if(flag){
+                window.location.href =   url+'?districtId='+districtId+'&areaId='+search_id
+            }else {
+                window.location.href =   url+'?areaId='+search_id
+            }
+        })
+    }
+
+    function getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type) {
+        var districtId = '';
+        $.getJSON('/static/mock/district_area.json',function (districtList) {
+            var flag = false;
+            // $.ajaxSettings.async = false;
+            for(var i in districtList){
+                if (search_id==districtList[i].area){
+                    districtId = districtList[i].district
+                    flag = true
+                }
+            }
+            if(flag){
+                window.location.href =  url+'/'+location_type+'?districtId='+districtId+'&areaId='+search_id
+            }else {
+                window.location.href =  url+'/'+location_type+'?areaId='+search_id
+            }
+        })
+    }
+
     function getUrl(url,search_type,search_id,search_name,location_type_sings) {
         var href = '';
         if (search_type == '小区'){
             if (location_type_sings == 1){
                 href = url+'?districtId='+search_id
             }else if (location_type_sings ==2){
-                href = url+'?areaId='+search_id
+                href = getUrlWithDistrictIdByAreaId(search_id,url)
             }else {
                 href = url+'/'+search_id+'.html'
             }
@@ -286,7 +339,7 @@ $(function(){
             if (location_type_sings == 1){
                 href = url+'?districtId='+search_id
             }else if (location_type_sings ==2){
-                href = url+'?areaId='+search_id
+                href = getUrlWithDistrictIdByAreaId(search_id,url)
             }else {
                 href = url+'?keyword='+search_name
             }
@@ -295,12 +348,43 @@ $(function(){
             if (location_type_sings == 1){
                 href = url+'?districtId='+search_id
             }else if (location_type_sings ==2){
-                href = url+'?areaId='+search_id
+                href = getUrlWithDistrictIdByAreaId(search_id,url)
             }else {
                 href = url+'/'+search_id+'.html'
             }
         }
         return href;
+    }
+
+    function getHomePageUrl(search_type,location_type_sings,url,search_name,search_id) {
+        if(search_type == '新房'){
+            if(location_type_sings == 1){
+                window.location.href = url+'/loupan?districtId='+search_id
+            }else if(location_type_sings == 2){
+                window.location.href = url+'/loupan?areaId='+search_id
+            }else {
+                window.location.href = url+'/loupan/'+search_id+'.html'
+            }
+        }
+        if (search_type == '小区'){
+            if(location_type_sings == 1){
+                window.location.href = url+'/xiaoqu?districtId='+search_id
+            }else if(location_type_sings == 2){
+                window.location.href = url+'/xiaoqu?areaId='+search_id
+            }else {
+                window.location.href = url+'/xiaoqu/'+search_id+'.html'
+            }
+        }
+        if(search_type == '二手房'){
+            if(location_type_sings == 1){
+                window.location.href = url+'/esf?districtId='+search_id
+            }else if(location_type_sings == 2){
+                window.location.href = url+'/esf?areaId='+search_id
+            }else {
+                window.location.href = url+'/esf?keyword='+search_name
+            }
+        }
+
     }
 
     /**
@@ -579,12 +663,15 @@ $(function(){
                                 if (search_type == '新房'){
                                     hashPush(newHouseStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
                                     localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
-                                    if(location_type_sings == 1){
-                                        window.location.href = url+'/loupan?districtId='+search_id
-                                    }else if(location_type_sings == 2){
-                                        window.location.href = url+'/loupan?areaId='+search_id
-                                    }else {
-                                        window.location.href = url+'/loupan/'+search_id+'.html'
+                                    if(search_type == '新房'){
+                                        if(location_type_sings == 1){
+                                            window.location.href = url+'/loupan?districtId='+search_id
+                                        }else if(location_type_sings == 2){
+                                            var location_type = 'loupan';
+                                            getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type)
+                                        }else {
+                                            window.location.href = url+'/loupan/'+search_id+'.html'
+                                        }
                                     }
                                 }
                                 if(search_type == '小区'){
@@ -593,7 +680,8 @@ $(function(){
                                     if(location_type_sings == 1){
                                         window.location.href = url+'/xiaoqu?districtId='+search_id
                                     }else if(location_type_sings == 2){
-                                        window.location.href = url+'/xiaoqu?areaId='+search_id
+                                        var location_type = 'xiaoqu';
+                                        getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type)
                                     }else {
                                         window.location.href = url+'/xiaoqu/'+search_id+'.html'
                                     }
@@ -604,7 +692,8 @@ $(function(){
                                     if(location_type_sings == 1){
                                         window.location.href = url+'/esf?districtId='+search_id
                                     }else if(location_type_sings == 2){
-                                        window.location.href = url+'/esf?areaId='+search_id
+                                        var location_type = 'esf';
+                                        getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type)
                                     }else {
                                         window.location.href = url+'/esf?keyword='+search_name
                                     }
