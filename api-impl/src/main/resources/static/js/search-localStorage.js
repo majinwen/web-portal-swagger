@@ -299,10 +299,10 @@ $(function(){
                 }
             }
             if(flag){
-                console.log('href111'+href)
+
                 href = url+'?districtId='+districtId+'&areaId='+search_id
             }else {
-                console.log('href222'+href)
+
                 href = url+'?areaId='+search_id
             }
         })
