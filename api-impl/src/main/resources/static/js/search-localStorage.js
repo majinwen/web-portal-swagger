@@ -287,10 +287,11 @@ $(function(){
     }
 
     function getUrlWithDistrictIdByAreaId(search_id,url) {
+        var href = null
         var districtId = '';
         $.getJSON('/static/mock/district_area.json',function (districtList) {
             var flag = false;
-            // $.ajaxSettings.async = false;
+            $.ajaxSettings.async = false;
             for(var i in districtList){
                 if (search_id==districtList[i].area){
                     districtId = districtList[i].district
@@ -298,18 +299,21 @@ $(function(){
                 }
             }
             if(flag){
-                window.location.href =   url+'?districtId='+districtId+'&areaId='+search_id
+                console.log('href111'+href)
+                href = url+'?districtId='+districtId+'&areaId='+search_id
             }else {
-                window.location.href =   url+'?areaId='+search_id
+                console.log('href222'+href)
+                href = url+'?areaId='+search_id
             }
         })
+        return href
     }
 
     function getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type) {
         var districtId = '';
         $.getJSON('/static/mock/district_area.json',function (districtList) {
             var flag = false;
-            // $.ajaxSettings.async = false;
+            $.ajaxSettings.async = false;
             for(var i in districtList){
                 if (search_id==districtList[i].area){
                     districtId = districtList[i].district
