@@ -59,6 +59,12 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
         }
         srbScope.addSort("search_sort",SortOrder.ASC);
+
+
+        srbScope.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
+                .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
+                .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)));
+
         SearchResponse searchResponseScope = srbScope.setQuery(boolQueryBuilderScope).execute().actionGet();
         if (searchResponseScope!=null){
             SearchHit[] hits = searchResponseScope.getHits().getHits();
@@ -68,7 +74,9 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             }
         }
 
-
+        map.put("plotNum",((InternalFilter)searchResponseScope.getAggregations().get("plot")).getDocCount());
+        map.put("esfNum",((InternalFilter)searchResponseScope.getAggregations().get("esf")).getDocCount());
+        map.put("newHouseNum",((InternalFilter)searchResponseScope.getAggregations().get("newHouse")).getDocCount());
 
         SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -106,10 +114,18 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             }else{
                 map.put("list",list.subList(0,10));
             }
-
-            map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
-            map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
-            map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
+            if(Integer.valueOf(map.get("plotNum").toString())==0){
+                map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
+            }
+            if(Integer.valueOf(map.get("esfNum").toString())==0){
+                map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
+            }
+            if(Integer.valueOf(map.get("newHouseNum").toString())==0){
+                map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
+            }
+//            map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
+//            map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
+//            map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
         }
         return map;
     }
@@ -117,13 +133,13 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
     public String getSearchType(String property){
         String searchType = null;
         if (property.equals("新房")){
-            searchType = "0";
+            searchType = NEW_HOUSE_TYPE;
         }
         if (property.equals("小区")){
-            searchType = "1";
+            searchType = PLOT_TYPE;
         }
         if (property.equals("二手房")){
-            searchType = "2";
+            searchType = ESF_TYPE;
         }
         return searchType;
     }
