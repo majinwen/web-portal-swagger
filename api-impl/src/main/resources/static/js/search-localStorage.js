@@ -287,7 +287,6 @@ $(function(){
     }
 
     function getUrlWithDistrictIdByAreaId(search_id,url) {
-        var href = null
         var districtId = '';
         $.getJSON('/static/mock/district_area.json',function (districtList) {
             var flag = false;
@@ -299,14 +298,11 @@ $(function(){
                 }
             }
             if(flag){
-                console.log('href111'+href)
-                href = url+'?districtId='+districtId+'&areaId='+search_id
+                window.location.href = url+'?districtId='+districtId+'&areaId='+search_id
             }else {
-                console.log('href222'+href)
-                href = url+'?areaId='+search_id
+                window.location.href = url+'?areaId='+search_id
             }
         })
-        return href
     }
 
     function getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type) {
@@ -329,35 +325,33 @@ $(function(){
     }
 
     function getUrl(url,search_type,search_id,search_name,location_type_sings) {
-        var href = '';
         if (search_type == '小区'){
             if (location_type_sings == 1){
-                href = url+'?districtId='+search_id
+                window.location.href = url+'?districtId='+search_id
             }else if (location_type_sings ==2){
-                href = getUrlWithDistrictIdByAreaId(search_id,url)
+                getUrlWithDistrictIdByAreaId(search_id,url)
             }else {
-                href = url+'/'+search_id+'.html'
+                window.location.href = url+'/'+search_id+'.html'
             }
         }
         if (search_type == '二手房'){
             if (location_type_sings == 1){
-                href = url+'?districtId='+search_id
+                window.location.href = url+'?districtId='+search_id
             }else if (location_type_sings ==2){
-                href = getUrlWithDistrictIdByAreaId(search_id,url)
+                getUrlWithDistrictIdByAreaId(search_id,url)
             }else {
-                href = url+'?keyword='+search_name
+                window.location.href = url+'?keyword='+search_name
             }
         }
         if (search_type == '新房'){
             if (location_type_sings == 1){
-                href = url+'?districtId='+search_id
+                window.location.href = url+'?districtId='+search_id
             }else if (location_type_sings ==2){
-                href = getUrlWithDistrictIdByAreaId(search_id,url)
+                getUrlWithDistrictIdByAreaId(search_id,url)
             }else {
-                href = url+'/'+search_id+'.html'
+                window.location.href = url+'/'+search_id+'.html'
             }
         }
-        return href;
     }
 
     function getHomePageUrl(search_type,location_type_sings,url,search_name,search_id) {
@@ -650,18 +644,18 @@ $(function(){
                             if (url.indexOf('xiaoqu')>0){
                                 hashPush(plotStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
-                                window.location.href = getUrl(url,search_type,search_id,search_name,location_type_sings);
+                                getUrl(url,search_type,search_id,search_name,location_type_sings);
                             }
                             if (url.indexOf('esf')>0){
                                 hashPush(esfStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
                                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
-                                window.location.href = getUrl(url,search_type,search_id,search_name,location_type_sings);
+                                getUrl(url,search_type,search_id,search_name,location_type_sings);
                             }
                             if (url.indexOf('xinfang')>0||url.indexOf('loupan')>0){
                                 hashPush(newHouseStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
                                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                                 url = url.replace('xinfang','loupan')
-                                window.location.href = getUrl(url,search_type,search_id,search_name,location_type_sings);
+                                getUrl(url,search_type,search_id,search_name,location_type_sings);
                             }
                             if (url.indexOf('xinfang')==-1&&url.indexOf('loupan')==-1&&url.indexOf('esf')==-1&&url.indexOf('xiaoqu')==-1){
                                 if (search_type == '新房'){
