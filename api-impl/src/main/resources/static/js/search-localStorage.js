@@ -228,7 +228,7 @@ $(function(){
 
                     $('.click_index').on('click',function () {
                         var id = $(this).attr('id')
-                        var url = window.location.href;
+                        var url = window.location.href.split("?")[0];
                         if(id == 1){
                             hashPush(plotStorageArray,_keyword+',,小区,');
                             localStorage.setItem('plot', JSON.stringify(plotStorageArray));
