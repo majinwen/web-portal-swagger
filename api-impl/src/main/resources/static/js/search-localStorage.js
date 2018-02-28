@@ -142,7 +142,7 @@ $(function(){
                 styleText = '新房'
             }
             if (history[3]==1){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(history[3]==2){
                 var districtId = '';
                 $.getJSON('/static/mock/district_area.json',function (districtList) {
@@ -155,19 +155,19 @@ $(function(){
                         }
                     }
                     if(flag){
-                        $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId='+districtId+'&areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                        $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId='+districtId+'&areaId=' + history[1] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
                     }else {
-                        $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                        $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?areaId=' + history[1] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
                     }
                 })
             }else if(urlText=='esf'){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(urlText=='xiaoqu'&&history[3]==''){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(urlText=='loupan'&&history[3]==''){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else {
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'/' + history[1] )+'.html' + '" class="word-break">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'/' + history[1] )+'.html' + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }
         }
     }
@@ -260,7 +260,7 @@ $(function(){
     });
     $('.searchpage-history').on('click', '.word-break', function () {
         var text = $(this).text();
-        $('.key-words').val(text);
+        $('.key-words').val($(this).attr("data-name"));
         $('.search-page-wrapper').removeClass('active');
     });
 
