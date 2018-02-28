@@ -129,6 +129,9 @@ $(function(){
         for (var i = start; i < end; i++) {
             var _history = indexStorageArray.pop();
             var history = _history.split(',');
+            if(history.length < 2){
+                continue;
+            }
             var styleText = '';
             var urlText = '';
             if (styleArray == 'plot') {
