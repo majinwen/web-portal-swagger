@@ -36,7 +36,7 @@
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})">
-                <i class="index-intelligent-icon"></i><p>懂房帝</p>
+                <i class="index-intelligent-icon"></i><p>智能找楼</p>
             </a></div>
         </div>
     </section>
