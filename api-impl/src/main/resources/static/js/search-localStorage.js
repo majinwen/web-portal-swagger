@@ -602,7 +602,7 @@ $(function(){
             var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
 
             var url = null
-            var herf = window.location.href;
+            var herf = window.location.href.split("?")[0];
             if(herf.indexOf('/xiaoqu')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&property=小区"
             }else if(herf.indexOf('/esf')>0){
