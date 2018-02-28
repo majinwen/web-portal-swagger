@@ -170,14 +170,14 @@
                             <p class="cont-first"><span>${item['room']!'暂无数据'}室${item['hall']!'暂无数据'}厅${item['toilet']!'暂无数据'}卫</span><span>${item['building_area']!'暂无数据'}㎡</span></p>
                         <#--<h4 class="cont-last">均价：${item['reference_price']+"元/㎡"!'暂无数据'}</h4>-->
                             <div class="house-labelling normal small tilelist-tag">
-                                <#if item['layout_tag']??>
-                                    <#assign layouttagitem = item['layout_tag']>
-                                    <#list layouttagitem as tagatem>
-                                        <#if tagatem?exists>
-                                            <span>${tagatem}</span>
-                                        </#if>
-                                    </#list>
-                                </#if>
+                                <#--<#if item['layout_tag']??>-->
+                                    <#--<#assign layouttagitem = item['layout_tag']?split(',')>-->
+                                    <#--<#list layouttagitem as tagatem>-->
+                                        <#--<#if tagatem?exists>-->
+                                            <#--<span>${tagatem}</span>-->
+                                        <#--</#if>-->
+                                    <#--</#list>-->
+                                <#--</#if>-->
                             </div>
                         </div>
                     </a>
