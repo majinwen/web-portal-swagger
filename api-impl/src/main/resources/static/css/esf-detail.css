@@ -1919,6 +1919,88 @@ a.pswp__share--download:hover {
     height: 0;
     font-size: 0; }
 
+.tilelist-type {
+  width: 100%;
+  padding: 0.5333333333rem 0.4rem;
+  box-sizing: border-box; }
+  .tilelist-type li {
+    width: 100%;
+    margin-bottom: 0.4rem;
+    zoom: 1; }
+    [data-dpr="1"] .tilelist-type li {
+      font-size: 13px; }
+    [data-dpr="2"] .tilelist-type li {
+      font-size: 26px; }
+    [data-dpr="3"] .tilelist-type li {
+      font-size: 39px; }
+    .tilelist-type li .picture-box {
+      float: left;
+      position: relative;
+      width: 2.8rem;
+      height: 2.1066666667rem;
+      overflow: hidden;
+      text-align: center; }
+      .tilelist-type li .picture-box img {
+        min-width: 100%;
+        height: 100%; }
+      .tilelist-type li .picture-box .bottom-text {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 0.4533333333rem;
+        line-height: 0.4533333333rem;
+        text-align: left;
+        padding-left: 0.1333333333rem;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.5);
+        box-sizing: border-box; }
+        [data-dpr="1"] .tilelist-type li .picture-box .bottom-text {
+          font-size: 12px; }
+        [data-dpr="2"] .tilelist-type li .picture-box .bottom-text {
+          font-size: 24px; }
+        [data-dpr="3"] .tilelist-type li .picture-box .bottom-text {
+          font-size: 36px; }
+    .tilelist-type li .tilelist-content {
+      position: relative;
+      float: left;
+      width: 5.8533333333rem;
+      height: 2.1066666667rem;
+      margin-left: 0.4rem; }
+      .tilelist-type li .tilelist-content h4 {
+        margin-top: 0.1066666667rem;
+        margin-bottom: 0.2666666667rem;
+        color: #3a3a3a; }
+        [data-dpr="1"] .tilelist-type li .tilelist-content h4 {
+          font-size: 14px; }
+        [data-dpr="2"] .tilelist-type li .tilelist-content h4 {
+          font-size: 28px; }
+        [data-dpr="3"] .tilelist-type li .tilelist-content h4 {
+          font-size: 42px; }
+      .tilelist-type li .tilelist-content p {
+        position: absolute;
+        top: 40%;
+        width: 100%;
+        color: #666;
+        margin-bottom: 0.4rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+        .tilelist-type li .tilelist-content p em {
+          color: #fb3939; }
+      .tilelist-type li .tilelist-content .house-labelling {
+        position: absolute;
+        bottom: 0; }
+    .tilelist-type li:after {
+      visibility: hidden;
+      display: block;
+      clear: both;
+      content: '';
+      height: 0;
+      font-size: 0; }
+    .tilelist-type li:last-child {
+      margin-bottom: 0; }
+
 .detail-contact-wrapper {
   position: relative;
   height: 1.3066666667rem; }

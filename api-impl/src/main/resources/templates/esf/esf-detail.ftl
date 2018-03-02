@@ -294,38 +294,41 @@
 </div>
 </#if>
 <#if plot?exists>
-<div id="nearbynewesf" class="module-bottom-fill">
+<div id="nearbynewesf">
     <section>
         <div class="module-header-message">
-            <h3>附近好房</h3>
+            <h3>看过本房的用户正在看</h3>
         </div>
-        <ul class="tilelist">
+        <ul class="tilelist-type">
             <#list plot as map>
                 <li>
                     <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
                     <#else><a href="#">
                     </#if>
                     <div class="picture-box">
-                        <div class="picture-box">
-                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
-                                <img src="${map.housePhotoTitle}" alt="${map.plotName}">
-                            <#else >
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            </#if>
-                            <div class="bottom-text">
-                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}</#if>
-                            </div>
+                        <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                            <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                        <#else >
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
+                        <div class="bottom-text">
+                            <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
                         </div>
                     </div>
                     <div class="tilelist-content">
-                        <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万/</#if>
-                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡/</#if>
-                                <#if map.room?exists&&map.hall?exists>
-                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
-                            </em>
-                        </p>
                         <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
+                        <p class="cont-first">
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}</em>万</#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                                <#if map.forwardName?exists> ${map.forwardName}</#if>
+                        </p>
+                        <div class="cont-block-4 house-labelling normal">
+                            <span>近地铁</span>
+                            <span>随时看</span>
+                            <span>满五年</span>
+                        </div>
                     </div>
                 </a></li>
             </#list>
@@ -333,7 +336,7 @@
     </section>
 </div>
 </#if>
-<#if plotList?exists>
+<#--<#if plotList?exists>
 <section id="nearbypLOT">
     <div class="module-header-message">
         <h3>附近小区</h3>
@@ -362,7 +365,7 @@
         </#list>
     </ul>
 </section>
-</#if>
+</#if>-->
 <#if houseDetail.houseProxyPhone?exists>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
@@ -435,7 +438,7 @@
         });
         return false;
     })
-    $("#nearbypLOT").on('click', 'li', function () {
+    /*$("#nearbypLOT").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('二手房-点击查看推荐小区', {
             "小区名称":link.find('.tilelist-content').find('.cont-first').text(),
@@ -445,7 +448,7 @@
             location.href = link.find('a').attr('href');
         });
         return false;
-    })
+    })*/
     function plotDetailInfo_1(a) {
         var link = $(a);
         zhuge.track('二手房-点击查看小区详情', {
