@@ -316,17 +316,17 @@
                         </div>
                     </div>
                     <div class="tilelist-content">
-                        <h4 class="cont-last"><#if map.plotName?exists>${map.plotName}</#if></h4>
+                        <h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>
                         <p class="cont-first">
-                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}</em>万</#if>
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>
                                 <#if map.room?exists&&map.hall?exists>
                                 <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                                 <#if map.forwardName?exists> ${map.forwardName}</#if>
                         </p>
                         <div class="cont-block-4 house-labelling normal">
-                            <#if plot['label']?exists>
-                                <#assign item =  plot['label']>
+                            <#if map.tagsName?exists>
+                                <#assign item = map.tagsName>
                                 <#list item as itemValue>
                                     <#if itemValue?exists>
                                         <#if itemValue_index lt 3>
@@ -434,7 +434,7 @@
     })
     $("#nearbynewesf").on('click', 'li', function () {
         var link = $(this);
-        zhuge.track('二手房-点击查看推荐房源', {
+        zhuge.track('二手房-看过本房的用户正在看', {
             "户型":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[1],
             "面积":link.find('.tilelist-content').find('em').text().split("万/")[1].split("㎡/")[0]+"㎡",
             "价格":link.find('.tilelist-content').find('em').text().split("万/")[0]+"万",
