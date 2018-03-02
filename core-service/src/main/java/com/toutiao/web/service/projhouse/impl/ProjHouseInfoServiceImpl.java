@@ -595,7 +595,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 }
             }
         }
-        list.add(projHouseInfoResponse);
+        if(!flag){
+            list.add(projHouseInfoResponse);
+        }
         return list;
     };
 
@@ -619,7 +621,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
             srb.addSort("updateTimeSort", SortOrder.DESC);
-            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(20).execute().actionGet();
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(10).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit : hits) {
                 Map<String, Object> buildings = hit.getSource();
@@ -634,7 +636,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
         if (list!=null&&list.size()>=5){
             while (result.size()<5){
-                result = hashPush(result, (ProjHouseInfoResponse) list.get(random.nextInt(20)));
+                result = hashPush(result, (ProjHouseInfoResponse) list.get(random.nextInt(10)));
             }
         }
         return result;
