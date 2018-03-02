@@ -217,6 +217,7 @@ $(function(){
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
             }else {
                 if (_keyword!=null&&_keyword!=''){
+                    $('#search-index').addClass('none');
                     $('#automatedWord').addClass('none');
                     $('#indexWord').html('');
                     if (newHouseNum>0){
@@ -623,6 +624,7 @@ $(function(){
                 async: true,
                 dataType:'json',
                 success: function (data) {
+                    $('#search-index').removeClass('none')
                     setLocalStorage('plotNum',data.plotNum)
                     setLocalStorage('esfNum',data.esfNum)
                     setLocalStorage('newHouseNum',data.newHouseNum)
