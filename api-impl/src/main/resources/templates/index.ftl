@@ -116,7 +116,7 @@
         </div>
     </section>
 </div>
-<section id="plot_desc">
+<section id="esf_desc">
     <div class="index-module-header">
         <h3>最新挂牌二手房</h3>
     </div>
@@ -350,16 +350,19 @@
     })
 </script>
 <script>
-    $("#plot_desc").on('click', 'li', function () {
+    $("#esf_desc").on('click', 'li', function () {
         var link = $(this);
-        zhuge.track('大首页-点击小区推荐',{
-            "小区名称":link.find('img').attr('alt'),
-            "建成年代":link.find('div.list-item-cont').find('p.build_year').text(),
-            "参考均价":link.find('div.cont-block-price.plot').find('em').text(),
-            "位置信息":link.find('p.cont-block-3.distance').find('i.icon').text(),
-            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.plot_lable').text(),
-            "页面位置序号":link.find('a').attr('id'),
-            "是否为广告位":"否"
+        zhuge.track('大首页-点击二手房推荐', {
+            "楼盘名称":link.find('img').attr('alt'),
+            "总价":link.find('div.cont-block-price').find('em').text(),
+            "单价":link.find('div.cont-block-price').find('span').text(),
+            "面积":link.find('p.cont-block-2').text().split("/")[0],
+            "户型":link.find('p.cont-block-2').text().split("/")[1],
+            "朝向":link.find('p.cont-block-2').text().split("/")[2],
+            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
+            "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
+            "第几屏":getDefaultPageNum(),
+            "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');
         });
