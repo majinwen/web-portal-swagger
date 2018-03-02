@@ -203,18 +203,18 @@
                                 <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
                             <#--</#if>-->
                         <#--</#if>-->
-                        <#--<div class="cont-block-4 house-labelling gray">-->
-                            <#--<#if plot['label']?exists>-->
-                                <#--<#assign item =  plot['label']>-->
-                                <#--<#list item as itemValue>-->
-                                    <#--<#if itemValue?exists>-->
-                                        <#--<#if itemValue_index lt 3>-->
-                                            <#--<span>${itemValue}</span>-->
-                                        <#--</#if>-->
-                                    <#--</#if>-->
-                                <#--</#list>-->
-                            <#--</#if>-->
-                        <#--</div>-->
+                        <div class="cont-block-4 house-labelling gray">
+                            <#if plot['label']?exists>
+                                <#assign item =  plot['label']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                        <#if itemValue_index lt 3>
+                                            <span>${itemValue}</span>
+                                        </#if>
+                                    </#if>
+                                </#list>
+                            </#if>
+                        </div>
                         <#--<div class="cont-block-price plot">-->
                             <#--<em>${plot['avgPrice']}元/㎡</em>-->
                         <#--</div>-->

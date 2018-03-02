@@ -325,9 +325,16 @@
                                 <#if map.forwardName?exists> ${map.forwardName}</#if>
                         </p>
                         <div class="cont-block-4 house-labelling normal">
-                            <span>近地铁</span>
-                            <span>随时看</span>
-                            <span>满五年</span>
+                            <#if plot['label']?exists>
+                                <#assign item =  plot['label']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                        <#if itemValue_index lt 3>
+                                            <span>${itemValue}</span>
+                                        </#if>
+                                    </#if>
+                                </#list>
+                            </#if>
                         </div>
                     </div>
                 </a></li>
