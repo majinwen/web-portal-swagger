@@ -1970,7 +1970,10 @@ a.pswp__share--download:hover {
       .tilelist-type li .tilelist-content h4 {
         margin-top: 0.1066666667rem;
         margin-bottom: 0.2666666667rem;
-        color: #3a3a3a; }
+        color: #3a3a3a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
         [data-dpr="1"] .tilelist-type li .tilelist-content h4 {
           font-size: 14px; }
         [data-dpr="2"] .tilelist-type li .tilelist-content h4 {

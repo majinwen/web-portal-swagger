@@ -218,10 +218,10 @@
 
             h4 {
                 margin-top: rem(8);
-
                 margin-bottom: rem(20);
                 color: $baseBlack;
                 @include font-dpr(28);
+                @include text-ellipses;
             }
 
             p {
