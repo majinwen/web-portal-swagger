@@ -191,7 +191,7 @@ public class PlotServiceImpl implements PlotService {
             String subwayStationId = villageRequest.getSubwayStationId();
             if (subwayLineId != null && subwayLineId.length() != 0 && subwayStationId != null && subwayStationId.length() != 0) {
                 String[] SubwayStationId = subwayStationId.split(",");
-                boolQueryBuilder.should(QueryBuilders.termsQuery("metroStationId", SubwayStationId[0]));
+                boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", SubwayStationId[0]));
                 key = SubwayLineId[0] + "$" + SubwayStationId[0];
             }
             //标签
