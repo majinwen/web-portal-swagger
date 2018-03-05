@@ -217,6 +217,7 @@ $(function(){
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
             }else {
                 if (_keyword!=null&&_keyword!=''){
+                    $('#search-index').addClass('none');
                     $('#automatedWord').addClass('none');
                     $('#indexWord').html('');
                     if (newHouseNum>0){
@@ -615,6 +616,7 @@ $(function(){
                 url = url.replace('loupan','xinfang')
             }else {
                 url = herf+"/search?keyword="+_keyword
+                $('#search-index').removeClass('none')
             }
             $.ajax({
                 type: "get",

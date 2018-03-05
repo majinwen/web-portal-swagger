@@ -20,6 +20,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -580,6 +581,67 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         }
         return null;
     }
+
+
+    /**
+     * 去重
+     */
+    public List hashPush(List<ProjHouseInfoResponse> list,ProjHouseInfoResponse projHouseInfoResponse){
+        Boolean flag = false;
+        if(list.size()>0){
+            for (int i = 0; i <list.size() ; i++) {
+                if (list.get(i).getHouseId().equals(projHouseInfoResponse.getHouseId())){
+                    flag = true;
+                }
+            }
+        }
+        if(!flag){
+            list.add(projHouseInfoResponse);
+        }
+        return list;
+    };
+
+    /**
+     *
+     * @Description：首页最佳挂牌二手房
+     *
+     * @Param []
+     * @Return java.util.List
+     * @Author zengqingzhou
+     * @Date 2018/3/2 13:57
+     */
+    @Override
+    public List queryIndexProjHouse() {
+        Random random = new Random();
+        List list = new ArrayList();
+        List result = new ArrayList();
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
+            srb.addSort("updateTimeSort", SortOrder.DESC);
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(20).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            for (SearchHit hit : hits) {
+                Map<String, Object> buildings = hit.getSource();
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                list.add(instance);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (list!=null&&list.size()>=5){
+            while (result.size()<5){
+                result = hashPush(result, (ProjHouseInfoResponse) list.get(random.nextInt(20)));
+            }
+        }
+        return result;
+    }
+
 
     /**
      * 功能描述：通过输入的搜索框信息查询数据

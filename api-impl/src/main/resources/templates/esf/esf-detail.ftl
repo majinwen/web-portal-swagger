@@ -398,7 +398,15 @@
             $("tilePlotDesc").find("p").html(s);
         }
     });
-    zhuge.track('二手房-进入二手房详情页', {
+    function desc(url) {
+        if(url.indexOf('esf')>-1){
+            return '二手房-进入二手房详情页'
+        }
+        if(url.indexOf(window.location.hostname)>-1){
+            return '大首页-点击二手房推荐'
+        }
+    }
+    zhuge.track(desc(document.referrer), {
         '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
@@ -410,6 +418,7 @@
         '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
+
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {

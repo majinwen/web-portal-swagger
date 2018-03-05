@@ -23,28 +23,25 @@
             background-size: contain;
 
             &.all-buildings {
-                @include bg-image('/static/images/newindex/newindex-nav-icon-newyear1');
+                @include bg-image('/static/images/newindex/newindex-nav-icon-2018030501');
             }
             &.featured-properties {
-                @include bg-image('/static/images/newindex/newindex-nav-icon-newyear2');
+                @include bg-image('/static/images/newindex/newindex-nav-icon-2018030502');
             }
             &.houses-open {
-                @include bg-image('/static/images/newindex/newindex-nav-icon-newyear3');
-            }
-            &.houses-intelligent {
-                @include bg-image('/static/images/newindex/zf_icon_znzf');
+                @include bg-image('/static/images/newindex/newindex-nav-icon-2018030503');
             }
             &.index-esf-icon {
-                @include bg-image('/static/images/index/index-nav-icon-newyear3');
+                @include bg-image('/static/images/index/index-nav-icon-2018030501');
             }
             &.index-plot-icon {
-                @include bg-image('/static/images/index/index-nav-icon-newyear2');
+                @include bg-image('/static/images/index/index-nav-icon-2018030502');
             }
             &.index-new-icon {
-                @include bg-image('/static/images/index/index-nav-icon-newyear1');
+                @include bg-image('/static/images/index/index-nav-icon-2018030503');
             }
             &.index-intelligent-icon {
-                @include bg-image('/static/images/index/index-nav-icon-newyear4');
+                @include bg-image('/static/images/index/index-nav-icon-2018030504');
             }
         }
 

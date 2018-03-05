@@ -966,77 +966,68 @@ body {
       -webkit-background-size: contain;
       background-size: contain; }
       .banner-nav .banner-nav-item i.all-buildings {
-        background-image: url("/static/images/newindex/newindex-nav-icon-newyear1.png");
+        background-image: url("/static/images/newindex/newindex-nav-icon-2018030501.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.all-buildings {
-            background-image: url("/static/images/newindex/newindex-nav-icon-newyear1@2x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-2018030501@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.all-buildings {
-            background-image: url("/static/images/newindex/newindex-nav-icon-newyear1@3x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-2018030501@3x.png"); } }
       .banner-nav .banner-nav-item i.featured-properties {
-        background-image: url("/static/images/newindex/newindex-nav-icon-newyear2.png");
+        background-image: url("/static/images/newindex/newindex-nav-icon-2018030502.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.featured-properties {
-            background-image: url("/static/images/newindex/newindex-nav-icon-newyear2@2x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-2018030502@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.featured-properties {
-            background-image: url("/static/images/newindex/newindex-nav-icon-newyear2@3x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-2018030502@3x.png"); } }
       .banner-nav .banner-nav-item i.houses-open {
-        background-image: url("/static/images/newindex/newindex-nav-icon-newyear3.png");
+        background-image: url("/static/images/newindex/newindex-nav-icon-2018030503.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.houses-open {
-            background-image: url("/static/images/newindex/newindex-nav-icon-newyear3@2x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-2018030503@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.houses-open {
-            background-image: url("/static/images/newindex/newindex-nav-icon-newyear3@3x.png"); } }
-      .banner-nav .banner-nav-item i.houses-intelligent {
-        background-image: url("/static/images/newindex/zf_icon_znzf.png");
-        background-repeat: no-repeat; }
-        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .banner-nav .banner-nav-item i.houses-intelligent {
-            background-image: url("/static/images/newindex/zf_icon_znzf@2x.png"); } }
-        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .banner-nav .banner-nav-item i.houses-intelligent {
-            background-image: url("/static/images/newindex/zf_icon_znzf@3x.png"); } }
+            background-image: url("/static/images/newindex/newindex-nav-icon-2018030503@3x.png"); } }
       .banner-nav .banner-nav-item i.index-esf-icon {
-        background-image: url("/static/images/index/index-nav-icon-newyear3.png");
+        background-image: url("/static/images/index/index-nav-icon-2018030501.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear3@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030501@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear3@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030501@3x.png"); } }
       .banner-nav .banner-nav-item i.index-plot-icon {
-        background-image: url("/static/images/index/index-nav-icon-newyear2.png");
+        background-image: url("/static/images/index/index-nav-icon-2018030502.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-plot-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear2@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030502@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-plot-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear2@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030502@3x.png"); } }
       .banner-nav .banner-nav-item i.index-new-icon {
-        background-image: url("/static/images/index/index-nav-icon-newyear1.png");
+        background-image: url("/static/images/index/index-nav-icon-2018030503.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-new-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear1@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030503@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-new-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear1@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030503@3x.png"); } }
       .banner-nav .banner-nav-item i.index-intelligent-icon {
-        background-image: url("/static/images/index/index-nav-icon-newyear4.png");
+        background-image: url("/static/images/index/index-nav-icon-2018030504.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-intelligent-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear4@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030504@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-intelligent-icon {
-            background-image: url("/static/images/index/index-nav-icon-newyear4@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030504@3x.png"); } }
     .banner-nav .banner-nav-item p {
       margin-top: 0.2266666667rem;
       color: #444;
@@ -1247,5 +1238,18 @@ body {
         font-size: 18px; }
       [data-dpr="3"] .markets-quotations .row .cloumn span {
         font-size: 27px; }
+
+.index-word {
+  padding: 0.1333333333rem 0.4rem 0; }
+  .index-word li {
+    display: block;
+    padding: 0.24rem 0;
+    color: #3a3a3a; }
+    [data-dpr="1"] .index-word li {
+      font-size: 13px; }
+    [data-dpr="2"] .index-word li {
+      font-size: 26px; }
+    [data-dpr="3"] .index-word li {
+      font-size: 39px; }
 
 /*# sourceMappingURL=index.css.map */

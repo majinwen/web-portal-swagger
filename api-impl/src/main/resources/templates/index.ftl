@@ -116,10 +116,120 @@
         </div>
     </section>
 </div>
-
+<section id="esf_desc">
+    <div class="index-module-header">
+        <h3>最新挂牌二手房</h3>
+    </div>
+    <ul><#if esfList?exists>
+        <#list esfList as map>
+        <#--<#if map_index==3>-->
+        <#--<li><a class="list-item new new-ad-item" href="#">-->
+        <#--<div class="list-item-cont-ad">-->
+        <#--<h3 class="cont-block-1">新龙城</h3>-->
+        <#--<p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>-->
+        <#--<p class="cont-block-2">2008年建成</p>-->
+        <#--</div>-->
+        <#--<div class="clear">-->
+        <#--<div class="list-item-img-box">-->
+        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+        <#--</div>-->
+        <#--<div class="list-item-img-box">-->
+        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+        <#--</div>-->
+        <#--<div class="list-item-img-box">-->
+        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+        <#--</div>-->
+        <#--</div>-->
+        <#--<div class="pr">-->
+        <#--<div class="cont-block-4 house-labelling gray middle">-->
+        <#--<span>复式</span>-->
+        <#--<span>五证齐全</span>-->
+        <#--<span>花园洋房</span>-->
+        <#--</div>-->
+        <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
+        <#--</div>-->
+        <#--</a></li>-->
+        <#--<#elseif map_index==4>-->
+        <#--<#break>-->
+        <#--</#if>-->
+            <#if map_index==5>
+                <#break>
+            </#if>
+            <li><a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <#assign item=map['housePhotoTitle']>
+                        <#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">
+                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
+                        </#if>
+                    </div>
+                    <div class="list-item-cont">
+                        <h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>
+                        <p class="cont-block-2">
+                            <#if map.buildArea?exists&&(map.buildArea>0)>
+                            ${map.buildArea}㎡
+                            </#if>
+                            <#if map.room?exists&&map.hall?exists>
+                                / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
+                            </#if>
+                            <#if map.forwardName?exists>
+                                / ${map.forwardName}
+                            </#if>
+                            <#if map.plotName?exists>
+                                / ${map.plotName}
+                            </#if>
+                        </p>
+                        <#if map['subwayDistince']?exists>
+                            <#assign item=map['subwayDistince']>
+                            <#if map['key']?exists>
+                                <#if item[map['key']]?exists>
+                                    <p class="cont-block-3 distance"><i class="icon"></i>
+                                        <#assign rounditems=item[map['key']]?split("$")>
+                                        <#if rounditems[2]?number gt 1000>
+                                            <#assign x = rounditems[2]?number/1000>
+                                            距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
+                                        <#else>
+                                            距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                                        </#if>
+                                    </p>
+                                </#if>
+                            <#else>
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>
+                            </#if>
+                        <#else >
+                            <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>
+                        </#if>
+                        <div class="cont-block-4 house-labelling gray middle esf">
+                            <#if map['tagsName']?exists>
+                                <#assign item =map['tagsName']>
+                                <#list item as itemValue>
+                                    <#if itemValue?exists>
+                                        <span>${itemValue}</span>
+                                    </#if>
+                                <#else>
+                                </#list>
+                            <#else >
+                            </#if>
+                        </div>
+                        <div class="cont-block-price">
+                            <#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>
+                                <em>${map.houseTotalPrices}万</em>
+                            </#if>
+                            <#if map.houseTotalPrices?exists && map.buildArea?exists>
+                                <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
+                                    <span>${(((map.houseTotalPrices?number / (map.buildArea?number))) * 10000)}元/㎡</span>
+                                </#if>
+                            </#if>
+                        </div>
+                    </div>
+                </div>
+            </a></li>
+        </#list>
+    </#if></ul>
+</section>
 <section>
     <div class="index-module-header">
-        <h3>新房推荐</h3>
+        <h3>最近热销新房</h3>
     </div>
     <ul><#if newbuilds?exists>
         <#assign builds = newbuilds['data']>
@@ -215,80 +325,7 @@
     </#if>
     </ul>
 </section>
-<section id="plot_desc">
-    <div class="index-module-header">
-        <h3>小区推荐</h3>
-    </div>
-    <ul><#if villageList?exists>
-        <#list villageList as map>
-            <#--<#if map_index==3>-->
-            <#--<li><a class="list-item new new-ad-item" href="#">-->
-                <#--<div class="list-item-cont-ad">-->
-                    <#--<h3 class="cont-block-1">新龙城</h3>-->
-                    <#--<p class="cont-block-3 distance"><i class="icon"></i>距离您0.5km</p>-->
-                    <#--<p class="cont-block-2">2008年建成</p>-->
-                <#--</div>-->
-                <#--<div class="clear">-->
-                    <#--<div class="list-item-img-box">-->
-                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
-                    <#--</div>-->
-                    <#--<div class="list-item-img-box">-->
-                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
-                    <#--</div>-->
-                    <#--<div class="list-item-img-box">-->
-                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
-                    <#--</div>-->
-                <#--</div>-->
-                <#--<div class="pr">-->
-                    <#--<div class="cont-block-4 house-labelling gray middle">-->
-                        <#--<span>复式</span>-->
-                        <#--<span>五证齐全</span>-->
-                        <#--<span>花园洋房</span>-->
-                    <#--</div>-->
-                    <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
-                <#--</div>-->
-            <#--</a></li>-->
-            <#--<#elseif map_index==4>-->
-                <#--<#break>-->
-            <#--</#if>-->
-            <#if map_index==5>
-                <#break>
-            </#if>
-            <li><a id="${map_index+1}" class="list-item" href="${router_city('/xiaoqu/'+map['id']?c+'.html')}">
-                <div class="clear">
-                    <div class="list-item-img-box">
-                        <#if map['photo'][0]?? && map['photo'][0] != ''><img src="${qiniuimage}/${map['photo'][0]}-tt400x300" alt="${map['rc']}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['rc']}">
-                        </#if>
-                    </div>
-                    <div class="list-item-cont">
-                        <input type="hidden" value="${map['id']}">
-                        <h3 class="cont-block-1">${map['rc']}</h3>
-                        <#if map['abbreviatedAge']?exists>
-                            <p class="cont-block-2 build_year">${map['abbreviatedAge']}年建成</p>
-                        </#if>
 
-                        <p class="cont-block-3 distance"><i class="icon"></i>${map['area']}-${map['tradingArea']}</p>
-                        <div class="cont-block-4 house-labelling gray middle plot_lable">
-                            <#if (map['label']??)&&(map['label']?size>0)>
-                            <#list map['label'] as label>
-                                <#if label?exists><span>${label}</span></#if>
-                            </#list>
-                            </#if>
-                        </div>
-                        <div class="cont-block-price plot">
-                            <#if map['avgPrice']?? && map['avgPrice'] gt 0>
-                                <em>${map['avgPrice']}元/㎡</em>
-                            <#else>
-                                <em>售价待定</em>
-                            </#if>
-                        </div>
-                    </div>
-                </div>
-            </a></li>
-        </#list>
-    </#if></ul>
-</section>
 <#include "user.ftl">
 <#include "search.ftl">
 
@@ -313,16 +350,18 @@
     })
 </script>
 <script>
-    $("#plot_desc").on('click', 'li', function () {
+    $("#esf_desc").on('click', 'li', function () {
         var link = $(this);
-        zhuge.track('大首页-点击小区推荐',{
-            "小区名称":link.find('img').attr('alt'),
-            "建成年代":link.find('div.list-item-cont').find('p.build_year').text(),
-            "参考均价":link.find('div.cont-block-price.plot').find('em').text(),
-            "位置信息":link.find('p.cont-block-3.distance').find('i.icon').text(),
-            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.plot_lable').text(),
-            "页面位置序号":link.find('a').attr('id'),
-            "是否为广告位":"否"
+        zhuge.track('大首页-点击二手房推荐', {
+            "楼盘名称":link.find('img').attr('alt'),
+            "总价":link.find('div.cont-block-price').find('em').text(),
+            "单价":link.find('div.cont-block-price').find('span').text(),
+            "面积":link.find('p.cont-block-2').text().split("/")[0],
+            "户型":link.find('p.cont-block-2').text().split("/")[1],
+            "朝向":link.find('p.cont-block-2').text().split("/")[2],
+            "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
+            "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
+            "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');
         });

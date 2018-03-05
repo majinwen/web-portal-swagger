@@ -219,7 +219,7 @@
         display: block;
         padding: rem(18) 0;
         @include font-dpr(26);
-        color: #999;
+        color: $baseBlack;
     }
 }
 

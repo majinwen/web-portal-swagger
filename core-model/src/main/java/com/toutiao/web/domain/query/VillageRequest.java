@@ -62,7 +62,7 @@ public class VillageRequest {
     private String sdr;  //供需关系
     private Integer level;  //楼盘级别
     private Integer pageNum = 1;  //起始条数
-    private Integer size;  //每页显示条数
+    private Integer size=10;  //每页显示条数
     private String villageCharacteristics;  //楼盘特色
     private String cityId;  //城市编号
     private String ringRoad;  //环线
@@ -72,6 +72,7 @@ public class VillageRequest {
     private String waterSupply;  //供水
     private String deliverStyle;  //装修标准
     private String is_approve;  //审批状态（0-未发布，1-已发布）
+    private String scrollId;
     /**
      * 维度 附近找房
      */

@@ -7,6 +7,7 @@ import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.PlotService;
+import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,8 @@ public class HomePageController {
     private PlotService plotService;
     @Autowired
     private RedisSession redisSession;
+    @Autowired
+    private ProjHouseInfoService projHouseInfoService;
 
 
     @RequestMapping(value={""})
@@ -53,11 +56,12 @@ public class HomePageController {
 //        newHouseQuery.setPageSize(5);
         Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
         List villageList = plotService.findVillageByConditions(villageRequest);
+        List esfList = projHouseInfoService.queryIndexProjHouse();
         model.addAttribute("villageList", villageList);
         model.addAttribute("newbuilds",builds);
         model.addAttribute("user","asds");
         model.addAttribute("currentTime",sdf.format(data));
-//        model.addAttribute("searchType","projhouse");
+        model.addAttribute("esfList",esfList);
         return "index";
 
     }
