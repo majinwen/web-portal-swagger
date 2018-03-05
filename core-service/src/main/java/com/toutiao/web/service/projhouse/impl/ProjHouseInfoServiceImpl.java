@@ -617,7 +617,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         List result = new ArrayList();
         try{
             TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(/*projhouseIndex*/"esf_house_sort").setTypes(projhouseType);
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
             srb.addSort("updateTimeSort", SortOrder.DESC);
