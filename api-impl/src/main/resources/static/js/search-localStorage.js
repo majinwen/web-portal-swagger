@@ -625,7 +625,6 @@ $(function(){
                 async: true,
                 dataType:'json',
                 success: function (data) {
-                    // $('#search-index').removeClass('none')
                     setLocalStorage('plotNum',data.plotNum)
                     setLocalStorage('esfNum',data.esfNum)
                     setLocalStorage('newHouseNum',data.newHouseNum)

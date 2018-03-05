@@ -24,6 +24,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -114,6 +115,8 @@ public class PlotServiceImpl implements PlotService {
 
     @Override
     public List findVillageByConditions(VillageRequest villageRequest) {
+
+
         List houseList = new ArrayList();
         BoolQueryBuilder queryBuilder = null;
         try {
@@ -122,6 +125,19 @@ public class PlotServiceImpl implements PlotService {
             String key = null;
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+
+            if (villageRequest.getScrollId()!=null){
+                SearchResponse response = srb.setScroll(new TimeValue(5000)).execute().actionGet();
+                SearchHit[] searchHists = response.getHits().getHits();
+                Map source = searchHists[0].getSource();
+                Class<VillageResponse> entityClass = VillageResponse.class;
+                VillageResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, source);
+                houseList.add(instance);
+                return houseList;
+            }
+
             //默认查询均格大于零
 //            if (villageRequest.getAvgPrice()==null){
 //                villageRequest.setAvgPrice("0,10000000");
@@ -191,7 +207,7 @@ public class PlotServiceImpl implements PlotService {
             String subwayStationId = villageRequest.getSubwayStationId();
             if (subwayLineId != null && subwayLineId.length() != 0 && subwayStationId != null && subwayStationId.length() != 0) {
                 String[] SubwayStationId = subwayStationId.split(",");
-                boolQueryBuilder.should(QueryBuilders.termsQuery("metroStationId", SubwayStationId[0]));
+                boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", SubwayStationId[0]));
                 key = SubwayLineId[0] + "$" + SubwayStationId[0];
             }
             //标签
@@ -320,18 +336,18 @@ public class PlotServiceImpl implements PlotService {
 
             //分页
             // 每页大小
-            if (villageRequest.getSize() == null || villageRequest.getSize() < 1) {
-                villageRequest.setSize(10);
-            }
+//            if (villageRequest.getSize() == null || villageRequest.getSize() < 1) {
+//                villageRequest.setSize(10);
+//            }
             // 当前页
             if (villageRequest.getPageNum() == null || villageRequest.getPageNum() < 1) {
                 villageRequest.setPageNum(1);
             }
 
-            int rows = (villageRequest.getPageNum() - 1) * villageRequest.getSize();
+            int rows = (villageRequest.getPageNum() - 1) * 10;
             Integer size = villageRequest.getSize();
             srb.setFrom(rows).setSize(size);
-            SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchResponse response = srb.setScroll(new TimeValue(5000)).setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = response.getHits().getHits();
 
             if (searchHists != null) {
@@ -343,6 +359,7 @@ public class PlotServiceImpl implements PlotService {
                     if(StringTool.isNotBlank(source.get("TrafficInformation"))){
                         instance.setTrafficInformation(source.get("TrafficInformation").toString());
                     }
+                    instance.setScrollId(response.getScrollId());
                     instance.setKey(key);
                     if ("商电".equals(instance.getElectricSupply())) {
                         instance.setElectricFee("1.33");
@@ -391,9 +408,22 @@ public class PlotServiceImpl implements PlotService {
             }
 
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+
+
+            if (villageRequest.getScrollId()!=null){
+                SearchResponse response = srb.setScroll(new TimeValue(5000)).execute().actionGet();
+                SearchHit[] searchHists = response.getHits().getHits();
+                Map source = searchHists[0].getSource();
+                Class<VillageResponse> entityClass = VillageResponse.class;
+                VillageResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, source);
+                houseList.add(instance);
+                return houseList;
+            }
+
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(villageRequest.getLat(), villageRequest.getLon()).distance("1.6", DistanceUnit.KILOMETERS);
-            srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
+            srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(villageRequest.getSize());
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", villageRequest.getLat(), villageRequest.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
@@ -402,7 +432,7 @@ public class PlotServiceImpl implements PlotService {
             srb.addSort(sort);
             BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
             booleanQuery.must(QueryBuilders.termQuery("is_approve", 1));
-            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
+            SearchResponse searchResponse = srb.setScroll(new TimeValue(5000)).setQuery(booleanQuery).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){
@@ -439,6 +469,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(hits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
+                        instance.setScrollId(searchResponse.getScrollId());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo < 10 && reslocationinfo>0){
@@ -473,6 +504,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(hits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
+                        instance.setScrollId(searchResponse.getScrollId());
                         houseList.add(instance);
                     }
                     SearchResponse searchresponse = null;
@@ -482,7 +514,8 @@ public class PlotServiceImpl implements PlotService {
                     srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
                             .setFrom((0) * pageSize)
-                            .setSize(pageSize-hits.getHits().length)
+//                            .setSize(pageSize-hits.getHits().length)
+                            .setSize(villageRequest.getSize())
                             .execute().actionGet();
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
@@ -515,6 +548,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(hits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
+                        instance.setScrollId(searchResponse.getScrollId());
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo == 0){
@@ -526,7 +560,7 @@ public class PlotServiceImpl implements PlotService {
                     srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
                             .setFrom(Integer.valueOf((int) es_from))
-                            .setSize(pageSize)
+                            .setSize(villageRequest.getSize())
                             .execute().actionGet();
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
@@ -559,6 +593,7 @@ public class PlotServiceImpl implements PlotService {
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
                         instance.setTotal(polthits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
+                        instance.setScrollId(searchResponse.getScrollId());
                         houseList.add(instance);
                     }
                 }
