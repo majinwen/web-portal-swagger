@@ -79,7 +79,7 @@
             <#if TradeQuotations['newHouse']?exists&&TradeQuotations['newHouse']!=''>
             <div class="row clear">
                 <#if TradeQuotations['newHouseHref']?exists&&TradeQuotations['newHouseHref']!=''>
-                    <a href=TradeQuotations['newHouseHref']>
+                    <a href=${TradeQuotations['newHouseHref']}>
                 <#else >
                     <a href="#">
                 </#if>
@@ -100,7 +100,7 @@
             <#if TradeQuotations['esfHouse']?exists&&TradeQuotations['esfHouse']!=''>
             <div class="row clear">
                 <#if TradeQuotations['esfHouseHref']?exists&&TradeQuotations['esfHouseHref']!=''>
-                    <a href=TradeQuotations['esfHouseHref']>
+                    <a href=${TradeQuotations['esfHouseHref']}>
                 <#else >
                     <a href="#">
                 </#if>
