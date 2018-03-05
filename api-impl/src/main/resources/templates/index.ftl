@@ -361,7 +361,6 @@
             "朝向":link.find('p.cont-block-2').text().split("/")[2],
             "标签":link.find('div.cont-block-4.house-labelling.gray.middle.esf').text(),
             "位置信息":link.find('div.list-item-cont').find('p.cont-block-3.distance').text(),
-            "第几屏":getDefaultPageNum(),
             "是否为广告":"否"
         }, function () {
             location.href = link.find('a').attr('href');
