@@ -78,7 +78,11 @@
         <div class="markets-quotations">
             <#if TradeQuotations['newHouse']?exists&&TradeQuotations['newHouse']!=''>
             <div class="row clear">
-                <a href="http://www.toutiaopage.com/tetris/page/1591812168226823/">
+                <#if TradeQuotations['newHouseHref']?exists&&TradeQuotations['newHouseHref']!=''>
+                    <a href=TradeQuotations['newHouseHref']>
+                <#else >
+                    <a href="#">
+                </#if>
                     <div class="cloumn">
                         <h6>昨日新房成交量</h6>
                         <div><#if TradeQuotations['newHouse']?split(',')[0]?exists&&TradeQuotations['newHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['newHouse']?split(',')[0]}</em>套<#else >暂无数据</#if>
@@ -95,7 +99,11 @@
             </#if>
             <#if TradeQuotations['esfHouse']?exists&&TradeQuotations['esfHouse']!=''>
             <div class="row clear">
-                <a href="http://www.toutiaopage.com/tetris/page/1591794453940228/">
+                <#if TradeQuotations['esfHouseHref']?exists&&TradeQuotations['esfHouseHref']!=''>
+                    <a href=TradeQuotations['esfHouseHref']>
+                <#else >
+                    <a href="#">
+                </#if>
                     <div class="cloumn">
                         <h6>上周二手房成交量</h6>
                         <div><#if TradeQuotations['esfHouse']?split(',')[0]?exists&&TradeQuotations['esfHouse']?split(',')[0]?number gt 0><em>${TradeQuotations['esfHouse']?split(',')[0]}</em>套<#else >暂无数据</#if>
