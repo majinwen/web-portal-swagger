@@ -72,7 +72,6 @@ public class VillageRequest {
     private String waterSupply;  //供水
     private String deliverStyle;  //装修标准
     private String is_approve;  //审批状态（0-未发布，1-已发布）
-    private String scrollId;
     /**
      * 维度 附近找房
      */
