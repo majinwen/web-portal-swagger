@@ -673,6 +673,19 @@ body {
     [data-dpr="3"] .automated-word li {
       font-size: 39px; }
 
+.index-word {
+  padding: 0.1333333333rem 0.4rem 0; }
+  .index-word li {
+    display: block;
+    padding: 0.24rem 0;
+    color: #3a3a3a; }
+    [data-dpr="1"] .index-word li {
+      font-size: 13px; }
+    [data-dpr="2"] .index-word li {
+      font-size: 26px; }
+    [data-dpr="3"] .index-word li {
+      font-size: 39px; }
+
 .search-page-wrapper {
   position: absolute;
   top: 0;
@@ -1238,18 +1251,5 @@ body {
         font-size: 18px; }
       [data-dpr="3"] .markets-quotations .row .cloumn span {
         font-size: 27px; }
-
-.index-word {
-  padding: 0.1333333333rem 0.4rem 0; }
-  .index-word li {
-    display: block;
-    padding: 0.24rem 0;
-    color: #3a3a3a; }
-    [data-dpr="1"] .index-word li {
-      font-size: 13px; }
-    [data-dpr="2"] .index-word li {
-      font-size: 26px; }
-    [data-dpr="3"] .index-word li {
-      font-size: 39px; }
 
 /*# sourceMappingURL=index.css.map */

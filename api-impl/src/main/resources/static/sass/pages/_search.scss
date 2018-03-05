@@ -223,6 +223,18 @@
     }
 }
 
+.index-word {
+    padding: rem(10) rem(30) 0;
+
+    li {
+        display: block;
+        padding: rem(18) 0;
+        color: $baseBlack;
+        @include font-dpr(26);
+    }
+}
+
+
 .search-page-wrapper {
     position: absolute;
     top: 0;
