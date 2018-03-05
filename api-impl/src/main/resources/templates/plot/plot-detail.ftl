@@ -603,11 +603,6 @@
     </ul>
 
 </section>
-<section id="nextPage">
-    <div >
-        <li style="height: auto">下一页</li>
-    </div>
-</section>
 <!-------- photoswipe -------->
 <div id="mapContainer" style="display: none;"> </div>
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
