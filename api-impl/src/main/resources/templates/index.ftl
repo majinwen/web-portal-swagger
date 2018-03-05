@@ -78,8 +78,8 @@
         <div class="markets-quotations">
             <#if TradeQuotations['newHouse']?exists&&TradeQuotations['newHouse']!=''>
             <div class="row clear">
-                <#if TradeQuotations['newHousehref']?exists&&TradeQuotations['newHousehref']!=''>
-                    <a href=TradeQuotations['newHousehref']>
+                <#if TradeQuotations['newHouseHref']?exists&&TradeQuotations['newHouseHref']!=''>
+                    <a href=TradeQuotations['newHouseHref']>
                 <#else >
                     <a href="#">
                 </#if>
