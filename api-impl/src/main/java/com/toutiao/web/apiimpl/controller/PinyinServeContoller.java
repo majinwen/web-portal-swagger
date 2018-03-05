@@ -44,4 +44,26 @@ public class PinyinServeContoller {
 
         return "404";
     }
+
+    /**
+     * cpc2
+     *
+     * @return
+     */
+    @RequestMapping("/cpc2")
+    public String cpc2(Model model){
+
+        return "/cpc/cpcPage2";
+    }
+
+    /**
+     * cpc3
+     *
+     * @return
+     */
+    @RequestMapping("/cpc3")
+    public String cpc3(Model model){
+
+        return "/cpc/cpcPage3";
+    }
 }
