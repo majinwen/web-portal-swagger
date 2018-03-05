@@ -601,6 +601,12 @@
         </li>
     </#list>
     </ul>
+
+</section>
+<section id="nextPage">
+    <div >
+        <li style="height: auto">下一页</li>
+    </div>
 </section>
 <!-------- photoswipe -------->
 <div id="mapContainer" style="display: none;"> </div>
@@ -615,6 +621,43 @@
 <script type="text/javascript" src="${staticurl}/js/base-map.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
 <script>
+    var plotId = ${village['id']}
+    var plotUrl = localStorage.getItem('listUrl');
+    $(function () {
+        var flag = false
+        while (!flag){
+            $.ajax({
+                type: "get",
+                contentType:'application/json',
+                url: plotUrl+'&size=1',
+                async: false,
+                dataType:'json',
+                success:function (data) {
+                    if (data.data.data[0].id==plotId){
+                        localStorage.setItem('scrollId',data.data.data[0].scrollId);
+                        flag = true;
+                        console.log(data.data.data[0].scrollId)
+                    }
+                }
+            })
+        }
+
+    })
+
+    var scrollId =localStorage.getItem('scrollId');
+    $('#nextPage').on('click',function () {
+        $.ajax({
+            type: "get",
+            contentType:'application/json',
+            url: plotUrl.split('?')[0]+'?scrollId='+scrollId,
+            async: true,
+            dataType:'json',
+            success:function (data) {
+                window,location.href = router_city('/xiaoqu/'+data.data.id+'.html');
+            }
+        })
+    })
+
     var chartGrid = {
         left: '2%',
         right: '6%',

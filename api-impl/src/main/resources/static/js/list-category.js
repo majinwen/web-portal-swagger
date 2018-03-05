@@ -1163,6 +1163,7 @@ function pullUpAction() {
                 async: true,
                 dataType:'json',
                 success: function (data) {
+                    localStorage.setItem('listUrl',url);
 
                     if (data.code == 'success') {
                         //第一次加载
@@ -1178,6 +1179,7 @@ function pullUpAction() {
 
                             var dataCon = data.data.data || [];
                             for (var i = 0; i < dataCon.length; i++) {
+
 
                                 if (_localHref.indexOf('loupan') > 0) {
                                     //组织地铁描述信息
