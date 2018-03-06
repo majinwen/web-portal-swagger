@@ -1,5 +1,7 @@
 package com.toutiao.web.service.rent;
 
+import com.toutiao.web.domain.query.RentHouseQuery;
+
 import java.util.List;
 
 /**
@@ -8,6 +10,6 @@ import java.util.List;
  *
  */
 public interface RentHouseService {
-    List GetNearHouseByDistance(Double distance,double lat, double lon);
+    List GetNearHouseByDistance(RentHouseQuery rentHouseQuery);
 
 }

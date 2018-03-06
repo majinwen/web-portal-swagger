@@ -1,6 +1,7 @@
 package com.toutiao.web.service.rent.impl;
 
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.domain.query.RentHouseQuery;
 import com.toutiao.web.service.rent.RentHouseService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -40,19 +41,19 @@ public class RentHouseServiceImpl implements RentHouseService{
 
 
     @Override
-    public List GetNearHouseByDistance(Double distance, double lat, double lon) {
+    public List GetNearHouseByDistance(RentHouseQuery rentHouseQuery) {
         List list = new ArrayList();
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
             //从该坐标查询距离为distance
-            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
+            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNearbyKm(), DistanceUnit.METERS);
             srb.setPostFilter(location1).setSize(10);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
-            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
             sort.unit(DistanceUnit.METERS);
             sort.order(SortOrder.ASC);
-            sort.point(lat, lon);
+            sort.point(rentHouseQuery.getLat(), rentHouseQuery.getLon());
             srb.addSort(sort);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
@@ -69,7 +70,6 @@ public class RentHouseServiceImpl implements RentHouseService{
                 hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
                 String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
                 //System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
-
             }
         }catch (Exception e){
             e.printStackTrace();
