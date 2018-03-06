@@ -71,7 +71,7 @@
         </a></li>
         </#list>
     </ul>
-    <a href="http://m.toutiaofangchan.com/bj/esf?=xxl2esf_all&beginPrice=300.0&endPrice=500.0&houseLabelId=1" class="change-list">查看全部78526套房源 ></a>
+    <a href="http://m.toutiaofangchan.com/bj/esf?=xxl2esf_all&beginPrice=300.0&endPrice=500.0" class="change-list">查看全部78526套房源 ></a>
 </section></#if>
 <a class="bottom-link-box" href="http://m.toutiaofangchan.com/bj/?=xxl2esf_two">
     <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/80a5ec258cf84945adaad2b6587c4f9b/bottom-link.jpg" width="100%" alt="发现好房 只要两步">
