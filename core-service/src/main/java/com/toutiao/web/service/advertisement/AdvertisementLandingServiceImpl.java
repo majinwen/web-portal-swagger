@@ -50,8 +50,8 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         //面积50平米以上
         booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(50));
 
-        //标签有近地铁
-        booleanQueryBuilder.must(termsQuery("tags", "1"));
+//        //标签有近地铁
+//        booleanQueryBuilder.must(termsQuery("tags", "1"));
 
         //过滤掉北京周边
         booleanQueryBuilder.mustNot(termsQuery("areaId", "106013"));
@@ -67,7 +67,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder)
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},
                         null).setSize(7)
                 .execute().actionGet();
 
@@ -78,6 +78,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
             Map<String,Object> buildings = hit.getSourceAsMap();
             buildinglist.add(buildings);
         }
+        Collections.shuffle(buildinglist);
         advertisement.put("data",buildinglist);
         advertisement.put("total", hits.getTotalHits());
 
@@ -123,9 +124,9 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder).setQuery(booleanQueryBuilder.must(termQuery("of_company", "我爱我家")))
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
-                        null).setSize(10)
+                        null)
                 .execute().actionGet();
 
         SearchHits hits = searchresponse.getHits();
@@ -139,9 +140,9 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder1).setQuery(booleanQueryBuilder1.must(termQuery("of_company", "中原地产")))
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
-                        null).setSize(10)
+                        null)
                 .execute().actionGet();
 
         SearchHits hit1 = searchresponse.getHits();
@@ -155,9 +156,9 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder2).setQuery(booleanQueryBuilder2.must(termQuery("of_company", "麦田房产")))
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
-                        null).setSize(10)
+                        null)
                 .execute().actionGet();
 
         SearchHits hit2 = searchresponse.getHits();
