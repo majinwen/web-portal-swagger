@@ -3,13 +3,13 @@
 <head>
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/cpc.css?v=${staticversion}">
-    <title>ccl2</title>
+    <title>xxl2</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<a href="http://m.toutiaofangchan.com/bj/?=ccl2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png" width="100%" alt="头条房产"></a>
+<a href="http://m.toutiaofangchan.com/bj/?=xxl2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png" width="100%" alt="头条房产"></a>
 <div class="module-bottom-fill">
     <section class="brand-introduction">
         <img class="logo" src="${staticurl}/images/cpc/cpc-page-logo.png" alt="头条房产">
@@ -18,7 +18,7 @@
             <p>每天都有新房源上架哦~</p>
         </div>
         <div class="go-show-box">
-            <a href="http://m.toutiaofangchan.com/bj/?=ccl2esf_go_show" class="go-show">去看看 ></a>
+            <a href="http://m.toutiaofangchan.com/bj/?=xxl2esf_go_show" class="go-show">去看看 ></a>
         </div>
     </section>
 </div>
@@ -29,7 +29,7 @@
         <#if itemdetail_index==5>
             <#break >
         </#if>
-        <li><a href="${router_city('/esf/'+itemdetail['houseId']?c+'.html?ccl2esf_detail')}" class="list-item">
+        <li><a href="${router_city('/esf/'+itemdetail['houseId']?c+'.html?xxl2esf_detail')}" class="list-item">
             <div class="clear">
                 <div class="list-item-img-box">
                     <#if itemdetail['housePhotoTitle']?exists>
@@ -71,9 +71,9 @@
         </a></li>
         </#list>
     </ul>
-    <a href="http://m.toutiaofangchan.com/bj/esf?=ccl2esf_all&beginPrice=300.0&endPrice=500.0&houseLabelId=1" class="change-list">查看全部78526套房源 ></a>
+    <a href="http://m.toutiaofangchan.com/bj/esf?=xxl2esf_all&beginPrice=300.0&endPrice=500.0&houseLabelId=1" class="change-list">查看全部78526套房源 ></a>
 </section></#if>
-<a class="bottom-link-box" href="http://m.toutiaofangchan.com/bj/?=ccl2esf_two">
+<a class="bottom-link-box" href="http://m.toutiaofangchan.com/bj/?=xxl2esf_two">
     <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/80a5ec258cf84945adaad2b6587c4f9b/bottom-link.jpg" width="100%" alt="发现好房 只要两步">
 </a>
 <div class="bottom-tips">
@@ -86,13 +86,16 @@
     window.onscroll = function(){
         if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
             addHeight = 200;
-        } else {
+        }
+        if(/(android|Windows Phone|windows|Windows)/i.test(navigator.userAgent)){
             addHeight = 0;
         }
         if(getScrollTop() + getClientHeight() >= getTotalHeight() + addHeight) {
-            window.location.href = "http://m.toutiaofangchan.com/bj/?=ccl2esf_bottom";
+            window.location.href = "http://m.toutiaofangchan.com/bj/?=xxl2esf_bottom";
         }
     };
+
+
     //获取滚动条当前的位置
     function getScrollTop() {
         var scrollTop = 0;

@@ -80,7 +80,8 @@
     window.onscroll = function(){
         if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
             addHeight = 200;
-        } else {
+        }
+        if(/(android|Windows Phone|windows|Windows)/i.test(navigator.userAgent)){
             addHeight = 0;
         }
         if(getScrollTop() + getClientHeight() >= getTotalHeight() + addHeight) {

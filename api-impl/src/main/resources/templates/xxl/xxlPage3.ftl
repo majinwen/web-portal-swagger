@@ -3,18 +3,18 @@
 <head>
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/cpc.css?v=${staticversion}">
-    <title>ccl3</title>
+    <title>xxl3</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<a href="http://m.toutiaofangchan.com/bj/esf?=ccl3esf_top_banner&beginPrice=0.0&endPrice=200.0 "><img src="${staticurl}/images/cpc/cpc-page3-banner.png" width="100%" alt="头条房产"></a>
+<a href="http://m.toutiaofangchan.com/bj/esf?=xxl3esf_top_banner&beginPrice=0.0&endPrice=200.0 "><img src="${staticurl}/images/cpc/cpc-page3-banner.png" width="100%" alt="头条房产"></a>
 <#if adcpc?exists><section class="recommend-list">
     <ul>
         <#assign listdetail = adcpc['data']>
         <#list listdetail as itemdetail>
-        <li><a href="${router_city('/esf/'+itemdetail['houseId']?c+'.html?ccl3esf_detail')}" class="list-item">
+        <li><a href="${router_city('/esf/'+itemdetail['houseId']?c+'.html?xxl3esf_detail')}" class="list-item">
             <div class="clear">
                 <div class="list-item-img-box">
                     <#if itemdetail['housePhotoTitle']?exists>
@@ -67,7 +67,7 @@
         </#list>
     </ul>
 </section></#if>
-<a class="bottom-link-box" href="http://m.toutiaofangchan.com/bj/esf?=ccl3esf_two&beginPrice=0.0&endPrice=200.0">
+<a class="bottom-link-box" href="http://m.toutiaofangchan.com/bj/esf?=xxl3esf_two&beginPrice=0.0&endPrice=200.0">
     <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/80a5ec258cf84945adaad2b6587c4f9b/bottom-link.jpg" width="100%" alt="发现好房 只要两步">
 </a>
 <div class="bottom-tips">
@@ -80,11 +80,12 @@
     window.onscroll = function(){
         if(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
             addHeight = 200;
-        } else {
+        }
+        if(/(android|Windows Phone|windows|Windows)/i.test(navigator.userAgent)){
             addHeight = 0;
         }
         if(getScrollTop() + getClientHeight() >= getTotalHeight() + addHeight) {
-            window.location.href = "http://m.toutiaofangchan.com/bj/esf?=ccl3esf_bottom&beginPrice=0.0&endPrice=200.0";
+            window.location.href = "http://m.toutiaofangchan.com/bj/esf?=xxl3esf_bottom&beginPrice=0.0&endPrice=200.0";
         }
     };
     //获取滚动条当前的位置
