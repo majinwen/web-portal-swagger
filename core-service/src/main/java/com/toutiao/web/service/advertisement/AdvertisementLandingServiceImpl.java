@@ -67,7 +67,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder)
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle"},
+                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},
                         null).setSize(7)
                 .execute().actionGet();
 
