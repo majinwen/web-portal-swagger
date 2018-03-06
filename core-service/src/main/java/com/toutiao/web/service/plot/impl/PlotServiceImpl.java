@@ -94,7 +94,7 @@ public class PlotServiceImpl implements PlotService {
                 String location = lat + "," + lon;
                 if (instance.getLocation() != null) {
                     String[] split = instance.getLocation().split(",");
-                    if (Double.valueOf(split[0]) != lat & Double.valueOf(split[1]) != lon) {
+                    if (Double.valueOf(split[0]) != lat && Double.valueOf(split[1]) != lon) {
                         houseList.add(instance);
                     }
                 }
