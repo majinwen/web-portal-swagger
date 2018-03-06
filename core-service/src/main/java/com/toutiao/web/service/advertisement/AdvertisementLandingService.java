@@ -5,5 +5,7 @@ import java.util.Map;
 public interface AdvertisementLandingService {
 
 
-    Map<String,Object> advertisement();
+    Map<String,Object> advertisementCpc_3();
+
+    Map<String,Object> advertisementCpc_1();
 }

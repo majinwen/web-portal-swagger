@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
@@ -36,7 +38,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
 
 
     @Override
-    public Map<String, Object> advertisement() {
+    public Map<String, Object> advertisementCpc_3() {
         Map<String ,Object> advertisement =new HashedMap();
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
@@ -81,5 +83,96 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
 
         return advertisement;
 
+    }
+
+    @Override
+    public Map<String, Object> advertisementCpc_1() {
+
+
+        Map<String ,Object> advertisement =new HashedMap();
+        TransportClient client = esClientTools.init();
+        SearchResponse searchresponse = new SearchResponse();
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
+        BoolQueryBuilder booleanQueryBuilder2 = QueryBuilders.boolQuery();
+
+        //价格300到500万
+        booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(300).lte(500));
+        //标签有近地铁
+//        booleanQueryBuilder.must(termsQuery("tags", "1"));
+        //忽略标题图为空
+        booleanQueryBuilder.mustNot(termsQuery("housePhotoTitle", ""));
+        booleanQueryBuilder.must(termsQuery("isDel", "0"));
+        //价格300到500万
+        booleanQueryBuilder1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(300).lte(500));
+        //标签有近地铁
+//        booleanQueryBuilder1.must(termsQuery("tags", "1"));
+        //忽略标题图为空
+        booleanQueryBuilder1.mustNot(termsQuery("housePhotoTitle", ""));
+        booleanQueryBuilder1.must(termsQuery("isDel", "0"));
+        //价格300到500万
+        booleanQueryBuilder2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(300).lte(500));
+        //标签有近地铁
+//        booleanQueryBuilder2.must(termsQuery("tags", "1"));
+        //忽略标题图为空
+        booleanQueryBuilder2.mustNot(termsQuery("housePhotoTitle", ""));
+        booleanQueryBuilder2.must(termsQuery("isDel", "0"));
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+
+        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder).setQuery(booleanQueryBuilder.must(termQuery("of_company", "我爱我家")))
+                .addSort(scrip).setFetchSource(
+                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
+                        null).setSize(10)
+                .execute().actionGet();
+
+        SearchHits hits = searchresponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
+        for (SearchHit hit : searchHists) {
+            Map<String,Object> buildings = hit.getSourceAsMap();
+            buildinglist.add(buildings);
+        }
+
+        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder1).setQuery(booleanQueryBuilder1.must(termQuery("of_company", "中原地产")))
+                .addSort(scrip).setFetchSource(
+                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
+                        null).setSize(10)
+                .execute().actionGet();
+
+        SearchHits hit1 = searchresponse.getHits();
+        SearchHit[] searchHist1 = hit1.getHits();
+
+        for (SearchHit hit : searchHist1) {
+            Map<String,Object> buildings = hit.getSourceAsMap();
+            buildinglist.add(buildings);
+        }
+
+        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder2).setQuery(booleanQueryBuilder2.must(termQuery("of_company", "麦田房产")))
+                .addSort(scrip).setFetchSource(
+                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
+                        null).setSize(10)
+                .execute().actionGet();
+
+        SearchHits hit2 = searchresponse.getHits();
+        SearchHit[] searchHist2 = hit2.getHits();
+
+        for (SearchHit hit : searchHist2) {
+            Map<String,Object> buildings = hit.getSourceAsMap();
+            buildinglist.add(buildings);
+        }
+
+
+        Collections.shuffle(buildinglist);
+
+        advertisement.put("data",buildinglist);
+
+        return advertisement;
     }
 }
