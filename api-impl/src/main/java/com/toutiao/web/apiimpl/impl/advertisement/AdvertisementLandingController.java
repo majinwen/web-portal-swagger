@@ -25,10 +25,14 @@ public class AdvertisementLandingController {
     //提升核心页pv】cpc广告3
     @RequestMapping("/cpc3")
     @ResponseBody
-    public Map advertisementThree(Model model) {
-        Map advertisementResult = advertisementLandingService.advertisement();
+    public Map<String,Object> advertisementThree(Model model) {
+        Map<String,Object> advertisementResult = advertisementLandingService.advertisement();
         model.addAttribute("adcpc",advertisementResult);
         return advertisementResult;
     }
+
+
+
+
 
 }
