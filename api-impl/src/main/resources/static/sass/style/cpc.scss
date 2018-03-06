@@ -102,7 +102,7 @@ $cpcGray: #888;
 
         .cont-block-3 {
             position: relative;
-            width: 63%;
+            width: 65%;
             margin-top: rem(16);
             color: $cpcGray;
 
@@ -174,7 +174,7 @@ $cpcGray: #888;
 
             span {
                 display: block;
-                margin-top: rem(26);
+                margin-top: rem(24);
                 color: $cpcGray;
             }
 
@@ -195,50 +195,8 @@ $cpcGray: #888;
     color: $cpcGray;
 }
 
-.nav {
-    display: -webkit-flex;
-    display: flex;
-    padding-top: rem(70);
-    padding-bottom: rem(60);
-    justify-content: space-between;
-    background-color: #fff;
-
-    .nav-item {
-        -webkit-flex: 1;
-        flex: 1;
-        margin-left: rem(30);
-        margin-right: rem(30);
-        text-align: center;
-
-        a {
-            display: block;
-        }
-
-        img {
-            display: inline-block;
-            width: rem(110);
-            height: rem(110);
-            border: rem(1) solid #b6c0da;
-            -webkit-border-radius: 50%;
-            -moz-border-radius: 50%;
-            border-radius: 50%;
-            @include box-sizing;
-        }
-
-        p {
-            margin-top: rem(30);
-            @include font-dpr(28);
-            color: #333;
-            white-space: nowrap;
-
-            span {
-                display: block;
-                margin-top: rem(15);
-                color: #666;
-                @include font-dpr(24);
-            }
-        }
-    }
+.bottom-link-box {
+    display: block;
 }
 
 .bottom-tips {
@@ -246,7 +204,6 @@ $cpcGray: #888;
     padding-bottom: rem(40);
     text-align: center;
     color: #999;
-    background-color: #e0e1e4;
 
     img {
         width: rem(57);

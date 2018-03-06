@@ -15,7 +15,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/advertisement")
+@RequestMapping("/{citypath}/advertisement")
 public class AdvertisementLandingController {
 
 
@@ -32,12 +32,11 @@ public class AdvertisementLandingController {
 
 
     //提升核心页pv】cpc广告1
-    @RequestMapping("/cpc1")
-    @ResponseBody
-    public Map advertisementCpc1(Model model) {
+    @RequestMapping("/cpc2")
+    public String advertisementCpc1(Model model) {
         Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
         model.addAttribute("adcpc",advertisementResult);
-        return advertisementResult;
+        return "/cpc/cpcPage2";
     }
 
 

@@ -300,7 +300,7 @@ body {
       color: #888; }
     .list-item .list-item-cont .cont-block-3 {
       position: relative;
-      width: 63%;
+      width: 65%;
       margin-top: 0.2133333333rem;
       color: #888; }
       .list-item .list-item-cont .cont-block-3 .icon {
@@ -366,7 +366,7 @@ body {
           font-size: 33px; }
       .list-item .list-item-cont .cont-block-price span {
         display: block;
-        margin-top: 0.3466666667rem;
+        margin-top: 0.32rem;
         color: #888; }
       @media screen and (min-device-width: 320px) and (max-device-width: 374px) {
         .list-item .list-item-cont .cont-block-price span {
@@ -379,57 +379,14 @@ body {
   text-align: center;
   color: #888; }
 
-.nav {
-  display: -webkit-flex;
-  display: flex;
-  padding-top: 0.9333333333rem;
-  padding-bottom: 0.8rem;
-  justify-content: space-between;
-  background-color: #fff; }
-  .nav .nav-item {
-    -webkit-flex: 1;
-    flex: 1;
-    margin-left: 0.4rem;
-    margin-right: 0.4rem;
-    text-align: center; }
-    .nav .nav-item a {
-      display: block; }
-    .nav .nav-item img {
-      display: inline-block;
-      width: 1.4666666667rem;
-      height: 1.4666666667rem;
-      border: 0.0133333333rem solid #b6c0da;
-      -webkit-border-radius: 50%;
-      -moz-border-radius: 50%;
-      border-radius: 50%;
-      box-sizing: border-box; }
-    .nav .nav-item p {
-      margin-top: 0.4rem;
-      color: #333;
-      white-space: nowrap; }
-      [data-dpr="1"] .nav .nav-item p {
-        font-size: 14px; }
-      [data-dpr="2"] .nav .nav-item p {
-        font-size: 28px; }
-      [data-dpr="3"] .nav .nav-item p {
-        font-size: 42px; }
-      .nav .nav-item p span {
-        display: block;
-        margin-top: 0.2rem;
-        color: #666; }
-        [data-dpr="1"] .nav .nav-item p span {
-          font-size: 12px; }
-        [data-dpr="2"] .nav .nav-item p span {
-          font-size: 24px; }
-        [data-dpr="3"] .nav .nav-item p span {
-          font-size: 36px; }
+.bottom-link-box {
+  display: block; }
 
 .bottom-tips {
   padding-top: 0.5333333333rem;
   padding-bottom: 0.5333333333rem;
   text-align: center;
-  color: #999;
-  background-color: #e0e1e4; }
+  color: #999; }
   .bottom-tips img {
     width: 0.76rem;
     margin-bottom: 0.4rem; }
