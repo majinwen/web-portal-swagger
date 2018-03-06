@@ -595,7 +595,6 @@
                         <#else><p class="cont-last"><em>售价待定</em></p>
                         </#if>
                     </#if>
-
                 </div>
             </a>
         </li>
