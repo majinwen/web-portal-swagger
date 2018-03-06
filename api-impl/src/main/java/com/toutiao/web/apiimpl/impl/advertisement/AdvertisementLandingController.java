@@ -40,4 +40,23 @@ public class AdvertisementLandingController {
     }
 
 
+
+    //提升核心页pv】cpc广告3
+    @RequestMapping("/ccl3")
+    public String advertisementCcl3(Model model) {
+        Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_3();
+        model.addAttribute("adcpc",advertisementResult);
+        return "/ccl/cclPage3";
+    }
+
+
+    //提升核心页pv】cpc广告1
+    @RequestMapping("/ccl2")
+    public String advertisementCcl1(Model model) {
+        Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
+        model.addAttribute("adcpc",advertisementResult);
+        return "/ccl/cclPage2";
+    }
+
+
 }
