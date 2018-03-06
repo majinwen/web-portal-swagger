@@ -21,7 +21,7 @@
                                 <a class="report-link-block" href="#">
                                     <i class="item-report-icon"></i>
                                     <div class="item-report-title">
-                                        <h3>智能找楼--我的报告</h3>
+                                        <h3>懂房帝--我的报告</h3>
                                         <p>${myReport.createTime}</p>
                                     </div>
                                 </a>
