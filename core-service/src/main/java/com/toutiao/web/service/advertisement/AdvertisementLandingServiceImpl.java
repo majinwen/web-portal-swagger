@@ -67,7 +67,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder)
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},
                         null).setSize(7)
                 .execute().actionGet();
 
@@ -124,7 +124,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder).setQuery(booleanQueryBuilder.must(termQuery("of_company", "我爱我家")))
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
                         null)
                 .execute().actionGet();
@@ -140,7 +140,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder1).setQuery(booleanQueryBuilder1.must(termQuery("of_company", "中原地产")))
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
                         null)
                 .execute().actionGet();
@@ -156,7 +156,7 @@ public class AdvertisementLandingServiceImpl implements  AdvertisementLandingSer
         searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder2).setQuery(booleanQueryBuilder2.must(termQuery("of_company", "麦田房产")))
                 .addSort(scrip).setFetchSource(
-                        new String[]{"houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
                         null)
                 .execute().actionGet();
