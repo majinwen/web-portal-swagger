@@ -5,7 +5,6 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.query.RentHouseQuery;
 import com.toutiao.web.service.rent.RentHouseService;
-import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -13,10 +12,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -58,7 +55,7 @@ public class RentHouseServiceImpl implements RentHouseService{
 
         //建立连接
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = new SearchResponse();
+//        SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
@@ -144,16 +141,12 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
 
         int pageNum = 1;
-        int pageSize = 10;
 
         if (rentHouseQuery.getPageNum() != null && rentHouseQuery.getPageNum() > 1) {
             pageNum = rentHouseQuery.getPageNum();
         }
-        if (rentHouseQuery.getPageSize() != null && rentHouseQuery.getPageSize()>= 10) {
-            pageSize = rentHouseQuery.getPageSize();
-        }
 
-        searchresponse = client.prepareSearch(rentIndex).setTypes(rentType)
+        SearchResponse searchresponse = client.prepareSearch(rentIndex).setTypes(rentType)
                 .setQuery(booleanQueryBuilder).setPostFilter(location).setFetchSource(
                         new String[]{"village_name","village_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
@@ -177,6 +170,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         Map<String,Object> result = new HashMap<>();
         result.put("data", rentlist);
         result.put("total", hits.getTotalHits());
+
         return result;
     }
 }
