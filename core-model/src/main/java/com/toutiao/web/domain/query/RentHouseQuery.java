@@ -7,6 +7,10 @@ import lombok.Data;
 public class RentHouseQuery {
 
     /**
+     * 出租房源Id(主键)
+     */
+    private String houseId;
+    /**
      * 关键字
      */
     private String keyword;

@@ -34,11 +34,11 @@ public class rentEntity {
     /**
      * 租赁方式(1-整租，2-合租)
      */
-    private Integer[] rentType;
+    private Integer rentType;
     /**
      * 租赁方式名称
      */
-    private String[] rentTypeName;
+    private String rentTypeName;
     /**
      * 出租房源标志
      */
@@ -56,7 +56,7 @@ public class rentEntity {
      */
     private String villageName;
     /**
-     * 坐标
+     * 坐标(lat,lon)
      */
     private String location;
     /**
@@ -191,4 +191,5 @@ public class rentEntity {
      * 版本
      */
     private Integer version;
+
 }

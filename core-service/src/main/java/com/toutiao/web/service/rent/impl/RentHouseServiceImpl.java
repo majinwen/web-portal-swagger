@@ -1,8 +1,10 @@
 package com.toutiao.web.service.rent.impl;
 
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.domain.query.RentHouseQuery;
 import com.toutiao.web.service.rent.RentHouseService;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,22 +44,26 @@ public class RentHouseServiceImpl implements RentHouseService{
 
 
     @Override
-    public List GetNearHouseByDistance(RentHouseQuery rentHouseQuery) {
+    public NashResult queryNearHouseByDistance(RentHouseQuery rentHouseQuery) {
         List list = new ArrayList();
+        Map result = new HashMap();
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
             //从该坐标查询距离为distance
-            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNearbyKm(), DistanceUnit.METERS);
+            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNearbyKm(), DistanceUnit.KILOMETERS);
             srb.setPostFilter(location1).setSize(10);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
-            sort.unit(DistanceUnit.METERS);
+            sort.unit(DistanceUnit.KILOMETERS);
             sort.order(SortOrder.ASC);
             sort.point(rentHouseQuery.getLat(), rentHouseQuery.getLon());
             srb.addSort(sort);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //
+            //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+            //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
@@ -68,12 +75,38 @@ public class RentHouseServiceImpl implements RentHouseService{
                 Map<String, Object> hitMap = hit.getSource();
                 // 在创建MAPPING的时候，属性名的不可为geoDistance。
                 hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-                String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+                String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.KILOMETERS.toString();//距离
                 //System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
+            result.put("rent",list);
+            result.put("total",searchResponse.getHits().getTotalHits());
+            return NashResult.build(result);
         }catch (Exception e){
             e.printStackTrace();
         }
-        return null;
+        return NashResult.Fail("");
     }
+
+    @Override
+    public NashResult queryHouseById(RentHouseQuery rentHouseQuery) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //出租房源ID
+        if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
+        }
+        //是否删除
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+        //发布状态
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
+        SearchHit[] searchHists = response.getHits().getHits();
+        if(searchHists.length==1){
+            Map source = searchHists[0].getSource();
+            return NashResult.build(source);
+        }
+        return NashResult.Fail("");
+    }
+
 }
