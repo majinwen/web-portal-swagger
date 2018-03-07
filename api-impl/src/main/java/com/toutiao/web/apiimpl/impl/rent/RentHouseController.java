@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.impl.rent;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -10,8 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-@RequestMapping("/{citypath}")
+@RequestMapping("/{citypath}/zufang")
 public class RentHouseController {
 
+    @RequestMapping("")
+    public String empty(Model model){
 
+        return "404";
+    }
 }
