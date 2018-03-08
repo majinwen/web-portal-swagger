@@ -9,6 +9,7 @@ import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -287,6 +288,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 String[] layoutId = projHouseInfoRequest.getOwnership().split(",");
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("propertyRight", layoutId));
 
+            }
+            //按距离排序
+            if (StringUtils.isNotBlank(projHouseInfoRequest.getNearbyKm())){
+                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(distance, DistanceUnit.KILOMETERS);
+                srb.setPostFilter(location1);
+                GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+                sort.unit(DistanceUnit.KILOMETERS);
+                sort.order(SortOrder.ASC);
+                srb.addSort(sort);
             }
             //去未删除的房源信息
             booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));

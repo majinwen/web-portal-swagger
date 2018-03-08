@@ -11,6 +11,10 @@ public class RentHouseQuery {
      */
     private String houseId;
     /**
+     * 公寓上级Id
+     */
+    private String apartmentParentId;
+    /**
      * 关键字
      */
     private String keyword;

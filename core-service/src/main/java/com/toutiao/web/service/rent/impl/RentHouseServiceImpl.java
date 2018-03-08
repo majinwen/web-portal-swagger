@@ -34,9 +34,9 @@ import java.util.Map;
 
 @Service
 public class RentHouseServiceImpl implements RentHouseService{
-    @Value("${rent.index}")
+//    @Value("${rent.index}")
     private String index ;
-    @Value("${rent.type}")
+//    @Value("${rent.type}")
     private String type ;
 
     @Autowired
@@ -50,21 +50,26 @@ public class RentHouseServiceImpl implements RentHouseService{
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
-            //从该坐标查询距离为distance
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //从该坐标查询距离为distance的点
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNearbyKm(), DistanceUnit.KILOMETERS);
-            srb.setPostFilter(location1).setSize(10);
-            // 获取距离多少公里 这个才是获取点与点之间的距离的
+            srb.setPostFilter(location1).setSize(6);
+            // 按距离排序
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
             sort.order(SortOrder.ASC);
             sort.point(rentHouseQuery.getLat(), rentHouseQuery.getLon());
             srb.addSort(sort);
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
             //小区/公寓
             //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
+            //价格上下浮动20%
+            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
+            }
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
             for (SearchHit hit:searchHists){
@@ -73,6 +78,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                 //获取距离值，并保留两位小数点
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
                 Map<String, Object> hitMap = hit.getSource();
+
                 // 在创建MAPPING的时候，属性名的不可为geoDistance。
                 hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
                 String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.KILOMETERS.toString();//距离
@@ -95,6 +101,10 @@ public class RentHouseServiceImpl implements RentHouseService{
         //出租房源ID
         if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
             boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
+        }
+        //公寓上级ID
+        if (StringUtils.isNotBlank(rentHouseQuery.getApartmentParentId())){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("apartment_parent_id",rentHouseQuery.getApartmentParentId()));
         }
         //是否删除
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));

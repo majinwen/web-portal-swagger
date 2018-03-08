@@ -70,17 +70,15 @@ public class PlotServiceImpl implements PlotService {
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
-            srb.setPostFilter(location1).setSize(5);
+            srb.setPostFilter(location1).setSize(6);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
             sort.unit(DistanceUnit.METERS);
             sort.order(SortOrder.ASC);
-            sort.point(lat, lon);
             srb.addSort(sort);
-            BoolQueryBuilder queryBuilder = null;
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-            SearchResponse searchResponse = srb.setQuery(queryBuilder).execute().actionGet();
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             String[] house = new String[(int) hits.getTotalHits()];

@@ -45,17 +45,17 @@ public class PlotConterller {
     @Autowired
     private MapService mapService;
 
-//    //(查询附近小区和(距离))
-//    @RequestMapping("/fingNearVillageAndDistance")
-//    @ResponseBody
-//    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
-//        List villageList = null;
-//        Double lonx = Double.valueOf(lon);
-//        Double laty = Double.valueOf(lat);
-//        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
-//        model.addAttribute("villageList", villageList);
-//        return "plot-list";
-//    }
+    //(查询附近小区和(距离))
+    @RequestMapping("/fingNearVillageAndDistance")
+    @ResponseBody
+    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
+        List villageList = null;
+        Double lonx = Double.valueOf(lon);
+        Double laty = Double.valueOf(lat);
+        villageList = plotService.GetNearByhHouseAndDistance(laty, lonx);
+        model.addAttribute("villageList", villageList);
+        return "plot-list";
+    }
 
     //根据条件查询小区
     @RequestMapping("")
@@ -203,6 +203,7 @@ public class PlotConterller {
                 //跳转登录页面
                 return NashResult.Fail("no-login","");
             }else {
+                //TODO
                 //保存用户电话(标志)和小区信息
 
             }

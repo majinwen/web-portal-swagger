@@ -8,6 +8,10 @@ import java.util.Map;
 @Data
 public class rentEntity {
     /**
+     * 公寓上级Id
+     */
+    private Integer apartmentParentId;
+    /**
      * 城市编号
      */
     private Integer cityId;
@@ -40,13 +44,13 @@ public class rentEntity {
      */
     private String rentTypeName;
     /**
-     * 出租房源标志
+     * 出租房源标志(出租/公寓)
      */
-    private Integer[] rentSign;
+    private Integer rentSign;
     /**
-     * 出租房源标志名称
+     * 出租房源标志名称(出租/公寓)
      */
-    private String[] rentSignName;
+    private String rentSignName;
     /**
      * 楼盘ID(楼盘/小区)
      */

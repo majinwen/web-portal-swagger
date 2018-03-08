@@ -43,13 +43,25 @@ public class RentHouseController {
         if(rentDetail.getCode().equals("success")){
             Map rentHouse = (Map)rentDetail.getData();
             model.addAttribute("rentHouse",rentHouse);
-
-            RentHouseQuery queryNearHouse = new RentHouseQuery();
-            queryNearHouse.setLat(Double.parseDouble(rentHouse.get("location").toString().split(",")[0]));
-            queryNearHouse.setLon(Double.parseDouble(rentHouse.get("location").toString().split(",")[1]));
-            queryNearHouse.setNearbyKm("3");
             //附近相似好房/好房推荐
-            NashResult NearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
+            RentHouseQuery queryNearHouse = new RentHouseQuery();
+            NashResult nearHouse = new NashResult();
+            nearHouse.setCode("fail");
+            if((Integer) rentHouse.get("Integer")==1){
+                queryNearHouse.setNearbyKm("3");
+                queryNearHouse.setBeginPrice((Double) rentHouse.get("rent_house_price")*0.8);
+                queryNearHouse.setEndPrice((Double) rentHouse.get("rent_house_price")*1.2);
+                queryNearHouse.setLat(Double.parseDouble(rentHouse.get("location").toString().split(",")[0]));
+                queryNearHouse.setLon(Double.parseDouble(rentHouse.get("location").toString().split(",")[1]));
+                nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
+            }else {
+                queryNearHouse.setApartmentParentId((String) rentHouse.get("apartment_parent_id"));
+                nearHouse = rentHouseService.queryHouseById(queryNearHouse);
+            }
+            if (nearHouse.getCode().equals("success")){
+                Map data = (Map) nearHouse.getData();
+                model.addAttribute("nearHouse",data);
+            }
             return null;
         }
         return "404";
@@ -95,7 +107,9 @@ public class RentHouseController {
                 //跳转登录页面
                 return NashResult.Fail("no-login","");
             }else {
+                //TODO
                 //保存用户电话(标志)和房源信息
+
             }
         }
         return null;
