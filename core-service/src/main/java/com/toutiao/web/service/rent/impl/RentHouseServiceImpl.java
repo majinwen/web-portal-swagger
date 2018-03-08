@@ -79,7 +79,7 @@ public class RentHouseServiceImpl implements RentHouseService{
 
                 zufangList = computeZufangList(searchTopRentResponse,rentHouseQuery,keys);
 
-            }else if(topInfo < 10 && topInfo>0){
+            }else if(topInfo < 10 && topInfo > 0){
 
                 zufangList = computeZufangList(searchTopRentResponse,rentHouseQuery,keys);
                 zufangList.add(computeZufangList_1(searchTopRentResponse, rentHouseQuery, client, keys));
