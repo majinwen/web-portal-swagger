@@ -1,22 +1,9 @@
 $(function(){
     var _localHref = window.location.pathname;
 
-    if(_localHref.indexOf('xiaoqu')>0){
-        $('#plot').addClass('current').siblings().removeClass('current');
-        $('.search-container-item').addClass('none');
-        $('#search-plot').removeClass('none');
-    } else if(_localHref.indexOf('esf')>0){
-        $('#erhouse').addClass('current').siblings().removeClass('current');
-        $('.search-container-item').addClass('none');
-        $('#search-erhouse').removeClass('none');
-    }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0){
-        $('#nhouse').addClass('current').siblings().removeClass('current');
-        $('.search-container-item').addClass('none');
-        $('#search-newhouse').removeClass('none');
-    }else {
-        $('.search-container-item').addClass('none');
-        $('#search-index').removeClass('none');
-    }
+    $('.search-container-item').addClass('none');
+    $('#search-index').removeClass('none');
+
 
     var houseTypeChoose = $('.type-menu').find('span.current').index();
 

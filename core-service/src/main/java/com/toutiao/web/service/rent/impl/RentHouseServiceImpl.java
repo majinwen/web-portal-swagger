@@ -60,7 +60,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             sort.point(rentHouseQuery.getLat(), rentHouseQuery.getLon());
             srb.addSort(sort);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            //
+            //小区/公寓
             //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
             //发布状态

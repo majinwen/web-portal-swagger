@@ -96,10 +96,9 @@ public class RentHouseController {
                 return NashResult.Fail("no-login","");
             }else {
                 //保存用户电话(标志)和房源信息
-
             }
         }
-        return  null;
+        return null;
     }
 
 
