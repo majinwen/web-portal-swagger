@@ -95,7 +95,8 @@ public class RentHouseServiceImpl implements RentHouseService{
 
 
     /**
-     * 整合置顶和普通房源集合方法
+     * 整合置顶和普通房源集合方法 1
+     * size == 10
      * @param searchTopRentResponse
      * @return
      */
@@ -115,7 +116,15 @@ public class RentHouseServiceImpl implements RentHouseService{
         return zufanglist;
     }
 
-
+    /**
+     * 整合置顶和普通房源集合方法 2
+     * 10<size<0
+     * @param searchTopRentResponse
+     * @param rentHouseQuery
+     * @param client
+     * @param keys
+     * @return
+     */
     public List computeZufangList_1(SearchResponse searchTopRentResponse, RentHouseQuery rentHouseQuery,
                                     TransportClient client, String keys){
 
@@ -135,6 +144,15 @@ public class RentHouseServiceImpl implements RentHouseService{
         return zufanglist;
     }
 
+    /**
+     * 整合置顶和普通房源集合方法 3
+     * size==0
+     * @param rentHouseQuery
+     * @param client
+     * @param keys
+     * @param top_size
+     * @return
+     */
     public List computeZufangList_2(RentHouseQuery rentHouseQuery,
                                     TransportClient client, String keys, long top_size){
 
@@ -327,7 +345,29 @@ public class RentHouseServiceImpl implements RentHouseService{
 
         Map<String,Object> result = new HashMap<>();
         //声明过滤筛选条件查询方法
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        //关键字
+        if (StringTool.isNotBlank(rentHouseQuery.getKeyword())) {
+            if (StringUtil.isNotNullString(DistrictMap.getDistricts(rentHouseQuery.getKeyword()))) {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("village_name", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("village_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart")));
+            } else if (StringUtil.isNotNullString(AreaMap.getAreas(rentHouseQuery.getKeyword()))) {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("village_name", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()).analyzer("ik_max_word"))
+                        .should(QueryBuilders.matchQuery("village_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2)));
+            } else {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("village_name", rentHouseQuery.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("village_name_search", rentHouseQuery.getKeyword())));
+            }
+        }
 
         //城市
         if(rentHouseQuery.getCityId()!=null && rentHouseQuery.getCityId()!=0){
