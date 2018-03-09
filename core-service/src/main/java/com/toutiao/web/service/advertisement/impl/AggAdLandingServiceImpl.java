@@ -102,7 +102,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
                 .setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
-                                "plotName","forwardName","houseTitle","tagsName","housePlotLocation"},
+                                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName"},
                         null)
                 .setFrom((pageNum-1)*aggAdLandingDo.getPs())
                 .setSize(aggAdLandingDo.getPs())
