@@ -3,13 +3,13 @@
 <head>
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/cpc.css?v=${staticversion}">
-    <title>cpc3</title>
+    <title>头条房产 发现好房</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<a href="http://m.toutiaofangchan.com/bj/esf?=cpc3esf_top_banner&beginPrice=0.0&endPrice=200.0 "><img src="${staticurl}/images/cpc/cpc-page3-banner.png" width="100%" alt="头条房产"></a>
+<a href="http://m.toutiaofangchan.com/bj/esf?=cpc3esf_top_banner&beginPrice=0.0&endPrice=200.0"><img src="${staticurl}/images/cpc/cpc-page3-banner.png" width="100%" alt="头条房产"></a>
 <#if adcpc?exists><section class="recommend-list">
     <ul>
         <#assign listdetail = adcpc['data']>

@@ -3,13 +3,13 @@
 <head>
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/cpc.css?v=${staticversion}">
-    <title>xxl2</title>
+    <title>头条房产 发现好房</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<a href="http://m.toutiaofangchan.com/bj/?=xxl2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png" width="100%" alt="头条房产"></a>
+<a href="http://m.toutiaofangchan.com/bj/?=xxl2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png?v=${staticversion}" width="100%" alt="头条房产"></a>
 <div class="module-bottom-fill">
     <section class="brand-introduction">
         <img class="logo" src="${staticurl}/images/cpc/cpc-page-logo.png" alt="头条房产">
@@ -74,7 +74,7 @@
     <a href="http://m.toutiaofangchan.com/bj/esf?=xxl2esf_all&beginPrice=300.0&endPrice=500.0" class="change-list">查看全部78526套房源 ></a>
 </section></#if>
 <a class="bottom-link-box" href="http://m.toutiaofangchan.com/bj/?=xxl2esf_two">
-    <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/80a5ec258cf84945adaad2b6587c4f9b/bottom-link.jpg" width="100%" alt="发现好房 只要两步">
+    <img src="${staticurl}/images/cpc/bottom-link.png?v=${staticversion}" width="100%" alt="发现好房 只要两步">
 </a>
 <div class="bottom-tips">
     <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/700fba27781845049881eb3c23ae9674/20180209174127.png" alt="上拉进入头条房产">
