@@ -34,9 +34,9 @@ import java.util.Map;
 
 @Service
 public class RentHouseServiceImpl implements RentHouseService{
-//    @Value("${rent.index}")
+    @Value("${tt.rent.index}")
     private String index ;
-//    @Value("${rent.type}")
+    @Value("${tt.rent.type}")
     private String type ;
 
     @Autowired
