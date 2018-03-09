@@ -9,19 +9,7 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<a href="http://m.toutiaofangchan.com/bj/?=cpc2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png?v=${staticversion}" width="100%" alt="头条房产"></a>
-<div class="module-bottom-fill">
-    <section class="brand-introduction">
-        <img class="logo" src="${staticurl}/images/cpc/cpc-page-logo.png" alt="头条房产">
-        <div class="introduction-text">
-            <p>头条房产，现已聚合我爱我家，麦田，中原三大主流经纪公司房源，<em>78526套真房源</em>任您挑选。</p>
-            <p>每天都有新房源上架哦~</p>
-        </div>
-        <div class="go-show-box">
-            <a href="http://m.toutiaofangchan.com/bj/?=cpc2esf_go_show" class="go-show">去看看 ></a>
-        </div>
-    </section>
-</div>
+<a href="http://m.toutiaofangchan.com/bj/?=cpc2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png?v=${staticversion}" width="100%" alt="头条房产" style="margin-bottom:3%;"></a>
 <#if adcpc?exists><section class="recommend-list">
     <ul>
         <#assign listdetail = adcpc['data']>
