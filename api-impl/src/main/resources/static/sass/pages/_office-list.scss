@@ -27,6 +27,112 @@ $textGrayColor: #888;
         height: rem(172);
         padding-left: rem(30);
 
+        .cont-block-top, .cont-block-1 {
+            height: rem(32);
+            line-height: rem(32);
+            @include font-dpr(28);
+            @include text-ellipses;
+
+            .ellipsis {
+                display: inline-block;
+                max-width: rem(188);
+                @include text-ellipses;
+            }
+
+            em {
+                position: relative;
+                top: rem(2);
+                display: inline-block;
+                height: rem(28);
+                line-height: rem(26);
+                padding: 0 rem(12);
+                margin-left: rem(5);
+                @include font-dpr(20);
+                color: #999;
+                border: rem(1) solid $borderRadiusColor;
+                -webkit-border-radius: rem(4);
+                border-radius: rem(4);
+                @include box-sizing;
+                vertical-align: top;
+            }
+        }
+
+        .address, .cont-block-3 {
+            position: relative;
+            margin-top: rem(18);
+            @include text-ellipses;
+
+            .icon {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+            }
+        }
+
+        .address {
+            line-height: rem(26);
+            color: $textGrayColor;
+
+            .icon {
+                width: rem(20);
+                height: rem(24);
+                @include bg-image('../images/rent/rent_list_icon_wz');
+                -webkit-background-size: rem(20) auto;
+                background-size: rem(20) auto;
+            }
+
+            &.distance {
+                padding-left: rem(33);
+            }
+        }
+
+        .cont-block-3 {
+            color: $baseGray;
+
+            .icon {
+                width: rem(21);
+                height: rem(28);
+                @include bg-image('../images/esf/esf_list_icon_wz');
+                -webkit-background-size: rem(21) auto;
+                background-size: rem(21) auto;
+            }
+
+            &.distance {
+                padding-left: rem(31);
+            }
+        }
+
+        .house-labelling {
+            margin-top: rem(18);
+        }
+
+        .cont-block-bottom {
+            position: absolute;
+            bottom: 0;
+            line-height: rem(26);
+            @include text-ellipses;
+            @include font-dpr(30);
+
+            em {
+                @include font-dpr(22);
+            }
+        }
+
+        .cont-block-1, .cont-block-2, .cont-block-3 {
+            @include text-ellipses;
+        }
+
+
+        .cont-block-2 {
+            margin-top: rem(16);
+            color: $baseGray;
+
+            &.plot {
+                width: rem(250);
+            }
+        }
+
         .cont-block-4 {
             position: absolute;
             width: rem(430);
@@ -47,20 +153,20 @@ $textGrayColor: #888;
             bottom: 0;
             line-height: 1.2;
             text-align: right;
-            
+
             em {
                 display: block;
                 @include font-dpr(28);
                 color: $baseRed;
             }
-            
+
             span {
                 display: block;
                 margin-top: rem(8);
                 @include font-dpr(24);
                 color: $textGrayColor;
             }
-            
+
             &.plot {
                 top: rem(44);
                 bottom: auto;
@@ -68,69 +174,7 @@ $textGrayColor: #888;
         }
     }
 
-    .cont-block-1, .cont-block-2, .cont-block-3 {
-        @include text-ellipses;
-    }
 
-    .cont-block-1 {
-        height: rem(32);
-        line-height: rem(32);
-        @include font-dpr(28);
-
-        .ellipsis {
-            display: inline-block;
-            max-width: rem(188);
-            @include text-ellipses;
-        }
-
-        em {
-            position: relative;
-            top: rem(2);
-            display: inline-block;
-            height: rem(28);
-            line-height: rem(26);
-            padding: 0 rem(12);
-            margin-left: rem(5);
-            @include font-dpr(20);
-            color: #999;
-            border: rem(1) solid $borderRadiusColor;
-            -webkit-border-radius: rem(4);
-                    border-radius: rem(4);
-            @include box-sizing;
-            vertical-align: top;
-        }
-    }
-
-    .cont-block-2 {
-        margin-top: rem(16);
-        color: $baseGray;
-
-        &.plot {
-            width: rem(250);
-        }
-    }
-
-    .cont-block-3 {
-        position: relative;
-        margin-top: rem(16);
-        color: $baseGray;
-
-        .icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: block;
-            width: rem(21);
-            height: rem(28);
-            @include bg-image('../images/esf/esf_list_icon_wz');
-            -webkit-background-size: rem(21) auto;
-            background-size: rem(21) auto;
-        }
-
-        &.distance {
-            padding-left: rem(31);
-        }
-    }
 
     &.new {
         .cont-block-1 {

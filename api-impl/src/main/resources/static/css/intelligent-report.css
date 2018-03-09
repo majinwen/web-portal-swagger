@@ -198,6 +198,12 @@ body {
       font-size: 30px; }
     .house-labelling span:last-child {
       margin-right: 0; }
+  .house-labelling.big {
+    height: 0.4266666667rem; }
+    .house-labelling.big span {
+      height: 0.4266666667rem;
+      line-height: 0.4rem;
+      box-sizing: border-box; }
 
 .hidden {
   overflow: hidden; }

@@ -1,0 +1,121 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../pages/detail-header-banner";
+@import "../pages/detail-primary";
+@import "../pages/tilelist-piece";
+@import "../base/detail-contact";
+@import "../pages/office-list";
+
+
+.carousel-swiper {
+    position: relative;
+    height: rem(470);
+
+    .banner-title {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: rem(50);
+        padding: 0 rem(30);
+        z-index: 99;
+        @include box-sizing;
+        color: $baseWhite;
+
+        div {
+            display: inline-block;
+            height: rem(33);
+            line-height: rem(33);
+            @include font-dpr(20);
+            padding: 0 rem(16);
+            background-color: rgba(95,103,137,0.8);
+
+            &.banner-house-number {
+                -webkit-border-radius: rem(6);
+                -moz-border-radius: rem(6);
+                border-radius: rem(6);
+            }
+
+            &.pictrue-index {
+                position: relative;
+                bottom: 0;
+                width: auto;
+                float: right;
+                -webkit-border-radius: rem(16);
+                -moz-border-radius: rem(16);
+                border-radius: rem(16);
+            }
+        }
+
+    }
+
+    img {
+        width: 100%;
+    }
+}
+
+.describe-box {
+    padding: rem(40) rem(30);
+    
+    .describe-header {
+        height: rem(80);
+        margin-bottom: rem(28);
+        
+        .source-icon {
+            display: inline-block;
+            width: auto;
+            height: rem(80);
+            vertical-align: top;
+        }
+        
+        p {
+            position: relative;
+            display: inline-block;
+            height: rem(80);
+            margin-left: rem(20);
+            white-space: nowrap;
+            
+            em {
+                position: absolute;
+                display: block;
+                bottom: 0;
+                color: #999;
+                @include font-dpr(22);
+            }
+            
+            span {
+                display: block;
+                position: absolute;
+                left: rem(-10);
+                @include font-dpr(32);
+            }
+        }
+        
+        .issuer-tel-icon {
+            display: block;
+            float: right;
+            width: rem(60);
+            height: rem(80);
+            @include bg-image('../images/global/red_icon_phone');
+            -webkit-background-size: contain;
+            background-size: contain;
+            background-position: center;
+        }
+    }
+    
+    .describe-cont {
+        position: relative;
+        @include font-dpr(26);
+        line-height: rem(40);
+        text-align: justify;
+        
+        .describe-show-btn {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            color: #999;
+            margin-left: rem(20);
+            white-space: nowrap;
+        }
+    }
+}
+
