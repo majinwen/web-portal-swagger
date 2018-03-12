@@ -71,8 +71,10 @@ public class RentHouseController {
 
             //房源经纪人
             Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
-            List agentList = (List) agent.get("agent");
-            model.addAttribute("agentList",agentList);
+            if (agent!=null){
+                List agentList = (List) agent.get("agent");
+                model.addAttribute("agentList",agentList);
+            }
 
             return "/rent/rent-detail";
         }

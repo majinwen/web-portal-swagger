@@ -90,15 +90,17 @@ public class RentHouseServiceImpl implements RentHouseService{
             }
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
-            for (SearchHit hit:searchHists){
-                Map source = hit.getSource();
-                if (!"0.0".equals(hit.getSortValues()[0].toString())){
-                    list.add(source);
+            if(searchHists.length>0){
+                for (SearchHit hit:searchHists){
+                    Map source = hit.getSource();
+                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                        list.add(source);
+                    }
                 }
+                result.put("nearHouse",list);
+                result.put("total",searchResponse.getHits().getTotalHits());
+                return result;
             }
-            result.put("nearHouse",list);
-            result.put("total",searchResponse.getHits().getTotalHits());
-            return result;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -126,8 +128,10 @@ public class RentHouseServiceImpl implements RentHouseService{
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
             SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = response.getHits().getHits();
-            Map source = searchHists[0].getSource();
-            return source;
+            if(searchHists.length>0){
+                Map source = searchHists[0].getSource();
+                return source;
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -162,15 +166,17 @@ public class RentHouseServiceImpl implements RentHouseService{
             srb.setSize(6);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
-            for (SearchHit hit:hits){
-                Map source = hit.getSource();
-                if (!"0.0".equals(hit.getSortValues()[0].toString())){
-                    list.add(source);
+            if (hits.length>0){
+                for (SearchHit hit:hits){
+                    Map source = hit.getSource();
+                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                        list.add(source);
+                    }
                 }
+                result.put("nearHouse",list);
+                result.put("total",searchResponse.getHits().getTotalHits());
+                return result;
             }
-            result.put("nearHouse",list);
-            result.put("total",searchResponse.getHits().getTotalHits());
-            return result;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -193,12 +199,14 @@ public class RentHouseServiceImpl implements RentHouseService{
             boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
-            for (SearchHit hit:hits){
-                Map source = hit.getSource();
-                list.add(source);
+            if (hits.length>0){
+                for (SearchHit hit:hits){
+                    Map source = hit.getSource();
+                    list.add(source);
+                }
+                result.put("agent",list);
+                return result;
             }
-            result.put("agent",list);
-            return result;
         }catch (Exception e){
             e.printStackTrace();
         }
