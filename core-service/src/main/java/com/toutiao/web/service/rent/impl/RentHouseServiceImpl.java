@@ -23,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -455,8 +452,8 @@ public class RentHouseServiceImpl implements RentHouseService{
             String[] tag = rentHouseQuery.getTags().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", tag));
         }
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("is_del", IS_DEL));
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("release_status", RELEASE_STATUS));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
         result.put("booleanQueryBuilder",booleanQueryBuilder);
         result.put("location",location);
         result.put("geoDistanceSort",geoDistanceSort);
