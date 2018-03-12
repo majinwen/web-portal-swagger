@@ -44,74 +44,89 @@
                 <div class="price-list">
                     <ul>
                         <li data-begin-price="" data-end-price="" class="current">不限</li>
-                        <li data-begin-price="0.0" data-end-price="20000.0">2万元以下</li>
-                        <li data-begin-price="20000.0" data-end-price="30000.0">2-3万元</li>
-                        <li data-begin-price="30000.0" data-end-price="40000.0">3-4万元</li>
-                        <li data-begin-price="40000.0" data-end-price="60000.0">4-6万元</li>
-                        <li data-begin-price="60000.0" data-end-price="80000.0">6-8万元</li>
-                        <li data-begin-price="80000.0" data-end-price="2000000000.0">8万元以上</li>
+                        <li data-begin-price="0.0" data-end-price="2000.0">2000以下</li>
+                        <li data-begin-price="2000.0" data-end-price="3000.0">2000-3000元</li>
+                        <li data-begin-price="3000.0" data-end-price="4000.0">3000-4000元</li>
+                        <li data-begin-price="4000.0" data-end-price="5000.0">4000-5000元</li>
+                        <li data-begin-price="5000.0" data-end-price="8000.0">5000-8000元</li>
+                        <li data-begin-price="8000.0" data-end-price="2000000000.0">8000元以上</li>
                     </ul>
                 </div>
             </div>
             <!-- 楼龄 -->
             <div class="filter-item" data-mark="panel-age">
-                <div class="age-list">
-                    <ul>
-                        <li class="current" data-info="">不限</li>
-                        <li data-info="[0-5]">5年内</li>
-                        <li data-info="[0-10]">10年内</li>
-                        <li data-info="[0-15]">15年内</li>
-                        <li data-info="[0-20]">20年内</li>
-                        <li data-info="[20-120]">20年以上</li>
-                    </ul>
+                <div class="more-list">
+                    <dl>
+                        <dt class="text-center" data-type="propertyTypeId">整租</dt>
+                        <dd>
+                            <span data-info="1">不限</span>
+                            <span data-info="1">一居</span>
+                            <span data-info="2">二居</span>
+                            <span data-info="2">三居</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt class="text-center" data-type="houseAreaSize">合租</dt>
+                        <dd>
+                            <span data-info="1">不限</span>
+                            <span data-info="1">一居</span>
+                            <span data-info="2">二居</span>
+                            <span data-info="2">三居+</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="submit-wrapper">
+                    <a href="javascript:;" class="operation-button more-reset" id="moreRentReset">重置</a>
+                    <a href="javascript:;" class="operation-button more-submit" id="moreRentSubmit">确定</a>
                 </div>
             </div>
             <!-- 更多 -->
             <div class="filter-item" data-mark="panel-more">
                 <div class="more-list">
                     <dl>
-                        <dt data-type="propertyTypeId">物业类型</dt>
+                        <dt data-type="propertyTypeId">来源</dt>
                         <dd>
-                            <span data-info="1">住宅</span>
-                            <span data-info="2">别墅</span>
+                            <span data-info="1">经纪人</span>
+                            <span data-info="2">乐乎公寓</span>
+                            <span data-info="2">美丽遇</span>
+                            <span data-info="2">青遇home</span>
+                            <span data-info="2">大象公寓</span>
                         </dd>
                     </dl>
                     <dl>
                         <dt data-type="houseAreaSize">面积</dt>
                         <dd>
-                            <span data-info="[0-60]">60平以下</span>
-                            <span data-info="[60-90]">60-90平</span>
-                            <span data-info="[90-110]">90-110平</span>
-                            <span data-info="[110-130]">110-130平</span>
-                            <span data-info="[130-150]">130-150平</span>
-                            <span data-info="[150-200]">150-200平</span>
-                            <span data-info="[200-10000]">200平以上</span>
+                            <span data-info="[0-20]">20㎡以下</span>
+                            <span data-info="[20-40]">20-40㎡</span>
+                            <span data-info="[40-60]">40-60㎡</span>
+                            <span data-info="[60-80]">60-80㎡</span>
+                            <span data-info="[80-100]">80-100㎡</span>
+                            <span data-info="[100-10000]">100㎡以上</span>
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="elevatorFlag">电梯</dt>
+                        <dt data-type="elevatorFlag">朝向</dt>
                         <dd>
-                            <span class="only" data-info="1">有</span>
-                            <span class="only" data-info="0">无</span>
+                            <span data-info="1">东</span>
+                            <span data-info="0">西</span>
+                            <span data-info="0">南</span>
+                            <span data-info="0">北</span>
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="buildingType">建筑类型</dt>
+                        <dt data-type="buildingType">供暖</dt>
                         <dd>
-                            <span data-info="1">板楼</span>
-                            <span data-info="2">塔楼</span>
-                            <span data-info="3">板塔结合</span>
+                            <span data-info="1">集体供暖</span>
+                            <span data-info="2">自供暖</span>
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="buildingFeature">楼盘特色</dt>
+                        <dt data-type="buildingFeature">特色</dt>
                         <dd>
-                            <span data-info="1">别墅</span>
-                            <span data-info="2">花园洋房</span>
-                            <span data-info="3">近地铁</span>
-                            <span data-info="4">车位充足</span>
-                            <span data-info="9">500强房企</span>
-                            <span data-info="6">高绿化</span>
+                            <span data-info="1">近地铁</span>
+                            <span data-info="2">免佣</span>
+                            <span data-info="3">供暖方式</span>
+                            <span data-info="4">有电梯</span>
                         </dd>
                     </dl>
                 </div>
