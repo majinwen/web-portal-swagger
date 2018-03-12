@@ -45,6 +45,8 @@ public class RentHouseServiceImpl implements RentHouseService{
     private String rentIndex;
     @Value("${tt.zufang.rent.type}")
     private String rentType;
+    private static final Integer IS_DEL = 0;//房源未删除 0-未删除
+    private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
 
 
 
@@ -310,7 +312,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         //获取公共筛选条件
         Map<String,Object> filter = getFilterCondition(rentHouseQuery);
 
-        booleanQueryBuilder = (BoolQueryBuilder) filter.get("booleanQueryBuilder");
+        booleanQueryBuilder = booleanQueryBuilder.must((BoolQueryBuilder) filter.get("booleanQueryBuilder"));
         GeoDistanceQueryBuilder location = (GeoDistanceQueryBuilder) filter.get("location");
         GeoDistanceSortBuilder geoDistanceSort = (GeoDistanceSortBuilder) filter.get("geoDistanceSort");
 
@@ -406,8 +408,8 @@ public class RentHouseServiceImpl implements RentHouseService{
 
         //总价
         if(rentHouseQuery.getBeginPrice()!=null && rentHouseQuery.getEndPrice()!=0){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("rent_house_price")
-                    .gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice())));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+                    .gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
         }
         //租赁方式
         if(rentHouseQuery.getRt()!=null && rentHouseQuery.getRt()!=0){
@@ -453,7 +455,8 @@ public class RentHouseServiceImpl implements RentHouseService{
             String[] tag = rentHouseQuery.getTags().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", tag));
         }
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("is_del", "0"));
+        booleanQueryBuilder.must(QueryBuilders.termsQuery("is_del", IS_DEL));
+        booleanQueryBuilder.must(QueryBuilders.termsQuery("release_status", RELEASE_STATUS));
         result.put("booleanQueryBuilder",booleanQueryBuilder);
         result.put("location",location);
         result.put("geoDistanceSort",geoDistanceSort);
