@@ -138,7 +138,7 @@ public class RentHouseController {
 //        return "newhouse/new-index";
 //    }
 
-    @RequestMapping("/list")
+    @RequestMapping("/rent")
     @ResponseBody
     public NashResult queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
 
