@@ -4,7 +4,7 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css?v=${staticversion}">
-    <title>智能找楼</title>
+    <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
@@ -17,7 +17,7 @@
     <div class="section page1 active">
         <div class="bgbox bg1"></div>
         <div class="page-content">
-            <h1>智能找楼</h1>
+            <h1>懂房帝</h1>
             <p>大数据算法为您智能匹配所需房源<br>5千余个小区，3万余套房源，现已准备就绪<br>好房子 来找你</p>
             <button type="button" class="button begin">立即开启</button>
         </div>

@@ -17,13 +17,13 @@
         <span>1</span>
         <div class="tips-content">
             <h3>报告从哪里来？</h3>
-            <p>快去体验智能找楼，获取您的专属理想家分析报告。</p>
+            <p>快去体验懂房帝，获取您的专属理想家分析报告。</p>
         </div>
     </div>
     <div class="tips-content-wrapper mt">
         <span>2</span>
         <div class="tips-content">
-            <h3>智能找楼是什么？</h3>
+            <h3>懂房帝是什么？</h3>
             <p>头条房产大数据，为您匹配专属理想家。</p>
         </div>
     </div>
