@@ -139,21 +139,6 @@ public class RentHouseController {
 //        return "newhouse/new-index";
 //    }
 
-    /**
-     * 租房分页
-     * @param rentHouseQuery
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = {""},produces="application/json")
-    @ResponseBody
-    public NashResult rentPage(RentHouseQuery rentHouseQuery){
-        Map rentHouseList = rentHouseService.getRentHouseList(rentHouseQuery);
-        if (rentHouseList!=null){
-            return NashResult.build(rentHouseList.get("data"));
-        }
-        return NashResult.Fail("");
-    };
 
     @RequestMapping("/list")
     @ResponseBody
