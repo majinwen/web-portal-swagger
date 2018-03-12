@@ -55,8 +55,10 @@ public class RentHouseServiceImpl implements RentHouseService{
             sort.unit(DistanceUnit.KILOMETERS);
             sort.order(SortOrder.ASC);
             srb.addSort(sort);
-
             //小区/公寓
+            if (rentHouseQuery.getRentSign()==1){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("rent_sign",1));
+            }
             //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
             //发布状态
@@ -118,6 +120,8 @@ public class RentHouseServiceImpl implements RentHouseService{
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
         //发布状态
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        //小区/公寓
+        boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",0));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
         SearchHit[] hits = searchResponse.getHits().getHits();
         if(hits.length>0){

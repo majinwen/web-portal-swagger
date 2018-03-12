@@ -101,4 +101,8 @@ public class RentHouseQuery {
      *
      */
     private String nearbyKm;
+    /**
+     * 小区公寓标志
+     */
+    private Integer rentSign;
 }

@@ -49,6 +49,7 @@ public class RentHouseController {
             //附近相似好房/好房推荐
             if((Integer) rentHouse.get("rent_sign")==1){
                 queryNearHouse.setNearbyKm("3");
+                queryNearHouse.setRentSign(1);
                 queryNearHouse.setBeginPrice((Double) rentHouse.get("rent_house_price")*0.8);
                 queryNearHouse.setEndPrice((Double) rentHouse.get("rent_house_price")*1.2);
                 queryNearHouse.setLat(Double.parseDouble(rentHouse.get("location").toString().split(",")[0]));
