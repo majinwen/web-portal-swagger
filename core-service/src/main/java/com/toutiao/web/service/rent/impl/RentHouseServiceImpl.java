@@ -25,10 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -395,7 +392,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             pageNum = rentHouseQuery.getPageNum();
         }
 
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        BoolQueryBuilder booleanQueryBuilder=QueryBuilders.boolQuery();;
 
         //置顶数据只根据区域、商圈确定
         List<String> topKeywords = new ArrayList<>();
@@ -511,11 +508,11 @@ public class RentHouseServiceImpl implements RentHouseService{
         GeoDistanceQueryBuilder location = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
         if(StringUtil.isNotNullString(rentHouseQuery.getNear())){
-            location = QueryBuilders.geoDistanceQuery("housePlotLocation")
+            location = QueryBuilders.geoDistanceQuery("location")
                     .point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear()
                             , DistanceUnit.KILOMETERS);
 
-            geoDistanceSort = SortBuilders.geoDistanceSort("housePlotLocation", rentHouseQuery.getLat(),
+            geoDistanceSort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(),
                     rentHouseQuery.getLon());
             geoDistanceSort.unit(DistanceUnit.KILOMETERS);
             geoDistanceSort.order(SortOrder.ASC);
@@ -533,8 +530,9 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         //户型
         if(StringUtil.isNotNullString(rentHouseQuery.getLo())){
-            String[] layoutId = rentHouseQuery.getLo().split(",");
-            booleanQueryBuilder.must(termQuery("room", layoutId));
+            String[] room = rentHouseQuery.getLo().split(",");
+//            int[] ints= Arrays.stream(layoutId).mapToInt(Integer::valueOf).toArray();
+            booleanQueryBuilder.must(termsQuery("room", room));
         }
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
