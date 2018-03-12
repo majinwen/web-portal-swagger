@@ -1,5 +1,6 @@
 package com.toutiao.web.apiimpl.impl.advertisement;
 
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.service.advertisement.AdvertisementLandingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/{citypath}/ad")
+@RequestMapping("/ad")
 public class AdvertisementLandingController {
 
 
@@ -24,38 +25,39 @@ public class AdvertisementLandingController {
 
     //提升核心页pv】cpc广告3
     @RequestMapping("/cpc3")
-    public String advertisementCpc3(Model model) {
+    @ResponseBody
+    public NashResult advertisementCpc3() {
         Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_3();
-        model.addAttribute("adcpc",advertisementResult);
-        return "/cpc/cpcPage3";
+
+        return NashResult.build(advertisementResult.get("data"));
     }
 
 
     //提升核心页pv】cpc广告1
     @RequestMapping("/cpc2")
-    public String advertisementCpc1(Model model) {
+    @ResponseBody
+    public NashResult advertisementCpc1() {
         Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
-        model.addAttribute("adcpc",advertisementResult);
-        return "/cpc/cpcPage2";
+
+        return NashResult.build(advertisementResult.get("data"));
     }
 
 
 
     //提升核心页pv】cpc广告3
     @RequestMapping("/xxl3")
-    public String advertisementXxl3(Model model) {
+    @ResponseBody
+    public NashResult advertisementXxl3() {
         Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_3();
-        model.addAttribute("adcpc",advertisementResult);
-        return "/xxl/xxlPage3";
+        return NashResult.build(advertisementResult.get("data"));
     }
 
 
     //提升核心页pv】cpc广告1
     @RequestMapping("/xxl2")
-    public String advertisementXxl1(Model model) {
+    public NashResult advertisementXxl1() {
         Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
-        model.addAttribute("adcpc",advertisementResult);
-        return "/xxl/xxlPage2";
+        return NashResult.build(advertisementResult.get("data"));
     }
 
 
