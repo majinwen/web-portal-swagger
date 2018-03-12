@@ -45,6 +45,10 @@ public class RentHouseServiceImpl implements RentHouseService{
     private String rentIndex;
     @Value("${tt.zufang.rent.type}")
     private String rentType;
+    @Value("${tt.zufang.agent.index}")
+    private String agentIndex;
+    @Value("${tt.zufang.agent.type}")
+    private String agentType;
     private static final Integer IS_DEL = 0;//房源未删除 0-未删除
     private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
     private static final Integer RENT = 1;//出租:1
@@ -166,6 +170,34 @@ public class RentHouseServiceImpl implements RentHouseService{
             }
             result.put("nearHouse",list);
             result.put("total",searchResponse.getHits().getTotalHits());
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 根据房源的id查询该房源所有的经纪人
+     * @param houseId
+     * @return
+     */
+    @Override
+    public Map queryAgentByHouseId(String houseId) {
+        Map result = new HashMap();
+        List list = new ArrayList();
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(agentIndex).setTypes(agentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            for (SearchHit hit:hits){
+                Map source = hit.getSource();
+                list.add(source);
+            }
+            result.put("agent",list);
             return result;
         }catch (Exception e){
             e.printStackTrace();

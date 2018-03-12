@@ -40,11 +40,11 @@ public class RentHouseController {
      */
     @RequestMapping("/{houseId}.html")
     public String rentDetail(RentHouseQuery rentHouseQuery, Model model){
-        RentHouseQuery queryNearHouse = new RentHouseQuery();
+        //房源详情
         Map map = rentHouseService.queryHouseById(rentHouseQuery);
         if(map!=null){
             model.addAttribute("rentHouse",map);
-
+            RentHouseQuery queryNearHouse = new RentHouseQuery();
             //附近相似好房/好房推荐
             if((Integer) map.get("rent_sign")==1){
                 queryNearHouse.setNear("3");
@@ -68,6 +68,12 @@ public class RentHouseController {
                 //小区待租房源总数
                 model.addAttribute("total",nearHouse.get("total"));
             }
+
+            //房源经纪人
+            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
+            List agentList = (List) agent.get("agent");
+            model.addAttribute("agentList",agentList);
+
             return "/rent/rent-detail";
         }
         return "404";
