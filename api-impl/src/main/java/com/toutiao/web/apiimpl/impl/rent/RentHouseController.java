@@ -65,6 +65,7 @@ public class RentHouseController {
                 List list = rentHouseService.queryHouseByparentId(queryNearHouse);
                 if (list!=null&&list.size()>0){
                     model.addAttribute("nearHouse",list);
+
                 }
                 //小区待租房源总数
                 String total = rentHouseService.queryHouseNumByparentId((Integer) rentHouse.get("apartment_parent_id"));

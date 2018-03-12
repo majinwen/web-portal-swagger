@@ -54,7 +54,6 @@ public class RentHouseServiceImpl implements RentHouseService{
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
             sort.order(SortOrder.ASC);
-            sort.point(rentHouseQuery.getLat(), rentHouseQuery.getLon());
             srb.addSort(sort);
 
             //小区/公寓
@@ -70,7 +69,9 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchHit[] searchHists = searchResponse.getHits().getHits();
             for (SearchHit hit:searchHists){
                 Map source = hit.getSource();
-                list.add(source);
+                if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                    list.add(source);
+                }
             }
             return list;
         }catch (Exception e){
