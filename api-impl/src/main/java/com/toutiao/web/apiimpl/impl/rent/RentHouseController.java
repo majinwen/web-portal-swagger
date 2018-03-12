@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,29 +40,38 @@ public class RentHouseController {
      */
     @RequestMapping("/{houseId}.html")
     public String rentDetail(RentHouseQuery rentHouseQuery, Model model){
+        RentHouseQuery queryNearHouse = new RentHouseQuery();
         NashResult rentDetail = rentHouseService.queryHouseById(rentHouseQuery);
         if(rentDetail.getCode().equals("success")){
             Map rentHouse = (Map)rentDetail.getData();
             model.addAttribute("rentHouse",rentHouse);
+
             //附近相似好房/好房推荐
-            RentHouseQuery queryNearHouse = new RentHouseQuery();
-            NashResult nearHouse = new NashResult();
-            nearHouse.setCode("fail");
-            if((Integer) rentHouse.get("Integer")==1){
+            if((Integer) rentHouse.get("rent_sign")==1){
                 queryNearHouse.setNearbyKm("3");
                 queryNearHouse.setBeginPrice((Double) rentHouse.get("rent_house_price")*0.8);
                 queryNearHouse.setEndPrice((Double) rentHouse.get("rent_house_price")*1.2);
                 queryNearHouse.setLat(Double.parseDouble(rentHouse.get("location").toString().split(",")[0]));
                 queryNearHouse.setLon(Double.parseDouble(rentHouse.get("location").toString().split(",")[1]));
-                nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
+                List nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
+                if (nearHouse!=null&&nearHouse.size()>0){
+                    model.addAttribute("nearHouse",nearHouse);
+                }
+                //小区待租房源总数
+                String total = rentHouseService.queryHouseNumByparentId((Integer) rentHouse.get("house_id"));
+                model.addAttribute("total",total);
             }else {
                 queryNearHouse.setApartmentParentId((String) rentHouse.get("apartment_parent_id"));
-                nearHouse = rentHouseService.queryHouseById(queryNearHouse);
+                List list = rentHouseService.queryHouseByparentId(queryNearHouse);
+                if (list!=null&&list.size()>0){
+                    model.addAttribute("nearHouse",list);
+                }
+                //小区待租房源总数
+                String total = rentHouseService.queryHouseNumByparentId((Integer) rentHouse.get("apartment_parent_id"));
+                model.addAttribute("total",total);
             }
-            if (nearHouse.getCode().equals("success")){
-                Map data = (Map) nearHouse.getData();
-                model.addAttribute("nearHouse",data);
-            }
+
+            //TODO
             return null;
         }
         return "404";

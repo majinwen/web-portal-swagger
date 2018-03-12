@@ -4,7 +4,6 @@ import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.query.RentHouseQuery;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -12,8 +11,12 @@ import java.util.Map;
  *
  */
 public interface RentHouseService {
-    NashResult queryNearHouseByDistance(RentHouseQuery rentHouseQuery);
+    List queryNearHouseByDistance(RentHouseQuery rentHouseQuery);
 
     NashResult queryHouseById(RentHouseQuery rentHouseQuery);
+
+    List queryHouseByparentId(RentHouseQuery rentHouseQuery);
+
+    String queryHouseNumByparentId(Integer parentId);
 
 }

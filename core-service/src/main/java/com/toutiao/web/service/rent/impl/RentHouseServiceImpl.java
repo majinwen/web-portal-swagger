@@ -13,7 +13,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -21,9 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +41,8 @@ public class RentHouseServiceImpl implements RentHouseService{
 
 
     @Override
-    public NashResult queryNearHouseByDistance(RentHouseQuery rentHouseQuery) {
+    public List queryNearHouseByDistance(RentHouseQuery rentHouseQuery) {
         List list = new ArrayList();
-        Map result = new HashMap();
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
@@ -75,22 +71,12 @@ public class RentHouseServiceImpl implements RentHouseService{
             for (SearchHit hit:searchHists){
                 Map source = hit.getSource();
                 list.add(source);
-                //获取距离值，并保留两位小数点
-                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-                Map<String, Object> hitMap = hit.getSource();
-
-                // 在创建MAPPING的时候，属性名的不可为geoDistance。
-                hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-                String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.KILOMETERS.toString();//距离
-                //System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
-            result.put("rent",list);
-            result.put("total",searchResponse.getHits().getTotalHits());
-            return NashResult.build(result);
+            return list;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return NashResult.Fail("");
+        return null;
     }
 
     @Override
@@ -101,10 +87,6 @@ public class RentHouseServiceImpl implements RentHouseService{
         //出租房源ID
         if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
             boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
-        }
-        //公寓上级ID
-        if (StringUtils.isNotBlank(rentHouseQuery.getApartmentParentId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("apartment_parent_id",rentHouseQuery.getApartmentParentId()));
         }
         //是否删除
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
@@ -118,5 +100,51 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         return NashResult.Fail("");
     }
+
+    @Override
+    public List queryHouseByparentId(RentHouseQuery rentHouseQuery) {
+        List list = new ArrayList();
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //上级公寓ID
+        if (StringUtils.isNotBlank(rentHouseQuery.getApartmentParentId())){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("apartment_parent_id",rentHouseQuery.getApartmentParentId()));
+        }
+        //按价格由低到高排序
+        srb.addSort("rent_house_price",SortOrder.ASC);
+        //是否删除
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+        //发布状态
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if(hits.length>0){
+            for (SearchHit hit:hits){
+                Map source = hit.getSource();
+                list.add(source);
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public String queryHouseNumByparentId(Integer parentId) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //上级公寓ID
+        if (parentId>0){
+            boolQueryBuilder.must(QueryBuilders.termQuery("apartment_parent_id",parentId));
+        }
+        //是否删除
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+        //发布状态
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+        String totalHits = String.valueOf(searchResponse.getHits().getTotalHits());
+        return totalHits;
+    }
+
 
 }
