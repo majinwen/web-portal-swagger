@@ -276,7 +276,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             pageNum = rentHouseQuery.getPageNum();
         }
 
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        BoolQueryBuilder booleanQueryBuilder=QueryBuilders.boolQuery();;
 
         //置顶数据只根据区域、商圈确定
         List<String> topKeywords = new ArrayList<>();
@@ -415,7 +415,8 @@ public class RentHouseServiceImpl implements RentHouseService{
         //户型
         if(StringUtil.isNotNullString(rentHouseQuery.getLo())){
             String[] layoutId = rentHouseQuery.getLo().split(",");
-            booleanQueryBuilder.must(termQuery("room", layoutId));
+            int[] ints= Arrays.stream(layoutId).mapToInt(Integer::valueOf).toArray();
+            booleanQueryBuilder.must(termQuery("room", ints));
         }
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
