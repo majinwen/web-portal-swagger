@@ -57,7 +57,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             srb.addSort(sort);
             //小区/公寓
             if (rentHouseQuery.getRentSign()==1){
-                boolQueryBuilder.must(QueryBuilders.termsQuery("rent_sign",1));
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",1));
             }
             //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
