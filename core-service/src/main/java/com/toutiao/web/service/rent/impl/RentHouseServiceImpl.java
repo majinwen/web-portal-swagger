@@ -392,11 +392,11 @@ public class RentHouseServiceImpl implements RentHouseService{
         GeoDistanceQueryBuilder location = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
         if(StringUtil.isNotNullString(rentHouseQuery.getNear())){
-            location = QueryBuilders.geoDistanceQuery("housePlotLocation")
+            location = QueryBuilders.geoDistanceQuery("location")
                     .point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear()
                             , DistanceUnit.KILOMETERS);
 
-            geoDistanceSort = SortBuilders.geoDistanceSort("housePlotLocation", rentHouseQuery.getLat(),
+            geoDistanceSort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(),
                     rentHouseQuery.getLon());
             geoDistanceSort.unit(DistanceUnit.KILOMETERS);
             geoDistanceSort.order(SortOrder.ASC);
@@ -414,9 +414,9 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         //户型
         if(StringUtil.isNotNullString(rentHouseQuery.getLo())){
-            String[] layoutId = rentHouseQuery.getLo().split(",");
-            int[] ints= Arrays.stream(layoutId).mapToInt(Integer::valueOf).toArray();
-            booleanQueryBuilder.must(termQuery("room", ints));
+            String[] room = rentHouseQuery.getLo().split(",");
+//            int[] ints= Arrays.stream(layoutId).mapToInt(Integer::valueOf).toArray();
+            booleanQueryBuilder.must(termsQuery("room", room));
         }
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
