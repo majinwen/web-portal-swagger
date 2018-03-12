@@ -1,0 +1,241 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../pages/detail-header-banner";
+@import "../pages/detail-primary";
+@import "../pages/tilelist-piece";
+@import "../base/detail-contact";
+@import "../pages/office-list";
+
+
+.carousel-swiper {
+    position: relative;
+    height: rem(470);
+
+    .banner-title {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: rem(50);
+        padding: 0 rem(30);
+        z-index: 99;
+        @include box-sizing;
+        color: $baseWhite;
+
+        div {
+            display: inline-block;
+            height: rem(33);
+            line-height: rem(33);
+            @include font-dpr(20);
+            padding: 0 rem(16);
+            background-color: rgba(95,103,137,0.8);
+
+            &.banner-house-number {
+                -webkit-border-radius: rem(6);
+                -moz-border-radius: rem(6);
+                border-radius: rem(6);
+            }
+
+            &.pictrue-index {
+                position: relative;
+                bottom: 0;
+                width: auto;
+                float: right;
+                -webkit-border-radius: rem(16);
+                -moz-border-radius: rem(16);
+                border-radius: rem(16);
+            }
+        }
+
+    }
+
+    img {
+        width: 100%;
+    }
+}
+
+.describe-box {
+    padding: rem(40) rem(30);
+
+    .describe-header {
+        height: rem(80);
+        margin-bottom: rem(28);
+
+        .source-icon {
+            display: inline-block;
+            width: auto;
+            height: rem(80);
+            vertical-align: top;
+        }
+
+        p {
+            position: relative;
+            display: inline-block;
+            height: rem(80);
+            margin-left: rem(20);
+            white-space: nowrap;
+
+            em {
+                position: absolute;
+                display: block;
+                bottom: 0;
+                color: #999;
+                @include font-dpr(22);
+            }
+
+            span {
+                display: block;
+                position: absolute;
+                left: rem(-10);
+                @include font-dpr(32);
+            }
+        }
+
+        .issuer-tel-icon {
+            display: block;
+            float: right;
+            width: rem(60);
+            height: rem(80);
+            @include bg-image('../images/global/red_icon_phone');
+            -webkit-background-size: contain;
+            background-size: contain;
+            background-position: center;
+        }
+    }
+
+    .describe-cont {
+        position: relative;
+        @include font-dpr(26);
+        line-height: rem(40);
+        text-align: justify;
+
+        .describe-show-btn {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            color: #999;
+            margin-left: rem(20);
+            white-space: nowrap;
+        }
+    }
+}
+
+.primary-message {
+    .primary-header {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: rem(30);
+        margin-right: rem(30);
+    }
+}
+
+.module-header-message {
+    padding: 0;
+    margin: 0 rem(30);
+    border-bottom: none;
+
+    .more-arrows {
+        right: 0;
+    }
+}
+
+.tilelist {
+    &.row {
+        padding-top: 0;
+        li {
+            .tilelist-content {
+                @include font-dpr(24);
+                h4 {
+                    @include font-dpr(24);
+                }
+                em {
+                    color: #888;
+                }
+
+                p {
+                    em {
+                        color: #888;
+
+                        &.link {
+                            color: #2a8ad5;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.border-box {
+    margin-left: rem(30);
+    margin-right: rem(30);
+    border-bottom: rem(1) solid #e8e8e8;
+
+    > section {
+        margin-left: rem(-30);
+        margin-right: rem(-30);
+    }
+}
+
+.map-distance {
+    margin-left: rem(30);
+    margin-right: rem(30);
+    padding-bottom: rem(45);
+}
+
+.describe-box {
+    padding-top: 0;
+}
+
+.list-item {
+    &:first-child {
+        padding-top: 0;
+    }
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.house-labelling {
+    span {
+        &.rent-style {
+            color: $baseWhite;
+            background-color: #aaa;
+        }
+    }
+}
+
+.detail-contact-box {
+    .detail-contact-content {
+        padding: 0;
+        background-color: transparent;
+        border-top: rem(1) solid #e8e8e8;
+
+        a {
+            float: left;
+            height: rem(98);
+            line-height: rem(98);
+
+            &.contact-telephone-counseling {
+                width: rem(300);
+                height: rem(98);
+                line-height: rem(98);
+                -webkit-border-radius: 0;
+                -moz-border-radius: 0;
+                border-radius: 0;
+            }
+            &.contact-like, &.contact-next {
+                background-color: #fff;
+                color: #333;
+                text-align: center;
+                @include font-dpr(32);
+            }
+            &.contact-like {
+                width: rem(199);
+                border-right: rem(1) solid #e8e8e8;
+            }
+            &.contact-next {
+                width: rem(250);
+            }
+        }
+    }
+}

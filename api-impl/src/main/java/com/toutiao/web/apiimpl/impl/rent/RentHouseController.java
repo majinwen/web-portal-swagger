@@ -149,5 +149,14 @@ public class RentHouseController {
         return NashResult.build(rentHouseList);
     }
 
+    @RequestMapping("")
+    public String empty(Model model){
 
+        return "/rent/rent-list";
+    }
+    @RequestMapping("/detail")
+    public String detail(Model model){
+
+        return "/rent/rent-detail";
+    }
 }

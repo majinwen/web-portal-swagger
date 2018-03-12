@@ -209,6 +209,15 @@ body {
         }
     }
 
+    &.big {
+        height: rem(32);
+        span {
+            height: rem(32);
+            line-height: rem(30);
+            @include box-sizing;
+        }
+    }
+
 }
 .hidden {
     overflow: hidden;
