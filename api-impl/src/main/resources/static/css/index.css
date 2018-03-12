@@ -1059,14 +1059,14 @@ body {
           .banner-nav .banner-nav-item i.houses-open {
             background-image: url("/static/images/newindex/newindex-nav-icon-2018030503@3x.png"); } }
       .banner-nav .banner-nav-item i.index-esf-icon {
-        background-image: url("/static/images/index/index-nav-icon-2018030501.png");
+        background-image: url("/static/images/index/index-nav-icon-2018030503.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/index-nav-icon-2018030501@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030503@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/index-nav-icon-2018030501@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030503@3x.png"); } }
       .banner-nav .banner-nav-item i.index-plot-icon {
         background-image: url("/static/images/index/index-nav-icon-2018030502.png");
         background-repeat: no-repeat; }
@@ -1077,14 +1077,14 @@ body {
           .banner-nav .banner-nav-item i.index-plot-icon {
             background-image: url("/static/images/index/index-nav-icon-2018030502@3x.png"); } }
       .banner-nav .banner-nav-item i.index-new-icon {
-        background-image: url("/static/images/index/index-nav-icon-2018030503.png");
+        background-image: url("/static/images/index/index-nav-icon-2018030501.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .banner-nav .banner-nav-item i.index-new-icon {
-            background-image: url("/static/images/index/index-nav-icon-2018030503@2x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030501@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .banner-nav .banner-nav-item i.index-new-icon {
-            background-image: url("/static/images/index/index-nav-icon-2018030503@3x.png"); } }
+            background-image: url("/static/images/index/index-nav-icon-2018030501@3x.png"); } }
       .banner-nav .banner-nav-item i.index-intelligent-icon {
         background-image: url("/static/images/index/index-nav-icon-2018030504.png");
         background-repeat: no-repeat; }
