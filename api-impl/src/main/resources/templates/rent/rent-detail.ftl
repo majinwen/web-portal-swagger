@@ -168,6 +168,7 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
+
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
@@ -175,9 +176,7 @@
             $("tilePlotDesc").find("p").html(s);
         }
     });
-    
-    function nextPage(e) {
-    }
+
 </script>
 </body>
 </html>

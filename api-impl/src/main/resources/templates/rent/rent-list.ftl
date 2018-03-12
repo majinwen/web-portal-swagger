@@ -262,9 +262,7 @@
             sortZhuge = '价格由低到高';
         }
     });
-    function plot_list(e) {
-        setPageNum($(e).attr('data-id'));
-        window.location.href = $(e).attr('url')
-    }
+
+
 </script>
 </html>

@@ -1044,6 +1044,8 @@ function setPageNum(page) {
 
 }
 
+
+
 function pullUpAction() {
 
     $('#result-section').dropload({
