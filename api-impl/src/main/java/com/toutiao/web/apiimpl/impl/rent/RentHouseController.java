@@ -24,7 +24,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/{citypath}/rent")
+@RequestMapping("/{citypath}")
 public class RentHouseController {
     @Autowired
     private RentHouseService rentHouseService;
@@ -125,6 +125,30 @@ public class RentHouseController {
             }
         }
         return null;
+    }
+
+    @Autowired
+    private RentHouseService rentHouseService;
+
+//    @RequestMapping("/zufang")
+//    public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
+//
+//        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+//
+//        model.addAttribute("rent",rentHouseList);
+//
+//        return "newhouse/new-index";
+//    }
+
+    @RequestMapping("/zufang")
+    @ResponseBody
+    public NashResult queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
+
+        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+
+       // model.addAttribute("rent",rentHouseList);
+
+        return NashResult.build(rentHouseList);
     }
 
 

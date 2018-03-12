@@ -19,4 +19,12 @@ public interface RentHouseService {
 
     String queryHouseNumByparentId(Integer parentId);
 
+    /**
+     * 据筛选条件查询(普租、公寓)
+     * @param rentHouseQuery
+     * @return
+     */
+    Map<String,Object> getRentHouseList(RentHouseQuery rentHouseQuery);
+
+
 }

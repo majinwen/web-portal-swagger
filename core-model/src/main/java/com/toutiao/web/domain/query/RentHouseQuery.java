@@ -58,9 +58,13 @@ public class RentHouseQuery {
     private Double endPrice;
 
     /**
+     * 租赁方式
+     */
+    private Integer rt;
+    /**
      * 户型
      */
-    private String layoutId;
+    private String lo;
 
     /**
      * 来源
@@ -92,6 +96,10 @@ public class RentHouseQuery {
     private String elevator;
 
     /**
+     * 供暖方式
+     */
+    private String ht;
+    /**
      * 标签（特色）
      */
     private String tags;
@@ -100,9 +108,20 @@ public class RentHouseQuery {
      * 附近1,3,5km
      *
      */
-    private String nearbyKm;
+    private String near;
+
     /**
      * 小区公寓标志
      */
     private Integer rentSign;
+
+    /**
+     * 页码
+     */
+    private Integer pageNum = 1;
+
+    /**
+     * 每页数量
+     */
+    private Integer pageSize = 10;
 }
