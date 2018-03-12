@@ -59,61 +59,69 @@
 <section class="primary-message">
     <div class="primary-header">
         <h2>¥4800元/月(押一付三)</h2>
+        <p>青遇home · 65㎡ 南向 2室1厅</p>
         <div class="primary-header-tag house-labelling gray">
             <span>首次出租</span>
             <span>离地铁近</span>
         </div>
     </div>
 </section>
-<section>
-    <div  class="module-header-message">
-        <h3>小区信息</h3>
-        <a href="" class="more-arrows"><i class="arrows-right"></i></a>
-    </div>
-    <ul class="tilelist row">
-        <li>
-            <a href="/bj/xiaoqu/11111737.html" style="display: block">
-                <div class="picture-box">
-                    <img src="http://s1.qn.toutiaofangchan.com/c1-6d5924c0-daf9-11e7-92d8-14abc5f0dc77.jpg-tt400x300" alt="UHN国际村">
-                </div>
-                <div id="tilePlotDesc" class="tilelist-content">
-                    <h4><em>小区：</em>UHN国际村</h4>
-                    <p><em>年代：</em>2008年建成住宅,共7栋</p>
-                    <p><em>待租：</em><em>123套</em></p>
-                </div>
-            </a>
-        </li>
+<div class="border-box">
+    <section>
+        <div  class="module-header-message">
+            <h3>小区信息</h3>
+            <a href="" class="more-arrows"><i class="arrows-right"></i></a>
+        </div>
+        <ul class="tilelist row">
+            <li>
+                <a href="/bj/xiaoqu/11111737.html" style="display: block">
+                    <div class="picture-box">
+                        <img src="http://s1.qn.toutiaofangchan.com/c1-6d5924c0-daf9-11e7-92d8-14abc5f0dc77.jpg-tt400x300" alt="UHN国际村">
+                    </div>
+                    <div id="tilePlotDesc" class="tilelist-content">
+                        <h4><em>小区：</em>UHN国际村</h4>
+                        <p><em>年代：</em>2008年建成住宅,共7栋</p>
+                        <p><em>待租：</em><em class="link">123套</em></p>
+                    </div>
+                </a>
+            </li>
 
-    </ul>
-</section>
-<section>
-    <div class="module-header-message">
-        <h3>配套地图</h3>
-        <a onclick="esf_map_1(this)" href="#" class="more-arrows"><i class="arrows-right"></i></a>
-    </div>
-    <a onclick="esf_map_2(this)" href="/bj/esf/11111737/map.html" class="detail-map">
-        <i class="map-marker-icon"></i>
-        <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&amp;width=700&amp;height=350&amp;center=116.455055236816,39.9732894897461&amp;&amp;zoom=16" alt="">
-    </a>
-</section>
-<section>
-    <div class="module-header-message">
-        <h3>房源描述</h3>
-    </div>
-    <div class="describe-box">
-        <div class="describe-header">
-            <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
-            <p>
-                <span style="left: 0">李宝飞</span>
-                <em>中原地产</em>
-            </p>
-            <a href="tel:13164223605" class="issuer-tel-icon"></a>
+        </ul>
+    </section>
+</div>
+<div class="border-box">
+    <section>
+        <div class="module-header-message">
+            <h3>配套地图</h3>
+            <a onclick="esf_map_1(this)" href="#" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <div class="describe-cont">
-            <p>此房的房源编号为：BJCY0000020853，我们将全心全意为您服务。<br>此户型在小区属于户型，小区出房率不是很，采光面超大，朝向好，通风效果更好，夏天不用开空调，家具电器好摆放，实际看起来要比想象中的大很多。可以拎包入住，省去您的装修费用。</p>
+        <a onclick="esf_map_2(this)" href="/bj/esf/11111737/map.html" class="detail-map">
+            <i class="map-marker-icon"></i>
+            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&amp;width=700&amp;height=350&amp;center=116.455055236816,39.9732894897461&amp;&amp;zoom=16" alt="">
+        </a>
+        <p class="map-distance">距四惠站[1号线]2.1km </p>
+    </section>
+</div>
+<div class="border-box">
+    <section>
+        <div class="module-header-message">
+            <h3>房源点评</h3>
         </div>
-    </div>
-</section>
+        <div class="describe-box">
+            <div class="describe-header">
+                <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                <p>
+                    <span style="left: 0">李宝飞</span>
+                    <em>中原地产</em>
+                </p>
+                <a href="tel:13164223605" class="issuer-tel-icon"></a>
+            </div>
+            <div class="describe-cont">
+                <p>此房的房源编号为：BJCY0000020853，我们将全心全意为您服务。<br>此户型在小区属于户型，小区出房率不是很，采光面超大，朝向好，通风效果更好，夏天不用开空调，家具电器好摆放，实际看起来要比想象中的大很多。可以拎包入住，省去您的装修费用。</p>
+            </div>
+        </div>
+    </section>
+</div>
 <div id="nearbynewesf">
     <section>
         <div class="module-header-message">
@@ -129,7 +137,7 @@
                         <h3 class="cont-block-top"><span>万年花城二期·136m2三室·西</span></h3>
                         <div class="address distance"><i class="icon"></i>朝阳 大望路</div>
                         <div class="house-labelling big normal">
-                            <span>整租</span>
+                            <span class="rent-style">整租</span>
                             <span>整租</span>
                         </div>
                         <div class="cont-block-bottom house-labelling big normal">
@@ -145,7 +153,9 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="tel:" class="only contact-telephone-counseling">咨询经纪人</a>
+            <a href="tel:" class="contact-telephone-counseling">咨询经纪人</a>
+            <a href="#" class="contact-like">喜欢</a>
+            <a href="#" class="contact-next">下一个</a>
         </div>
     </section>
 </div>
