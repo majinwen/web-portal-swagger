@@ -51,6 +51,11 @@ public class RentHouseServiceImpl implements RentHouseService{
     private static final Integer APARTMENT = 2;//公寓:2
 
 
+    /**
+     * 根据距离范围查询并按距离排序
+     * @param rentHouseQuery
+     * @return
+     */
     @Override
     public Map queryNearHouseByDistance(RentHouseQuery rentHouseQuery) {
         List list = new ArrayList();
@@ -96,6 +101,11 @@ public class RentHouseServiceImpl implements RentHouseService{
         return null;
     }
 
+    /**
+     * 根据houseId查询详情
+     * @param rentHouseQuery
+     * @return
+     */
     @Override
     public Map queryHouseById(RentHouseQuery rentHouseQuery) {
         try{
@@ -120,6 +130,11 @@ public class RentHouseServiceImpl implements RentHouseService{
         return null;
     }
 
+    /**
+     * 查询该公寓所在小区下的公寓
+     * @param rentHouseQuery
+     * @return
+     */
     @Override
     public Map queryHouseByparentId(RentHouseQuery rentHouseQuery) {
         Map result = new HashMap();
@@ -140,11 +155,14 @@ public class RentHouseServiceImpl implements RentHouseService{
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
             //小区/公寓
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",APARTMENT));
+            srb.setSize(6);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit:hits){
                 Map source = hit.getSource();
-                list.add(source);
+                if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                    list.add(source);
+                }
             }
             result.put("nearHouse",list);
             result.put("total",searchResponse.getHits().getTotalHits());

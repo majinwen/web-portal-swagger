@@ -68,9 +68,7 @@ public class RentHouseController {
                 //小区待租房源总数
                 model.addAttribute("total",nearHouse.get("total"));
             }
-
-            //TODO
-            return null;
+            return "/rent/rent-detail";
         }
         return "404";
     }
