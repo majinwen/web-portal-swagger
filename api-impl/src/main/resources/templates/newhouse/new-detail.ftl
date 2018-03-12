@@ -15,7 +15,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}-ttfdc1200x640" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}-ttfc1200x640" alt="头条·房产">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -24,7 +24,7 @@
             <#if item?exists>
                 <#if item?? && item!= ''>
                     <li onclick="initphoto(this,${item_index},window.location.href)" class="swiper-slide">
-                        <img src="${qiniuimage}/${item}-ttfdc1200x640" data-src="${qiniuimage}/${item}-ttfdc1200x640" alt="${build['building_name']}">
+                        <img src="${qiniuimage}/${item}-ttfc1200x640" data-src="${qiniuimage}/${item}-ttfc1200x640" alt="${build['building_name']}">
                     </li>
                 <#else >
                     <li onclick="initphoto(this,0,window.location.href)" class="swiper-slide">

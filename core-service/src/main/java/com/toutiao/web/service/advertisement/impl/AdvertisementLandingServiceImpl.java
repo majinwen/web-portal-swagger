@@ -1,6 +1,7 @@
-package com.toutiao.web.service.advertisement;
+package com.toutiao.web.service.advertisement.impl;
 
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.service.advertisement.AdvertisementLandingService;
 import org.apache.commons.collections.map.HashedMap;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -23,7 +24,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
-public class AdvertisementLandingServiceImpl implements  AdvertisementLandingService{
+public class AdvertisementLandingServiceImpl implements AdvertisementLandingService {
 
 
     @Autowired
