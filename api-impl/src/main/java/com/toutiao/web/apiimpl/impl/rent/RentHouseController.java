@@ -24,7 +24,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/{citypath}")
+@RequestMapping("/{citypath}/zufang")
 public class RentHouseController {
     @Autowired
     private RentHouseService rentHouseService;
@@ -48,7 +48,7 @@ public class RentHouseController {
 
             //附近相似好房/好房推荐
             if((Integer) rentHouse.get("rent_sign")==1){
-                queryNearHouse.setNearbyKm("3");
+                queryNearHouse.setNear("3");
                 queryNearHouse.setRentSign(1);
                 queryNearHouse.setBeginPrice((Double) rentHouse.get("rent_house_price")*0.8);
                 queryNearHouse.setEndPrice((Double) rentHouse.get("rent_house_price")*1.2);
@@ -127,8 +127,6 @@ public class RentHouseController {
         return null;
     }
 
-    @Autowired
-    private RentHouseService rentHouseService;
 
 //    @RequestMapping("/zufang")
 //    public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
@@ -140,11 +138,11 @@ public class RentHouseController {
 //        return "newhouse/new-index";
 //    }
 
-    @RequestMapping("/zufang")
+    @RequestMapping("/list")
     @ResponseBody
     public NashResult queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
 
-        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+        Map<String, Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
 
        // model.addAttribute("rent",rentHouseList);
 

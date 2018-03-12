@@ -1,5 +1,6 @@
 package com.toutiao.web.service.rent.impl;
 
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -7,6 +8,7 @@ import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.query.RentHouseQuery;
 import com.toutiao.web.service.rent.RentHouseService;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -37,13 +39,15 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Service
 public class RentHouseServiceImpl implements RentHouseService{
-    @Value("${tt.rent.index}")
-    private String index ;
-    @Value("${tt.rent.type}")
-    private String type ;
 
     @Autowired
     private ESClientTools esClientTools;
+    @Value("${tt.zufang.rent.index}")
+    private String rentIndex;
+    @Value("${tt.zufang.rent.type}")
+    private String rentType;
+    private static final Integer IS_DEL = 0;//房源未删除 0-未删除
+    private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
 
 
     @Override
@@ -51,10 +55,10 @@ public class RentHouseServiceImpl implements RentHouseService{
         List list = new ArrayList();
         try{
             TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+            SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //从该坐标查询距离为distance的点
-            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNearbyKm(), DistanceUnit.KILOMETERS);
+            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear(), DistanceUnit.KILOMETERS);
             srb.setPostFilter(location1).setSize(6);
             // 按距离排序
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
@@ -91,7 +95,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     @Override
     public NashResult queryHouseById(RentHouseQuery rentHouseQuery) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //出租房源ID
         if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
@@ -114,7 +118,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     public List queryHouseByparentId(RentHouseQuery rentHouseQuery) {
         List list = new ArrayList();
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //上级公寓ID
         if (StringUtils.isNotBlank(rentHouseQuery.getApartmentParentId())){
@@ -142,7 +146,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     @Override
     public String queryHouseNumByparentId(Integer parentId) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(type);
+        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //上级公寓ID
         if (parentId>0){
@@ -158,14 +162,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     }
 
 
-    @Autowired
-    private ESClientTools esClientTools;
-    @Value("${tt.zufang.rent.index}")
-    private String rentIndex;
-    @Value("${tt.zufang.rent.type}")
-    private String rentType;
-    private static final Integer IS_DEL = 0;//房源未删除 0-未删除
-    private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
+
 
 
 
@@ -574,8 +571,8 @@ public class RentHouseServiceImpl implements RentHouseService{
             String[] tag = rentHouseQuery.getTags().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", tag));
         }
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("is_del", IS_DEL));
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("release_status", RELEASE_STATUS));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
         result.put("booleanQueryBuilder",booleanQueryBuilder);
         result.put("location",location);
         result.put("geoDistanceSort",geoDistanceSort);
