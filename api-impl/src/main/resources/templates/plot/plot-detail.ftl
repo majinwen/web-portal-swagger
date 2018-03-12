@@ -20,14 +20,14 @@
 <#assign ptCD1 = tradeline['arealine']>
 <#assign ptCD2 = tradeline['tradearealine']>
 <#assign mouthList = tradeline['mouthList']>
-<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-tt1200x640" alt="">
+<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-ttfc1200x640" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
         <#if village['photo']?exists&&(village['photo']?size gt 0)>
             <#list village['photo'] as vpphoto>
                 <li onclick="initphoto(this,${vpphoto_index},window.location.href)" class="swiper-slide">
-                    <img src="${qiniuimage}/${vpphoto}-ttfdc1200x640" data-src="${qiniuimage}/${vpphoto}-ttfdc1200x640" alt="">
+                    <img src="${qiniuimage}/${vpphoto}-ttfc1200x640" data-src="${qiniuimage}/${vpphoto}-ttfc1200x640" alt="">
                 </li>
             </#list>
         <#else>
