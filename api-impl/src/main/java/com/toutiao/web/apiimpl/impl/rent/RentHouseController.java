@@ -41,36 +41,32 @@ public class RentHouseController {
     @RequestMapping("/{houseId}.html")
     public String rentDetail(RentHouseQuery rentHouseQuery, Model model){
         RentHouseQuery queryNearHouse = new RentHouseQuery();
-        NashResult rentDetail = rentHouseService.queryHouseById(rentHouseQuery);
-        if(rentDetail.getCode().equals("success")){
-            Map rentHouse = (Map)rentDetail.getData();
-            model.addAttribute("rentHouse",rentHouse);
+        Map map = rentHouseService.queryHouseById(rentHouseQuery);
+        if(map!=null){
+            model.addAttribute("rentHouse",map);
 
             //附近相似好房/好房推荐
-            if((Integer) rentHouse.get("rent_sign")==1){
+            if((Integer) map.get("rent_sign")==1){
                 queryNearHouse.setNear("3");
                 queryNearHouse.setRentSign(1);
-                queryNearHouse.setBeginPrice((Double) rentHouse.get("rent_house_price")*0.8);
-                queryNearHouse.setEndPrice((Double) rentHouse.get("rent_house_price")*1.2);
-                queryNearHouse.setLat(Double.parseDouble(rentHouse.get("location").toString().split(",")[0]));
-                queryNearHouse.setLon(Double.parseDouble(rentHouse.get("location").toString().split(",")[1]));
-                List nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
-                if (nearHouse!=null&&nearHouse.size()>0){
-                    model.addAttribute("nearHouse",nearHouse);
+                queryNearHouse.setBeginPrice((Double) map.get("rent_house_price")*0.8);
+                queryNearHouse.setEndPrice((Double) map.get("rent_house_price")*1.2);
+                queryNearHouse.setLat(Double.parseDouble(map.get("location").toString().split(",")[0]));
+                queryNearHouse.setLon(Double.parseDouble(map.get("location").toString().split(",")[1]));
+                Map nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
+                if (nearHouse!=null){
+                    model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
                 //小区待租房源总数
-                String total = rentHouseService.queryHouseNumByparentId((Integer) rentHouse.get("house_id"));
-                model.addAttribute("total",total);
+                model.addAttribute("total",nearHouse.get("total"));
             }else {
-                queryNearHouse.setApartmentParentId((String) rentHouse.get("apartment_parent_id"));
-                List list = rentHouseService.queryHouseByparentId(queryNearHouse);
-                if (list!=null&&list.size()>0){
-                    model.addAttribute("nearHouse",list);
-
+                queryNearHouse.setApartmentParentId((String) map.get("apartment_parent_id"));
+                Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
+                if (nearHouse!=null){
+                    model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
                 //小区待租房源总数
-                String total = rentHouseService.queryHouseNumByparentId((Integer) rentHouse.get("apartment_parent_id"));
-                model.addAttribute("total",total);
+                model.addAttribute("total",nearHouse.get("total"));
             }
 
             //TODO
@@ -90,10 +86,9 @@ public class RentHouseController {
      */
     @RequestMapping("/{houseId}/map.html")
     public String plotMap(RentHouseQuery rentHouseQuery, Model model) {
-        NashResult rentDetail = rentHouseService.queryHouseById(rentHouseQuery);
-        if(rentDetail.getCode().equals("success")){
-            Map rentHouse = (Map)rentDetail.getData();
-            model.addAttribute("build", rentHouse);
+        Map rentDetail = rentHouseService.queryHouseById(rentHouseQuery);
+        if(rentDetail!=null){
+            model.addAttribute("build", rentDetail);
             return "map";
         }
         return "404";
