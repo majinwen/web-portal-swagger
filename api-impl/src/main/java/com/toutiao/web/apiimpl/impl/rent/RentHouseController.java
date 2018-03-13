@@ -129,27 +129,27 @@ public class RentHouseController {
     }
 
 
-//    @RequestMapping("/zufang")
-//    public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
-//
-//        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
-//
-//        model.addAttribute("rent",rentHouseList);
-//
-//        return "newhouse/new-index";
-//    }
-
-
     @RequestMapping("/rent")
-    @ResponseBody
-    public NashResult queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
+    public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
 
-        Map<String, Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
 
-       // model.addAttribute("rent",rentHouseList);
+        model.addAttribute("rent",rentHouseList);
 
-        return NashResult.build(rentHouseList);
+        return "newhouse/new-index";
     }
+
+
+//    @RequestMapping("/rent")
+//    @ResponseBody
+//    public NashResult queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
+//
+//        Map<String, Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+//
+//       // model.addAttribute("rent",rentHouseList);
+//
+//        return NashResult.build(rentHouseList);
+//    }
 
     @RequestMapping("")
     public String empty(Model model){
