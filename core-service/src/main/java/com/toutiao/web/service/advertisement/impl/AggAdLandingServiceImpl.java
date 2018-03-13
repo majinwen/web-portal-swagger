@@ -137,6 +137,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
         BoolQueryBuilder booleanQueryBuilder2 = QueryBuilders.boolQuery();
+        //忽略标题图为空
         booleanQueryBuilder2.mustNot(termsQuery("housePhotoTitle", ""));
         booleanQueryBuilder2.must(termsQuery("isDel", "0"));
         //价格300到500万
@@ -153,9 +154,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         booleanQueryBuilder1.must(termsQuery("isDel", "0"));
         //价格300到500万
         booleanQueryBuilder2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(300).lte(500));
-        //标签有近地铁
-//        booleanQueryBuilder2.must(termsQuery("tags", "1"));
-        //忽略标题图为空
+
 
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
