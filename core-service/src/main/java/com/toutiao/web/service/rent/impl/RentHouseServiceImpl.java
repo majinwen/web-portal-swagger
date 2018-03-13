@@ -1,6 +1,5 @@
 package com.toutiao.web.service.rent.impl;
 
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -43,13 +42,25 @@ public class RentHouseServiceImpl implements RentHouseService{
     private String rentIndex;
     @Value("${tt.zufang.rent.type}")
     private String rentType;
+    @Value("${tt.zufang.agent.index}")
+    private String agentIndex;
+    @Value("${tt.zufang.agent.type}")
+    private String agentType;
     private static final Integer IS_DEL = 0;//房源未删除 0-未删除
     private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
+    private static final Integer RENT = 1;//出租:1
+    private static final Integer APARTMENT = 2;//公寓:2
 
 
+    /**
+     * 根据距离范围查询并按距离排序
+     * @param rentHouseQuery
+     * @return
+     */
     @Override
-    public List queryNearHouseByDistance(RentHouseQuery rentHouseQuery) {
+    public Map queryNearHouseByDistance(RentHouseQuery rentHouseQuery) {
         List list = new ArrayList();
+        Map result = new HashMap();
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
@@ -64,99 +75,158 @@ public class RentHouseServiceImpl implements RentHouseService{
             srb.addSort(sort);
             //小区/公寓
             if (rentHouseQuery.getRentSign()==1){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",1));
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
             }
             //是否删除
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
             //发布状态
-            boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
+            boolQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
             //价格上下浮动20%
             if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
             }
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
-            for (SearchHit hit:searchHists){
-                Map source = hit.getSource();
-                if (!"0.0".equals(hit.getSortValues()[0].toString())){
-                    list.add(source);
+            if(searchHists.length>0){
+                for (SearchHit hit:searchHists){
+                    Map source = hit.getSource();
+                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                        list.add(source);
+                    }
                 }
+                result.put("nearHouse",list);
+                result.put("total",searchResponse.getHits().getTotalHits());
+                return result;
             }
-            return list;
         }catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
 
+    /**
+     * 根据houseId查询详情
+     * @param rentHouseQuery
+     * @return
+     */
     @Override
-    public NashResult queryHouseById(RentHouseQuery rentHouseQuery) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        //出租房源ID
-        if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
-        }
-        //是否删除
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
-        //发布状态
-        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
-        SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
-        SearchHit[] searchHists = response.getHits().getHits();
-        if(searchHists.length==1){
-            Map source = searchHists[0].getSource();
-            return NashResult.build(source);
-        }
-        return NashResult.Fail("");
-    }
-
-    @Override
-    public List queryHouseByparentId(RentHouseQuery rentHouseQuery) {
-        List list = new ArrayList();
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        //上级公寓ID
-        if (StringUtils.isNotBlank(rentHouseQuery.getApartmentParentId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("apartment_parent_id",rentHouseQuery.getApartmentParentId()));
-        }
-        //按价格由低到高排序
-        srb.addSort("rent_house_price",SortOrder.ASC);
-        //是否删除
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
-        //发布状态
-        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
-        //小区/公寓
-        boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",0));
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
-        SearchHit[] hits = searchResponse.getHits().getHits();
-        if(hits.length>0){
-            for (SearchHit hit:hits){
-                Map source = hit.getSource();
-                list.add(source);
+    public Map queryHouseById(RentHouseQuery rentHouseQuery) {
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //出租房源ID
+            if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
             }
+            //是否删除
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
+            //发布状态
+            boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
+            SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchHit[] searchHists = response.getHits().getHits();
+            if(searchHists.length>0){
+                Map source = searchHists[0].getSource();
+                return source;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return list;
+        return null;
     }
 
+    /**
+     * 查询该公寓所在小区下的公寓
+     * @param rentHouseQuery
+     * @return
+     */
     @Override
-    public String queryHouseNumByparentId(Integer parentId) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        //上级公寓ID
-        if (parentId>0){
-            boolQueryBuilder.must(QueryBuilders.termQuery("apartment_parent_id",parentId));
+    public Map queryHouseByparentId(RentHouseQuery rentHouseQuery) {
+        Map result = new HashMap();
+        List list = new ArrayList();
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //上级公寓ID
+            if (StringUtils.isNotBlank(rentHouseQuery.getApartmentParentId())){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("apartment_parent_id",rentHouseQuery.getApartmentParentId()));
+            }
+            //按价格由低到高排序
+            srb.addSort("rent_house_price",SortOrder.ASC);
+            //是否删除
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
+            //发布状态
+            boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
+            //小区/公寓
+            boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",APARTMENT));
+            srb.setSize(6);
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length>0){
+                for (SearchHit hit:hits){
+                    Map source = hit.getSource();
+                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                        list.add(source);
+                    }
+                }
+                result.put("nearHouse",list);
+                result.put("total",searchResponse.getHits().getTotalHits());
+                return result;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        //是否删除
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
-        //发布状态
-        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
-        String totalHits = String.valueOf(searchResponse.getHits().getTotalHits());
-        return totalHits;
+        return null;
     }
+
+    /**
+     * 根据房源的id查询该房源所有的经纪人
+     * @param houseId
+     * @return
+     */
+    @Override
+    public Map queryAgentByHouseId(String houseId) {
+        Map result = new HashMap();
+        List list = new ArrayList();
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(agentIndex).setTypes(agentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length>0){
+                for (SearchHit hit:hits){
+                    Map source = hit.getSource();
+                    list.add(source);
+                }
+                result.put("agent",list);
+                return result;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+//    @Override
+//    public String queryHouseNumByparentId(Integer parentId) {
+//        TransportClient client = esClientTools.init();
+//        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        //上级公寓ID
+//        if (parentId>0){
+//            boolQueryBuilder.must(QueryBuilders.termQuery("apartment_parent_id",parentId));
+//        }
+//        //是否删除
+//        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+//        //发布状态
+//        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+//        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+//        String totalHits = String.valueOf(searchResponse.getHits().getTotalHits());
+//        return totalHits;
+//    }
 
 
 

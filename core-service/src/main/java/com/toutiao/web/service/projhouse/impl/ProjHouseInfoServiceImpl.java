@@ -60,7 +60,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @date 2017/12/15 11:50
      */
     @Override
-    public List queryProjHouseByhouseIdandLocation(String newhouse, double lat, double lon) {
+    public List queryProjHouseByhouseIdandLocation(String newhouse, double lat, double lon,String distance) {
 
 
         Map<String, Object> result = null;
@@ -70,7 +70,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
-            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance("1.6", DistanceUnit.KILOMETERS));
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.KILOMETERS));
             srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName","forwardName","houseTitle","tagsName"}, null).execute().actionGet();
 
             // 获取距离多少公里 这个才是获取点与点之间的距离的
@@ -79,10 +79,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             sort.unit(DistanceUnit.KILOMETERS);
 ////            sort.order(SortOrder.DESC);
-            sort.point(lat, lon);
             sort.geoDistance(GeoDistance.ARC);
             srb.addSort(scrip).addSort(sort);
-            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
+            SearchResponse searchResponse = srb.setSize(6).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 

@@ -1,6 +1,5 @@
 package com.toutiao.web.service.rent;
 
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.query.RentHouseQuery;
 
 import java.util.List;
@@ -12,13 +11,15 @@ import java.util.Map;
  *
  */
 public interface RentHouseService {
-    List queryNearHouseByDistance(RentHouseQuery rentHouseQuery);
+    Map queryNearHouseByDistance(RentHouseQuery rentHouseQuery);
 
-    NashResult queryHouseById(RentHouseQuery rentHouseQuery);
+    Map queryHouseById(RentHouseQuery rentHouseQuery);
 
-    List queryHouseByparentId(RentHouseQuery rentHouseQuery);
+    Map queryHouseByparentId(RentHouseQuery rentHouseQuery);
 
-    String queryHouseNumByparentId(Integer parentId);
+    Map queryAgentByHouseId(String houseId);
+
+//    String queryHouseNumByparentId(Integer parentId);
 
     /**
      * 据筛选条件查询(普租、公寓)

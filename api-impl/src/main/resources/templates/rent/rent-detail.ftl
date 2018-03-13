@@ -155,7 +155,7 @@
         <div class="detail-contact-content">
             <a href="tel:" class="contact-telephone-counseling">咨询经纪人</a>
             <a href="#" class="contact-like">喜欢</a>
-            <a href="#" class="contact-next">下一个</a>
+            <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next">下一个</a>
         </div>
     </section>
 </div>
@@ -168,6 +168,7 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
+
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
@@ -175,6 +176,7 @@
             $("tilePlotDesc").find("p").html(s);
         }
     });
+
 </script>
 </body>
 </html>
