@@ -14,7 +14,13 @@ var moreChooseZhuge = [];
 $(function () {
     var disStr = '<li id="district-option">区域</li>';
     var subStr = '<li id="subway-option">地铁</li>';
-    $('#level1').append(disStr+subStr);
+    var nearbyStr = '<li id="nearby-option">附近</li>';
+
+    if ((_localHref.indexOf('/zufang')) > 0) {
+        $('#level1').append(disStr+subStr+nearbyStr);
+    } else {
+        $('#level1').append(disStr+subStr);
+    }
 
     //列表页排序切换
     listSortTab();
@@ -41,7 +47,7 @@ $(function () {
         $dom.toggleClass('active').siblings().removeClass('active');
 
         if ($('#level2').is(':hidden') && $dom.attr('data-mark') == 'panel-place') {
-            if (req['districtId'] || req['subwayLineId']) {
+            if (req['districtId'] || req['subwayLineId'] || req['near']) {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
@@ -53,6 +59,9 @@ $(function () {
                 } else if (req['subwayLineId']) {
                     $('#subway-option').addClass('current');
                     showSubway(req['subwayLineId'], req['subwayStationId']);
+                } else if (req['near']) {
+                    $('#nearby-option').addClass('current');
+                    showNearby(req['near']);
                 }
             } else {
                 $('#district-option').addClass('current');
@@ -83,6 +92,8 @@ $(function () {
             }
         } else if ($(this).attr('id') == 'subway-option') {
             showSubway();
+        } else if ($(this).attr('id') == 'nearby-option') {
+            showNearby();
         }
     });
 
@@ -134,7 +145,6 @@ $(function () {
                 $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_circleName?_circleName:_districtName);
             });
         }
-
     }
 
     /**
@@ -168,6 +178,28 @@ $(function () {
 
             $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_subwayStationName?_subwayStationName:_subwayLineName);
         });
+    }
+    /**
+     * 附近筛选
+     */
+    if (req['near']){
+        near(req)
+    }
+    /**
+     * 附近距离处理
+     * @param req
+     */
+    function near(req) {
+        var _nearArr = [1,3,5];
+        var _nearNumber = req['near'] || [];
+        var _nearText;
+        for (var i = 0; i < _nearArr.length; i++) {
+
+            if (_nearNumber == _nearArr[i]) {
+                _nearText = _nearArr[i] + 'km'
+            }
+        }
+        $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_nearText);
     }
 
     /**
@@ -521,6 +553,7 @@ function submitPlace(e) {
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
     req['lat'] = null;
+    req['near'] = null;
     req['lon'] = null;
     params = joinParams(req);
     url = _localHref + params;
@@ -544,6 +577,7 @@ function submitDirstrict(districtid, e) {
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
         req['areaId'] = null;
+        req['near'] = null;
         req['lat'] = null;
         req['lon'] = null;
     }
@@ -571,6 +605,7 @@ function submitBussiness(districtid, areaId, e) {
         req['pageNum'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
+        req['near'] = null;
         req['lat'] = null;
         req['lon'] = null;
     }
@@ -625,6 +660,8 @@ function showSubway(lineId, stationId) {
     })
 }
 
+
+
 /**
  * 地铁不限
  * */
@@ -634,6 +671,7 @@ function submitSubway(e) {
     req['areaId'] = null;
     req['subwayLineId'] = null;
     req['subwayStationId'] = null;
+    req['near'] = null;
     req['lat'] = null;
     req['lon'] = null;
 
@@ -693,6 +731,7 @@ function submitSubwayLine(subwayid, e) {
         req['pageNum'] = null;
         req['districtId'] = null;
         req['areaId'] = null;
+        req['near'] = null;
         req['subwayStationId'] = null;
         req['lat'] = null;
         req['lon'] = null;
@@ -721,6 +760,7 @@ function submitStation(subwayid, subwayStationId, e) {
         req['areaId'] = null;
         req['lat'] = null;
         req['lon'] = null;
+        req['near'] = null;
     }
     req['subwayLineId']=subwayid;
     req['subwayStationId']=subwayStationId;
@@ -734,6 +774,77 @@ function submitStation(subwayid, subwayStationId, e) {
     // console.log(diteixian+'-'+diteizhan);
     $.get(url, function () {
         zhuge.track(houseName+'-按区域筛选',{'地铁位置':diteixian+'-'+diteizhan});
+        location.replace(url);
+    });
+}
+
+/*
+ * 显示附近
+ * */
+function showNearby(nearNumber) {
+    $('#level2').removeClass('none');
+    $('#level3').addClass('none');
+    $('#level2').empty();
+
+    var str;
+    if (showNearby) {
+        str = '<li onclick="submitNearby(event)">不限</li>';
+    } else {
+        str = '<li class="current" onclick="submitNearby(event)">不限</li>';
+    }
+    var _nearArr = [1,3,5];
+    for (var i = 0; i < _nearArr.length; i++) {
+
+        if (nearNumber == _nearArr[i]) {
+            str += '<li class="current" onclick="submitNearbyNumber(_nearArr[i],event)">'+ _nearArr[i]  +'km</li>';
+        } else {
+            str += '<li onclick="submitNearbyNumber('+ _nearArr[i] +',event)">'+ _nearArr[i]  +'km</li>';
+        }
+    }
+    $('#level2').append(str);
+}
+/*
+ * 提交选中附近不限
+ * */
+function submitNearby(e) {
+    req['pageNum'] = null;
+    req['districtId'] = null;
+    req['areaId'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
+    req['near'] = null;
+    req['subwayLineId'] = null;
+    req['subwayStationId'] = null;
+    params = joinParams(req);
+    url = _localHref + params;
+    tabTextReplace(e);
+    var houseName = null;
+    houseName = getHouseName(_localHref,houseName);
+    $.get(url, function () {
+        console.log(url);
+        location.replace(url);
+    });
+}
+/*
+ * 提交选中附近距离
+ * */
+function submitNearbyNumber(nearNumber, e) {
+    if (nearNumber) {
+        req['pageNum'] = null;
+        req['districtId'] = null;
+        req['areaId'] = null;
+        req['subwayLineId'] = null;
+        req['subwayStationId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
+    }
+    req['near'] = nearNumber;
+    params = joinParams(req);
+    url = _localHref + params;
+    tabTextReplace(e);
+    var houseName = null;
+    houseName = getHouseName(_localHref,houseName);
+    $.get(url, function () {
         location.replace(url);
     });
 }
@@ -793,15 +904,15 @@ $('.age-list').on('click', 'li', function (e) {
     params = joinParams(req);
     url = _localHref + params;
     var houseName = null;
-    houseName = getHouseName(_localHref,houseName);
+    houseName = getHouseName(_localHref, houseName);
     tabTextReplace(e, $(this).text());
     louling.push($('.age-list').find('li.current').text());
     $.get(url, function () {
         var split = url.split('?');
-        if (split.length == 1){
-            zhuge.track(houseName+'-按楼龄筛选',{'楼龄':'不限'});
-        }else {
-            zhuge.track(houseName+'-按楼龄筛选',{'楼龄':louling[0]});
+        if (split.length == 1) {
+            zhuge.track(houseName + '-按楼龄筛选', {'楼龄': '不限'});
+        } else {
+            zhuge.track(houseName + '-按楼龄筛选', {'楼龄': louling[0]});
         }
         location.replace(url);
     })
@@ -1003,7 +1114,7 @@ function getDefaultPageNum() {
             }
         }
         catch (e){}
-    })
+    });
     return pageNum;
 }
 
@@ -1011,43 +1122,42 @@ var pageNumDown = getDefaultPageNum();
 var pageNumUp =pageNumDown;
 var initLoad_pageNum=pageNumDown;
 function setPageNum(page) {
-    if(page<1){
+    if (page < 1) {
         return;
     }
     var hash = window.location.href.split('#');
     var path = hash[0];
     hash = hash[1] || '';
     hash = hash.split('&');
-    var res=[];
-    var hasPageNum=false;
-    $.each(hash,function (index,ele) {
-        if($.trim(ele)==''){
+    var res = [];
+    var hasPageNum = false;
+    $.each(hash, function (index, ele) {
+        if ($.trim(ele) == '') {
             return true;
         }
         try {
             if (ele.indexOf('pageNum=') == 0) {
                 hasPageNum = true;
-                ele = 'pageNum='+page;
+                ele = 'pageNum=' + page;
             }
         }
-        catch (e){}
+        catch (e) {
+        }
         res.push(ele);
     });
-    if(!hasPageNum){
-        res.push('pageNum='+page);
+    if (!hasPageNum) {
+        res.push('pageNum=' + page);
     }
-    if(!!(window.history && history.replaceState)){
-        window.history.replaceState({}, document.title,path+'#'+res.join('&'));
+    if (!!(window.history && history.replaceState)) {
+        window.history.replaceState({}, document.title, path + '#' + res.join('&'));
     } else {
-        window.location.replace(path+'#'+res.join('&'));
+        window.location.replace(path + '#' + res.join('&'));
     }
 
 }
 
 
-
 function pullUpAction() {
-
     $('#result-section').dropload({
         scrollArea : window,
         autoLoad:true,
@@ -1084,7 +1194,9 @@ function pullUpAction() {
                 url = router_city('/esf' )+ params;
             } else if (_localHref.indexOf('/xiaoqu') > 0){
                 url = router_city('/xiaoqu') + params;
-            };
+            } else if (_localHref.indexOf('/zufang') > 0){
+                url = router_city('/zufang') + params;
+            }
 
             $.ajax({
                 type: "get",
@@ -1093,24 +1205,22 @@ function pullUpAction() {
                 async: true,
                 dataType:'json',
                 success: function (data) {
-                    localStorage.setItem('listUrl',url);
 
+                    localStorage.setItem('listUrl',url);
                     if (data.code == 'success') {
                         //第一次加载
-
-                        if(data.data!=null && data.data.total > 0){
-                            if(initLoad_pageNum!=pageNumUp) {
+                        if (data.data != null && data.data.total > 0) {
+                            if (initLoad_pageNum != pageNumUp) {
                                 pageNumUp++;
                                 setPageNum(pageNumUp);
                             }
                             else {
                                 initLoad_pageNum = -1;
+                                console.log(initLoad_pageNum)
                             }
 
                             var dataCon = data.data.data || [];
                             for (var i = 0; i < dataCon.length; i++) {
-
-
                                 if (_localHref.indexOf('loupan') > 0) {
                                     //组织地铁描述信息
                                     if (dataCon[i]['nearsubway']) {
@@ -1130,7 +1240,7 @@ function pullUpAction() {
                                             dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
                                     }
-                                };
+                                }
 
                                 // 二手房列表单价
                                 if (_localHref.indexOf('/esf') > 0) {
@@ -1162,11 +1272,10 @@ function pullUpAction() {
                                             }
                                             dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
-                                    };
-                                };
+                                    }
+                                }
 
                                 if (_localHref.indexOf('xiaoqu') > 0) {
-
                                     //组织地铁描述信息
                                     var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                     var _key = dataCon[i]['key'];
@@ -1186,13 +1295,15 @@ function pullUpAction() {
                                             }
                                             dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
-                                    };
-                                };
+                                    }
+                                }
                             }
                         }
 
                         if(data.data==null){
+                            console.log(data,url);
                             me.lock();
+
                             // 无数据
                             me.noData();
                         }else{
@@ -1203,10 +1314,11 @@ function pullUpAction() {
                                 me.lock();
                                 // 无数据
                                 me.noData();
-                            };
+                            }
                         }
 
                         var html = template('listContent', data.data);
+                        console.log(data.data);
                         $('#valueList ').append(html);
                         // setTimeout(function () {
                         //     $(document).scrollTop(0);
@@ -1221,11 +1333,12 @@ function pullUpAction() {
                     // alert('Ajax error!');
                     // 即使加载出错，也得重置
                     me.resetload();
+                    console.log(xhr, type);
                 }
             });
         }
     });
-};
+}
 
 /**
  * 上拉分页
@@ -1243,44 +1356,45 @@ function pullDownAction() {
     //         pageNum = parseInt(href[href.length-1].split('=')[1])-1
     //     }
     // }
-    if (pageNumDown>1){
+    if (pageNumDown > 1) {
         $('#result-section').dropload({
-            scrollArea : window,
-            autoLoad:false,
-            domUp : {
-                domClass   : 'dropload-up',
-                domRefresh : '<div class="dropload-refresh">↓下拉刷新</div>',
-                domUpdate : '<div class="dropload-update">↑释放更新</div>',
+            scrollArea: window,
+            autoLoad: false,
+            domUp: {
+                domClass: 'dropload-up',
+                domRefresh: '<div class="dropload-refresh">↓下拉刷新</div>',
+                domUpdate: '<div class="dropload-update">↑释放更新</div>'
             },
-            loadUpFn : function(me){
+            loadUpFn: function (me) {
                 var paramData = req;
-                paramData['pageNum'] = pageNumDown-1;
+                paramData['pageNum'] = pageNumDown - 1;
                 params = joinParams(paramData);
                 if (_localHref.indexOf('/loupan') > 0) {
                     url = router_city('/loupan') + params;
                 } else if (_localHref.indexOf('/esf') > 0) {
-                    url = router_city('/esf' )+ params;
-                } else if (_localHref.indexOf('/xiaoqu') > 0){
+                    url = router_city('/esf') + params;
+                } else if (_localHref.indexOf('/xiaoqu') > 0) {
                     url = router_city('/xiaoqu') + params;
-                };
+                } else if (_localHref.indexOf('/zufang') > 0) {
+                    url = router_city('/zufang') + params;
+                }
                 $.ajax({
                     type: "get",
-                    contentType:'application/json',
+                    contentType: 'application/json',
                     url: url,
                     async: true,
-                    dataType:'json',
+                    dataType: 'json',
                     success: function (data) {
                         if (data.code == 'success') {
                             pageNumDown--;
                             setPageNum(pageNumDown);
-                            if (pageNumDown<2){
+                            if (pageNumDown < 2) {
                                 me.lock()
                             }
 
-                            if(data.data!=null){
+                            if (data.data != null) {
                                 var dataCon = data.data.data || [];
                                 for (var i = 0; i < dataCon.length; i++) {
-
                                     if (_localHref.indexOf('loupan') > 0) {
                                         //组织地铁描述信息
                                         if (dataCon[i]['nearsubway']) {
@@ -1300,7 +1414,7 @@ function pullDownAction() {
                                                 dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
                                         }
-                                    };
+                                    }
 
                                     // 二手房列表单价
                                     if (_localHref.indexOf('/esf') > 0) {
@@ -1332,11 +1446,10 @@ function pullDownAction() {
                                                 }
                                                 dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                        };
-                                    };
+                                        }
+                                    }
 
                                     if (_localHref.indexOf('xiaoqu') > 0) {
-
                                         //组织地铁描述信息
                                         var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                         var _key = dataCon[i]['key'];
@@ -1356,23 +1469,23 @@ function pullDownAction() {
                                                 }
                                                 dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                        };
-                                    };
+                                        }
+                                    }
                                 }
                             }
 
-                            if(data.data==null){
+                            if (data.data == null) {
                                 me.lock();
                                 // 无数据
                                 me.noData();
-                            }else{
+                            } else {
                                 if (dataCon.length <= 0) {
                                     // $('.tip-box').removeClass('none');
                                     // 锁定
                                     me.lock();
                                     // 无数据
                                     me.noData();
-                                };
+                                }
                             }
 
                             var html = template('listContent', data.data);
@@ -1381,7 +1494,7 @@ function pullDownAction() {
                             me.resetload();
                         }
                     },
-                    error: function(xhr, type){
+                    error: function (xhr, type) {
                         alert('Ajax error!');
                         // 即使加载出错，也得重置
                         me.resetload();
@@ -1391,4 +1504,4 @@ function pullDownAction() {
             }
         });
     }
-};
+}

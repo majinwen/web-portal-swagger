@@ -131,31 +131,18 @@ public class RentHouseController {
 
     @RequestMapping("")
     public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
-
         Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
-
         model.addAttribute("rent",rentHouseList);
-
-        return "/rent/rent-list";
+        return "rent/rent-list";
     }
 
-
-//    @RequestMapping("/rent")
-//    @ResponseBody
-//    public NashResult queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
-//
-//        Map<String, Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
-//
-//       // model.addAttribute("rent",rentHouseList);
-//
-//        return NashResult.build(rentHouseList);
-//    }
-
-    @RequestMapping("")
-    public String empty(Model model){
-
-        return "/rent/rent-list";
+    @RequestMapping(value = {""},produces="application/json")
+    @ResponseBody
+    public NashResult queryRentHousePageList(RentHouseQuery rentHouseQuery) {
+        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+        return NashResult.build(rentHouseList);
     }
+
     @RequestMapping("/detail")
     public String detail(Model model){
 

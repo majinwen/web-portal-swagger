@@ -275,6 +275,8 @@ public class RentHouseServiceImpl implements RentHouseService{
             }
         }
         result.put("data",zufangList);
+        result.put("pageNum",rentHouseQuery.getPageNum());
+        result.put("total",zufangList.size());
         return result;
     }
 
@@ -394,7 +396,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                 .setFetchSource(new String[]{"village_name","village_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                "house_title_img","rent_house_price"},
+                                "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
                         null)
                 .setFrom(((0) * pageSize)*rentHouseQuery.getPageSize())
                 .setSize(pageSize-count)
@@ -438,7 +440,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                 .setFetchSource(new String[]{"village_name","village_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                "house_title_img","rent_house_price"},
+                                "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
                         null)
                 .setFrom(Integer.valueOf((int) zufang_from))
                 .setSize(pageSize)
@@ -509,7 +511,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                 .setFetchSource(new String[]{"village_name","village_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                "house_title_img","rent_house_price"},
+                                "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
                         null)
                 .setFrom((pageNum-1)*rentHouseQuery.getPageSize())
                 .setSize(rentHouseQuery.getPageSize())
