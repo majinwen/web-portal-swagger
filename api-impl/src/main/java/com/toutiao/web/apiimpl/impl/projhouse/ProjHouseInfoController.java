@@ -8,6 +8,7 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
@@ -76,12 +77,25 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+
+            //房源经纪人
+            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
+            if (agent!=null){
+                List agentList = (List) agent.get("agent");
+                model.addAttribute("agentList",agentList);
+            }
         } else {
             //跳转到404页
             return "404";
         }
 
         return "esf/esf-detail";
+    }
+
+    @RequestMapping("test")
+    public String aaa(){
+        List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation("1111", 39.8685073852539,116.508819580078,"3");
+        return null;
     }
 
     /**
