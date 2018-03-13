@@ -8,6 +8,7 @@ import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -36,6 +37,16 @@ public class AggAdLandingController {
         Map<String, Object> esfMap = aggAdLandingService.getAdLanding(aggAdLandingDo);
 
         return NashResult.build(esfMap.get("data"));
+    }
+
+
+
+    @RequestMapping("/cpc1")
+    @ResponseBody
+    public NashResult advertisementCpc1() {
+        Map<String,Object> advertisementResult = aggAdLandingService.advertisementCpc_1();
+
+        return NashResult.build(advertisementResult.get("data"));
     }
 
 

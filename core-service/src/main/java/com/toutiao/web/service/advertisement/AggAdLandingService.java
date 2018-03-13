@@ -9,4 +9,7 @@ public interface AggAdLandingService {
 
     Map<String,Object> getAdLanding(AggAdLandingDo aggAdLandingDo);
 
+
+    Map<String,Object> advertisementCpc_1();
+
 }
