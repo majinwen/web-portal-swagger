@@ -8,6 +8,7 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
@@ -75,6 +76,13 @@ public class ProjHouseInfoController {
             List plotList = plotService.GetNearByhHouseAndDistance(Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
+            }
+
+            //房源经纪人
+            Map agent = projHouseInfoService.queryAgentByHouseId(((VillageResponse)village.get(0)).getId());
+            if (agent!=null){
+                List agentList = (List) agent.get("agent");
+                model.addAttribute("agentList",agentList);
             }
         } else {
             //跳转到404页
