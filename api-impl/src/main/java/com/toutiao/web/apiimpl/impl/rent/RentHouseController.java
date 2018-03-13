@@ -129,14 +129,14 @@ public class RentHouseController {
     }
 
 
-    @RequestMapping("/rent")
+    @RequestMapping("")
     public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
 
         Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
 
         model.addAttribute("rent",rentHouseList);
 
-        return "newhouse/new-index";
+        return "/rent/rent-list";
     }
 
 
