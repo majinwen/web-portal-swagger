@@ -92,6 +92,12 @@ public class ProjHouseInfoController {
         return "esf/esf-detail";
     }
 
+    @RequestMapping("test")
+    public String aaa(){
+        List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation("1111", 39.8685073852539,116.508819580078,"3");
+        return null;
+    }
+
     /**
      * 二手房配套地图
      *
