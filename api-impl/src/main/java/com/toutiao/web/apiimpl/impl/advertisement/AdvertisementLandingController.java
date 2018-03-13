@@ -31,13 +31,13 @@ public class AdvertisementLandingController {
     }
 
 
-    //提升核心页pv】cpc广告1
-    @RequestMapping("/cpc2")
-    public String advertisementCpc1(Model model) {
-        Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
-        model.addAttribute("adcpc",advertisementResult);
-        return "/cpc/cpcPage2";
-    }
+//    //提升核心页pv】cpc广告1
+//    @RequestMapping("/cpc2")
+//    public String advertisementCpc1(Model model) {
+//        Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
+//        model.addAttribute("adcpc",advertisementResult);
+//        return "/cpc/cpcPage2";
+//    }
 
 
 
@@ -50,13 +50,13 @@ public class AdvertisementLandingController {
     }
 
 
-    //提升核心页pv】cpc广告1
-    @RequestMapping("/xxl2")
-    public String advertisementXxl1(Model model) {
-        Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
-        model.addAttribute("adcpc",advertisementResult);
-        return "/xxl/xxlPage2";
-    }
+//    //提升核心页pv】cpc广告1
+//    @RequestMapping("/xxl2")
+//    public String advertisementXxl1(Model model) {
+//        Map<String,Object> advertisementResult = advertisementLandingService.advertisementCpc_1();
+//        model.addAttribute("adcpc",advertisementResult);
+//        return "/xxl/xxlPage2";
+//    }
 
 
 }

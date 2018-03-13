@@ -7,5 +7,5 @@ public interface AdvertisementLandingService {
 
     Map<String,Object> advertisementCpc_3();
 
-    Map<String,Object> advertisementCpc_1();
+//    Map<String,Object> advertisementCpc_1();
 }
