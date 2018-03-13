@@ -49,6 +49,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String projhouseType;//索引类
     @Value("${distance}")
     private Double distance;
+    @Value("${tt.zufang.agent.index}")
+    private String agentIndex;
+    @Value("${tt.zufang.agent.type}")
+    private String agentType;
 
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
@@ -78,7 +82,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             Script script = new Script("Math.random()");
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             sort.unit(DistanceUnit.KILOMETERS);
-////            sort.order(SortOrder.DESC);
             sort.geoDistance(GeoDistance.ARC);
             srb.addSort(scrip).addSort(sort);
             SearchResponse searchResponse = srb.setSize(6).execute().actionGet();
@@ -736,5 +739,35 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         client.index(indexRequest).actionGet();
     }*/
 
+    /**
+     * 根据房源的id查询该房源所有的经纪人
+     * @param houseId
+     * @return
+     */
+    @Override
+    public Map queryAgentByHouseId(Integer houseId) {
+        Map result = new HashMap();
+        List list = new ArrayList();
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(agentIndex).setTypes(agentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length>0){
+                for (SearchHit hit:hits){
+                    Map source = hit.getSource();
+                    list.add(source);
+                }
+                result.put("total",searchResponse.getHits().getTotalHits());
+                result.put("agent",list);
+                return result;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

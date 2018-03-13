@@ -31,7 +31,7 @@ public class RentHouseController {
 
     /**
      *
-     * @Description：小区详情页
+     * @Description：租房详情页
      *
      * @Param [rentHouseQuery, model]
      * @Return java.lang.String
@@ -70,11 +70,11 @@ public class RentHouseController {
             }
 
             //房源经纪人
-            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
-            if (agent!=null){
-                List agentList = (List) agent.get("agent");
-                model.addAttribute("agentList",agentList);
-            }
+//            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
+//            if (agent!=null){
+//                List agentList = (List) agent.get("agent");
+//                model.addAttribute("agentList",agentList);
+//            }
 
             return "/rent/rent-detail";
         }

@@ -64,8 +64,9 @@ public class PartialMatchingController {
         }
         return searchMap;
     }
-    @RequestMapping("/rent/search")
+    @RequestMapping("/zufang/search")
     @ResponseBody
+
     public Map rentPartialMatching(String keyword,String property){
         Map searchMap = new HashMap();
         try {
