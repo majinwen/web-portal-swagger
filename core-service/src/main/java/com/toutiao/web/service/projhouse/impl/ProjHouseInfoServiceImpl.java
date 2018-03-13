@@ -82,7 +82,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             Script script = new Script("Math.random()");
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             sort.unit(DistanceUnit.KILOMETERS);
-////            sort.order(SortOrder.DESC);
             sort.geoDistance(GeoDistance.ARC);
             srb.addSort(scrip).addSort(sort);
             SearchResponse searchResponse = srb.setSize(6).execute().actionGet();
@@ -761,6 +760,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     Map source = hit.getSource();
                     list.add(source);
                 }
+                result.put("total",searchResponse.getHits().getTotalHits());
                 result.put("agent",list);
                 return result;
             }
