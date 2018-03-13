@@ -79,7 +79,7 @@ public class ProjHouseInfoController {
             }
 
             //房源经纪人
-            Map agent = projHouseInfoService.queryAgentByHouseId(((VillageResponse)village.get(0)).getId());
+            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
             if (agent!=null){
                 List agentList = (List) agent.get("agent");
                 model.addAttribute("agentList",agentList);
