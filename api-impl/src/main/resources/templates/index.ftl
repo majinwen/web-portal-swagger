@@ -239,7 +239,7 @@
     <div class="index-module-header">
         <h3>最近热销新房</h3>
     </div>
-    <ul><#if newbuilds?exists>
+    <ul id="index-recommend-newhouse"><#if newbuilds?exists>
         <#assign builds = newbuilds['data']>
         <#list builds as map>
             <#--<#if map_index==3>-->
@@ -412,7 +412,6 @@
             html.click(function () {
                 zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':html.text()});
             })
-
         }},
         {"pid":13,callback:function (html) {
             var parent=$('<li></li>');
@@ -422,7 +421,24 @@
             html.click(function () {
                 zhuge.track('购房指南_大首页',{'指南类别':'资讯','指南名称':html.text()});
             })
-
+        }},
+        {"pid":16,callback:function (html) {
+           if(html != ''){
+               $('#index-recommend-newhouse').find('li').each(function(){
+                   if($(this).index()==3){
+                       $(this)[0].innerHTML = html[0].innerHTML
+                   }
+               })
+           }
+        }},
+        {"pid":17,callback:function (html) {
+            if(html != ''){
+                $('#index-recommend-newhouse').find('li').each(function(){
+                    if($(this).index()==0){
+                        $(this)[0].innerHTML = html[0].innerHTML
+                    }
+                })
+            }
         }}
     ]
     $com.toutiao.ad.json_chain(lunbo);
