@@ -5,6 +5,7 @@ import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.domain.query.VillageRequest;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PlotService {
     List GetNearByhHouseAndDistance(double lat, double lon);
@@ -16,4 +17,6 @@ public interface PlotService {
     void saveParent(VillageEntityES village);
 
     void saveChild(ProjHouseInfoES projHouseInfoes);
+
+    Map queryPlotByRentId(String rentPlotId);
 }
