@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +56,13 @@ public class RentHouseController {
                 queryNearHouse.setLat(Double.parseDouble(map.get("location").toString().split(",")[0]));
                 queryNearHouse.setLon(Double.parseDouble(map.get("location").toString().split(",")[1]));
                 Map nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
-                if (nearHouse!=null){
+                if (nearHouse!=null&&((ArrayList) nearHouse.get("nearHouse")).size()>0){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
+                    System.out.println(nearHouse.get("nearHouse"));
                 }
                 //小区待租房源总数
                 model.addAttribute("total",nearHouse.get("total"));
+                System.out.println(nearHouse.get("nearHouse"));
             }else {
                 queryNearHouse.setApartmentParentId((String) map.get("apartment_parent_id"));
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
@@ -76,7 +80,7 @@ public class RentHouseController {
 //                model.addAttribute("agentList",agentList);
 //            }
 
-            return "/rent/rent-detail";
+            return "rent/rent-detail";
         }
         return "404";
     }
@@ -141,11 +145,5 @@ public class RentHouseController {
     public NashResult queryRentHousePageList(RentHouseQuery rentHouseQuery) {
         Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
         return NashResult.build(rentHouseList);
-    }
-
-    @RequestMapping("/detail")
-    public String detail(Model model){
-
-        return "/rent/rent-detail";
     }
 }

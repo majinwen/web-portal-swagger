@@ -121,10 +121,39 @@
 
 .primary-message {
     .primary-header {
-        padding-left: 0;
-        padding-right: 0;
+        padding: rem(50) 0;
         margin-left: rem(30);
         margin-right: rem(30);
+
+        h2, p {
+            line-height: 1;
+            @include font-dpr(36);
+        }
+
+        h2 {
+            font-weight: 700;
+        }
+
+        p {
+            color: $baseBlack;
+            margin-top: rem(26);
+        }
+    }
+}
+
+.primary-header-rent-tag {
+    margin-top: rem(50);
+
+    &.house-labelling {
+        span {
+            height: rem(54);
+            line-height: rem(54);
+            padding-left: rem(20);
+            padding-right: rem(20);
+            margin-right: rem(20);
+            box-sizing: border-box;
+            border: rem(1) solid $baseBorderColor;
+        }
     }
 }
 

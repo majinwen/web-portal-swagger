@@ -204,6 +204,10 @@ body {
       height: 0.4266666667rem;
       line-height: 0.4rem;
       box-sizing: border-box; }
+  .house-labelling span.company {
+    background-color: #aaa;
+    color: #fff;
+    border-color: #aaa; }
 
 .hidden {
   overflow: hidden; }

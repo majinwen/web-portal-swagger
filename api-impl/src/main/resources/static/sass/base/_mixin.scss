@@ -218,6 +218,14 @@ body {
         }
     }
 
+    span {
+        &.company {
+            background-color: #aaa;
+            color: $baseWhite;
+            border-color: #aaa;
+        }
+    }
+
 }
 .hidden {
     overflow: hidden;
