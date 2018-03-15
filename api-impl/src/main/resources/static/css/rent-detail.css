@@ -2602,8 +2602,7 @@ a.pswp__share--download:hover {
   .tilelist.row li .tilelist-content p em {
     color: #888; }
     .tilelist.row li .tilelist-content p em.link {
-      color: #2a8ad5;
-      text-decoration: underline; }
+      color: #2a8ad5; }
 
 .border-box {
   margin-left: 0.4rem;

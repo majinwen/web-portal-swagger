@@ -68,7 +68,7 @@
 <section class="primary-message">
     <div class="primary-header">
         <h2><#if rentHouse['rent_house_price']?exists>¥${rentHouse['rent_house_price']}元/月<#else>暂无数据</#if><#if rentHouse['pay_mode_name']?exists>(${rentHouse['pay_mode_name']})</#if></h2>
-        <p><#if rentHouse['rent_sign'] == 1>${rentHouse['village_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
+        <p><#if rentHouse['rent_sign'] == 1>${rentHouse['zufang_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
         <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
             <div class="primary-header-rent-tag house-labelling">
                 <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
@@ -81,19 +81,20 @@
     <section>
         <div  class="module-header-message">
             <h3>小区信息</h3>
-            <a href="${router_city('/xiaoqu/'+rentHouse['rent_id']?c+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']?c+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
-            <li><a href="${router_city('/xiaoqu/'+rentHouse['rent_id']?c+'.html')}" style="display: block">
+            <li><a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']?c+'.html')}" style="display: block">
                 <div class="picture-box">
-                    <#if rentHouse.house_title_img?exists && rentHouse.house_title_img!=''>
-                        <img src="${qiniuzufangimage}/${rentHouse.house_title_img}" alt="${rentHouse.village_name}">
+                    <#assign photo = plot['photo']>
+                    <#if photo[0]?exists>
+                        <img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot.rc}">
                     <#else >
                         <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                 </div>
                 <div id="tilePlotDesc" class="tilelist-content">
-                    <h4><em>小区：</em>${rentHouse['village_name']} [${rentHouse['district_name']} ${rentHouse['area_name']}]</h4>
+                    <h4><em>小区：</em>${plot['rc']} [${plot['area']} ${plot['tradingArea']}]</h4>
                     <p><em>年代：</em>${plot['abbreviatedAge']}年建成住宅,共${plot['sumBuilding']}栋</p>
                     <p><em>待租：</em><em class="link">${total}套</em></p>
                 </div>
@@ -161,13 +162,13 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if builditem.house_title_img?exists && builditem.house_title_img!=''>
-                            <img src="${qiniuzufangimage}/${builditem.house_title_img}" alt="${builditem.village_name}">
+                            <img src="${qiniuzufangimage}/${builditem.house_title_img}" alt="${builditem.zufang_name}">
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                     </div>
                     <div class="list-item-cont">
-                        <h3 class="cont-block-top"><span>${builditem['village_name']} · ${builditem['house_area']}㎡ ${builditem['forward']} ${builditem['room']}室${builditem['hall']}厅</span></h3>
+                        <h3 class="cont-block-top"><span>${builditem['zufang_name']} · ${builditem['house_area']}㎡ ${builditem['forward']} ${builditem['room']}室${builditem['hall']}厅</span></h3>
                         <div class="address distance"><i class="icon"></i>${builditem['district_name']} ${builditem['area_name']}</div>
                         <#if rentHouse['rent_type_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
                             <div class="house-labelling big normal">
@@ -221,7 +222,7 @@
     zhuge.track(desc(document.referrer), {
         '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
         '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
-        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.village_name?exists&& rentHouse.village_name!=''>${rentHouse.village_name}</#if>',
+        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
         '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
         '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
         '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡'</#if>,

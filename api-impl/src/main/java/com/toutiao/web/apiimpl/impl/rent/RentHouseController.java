@@ -49,7 +49,7 @@ public class RentHouseController {
             model.addAttribute("rentHouse",map);
             RentHouseQuery queryNearHouse = new RentHouseQuery();
             Integer house_id = (Integer) map.get("house_id");
-            Integer village_id = (Integer) map.get("village_id");
+            Integer village_id = (Integer) map.get("zufang_id");
             //附近相似好房/好房推荐
             if((Integer) map.get("rent_sign")==1){
                 queryNearHouse.setNear("3");
