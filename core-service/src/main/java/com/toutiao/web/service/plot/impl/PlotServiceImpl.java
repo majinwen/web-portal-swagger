@@ -2,6 +2,7 @@ package com.toutiao.web.service.plot.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.assertUtils.Query;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -650,5 +651,24 @@ public class PlotServiceImpl implements PlotService {
 //        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
 //        return bulkResponse.hasFailures();
         client.index(indexRequest).actionGet();
+    }
+
+    @Override
+    public Map queryPlotByRentId(String rentPlotId) {
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("id",rentPlotId));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"photo","rc","tradingArea","tradingAreaId","area","areaId","abbreviatedAge","sumBuilding"}, null).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length==1){
+                Map source = hits[0].getSource();
+                return source;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }
