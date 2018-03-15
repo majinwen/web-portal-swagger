@@ -76,7 +76,7 @@ public class RentHouseController {
             }
 
             //小区详情信息
-            Map plot = plotService.queryPlotByRentId((String) map.get("apartment_parent_id"));
+            Map plot = plotService.queryPlotByRentId((String) map.get("village_id"));
             if (plot!=null){
                 model.addAttribute("plot",plot);
             }
