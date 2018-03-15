@@ -52,19 +52,21 @@ $com.toutiao.ad.json_chain = function (config) {
                 cache:false,
                 async:false,
                 success: function (data) {
+                    if(data.html !="" && data.html!= undefined){
                     var dom=$(data.html);
-                    if(ele["jqid"]) {
-                        $(ele["jqid"]).html(dom);
-                    }
-                    if(ele["callback"]){
-                        try {
-                            ele.callback(dom);
-                        }
-                        catch (error){
-                            console.error(error);
-                        }
-                    }
 
+                        if(ele["jqid"]) {
+                            $(ele["jqid"]).html(dom);
+                        }
+                        if(ele["callback"]){
+                            try {
+                                ele.callback(dom);
+                            }
+                            catch (error){
+                                console.error(error);
+                            }
+                        }
+                    }
                 },
                 dataType: 'json'
             });
