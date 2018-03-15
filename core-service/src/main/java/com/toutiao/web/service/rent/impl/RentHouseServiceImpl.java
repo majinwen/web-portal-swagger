@@ -163,18 +163,18 @@ public class RentHouseServiceImpl implements RentHouseService{
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
             //小区/公寓
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",APARTMENT));
-            srb.setSize(6);
+            srb.setSize(4);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
                     Map source = hit.getSource();
-                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                    if((source.get("house_id"))!=Integer.valueOf(rentHouseQuery.getHouseId())){
                         list.add(source);
                     }
                 }
-                result.put("nearHouse",list);
                 result.put("total",searchResponse.getHits().getTotalHits());
+                result.put("nearHouse",list);
                 return result;
             }
         }catch (Exception e){
