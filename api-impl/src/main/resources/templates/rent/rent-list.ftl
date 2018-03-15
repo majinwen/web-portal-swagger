@@ -149,8 +149,8 @@
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.house_title_img && $value.house_title_img.length > 0}}
-                <img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.village_name}}">
-                <#--<img src="${qiniuimage}/{{$value.house_title_img}}-tt400x300" alt="{{$value.village_name}}">-->
+                <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.village_name}}">-->
+                <img src="${qiniuzufangimage}/{{$value.house_title_img}}" alt="{{$value.village_name}}">
                 {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
