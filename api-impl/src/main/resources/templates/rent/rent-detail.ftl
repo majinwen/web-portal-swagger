@@ -203,6 +203,31 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
+    var rentUrl = sessionStorage.getItem('rentUrl')||window.location.protocol+'//'+window.location.host+router_city('/zufang');
+    var rentSortId = sessionStorage.getItem('rentSortId')||-1;
+
+    function nextPage(e) {
+        if (rentUrl.split('?').length>1){
+            rentUrl = rentUrl+'&from='+(parseInt(rentSortId)+1);
+        }else if (rentUrl.split('?').length==1){
+            rentUrl = rentUrl+'?from='+(parseInt(rentSortId)+1)
+        }
+        $.ajax({
+            type: "get",
+            contentType:'application/json',
+            url: rentUrl,
+            async: true,
+            dataType:'json',
+            success:function (data) {
+                if(data.code=='fail'){
+                    return;
+                }
+                sessionStorage.setItem('rentSortId',parseInt(rentSortId)+1);
+                window.location.replace(router_city('/zufang/'+data.data.data[0].house_id+'.html'))
+            }
+        })
+    }
+
 
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
