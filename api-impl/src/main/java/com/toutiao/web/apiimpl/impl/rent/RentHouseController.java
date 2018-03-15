@@ -51,8 +51,8 @@ public class RentHouseController {
             if((Integer) map.get("rent_sign")==1){
                 queryNearHouse.setNear("3");
                 queryNearHouse.setRentSign(1);
-                queryNearHouse.setBeginPrice((Double) map.get("rent_house_price")*0.8);
-                queryNearHouse.setEndPrice((Double) map.get("rent_house_price")*1.2);
+//                queryNearHouse.setBeginPrice((Double) map.get("rent_house_price")*0.8);
+//                queryNearHouse.setEndPrice((Double) map.get("rent_house_price")*1.2);
                 queryNearHouse.setLat(Double.parseDouble(map.get("location").toString().split(",")[0]));
                 queryNearHouse.setLon(Double.parseDouble(map.get("location").toString().split(",")[1]));
                 Map nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
