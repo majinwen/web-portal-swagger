@@ -85,7 +85,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
             //价格上下浮动20%
-            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0){
+            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0&&rentHouseQuery.getEndPrice()>rentHouseQuery.getBeginPrice()){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
             }
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
@@ -93,7 +93,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             if(searchHists.length>0){
                 for (SearchHit hit:searchHists){
                     Map source = hit.getSource();
-                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                    if((source.get("house_id"))!=Integer.valueOf(rentHouseQuery.getHouseId())){
                         list.add(source);
                     }
                 }
