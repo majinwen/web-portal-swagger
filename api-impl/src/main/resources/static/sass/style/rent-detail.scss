@@ -54,23 +54,23 @@
 }
 
 .describe-box {
-    padding: rem(40) rem(30);
+    padding: 0 rem(30) rem(40);
 
     .describe-header {
-        height: rem(80);
-        margin-bottom: rem(28);
+        height: rem(70);
+        margin-bottom: rem(46);
 
         .source-icon {
             display: inline-block;
             width: auto;
-            height: rem(80);
+            height: rem(70);
             vertical-align: top;
         }
 
         p {
             position: relative;
             display: inline-block;
-            height: rem(80);
+            height: rem(70);
             margin-left: rem(20);
             white-space: nowrap;
 
@@ -78,14 +78,13 @@
                 position: absolute;
                 display: block;
                 bottom: 0;
-                color: #999;
-                @include font-dpr(22);
+                color: #666;
+                @include font-dpr(24);
             }
 
             span {
                 display: block;
                 position: absolute;
-                left: rem(-10);
                 @include font-dpr(32);
             }
         }
@@ -93,9 +92,9 @@
         .issuer-tel-icon {
             display: block;
             float: right;
-            width: rem(60);
-            height: rem(80);
-            @include bg-image('../images/global/red_icon_phone');
+            width: rem(70);
+            height: rem(70);
+            @include bg-image('../images/rent/rent_gray_icon_phone');
             -webkit-background-size: contain;
             background-size: contain;
             background-position: center;
@@ -104,8 +103,9 @@
 
     .describe-cont {
         position: relative;
-        @include font-dpr(26);
-        line-height: rem(40);
+        @include font-dpr(28);
+        line-height: rem(42);
+        color: #999;
         text-align: justify;
 
         .describe-show-btn {
@@ -132,6 +132,7 @@
 
         h2 {
             font-weight: 700;
+
         }
 
         p {
@@ -143,24 +144,42 @@
 
 .primary-header-rent-tag {
     margin-top: rem(50);
+    white-space: inherit;
 
     &.house-labelling {
+        margin-bottom: rem(-15);
+
         span {
             height: rem(54);
             line-height: rem(54);
             padding-left: rem(20);
             padding-right: rem(20);
             margin-right: rem(20);
+            margin-bottom: rem(15);
             box-sizing: border-box;
             border: rem(1) solid $baseBorderColor;
         }
     }
 }
 
+.house-labelling {
+    span {
+        &.rent-style {
+            color: $baseWhite;
+            background-color: #aaa;
+        }
+    }
+}
+
+
 .module-header-message {
     padding: 0;
     margin: 0 rem(30);
     border-bottom: none;
+
+    h3 {
+        @include font-dpr(32);
+    }
 
     .more-arrows {
         right: 0;
@@ -186,7 +205,6 @@
 
                         &.link {
                             color: #2a8ad5;
-                            text-decoration: underline;
                         }
                     }
                 }
@@ -209,10 +227,15 @@
     margin-left: rem(30);
     margin-right: rem(30);
     padding-bottom: rem(45);
-}
 
-.describe-box {
-    padding-top: 0;
+    .rent-traffic-icon {
+        display: inline-block;
+        width: rem(14);
+        height: rem(22);
+        @include bg-image('../static/images/rent/rent-traffic-icon');
+        -webkit-background-size: contain;
+        background-size: contain;
+    }
 }
 
 .list-item {
@@ -221,15 +244,6 @@
     }
     &:last-child {
         border-bottom: none;
-    }
-}
-
-.house-labelling {
-    span {
-        &.rent-style {
-            color: $baseWhite;
-            background-color: #aaa;
-        }
     }
 }
 

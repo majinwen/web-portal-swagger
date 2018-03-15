@@ -1186,22 +1186,36 @@ function pullUpAction() {
         loadDownFn : function(me){
             var paramData = req;
             paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
-            if (window["$toutiao_customer_pullUpAction_latlon"]) {
+
+            if (_localHref.indexOf('/zufang') > 0){
+                if(("near" in paramData)){
+                    if (window["$toutiao_customer_pullUpAction_latlon"]) {
+                        paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
+                        paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
+                        if(hasAnotherParam){
+                            delete paramData["lat"];
+                            delete paramData["lon"];
+                        }
+                    }
+                }
+            }else{
+                if (window["$toutiao_customer_pullUpAction_latlon"]) {
                     var hasAnotherParam=false;
                     for(var key in paramData){
                         if(!$.inArray(key,['lat','lon'])){
                             hasAnotherParam = true;
                         }
                     }
-                paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
-                paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
+                    paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
+                    paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
                     if(hasAnotherParam){
                         delete paramData["lat"];
                         delete paramData["lon"];
                     }
-
-
+                }
             }
+
+
             params = joinParams(paramData);
 
             if (_localHref.indexOf('/loupan') > 0) {

@@ -149,14 +149,13 @@
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.house_title_img && $value.house_title_img.length > 0}}
-                <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.village_name}}">-->
                 <img src="${qiniuzufangimage}/{{$value.house_title_img}}" alt="{{$value.village_name}}">
                 {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 1}}{{$value.village_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
+                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 1}}{{$value.zufang_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
                 <div class="address distance"><i class="icon"></i>{{if $value.subwayDesc}}{{$value.subwayDesc}}{{else if $value.area_name}}{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}} {{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}{{/if}}</div>
                 {{if $value.rent_type_name}}
                 <div class="house-labelling big normal">
@@ -196,19 +195,44 @@
             sortZhuge = '价格由低到高';
         }
     });*/
-    var rentPageNums = [];
+    window["$toutiao_customer_pullUpAction"]=true;
+
     $(function () {
-        var pageNum = 1;
-        if(window.location.href.split('#').length==2){
-            pageNum = window.location.href.split('#')[1].split('=')[1];
+        var urlparam =GetRequest();
+        if (urlparam["lat"] && urlparam["lon"]) {
+            window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
+            pullUpAction();
+        } else {
+            var hasTimeOut = false;
+            var timeout = setTimeout(function () {
+                if (hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                pullUpAction();
+            }, 2000);
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                clearTimeout(timeout);
+                if (hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                console.log(lat,lon);
+                if (lon == 116.40387397 && lat == 39.91488908) {
+                    window["$toutiao_customer_pullUpAction_latlon"] = [39.91931152343750000000, 116.49440002441400000000]
+                    pullUpAction();
+                } else {
+                    window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+                    pullUpAction();
+                }
+            });
         }
-        rentPageNums.push(parseInt(pageNum));
     });
+
     function rent_list(e) {
-        var pageNum = Math.min.apply(Math,rentPageNums);
-        sessionStorage.clear();
-        sessionStorage.setItem('rentUrl',window.location.href.split('#')[0]);
-        sessionStorage.setItem('rentSortId',parseInt($(e).parent().index())+parseInt(pageNum)*10-10);
         setPageNum($(e).attr('data-id'));
         window.location.href = $(e).attr('url')
     }
