@@ -2463,36 +2463,35 @@ a.pswp__share--download:hover {
     width: 100%; }
 
 .describe-box {
-  padding: 0.5333333333rem 0.4rem; }
+  padding: 0 0.4rem 0.5333333333rem; }
   .describe-box .describe-header {
-    height: 1.0666666667rem;
-    margin-bottom: 0.3733333333rem; }
+    height: 0.9333333333rem;
+    margin-bottom: 0.6133333333rem; }
     .describe-box .describe-header .source-icon {
       display: inline-block;
       width: auto;
-      height: 1.0666666667rem;
+      height: 0.9333333333rem;
       vertical-align: top; }
     .describe-box .describe-header p {
       position: relative;
       display: inline-block;
-      height: 1.0666666667rem;
+      height: 0.9333333333rem;
       margin-left: 0.2666666667rem;
       white-space: nowrap; }
       .describe-box .describe-header p em {
         position: absolute;
         display: block;
         bottom: 0;
-        color: #999; }
+        color: #666; }
         [data-dpr="1"] .describe-box .describe-header p em {
-          font-size: 11px; }
+          font-size: 12px; }
         [data-dpr="2"] .describe-box .describe-header p em {
-          font-size: 22px; }
+          font-size: 24px; }
         [data-dpr="3"] .describe-box .describe-header p em {
-          font-size: 33px; }
+          font-size: 36px; }
       .describe-box .describe-header p span {
         display: block;
-        position: absolute;
-        left: -0.1333333333rem; }
+        position: absolute; }
         [data-dpr="1"] .describe-box .describe-header p span {
           font-size: 16px; }
         [data-dpr="2"] .describe-box .describe-header p span {
@@ -2502,29 +2501,30 @@ a.pswp__share--download:hover {
     .describe-box .describe-header .issuer-tel-icon {
       display: block;
       float: right;
-      width: 0.8rem;
-      height: 1.0666666667rem;
-      background-image: url("../images/global/red_icon_phone.png");
+      width: 0.9333333333rem;
+      height: 0.9333333333rem;
+      background-image: url("../images/rent/rent_gray_icon_phone.png");
       background-repeat: no-repeat;
       -webkit-background-size: contain;
       background-size: contain;
       background-position: center; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .describe-box .describe-header .issuer-tel-icon {
-          background-image: url("../images/global/red_icon_phone@2x.png"); } }
+          background-image: url("../images/rent/rent_gray_icon_phone@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .describe-box .describe-header .issuer-tel-icon {
-          background-image: url("../images/global/red_icon_phone@3x.png"); } }
+          background-image: url("../images/rent/rent_gray_icon_phone@3x.png"); } }
   .describe-box .describe-cont {
     position: relative;
-    line-height: 0.5333333333rem;
+    line-height: 0.56rem;
+    color: #999;
     text-align: justify; }
     [data-dpr="1"] .describe-box .describe-cont {
-      font-size: 13px; }
+      font-size: 14px; }
     [data-dpr="2"] .describe-box .describe-cont {
-      font-size: 26px; }
+      font-size: 28px; }
     [data-dpr="3"] .describe-box .describe-cont {
-      font-size: 39px; }
+      font-size: 42px; }
     .describe-box .describe-cont .describe-show-btn {
       position: absolute;
       right: 0;
@@ -2552,20 +2552,34 @@ a.pswp__share--download:hover {
     margin-top: 0.3466666667rem; }
 
 .primary-header-rent-tag {
-  margin-top: 0.6666666667rem; }
-  .primary-header-rent-tag.house-labelling span {
-    height: 0.72rem;
-    line-height: 0.72rem;
-    padding-left: 0.2666666667rem;
-    padding-right: 0.2666666667rem;
-    margin-right: 0.2666666667rem;
-    box-sizing: border-box;
-    border: 0.0133333333rem solid #e8e8e8; }
+  margin-top: 0.6666666667rem;
+  white-space: inherit; }
+  .primary-header-rent-tag.house-labelling {
+    margin-bottom: -0.2rem; }
+    .primary-header-rent-tag.house-labelling span {
+      height: 0.72rem;
+      line-height: 0.72rem;
+      padding-left: 0.2666666667rem;
+      padding-right: 0.2666666667rem;
+      margin-right: 0.2666666667rem;
+      margin-bottom: 0.2rem;
+      box-sizing: border-box;
+      border: 0.0133333333rem solid #e8e8e8; }
+
+.house-labelling span.rent-style {
+  color: #fff;
+  background-color: #aaa; }
 
 .module-header-message {
   padding: 0;
   margin: 0 0.4rem;
   border-bottom: none; }
+  [data-dpr="1"] .module-header-message h3 {
+    font-size: 16px; }
+  [data-dpr="2"] .module-header-message h3 {
+    font-size: 32px; }
+  [data-dpr="3"] .module-header-message h3 {
+    font-size: 48px; }
   .module-header-message .more-arrows {
     right: 0; }
 
@@ -2603,18 +2617,25 @@ a.pswp__share--download:hover {
   margin-left: 0.4rem;
   margin-right: 0.4rem;
   padding-bottom: 0.6rem; }
-
-.describe-box {
-  padding-top: 0; }
+  .map-distance .rent-traffic-icon {
+    display: inline-block;
+    width: 0.1866666667rem;
+    height: 0.2933333333rem;
+    background-image: url("../static/images/rent/rent-traffic-icon.png");
+    background-repeat: no-repeat;
+    -webkit-background-size: contain;
+    background-size: contain; }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+      .map-distance .rent-traffic-icon {
+        background-image: url("../static/images/rent/rent-traffic-icon@2x.png"); } }
+    @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+      .map-distance .rent-traffic-icon {
+        background-image: url("../static/images/rent/rent-traffic-icon@3x.png"); } }
 
 .list-item:first-child {
   padding-top: 0; }
 .list-item:last-child {
   border-bottom: none; }
-
-.house-labelling span.rent-style {
-  color: #fff;
-  background-color: #aaa; }
 
 .detail-contact-box .detail-contact-content {
   padding: 0;

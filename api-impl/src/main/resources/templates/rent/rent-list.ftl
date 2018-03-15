@@ -149,14 +149,13 @@
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.house_title_img && $value.house_title_img.length > 0}}
-                <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="{{$value.village_name}}">-->
                 <img src="${qiniuzufangimage}/{{$value.house_title_img}}" alt="{{$value.village_name}}">
                 {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 1}}{{$value.village_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
+                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 1}}{{$value.zufang_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
                 <div class="address distance"><i class="icon"></i>{{if $value.subwayDesc}}{{$value.subwayDesc}}{{else if $value.area_name}}{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}} {{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}{{/if}}</div>
                 {{if $value.rent_type_name}}
                 <div class="house-labelling big normal">

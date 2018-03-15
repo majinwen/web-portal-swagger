@@ -18,7 +18,7 @@
         <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
             <#list rentHouse['rent_hsoue_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
-                    <img src="${qiniuimage}/${rentphoto}-ttfdc1200x640" data-src="${qiniuimage}/${rentphoto}-ttfdc1200x640" alt="">
+                    <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
                 </li>
             </#list>
         <#else>
@@ -68,73 +68,85 @@
 <section class="primary-message">
     <div class="primary-header">
         <h2><#if rentHouse['rent_house_price']?exists>¥${rentHouse['rent_house_price']}元/月<#else>暂无数据</#if><#if rentHouse['pay_mode_name']?exists>(${rentHouse['pay_mode_name']})</#if></h2>
-        <p>${rentHouse['village_name']} · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
-        <div class="primary-header-rent-tag house-labelling">
-            <span>首次出租</span><span>离地铁近</span>
-        </div>
+        <p><#if rentHouse['rent_sign'] == 1>${rentHouse['village_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
+        <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
+            <div class="primary-header-rent-tag house-labelling">
+                <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
+            </div>
+        </#if>
     </div>
 </section>
+<#if rentHouse['rent_sign'] == 1>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
             <h3>小区信息</h3>
-            <a href="" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+rentHouse['rent_id']?c+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
-            <li>
-                <a href="/bj/xiaoqu/11111737.html" style="display: block">
-                    <div class="picture-box">
-                        <#if rentHouse.house_title_img?exists && rentHouse.house_title_img!=''>
-                            <img src="${rentHouse.house_title_img}" alt="${rentHouse.village_name}">
-                        <#else >
-                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                        </#if>
-                    </div>
-                    <div id="tilePlotDesc" class="tilelist-content">
-                        <h4><em>小区：</em>${rentHouse.village_name}</h4>
-                        <p><em>年代：</em>2008年建成住宅,共7栋</p>
-                        <p><em>待租：</em><em class="link">123套</em></p>
-                    </div>
-                </a>
-            </li>
-
+            <li><a href="${router_city('/xiaoqu/'+rentHouse['rent_id']?c+'.html')}" style="display: block">
+                <div class="picture-box">
+                    <#if rentHouse.house_title_img?exists && rentHouse.house_title_img!=''>
+                        <img src="${qiniuzufangimage}/${rentHouse.house_title_img}" alt="${rentHouse.village_name}">
+                    <#else >
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    </#if>
+                </div>
+                <div id="tilePlotDesc" class="tilelist-content">
+                    <h4><em>小区：</em>${rentHouse['village_name']} [${rentHouse['district_name']} ${rentHouse['area_name']}]</h4>
+                    <p><em>年代：</em>${plot['abbreviatedAge']}年建成住宅,共${plot['sumBuilding']}栋</p>
+                    <p><em>待租：</em><em class="link">${total}套</em></p>
+                </div>
+            </a></li>
         </ul>
     </section>
 </div>
-<div class="module-bottom-fill">
+</#if>
+<div class="border-box">
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a onclick="esf_map_1(this)" href="#" class="more-arrows"><i class="arrows-right"></i></a>
+            <a onclick="rent_map_1(this)" href="${router_city('/zufang/'+rentHouse.house_id+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a onclick="esf_map_2(this)" href="#" class="detail-map">
+        <a onclick="rent_map_2(this)" href="${router_city('/zufang/'+rentHouse.house_id+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
-            <#if rentHouse.lat?exists && rentHouse.lon?exists>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${rentHouse.lat?if_exists?string("####.#######################")},${rentHouse.lon?if_exists?string("####.#######################")}&&zoom=16" alt="">
+            <#if rentHouse.location?exists>
+                <#assign lon = rentHouse['location']?split(',')[0]>
+                <#assign lat = rentHouse['location']?split(',')[1]>
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${lat},${lon}&&zoom=16" alt="">
             <#else >
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
         </a>
-        <p class="map-distance">距四惠站[1号线]2.1km </p>
+        <#if rentHouse['nearest_subway']?exists>
+            <#assign subwayDistance = rentHouse['nearest_subway']?split('$')[2]?number>
+            <p class="map-distance"><i class="rent-traffic-icon"></i>距${rentHouse['nearest_subway']?split('$')[1]}[${rentHouse['nearest_subway']?split('$')[0]}]<#if subwayDistance gt 1000>${subwayDistance}km<#else >${subwayDistance}m</#if></p>
+        </#if>
     </section>
 </div>
 <div class="border-box">
     <section>
         <div class="module-header-message">
-            <h3>房源点评</h3>
+            <h3><#if rentHouse['rent_sign'] == 1>房源点评</#if></h3>
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
+                    <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                <#else >
+                    <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                </#if>
                 <p>
-                    <span style="left: 0">李宝飞</span>
-                    <em>中原地产</em>
+                    <span>${rentHouse['estate_agent']}</span>
+                    <em>${rentHouse['brokerage_agency']}</em>
                 </p>
-                <a href="tel:13164223605" class="issuer-tel-icon"></a>
+                <a href="tel:13164223605" class="issuer-tel-icon rent"></a>
             </div>
+            <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
             <div class="describe-cont">
-                <p>此房的房源编号为：BJCY0000020853，我们将全心全意为您服务。<br>此户型在小区属于户型，小区出房率不是很，采光面超大，朝向好，通风效果更好，夏天不用开空调，家具电器好摆放，实际看起来要比想象中的大很多。可以拎包入住，省去您的装修费用。</p>
+                <p>${rentHouse['house_desc']}</p>
             </div>
+            </#if>
         </div>
     </section>
 </div>
@@ -144,51 +156,31 @@
         <div class="module-header-message">
             <h3>附近相似好房</h3>
         </div>
-        <#--<#assign nearHouseList = nearHouse['nearHouse']>-->
         <ul><#list nearHouse as builditem>
             <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="/static/images/global/tpzw_image.png" alt="拍摄中">
+                        <#if builditem.house_title_img?exists && builditem.house_title_img!=''>
+                            <img src="${qiniuzufangimage}/${builditem.house_title_img}" alt="${builditem.village_name}">
+                        <#else >
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
                     </div>
                     <div class="list-item-cont">
                         <h3 class="cont-block-top"><span>${builditem['village_name']} · ${builditem['house_area']}㎡ ${builditem['forward']} ${builditem['room']}室${builditem['hall']}厅</span></h3>
-                        <div class="address distance"><i class="icon"></i>海淀 蓟门桥</div>
-                        <div class="house-labelling big normal">
-                            <span class="company">整租</span>
-                            <span>地铁近</span>
-                        </div>
+                        <div class="address distance"><i class="icon"></i>${builditem['district_name']} ${builditem['area_name']}</div>
+                        <#if rentHouse['rent_type_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
+                            <div class="house-labelling big normal">
+                                <span class="company">${builditem['rent_type_name']}</span>
+                                <#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span> </#if></#list></#if>
+                            </div>
+                        </#if>
                         <div class="cont-block-bottom">
                             <p class="high-light-red"><#if builditem['rent_house_price']?exists>¥${builditem['rent_house_price']}<em> 元/月</em><#else>暂无数据</#if></p>
                         </div>
                     </div>
                 </div>
             </a></li></#list>
-        <#--<#list newbuilds as builditem>-->
-            <#--<li data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">-->
-                <#--<a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">-->
-                    <#--<div class="picture-box">-->
-                        <#--<#assign imglist = builditem['building_title_img']>-->
-                        <#--<#if imglist?exists >-->
-                            <#--<#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">-->
-                            <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">-->
-                            <#--</#if>-->
-                        <#--</#if>-->
-                    <#--</div>-->
-                    <#--<div class="tilelist-content">-->
-                        <#--<h4 class="cont-first">${builditem['building_name']!''}</h4>-->
-                        <#--<#if builditem['average_price']?exists && builditem['average_price'] gt 0>-->
-                            <#--<p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>-->
-                        <#--<#else>-->
-                            <#--<#if builditem['total_price']?exists && builditem['total_price'] gt 0>-->
-                                <#--<p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>-->
-                            <#--<#else><p class="cont-last"><em>售价待定</em></p>-->
-                            <#--</#if>-->
-                        <#--</#if>-->
-                    <#--</div>-->
-                <#--</a>-->
-            <#--</li>-->
-        <#--</#list>-->
         </ul>
     </section>
 </div></#if>
@@ -217,10 +209,45 @@
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
-
-        <#--var list = ${nearHouse};-->
-//        console.log(list);
     });
+    function desc(url) {
+        if(url.indexOf('zufang')>-1){
+            return '租房-进入租房详情页'
+        }
+        if(url.indexOf(window.location.hostname)>-1){
+            return '大首页-点击租房推荐'
+        }
+    }
+    zhuge.track(desc(document.referrer), {
+        '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
+        '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
+        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.village_name?exists&& rentHouse.village_name!=''>${rentHouse.village_name}</#if>',
+        '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
+        '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
+        '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡'</#if>,
+        '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
+        '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
+        'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
+        'location' : '${rentHouse.location}'
+    });
+    function rent_map_1(a) {
+        var link = $(a);
+        zhuge.track('租房-点击配套地图', {
+            "租房-点击配套地图": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    function rent_map_2(a) {
+        var link = $(a);
+        zhuge.track('租房-点击配套地图', {
+            "租房-点击配套地图": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
 
 </script>
 </body>
