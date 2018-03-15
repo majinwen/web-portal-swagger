@@ -196,6 +196,43 @@
             sortZhuge = '价格由低到高';
         }
     });*/
+    window["$toutiao_customer_pullUpAction"]=true;
+
+    $(function () {
+        var urlparam =GetRequest();
+        if (urlparam["lat"] && urlparam["lon"]) {
+            window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
+            pullUpAction();
+        } else {
+            var hasTimeOut = false;
+            var timeout = setTimeout(function () {
+                if (hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                pullUpAction();
+            }, 2000);
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                clearTimeout(timeout);
+                if (hasTimeOut) {
+                    return
+                }
+                hasTimeOut = true;
+                lon = r.point.lng;
+                lat = r.point.lat;
+                console.log(lat,lon);
+                if (lon == 116.40387397 && lat == 39.91488908) {
+                    window["$toutiao_customer_pullUpAction_latlon"] = [39.91931152343750000000, 116.49440002441400000000]
+                    pullUpAction();
+                } else {
+                    window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+                    pullUpAction();
+                }
+            });
+        }
+    });
+
     function rent_list(e) {
         setPageNum($(e).attr('data-id'));
         window.location.href = $(e).attr('url')

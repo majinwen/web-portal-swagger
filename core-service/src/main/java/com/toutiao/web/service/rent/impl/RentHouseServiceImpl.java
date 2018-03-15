@@ -579,7 +579,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         //附近1,3,5km
         GeoDistanceQueryBuilder location = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
-        if(StringUtil.isNotNullString(rentHouseQuery.getNear())){
+        if(StringUtil.isNotNullString(rentHouseQuery.getNear()) && rentHouseQuery.getLat()!=0 && rentHouseQuery.getLon()!=0){
             location = QueryBuilders.geoDistanceQuery("location")
                     .point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear()
                             , DistanceUnit.KILOMETERS);
