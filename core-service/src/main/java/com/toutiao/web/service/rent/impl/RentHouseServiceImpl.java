@@ -70,7 +70,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //从该坐标查询距离为distance的点
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear(), DistanceUnit.KILOMETERS);
-            srb.setPostFilter(location1).setSize(6);
+            srb.setPostFilter(location1).setSize(4);
             // 按距离排序
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
@@ -85,9 +85,9 @@ public class RentHouseServiceImpl implements RentHouseService{
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
             //价格上下浮动20%
-            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0&&rentHouseQuery.getEndPrice()>rentHouseQuery.getBeginPrice()){
+            /*if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0&&rentHouseQuery.getEndPrice()>rentHouseQuery.getBeginPrice()){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
-            }
+            }*/
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
             if(searchHists.length>0){

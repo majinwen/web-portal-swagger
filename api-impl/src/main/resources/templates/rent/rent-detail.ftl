@@ -144,8 +144,8 @@
         <div class="module-header-message">
             <h3>附近相似好房</h3>
         </div>
-        <#assign nearHouseList = nearHouse['nearHouse']>
-        <ul><#list nearHouseList as builditem>
+        <#--<#assign nearHouseList = nearHouse['nearHouse']>-->
+        <ul><#list nearHouse as builditem>
             <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
@@ -164,31 +164,31 @@
                     </div>
                 </div>
             </a></li></#list>
-        <#list newbuilds as builditem>
-            <li data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">
-                <a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">
-                    <div class="picture-box">
-                        <#assign imglist = builditem['building_title_img']>
-                        <#if imglist?exists >
-                            <#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
-                            </#if>
-                        </#if>
-                    </div>
-                    <div class="tilelist-content">
-                        <h4 class="cont-first">${builditem['building_name']!''}</h4>
-                        <#if builditem['average_price']?exists && builditem['average_price'] gt 0>
-                            <p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>
-                        <#else>
-                            <#if builditem['total_price']?exists && builditem['total_price'] gt 0>
-                                <p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>
-                            <#else><p class="cont-last"><em>售价待定</em></p>
-                            </#if>
-                        </#if>
-                    </div>
-                </a>
-            </li>
-        </#list>
+        <#--<#list newbuilds as builditem>-->
+            <#--<li data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">-->
+                <#--<a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">-->
+                    <#--<div class="picture-box">-->
+                        <#--<#assign imglist = builditem['building_title_img']>-->
+                        <#--<#if imglist?exists >-->
+                            <#--<#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">-->
+                            <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                    <#--</div>-->
+                    <#--<div class="tilelist-content">-->
+                        <#--<h4 class="cont-first">${builditem['building_name']!''}</h4>-->
+                        <#--<#if builditem['average_price']?exists && builditem['average_price'] gt 0>-->
+                            <#--<p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>-->
+                        <#--<#else>-->
+                            <#--<#if builditem['total_price']?exists && builditem['total_price'] gt 0>-->
+                                <#--<p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>-->
+                            <#--<#else><p class="cont-last"><em>售价待定</em></p>-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                    <#--</div>-->
+                <#--</a>-->
+            <#--</li>-->
+        <#--</#list>-->
         </ul>
     </section>
 </div></#if>

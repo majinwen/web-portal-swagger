@@ -909,7 +909,7 @@ a.pswp__share--download:hover {
           [data-dpr="3"] .carousel-swiper .banner-title.rent div.banner-house-number {
             font-size: 33px; }
         .carousel-swiper .banner-title.rent div.pictrue-index {
-          background-color: rgba(0, 0, 255, 0.7);
+          background-color: rgba(0, 0, 0, 0.7);
           -webkit-border-radius: 0.0666666667rem;
           border-radius: 0.0666666667rem; }
   .carousel-swiper img {
