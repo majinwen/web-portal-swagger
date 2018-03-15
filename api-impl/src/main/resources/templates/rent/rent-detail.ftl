@@ -15,8 +15,8 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
-            <#list rentHouse['rent_hsoue_img'] as rentphoto>
+        <#if rentHouse['rent_house_img']?exists && (rentHouse['rent_house_img']?size gt 0)>
+            <#list rentHouse['rent_house_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
                     <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
                 </li>
