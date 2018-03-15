@@ -49,6 +49,7 @@ public class RentHouseController {
             model.addAttribute("rentHouse",map);
             RentHouseQuery queryNearHouse = new RentHouseQuery();
             Integer house_id = (Integer) map.get("house_id");
+            Integer village_id = (Integer) map.get("village_id");
             //附近相似好房/好房推荐
             if((Integer) map.get("rent_sign")==1){
                 queryNearHouse.setNear("3");
@@ -66,7 +67,7 @@ public class RentHouseController {
                 model.addAttribute("total",nearHouse.get("total"));
             }else {
                 queryNearHouse.setHouseId(String.valueOf(house_id));
-                queryNearHouse.setApartmentParentId((String) map.get("apartment_parent_id"));
+                queryNearHouse.setApartmentParentId(String.valueOf(village_id));
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
                 if (nearHouse!=null){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
@@ -76,7 +77,7 @@ public class RentHouseController {
             }
 
             //小区详情信息
-            Map plot = plotService.queryPlotByRentId((String) map.get("apartment_parent_id"));
+            Map plot = plotService.queryPlotByRentId(String.valueOf(village_id));
             if (plot!=null){
                 model.addAttribute("plot",plot);
             }
@@ -142,8 +143,8 @@ public class RentHouseController {
 
     @RequestMapping("")
     public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
-        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
-        model.addAttribute("rent",rentHouseList);
+//        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+//        model.addAttribute("rent",rentHouseList);
         return "rent/rent-list";
     }
 
