@@ -393,7 +393,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         SearchResponse searchresponse = searchRequestBuilder
                 .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC)
-                .setFetchSource(new String[]{"village_name","village_id","house_area","forward","room","hall",
+                .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
                                 "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
@@ -437,7 +437,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         SearchResponse searchresponse = searchRequestBuilder
                 .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC)
-                .setFetchSource(new String[]{"village_name","village_id","house_area","forward","room","hall",
+                .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
                                 "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
@@ -508,7 +508,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         SearchResponse searchresponse = searchRequestBuilder
                 .setQuery(booleanQueryBuilder).addSort("top_time",SortOrder.ASC)
-                .setFetchSource(new String[]{"village_name","village_id","house_area","forward","room","hall",
+                .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
                                 "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
