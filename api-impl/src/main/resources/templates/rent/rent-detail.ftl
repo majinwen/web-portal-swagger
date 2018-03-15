@@ -18,7 +18,7 @@
         <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
             <#list rentHouse['rent_hsoue_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
-                    <img src="${qiniuimage}/${rentphoto}-ttfdc1200x640" data-src="${qiniuimage}/${rentphoto}-ttfdc1200x640" alt="">
+                    <img src="${qiniuimage}/${rentphoto['image_path']}-ttfdc1200x640" data-src="${qiniuimage}/${rentphoto['image_path']}-ttfdc1200x640" alt="">
                 </li>
             </#list>
         <#else>
@@ -210,6 +210,30 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
+    var rentUrl = sessionStorage.getItem('rentUrl')||window.location.protocol+'//'+window.location.host+router_city('/zufang');
+    var rentSortId = sessionStorage.getItem('rentSortId')||-1;
+
+    function nextPage() {
+        if (rentUrl.split('?').length>1){
+            rentUrl = rentUrl+'&from='+(parseInt(rentSortId)+1);
+        }else if (rentUrl.split('?').length==1){
+            rentUrl = rentUrl+'?from='+(parseInt(rentSortId)+1)
+        }
+        $.ajax({
+            type: "get",
+            contentType:'application/json',
+            url: rentUrl,
+            async: true,
+            dataType:'json',
+            success:function (data) {
+                if(data.code=='fail'){
+                    return;
+                }
+                sessionStorage.setItem('rentSortId',parseInt(rentSortId)+1);
+                window.location.replace(router_city('/zufang/'+data.data.data[0].id+'.html'))
+            }
+        })
+    }
 
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
@@ -217,9 +241,6 @@
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
-
-        <#--var list = ${nearHouse};-->
-//        console.log(list);
     });
 
 </script>

@@ -1096,6 +1096,22 @@ function listSortTab() {
     }
 }
 
+
+function arrayPush(url,pageNum) {
+    // if (url.indexOf('xiaoqu')>-1){
+    //     plotPageNums.push(pageNum)
+    // }
+    // if (url.indexOf('esf')>-1){
+    //     esfPageNums.push(pageNum)
+    // }
+    // if (url.indexOf('loupan')>-1){
+    //     newPageNums.push(pageNum)
+    // }
+    if (url.indexOf('zufang')>-1){
+        rentPageNums.push(pageNum)
+    }
+}
+
 /**
  * 下拉分页
  * @param pageNumber
@@ -1213,6 +1229,7 @@ function pullUpAction() {
                             if (initLoad_pageNum != pageNumUp) {
                                 pageNumUp++;
                                 setPageNum(pageNumUp);
+                                arrayPush(url,pageNumUp);
                             }
                             else {
                                 initLoad_pageNum = -1;
@@ -1409,6 +1426,7 @@ function pullDownAction() {
                         if (data.code == 'success') {
                             pageNumDown--;
                             setPageNum(pageNumDown);
+                            arrayPush(url,pageNumDown);
                             if (pageNumDown < 2) {
                                 me.lock()
                             }

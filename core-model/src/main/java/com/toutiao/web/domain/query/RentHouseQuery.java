@@ -11,9 +11,9 @@ public class RentHouseQuery {
      */
     private String houseId;
     /**
-     * 公寓上级Id
+     * 房源上级Id
      */
-    private String apartmentParentId;
+    private String zuFangId;
     /**
      * 关键字
      */
@@ -124,4 +124,9 @@ public class RentHouseQuery {
      * 每页数量
      */
     private Integer pageSize = 10;
+
+    /**
+     * 分页起始位置
+     */
+    private Integer from;
 }

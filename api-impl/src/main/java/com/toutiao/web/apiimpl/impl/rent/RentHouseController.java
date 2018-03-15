@@ -49,7 +49,7 @@ public class RentHouseController {
             model.addAttribute("rentHouse",map);
             RentHouseQuery queryNearHouse = new RentHouseQuery();
             Integer house_id = (Integer) map.get("house_id");
-            Integer village_id = (Integer) map.get("village_id");
+            Integer zufang_id = (Integer) map.get("zufang_id");
             //附近相似好房/好房推荐
             if((Integer) map.get("rent_sign")==1){
                 queryNearHouse.setNear("3");
@@ -63,11 +63,18 @@ public class RentHouseController {
                 if (nearHouse!=null){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
-                //附近小区总数
-                model.addAttribute("total",nearHouse.get("total"));
+
+                //小区待租房源总数
+                RentHouseQuery queryNearHouse1 = new RentHouseQuery();
+                queryNearHouse1.setZuFangId(String.valueOf(zufang_id));
+                queryNearHouse1.setRentSign(1);
+                Map nearHouseApartment = rentHouseService.queryHouseByparentId(queryNearHouse1);
+                if (nearHouseApartment!=null){
+                    model.addAttribute("total",nearHouseApartment.get("total"));
+                }
             }else {
-                queryNearHouse.setHouseId(String.valueOf(house_id));
-                queryNearHouse.setApartmentParentId(String.valueOf(village_id));
+                queryNearHouse.setZuFangId(String.valueOf(zufang_id));
+                queryNearHouse.setRentSign(2);
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
                 if (nearHouse!=null){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
@@ -77,7 +84,7 @@ public class RentHouseController {
             }
 
             //小区详情信息
-            Map plot = plotService.queryPlotByRentId(String.valueOf(village_id));
+            Map plot = plotService.queryPlotByRentId(String.valueOf(zufang_id));
             if (plot!=null){
                 model.addAttribute("plot",plot);
             }

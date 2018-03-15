@@ -10,7 +10,7 @@ public class rentEntity {
     /**
      * 公寓上级Id
      */
-    private Integer apartmentParentId;
+    private Integer zuFangId;
     /**
      * 城市编号
      */
@@ -44,7 +44,7 @@ public class rentEntity {
      */
     private String rentTypeName;
     /**
-     * 出租房源标志(出租/公寓)
+     * 出租房源标志(普租/公寓)
      */
     private Integer rentSign;
     /**

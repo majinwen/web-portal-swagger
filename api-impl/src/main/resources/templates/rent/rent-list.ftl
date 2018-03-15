@@ -196,7 +196,19 @@
             sortZhuge = '价格由低到高';
         }
     });*/
+    var rentPageNums = [];
+    $(function () {
+        var pageNum = 1;
+        if(window.location.href.split('#').length==2){
+            pageNum = window.location.href.split('#')[1].split('=')[1];
+        }
+        rentPageNums.push(parseInt(pageNum));
+    });
     function rent_list(e) {
+        var pageNum = Math.min.apply(Math,rentPageNums);
+        sessionStorage.clear();
+        sessionStorage.setItem('rentUrl',window.location.href.split('#')[0]);
+        sessionStorage.setItem('rentSortId',parseInt($(e).parent().index())+parseInt(pageNum)*10-10);
         setPageNum($(e).attr('data-id'));
         window.location.href = $(e).attr('url')
     }
