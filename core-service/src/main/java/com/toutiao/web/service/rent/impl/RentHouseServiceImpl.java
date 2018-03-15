@@ -24,7 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -82,17 +85,17 @@ public class RentHouseServiceImpl implements RentHouseService{
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
             //价格上下浮动20%
-//            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0){
-//                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
-//            }
+            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0&&rentHouseQuery.getEndPrice()>rentHouseQuery.getBeginPrice()){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
+            }
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
             if(searchHists.length>0){
                 for (SearchHit hit:searchHists){
                     Map source = hit.getSource();
-//                    if (!"0.0".equals(hit.getSortValues()[0].toString())){
+                    if((source.get("house_id"))!=Integer.valueOf(rentHouseQuery.getHouseId())){
                         list.add(source);
-//                    }
+                    }
                 }
                 result.put("nearHouse",list);
                 result.put("total",searchResponse.getHits().getTotalHits());
@@ -464,7 +467,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             pageNum = rentHouseQuery.getPageNum();
         }
 
-        BoolQueryBuilder booleanQueryBuilder=QueryBuilders.boolQuery();;
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
         //置顶数据只根据区域、商圈确定
         List<String> topKeywords = new ArrayList<>();
