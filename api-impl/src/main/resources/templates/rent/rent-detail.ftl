@@ -15,11 +15,20 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-            <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="http://image.5i5j.com/picture/house/3877/38770403/shinei/kpccdaipdb38cd53.jpg" data-src="http://image.5i5j.com/picture/house/3877/38770403/shinei/kpccdaipdb38cd53.jpg" alt="">
+        <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
+            <#list rentHouse['rent_hsoue_img'] as rentphoto>
+                <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
+                    <img src="${qiniuimage}/${rentphoto}-ttfdc1200x640" data-src="${qiniuimage}/${rentphoto}-ttfdc1200x640" alt="">
+                </li>
+            </#list>
+        <#else>
+            <li onclick="initphoto(this,0,window.location.href)" class="swiper-slide">
+                <img src="${staticurl}/images/global/tpzw_banner_image.png" height="100%" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="">
             </li>
-        <div class="banner-title">
-            <div class="banner-house-number">房源编号：2873673</div>
+        </#if>
+        </ul>
+        <div class="banner-title rent">
+            <div class="banner-house-number">编号${rentHouse['house_id']}</div>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
     </div>
@@ -58,11 +67,10 @@
 </div>
 <section class="primary-message">
     <div class="primary-header">
-        <h2>¥4800元/月(押一付三)</h2>
-        <p>青遇home · 65㎡ 南向 2室1厅</p>
-        <div class="primary-header-tag house-labelling gray">
-            <span>首次出租</span>
-            <span>离地铁近</span>
+        <h2><#if rentHouse['rent_house_price']?exists>¥${rentHouse['rent_house_price']}元/月<#else>暂无数据</#if><#if rentHouse['pay_mode_name']?exists>(${rentHouse['pay_mode_name']})</#if></h2>
+        <p>${rentHouse['village_name']} · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
+        <div class="primary-header-rent-tag house-labelling">
+            <span>首次出租</span><span>离地铁近</span>
         </div>
     </div>
 </section>
@@ -76,10 +84,14 @@
             <li>
                 <a href="/bj/xiaoqu/11111737.html" style="display: block">
                     <div class="picture-box">
-                        <img src="http://s1.qn.toutiaofangchan.com/c1-6d5924c0-daf9-11e7-92d8-14abc5f0dc77.jpg-tt400x300" alt="UHN国际村">
+                        <#if rentHouse.house_title_img?exists && rentHouse.house_title_img!=''>
+                            <img src="${rentHouse.house_title_img}" alt="${rentHouse.village_name}">
+                        <#else >
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
                     </div>
                     <div id="tilePlotDesc" class="tilelist-content">
-                        <h4><em>小区：</em>UHN国际村</h4>
+                        <h4><em>小区：</em>${rentHouse.village_name}</h4>
                         <p><em>年代：</em>2008年建成住宅,共7栋</p>
                         <p><em>待租：</em><em class="link">123套</em></p>
                     </div>
@@ -89,15 +101,19 @@
         </ul>
     </section>
 </div>
-<div class="border-box">
+<div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
             <a onclick="esf_map_1(this)" href="#" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a onclick="esf_map_2(this)" href="/bj/esf/11111737/map.html" class="detail-map">
+        <a onclick="esf_map_2(this)" href="#" class="detail-map">
             <i class="map-marker-icon"></i>
-            <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&amp;width=700&amp;height=350&amp;center=116.455055236816,39.9732894897461&amp;&amp;zoom=16" alt="">
+            <#if rentHouse.lat?exists && rentHouse.lon?exists>
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${rentHouse.lat?if_exists?string("####.#######################")},${rentHouse.lon?if_exists?string("####.#######################")}&&zoom=16" alt="">
+            <#else >
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
+            </#if>
         </a>
         <p class="map-distance">距四惠站[1号线]2.1km </p>
     </section>
@@ -122,34 +138,60 @@
         </div>
     </section>
 </div>
+<#if nearHouse?exists>
 <div id="nearbynewesf">
     <section>
         <div class="module-header-message">
             <h3>附近相似好房</h3>
         </div>
-        <ul>
-            <li><a class="list-item" href="javascript:void(0);">
+        <#--<#assign nearHouseList = nearHouse['nearHouse']>-->
+        <ul><#list nearHouse as builditem>
+            <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']?c+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
-                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        <img src="/static/images/global/tpzw_image.png" alt="拍摄中">
                     </div>
                     <div class="list-item-cont">
-                        <h3 class="cont-block-top"><span>万年花城二期·136m2三室·西</span></h3>
-                        <div class="address distance"><i class="icon"></i>朝阳 大望路</div>
+                        <h3 class="cont-block-top"><span>${builditem['village_name']} · ${builditem['house_area']}㎡ ${builditem['forward']} ${builditem['room']}室${builditem['hall']}厅</span></h3>
+                        <div class="address distance"><i class="icon"></i>海淀 蓟门桥</div>
                         <div class="house-labelling big normal">
-                            <span class="rent-style">整租</span>
-                            <span>整租</span>
+                            <span class="company">整租</span>
+                            <span>地铁近</span>
                         </div>
-                        <div class="cont-block-bottom house-labelling big normal">
-                            <span>离地铁近</span>
-                            <span>集中供暖</span>
+                        <div class="cont-block-bottom">
+                            <p class="high-light-red"><#if builditem['rent_house_price']?exists>¥${builditem['rent_house_price']}<em> 元/月</em><#else>暂无数据</#if></p>
                         </div>
                     </div>
                 </div>
-            </a></li>
+            </a></li></#list>
+        <#--<#list newbuilds as builditem>-->
+            <#--<li data-type="<#if builditem['district_name']?exists&&builditem['district_name']!="">${builditem.district_name}</#if>">-->
+                <#--<a href="${router_city('/loupan/'+builditem['building_name_id']?c+'.html')}">-->
+                    <#--<div class="picture-box">-->
+                        <#--<#assign imglist = builditem['building_title_img']>-->
+                        <#--<#if imglist?exists >-->
+                            <#--<#if imglist?split(",")[0]?? && imglist?split(",")[0] != ''><img src="${qiniuimage}/${imglist?split(",")[0]}-tt400x300" alt="${imglist?split(",")[0]}">-->
+                            <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                    <#--</div>-->
+                    <#--<div class="tilelist-content">-->
+                        <#--<h4 class="cont-first">${builditem['building_name']!''}</h4>-->
+                        <#--<#if builditem['average_price']?exists && builditem['average_price'] gt 0>-->
+                            <#--<p class="cont-last">均价：<em>${builditem['average_price']}元</em>/㎡</p>-->
+                        <#--<#else>-->
+                            <#--<#if builditem['total_price']?exists && builditem['total_price'] gt 0>-->
+                                <#--<p class="cont-last">总价：<em>${builditem['total_price']}万</em>/套</p>-->
+                            <#--<#else><p class="cont-last"><em>售价待定</em></p>-->
+                            <#--</#if>-->
+                        <#--</#if>-->
+                    <#--</div>-->
+                <#--</a>-->
+            <#--</li>-->
+        <#--</#list>-->
         </ul>
     </section>
-</div>
+</div></#if>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
@@ -175,6 +217,9 @@
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
         }
+
+        <#--var list = ${nearHouse};-->
+//        console.log(list);
     });
 
 </script>

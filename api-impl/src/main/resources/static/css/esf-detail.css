@@ -203,6 +203,10 @@ body {
       height: 0.4266666667rem;
       line-height: 0.4rem;
       box-sizing: border-box; }
+  .house-labelling span.company {
+    background-color: #aaa;
+    color: #fff;
+    border-color: #aaa; }
 
 .hidden {
   overflow: hidden; }
@@ -886,6 +890,28 @@ a.pswp__share--download:hover {
         -webkit-border-radius: 0.2133333333rem;
         -moz-border-radius: 0.2133333333rem;
         border-radius: 0.2133333333rem; }
+    .carousel-swiper .banner-title.rent {
+      height: 0.5866666667rem;
+      bottom: 0.2666666667rem; }
+      .carousel-swiper .banner-title.rent div {
+        height: 0.5866666667rem;
+        line-height: 0.5866666667rem; }
+        .carousel-swiper .banner-title.rent div.banner-house-number {
+          padding: 0 0.2933333333rem;
+          color: #333;
+          background-color: rgba(255, 255, 255, 0.7);
+          -webkit-border-radius: 0.0666666667rem;
+          border-radius: 0.0666666667rem; }
+          [data-dpr="1"] .carousel-swiper .banner-title.rent div.banner-house-number {
+            font-size: 11px; }
+          [data-dpr="2"] .carousel-swiper .banner-title.rent div.banner-house-number {
+            font-size: 22px; }
+          [data-dpr="3"] .carousel-swiper .banner-title.rent div.banner-house-number {
+            font-size: 33px; }
+        .carousel-swiper .banner-title.rent div.pictrue-index {
+          background-color: rgba(0, 0, 0, 0.7);
+          -webkit-border-radius: 0.0666666667rem;
+          border-radius: 0.0666666667rem; }
   .carousel-swiper img {
     width: 100%; }
 

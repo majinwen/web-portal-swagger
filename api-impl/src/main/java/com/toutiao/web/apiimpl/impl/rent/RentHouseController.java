@@ -87,7 +87,7 @@ public class RentHouseController {
 //                model.addAttribute("agentList",agentList);
 //            }
 
-            return "/rent/rent-detail";
+            return "rent/rent-detail";
         }
         return "404";
     }
@@ -152,11 +152,5 @@ public class RentHouseController {
     public NashResult queryRentHousePageList(RentHouseQuery rentHouseQuery) {
         Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
         return NashResult.build(rentHouseList);
-    }
-
-    @RequestMapping("/detail")
-    public String detail(Model model){
-
-        return "/rent/rent-detail";
     }
 }

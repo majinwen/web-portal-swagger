@@ -156,15 +156,18 @@
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-top"><span>{{$value.village_name}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
-                <div class="address distance"><i class="icon"></i>{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}} {{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}</div>
-                {{if $value.rent_house_tags_name && $value.rent_house_tags_name.length > 0}}
+                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 1}}{{$value.village_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
+                <div class="address distance"><i class="icon"></i>{{if $value.subwayDesc}}{{$value.subwayDesc}}{{else if $value.area_name}}{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}} {{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}{{/if}}</div>
+                {{if $value.rent_type_name}}
                 <div class="house-labelling big normal">
+                    <span class="company">{{$value.rent_type_name}}</span>
+                    {{if $value.rent_house_tags_name && $value.rent_house_tags_name.length > 0}}
                     {{each $value.rent_house_tags_name value i}}
                     {{if i < 3}}
                     <span>{{value}}</span>
                     {{/if}}
                     {{/each}}
+                    {{/if}}
                 </div>
                 {{/if}}
                 <div class="cont-block-bottom">
