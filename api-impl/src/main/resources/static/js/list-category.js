@@ -345,6 +345,12 @@ $(function () {
         moreOption('source');
     }
     /**
+     * 供暖筛选---多选(租房)
+     */
+    if (req['ht']) {
+        moreOption('ht');
+    }
+    /**
      * 整租筛选---多选
      */
     if (req['elo']) {
