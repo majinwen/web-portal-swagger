@@ -142,7 +142,7 @@
     <ul id="valueList"></ul>
 </section>
 <#include "../user.ftl">
-<#include "../search.ftl">
+<#include "../search-rent.ftl">
 <script id="listContent" type="text/html">
     {{each data}}
     <li><a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
@@ -232,7 +232,20 @@
         }
     });
 
+    var rentPageNums = [];
+    $(function () {
+        var pageNum = 1;
+        if(window.location.href.split('#').length==2){
+            pageNum = window.location.href.split('#')[1].split('=')[1];
+        }
+        rentPageNums.push(parseInt(pageNum));
+    });
+
     function rent_list(e) {
+        var pageNum = Math.min.apply(Math,rentPageNums);
+        sessionStorage.clear();
+        sessionStorage.setItem('rentUrl',window.location.href.split('#')[0]);
+        sessionStorage.setItem('rentSortId',parseInt($(e).parent().index())+parseInt(pageNum)*10-10);
         setPageNum($(e).attr('data-id'));
         window.location.href = $(e).attr('url')
     }

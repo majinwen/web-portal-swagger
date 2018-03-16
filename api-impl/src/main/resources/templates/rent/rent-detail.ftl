@@ -15,8 +15,8 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if rentHouse['rent_house_img']?exists && (rentHouse['rent_house_img']?size gt 0)>
-            <#list rentHouse['rent_house_img'] as rentphoto>
+        <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
+            <#list rentHouse['rent_hsoue_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
                     <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
                 </li>
@@ -231,6 +231,34 @@
 <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
+    var rentUrl = sessionStorage.getItem('rentUrl')||window.location.protocol+'//'+window.location.host+router_city('/zufang');
+    var rentSortId = sessionStorage.getItem('rentSortId')||-1;
+
+    console.log(rentSortId,rentUrl)
+    function nextPage(e) {
+        if (rentUrl.split('?').length>1){
+            rentUrl = rentUrl+'&from='+(parseInt(rentSortId)+1);
+        }else if (rentUrl.split('?').length==1){
+            rentUrl = rentUrl+'?from='+(parseInt(rentSortId)+1)
+        }
+        console.log(rentUrl)
+        $.ajax({
+            type: "get",
+            contentType:'application/json',
+            url: rentUrl,
+            async: true,
+            dataType:'json',
+            success:function (data) {
+                if(data.code=='fail'){
+                    return;
+                }
+                console.log(data)
+                sessionStorage.setItem('rentSortId',parseInt(rentSortId)+1);
+                window.location.replace(router_city('/zufang/'+data.data.data[0].house_id+'.html'))
+            }
+        })
+    }
+
 
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
@@ -253,7 +281,7 @@
         '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
         '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
         '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
-        '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡'</#if>,
+        '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
         '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
         '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
         'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',

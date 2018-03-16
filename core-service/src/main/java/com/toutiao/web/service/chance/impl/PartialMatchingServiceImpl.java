@@ -42,6 +42,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
     private static final String PLOT_TYPE = "1";
     private static final String ESF_TYPE = "2";
     private static final String RENT_TYPE = "3";
+    private static final String APARTMENT_TYPE = "4";
 
 
 
@@ -65,7 +66,8 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         srbScope.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                 .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))
-                .addAggregation(AggregationBuilders.filter("rent",QueryBuilders.termQuery("search_type_sings", RENT_TYPE)));
+                .addAggregation(AggregationBuilders.filter("rent",QueryBuilders.termQuery("search_type_sings", RENT_TYPE)))
+                .addAggregation(AggregationBuilders.filter("apartment",QueryBuilders.termQuery("search_type_sings", APARTMENT_TYPE)));
 
         SearchResponse searchResponseScope = srbScope.setQuery(boolQueryBuilderScope).execute().actionGet();
         if (searchResponseScope!=null){
@@ -95,7 +97,8 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                 .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))
-                .addAggregation(AggregationBuilders.filter("rent",QueryBuilders.termQuery("search_type_sings", RENT_TYPE)));
+                .addAggregation(AggregationBuilders.filter("rent",QueryBuilders.termQuery("search_type_sings", RENT_TYPE)))
+                .addAggregation(AggregationBuilders.filter("apartment",QueryBuilders.termQuery("search_type_sings", APARTMENT_TYPE)));
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
