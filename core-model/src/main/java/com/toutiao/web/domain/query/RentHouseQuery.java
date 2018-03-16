@@ -130,4 +130,5 @@ public class RentHouseQuery {
      * 分页起始位置
      */
     private Integer from;
+
 }

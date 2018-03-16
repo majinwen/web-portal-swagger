@@ -50,6 +50,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
     private static final Integer RENT = 1;//出租:1
     private static final Integer APARTMENT = 2;//公寓:2
+    private static final String LAYOUT = "3";
 
 
     /**
@@ -628,22 +629,19 @@ public class RentHouseServiceImpl implements RentHouseService{
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
                     .gte(rentHouseQuery.getBeginPrice()));
         }
-//        //租赁方式
-//        if(StringTool.isNotBlank(rentHouseQuery.getErt()) && !StringTool.isNotBlank(rentHouseQuery.getJrt())){
-//            booleanQueryBuilder.must(termQuery("rent_type", rentHouseQuery.getErt()));
-//        }else if(!StringTool.isNotBlank(rentHouseQuery.getErt()) && StringTool.isNotBlank(rentHouseQuery.getJrt())){
-//            booleanQueryBuilder.must(termQuery("rent_type", rentHouseQuery.getJrt()));
-//        }else if(StringTool.isNotBlank(rentHouseQuery.getErt()) && StringTool.isNotBlank(rentHouseQuery.getJrt())){
-//            booleanQueryBuilder.must(termQuery("rent_type", new int[]{rentHouseQuery.getErt(),rentHouseQuery.getJrt()}));
-//        }
+
         //户型
         if(StringTool.isNotBlank(rentHouseQuery.getElo()) && !StringTool.isNotBlank(rentHouseQuery.getJlo())){
+//            if(rentHouseQuery.getElo()=="3"){
+//
+//            }
             String[] room = rentHouseQuery.getElo().split(",");
             booleanQueryBuilder.must(termsQuery("erent_layout", room));
         }else if(!StringTool.isNotBlank(rentHouseQuery.getElo()) && StringTool.isNotBlank(rentHouseQuery.getJlo())){
             String[] room = rentHouseQuery.getJlo().split(",");
             booleanQueryBuilder.must(termsQuery("jrent_layout", room));
         }else if(StringTool.isNotBlank(rentHouseQuery.getElo()) && StringTool.isNotBlank(rentHouseQuery.getJlo())){
+
             String[] jroom = rentHouseQuery.getJlo().split(",");
             String[] eroom = rentHouseQuery.getElo().split(",");
             booleanQueryBuilder.must(termsQuery("jrent_layout", jroom));

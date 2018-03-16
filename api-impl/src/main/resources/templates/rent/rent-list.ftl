@@ -62,7 +62,7 @@
                             <span data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
-                            <span data-info="3">三居</span>
+                            <span data-info="3">三居+</span>
                         </dd>
                     </dl>
                     <dl class="rent-sign">
