@@ -40,7 +40,7 @@
                 </div>
             </div>
             <!-- 价格 -->
-            <div class="filter-item" data-mark="tab-rent-price">
+            <div class="filter-item" data-mark="panel-rent-price">
                 <div class="price-list">
                     <ul>
                         <li data-begin-price="" data-end-price="" class="current">不限</li>
@@ -49,12 +49,12 @@
                         <li data-begin-price="3000.0" data-end-price="4000.0">3000-4000元</li>
                         <li data-begin-price="4000.0" data-end-price="5000.0">4000-5000元</li>
                         <li data-begin-price="5000.0" data-end-price="8000.0">5000-8000元</li>
-                        <li data-begin-price="8000.0" data-end-price="2000000000.0">8000元以上</li>
+                        <li data-begin-price="8000.0" data-end-price="">8000元以上</li>
                     </ul>
                 </div>
             </div>
             <!-- 楼龄 -->
-            <div class="filter-item" data-mark="tab-rent-type">
+            <div class="filter-item" data-mark="panel-rent-type">
                 <div class="more-list">
                     <dl>
                         <dt class="text-center" data-type="propertyTypeId">整租</dt>

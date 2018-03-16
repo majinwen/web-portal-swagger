@@ -616,19 +616,38 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
 
         //总价
-        if(rentHouseQuery.getBeginPrice()!=null && rentHouseQuery.getEndPrice()!=0){
+//        if(rentHouseQuery.getBeginPrice()!=null && rentHouseQuery.getEndPrice()!=0){
+//            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+//                    .gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
+//        }
+
+        if(StringTool.isNotBlank(rentHouseQuery.getBeginPrice()) && StringTool.isNotBlank(rentHouseQuery.getEndPrice())){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
                     .gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
+        }else if(StringTool.isNotBlank(rentHouseQuery.getBeginPrice()) && !StringTool.isNotBlank(rentHouseQuery.getEndPrice())){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+                    .gte(rentHouseQuery.getBeginPrice()));
         }
-        //租赁方式
-        if(rentHouseQuery.getRt()!=null && rentHouseQuery.getRt()!=0){
-            booleanQueryBuilder.must(termQuery("rent_type", rentHouseQuery.getRt()));
-        }
+//        //租赁方式
+//        if(StringTool.isNotBlank(rentHouseQuery.getErt()) && !StringTool.isNotBlank(rentHouseQuery.getJrt())){
+//            booleanQueryBuilder.must(termQuery("rent_type", rentHouseQuery.getErt()));
+//        }else if(!StringTool.isNotBlank(rentHouseQuery.getErt()) && StringTool.isNotBlank(rentHouseQuery.getJrt())){
+//            booleanQueryBuilder.must(termQuery("rent_type", rentHouseQuery.getJrt()));
+//        }else if(StringTool.isNotBlank(rentHouseQuery.getErt()) && StringTool.isNotBlank(rentHouseQuery.getJrt())){
+//            booleanQueryBuilder.must(termQuery("rent_type", new int[]{rentHouseQuery.getErt(),rentHouseQuery.getJrt()}));
+//        }
         //户型
-        if(StringUtil.isNotNullString(rentHouseQuery.getLo())){
-            String[] room = rentHouseQuery.getLo().split(",");
-//            int[] ints= Arrays.stream(layoutId).mapToInt(Integer::valueOf).toArray();
-            booleanQueryBuilder.must(termsQuery("room", room));
+        if(StringTool.isNotBlank(rentHouseQuery.getElo()) && !StringTool.isNotBlank(rentHouseQuery.getJlo())){
+            String[] room = rentHouseQuery.getElo().split(",");
+            booleanQueryBuilder.must(termsQuery("erent_layout", room));
+        }else if(!StringTool.isNotBlank(rentHouseQuery.getElo()) && StringTool.isNotBlank(rentHouseQuery.getJlo())){
+            String[] room = rentHouseQuery.getJlo().split(",");
+            booleanQueryBuilder.must(termsQuery("jrent_layout", room));
+        }else if(StringTool.isNotBlank(rentHouseQuery.getElo()) && StringTool.isNotBlank(rentHouseQuery.getJlo())){
+            String[] jroom = rentHouseQuery.getJlo().split(",");
+            String[] eroom = rentHouseQuery.getElo().split(",");
+            booleanQueryBuilder.must(termsQuery("jrent_layout", jroom));
+            booleanQueryBuilder.must(termsQuery("erent_layout", eroom));
         }
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
