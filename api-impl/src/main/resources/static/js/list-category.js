@@ -339,6 +339,12 @@ $(function () {
         moreOption('forward');
     }
     /**
+     * 来源筛选---多选(租房)
+     */
+    if (req['source']) {
+        moreOption('source');
+    }
+    /**
      * 整租筛选---多选
      */
     if (req['elo']) {
