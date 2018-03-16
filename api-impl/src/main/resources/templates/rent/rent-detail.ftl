@@ -15,8 +15,8 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if rentHouse['rent_house_img']?exists && (rentHouse['rent_house_img']?size gt 0)>
-            <#list rentHouse['rent_house_img'] as rentphoto>
+        <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
+            <#list rentHouse['rent_hsoue_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
                     <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
                 </li>
@@ -76,7 +76,35 @@
         </#if>
     </div>
 </section>
-<#if rentHouse['rent_sign'] == 1 && plot?exists>
+<div class="border-box">
+    <section>
+        <div  class="module-header-message">
+            <h3>配套设施</h3>
+        </div>
+
+
+        <ul class="rent-support-nav">
+            <#if rentHouse['supporting_facilities']?exists && (rentHouse['supporting_facilities']?size gt 0)>
+                ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '<li class="support-item"><i class="kongtiao"></i><span>空调</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("电视")?string('<li class="support-item support"><i class="dianshi"></i><span>电视</span></li>', '<li class="support-item"><i class="dianshi"></i><span>电视</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("洗衣机")?string('<li class="support-item support"><i class="xiyiji"></i><span>洗衣机</span></li>', '<li class="support-item"><i class="xiyiji"></i><span>洗衣机</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("热水器")?string('<li class="support-item support"><i class="reshuiqi"></i><span>热水器</span></li>', '<li class="support-item"><i class="reshuiqi"></i><span>热水器</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("冰箱")?string('<li class="support-item support"><i class="bingxiang"></i><span>冰箱</span></li>', '<li class="support-item"><i class="bingxiang"></i><span>冰箱</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("微波炉")?string('<li class="support-item support"><i class="weibolu"></i><span>微波炉</span></li>', '<li class="support-item"><i class="weibolu"></i><span>微波炉</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("床")?string('<li class="support-item support"><i class="chuang"></i><span>床</span></li>', '<li class="support-item"><i class="chuang"></i><span>床</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("衣柜")?string('<li class="support-item support"><i class="yigui"></i><span>衣柜</span></li>', '<li class="support-item"><i class="yigui"></i><span>衣柜</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("沙发")?string('<li class="support-item support"><i class="shafa"></i><span>沙发</span></li>', '<li class="support-item"><i class="shafa"></i><span>沙发</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("桌子")?string('<li class="support-item support"><i class="zhuozi"></i><span>桌子</span></li>', '<li class="support-item"><i class="zhuozi"></i><span>桌子</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("椅子")?string('<li class="support-item support"><i class="yizi"></i><span>椅子</span></li>', '<li class="support-item"><i class="yizi"></i><span>椅子</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("暖气")?string('<li class="support-item support"><i class="nuanqi"></i><span>暖气</span></li>', '<li class="support-item"><i class="nuanqi"></i><span>暖气</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("煤气")?string('<li class="support-item support"><i class="meiqi"></i><span>煤气</span></li>', '<li class="support-item"><i class="meiqi"></i><span>煤气</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("网络")?string('<li class="support-item support"><i class="wangluo"></i><span>网络</span></li>', '<li class="support-item"><i class="wangluo"></i><span>网络</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("智能锁")?string('<li class="support-item support"><i class="zhinengsuo"></i><span>智能锁</span></li>', '<li class="support-item"><i class="zhinengsuo"></i><span>智能锁</span></li>')}
+            </#if>
+        </ul>
+    </section>
+</div>
+<#if rentHouse['rent_sign'] == 1>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
@@ -95,7 +123,7 @@
                 </div>
                 <div id="tilePlotDesc" class="tilelist-content">
                     <h4><em>小区：</em>${plot['rc']} [${plot['area']} ${plot['tradingArea']}]</h4>
-                    <p><em>年代：</em><#if plot['abbreviatedAge']?exists&&plot['sumBuilding']?exists> ${plot['abbreviatedAge']}年建成住宅,共${plot['sumBuilding']}栋<#else >暂无</#if></p>
+                    <p><em>年代：</em>${plot['abbreviatedAge']}年建成住宅,共${plot['sumBuilding']}栋</p>
                     <p><em>待租：</em><em class="link">${total}套</em></p>
                 </div>
             </a></li>
