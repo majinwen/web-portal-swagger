@@ -59,7 +59,7 @@
                     <dl class="rent-sign">
                         <dt class="text-center" data-type="elo">整租</dt>
                         <dd>
-                            <span data-info="">不限</span>
+                            <span class="rent-only" data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
                             <span data-info="3">三居+</span>
@@ -68,7 +68,7 @@
                     <dl class="rent-sign">
                         <dt class="text-center" data-type="jlo">合租</dt>
                         <dd>
-                            <span data-info="">不限</span>
+                            <span class="only" data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
                             <span data-info="3">三居+</span>
@@ -87,10 +87,7 @@
                         <dt data-type="source">来源</dt>
                         <dd>
                             <span data-info="1">经纪人</span>
-                            <span data-info="2">乐乎公寓</span>
-                            <span data-info="3">美丽遇</span>
-                            <span data-info="4">青遇home</span>
-                            <span data-info="5">大象公寓</span>
+                            <span data-info="2">相寓</span>
                         </dd>
                     </dl>
                     <dl>
@@ -114,18 +111,18 @@
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="buildingType">供暖</dt>
+                        <dt data-type="ht">供暖</dt>
                         <dd>
                             <span data-info="1">集体供暖</span>
                             <span data-info="2">自供暖</span>
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="buildingFeature">特色</dt>
+                        <dt data-type="tags">特色</dt>
                         <dd>
                             <span data-info="1">近地铁</span>
                             <span data-info="2">免佣</span>
-                            <span data-info="3">供暖方式</span>
+                            <span data-info="6">集中供暖</span>
                             <span data-info="4">有电梯</span>
                         </dd>
                     </dl>

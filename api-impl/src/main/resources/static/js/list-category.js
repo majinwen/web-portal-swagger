@@ -339,6 +339,18 @@ $(function () {
         moreOption('forward');
     }
     /**
+     * 来源筛选---多选(租房)
+     */
+    if (req['source']) {
+        moreOption('source');
+    }
+    /**
+     * 供暖筛选---多选(租房)
+     */
+    if (req['ht']) {
+        moreOption('ht');
+    }
+    /**
      * 整租筛选---多选
      */
     if (req['elo']) {
@@ -705,8 +717,6 @@ function showSubway(lineId, stationId) {
     })
 }
 
-
-
 /**
  * 地铁不限
  * */
@@ -1037,6 +1047,13 @@ $('.more-list').on('click','span', function () {
         $(this).toggleClass('current').siblings().removeClass('current');
     } else {
         $(this).toggleClass('current');
+    }
+
+    if ($(this).hasClass('rent-only')) {
+        $(this).addClass('current').siblings().removeClass('current');
+    } else {
+        $(this).siblings('span[data-info=""]').removeClass('current');
+        $(this).addClass('current');
     }
 });
 /**
