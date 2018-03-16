@@ -910,6 +910,10 @@ body {
               .category-box .category-cont .filter-item .more-list dl dd span.current {
                 color: #fb3939;
                 border-color: #fb3939; }
+          .category-box .category-cont .filter-item .more-list dl.rent-sign {
+            padding: 0.8rem 0.4rem; }
+            .category-box .category-cont .filter-item .more-list dl.rent-sign dt {
+              margin-bottom: 0.5333333333rem; }
       .category-box .category-cont .filter-item.active {
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
