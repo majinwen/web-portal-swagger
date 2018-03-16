@@ -561,22 +561,22 @@ public class RentHouseServiceImpl implements RentHouseService{
         if (StringTool.isNotBlank(rentHouseQuery.getKeyword())) {
             if (StringUtil.isNotNullString(DistrictMap.getDistricts(rentHouseQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("village_name", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart"))
                         .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("village_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart")));
+                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart")));
             } else if (StringUtil.isNotNullString(AreaMap.getAreas(rentHouseQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("village_name", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2))
                         .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()).analyzer("ik_max_word"))
-                        .should(QueryBuilders.matchQuery("village_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2)));
+                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseQuery.getKeyword()).analyzer("ik_smart").boost(2)));
             } else {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("village_name", rentHouseQuery.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseQuery.getKeyword()).boost(2))
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("village_name_search", rentHouseQuery.getKeyword())));
+                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseQuery.getKeyword())));
             }
         }
 

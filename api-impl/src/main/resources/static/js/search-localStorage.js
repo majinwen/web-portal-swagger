@@ -37,12 +37,15 @@ $(function(){
             getLocalstorageMsg('plot');
         } else if(_localHref.indexOf('esf')>0){
             getLocalstorageMsg('esf');
-        }else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0){
+        } else if(_localHref.indexOf('loupan')>0 || _localHref.indexOf('xinfang')>0) {
             getLocalstorageMsg('newHouse');
+        // } else if(_localHref.indexOf('zufang')>0){
+        //     getLocalstorageMsg('zufang')
         } else {
             getLocalstorageMsg('plot');
             getLocalstorageMsg('esf');
             getLocalstorageMsg('newHouse');
+            // getLocalstorageMsg('zufang')
         }
     }
     
@@ -67,6 +70,9 @@ $(function(){
             } else if (styleArray == 'newHouse') {
                 urlText = 'loupan';
                 styleText = '新房'
+            // } else if (styleArray == 'zufang'){
+            //     urlText = 'zufang';
+            //     styleText = '租房'
             }
             if (history[3]==1){
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
@@ -123,11 +129,11 @@ $(function(){
             var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
             var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
             var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
-            var rentStorageArray = JSON.parse(localStorage.getItem('rent')) || [];
+            // var rentStorageArray = JSON.parse(localStorage.getItem('rent')) || [];
             var plotNum = localStorage.getItem('plotNum')||'';
             var esfNum = localStorage.getItem('esfNum')||'';
             var newHouseNum = localStorage.getItem('newHouseNum')||'';
-            var rentNum = localStorage.getItem('rentNum')||'';
+            // var rentNum = localStorage.getItem('rentNum')||'';
 
 
             if(_localHref.indexOf('xiaoqu')>0){
@@ -142,8 +148,10 @@ $(function(){
                 hashPush(newHouseStorageArray,_keyword+',,新房,');
                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
-            } else if(_localHref.indexOf('rent')>0){
-                hashPush(rentStorageArray,_keyword+',,租房,')
+            // } else if(_localHref.indexOf('zufang')>0){
+            //     hashPush(rentStorageArray,_keyword+',,租房,')
+            //     localStorage.setItem('rent', JSON.stringify(rentStorageArray));
+            //     location.href= router_city('/zufang?keyword=') + $.trim($(this).val());
             }else {
                 if (_keyword!=null&&_keyword!=''){
                     $('#search-index').addClass('none');
@@ -158,18 +166,18 @@ $(function(){
                     if (plotNum>0){
                         $('#indexWord').append('<li id="1" class="click_index" >'+'查看包含"'+_keyword+'"小区'+/*' <em style="float: right; color: #bcbcbc;">约'+plotNum+'条></em>*/'</li>');
                     }
-                    if (rentNum>0){
-                        $('#indexWord').append('<li id="0" class="click_index" >'+'查看包含"'+_keyword+'"租房'+/*' <em style="float: right; color: #bcbcbc;">约'+rentNum+'条></em>*/'</li>');
-                    }
+                    // if (rentNum>0){
+                    //     $('#indexWord').append('<li id="0" class="click_index" >'+'查看包含"'+_keyword+'"租房'+/*' <em style="float: right; color: #bcbcbc;">约'+rentNum+'条></em>*/'</li>');
+                    // }
 
                     $('.click_index').on('click',function () {
                         var id = $(this).attr('id')
                         var url = window.location.href.split("?")[0];
-                        if(id == 0){
-                            hashPush(rentStorageArray,_keyword+',,租房,')
-                            localStorage.setItem('rent',JSON.stringify(rentStorageArray));
-                            window.location.href= url+'/rent?keyword='+_keyword
-                        }
+                        // if(id == 0){
+                        //     hashPush(rentStorageArray,_keyword+',,租房,')
+                        //     localStorage.setItem('rent',JSON.stringify(rentStorageArray));
+                        //     window.location.href= url+'/zufang?keyword='+_keyword
+                        // }
                         if(id == 1){
                             hashPush(plotStorageArray,_keyword+',,小区,');
                             localStorage.setItem('plot', JSON.stringify(plotStorageArray));
@@ -293,27 +301,27 @@ $(function(){
                 window.location.href = url+'/'+search_id+'.html'
             }
         }
-        if (search_type == '租房'){
-            if (location_type_sings == 1){
-                window.location.href = url+'?districtId='+search_id
-            }else if (location_type_sings ==2){
-                getUrlWithDistrictIdByAreaId(search_id,url)
-            }else {
-                window.location.href = url+'/'+search_id+'.html'
-            }
-        }
+        // if (search_type == '租房'){
+        //     if (location_type_sings == 1){
+        //         window.location.href = url+'?districtId='+search_id
+        //     }else if (location_type_sings ==2){
+        //         getUrlWithDistrictIdByAreaId(search_id,url)
+        //     }else {
+        //         window.location.href = url+'/'+search_id+'.html'
+        //     }
+        // }
     }
 
     function getHomePageUrl(search_type,location_type_sings,url,search_name,search_id) {
-        if(search_type == '租房'){
-            if(location_type_sings == 1){
-                window.location.href = url+'/rent?districtId='+search_id
-            }else if(location_type_sings == 2){
-                window.location.href = url+'/rent?areaId='+search_id
-            }else {
-                window.location.href = url+'/rent/'+search_id+'.html'
-            }
-        }
+        // if(search_type == '租房'){
+        //     if(location_type_sings == 1){
+        //         window.location.href = url+'/rent?districtId='+search_id
+        //     }else if(location_type_sings == 2){
+        //         window.location.href = url+'/rent?areaId='+search_id
+        //     }else {
+        //         window.location.href = url+'/rent/'+search_id+'.html'
+        //     }
+        // }
         if(search_type == '新房'){
             if(location_type_sings == 1){
                 window.location.href = url+'/loupan?districtId='+search_id
@@ -519,6 +527,10 @@ $(function(){
     //
     //     }
     // })
+    /**
+     * 中文输入拼音时不查询
+     * @type {number}
+     */
     var evTimeStamp = 0;
     var cpLock = false;
     $('.key-words').on({
@@ -559,7 +571,7 @@ $(function(){
             var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
             var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
             var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
-            var rentStorageArray = JSON.parse(localStorage.getItem('rent')) || [];
+            // var rentStorageArray = JSON.parse(localStorage.getItem('rent')) || [];
 
             var url = null
             var herf = window.location.href.split("?")[0];
@@ -570,7 +582,7 @@ $(function(){
             }else if(herf.indexOf('/loupan')>0||herf.indexOf('/xinfang')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&property=新房"
                 url = url.replace('loupan','xinfang')
-            }else if(herf.indexOf('/rent')>0){
+            }else if(herf.indexOf('/zufang')>0){
                 url = herf.split('?')[0]+"/search?keyword="+_keyword+"&property=租房"
             }else {
                 url = herf+"/search?keyword="+_keyword
@@ -586,7 +598,7 @@ $(function(){
                     setLocalStorage('plotNum',data.plotNum)
                     setLocalStorage('esfNum',data.esfNum)
                     setLocalStorage('newHouseNum',data.newHouseNum)
-                    setLocalStorage('rentNum',data.rentNum)
+                    // setLocalStorage('rentNum',data.rentNum)
                     $('#automatedWord').empty().show();
                     if (data.list.length>0){
                         $('#automatedWord').html('')
@@ -605,11 +617,11 @@ $(function(){
                             var search_name = word.split(' ')[0].trim()
                             var search_type = word.split(' ')[word.split(' ').length-1].trim()
                             var url = window.location.href.split('?')[0]
-                            if (url.indexOf('rent')>0){
-                                hashPush(plotStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
-                                localStorage.setItem('rent', JSON.stringify(rentStorageArray));
-                                getUrl(url,search_type,search_id,search_name,location_type_sings);
-                            }
+                            // if (url.indexOf('zufang')>0){
+                            //     hashPush(plotStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
+                            //     localStorage.setItem('rent', JSON.stringify(rentStorageArray));
+                            //     getUrl(url,search_type,search_id,search_name,location_type_sings);
+                            // }
                             if (url.indexOf('xiaoqu')>0){
                                 hashPush(plotStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
                                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
@@ -665,6 +677,18 @@ $(function(){
                                         window.location.href = url+'/esf?keyword='+search_name
                                     }
                                 }
+                                // if(search_type == '租房'){
+                                //     hashPush(plotStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings)
+                                //     localStorage.setItem('rent', JSON.stringify(rentStorageArray));
+                                //     if(location_type_sings == 1){
+                                //         window.location.href = url+'/zufang?districtId='+search_id
+                                //     }else if(location_type_sings == 2){
+                                //         var location_type = 'zufang';
+                                //         getHomeUrlWithDistrictIdByAreaId(search_id,url,location_type)
+                                //     }else {
+                                //         window.location.href = url+'/zufang/'+search_id+'.html'
+                                //     }
+                                // }
                             }
                         })
                     }
