@@ -717,8 +717,6 @@ function showSubway(lineId, stationId) {
     })
 }
 
-
-
 /**
  * 地铁不限
  * */
@@ -1049,6 +1047,13 @@ $('.more-list').on('click','span', function () {
         $(this).toggleClass('current').siblings().removeClass('current');
     } else {
         $(this).toggleClass('current');
+    }
+
+    if ($(this).hasClass('rent-only')) {
+        $(this).addClass('current').siblings().removeClass('current');
+    } else {
+        $(this).siblings('span[data-info=""]').removeClass('current');
+        $(this).addClass('current');
     }
 });
 /**

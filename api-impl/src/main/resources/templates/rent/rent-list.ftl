@@ -59,7 +59,7 @@
                     <dl class="rent-sign">
                         <dt class="text-center" data-type="elo">整租</dt>
                         <dd>
-                            <span data-info="">不限</span>
+                            <span class="rent-only" data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
                             <span data-info="3">三居+</span>
@@ -68,7 +68,7 @@
                     <dl class="rent-sign">
                         <dt class="text-center" data-type="jlo">合租</dt>
                         <dd>
-                            <span data-info="">不限</span>
+                            <span class="only" data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
                             <span data-info="3">三居+</span>
