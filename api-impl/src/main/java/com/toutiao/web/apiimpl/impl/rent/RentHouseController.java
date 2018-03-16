@@ -150,8 +150,8 @@ public class RentHouseController {
 
     @RequestMapping("")
     public String queryRentHouseList(RentHouseQuery rentHouseQuery, Model model) {
-        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
-        model.addAttribute("rent",rentHouseList);
+//        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+//        model.addAttribute("rent",rentHouseList);
         return "rent/rent-list";
     }
 
