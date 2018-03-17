@@ -416,14 +416,27 @@ public class RentHouseServiceImpl implements RentHouseService{
             searchRequestBuilder.setFrom(((0) * pageSize)*rentHouseQuery.getPageSize())
                     .setSize(pageSize-count);
         }
-        SearchResponse searchresponse = searchRequestBuilder
-                .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC).addSort("update_time",SortOrder.DESC)
-                .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
-                                "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
-                                "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
-                        null)
-                .execute().actionGet();
+        SearchResponse searchresponse =  new SearchResponse();
+        if(StringUtil.isNotNullString(rentHouseQuery.getKeyword())){
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }else{
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC).addSort("update_time",SortOrder.DESC)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }
+
 
         return searchresponse;
     }
@@ -464,14 +477,27 @@ public class RentHouseServiceImpl implements RentHouseService{
             searchRequestBuilder.setFrom(Integer.valueOf((int) zufang_from))
                     .setSize(pageSize);
         }
-        SearchResponse searchresponse = searchRequestBuilder
-                .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC).addSort("update_time",SortOrder.DESC)
-                .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
-                                "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
-                                "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
-                        null)
-                .execute().actionGet();
+        SearchResponse searchresponse =  new SearchResponse();
+        if(StringUtil.isNotNullString(rentHouseQuery.getKeyword())){
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }else{
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC).addSort("update_time",SortOrder.DESC)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }
+
 
         return searchresponse;
     }
@@ -538,14 +564,27 @@ public class RentHouseServiceImpl implements RentHouseService{
         }else {
             searchRequestBuilder.setFrom((pageNum-1)*rentHouseQuery.getPageSize()).setSize(rentHouseQuery.getPageSize());
         }
-        SearchResponse searchresponse = searchRequestBuilder
-                .setQuery(booleanQueryBuilder).addSort("top_time",SortOrder.ASC)
-                .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
-                                "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
-                                "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
-                        null)
-                .execute().actionGet();
+        SearchResponse searchresponse =  new SearchResponse();
+        if(StringUtil.isNotNullString(rentHouseQuery.getKeyword())){
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }else{
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder).addSort("top_time",SortOrder.ASC)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }
+
 
 
 
