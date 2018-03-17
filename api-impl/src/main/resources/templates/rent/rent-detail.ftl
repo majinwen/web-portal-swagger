@@ -68,7 +68,7 @@
 <section class="primary-message">
     <div class="primary-header">
         <h2><#if rentHouse['rent_house_price']?exists>¥${rentHouse['rent_house_price']}元/月<#else>暂无数据</#if><#if rentHouse['pay_mode_name']?exists>(${rentHouse['pay_mode_name']})</#if></h2>
-        <p><#if rentHouse['rent_sign'] == 1>${rentHouse['zufang_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
+        <p><#if rentHouse['rent_sign'] == 1>${rentHouse['zufang_name']} <#elseif rentHouse['rent_sign'] == 2>${rentHouse['zufang_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
         <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
             <div class="primary-header-rent-tag house-labelling">
                 <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
@@ -186,7 +186,7 @@
             <h3>附近相似好房</h3>
         </div>
         <ul><#list nearHouse as builditem>
-            <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']?c+'.html')}">
+            <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if builditem.house_title_img?exists && builditem.house_title_img!=''>
