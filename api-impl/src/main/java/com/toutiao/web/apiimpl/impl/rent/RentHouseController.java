@@ -48,10 +48,10 @@ public class RentHouseController {
         if(map!=null){
             model.addAttribute("rentHouse",map);
             RentHouseQuery queryNearHouse = new RentHouseQuery();
-            String house_id = (String) map.get("house_id");
+            String house_id = map.get("house_id").toString();
             Integer zufang_id = (Integer) map.get("zufang_id");
             //附近相似好房/好房推荐
-            if((Integer) map.get("rent_sign")==1){
+            if((Integer) map.get("rent_sign")==0){
                 queryNearHouse.setNear("3");
                 queryNearHouse.setRentSign(1);
                 queryNearHouse.setHouseId(house_id);
@@ -74,7 +74,7 @@ public class RentHouseController {
                 }
             }else {
                 queryNearHouse.setZuFangId(String.valueOf(zufang_id));
-                queryNearHouse.setRentSign(2);
+//                queryNearHouse.setRentSign(2);
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
                 if (nearHouse!=null){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
