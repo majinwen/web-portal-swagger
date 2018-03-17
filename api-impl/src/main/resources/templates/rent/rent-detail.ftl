@@ -15,8 +15,8 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if rentHouse['rent_hsoue_img']?exists && (rentHouse['rent_hsoue_img']?size gt 0)>
-            <#list rentHouse['rent_hsoue_img'] as rentphoto>
+        <#if rentHouse['rent_house_img']?exists && (rentHouse['rent_house_img']?size gt 0)>
+            <#list rentHouse['rent_house_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
                     <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
                 </li>
@@ -68,7 +68,7 @@
 <section class="primary-message">
     <div class="primary-header">
         <h2><#if rentHouse['rent_house_price']?exists>¥${rentHouse['rent_house_price']}元/月<#else>暂无数据</#if><#if rentHouse['pay_mode_name']?exists>(${rentHouse['pay_mode_name']})</#if></h2>
-        <p><#if rentHouse['rent_sign'] == 1>${rentHouse['zufang_name']} <#elseif rentHouse['rent_sign'] == 2>${rentHouse['zufang_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
+        <p><#if rentHouse['rent_sign'] == 0>${rentHouse['zufang_name']} <#else>${rentHouse['zufang_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
         <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
             <div class="primary-header-rent-tag house-labelling">
                 <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
