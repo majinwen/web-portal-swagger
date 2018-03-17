@@ -60,12 +60,13 @@ public class RentHouseQuery {
     /**
      * 租赁方式
      */
-    private Integer rt;
+    private Integer ert;//整租
+    private Integer jrt;//合租
     /**
      * 户型
      */
-    private String lo;
-
+    private String elo;//整租户型
+    private String jlo;//合租户型
     /**
      * 来源
      */
@@ -129,4 +130,5 @@ public class RentHouseQuery {
      * 分页起始位置
      */
     private Integer from;
+
 }

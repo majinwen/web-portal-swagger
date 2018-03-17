@@ -40,7 +40,7 @@
                 </div>
             </div>
             <!-- 价格 -->
-            <div class="filter-item" data-mark="tab-rent-price">
+            <div class="filter-item" data-mark="panel-rent-price">
                 <div class="price-list">
                     <ul>
                         <li data-begin-price="" data-end-price="" class="current">不限</li>
@@ -49,29 +49,29 @@
                         <li data-begin-price="3000.0" data-end-price="4000.0">3000-4000元</li>
                         <li data-begin-price="4000.0" data-end-price="5000.0">4000-5000元</li>
                         <li data-begin-price="5000.0" data-end-price="8000.0">5000-8000元</li>
-                        <li data-begin-price="8000.0" data-end-price="2000000000.0">8000元以上</li>
+                        <li data-begin-price="8000.0" data-end-price="">8000元以上</li>
                     </ul>
                 </div>
             </div>
-            <!-- 楼龄 -->
-            <div class="filter-item" data-mark="tab-rent-type">
-                <div class="more-list">
-                    <dl>
-                        <dt class="text-center" data-type="propertyTypeId">整租</dt>
+            <!-- 租房类型 -->
+            <div class="filter-item" data-mark="panel-rent-type">
+                <div class="more-list" id="rentType">
+                    <dl class="rent-sign">
+                        <dt class="text-center" data-type="elo">整租</dt>
                         <dd>
-                            <span data-info="1">不限</span>
+                            <span class="rent-only" data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
-                            <span data-info="2">三居</span>
+                            <span data-info="3">三居+</span>
                         </dd>
                     </dl>
-                    <dl>
-                        <dt class="text-center" data-type="houseAreaSize">合租</dt>
+                    <dl class="rent-sign">
+                        <dt class="text-center" data-type="jlo">合租</dt>
                         <dd>
-                            <span data-info="1">不限</span>
+                            <span class="only" data-info="">不限</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
-                            <span data-info="2">三居+</span>
+                            <span data-info="3">三居+</span>
                         </dd>
                     </dl>
                 </div>
@@ -84,13 +84,10 @@
             <div class="filter-item" data-mark="panel-more">
                 <div class="more-list">
                     <dl>
-                        <dt data-type="propertyTypeId">来源</dt>
+                        <dt data-type="source">来源</dt>
                         <dd>
                             <span data-info="1">经纪人</span>
-                            <span data-info="2">乐乎公寓</span>
-                            <span data-info="2">美丽遇</span>
-                            <span data-info="2">青遇home</span>
-                            <span data-info="2">大象公寓</span>
+                            <span data-info="2">相寓</span>
                         </dd>
                     </dl>
                     <dl>
@@ -105,27 +102,27 @@
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="elevatorFlag">朝向</dt>
+                        <dt data-type="forward">朝向</dt>
                         <dd>
                             <span data-info="1">东</span>
-                            <span data-info="0">西</span>
-                            <span data-info="0">南</span>
-                            <span data-info="0">北</span>
+                            <span data-info="2">西</span>
+                            <span data-info="3">南</span>
+                            <span data-info="4">北</span>
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="buildingType">供暖</dt>
+                        <dt data-type="ht">供暖</dt>
                         <dd>
                             <span data-info="1">集体供暖</span>
                             <span data-info="2">自供暖</span>
                         </dd>
                     </dl>
                     <dl>
-                        <dt data-type="buildingFeature">特色</dt>
+                        <dt data-type="tags">特色</dt>
                         <dd>
                             <span data-info="1">近地铁</span>
                             <span data-info="2">免佣</span>
-                            <span data-info="3">供暖方式</span>
+                            <span data-info="6">集中供暖</span>
                             <span data-info="4">有电梯</span>
                         </dd>
                     </dl>
@@ -155,7 +152,7 @@
                 {{/if}}
             </div>
             <div class="list-item-cont">
-                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 1}}{{$value.zufang_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.forward}} {{$value.room}}室{{$value.hall}}厅</span></h3>
+                <h3 class="cont-block-top"><span>{{if $value.rent_sign == 0}}{{$value.zufang_name}}{{/if}}·{{$value.house_area}}㎡ {{$value.room}}室{{$value.hall}}厅 {{$value.forward}}</span></h3>
                 <div class="address distance"><i class="icon"></i>{{if $value.subwayDesc}}{{$value.subwayDesc}}{{else if $value.area_name}}{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}} {{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}{{/if}}</div>
                 {{if $value.rent_type_name}}
                 <div class="house-labelling big normal">
@@ -186,15 +183,6 @@
 <script src="${staticurl}/js/list-category.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
-    /*$('.sort-content-box').on('click', function (){
-        var sortZhuge;
-        if(GetQueryString('sort')==1){
-            sortZhuge = '价格由高到低';
-        }
-        if(GetQueryString('sort')==2){
-            sortZhuge = '价格由低到高';
-        }
-    });*/
     window["$toutiao_customer_pullUpAction"]=true;
 
     $(function () {
@@ -220,7 +208,6 @@
                 hasTimeOut = true;
                 lon = r.point.lng;
                 lat = r.point.lat;
-                console.log(lat,lon);
                 if (lon == 116.40387397 && lat == 39.91488908) {
                     window["$toutiao_customer_pullUpAction_latlon"] = [39.91931152343750000000, 116.49440002441400000000]
                     pullUpAction();
