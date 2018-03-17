@@ -80,14 +80,10 @@ public class ProjHouseInfoController {
             }
 
             //房源经纪人
-            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
-            if (agent!=null){
-                List agentList = (List) agent.get("agent");
-                long time = new Date().getTime();
-                long index = (time / 10) % agentList.size();
-                model.addAttribute("indexNum",index);
-                model.addAttribute("agentList",agentList);
-            }
+//            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
+//            if (agent!=null){
+//                model.addAttribute("agent",agent);
+//            }
         } else {
             //跳转到404页
             return "404";
