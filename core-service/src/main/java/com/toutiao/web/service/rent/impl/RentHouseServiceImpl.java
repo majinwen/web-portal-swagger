@@ -413,7 +413,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                     .setSize(pageSize-count);
         }
         SearchResponse searchresponse = searchRequestBuilder
-                .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC)
+                .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC).addSort("update_time",SortOrder.DESC)
                 .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
@@ -461,7 +461,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                     .setSize(pageSize);
         }
         SearchResponse searchresponse = searchRequestBuilder
-                .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC)
+                .setQuery(booleanQueryBuilder).addSort("zufang_score",SortOrder.DESC).addSort("update_time",SortOrder.DESC)
                 .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
                                 "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
                                 "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
