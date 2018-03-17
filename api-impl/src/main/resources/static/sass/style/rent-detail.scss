@@ -431,3 +431,13 @@
         }
     }
 }
+
+.demand-list {
+    margin: 0 rem(30) rem(40);
+
+    li {
+        margin-bottom: rem(10);
+        color: #999;
+        @include font-dpr(28);
+    }
+}

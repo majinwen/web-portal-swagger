@@ -181,15 +181,18 @@
         </div>
     </section>
 </div>
-<#--<#if rentHouse['rent_sign'] != 0>
+<#if rentHouse['rent_sign'] != 0 && rentHouse['demand']?exists && rentHouse['demand'] != ''>
     <div class="border-box">
         <section>
             <div class="module-header-message">
                 <h3>入住要求</h3>
             </div>
+            <ul class="demand-list">
+                <li>${rentHouse['demand']}</li>
+            </ul>
         </section>
     </div>
-</#if>-->
+</#if>
 <#if nearHouse?exists>
 <div id="nearbynewesf">
     <section>

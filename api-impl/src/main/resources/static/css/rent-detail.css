@@ -2796,4 +2796,16 @@ a.pswp__share--download:hover {
         .rent-support-nav .support-item.support i.zhinengsuo {
           background-position: -3.2rem -1.6rem; }
 
+.demand-list {
+  margin: 0 0.4rem 0.5333333333rem; }
+  .demand-list li {
+    margin-bottom: 0.1333333333rem;
+    color: #999; }
+    [data-dpr="1"] .demand-list li {
+      font-size: 14px; }
+    [data-dpr="2"] .demand-list li {
+      font-size: 28px; }
+    [data-dpr="3"] .demand-list li {
+      font-size: 42px; }
+
 /*# sourceMappingURL=rent-detail.css.map */
