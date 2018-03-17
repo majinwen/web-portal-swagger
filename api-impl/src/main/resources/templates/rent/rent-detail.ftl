@@ -104,7 +104,7 @@
         </ul>
     </section>
 </div>
-<#if rentHouse['rent_sign'] == 1>
+<#if rentHouse['rent_sign'] == 0>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
@@ -156,12 +156,12 @@
 <div class="border-box">
     <section>
         <div class="module-header-message">
-            <h3><#if rentHouse['rent_sign'] == 1>房源点评</#if></h3>
+            <h3><#if rentHouse['rent_sign'] == 0>房源点评<#else>公寓简介</#if></h3>
         </div>
         <div class="describe-box">
             <div class="describe-header">
                 <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
-                    <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
                 <#else >
                     <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
                 </#if>
