@@ -234,14 +234,17 @@
     var rentUrl = sessionStorage.getItem('rentUrl')||window.location.protocol+'//'+window.location.host+router_city('/zufang');
     var rentSortId = sessionStorage.getItem('rentSortId')||-1;
 
-    console.log(rentSortId,rentUrl)
     function nextPage(e) {
+
         if (rentUrl.split('?').length>1){
-            rentUrl = rentUrl+'&from='+(parseInt(rentSortId)+1);
+            rentUrl = rentUrl.split('&from=')[0]+'&from='+(parseInt(rentSortId)+1);
         }else if (rentUrl.split('?').length==1){
             rentUrl = rentUrl+'?from='+(parseInt(rentSortId)+1)
         }
-        console.log(rentUrl)
+        var flag = sessionStorage.getItem(rentUrl)||false;
+        if (flag){
+            return;
+        }
         $.ajax({
             type: "get",
             contentType:'application/json',
@@ -252,7 +255,10 @@
                 if(data.code=='fail'){
                     return;
                 }
-                console.log(data)
+                if (!data.data.data.length>0){
+                    sessionStorage.setItem(rentUrl,true);
+                    return;
+                }
                 sessionStorage.setItem('rentSortId',parseInt(rentSortId)+1);
                 window.location.replace(router_city('/zufang/'+data.data.data[0].house_id+'.html'))
             }
