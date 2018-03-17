@@ -82,7 +82,7 @@
             <h3>配套设施</h3>
         </div>
         <ul class="rent-support-nav">
-            <#if rentHouse['supporting_facilities']?exists && (rentHouse['supporting_facilities']?size gt 0)>
+            <#if rentHouse['supporting_facilities']?exists>
                 ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '<li class="support-item"><i class="kongtiao"></i><span>空调</span></li>')}
                 ${rentHouse['supporting_facilities']?seq_contains("电视")?string('<li class="support-item support"><i class="dianshi"></i><span>电视</span></li>', '<li class="support-item"><i class="dianshi"></i><span>电视</span></li>')}
                 ${rentHouse['supporting_facilities']?seq_contains("洗衣机")?string('<li class="support-item support"><i class="xiyiji"></i><span>洗衣机</span></li>', '<li class="support-item"><i class="xiyiji"></i><span>洗衣机</span></li>')}
@@ -107,10 +107,10 @@
     <section>
         <div  class="module-header-message">
             <h3>小区信息</h3>
-            <a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a onclick="rentDetailInfo_1(this)" href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
-            <li><a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" style="display: block">
+            <li><a onclick="rentDetailInfo_2(this)" href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" style="display: block">
                 <div class="picture-box">
                     <#assign photo = plot['photo']>
                     <#if photo[0]?exists>
@@ -194,7 +194,7 @@
     </div>
 </#if>
 <#if nearHouse?exists && nearHouse?size gt 0>
-<div id="nearbynewesf">
+<div id="nearbyRent">
     <section>
         <div class="module-header-message">
             <h3><#if rentHouse['rent_sign'] == 0>附近相似好房<#else>${rentHouse['zufang_name']}好房推荐</#if></h3>
@@ -279,7 +279,6 @@
         })
     }
 
-
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
@@ -325,7 +324,24 @@
         });
         return false;
     }
-
+    function rentDetailInfo_1(a) {
+        var link = $(a);
+        zhuge.track('租房-点击查看小区详情', {
+            "租房-点击查看小区详情": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    function rentDetailInfo_2(a) {
+        var link = $(a);
+        zhuge.track('租房-点击查看小区详情', {
+            "租房-点击查看小区详情": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
 </script>
 </body>
 </html>
