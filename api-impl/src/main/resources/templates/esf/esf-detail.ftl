@@ -402,6 +402,9 @@
         if(url.indexOf('esf')>-1){
             return '二手房-进入二手房详情页'
         }
+        if(url.indexOf('/ad')>-1){
+            return '广告-进入二手房详情页'
+        }
         if(url.indexOf(window.location.hostname)>-1){
             return '大首页-点击二手房推荐'
         }
