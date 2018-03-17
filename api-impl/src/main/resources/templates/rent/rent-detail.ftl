@@ -124,7 +124,7 @@
                 <div id="tilePlotDesc" class="tilelist-content">
                     <h4><em>小区：</em>${plot['rc']} [${plot['area']} ${plot['tradingArea']}]</h4>
                     <p><em>年代：</em>${plot['abbreviatedAge']}年建成住宅,共${plot['sumBuilding']}栋</p>
-                    <p><em>待租：</em><em class="link">${total}套</em></p>
+                    <p><em>待租：</em><#if total?exists && total != ''><em class="link">${total}套</em><#else >暂无其他房源</#if></p>
                 </div>
             </a></li>
         </ul>
