@@ -1052,11 +1052,13 @@ $('.more-list').on('click','span', function () {
         $(this).toggleClass('current');
     }
 
-    if ($(this).hasClass('rent-only')) {
-        $(this).addClass('current').siblings().removeClass('current');
-    } else {
-        $(this).siblings('span[data-info=""]').removeClass('current');
-        $(this).addClass('current');
+    if ($(this).parents('.filter-item').data('mark')=='panel-rent-type'){
+        if ($(this).hasClass('rent-only')) {
+            $(this).addClass('current').siblings().removeClass('current');
+        } else {
+            $(this).siblings('span[data-info=""]').removeClass('current');
+            $(this).addClass('current');
+        }
     }
 });
 /**
