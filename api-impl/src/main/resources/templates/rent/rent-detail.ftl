@@ -190,7 +190,7 @@
         </section>
     </div>
 </#if>-->
-<#if nearHouse?exists>
+<#if nearHouse?exists&&nearHouse??>
 <div id="nearbynewesf">
     <section>
         <div class="module-header-message">
@@ -223,7 +223,8 @@
             </a></li></#list>
         </ul>
     </section>
-</div></#if>
+</div>
+</#if>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">

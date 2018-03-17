@@ -1355,7 +1355,6 @@ function pullUpAction() {
                 dataType:'json',
                 success: function (data) {
 
-                    console.log(data.data);
                     localStorage.setItem('listUrl',url);
                     if (data.code == 'success') {
                         //第一次加载
