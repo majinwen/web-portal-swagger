@@ -67,7 +67,7 @@ public class RentHouseController {
                 //小区待租房源总数
                 RentHouseQuery queryNearHouse1 = new RentHouseQuery();
                 queryNearHouse1.setZuFangId(String.valueOf(zufang_id));
-                queryNearHouse1.setRentSign(1);
+                queryNearHouse1.setRentSign((Integer) map.get("rent_sign"));
                 Map nearHouseApartment = rentHouseService.queryHouseByparentId(queryNearHouse1);
                 if (nearHouseApartment!=null){
                     model.addAttribute("total",nearHouseApartment.get("total"));
