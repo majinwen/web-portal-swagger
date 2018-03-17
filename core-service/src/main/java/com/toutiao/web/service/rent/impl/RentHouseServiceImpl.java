@@ -95,7 +95,9 @@ public class RentHouseServiceImpl implements RentHouseService{
                     Map source = hit.getSource();
                     if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
                         if(!(String.valueOf(source.get("house_id"))).equals(rentHouseQuery.getHouseId())){
-                            list.add(source);
+                            if (list.size()<3){
+                                list.add(source);
+                            }
                         }
                     }else {
                         list.add(source);
@@ -183,7 +185,9 @@ public class RentHouseServiceImpl implements RentHouseService{
                     Map source = hit.getSource();
                     if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
                         if(!(String.valueOf(source.get("house_id"))).equals(Integer.valueOf(rentHouseQuery.getHouseId()))){
-                            list.add(source);
+                            if (list.size()<3){
+                                list.add(source);
+                            }
                         }
                     }else {
                         list.add(source);
