@@ -71,7 +71,20 @@
         <p>${rentHouse['zufang_name']} · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
         <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
             <div class="primary-header-rent-tag house-labelling">
-                <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
+                <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span>
+                <#if agent?exists&&agent['house_tags_name']?exists&&agent['house_tags_name']?size gt 0>
+                    <#list agent['house_tags_name'] as label>
+                        <#if label?exists>
+                            <span>${label}</span>
+                        </#if>
+                    </#list>
+                <#elseif  rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)>
+                    <#list rentHouse['rent_house_tags_name'] as label>
+                        <#if label?exists>
+                            <span>${label}</span>
+                        </#if>
+                    </#list>
+                </#if>
             </div>
         </#if>
     </div>
@@ -102,7 +115,7 @@
         </ul>
     </section>
 </div>
-<#if rentHouse['rent_sign'] == 0>
+<#if plot?exists&&rentHouse['rent_sign'] == 0>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
@@ -171,7 +184,11 @@
                     <span><#if rentHouse['rent_sign'] == 0>${rentHouse['estate_agent']}<#else>${rentHouse['zufang_name']}</#if></span>
                     <em>${rentHouse['brokerage_agency']}</em>
                 </p>
-                <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
+                <#if agent?exists&&agent['agent_phone']?exists>
+                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent"></a>
+                <#elseif rentHouse['phone']?exists>
+                    <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
+                </#if>
             </div>
             <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
             <div class="describe-cont">
@@ -228,7 +245,11 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+            <#if agent?exists&&agent['agent_phone']?exists>
+                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+            <#elseif rentHouse['phone']?exists>
+                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+            </#if>
             <#--<a href="#" class="contact-like">喜欢</a>-->
             <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next"><i class="next-icon"></i>下一个</a>
         </div>
