@@ -259,7 +259,8 @@
         border-top: rem(1) solid #e8e8e8;
 
         a {
-            float: left;
+            -webkit-flex: 1;
+            flex: 1;
             height: rem(98);
             line-height: rem(98);
 
@@ -283,6 +284,16 @@
             }
             &.contact-next {
                 width: rem(250);
+
+                .next-icon {
+                    display: inline-block;
+                    width: rem(32);
+                    height: rem(98);
+                    @include bg-image('../images/rent/rent-next-icon');
+                    background-position: center;
+                    -webkit-background-size: contain;
+                    background-size: contain;
+                }
             }
         }
     }

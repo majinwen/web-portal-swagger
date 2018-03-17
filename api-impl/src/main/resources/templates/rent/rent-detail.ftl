@@ -68,7 +68,7 @@
 <section class="primary-message">
     <div class="primary-header">
         <h2><#if rentHouse['rent_house_price']?exists>¥${rentHouse['rent_house_price']}元/月<#else>暂无数据</#if><#if rentHouse['pay_mode_name']?exists>(${rentHouse['pay_mode_name']})</#if></h2>
-        <p><#if rentHouse['rent_sign'] == 0>${rentHouse['zufang_name']} <#else>${rentHouse['zufang_name']}</#if> · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
+        <p>${rentHouse['zufang_name']} · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
         <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
             <div class="primary-header-rent-tag house-labelling">
                 <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
@@ -81,8 +81,6 @@
         <div  class="module-header-message">
             <h3>配套设施</h3>
         </div>
-
-
         <ul class="rent-support-nav">
             <#if rentHouse['supporting_facilities']?exists && (rentHouse['supporting_facilities']?size gt 0)>
                 ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '<li class="support-item"><i class="kongtiao"></i><span>空调</span></li>')}
@@ -104,7 +102,7 @@
         </ul>
     </section>
 </div>
-<#if rentHouse['rent_sign'] == 1>
+<#if rentHouse['rent_sign'] == 0>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
@@ -123,8 +121,8 @@
                 </div>
                 <div id="tilePlotDesc" class="tilelist-content">
                     <h4><em>小区：</em>${plot['rc']} [${plot['area']} ${plot['tradingArea']}]</h4>
-                    <p><em>年代：</em>${plot['abbreviatedAge']}年建成住宅,共${plot['sumBuilding']}栋</p>
-                    <p><em>待租：</em><em class="link">${total}套</em></p>
+                    <p><em>年代：</em><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成住宅</#if><#if plot['sumBuilding']?exists>，共${plot['sumBuilding']}栋</#if></p>
+                    <p><em>待租：</em><#if total?exists><em class="link">${total}套</em><#else >暂无其他房源</#if></p>
                 </div>
             </a></li>
         </ul>
@@ -156,20 +154,24 @@
 <div class="border-box">
     <section>
         <div class="module-header-message">
-            <h3><#if rentHouse['rent_sign'] == 1>房源点评</#if></h3>
+            <h3><#if rentHouse['rent_sign'] == 0>房源点评<#else>公寓简介</#if></h3>
         </div>
         <div class="describe-box">
             <div class="describe-header">
                 <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
-                    <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                    <#if rentHouse['rent_sign'] == 0>
+                        <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                    <#else >
+                        <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
+                    </#if>
                 <#else >
                     <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
                 </#if>
                 <p>
-                    <span>${rentHouse['estate_agent']}</span>
+                    <span><#if rentHouse['rent_sign'] == 0>${rentHouse['estate_agent']}<#else>${rentHouse['zufang_name']}</#if></span>
                     <em>${rentHouse['brokerage_agency']}</em>
                 </p>
-                <a href="tel:13164223605" class="issuer-tel-icon rent"></a>
+                <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
             </div>
             <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
             <div class="describe-cont">
@@ -179,11 +181,20 @@
         </div>
     </section>
 </div>
+<#--<#if rentHouse['rent_sign'] != 0>
+    <div class="border-box">
+        <section>
+            <div class="module-header-message">
+                <h3>入住要求</h3>
+            </div>
+        </section>
+    </div>
+</#if>-->
 <#if nearHouse?exists>
 <div id="nearbynewesf">
     <section>
         <div class="module-header-message">
-            <h3>附近相似好房</h3>
+            <h3><#if rentHouse['rent_sign'] == 0>附近相似好房<#else>${rentHouse['zufang_name']}好房推荐</#if></h3>
         </div>
         <ul><#list nearHouse as builditem>
             <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']+'.html')}">
@@ -216,9 +227,9 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="tel:" class="contact-telephone-counseling">咨询经纪人</a>
-            <a href="#" class="contact-like">喜欢</a>
-            <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next">下一个</a>
+            <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+            <#--<a href="#" class="contact-like">喜欢</a>-->
+            <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next"><i class="next-icon"></i>下一个</a>
         </div>
     </section>
 </div>

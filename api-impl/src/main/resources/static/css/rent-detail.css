@@ -2646,7 +2646,8 @@ a.pswp__share--download:hover {
   background-color: transparent;
   border-top: 0.0133333333rem solid #e8e8e8; }
   .detail-contact-box .detail-contact-content a {
-    float: left;
+    -webkit-flex: 1;
+    flex: 1;
     height: 1.3066666667rem;
     line-height: 1.3066666667rem; }
     .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
@@ -2671,6 +2672,21 @@ a.pswp__share--download:hover {
       border-right: 0.0133333333rem solid #e8e8e8; }
     .detail-contact-box .detail-contact-content a.contact-next {
       width: 3.3333333333rem; }
+      .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+        display: inline-block;
+        width: 0.4266666667rem;
+        height: 1.3066666667rem;
+        background-image: url("../images/rent/rent-next-icon.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+            background-image: url("../images/rent/rent-next-icon@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+            background-image: url("../images/rent/rent-next-icon@3x.png"); } }
 
 .rent-support-nav {
   display: -webkit-flex;
