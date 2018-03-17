@@ -73,7 +73,7 @@ function carouselSwiper() {
         // 详情页
         if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) == 1) {
             bannerloop = false;
-            $('#detail-swiper').children('.banner-title').addClass('none');
+            $('#detail-swiper').children('.banner-title').find('.pictrue-index').addClass('none');
         } else {
             bannerloop = true;
         }
