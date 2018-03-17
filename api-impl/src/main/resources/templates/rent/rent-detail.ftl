@@ -95,7 +95,7 @@
             <h3>配套设施</h3>
         </div>
         <ul class="rent-support-nav">
-            <#if rentHouse['supporting_facilities']?exists && (rentHouse['supporting_facilities']?size gt 0)>
+            <#if rentHouse['supporting_facilities']?exists>
                 ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '<li class="support-item"><i class="kongtiao"></i><span>空调</span></li>')}
                 ${rentHouse['supporting_facilities']?seq_contains("电视")?string('<li class="support-item support"><i class="dianshi"></i><span>电视</span></li>', '<li class="support-item"><i class="dianshi"></i><span>电视</span></li>')}
                 ${rentHouse['supporting_facilities']?seq_contains("洗衣机")?string('<li class="support-item support"><i class="xiyiji"></i><span>洗衣机</span></li>', '<li class="support-item"><i class="xiyiji"></i><span>洗衣机</span></li>')}
@@ -198,16 +198,19 @@
         </div>
     </section>
 </div>
-<#--<#if rentHouse['rent_sign'] != 0>
+<#if rentHouse['rent_sign'] != 0 && rentHouse['demand']?exists && rentHouse['demand'] != ''>
     <div class="border-box">
         <section>
             <div class="module-header-message">
                 <h3>入住要求</h3>
             </div>
+            <ul class="demand-list">
+                <li>${rentHouse['demand']}</li>
+            </ul>
         </section>
     </div>
-</#if>-->
-<#if nearHouse?exists&&nearHouse??>
+</#if>
+<#if nearHouse?exists && nearHouse?size gt 0>
 <div id="nearbynewesf">
     <section>
         <div class="module-header-message">
@@ -240,8 +243,7 @@
             </a></li></#list>
         </ul>
     </section>
-</div>
-</#if>
+</div></#if>
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">

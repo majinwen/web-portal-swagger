@@ -2460,7 +2460,7 @@ a.pswp__share--download:hover {
         -moz-border-radius: 0.2133333333rem;
         border-radius: 0.2133333333rem; }
   .carousel-swiper img {
-    width: 100%; }
+    height: 100%; }
 
 .describe-box {
   padding: 0 0.4rem 0.5333333333rem; }
@@ -2795,5 +2795,17 @@ a.pswp__share--download:hover {
           background-position: -2.4rem -1.6rem; }
         .rent-support-nav .support-item.support i.zhinengsuo {
           background-position: -3.2rem -1.6rem; }
+
+.demand-list {
+  margin: 0 0.4rem 0.5333333333rem; }
+  .demand-list li {
+    margin-bottom: 0.1333333333rem;
+    color: #999; }
+    [data-dpr="1"] .demand-list li {
+      font-size: 14px; }
+    [data-dpr="2"] .demand-list li {
+      font-size: 28px; }
+    [data-dpr="3"] .demand-list li {
+      font-size: 42px; }
 
 /*# sourceMappingURL=rent-detail.css.map */
