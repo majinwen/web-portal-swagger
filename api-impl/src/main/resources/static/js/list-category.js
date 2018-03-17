@@ -195,7 +195,6 @@ $(function () {
         var _nearNumber = req['near'] || [];
         var _nearText;
         for (var i = 0; i < _nearArr.length; i++) {
-
             if (_nearNumber == _nearArr[i]) {
                 _nearText = _nearArr[i] + 'km'
             }
@@ -850,7 +849,7 @@ function showNearby(nearNumber) {
     for (var i = 0; i < _nearArr.length; i++) {
 
         if (nearNumber == _nearArr[i]) {
-            str += '<li class="current" onclick="submitNearbyNumber(_nearArr[i],event)">'+ _nearArr[i]  +'km</li>';
+            str += '<li class="current" onclick="submitNearbyNumber('+ _nearArr[i] +',event)">'+ _nearArr[i]  +'km</li>';
         } else {
             str += '<li onclick="submitNearbyNumber('+ _nearArr[i] +',event)">'+ _nearArr[i]  +'km</li>';
         }
