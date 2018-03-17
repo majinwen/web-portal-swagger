@@ -193,7 +193,7 @@
         </section>
     </div>
 </#if>
-<#if nearHouse?exists>
+<#if nearHouse?exists && nearHouse?size gt 0>
 <div id="nearbynewesf">
     <section>
         <div class="module-header-message">

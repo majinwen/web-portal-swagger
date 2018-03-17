@@ -2460,7 +2460,7 @@ a.pswp__share--download:hover {
         -moz-border-radius: 0.2133333333rem;
         border-radius: 0.2133333333rem; }
   .carousel-swiper img {
-    width: 100%; }
+    height: 100%; }
 
 .describe-box {
   padding: 0 0.4rem 0.5333333333rem; }
