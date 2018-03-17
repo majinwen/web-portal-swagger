@@ -49,8 +49,9 @@ public class RentHouseServiceImpl implements RentHouseService{
     private String agentType;
     private static final Integer IS_DEL = 0;//房源未删除 0-未删除
     private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
-    private static final Integer RENT = 1;//出租:1
-    private static final Integer APARTMENT = 2;//公寓:2
+    private static final Integer RENT = 0;//出租:1
+    private static final Integer FOCUS_APARTMENT = 2;//公寓:2
+    private static final Integer DISPERSED_APARTMENTS = 1;//公寓:2
     private static final String LAYOUT = "3";
 
 
@@ -165,11 +166,14 @@ public class RentHouseServiceImpl implements RentHouseService{
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
             //小区/公寓
-            if (rentHouseQuery.getRentSign()==1){
+            if (rentHouseQuery.getRentSign()==0){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
             }
+            if (rentHouseQuery.getRentSign()==1){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",DISPERSED_APARTMENTS));
+            }
             if (rentHouseQuery.getRentSign()==2){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",APARTMENT));
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",FOCUS_APARTMENT));
             }
             srb.setSize(4);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();

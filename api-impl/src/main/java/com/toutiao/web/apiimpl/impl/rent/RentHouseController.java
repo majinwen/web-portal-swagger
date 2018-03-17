@@ -74,7 +74,7 @@ public class RentHouseController {
                 }
             }else {
                 queryNearHouse.setZuFangId(String.valueOf(zufang_id));
-//                queryNearHouse.setRentSign(2);
+                queryNearHouse.setRentSign((Integer) map.get("rent_sign"));
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
                 if (nearHouse!=null){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
