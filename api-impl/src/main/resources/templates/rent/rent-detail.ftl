@@ -71,20 +71,7 @@
         <p>${rentHouse['zufang_name']} · ${rentHouse['house_area']}㎡ ${rentHouse['forward']} ${rentHouse['room']}室${rentHouse['hall']}厅</p>
         <#if rentHouse['rent_type_name']?exists || rentHouse['rent_sign_name']?exists || (rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0))>
             <div class="primary-header-rent-tag house-labelling">
-                <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span>
-                <#if agent?exists&&agent['house_tags_name']?exists&&agent['house_tags_name']?size gt 0>
-                    <#list agent['house_tags_name'] as label>
-                        <#if label?exists>
-                            <span>${label}</span>
-                        </#if>
-                    </#list>
-                <#elseif  rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)>
-                    <#list rentHouse['rent_house_tags_name'] as label>
-                        <#if label?exists>
-                            <span>${label}</span>
-                        </#if>
-                    </#list>
-                </#if>
+                <span class="company">${rentHouse['rent_type_name']}</span><span class="company">${rentHouse['rent_sign_name']}</span><#if agent?exists&&agent['house_tags_name']?exists&&agent['house_tags_name']?size gt 0><#list agent['house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list><#elseif  rentHouse['rent_house_tags_name']?exists && (rentHouse['rent_house_tags_name']?size gt 0)><#list rentHouse['rent_house_tags_name'] as label><#if label?exists><span>${label}</span></#if></#list></#if>
             </div>
         </#if>
     </div>
@@ -120,10 +107,10 @@
     <section>
         <div  class="module-header-message">
             <h3>小区信息</h3>
-            <a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a onclick="rentDetailInfo_1(this)" href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
-            <li><a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" style="display: block">
+            <li><a onclick="rentDetailInfo_2(this)" href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" style="display: block">
                 <div class="picture-box">
                     <#assign photo = plot['photo']>
                     <#if photo[0]?exists>
@@ -185,7 +172,7 @@
                     <em>${rentHouse['brokerage_agency']}</em>
                 </p>
                 <#if agent?exists&&agent['agent_phone']?exists>
-                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent"></a>
+                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent" id="rentDescPhone"></a>
                 <#elseif rentHouse['phone']?exists>
                     <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
                 </#if>
@@ -211,7 +198,7 @@
     </div>
 </#if>
 <#if nearHouse?exists && nearHouse?size gt 0>
-<div id="nearbynewesf">
+<div id="nearbyRent">
     <section>
         <div class="module-header-message">
             <h3><#if rentHouse['rent_sign'] == 0>附近相似好房<#else>${rentHouse['zufang_name']}好房推荐</#if></h3>
@@ -248,9 +235,9 @@
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
             <#if agent?exists&&agent['agent_phone']?exists>
-                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
             <#elseif rentHouse['phone']?exists>
-                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
             </#if>
             <#--<a href="#" class="contact-like">喜欢</a>-->
             <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next"><i class="next-icon"></i>下一个</a>
@@ -300,7 +287,6 @@
         })
     }
 
-
     $(function () {
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
@@ -346,7 +332,46 @@
         });
         return false;
     }
-
+    function rentDetailInfo_1(a) {
+        var link = $(a);
+        zhuge.track('租房-点击查看小区详情', {
+            "租房-点击查看小区详情": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    function rentDetailInfo_2(a) {
+        var link = $(a);
+        zhuge.track('租房-点击查看小区详情', {
+            "租房-点击查看小区详情": link.attr('href')
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    }
+    $('#rentDescPhone').on('click', function () {
+        if('<#if rentHouse['rent_sign'] == 0>true</#if>') {
+            zhuge.track('租房-点击咨询经纪人', {
+                "位置": "经纪人描述旁"
+            })
+        } else {
+            zhuge.track('租房-点击咨询公寓客服', {
+                "位置": "公寓品牌介绍旁"
+            })
+        }
+    });
+    $('#rentBottomPhone').on('click', function () {
+        if('<#if rentHouse['rent_sign'] == 0>true</#if>') {
+            zhuge.track('租房-点击拨打电话', {
+                "位置": "底部"
+            })
+        } else {
+            zhuge.track('租房-点击拨公寓客服', {
+                "位置": "底部"
+            })
+        }
+    });
 </script>
 </body>
 </html>
