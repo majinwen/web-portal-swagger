@@ -95,7 +95,7 @@
             <h3>配套设施</h3>
         </div>
         <ul class="rent-support-nav">
-            <#if rentHouse['supporting_facilities']?exists && (rentHouse['supporting_facilities']?size gt 0)>
+            <#if rentHouse['supporting_facilities']?exists>
                 ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '<li class="support-item"><i class="kongtiao"></i><span>空调</span></li>')}
                 ${rentHouse['supporting_facilities']?seq_contains("电视")?string('<li class="support-item support"><i class="dianshi"></i><span>电视</span></li>', '<li class="support-item"><i class="dianshi"></i><span>电视</span></li>')}
                 ${rentHouse['supporting_facilities']?seq_contains("洗衣机")?string('<li class="support-item support"><i class="xiyiji"></i><span>洗衣机</span></li>', '<li class="support-item"><i class="xiyiji"></i><span>洗衣机</span></li>')}
