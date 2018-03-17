@@ -171,7 +171,7 @@
                     <span><#if rentHouse['rent_sign'] == 0>${rentHouse['estate_agent']}<#else>${rentHouse['zufang_name']}</#if></span>
                     <em>${rentHouse['brokerage_agency']}</em>
                 </p>
-                <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
+                <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent" id="rentDescPhone"></a>
             </div>
             <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
             <div class="describe-cont">
@@ -230,7 +230,7 @@
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling">咨询经纪人</a>
+            <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
             <#--<a href="#" class="contact-like">喜欢</a>-->
             <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next"><i class="next-icon"></i>下一个</a>
         </div>
@@ -342,6 +342,28 @@
         });
         return false;
     }
+    $('#rentDescPhone').on('click', function () {
+        if('<#if rentHouse['rent_sign'] == 0>true</#if>') {
+            zhuge.track('租房-点击咨询经纪人', {
+                "位置": "经纪人描述旁"
+            })
+        } else {
+            zhuge.track('租房-点击咨询公寓客服', {
+                "位置": "公寓品牌介绍旁"
+            })
+        }
+    });
+    $('#rentBottomPhone').on('click', function () {
+        if('<#if rentHouse['rent_sign'] == 0>true</#if>') {
+            zhuge.track('租房-点击拨打电话', {
+                "位置": "底部"
+            })
+        } else {
+            zhuge.track('租房-点击拨公寓客服', {
+                "位置": "底部"
+            })
+        }
+    });
 </script>
 </body>
 </html>
