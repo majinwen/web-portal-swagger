@@ -363,6 +363,28 @@
         });
         return false;
     }
+    $('#rentDescPhone').on('click', function () {
+        if('<#if rentHouse['rent_sign'] == 0>true</#if>') {
+            zhuge.track('租房-点击咨询经纪人', {
+                "位置": "经纪人描述旁"
+            })
+        } else {
+            zhuge.track('租房-点击咨询公寓客服', {
+                "位置": "公寓品牌介绍旁"
+            })
+        }
+    });
+    $('#rentBottomPhone').on('click', function () {
+        if('<#if rentHouse['rent_sign'] == 0>true</#if>') {
+            zhuge.track('租房-点击拨打电话', {
+                "位置": "底部"
+            })
+        } else {
+            zhuge.track('租房-点击拨公寓客服', {
+                "位置": "底部"
+            })
+        }
+    });
 </script>
 </body>
 </html>
