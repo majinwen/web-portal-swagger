@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +62,7 @@ public class RentHouseController {
                 queryNearHouse.setLat(Double.parseDouble(map.get("location").toString().split(",")[0]));
                 queryNearHouse.setLon(Double.parseDouble(map.get("location").toString().split(",")[1]));
                 Map nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
-                if (nearHouse!=null){
+                if (nearHouse!=null&&((ArrayList)nearHouse.get("nearHouse")).size()>0){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
 
@@ -81,7 +83,7 @@ public class RentHouseController {
                 queryNearHouse.setZuFangId(zufang_id);
                 queryNearHouse.setRentSign((Integer) map.get("rent_sign"));
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
-                if (nearHouse!=null){
+                if (nearHouse!=null&&((ArrayList)nearHouse.get("nearHouse")).size()>0){
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
                 //小区待租房源总数
@@ -90,12 +92,10 @@ public class RentHouseController {
 
 
             //房源经纪人
-//            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
-//            if (agent!=null){
-//                List agentList = (List) agent.get("agent");
-//                model.addAttribute("agentList",agentList);
-//            }
-
+            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
+            if (agent!=null){
+                model.addAttribute("agent",agent);
+            }
             return "rent/rent-detail";
         }
         return "404";

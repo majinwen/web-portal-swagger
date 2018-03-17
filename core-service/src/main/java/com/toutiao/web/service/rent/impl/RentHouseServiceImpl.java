@@ -95,7 +95,9 @@ public class RentHouseServiceImpl implements RentHouseService{
                     Map source = hit.getSource();
                     if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
                         if(!(String.valueOf(source.get("house_id"))).equals(rentHouseQuery.getHouseId())){
-                            list.add(source);
+                            if (list.size()<3){
+                                list.add(source);
+                            }
                         }
                     }else {
                         list.add(source);
@@ -183,7 +185,9 @@ public class RentHouseServiceImpl implements RentHouseService{
                     Map source = hit.getSource();
                     if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
                         if(!(String.valueOf(source.get("house_id"))).equals(Integer.valueOf(rentHouseQuery.getHouseId()))){
-                            list.add(source);
+                            if (list.size()<3){
+                                list.add(source);
+                            }
                         }
                     }else {
                         list.add(source);
@@ -206,8 +210,6 @@ public class RentHouseServiceImpl implements RentHouseService{
      */
     @Override
     public Map queryAgentByHouseId(String houseId) {
-        Map result = new HashMap();
-        List list = new ArrayList();
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(agentIndex).setTypes(agentType);
@@ -216,11 +218,9 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
-                for (SearchHit hit:hits){
-                    Map source = hit.getSource();
-                    list.add(source);
-                }
-                result.put("agent",list);
+                long time = new Date().getTime();
+                long index = (time / 600000) % hits.length;
+                Map result = hits[(int) index].getSource();
                 return result;
             }
         }catch (Exception e){
