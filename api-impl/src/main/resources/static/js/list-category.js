@@ -7,6 +7,7 @@ var quyu;
 var shangquan;
 var diteixian;
 var diteizhan;
+var fujinjuli;
 var junjia = [];
 var huxing = [];
 var louling = [];
@@ -874,6 +875,7 @@ function submitNearby(e) {
     var houseName = null;
     houseName = getHouseName(_localHref,houseName);
     $.get(url, function () {
+        zhuge.track(houseName+'-按附近距离筛选',{'附近距离':'不限'});
         location.replace(url);
     });
 }
@@ -896,7 +898,9 @@ function submitNearbyNumber(nearNumber, e) {
     tabTextReplace(e);
     var houseName = null;
     houseName = getHouseName(_localHref,houseName);
+    fujinjuli = $('#level2').find('li.current').text();
     $.get(url, function () {
+        zhuge.track(houseName+'-按附近距离筛选',{'附近距离':fujinjuli});
         location.replace(url);
     });
 }
