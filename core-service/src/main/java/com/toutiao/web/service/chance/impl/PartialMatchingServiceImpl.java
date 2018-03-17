@@ -99,11 +99,16 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
                 .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))
                 .addAggregation(AggregationBuilders.filter("rent",QueryBuilders.termQuery("search_type_sings", RENT_TYPE)))
                 .addAggregation(AggregationBuilders.filter("apartment",QueryBuilders.termQuery("search_type_sings", APARTMENT_TYPE)));
+//        TermsAggregationBuilder aggs = AggregationBuilders.terms("test").field("search_type_sings");
+//        srbEngines.addAggregation(aggs);
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.preTags("<em style = 'color:red'>").postTags("</em>").field("search_name");
         srbEngines.highlighter(highlightBuilder);
         SearchResponse searchResponse = srbEngines.setQuery(boolQueryBuilder).execute().actionGet();
+//        Aggregation player_count = searchResponse.getAggregations().get("player_count");
+//        Terms ddd = searchResponse.getAggregations().get("test");
+
         if(searchResponse !=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit :hits) {
