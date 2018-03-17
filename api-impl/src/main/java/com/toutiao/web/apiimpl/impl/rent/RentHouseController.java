@@ -49,7 +49,7 @@ public class RentHouseController {
             model.addAttribute("rentHouse",map);
             RentHouseQuery queryNearHouse = new RentHouseQuery();
             String house_id = map.get("house_id").toString();
-            Integer zufang_id = (Integer) map.get("zufang_id");
+            String zufang_id = map.get("zufang_id").toString();
             //附近相似好房/好房推荐
             if((Integer) map.get("rent_sign")==0){
                 queryNearHouse.setNear("3");
@@ -66,14 +66,19 @@ public class RentHouseController {
 
                 //小区待租房源总数
                 RentHouseQuery queryNearHouse1 = new RentHouseQuery();
-                queryNearHouse1.setZuFangId(String.valueOf(zufang_id));
+                queryNearHouse1.setZuFangId(zufang_id);
                 queryNearHouse1.setRentSign((Integer) map.get("rent_sign"));
                 Map nearHouseApartment = rentHouseService.queryHouseByparentId(queryNearHouse1);
                 if (nearHouseApartment!=null){
                     model.addAttribute("total",nearHouseApartment.get("total"));
                 }
+                //小区详情信息
+                Map plot = plotService.queryPlotByRentId(zufang_id);
+                if (plot!=null){
+                    model.addAttribute("plot",plot);
+                }
             }else {
-                queryNearHouse.setZuFangId(String.valueOf(zufang_id));
+                queryNearHouse.setZuFangId(zufang_id);
                 queryNearHouse.setRentSign((Integer) map.get("rent_sign"));
                 Map nearHouse = rentHouseService.queryHouseByparentId(queryNearHouse);
                 if (nearHouse!=null){
@@ -83,11 +88,7 @@ public class RentHouseController {
                 model.addAttribute("total",nearHouse.get("total"));
             }
 
-            //小区详情信息
-            Map plot = plotService.queryPlotByRentId(String.valueOf(zufang_id));
-            if (plot!=null){
-                model.addAttribute("plot",plot);
-            }
+
             //房源经纪人
 //            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
 //            if (agent!=null){

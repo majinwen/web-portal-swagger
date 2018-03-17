@@ -109,10 +109,10 @@
     <section>
         <div  class="module-header-message">
             <h3>小区信息</h3>
-            <a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']?c+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
         <ul class="tilelist row">
-            <li><a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']?c+'.html')}" style="display: block">
+            <li><a href="${router_city('/xiaoqu/'+rentHouse['zufang_id']+'.html')}" style="display: block">
                 <div class="picture-box">
                     <#assign photo = plot['photo']>
                     <#if photo[0]?exists>
