@@ -62,7 +62,6 @@ public class RentHouseController {
                 queryNearHouse.setLon(Double.parseDouble(map.get("location").toString().split(",")[1]));
                 Map nearHouse = rentHouseService.queryNearHouseByDistance(queryNearHouse);
                 if (nearHouse!=null&&((ArrayList)nearHouse.get("nearHouse")).size()>0){
-                    System.out.println(nearHouse.get("nearHouse"));
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
 
