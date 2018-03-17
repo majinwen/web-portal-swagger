@@ -674,7 +674,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
             String[] source = rentHouseQuery.getSource().split(",");
-            booleanQueryBuilder.must(termQuery("data_source_sign", source));
+            booleanQueryBuilder.must(termsQuery("data_source_sign",source));
         }
         //面积
         if (StringUtil.isNotNullString(rentHouseQuery.getHouseAreaSize())) {

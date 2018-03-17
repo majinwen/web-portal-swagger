@@ -86,8 +86,8 @@
                     <dl>
                         <dt data-type="source">来源</dt>
                         <dd>
-                            <span data-info="1">经纪人</span>
-                            <span data-info="2">相寓</span>
+                            <span data-info="0">经纪人</span>
+                            <span data-info="1">相寓</span>
                         </dd>
                     </dl>
                     <dl>
