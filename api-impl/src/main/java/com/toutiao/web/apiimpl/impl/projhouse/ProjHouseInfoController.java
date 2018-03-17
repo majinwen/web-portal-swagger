@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +83,9 @@ public class ProjHouseInfoController {
             Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
             if (agent!=null){
                 List agentList = (List) agent.get("agent");
+                long time = new Date().getTime();
+                long index = (time / 10) % agentList.size();
+                model.addAttribute("indexNum",index);
                 model.addAttribute("agentList",agentList);
             }
         } else {

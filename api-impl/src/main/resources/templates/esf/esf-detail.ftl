@@ -18,20 +18,37 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>
-            <#list houseDetail['housePhoto'] as itemValue>
-                <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                    <img src="${itemValue}" data-src="${itemValue}" alt="">
-                </li>
-            </#list>
+        <#if agentList?exists&&agentList?size gt 0&&indexNum?exists>
+            <#assign image = agentList[indexNum]>
+            <#if agentList[indexNum]['house_img']?exists&&agentList[indexNum]['house_img']?size gt 0>
+                <#list image['house_img'] as photo>
+                    <li onclick="initphoto(this,${photo_index})" class="swiper-slide">
+                        <img src="${photo['image_path']}" data-src="${photo['image_path']}" alt="">
+                    </li>
+                </#list>
+            </#if>
         <#else >
-            <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-            </li>
+            <#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>
+                <#list houseDetail['housePhoto'] as itemValue>
+                    <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
+                        <img src="${itemValue}" data-src="${itemValue}" alt="">
+                    </li>
+                </#list>
+            <#else>
+                <li onclick="initphoto(this,0)" class="swiper-slide">
+                    <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                </li>
+            </#if>
         </#if>
         </ul>
         <div class="banner-title">
-            <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
+            <#if agentList?exists&&agentList?size gt 0&&indexNum?exists>
+                <#if agentList[indexNum].houseId?exists&&agentList[indexNum].houseId!=''>
+                    <div class="banner-house-number">房源编号：${agentList[indexNum].houseId}</div>
+                </#if>
+            <#else >
+                <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
+            </#if>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
     </div>
@@ -71,14 +88,29 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
-            <div class="primary-header-tag house-labelling gray">
-            <#assign item =houseDetail['tagsName']>
-            <#list item as itemValue>
-                <#if itemValue?exists>
-                    <span>${itemValue}</span>
+            <#if agentList?exists&&agentList?size gt 0&&indexNum?exists>
+                <#if agentList[indexNum].house_title?exists&&agentList[indexNum].house_title!=''>
+                    <h2>${agentList[indexNum].house_title}</h2>
                 </#if>
-            </#list>
+            <#else >
+                <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
+            </#if>
+            <div class="primary-header-tag house-labelling gray">
+            <#if agentList?exists&&agentList?size gt 0&&indexNum?exists>
+                <#if agentList[indexNum]['house_tags_name']?exists&&agentList[indexNum]['house_tags_name']?size gt 0>
+                    <#assign item = agentList[indexNum]['house_tags_name']>
+                    <#list item as itemValue>
+                            <span>${itemValue}</span>
+                    </#list>
+                </#if>
+            <#else >
+                <#assign item =houseDetail['tagsName']>
+                <#list item as itemValue>
+                    <#if itemValue?exists>
+                        <span>${itemValue}</span>
+                    </#if>
+                </#list>
+            </#if>
             </div>
         </div>
         <ul class="primary-item">
@@ -201,7 +233,36 @@
         </ul>
     </section>
 </div>
-<#if houseDetail.houseProxyPhone?exists||houseDetail.houseProxyPhoto?exists||houseDetail.ofCompany?exists||houseDetail.houseDesc?exists>
+<#if agentList?exists&&agentList?size gt 0&&indexNum?exists>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>房源描述</h3>
+        </div>
+        <div class="describe-box">
+            <div class="describe-header">
+                <img class="source-icon" <#if agentList[indexNum]['agent_headphoto']?exists>src="${agentList[indexNum]['agent_headphoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <p>
+                    <span>
+                        <#if agentList[indexNum]['of_company']?exists&&agentList[indexNum]['of_company']!=''>【${agentList[indexNum]['of_company']}】</#if>
+                        <#if agentList[indexNum]['agent_name']?exists&&agentList[indexNum]['agent_name']!=''>${agentList[indexNum]['agent_name']}</#if></span>
+                    <em>房屋信息发布人</em>
+                </p>
+                <#if agentList[indexNum]['agent_phone']?exists&&agentList[indexNum]['agent_phone']!=''>
+                    <a href="tel:${agentList[indexNum]['agent_phone']}" class="issuer-tel-icon"></a>
+                </#if>
+            </div>
+            <#if agentList[indexNum]['house_desc']?exists&&agentList[indexNum]['house_desc']!=''>
+                <div class="describe-cont">
+                    <p>${agentList[indexNum]['house_desc']}</p>
+                <#--<span class="describe-show-btn">>>展开</span>-->
+                </div>
+            </#if>
+
+        </div>
+    </section>
+</div>
+<#elseif houseDetail.houseProxyPhone?exists||houseDetail.houseProxyPhoto?exists||houseDetail.ofCompany?exists||houseDetail.houseDesc?exists>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
