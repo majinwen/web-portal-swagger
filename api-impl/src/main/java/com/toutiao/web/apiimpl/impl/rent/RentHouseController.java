@@ -90,7 +90,9 @@ public class RentHouseController {
                     model.addAttribute("nearHouse",nearHouse.get("nearHouse"));
                 }
                 //小区待租房源总数
-                model.addAttribute("total",nearHouse.get("total"));
+                if (nearHouse!=null){
+                    model.addAttribute("total",nearHouse.get("total"));
+                }
             }
 
 
