@@ -42,7 +42,7 @@ $(function () {
         $dom.toggleClass('active').siblings().removeClass('active');
 
         if ($('#level2').is(':hidden') && $dom.attr('data-mark') == 'panel-place') {
-            if (req['districtId'] || req['subwayLineId']) {
+            if (req['districtId'] || req['subwayLineId']|| req['near']) {
                 $('#level1').find('li').removeClass('current');
                 if (req['districtId']) {
                     $('#district-option').addClass('current');
@@ -549,6 +549,7 @@ function submitPlace(e) {
     req['subwayStationId'] = null;
     req['lat'] = null;
     req['lon'] = null;
+    req['near'] = null;
     params = joinParams(req);
     url = _localHref + params;
     tabTextReplace(e, '区域');
@@ -573,6 +574,7 @@ function submitDirstrict(districtid, e) {
         req['areaId'] = null;
         req['lat'] = null;
         req['lon'] = null;
+        req['near'] = null;
     }
     req['districtId'] = districtid;
     var params = joinParams(req);
@@ -600,6 +602,7 @@ function submitBussiness(districtid, areaId, e) {
         req['subwayStationId'] = null;
         req['lat'] = null;
         req['lon'] = null;
+        req['near'] = null;
     }
     req['districtId'] = districtid;
     req['areaId'] = areaId;
@@ -663,6 +666,7 @@ function submitSubway(e) {
     req['subwayStationId'] = null;
     req['lat'] = null;
     req['lon'] = null;
+    req['near'] = null;
 
     params = joinParams(req);
     url = _localHref + params;
@@ -723,6 +727,7 @@ function submitSubwayLine(subwayid, e) {
         req['subwayStationId'] = null;
         req['lat'] = null;
         req['lon'] = null;
+        req['near'] = null;
     }
     req['subwayLineId'] = subwayid;
     params = joinParams(req);
@@ -749,6 +754,7 @@ function submitStation(subwayid, subwayStationId, e) {
         req['areaId'] = null;
         req['lat'] = null;
         req['lon'] = null;
+        req['near'] = null;
     }
     req['subwayLineId']=subwayid;
     req['subwayStationId']=subwayStationId;
