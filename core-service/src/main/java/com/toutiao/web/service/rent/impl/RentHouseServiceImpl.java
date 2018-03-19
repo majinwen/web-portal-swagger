@@ -16,9 +16,11 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,22 +74,27 @@ public class RentHouseServiceImpl implements RentHouseService{
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear(), DistanceUnit.KILOMETERS);
             srb.setPostFilter(location1).setSize(4);
             // 按距离排序
-            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
-            sort.unit(DistanceUnit.KILOMETERS);
-            sort.order(SortOrder.ASC);
-            srb.addSort(sort);
+            if (rentHouseQuery.getRentSign()!=0){
+                GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
+                sort.unit(DistanceUnit.KILOMETERS);
+                sort.order(SortOrder.ASC);
+                srb.addSort(sort);
+            }
             //小区
             if (rentHouseQuery.getRentSign()==0){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
+                Script script = new Script("Math.random()");
+                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+                srb.addSort(scrip);
             }
             //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
             //价格上下浮动20%
-            /*if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0&&rentHouseQuery.getEndPrice()>rentHouseQuery.getBeginPrice()){
+            if (rentHouseQuery.getBeginPrice()>0&&rentHouseQuery.getEndPrice()>0&&rentHouseQuery.getEndPrice()>rentHouseQuery.getBeginPrice()){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseQuery.getBeginPrice()).lte(rentHouseQuery.getEndPrice()));
-            }*/
+            }
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = searchResponse.getHits().getHits();
             if(searchHists.length>0){
