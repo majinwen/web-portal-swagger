@@ -1472,6 +1472,17 @@ function pullUpAction() {
                                             dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
                                     }
+
+                                    if (dataCon[i]['house_title_img']) {
+                                        var _house_title_img;
+                                        if (dataCon[i]['house_title_img'].indexOf('http') > 0) {
+                                            _house_title_img = dataCon[i]['house_title_img'];
+                                        }else{
+                                            _house_title_img = 'http://ozptwu1ea.bkt.clouddn.com/' + dataCon[i]['house_title_img'];
+                                        }
+                                        dataCon[i]['house_title_img'] = _house_title_img;
+                                    }
+
                                 }
                             }
                         }

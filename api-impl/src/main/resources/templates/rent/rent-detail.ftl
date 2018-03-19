@@ -18,7 +18,11 @@
         <#if rentHouse['rent_house_img']?exists && (rentHouse['rent_house_img']?size gt 0)>
             <#list rentHouse['rent_house_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
-                    <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
+                    <#if rentphoto['image_path']?index_of("http") gt -1>
+                        <img src="${rentphoto['image_path']}" data-src="${rentphoto['image_path']}" alt="">
+                    <#else>
+                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
+                    </#if>
                 </li>
             </#list>
         <#else>
@@ -160,7 +164,11 @@
             <div class="describe-header">
                 <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
                     <#if rentHouse['rent_sign'] == 0>
-                        <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                        <#if rentHouse['agent_headphoto']?index_of("http") gt -1>
+                            <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
+                        <#else>
+                            <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                        </#if>
                     <#else >
                         <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
                     </#if>
@@ -208,7 +216,11 @@
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if builditem.house_title_img?exists && builditem.house_title_img!=''>
-                            <img src="${qiniuzufangimage}/${builditem.house_title_img}" alt="${builditem.zufang_name}">
+                            <#if builditem.house_title_img?index_of("http") gt -1>
+                                <img src="${builditem.house_title_img}" alt="${builditem.zufang_name}">
+                            <#else>
+                                <img src="${qiniuzufangimage}/${builditem.house_title_img}" alt="${builditem.zufang_name}">
+                            </#if>
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
