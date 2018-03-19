@@ -745,6 +745,14 @@ public class RentHouseServiceImpl implements RentHouseService{
             String[] tag = rentHouseQuery.getTags().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", tag));
         }
+        //房源类型
+        if (Integer.valueOf(rentHouseQuery.getRentSign())==0){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_sign",0));
+        }
+        if (Integer.valueOf(rentHouseQuery.getRentSign())>0){
+            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+            booleanQueryBuilder.must(queryBuilder.should(QueryBuilders.termQuery("rent_sign",1)).should(QueryBuilders.termQuery("rent_sign",2)));
+        }
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
         result.put("booleanQueryBuilder",booleanQueryBuilder);

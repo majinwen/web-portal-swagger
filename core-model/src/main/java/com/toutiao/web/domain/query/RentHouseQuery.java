@@ -114,7 +114,7 @@ public class RentHouseQuery {
     /**
      * 小区公寓标志
      */
-    private Integer rentSign;
+    private Integer rentSign = -1;
 
     /**
      * 页码
