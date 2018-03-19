@@ -139,7 +139,7 @@
     <ul id="valueList"></ul>
 </section>
 <#include "../user.ftl">
-<#include "../search-rent.ftl">
+<#include "../search.ftl">
 <script id="listContent" type="text/html">
     {{each data}}
     <li><a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">

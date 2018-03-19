@@ -58,7 +58,13 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
 
         if (property!=null){
             String searchType = getSearchType(property);
-            boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+            if (searchType == RENT_TYPE){
+                boolQueryBuilderScope.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
+                boolQueryBuilderScope.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+            }else {
+                boolQueryBuilderScope.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+            }
         }
         srbScope.addSort("search_sort",SortOrder.ASC);
 
@@ -82,6 +88,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         map.put("esfNum",((InternalFilter)searchResponseScope.getAggregations().get("esf")).getDocCount());
         map.put("newHouseNum",((InternalFilter)searchResponseScope.getAggregations().get("newHouse")).getDocCount());
         map.put("rentNum",((InternalFilter)searchResponseScope.getAggregations().get("rent")).getDocCount());
+        map.put("apartmentNum",((InternalFilter)searchResponseScope.getAggregations().get("apartment")).getDocCount());
 
         SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -90,8 +97,14 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
 
         if (property!=null){
+            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             String searchType = getSearchType(property);
-            boolQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+            if (searchType == RENT_TYPE){
+                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
+                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+            }else {
+                boolQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+            }
         }
 
         srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
@@ -138,8 +151,12 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             if(Integer.valueOf(map.get("rentNum").toString())==0){
                 map.put("rentNum",((InternalFilter)searchResponse.getAggregations().get("rent")).getDocCount());
             }
+            if(Integer.valueOf(map.get("apartmentNum").toString())==0){
+                map.put("apartmentNum",((InternalFilter)searchResponse.getAggregations().get("apartment")).getDocCount());
+            }
 //            map.put("plotNum",((InternalFilter)searchResponse.getAggregations().get("plot")).getDocCount());
 //            map.put("esfNum",((InternalFilter)searchResponse.getAggregations().get("esf")).getDocCount());
+
 //            map.put("newHouseNum",((InternalFilter)searchResponse.getAggregations().get("newHouse")).getDocCount());
         }
         return map;
