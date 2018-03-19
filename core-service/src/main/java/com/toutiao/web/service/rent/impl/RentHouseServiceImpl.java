@@ -204,7 +204,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     }
 
     /**
-     * 根据房源的id查询该房源所有的经纪人
+     * 根据房源的id查询该房源所有的经纪人(每10min改变一次agent)
      * @param houseId
      * @return
      */
