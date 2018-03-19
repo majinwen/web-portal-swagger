@@ -293,12 +293,14 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //按距离排序
             if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
-                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
-                srb.setPostFilter(location1);
-                GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-                sort.unit(DistanceUnit.KILOMETERS);
-                sort.order(SortOrder.ASC);
-                srb.addSort(sort);
+                if(projHouseInfoRequest.getLat()!=0 && projHouseInfoRequest.getLon()!=0){
+                    GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
+                    srb.setPostFilter(location1);
+                    GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+                    sort.unit(DistanceUnit.KILOMETERS);
+                    sort.order(SortOrder.ASC);
+                    srb.addSort(sort);
+                }
             }
             //去未删除的房源信息
             booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
@@ -388,108 +390,114 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
 
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            //从该坐标查询距离为distance
-            GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance("1.6", DistanceUnit.KILOMETERS);
-            srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
-            // 获取距离多少公里 这个才是获取点与点之间的距离的
-            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-            sort.unit(DistanceUnit.KILOMETERS);
-            sort.order(SortOrder.ASC);
-            sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-            srb.addSort(sort);
-            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
-            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
-            SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC).execute().actionGet();
-            long oneKM_size = searchResponse.getHits().getTotalHits();
 
-            if(searchResponse != null){
-                int reslocationinfo = searchResponse.getHits().getHits().length;
-                if(reslocationinfo == 10){
-                    SearchHits hits = searchResponse.getHits();
-                    SearchHit[] searchHists = hits.getHits();
-                    for (SearchHit hit : searchHists) {
-                        Map<String, Object> buildings = hit.getSource();
-                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
-                        ProjHouseInfoResponse instance = entityClass.newInstance();
-                        BeanUtils.populate(instance, buildings);
-                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                            //小区坐标
-                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+            if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
+                houseList = queryProjHouseInfo(projHouseInfoRequest);
+            }else{
+                //从该坐标查询距离为distance
+                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance("1.6", DistanceUnit.KILOMETERS);
+                srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
+                // 获取距离多少公里 这个才是获取点与点之间的距离的
+                GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+                sort.unit(DistanceUnit.KILOMETERS);
+                sort.order(SortOrder.ASC);
+                sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+                srb.addSort(sort);
+                BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
+                booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+                SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC).execute().actionGet();
+                long oneKM_size = searchResponse.getHits().getTotalHits();
+
+                if(searchResponse != null){
+                    int reslocationinfo = searchResponse.getHits().getHits().length;
+                    if(reslocationinfo == 10){
+                        SearchHits hits = searchResponse.getHits();
+                        SearchHit[] searchHists = hits.getHits();
+                        for (SearchHit hit : searchHists) {
+                            Map<String, Object> buildings = hit.getSource();
+                            Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                            ProjHouseInfoResponse instance = entityClass.newInstance();
+                            BeanUtils.populate(instance, buildings);
+                            if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                                //小区坐标
+                                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                            }
+                            instance.setTotal(hits.totalHits);
+                            instance.setPageNum(projHouseInfoRequest.getPageNum());
+                            houseList.add(instance);
                         }
-                        instance.setTotal(hits.totalHits);
-                        instance.setPageNum(projHouseInfoRequest.getPageNum());
-                        houseList.add(instance);
-                    }
-                }else if(reslocationinfo < 10 && reslocationinfo>0){
-                    SearchHits hits = searchResponse.getHits();
-                    SearchHit[] searchHists = hits.getHits();
-                    for (SearchHit hit : searchHists) {
-                        Map<String, Object> buildings = hit.getSource();
-                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
-                        ProjHouseInfoResponse instance = entityClass.newInstance();
-                        BeanUtils.populate(instance, buildings);
-                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                            //小区坐标
-                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }else if(reslocationinfo < 10 && reslocationinfo>0){
+                        SearchHits hits = searchResponse.getHits();
+                        SearchHit[] searchHists = hits.getHits();
+                        for (SearchHit hit : searchHists) {
+                            Map<String, Object> buildings = hit.getSource();
+                            Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                            ProjHouseInfoResponse instance = entityClass.newInstance();
+                            BeanUtils.populate(instance, buildings);
+                            if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                                //小区坐标
+                                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                            }
+                            instance.setTotal(hits.totalHits);
+                            instance.setPageNum(projHouseInfoRequest.getPageNum());
+                            houseList.add(instance);
                         }
-                        instance.setTotal(hits.totalHits);
-                        instance.setPageNum(projHouseInfoRequest.getPageNum());
-                        houseList.add(instance);
-                    }
-                    SearchResponse searchresponse = null;
-                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                    SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-                    booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-                    searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-                            .setFrom((0) * pageSize)
-                            .setSize(pageSize-hits.getHits().length)
-                            .execute().actionGet();
-                    SearchHits esfhits = searchresponse.getHits();
-                    SearchHit[] esfsearchHists = esfhits.getHits();
-                    for (SearchHit hit : esfsearchHists) {
-                        Map<String, Object> buildings = hit.getSource();
-                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
-                        ProjHouseInfoResponse instance = entityClass.newInstance();
-                        BeanUtils.populate(instance, buildings);
-                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                            //小区坐标
-                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                        SearchResponse searchresponse = null;
+                        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                        SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                        booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                                .setFrom((0) * pageSize)
+                                .setSize(pageSize-hits.getHits().length)
+                                .execute().actionGet();
+                        SearchHits esfhits = searchresponse.getHits();
+                        SearchHit[] esfsearchHists = esfhits.getHits();
+                        for (SearchHit hit : esfsearchHists) {
+                            Map<String, Object> buildings = hit.getSource();
+                            Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                            ProjHouseInfoResponse instance = entityClass.newInstance();
+                            BeanUtils.populate(instance, buildings);
+                            if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                                //小区坐标
+                                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                            }
+                            instance.setTotal(esfhits.totalHits);
+                            instance.setPageNum(projHouseInfoRequest.getPageNum());
+                            houseList.add(instance);
                         }
-                        instance.setTotal(esfhits.totalHits);
-                        instance.setPageNum(projHouseInfoRequest.getPageNum());
-                        houseList.add(instance);
-                    }
-                }else if(reslocationinfo == 0){
-                    long es_from = (pageNum-1)*pageSize - oneKM_size;
-                    SearchResponse searchresponse = null;
-                    BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                    SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-                    booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-                    searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-                            .setFrom(Integer.valueOf((int) es_from))
-                            .setSize(pageSize)
-                            .execute().actionGet();
-                    SearchHits esfhits = searchresponse.getHits();
-                    SearchHit[] esfsearchHists = esfhits.getHits();
-                    for (SearchHit hit : esfsearchHists) {
-                        Map<String, Object> buildings = hit.getSource();
-                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
-                        ProjHouseInfoResponse instance = entityClass.newInstance();
-                        BeanUtils.populate(instance, buildings);
-                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                            //小区坐标
-                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }else if(reslocationinfo == 0){
+                        long es_from = (pageNum-1)*pageSize - oneKM_size;
+                        SearchResponse searchresponse = null;
+                        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+                        SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                        booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                                .setFrom(Integer.valueOf((int) es_from))
+                                .setSize(pageSize)
+                                .execute().actionGet();
+                        SearchHits esfhits = searchresponse.getHits();
+                        SearchHit[] esfsearchHists = esfhits.getHits();
+                        for (SearchHit hit : esfsearchHists) {
+                            Map<String, Object> buildings = hit.getSource();
+                            Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                            ProjHouseInfoResponse instance = entityClass.newInstance();
+                            BeanUtils.populate(instance, buildings);
+                            if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                                //小区坐标
+                                instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                                instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                            }
+                            instance.setTotal(esfhits.totalHits);
+                            instance.setPageNum(projHouseInfoRequest.getPageNum());
+                            houseList.add(instance);
                         }
-                        instance.setTotal(esfhits.totalHits);
-                        instance.setPageNum(projHouseInfoRequest.getPageNum());
-                        houseList.add(instance);
                     }
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
