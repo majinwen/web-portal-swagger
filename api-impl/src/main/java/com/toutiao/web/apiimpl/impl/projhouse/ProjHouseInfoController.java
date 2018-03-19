@@ -80,10 +80,10 @@ public class ProjHouseInfoController {
             }
 
             //房源经纪人
-//            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
-//            if (agent!=null){
-//                model.addAttribute("agent",agent);
-//            }
+            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
+            if (agent!=null){
+                model.addAttribute("agent",agent);
+            }
         } else {
             //跳转到404页
             return "404";
