@@ -236,7 +236,7 @@ $(function(){
     function hashPush(StorageArray,keyword) {
         var flag = false;
         for(var i = 0;i<StorageArray.length;i++){
-            if(StorageArray[i]==keyword){
+            if(StorageArray[i].split(',')[0]==keyword.split(',')[0]){
                 flag = true;
             }
         }

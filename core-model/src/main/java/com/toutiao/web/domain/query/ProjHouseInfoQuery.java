@@ -127,5 +127,5 @@ public class ProjHouseInfoQuery {
      * 附近1,3,5km
      *
      */
-    private String nearbyKm;
+    private String near ;
 }

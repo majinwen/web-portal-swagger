@@ -80,7 +80,9 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             SearchHit[] hits = searchResponseScope.getHits().getHits();
             for (SearchHit hit :hits) {
                 Map<String, Object> source = hit.getSource();
-                list.add(source);
+                if ((Integer) source.get("location_num")>0){
+                    list.add(source);
+                }
             }
         }
 
