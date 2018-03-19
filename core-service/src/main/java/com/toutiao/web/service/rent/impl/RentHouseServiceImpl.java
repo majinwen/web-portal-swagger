@@ -77,7 +77,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             sort.order(SortOrder.ASC);
             srb.addSort(sort);
             //小区
-            if (rentHouseQuery.getRentSign()==1){
+            if (rentHouseQuery.getRentSign()==0){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
             }
             //是否删除
@@ -158,8 +158,14 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //上级公寓ID
-            if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
-                boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
+            if(rentHouseQuery.getRentSign()==0){
+                if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
+                }
+            }else{
+                if (StringUtils.isNotBlank(rentHouseQuery.getZuFangName())){
+                    boolQueryBuilder.must(QueryBuilders.termQuery("zufang_name",rentHouseQuery.getZuFangName()));
+                }
             }
             //按价格由低到高排序
             srb.addSort("rent_house_price",SortOrder.ASC);

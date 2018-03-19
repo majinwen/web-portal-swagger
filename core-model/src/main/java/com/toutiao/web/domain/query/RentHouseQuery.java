@@ -15,6 +15,10 @@ public class RentHouseQuery {
      */
     private String zuFangId;
     /**
+     * 房源上级名称
+     */
+    private String zuFangName;
+    /**
      * 关键字
      */
     private String keyword;
