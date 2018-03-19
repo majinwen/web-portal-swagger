@@ -101,9 +101,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setHousetToPlotDistance(distance1);
                 BeanUtils.populate(instance, buildings);
                 buildinglist.add(instance);
-//                if (instance.getHouseId().equals(houseId)) {
-//                    buildinglist.remove(instance);
-//                }
+                if (instance.getHouseId().equals(instance.getHouseId())) {
+                    buildinglist.remove(instance);
+                }
 
             }
             if(buildinglist!=null&&buildinglist.size()>0){
@@ -292,8 +292,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //按距离排序
-            if (StringUtils.isNotBlank(projHouseInfoRequest.getNearbyKm())){
-                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(distance, DistanceUnit.KILOMETERS);
+            if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
+                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
                 srb.setPostFilter(location1);
                 GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
                 sort.unit(DistanceUnit.KILOMETERS);
