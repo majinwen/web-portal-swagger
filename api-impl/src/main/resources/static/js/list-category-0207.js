@@ -14,7 +14,8 @@ var moreChooseZhuge = [];
 $(function () {
     var disStr = '<li id="district-option">区域</li>';
     var subStr = '<li id="subway-option">地铁</li>';
-    $('#level1').append(disStr+subStr);
+    var nearbyStr = '<li id="nearby-option">附近</li>';
+    $('#level1').append(disStr+subStr+nearbyStr);
 
     //列表页排序切换
     listSortTab();
@@ -53,6 +54,9 @@ $(function () {
                 } else if (req['subwayLineId']) {
                     $('#subway-option').addClass('current');
                     showSubway(req['subwayLineId'], req['subwayStationId']);
+                } else if (req['near']) {
+                    $('#nearby-option').addClass('current');
+                    showNearby(req['near']);
                 }
             } else {
                 $('#district-option').addClass('current');
@@ -83,6 +87,8 @@ $(function () {
             }
         } else if ($(this).attr('id') == 'subway-option') {
             showSubway();
+        } else if ($(this).attr('id') == 'nearby-option') {
+            showNearby();
         }
     });
 
@@ -168,6 +174,28 @@ $(function () {
 
             $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_subwayStationName?_subwayStationName:_subwayLineName);
         });
+    }
+
+    /**
+     * 附近筛选
+     */
+    if (req['near']){
+        near(req)
+    }
+    /**
+     * 附近距离处理
+     * @param req
+     */
+    function near(req) {
+        var _nearArr = [1,3,5];
+        var _nearNumber = req['near'] || [];
+        var _nearText;
+        for (var i = 0; i < _nearArr.length; i++) {
+            if (_nearNumber == _nearArr[i]) {
+                _nearText = _nearArr[i] + 'km'
+            }
+        }
+        $('li[data-mark="tab-place"]').addClass('choose').find('em').text(_nearText);
     }
 
     /**
@@ -734,6 +762,80 @@ function submitStation(subwayid, subwayStationId, e) {
     // console.log(diteixian+'-'+diteizhan);
     $.get(url, function () {
         zhuge.track(houseName+'-按区域筛选',{'地铁位置':diteixian+'-'+diteizhan});
+        location.replace(url);
+    });
+}
+
+/*
+ * 显示附近
+ * */
+function showNearby(nearNumber) {
+    $('#level2').removeClass('none');
+    $('#level3').addClass('none');
+    $('#level2').empty();
+
+    var str;
+    if (nearNumber) {
+        str = '<li onclick="submitNearby(event)">不限</li>';
+    } else {
+        str = '<li class="current" onclick="submitNearby(event)">不限</li>';
+    }
+    var _nearArr = [1,3,5];
+    for (var i = 0; i < _nearArr.length; i++) {
+
+        if (nearNumber == _nearArr[i]) {
+            str += '<li class="current" onclick="submitNearbyNumber('+ _nearArr[i] +',event)">'+ _nearArr[i]  +'km</li>';
+        } else {
+            str += '<li onclick="submitNearbyNumber('+ _nearArr[i] +',event)">'+ _nearArr[i]  +'km</li>';
+        }
+    }
+    $('#level2').append(str);
+}
+/*
+ * 提交选中附近不限
+ * */
+function submitNearby(e) {
+    req['pageNum'] = null;
+    req['districtId'] = null;
+    req['areaId'] = null;
+    req['lat'] = null;
+    req['lon'] = null;
+    req['near'] = null;
+    req['subwayLineId'] = null;
+    req['subwayStationId'] = null;
+    params = joinParams(req);
+    url = _localHref + params;
+    tabTextReplace(e);
+    var houseName = null;
+    houseName = getHouseName(_localHref,houseName);
+    fujinjuli = $('#level2').find('li.current').text();
+    $.get(url, function () {
+        zhuge.track(houseName+'-按附近距离筛选',{'附近距离':fujinjuli});
+        location.replace(url);
+    });
+}
+/*
+ * 提交选中附近距离
+ * */
+function submitNearbyNumber(nearNumber, e) {
+    if (nearNumber) {
+        req['pageNum'] = null;
+        req['districtId'] = null;
+        req['areaId'] = null;
+        req['subwayLineId'] = null;
+        req['subwayStationId'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
+    }
+    req['near'] = nearNumber;
+    params = joinParams(req);
+    url = _localHref + params;
+    tabTextReplace(e);
+    var houseName = null;
+    houseName = getHouseName(_localHref,houseName);
+    fujinjuli = $('#level2').find('li.current').text();
+    $.get(url, function () {
+        zhuge.track(houseName+'-按附近距离筛选',{'附近距离':fujinjuli});
         location.replace(url);
     });
 }

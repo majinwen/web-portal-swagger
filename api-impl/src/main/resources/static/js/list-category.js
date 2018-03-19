@@ -840,7 +840,7 @@ function showNearby(nearNumber) {
     $('#level2').empty();
 
     var str;
-    if (showNearby) {
+    if (nearNumber) {
         str = '<li onclick="submitNearby(event)">不限</li>';
     } else {
         str = '<li class="current" onclick="submitNearby(event)">不限</li>';
