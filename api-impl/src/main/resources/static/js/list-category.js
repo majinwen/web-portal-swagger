@@ -1475,14 +1475,13 @@ function pullUpAction() {
 
                                     if (dataCon[i]['house_title_img']) {
                                         var _house_title_img;
-                                        if (dataCon[i]['house_title_img'].indexOf('http') > 0) {
+                                        if (dataCon[i]['house_title_img'].indexOf('http:') > -1 || dataCon[i]['house_title_img'].indexOf('https:') > -1) {
                                             _house_title_img = dataCon[i]['house_title_img'];
                                         }else{
                                             _house_title_img = 'http://ozptwu1ea.bkt.clouddn.com/' + dataCon[i]['house_title_img'];
                                         }
                                         dataCon[i]['house_title_img'] = _house_title_img;
                                     }
-
                                 }
                             }
                         }
