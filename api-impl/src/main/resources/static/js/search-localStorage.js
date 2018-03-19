@@ -94,8 +94,10 @@ $(function(){
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(urlText=='loupan'&&history[3]==''){
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
-            }else if(urlText=='zufang'){
-                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+            }else if(urlText=='zufang'&&history[4]==3){
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?rentSign=0&keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
+            }else if(urlText=='zufang'&&history[4]==4){
+                $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?rentSign=1&keyword=' + history[0] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else {
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'/' + history[1] )+'.html' + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }
@@ -135,23 +137,21 @@ $(function(){
 
 
             if(_localHref.indexOf('xiaoqu')>0){
-                hashPush(plotStorageArray,_keyword+',,小区,,');
+                hashPush(plotStorageArray,_keyword+',,小区,,1');
                 localStorage.setItem('plot', JSON.stringify(plotStorageArray));
                 location.href= router_city('/xiaoqu?keyword=') + $.trim($(this).val());
             } else if(_localHref.indexOf('esf')>0){
-                hashPush(esfStorageArray,_keyword+',,二手房,,');
+                hashPush(esfStorageArray,_keyword+',,二手房,,2');
                 localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                 location.href= router_city('/esf?keyword=') + $.trim($(this).val());
             } else if(_localHref.indexOf('loupan')>0||_localHref.indexOf('xinfang')>0){
-                hashPush(newHouseStorageArray,_keyword+',,新房,,');
+                hashPush(newHouseStorageArray,_keyword+',,新房,,0');
                 localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                 location.href= router_city('/loupan?keyword=') + $.trim($(this).val());
-            } else if(_localHref.indexOf('zufang')>0&&rentNum>0){
-                hashPush(rentStorageArray,_keyword+',,出租,,')
+            } else if(_localHref.indexOf('zufang')>0){
+                hashPush(rentStorageArray,_keyword+',,出租,,3')
                 localStorage.setItem('rent', JSON.stringify(rentStorageArray));
-                location.href= router_city('/zufang?keyword=') + $.trim($(this).val());
-            } else if(_localHref.indexOf('zufang')>0&&apartmentNum>0){
-                hashPush(rentStorageArray,_keyword+',,公寓,,')
+                hashPush(rentStorageArray,_keyword+',,公寓,,4')
                 localStorage.setItem('rent', JSON.stringify(rentStorageArray));
                 location.href= router_city('/zufang?keyword=') + $.trim($(this).val());
             }else {
@@ -179,27 +179,27 @@ $(function(){
                         var id = $(this).attr('id')
                         var url = window.location.href.split("?")[0];
                         if(id == 1){
-                            hashPush(plotStorageArray,_keyword+',,小区,,');
+                            hashPush(plotStorageArray,_keyword+',,小区,,1');
                             localStorage.setItem('plot', JSON.stringify(plotStorageArray));
                             window.location.href= url+'/xiaoqu?keyword='+_keyword
                         }
                         if(id == 2){
-                            hashPush(esfStorageArray,_keyword+',,二手房,,');
+                            hashPush(esfStorageArray,_keyword+',,二手房,,2');
                             localStorage.setItem('esf', JSON.stringify(esfStorageArray));
                             window.location.href = url+'/esf?keyword='+_keyword
                         }
                         if(id == 3){
-                            hashPush(newHouseStorageArray,_keyword+',,新房,,');
+                            hashPush(newHouseStorageArray,_keyword+',,新房,,0');
                             localStorage.setItem('newHouse', JSON.stringify(newHouseStorageArray));
                             window.location.href = url+'/loupan?keyword='+_keyword
                         }
                         if(id == 4){
-                            hashPush(rentStorageArray,_keyword+',,出租,,')
+                            hashPush(rentStorageArray,_keyword+',,出租,,3')
                             localStorage.setItem('rent',JSON.stringify(rentStorageArray));
                             window.location.href= url+'/zufang?rentSign=0&keyword='+_keyword
                         }
                         if(id == 5){
-                            hashPush(rentStorageArray,_keyword+',,公寓,,')
+                            hashPush(rentStorageArray,_keyword+',,公寓,,4')
                             localStorage.setItem('rent',JSON.stringify(rentStorageArray));
                             window.location.href= url+'/zufang?rentSign=1&keyword='+_keyword
                         }
