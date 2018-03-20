@@ -339,7 +339,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -362,7 +362,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -386,12 +386,12 @@ public class RentHouseServiceImpl implements RentHouseService{
 //        List<Map<String,Object>> zufanglist = new ArrayList<>();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
 
-    public List<Map<String,Object>> getZufangList(SearchHit[] searchHists, String keys){
+    public List<Map<String,Object>> getZufangList(SearchHit[] searchHists, String keys,RentHouseQuery rentHouseQuery){
 
         List<Map<String,Object>> zufanglist = new ArrayList<>();
         for (SearchHit hit : searchHists) {
@@ -399,6 +399,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             String nearbysubwayKey = nearbysubway.get(keys);
             Map<String,Object> zufangMap = hit.getSourceAsMap();
             zufangMap.put("nearsubway",nearbysubwayKey);
+            zufangMap.put("pageNum",rentHouseQuery.getPageNum());
             zufanglist.add(zufangMap);
         }
         return zufanglist;
