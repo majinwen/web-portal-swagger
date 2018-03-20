@@ -108,7 +108,7 @@
                     <a href="${router_city('/loupan/'+build['building_name_id']?c+'/map.html')}" class="arrows-right"></a>
                 </p>
                 <p>
-                    <#if build['roundstation']?exists>
+                    <#if build['roundstation']?exists && build['roundstation']!=''>
                         <#assign rounditems = build['roundstation']?split("$")>
                         <#if rounditems[2]?number gt 1000>
                             <#assign x = rounditems[2]?number/1000>
@@ -261,7 +261,7 @@
                 <div class="info-card-item">
                     <i class="item-three-2"></i>
                     <em>地铁</em>
-                    <#if build['roundstation']?exists>
+                    <#if build['roundstation']?exists && build['roundstation']!=''>
                         <#assign rounditems = build['roundstation']?split("$")>
                         <#assign x = rounditems[2]?number/1000>
                         <p id="subwayLine">${rounditems[1]}</p>

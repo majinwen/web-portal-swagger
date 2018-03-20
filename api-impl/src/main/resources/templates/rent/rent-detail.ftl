@@ -388,6 +388,19 @@
         'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
         'location' : '${rentHouse.location}'
     });
+
+    zhuge.track('租房详情页点击量', {
+        '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
+        '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
+        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+        '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
+        '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
+        '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
+        '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
+        '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
+        'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
+        'location' : '${rentHouse.location}'
+    });
     function rent_map_1(a) {
         var link = $(a);
         zhuge.track('租房-点击配套地图', {
