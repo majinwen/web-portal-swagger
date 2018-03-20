@@ -105,10 +105,24 @@
     </section>
 </div>
 <div class="module-bottom-fill">
+    <ul class="tilelist clear">
+        <li class="card-item">
+            <span class="card-tag sale">售</span>
+            <div class="total"><span class="title">小区在售</span><p><#if reViHouse?exists && reViHouse?size gt 0><em class="font36">${reViHouse[0]['total']}</em>套<#else>暂无数据</#if></p></div>
+            <div class="price"><span class="title">本月均价</span><p><#if village['avgPrice']?exists><em class="font36 high-light-red">${village['avgPrice']}</em>元/㎡<#else>暂无数据</#if></p></div>
+        </li>
+        <li class="card-item">
+            <span class="card-tag rent">租</span>
+            <div class="total"><span class="title">小区在租</span><p><#if rent?exists><em class="font36">${rent['total']}</em>套<#else>暂无数据</#if></p></div>
+            <div class="price"><span class="title">租金范围</span><p><#if rent?exists && rent['nearHouse']?size gt 0><em class="font36 high-light-red">${rent['nearHouse'][0]['rent_house_price']}</em>元起<#else>暂无数据</#if></p></div>
+        </li>
+    </ul>
+</div>
+<#--<div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>市场行情<span class="subtitle">洞察价格走势</span></h3>
-            <#--<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>-->
+            &lt;#&ndash;<div class="markets-btn"><i class="price-trend-btn current"></i><i class="supply-contrast-btn"></i></div>&ndash;&gt;
         </div>
         <div class="basic-information price-trend">
             <div class="column item-column-three">
@@ -154,9 +168,9 @@
                 </div>
             </div>
             <div>
-            <#--<div class="module-header-message">-->
-            <#--<h3>价格走势</h3>-->
-            <#--</div>-->
+            &lt;#&ndash;<div class="module-header-message">&ndash;&gt;
+            &lt;#&ndash;<h3>价格走势</h3>&ndash;&gt;
+            &lt;#&ndash;</div>&ndash;&gt;
             <#if  (mouthList?size>0)>
                 <div class="echarts-box">
                     <div class="echarts-content" id="village-price-trade" ></div>
@@ -165,46 +179,88 @@
             </div>
         </div>
     </section>
-</div>
-<#if (reViHouse?exists) && (reViHouse?size>0)>
+</div>-->
+<#if ((reViHouse?exists) && (reViHouse?size>0)) || ((rent['nearHouse']?exists) && (rent['nearHouse']?size>0))>
 <div id="plot_nearby_esf" class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>小区好房</h3>
-            <a onclick="see_all_esfInfo(this)" href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
+            <p class="house-type" id="houseTypeTab"><#if reViHouse?exists && (reViHouse?size>0)><span>在售</span></#if><#if rent?exists && (rent['nearHouse']?size>0)><span>在租</span></#if></p>
         </div>
-        <ul class="tilelist">
-            <#list reViHouse as reitem>
-                <#if reitem_index==4>
-                    <#break >
-                </#if>
-                <#assign itemLocation=reitem['housePlotLocation']>
-                <li id="${reitem_index+1}">
-                    <a href="${router_city('/esf/'+reitem.houseId)+'.html'}">
-                        <div class="picture-box">
-                            <#if reitem['housePhotoTitle']?exists>
-                                <#assign photoitem=reitem['housePhotoTitle']>
-                                <#if photoitem?? && photoitem != ''><img src="${photoitem}" alt="">
-                                <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+        <div id="houseContentTab">
+            <#if reViHouse?exists && (reViHouse?size>0)>
+            <div id="forSale" class="none">
+                <ul><#list reViHouse as reitem>
+                    <#if reitem_index==3>
+                        <#break >
+                    </#if>
+                    <#assign itemLocation=reitem['housePlotLocation']>
+                    <li id="${reitem_index+1}"><a class="list-item" href="${router_city('/esf/'+reitem.houseId)+'.html'}">
+                        <div class="clear">
+                            <div class="list-item-img-box">
+                                <#if reitem['housePhotoTitle']?exists>
+                                    <#assign photoitem=reitem['housePhotoTitle']>
+                                    <#if photoitem?? && photoitem != ''><img src="${photoitem}" alt="">
+                                    <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                    </#if>
                                 </#if>
-                            <#--<#if reitem['buildArea']?exists><p class="bottom-text">${reitem['buildArea']}㎡</p></#if>-->
-                            </#if>
+                            </div>
+                            <div class="list-item-cont">
+                                <h3 class="cont-block-top"><span>${reitem['houseTitle']}</span></h3>
+                                <div class="address font22">${reitem['buildArea']}㎡/${reitem['room']}室${reitem['hall']}厅/${reitem['forwardName']}</div>
+                                <p class="price-block high-light-red"><#if reitem['houseTotalPrices']?exists>¥${reitem['houseTotalPrices']}<em> 万</em><#else>暂无数据</#if></p>
+                                <div class="cont-block-bottom">
+                                    <#if reitem['tagsName']?exists && (reitem['tagsName']?size gt 0)>
+                                        <div class="house-labelling ellipsis big normal">
+                                            <#if reitem['tagsName']?exists && (reitem['tagsName']?size gt 0)><#list reitem['tagsName'] as label><#if label?exists><span>${label}</span> </#if></#list></#if>
+                                        </div>
+                                    </#if>
+
+                                </div>
+                            </div>
                         </div>
-                        <div class="tilelist-content">
-                            <p class="cont-first text-center">
-                                <em>
-                                    <#if reitem['houseTotalPrices']?exists&&reitem['houseTotalPrices']?number gt 0>${reitem.houseTotalPrices+'万'}</#if>
-                                <#--<#if reitem['forwardName']?exists>${reitem.forwardName}</#if>-->
-                                    <#if reitem['buildArea']?exists><#--<p class="bottom-text">-->${reitem['buildArea']}㎡<#--</p>--></#if>
-                                    <#if reitem['room']?exists&&reitem['room']?number gt 0>${reitem.room+'室'}</#if>
-                                    <#if reitem['hall']?exists&&reitem['hall']?number gt 0>${reitem.hall+'厅'}</#if>
-                                </em>
-                            </p>
+                    </a></li>
+                </#list></ul>
+                <div class="all-house-link-box"><a href="${router_city('/esf?newcode='+village['id'])}" class="all-house-link">小区在售${reViHouse[0]['total']}套</a></div>
+            </div>
+            </#if>
+            <#if rent?exists && (rent['nearHouse']?size>0)>
+            <div id="inRent" class="none">
+                <ul><#list rent['nearHouse'] as rentitem>
+                    <#if rentitem_index==3>
+                        <#break >
+                    </#if>
+                    <li id="${rentitem_index+1}"><a class="list-item" href="${router_city('/zufang/'+rentitem.house_id)+'.html'}">
+                        <div class="clear">
+                            <div class="list-item-img-box">
+                                <#if rentitem['house_title_img']?exists && rentitem['house_title_img']!=''>
+                                    <#if rentitem['house_title_img']?index_of("http") gt -1 || rentitem['house_title_img']?index_of("https") gt -1>
+                                        <img src="${rentitem['house_title_img']}" alt="${rentitem['zufang_name']}">
+                                    <#else>
+                                        <img src="${qiniuzufangimage}/${rentitem['house_title_img']}" alt="${rentitem['zufang_name']}">
+                                    </#if>
+                                <#else >
+                                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                </#if>
+                            </div>
+                            <div class="list-item-cont">
+                                <h3 class="cont-block-top"><span>${rentitem['room']}室${rentitem['hall']}厅 ${rentitem['house_area']}㎡ ${rentitem['forward']}</span></h3>
+                                <p class="price-block high-light-red"><#if rentitem['rent_house_price']?exists>¥${rentitem['rent_house_price']}<em> 元/月</em><#else>暂无数据</#if></p>
+                                <div class="cont-block-bottom">
+                                    <#if rentitem['rent_type_name']?exists || rentitem['rent_sign_name']?exists || (rentitem['rent_house_tags_name']?exists && (rentitem['rent_house_tags_name']?size gt 0))>
+                                        <div class="house-labelling ellipsis big normal">
+                                            <#if rentitem['rent_type_name']?exists><span class="company">${rentitem['rent_type_name']}</span> </#if><#if rentitem['rent_sign_name']?exists><span class="company">${rentitem['rent_sign_name']}</span> </#if><#if rentitem['rent_house_tags_name']?exists && (rentitem['rent_house_tags_name']?size gt 0)><#list rentitem['rent_house_tags_name'] as label><#if label?exists><span>${label}</span> </#if></#list></#if>
+                                        </div>
+                                    </#if>
+                                </div>
+                            </div>
                         </div>
-                    </a>
-                </li>
-            </#list>
-        </ul>
+                    </a></li>
+                </#list></ul>
+                <div class="all-house-link-box"><a href="${router_city('/zufang?vid='+village['id'])}" class="all-house-link">小区在租${rent['total']}套</a></div>
+            </div>
+            </#if>
+        </div>
     </section>
 </div>
 </#if>
@@ -529,12 +585,22 @@
         </a>
     </section>
 </div>
-<#if reViHouse?exists&&reViHouse?size gt 0>
+<#if reViHouse?exists && reViHouse?size gt 0>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
             <h3>待售房源</h3>
-            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows">查看全部<i class="arrows-right"></i></a>
+            <a href="${router_city('/esf?newcode='+village['id'])}" class="more-arrows"><i class="arrows-right"></i></a>
+        </div>
+    </section>
+</div>
+</#if>
+<#if rent?exists && rent['nearHouse']?size gt 0>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>待租房源</h3>
+            <a href="${router_city('/zufang?newcode='+village['id'])}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
@@ -615,7 +681,7 @@
 <script type="text/javascript" src="${staticurl}/js/base-map.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
 <script>
-    var chartGrid = {
+    /*var chartGrid = {
         left: '2%',
         right: '6%',
         bottom: 0,
@@ -694,7 +760,26 @@
             plot_first_name: plot_first_name+":"+first_result,
             plot_second_name: plot_second_name+":"+second_result
         });
+    });*/
+    
+    $(function () {
+        $('#houseTypeTab').find('span:first-child').addClass('current');
+        if ($('#houseTypeTab span.current').text() == '在售') {
+            $('#forSale').removeClass('none');
+        } else if ($('#houseTypeTab span.current').text() == '在租') {
+            $('#inRent').removeClass('none');
+        }
     });
+    $('#houseTypeTab').on('click','span', function () {
+        $(this).addClass('current').siblings().removeClass('current');
+        if ($(this).text() == '在售') {
+            $('#forSale').removeClass('none');
+            $('#inRent').addClass('none');
+        } else if ($(this).text() == '在租') {
+            $('#inRent').removeClass('none');
+            $('#forSale').addClass('none');
+        }
+    })
 </script>
 <script>
     $(function () {
@@ -750,7 +835,7 @@
         return false;
     })
 
-    function see_all_esfInfo(esf) {
+    /*function see_all_esfInfo(esf) {
         var link = $(esf);
         console.log(link.val("href"))
         zhuge.track('小区-点击查看全部二手房', {
@@ -759,7 +844,7 @@
             location.href = link.attr('href');
         });
         return false
-    }
+    }*/
     function plot_basic_info(plot) {
         var link = $(plot);
         console.log(link.val("href"))

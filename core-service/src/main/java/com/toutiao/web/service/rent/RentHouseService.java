@@ -28,4 +28,5 @@ public interface RentHouseService {
     Map<String,Object> getRentHouseList(RentHouseQuery rentHouseQuery);
 
 
+
 }

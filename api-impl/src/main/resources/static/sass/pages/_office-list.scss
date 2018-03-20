@@ -109,8 +109,9 @@ $textGrayColor: #888;
 
         .cont-block-bottom {
             position: absolute;
+            width: rem(430);
             bottom: 0;
-            line-height: rem(26);
+            line-height: rem(25);
             @include text-ellipses;
             @include font-dpr(30);
 

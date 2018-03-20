@@ -165,15 +165,23 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //上级公寓ID
-            if(rentHouseQuery.getRentSign()==0){
+            if(rentHouseQuery.getRentSign() > -1){
+                if(rentHouseQuery.getRentSign()==0){
+                    if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
+                        boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
+                    }
+                }else{
+                    if (StringUtils.isNotBlank(rentHouseQuery.getZuFangName())){
+                        boolQueryBuilder.must(QueryBuilders.termQuery("zufang_name",rentHouseQuery.getZuFangName()));
+                    }
+                }
+            }else{
                 if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
                     boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
                 }
-            }else{
-                if (StringUtils.isNotBlank(rentHouseQuery.getZuFangName())){
-                    boolQueryBuilder.must(QueryBuilders.termQuery("zufang_name",rentHouseQuery.getZuFangName()));
-                }
             }
+
+
             //按价格由低到高排序
             srb.addSort("rent_house_price",SortOrder.ASC);
             //是否删除
@@ -217,6 +225,8 @@ public class RentHouseServiceImpl implements RentHouseService{
         return null;
     }
 
+
+
     /**
      * 根据房源的id查询该房源所有的经纪人(每10min改变一次agent)
      * @param houseId
@@ -233,7 +243,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 long time = new Date().getTime();
-                long index = (time / 60000) % hits.length;
+                long index = (time / 600000) % hits.length;
                 Map result = hits[(int) index].getSource();
                 return result;
             }
@@ -316,6 +326,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     }
 
 
+
     /**
      * 整合置顶和普通房源集合方法 1
      * size == 10
@@ -328,7 +339,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -351,7 +362,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -375,12 +386,12 @@ public class RentHouseServiceImpl implements RentHouseService{
 //        List<Map<String,Object>> zufanglist = new ArrayList<>();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
 
-    public List<Map<String,Object>> getZufangList(SearchHit[] searchHists, String keys){
+    public List<Map<String,Object>> getZufangList(SearchHit[] searchHists, String keys,RentHouseQuery rentHouseQuery){
 
         List<Map<String,Object>> zufanglist = new ArrayList<>();
         for (SearchHit hit : searchHists) {
@@ -388,6 +399,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             String nearbysubwayKey = nearbysubway.get(keys);
             Map<String,Object> zufangMap = hit.getSourceAsMap();
             zufangMap.put("nearsubway",nearbysubwayKey);
+            zufangMap.put("pageNum",rentHouseQuery.getPageNum());
             zufanglist.add(zufangMap);
         }
         return zufanglist;
@@ -766,6 +778,9 @@ public class RentHouseServiceImpl implements RentHouseService{
         if (Integer.valueOf(rentHouseQuery.getRentSign())>0){
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             booleanQueryBuilder.must(queryBuilder.should(QueryBuilders.termQuery("rent_sign",1)).should(QueryBuilders.termQuery("rent_sign",2)));
+        }
+        if(StringTool.isNotEmpty(rentHouseQuery.getVid())){
+            booleanQueryBuilder.must(termsQuery("zufang_id", rentHouseQuery.getVid()));
         }
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
