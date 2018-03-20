@@ -2,7 +2,6 @@ package com.toutiao.web.service.rent;
 
 import com.toutiao.web.domain.query.RentHouseQuery;
 
-import java.util.List;
 import java.util.Map;
 
 /**
