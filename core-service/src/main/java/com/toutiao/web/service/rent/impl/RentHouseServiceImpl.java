@@ -233,7 +233,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 long time = new Date().getTime();
-                long index = (time / 60000) % hits.length;
+                long index = (time / 600000) % hits.length;
                 Map result = hits[(int) index].getSource();
                 return result;
             }
