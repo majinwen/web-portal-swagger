@@ -1655,6 +1655,37 @@ function pullDownAction() {
                                             }
                                         }
                                     }
+
+                                    if (_localHref.indexOf('zufang') > 0) {
+                                        //组织地铁描述信息
+                                        if (dataCon[i]['nearsubway']) {
+                                            var _subwayArray = dataCon[i]['nearsubway'].split('$');
+                                            if (_subwayArray.length > 2) {
+                                                var _subwayDesc;
+
+                                                var _distance = parseInt(_subwayArray[2]);
+                                                if (_distance > 1000) {
+                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + parseFloat(_tempDistance) + "km";
+                                                } else {
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + _distance + "m";
+                                                }
+                                                dataCon[i]['subwayDesc'] = _subwayDesc;
+                                            }
+                                        }
+
+                                        if (dataCon[i]['house_title_img']) {
+                                            var _house_title_img;
+                                            if (dataCon[i]['house_title_img'].indexOf('http:') > -1 || dataCon[i]['house_title_img'].indexOf('https:') > -1) {
+                                                _house_title_img = dataCon[i]['house_title_img'];
+                                            }else{
+                                                _house_title_img = 'http://ozptwu1ea.bkt.clouddn.com/' + dataCon[i]['house_title_img'];
+                                            }
+                                            dataCon[i]['house_title_img'] = _house_title_img;
+                                        }
+                                    }
                                 }
                             }
 

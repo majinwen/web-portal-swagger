@@ -368,12 +368,12 @@ public class PlotServiceImpl implements PlotService {
                     }
 
                     PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                    if (plotRatio!=null){
+                    if(plotRatio!=null){
                         instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
                         instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
-                        instance.setTotal(response.getHits().totalHits);
-                        instance.setPageNum(villageRequest.getPageNum());
                     }
+                    instance.setTotal(response.getHits().totalHits);
+                    instance.setPageNum(villageRequest.getPageNum());
                     houseList.add(instance);
                 }
             }
