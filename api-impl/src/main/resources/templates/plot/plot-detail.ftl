@@ -114,7 +114,7 @@
         <li class="card-item">
             <span class="card-tag rent">租</span>
             <div class="total"><span class="title">小区在租</span><p><#if rent?exists><em class="font36">${rent['total']}</em>套<#else>暂无数据</#if></p></div>
-            <div class="price"><span class="title">租金范围</span><p><#if rent['nearHouse']?exists && rent['nearHouse']?size gt 0><em class="font36 high-light-red">${rent['nearHouse'][0]['rent_house_price']}</em>元起<#else>暂无数据</#if></p></div>
+            <div class="price"><span class="title">租金范围</span><p><#if rent?exists && rent['nearHouse']?size gt 0><em class="font36 high-light-red">${rent['nearHouse'][0]['rent_house_price']}</em>元起<#else>暂无数据</#if></p></div>
         </li>
     </ul>
 </div>
@@ -185,7 +185,7 @@
     <section>
         <div class="module-header-message">
             <h3>小区好房</h3>
-            <p class="house-type" id="houseTypeTab"><#if reViHouse?exists && (reViHouse?size>0)><span>在售</span></#if><#if rent['nearHouse']?exists && (rent['nearHouse']?size>0)><span>在租</span></#if></p>
+            <p class="house-type" id="houseTypeTab"><#if reViHouse?exists && (reViHouse?size>0)><span>在售</span></#if><#if rent?exists && (rent['nearHouse']?size>0)><span>在租</span></#if></p>
         </div>
         <div id="houseContentTab">
             <#if reViHouse?exists && (reViHouse?size>0)>
@@ -224,7 +224,7 @@
                 <div class="all-house-link-box"><a href="${router_city('/esf?newcode='+village['id'])}" class="all-house-link">小区在售${reViHouse[0]['total']}套</a></div>
             </div>
             </#if>
-            <#if rent['nearHouse']?exists && (rent['nearHouse']?size>0)>
+            <#if rent?exists && (rent['nearHouse']?size>0)>
             <div id="inRent" class="none">
                 <ul><#list rent['nearHouse'] as rentitem>
                     <#if rentitem_index==3>
@@ -257,7 +257,7 @@
                         </div>
                     </a></li>
                 </#list></ul>
-                <div class="all-house-link-box"><a href="${router_city('/zufang?newcode='+village['id'])}" class="all-house-link">小区在租${rent['total']}套</a></div>
+                <div class="all-house-link-box"><a href="${router_city('/zufang?vid='+village['id'])}" class="all-house-link">小区在租${rent['total']}套</a></div>
             </div>
             </#if>
         </div>
@@ -595,7 +595,7 @@
     </section>
 </div>
 </#if>
-<#if rent['nearHouse']?exists && rent['nearHouse']?size gt 0>
+<#if rent?exists && rent['nearHouse']?size gt 0>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">

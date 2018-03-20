@@ -14,6 +14,12 @@ public class RentHouseQuery {
      * 房源上级Id
      */
     private String zuFangId;
+
+    /**
+     * 小区楼盘id
+     */
+    private String vid;
+
     /**
      * 房源上级名称
      */

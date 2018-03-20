@@ -165,15 +165,23 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //上级公寓ID
-            if(rentHouseQuery.getRentSign()==0){
+            if(rentHouseQuery.getRentSign() > -1){
+                if(rentHouseQuery.getRentSign()==0){
+                    if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
+                        boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
+                    }
+                }else{
+                    if (StringUtils.isNotBlank(rentHouseQuery.getZuFangName())){
+                        boolQueryBuilder.must(QueryBuilders.termQuery("zufang_name",rentHouseQuery.getZuFangName()));
+                    }
+                }
+            }else{
                 if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
                     boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
                 }
-            }else{
-                if (StringUtils.isNotBlank(rentHouseQuery.getZuFangName())){
-                    boolQueryBuilder.must(QueryBuilders.termQuery("zufang_name",rentHouseQuery.getZuFangName()));
-                }
             }
+
+
             //按价格由低到高排序
             srb.addSort("rent_house_price",SortOrder.ASC);
             //是否删除
@@ -216,6 +224,8 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         return null;
     }
+
+
 
     /**
      * 根据房源的id查询该房源所有的经纪人(每10min改变一次agent)
@@ -314,6 +324,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         result.put("dataCount",zufangMap.get("dataCount"));
         return result;
     }
+
 
 
     /**
@@ -766,6 +777,9 @@ public class RentHouseServiceImpl implements RentHouseService{
         if (Integer.valueOf(rentHouseQuery.getRentSign())>0){
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             booleanQueryBuilder.must(queryBuilder.should(QueryBuilders.termQuery("rent_sign",1)).should(QueryBuilders.termQuery("rent_sign",2)));
+        }
+        if(StringTool.isNotEmpty(rentHouseQuery.getVid())){
+            booleanQueryBuilder.must(termsQuery("zufang_id", rentHouseQuery.getVid()));
         }
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
