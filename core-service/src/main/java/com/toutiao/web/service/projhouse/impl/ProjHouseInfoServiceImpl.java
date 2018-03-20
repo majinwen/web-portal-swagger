@@ -84,7 +84,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             sort.unit(DistanceUnit.KILOMETERS);
             sort.geoDistance(GeoDistance.ARC);
             srb.addSort(scrip).addSort(sort);
-            SearchResponse searchResponse = srb.setSize(6).execute().actionGet();
+            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 
@@ -101,9 +101,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setHousetToPlotDistance(distance1);
                 BeanUtils.populate(instance, buildings);
                 buildinglist.add(instance);
-                if (instance.getHouseId().equals(instance.getHouseId())) {
-                    buildinglist.remove(instance);
-                }
+//                if (instance.getHouseId().equals(instance.getHouseId())) {
+//                    buildinglist.remove(instance);
+//                }
 
             }
             if(buildinglist!=null&&buildinglist.size()>0){
