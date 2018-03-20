@@ -157,7 +157,6 @@ $(function(){
     function mapSearch(text,dtd) {
         Map.search(text,dtd).done(function () {
             mapresults = Map.results;
-            console.log(mapresults);
             if ($('#typeNavSel li.currenttype').text() == '地铁站') {
                 for(var i = 0; i < mapresults.length; i++){
                     $('#resultsPanel').append('<li><i>' + (i+1) + '</i><p><span class="content">' + mapresults[i].title + '</span><em class="line">(' + mapresults[i].content + ')</em></p><em class="distance">---- ' + mapresults[i].distance + '</em></li>');

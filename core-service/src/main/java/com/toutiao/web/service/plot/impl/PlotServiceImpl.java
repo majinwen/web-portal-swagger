@@ -2,6 +2,7 @@ package com.toutiao.web.service.plot.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.common.assertUtils.Query;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -70,17 +71,15 @@ public class PlotServiceImpl implements PlotService {
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             //从该坐标查询距离为distance
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
-            srb.setPostFilter(location1).setSize(5);
+            srb.setPostFilter(location1).setSize(6);
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
             sort.unit(DistanceUnit.METERS);
             sort.order(SortOrder.ASC);
-            sort.point(lat, lon);
             srb.addSort(sort);
-            BoolQueryBuilder queryBuilder = null;
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-            SearchResponse searchResponse = srb.setQuery(queryBuilder).execute().actionGet();
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
@@ -94,7 +93,7 @@ public class PlotServiceImpl implements PlotService {
                 String location = lat + "," + lon;
                 if (instance.getLocation() != null) {
                     String[] split = instance.getLocation().split(",");
-                    if (Double.valueOf(split[0]) != lat & Double.valueOf(split[1]) != lon) {
+                    if (Double.valueOf(split[0]) != lat && Double.valueOf(split[1]) != lon) {
                         houseList.add(instance);
                     }
                 }
@@ -369,8 +368,10 @@ public class PlotServiceImpl implements PlotService {
                     }
 
                     PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                    instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
-                    instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                    if(plotRatio!=null){
+                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                    }
                     instance.setTotal(response.getHits().totalHits);
                     instance.setPageNum(villageRequest.getPageNum());
                     houseList.add(instance);
@@ -652,5 +653,24 @@ public class PlotServiceImpl implements PlotService {
 //        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
 //        return bulkResponse.hasFailures();
         client.index(indexRequest).actionGet();
+    }
+
+    @Override
+    public Map queryPlotByRentId(String rentPlotId) {
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("id",rentPlotId));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"photo","rc","tradingArea","tradingAreaId","area","areaId","abbreviatedAge","sumBuilding"}, null).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length==1){
+                Map source = hits[0].getSource();
+                return source;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

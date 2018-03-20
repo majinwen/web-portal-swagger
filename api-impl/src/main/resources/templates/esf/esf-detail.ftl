@@ -18,20 +18,40 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>
-            <#list houseDetail['housePhoto'] as itemValue>
-                <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                    <img src="${itemValue}" data-src="${itemValue}" alt="">
+        <#if agent?exists>
+            <#if agent['house_img']?exists&&agent['house_img']?size gt 0>
+                <#list agent['house_img'] as photo>
+                    <li onclick="initphoto(this,${photo_index})" class="swiper-slide">
+                        <img src="${photo['image_path']}" data-src="${photo['image_path']}" alt="">
+                    </li>
+                </#list>
+            <#else>
+                <li onclick="initphoto(this,0)" class="swiper-slide">
+                    <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
                 </li>
-            </#list>
+            </#if>
         <#else >
-            <li onclick="initphoto(this,0)" class="swiper-slide">
-                <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
-            </li>
+            <#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>
+                <#list houseDetail['housePhoto'] as itemValue>
+                    <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
+                        <img src="${itemValue}" data-src="${itemValue}" alt="">
+                    </li>
+                </#list>
+            <#else>
+                <li onclick="initphoto(this,0)" class="swiper-slide">
+                    <img src="${staticurl}/images/global/tpzw_banner_image.png" data-src="${staticurl}/images/global/tpzw_banner_image.png" alt="拍摄中">
+                </li>
+            </#if>
         </#if>
         </ul>
         <div class="banner-title">
-            <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
+            <#if agent?exists>
+                <#if agent.houseId?exists&&agent.houseId!=''>
+                    <div class="banner-house-number">房源编号：${agent.houseId}</div>
+                </#if>
+            <#else >
+                <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
+            </#if>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
     </div>
@@ -71,14 +91,28 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
-            <div class="primary-header-tag house-labelling gray">
-            <#assign item =houseDetail['tagsName']>
-            <#list item as itemValue>
-                <#if itemValue?exists>
-                    <span>${itemValue}</span>
+            <#if agent?exists>
+                <#if agent.house_title?exists&&agent.house_title!=''>
+                    <h2>${agent.house_title}</h2>
                 </#if>
-            </#list>
+            <#else >
+                <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
+            </#if>
+            <div class="primary-header-tag house-labelling gray">
+            <#if agent?exists>
+                <#if agent['house_tags_name']?exists&&agent['house_tags_name']?size gt 0>
+                    <#list agent['house_tags_name'] as itemValue>
+                            <span>${itemValue}</span>
+                    </#list>
+                </#if>
+            <#else >
+                <#assign item =houseDetail['tagsName']>
+                <#list item as itemValue>
+                    <#if itemValue?exists>
+                        <span>${itemValue}</span>
+                    </#if>
+                </#list>
+            </#if>
             </div>
         </div>
         <ul class="primary-item">
@@ -201,7 +235,36 @@
         </ul>
     </section>
 </div>
-<#if houseDetail.houseProxyPhone?exists||houseDetail.houseProxyPhoto?exists||houseDetail.ofCompany?exists||houseDetail.houseDesc?exists>
+<#if agent?exists>
+<div class="module-bottom-fill">
+    <section>
+        <div class="module-header-message">
+            <h3>房源描述</h3>
+        </div>
+        <div class="describe-box">
+            <div class="describe-header">
+                <img class="source-icon" <#if agent['agent_headphoto']?exists>src="${agent['agent_headphoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <p>
+                    <span>
+                        <#if agent['of_company']?exists&&agent['of_company']!=''>【${agent['of_company']}】</#if>
+                        <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
+                    <em>房屋信息发布人</em>
+                </p>
+                <#if agent['agent_phone']?exists&&agent['agent_phone']!=''>
+                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon"></a>
+                </#if>
+            </div>
+            <#if agent['house_desc']?exists&&agent['house_desc']!=''>
+                <div class="describe-cont">
+                    <p>${agent['house_desc']}</p>
+                <#--<span class="describe-show-btn">>>展开</span>-->
+                </div>
+            </#if>
+
+        </div>
+    </section>
+</div>
+<#elseif houseDetail.houseProxyPhone?exists||houseDetail.houseProxyPhoto?exists||houseDetail.ofCompany?exists||houseDetail.houseDesc?exists>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -284,8 +347,7 @@
         <a onclick="esf_map_2(this)" href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if houseDetail.lat?exists&&houseDetail.lon?exists>
-                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16"
-                     alt="">
+                <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=${houseDetail.lat?if_exists?string("####.#######################")},${houseDetail.lon?if_exists?string("####.#######################")}&&zoom=16" alt="">
             <#else >
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>

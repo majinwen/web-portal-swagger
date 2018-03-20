@@ -4,3 +4,138 @@
 @import "../pages/detail-primary";
 @import "../pages/tilelist-piece";
 @import "../base/detail-contact";
+@import "../pages/office-list";
+
+.list-item-cont {
+    .price-block {
+        margin-top: rem(15);
+        line-height: rem(28);
+        @include font-dpr(30);
+
+        em {
+            @include font-dpr(22);
+        }
+    }
+}
+
+#inRent {
+    .list-item-cont {
+        .price-block {
+            position: absolute;
+            top: 31%;
+        }
+    }
+}
+
+.font22 {
+    @include font-dpr(22);
+}
+
+.house-type {
+    position: absolute;
+    top: 0;
+    right: rem(30);
+    @include font-dpr(24);
+
+    span {
+        margin-left: rem(30);
+        color: #999;
+
+        &.current {
+            color: $baseBlack;
+            border-bottom: rem(1) solid $baseBlack;
+        }
+    }
+}
+.all-house-link-box {
+    padding-bottom: rem(50);
+    margin-left: rem(30);
+    margin-right: rem(30);
+
+    .all-house-link {
+        display: block;
+        height: rem(60);
+        line-height: rem(60);
+        text-align: center;
+        color: #777;
+        border: rem(1) solid $baseBorderColor;
+        @include box-sizing;
+        -webkit-border-radius: rem(2);
+        border-radius: rem(2);
+    }
+}
+
+.tilelist {
+    padding-top: rem(24);
+    padding-bottom: rem(24);
+
+    li.card-item {
+        position: relative;
+        display: inline-block;
+        width: rem(427);
+        height: rem(138);
+        margin-right: rem(25);
+        padding: rem(30) rem(36) rem(30) rem(22);
+        background-color: #fff;
+        border: rem(1) solid #e7e7e7;
+        -webkit-border-radius: rem(5);
+        border-radius: rem(5);
+        -webkit-box-shadow: rem(1) rem(1) rem(24) 0 rgba(55, 55, 55, 0.2);
+        box-shadow: rem(1) rem(1) rem(24) 0 rgba(55, 55, 55, 0.2);
+        @include box-sizing;
+
+        div {
+            position: relative;
+            float: left;
+            height: 100%;
+            padding-left: rem(36);
+            @include box-sizing;
+            @include text-ellipses;
+
+            .title {
+                color: #777;
+                @include font-dpr(22);
+            }
+
+            &.total {
+                width: rem(161);
+            }
+
+            &.price {
+                width: rem(205);
+                border-left: rem(1) solid #e1e1e1;
+            }
+            .font36 {
+                line-height: rem(24);
+                @include font-dpr(36);
+            }
+
+            p {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            }
+        }
+
+        .card-tag {
+            position: absolute;
+            left: 0;
+            top: rem(20);
+            padding-left: rem(8);
+            padding-right: rem(14);
+            height: rem(36);
+            line-height: rem(36);
+            color: #fff;
+            @include font-dpr(20);
+            -webkit-border-radius: 0 rem(18) rem(18) 0;
+            border-radius: 0 rem(18) rem(18) 0;
+
+            &.sale {
+                background-color: #a69f78;
+            }
+            &.rent {
+                background-color: #799bc9;
+            }
+        }
+    }
+}

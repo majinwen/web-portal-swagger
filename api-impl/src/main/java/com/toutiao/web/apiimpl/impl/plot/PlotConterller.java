@@ -7,15 +7,13 @@ import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
-import com.toutiao.web.domain.query.NewHouseQuery;
-import com.toutiao.web.domain.query.ProjHouseInfoQuery;
-import com.toutiao.web.domain.query.VillageRequest;
-import com.toutiao.web.domain.query.VillageResponse;
+import com.toutiao.web.domain.query.*;
 import com.toutiao.web.service.PriceTrendService;
 import com.toutiao.web.service.map.MapService;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
+import com.toutiao.web.service.rent.RentHouseService;
 import org.apache.commons.lang3.StringUtils;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +42,20 @@ public class PlotConterller {
     private PriceTrendService priceTrendService;
     @Autowired
     private MapService mapService;
+    @Autowired
+    private RentHouseService rentHouseService;
 
-//    //(查询附近小区和(距离))
-//    @RequestMapping("/fingNearVillageAndDistance")
-//    @ResponseBody
-//    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
-//        List villageList = null;
-//        Double lonx = Double.valueOf(lon);
-//        Double laty = Double.valueOf(lat);
-//        villageList = plotService.GetNearByhHouseAndDistance(lonx, laty);
-//        model.addAttribute("villageList", villageList);
-//        return "plot-list";
-//    }
+    //(查询附近小区和(距离))
+    @RequestMapping("/fingNearVillageAndDistance")
+    @ResponseBody
+    public String GetNearByhHouseAndDistance(String lon, String lat, Model model) {
+        List villageList = null;
+        Double lonx = Double.valueOf(lon);
+        Double laty = Double.valueOf(lat);
+        villageList = plotService.GetNearByhHouseAndDistance(laty, lonx);
+        model.addAttribute("villageList", villageList);
+        return "plot-list";
+    }
 
     //根据条件查询小区
     @RequestMapping("")
@@ -122,18 +122,37 @@ public class PlotConterller {
             Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
             model.addAttribute("tradeline", stringListMap);
 
-            //推荐小区好房
+            //推荐小区二手房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
             projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
             List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
             model.addAttribute("reViHouse", reViHouse);
 
-            newHouseQuery.setSort(0);
-            newHouseQuery.setPageNum(1);
-            newHouseQuery.setPageSize(4);
-            Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
-            List<Object> newbuildrecomed = (List<Object>) builds.get("data");
-            model.addAttribute("newbuilds", newbuildrecomed);
+            //推荐小区(普租+公寓)
+            RentHouseQuery rentHouseQuery = new RentHouseQuery();
+            rentHouseQuery.setZuFangId(String.valueOf(villageRequest.getId()));
+//            rentHouseQuery.setRentSign(0);
+            Map rent = rentHouseService.queryHouseByparentId(rentHouseQuery);
+            if (rent!=null){
+                model.addAttribute("rent",rent);
+            }
+
+            //推荐小区公寓
+//            RentHouseQuery rentApartmentQuery = new RentHouseQuery();
+//            rentApartmentQuery.setZuFangId(String.valueOf(villageRequest.getId()));
+//            rentApartmentQuery.setRentSign(1);
+//            Map apartment = rentHouseService.queryHouseByparentId(rentApartmentQuery);
+//            if (apartment!=null){
+//                model.addAttribute("apartment",apartment);
+//            }
+
+            //推荐新房
+//            newHouseQuery.setSort(0);
+//            newHouseQuery.setPageNum(1);
+//            newHouseQuery.setPageSize(4);
+//            Map<String, Object> builds = newHouseService.getNewHouse(newHouseQuery);
+//            List<Object> newbuildrecomed = (List<Object>) builds.get("data");
+//            model.addAttribute("newbuilds", newbuildrecomed);
             //查询地图信息
             MapInfo mapInfo = mapService.getMapInfo(villageRequest.getId());
             JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
@@ -203,6 +222,7 @@ public class PlotConterller {
                 //跳转登录页面
                 return NashResult.Fail("no-login","");
             }else {
+                //TODO
                 //保存用户电话(标志)和小区信息
 
             }

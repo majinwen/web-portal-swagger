@@ -34,11 +34,14 @@
         <div class="house-type-tag">
             <#--<p>均价：<#if datail['reference_total_price']?exists><em class="high-light-red">${datail['reference_total_price']}万</em>/套<#else>暂无</#if></p>-->
             <div class="house-labelling normal">
-                <#if datail['layout_tag']?exists>
-                <#list datail['layout_tag'] as tag>
-                   <span><#if tag?exists>${tag}</#if></span>
-                </#list>
-              </#if>
+                <#if datail['layout_tag']??>
+                    <#assign layouttagitem = datail['layout_tag']?split(',')>
+                    <#list layouttagitem as tagatem>
+                        <#if tagatem?exists>
+                            <span>${tagatem}</span>
+                        </#if>
+                    </#list>
+                </#if>
             </div>
         </div>
 

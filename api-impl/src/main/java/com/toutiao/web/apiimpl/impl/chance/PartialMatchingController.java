@@ -64,4 +64,16 @@ public class PartialMatchingController {
         }
         return searchMap;
     }
+    @RequestMapping("/zufang/search")
+    @ResponseBody
+
+    public Map rentPartialMatching(String keyword,String property){
+        Map searchMap = new HashMap();
+        try {
+            searchMap = partialMatchingService.search(keyword,property);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return searchMap;
+    }
 }

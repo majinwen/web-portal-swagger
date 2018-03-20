@@ -2,14 +2,17 @@ package com.toutiao.web.apiimpl.impl.projhouse;
 
 
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.RegexUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.domain.query.ProjHouseInfoQuery;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import com.toutiao.web.domain.query.VillageRequest;
+import com.toutiao.web.domain.query.VillageResponse;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +68,8 @@ public class ProjHouseInfoController {
             List village = plotService.findVillageByConditions(villageRequest);
             model.addAttribute("village",village.get(0));
             //附近好房
-            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(data_house.getNewcode().toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()));
+            String distance = "1.6";
+            List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation(data_house.getNewcode().toString(), Double.valueOf(data_house.getLon()), Double.valueOf(data_house.getLat()),distance);
             if (StringTool.isNotEmpty(houseInfo)) {
                 model.addAttribute("plot", houseInfo);
             }
@@ -72,12 +78,24 @@ public class ProjHouseInfoController {
             if (StringTool.isNotEmpty(plotList)) {
                 model.addAttribute("plotList", plotList);
             }
+
+            //房源经纪人
+            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
+            if (agent!=null){
+                model.addAttribute("agent",agent);
+            }
         } else {
             //跳转到404页
             return "404";
         }
 
         return "esf/esf-detail";
+    }
+
+    @RequestMapping("test")
+    public String aaa(){
+        List houseInfo = projHouseInfoService.queryProjHouseByhouseIdandLocation("1111", 39.8685073852539,116.508819580078,"3");
+        return null;
     }
 
     /**
@@ -183,5 +201,32 @@ public class ProjHouseInfoController {
         return "esf/esf-list";
     }*/
 
+    /**
+     *
+     * @Description：二手房收藏
+     *
+     * @Param
+     * @Return
+     * @Author zengqingzhou
+     * @Date 2018/3/3 12:11
+     */
+    @RequestMapping("/collectEsf")
+    @ResponseBody
+    public NashResult collectPlot(HttpServletRequest request, HttpServletResponse response, Model model,
+                                  @RequestParam("houseId") String houseId){
+        if(StringUtils.isNotBlank(houseId)){
+            String userPhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+            //是否登录
+            if (StringUtils.isBlank(userPhone)){
+                //跳转登录页面
+                return NashResult.Fail("no-login","");
+            }else {
+                //TODO
+                //保存用户电话(标志)和小区信息
+
+            }
+        }
+        return  null;
+    }
 
 }

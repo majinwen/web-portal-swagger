@@ -231,6 +231,14 @@ $borderRadiusColor: #999;
                             }
                         }
                     }
+
+                    &.rent-sign {
+                        padding: rem(60) rem(30);
+
+                        dt {
+                            margin-bottom: rem(40);
+                        }
+                    }
                 }
             }
 

@@ -123,4 +123,9 @@ public class ProjHouseInfoQuery {
      * 二手房id
      */
     private Integer id;
+    /**
+     * 附近1,3,5km
+     *
+     */
+    private String near ;
 }
