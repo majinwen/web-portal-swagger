@@ -2500,8 +2500,6 @@ a.pswp__share--download:hover {
     -webkit-box-shadow: 0.0133333333rem 0.0133333333rem 0.32rem 0 rgba(55, 55, 55, 0.2);
     box-shadow: 0.0133333333rem 0.0133333333rem 0.32rem 0 rgba(55, 55, 55, 0.2);
     box-sizing: border-box; }
-    .tilelist li.card-item:last-child {
-      margin-right: 0; }
     .tilelist li.card-item div {
       position: relative;
       float: left;

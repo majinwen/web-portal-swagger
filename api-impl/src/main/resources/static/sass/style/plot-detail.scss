@@ -84,10 +84,6 @@
         box-shadow: rem(1) rem(1) rem(24) 0 rgba(55, 55, 55, 0.2);
         @include box-sizing;
 
-        &:last-child {
-            margin-right: 0;
-        }
-
         div {
             position: relative;
             float: left;
