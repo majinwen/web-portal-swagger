@@ -131,7 +131,7 @@ public class PlotConterller {
             //推荐小区普租
             RentHouseQuery rentHouseQuery = new RentHouseQuery();
             rentHouseQuery.setZuFangId(String.valueOf(villageRequest.getId()));
-            rentHouseQuery.setRentSign(1);
+//            rentHouseQuery.setRentSign(1);
             Map rent = rentHouseService.queryHouseByparentId(rentHouseQuery);
             if (rent!=null){
                 model.addAttribute("rent",rent);

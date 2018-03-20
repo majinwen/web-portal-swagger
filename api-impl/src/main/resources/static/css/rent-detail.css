@@ -2228,8 +2228,9 @@ a.pswp__share--download:hover {
       margin-top: 0.24rem; }
     .list-item .list-item-cont .cont-block-bottom {
       position: absolute;
+      width: 5.7333333333rem;
       bottom: 0;
-      line-height: 0.3466666667rem;
+      line-height: 0.3333333333rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis; }
