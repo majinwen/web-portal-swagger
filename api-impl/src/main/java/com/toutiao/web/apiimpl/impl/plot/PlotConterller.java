@@ -128,23 +128,23 @@ public class PlotConterller {
             List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
             model.addAttribute("reViHouse", reViHouse);
 
-            //推荐小区普租
+            //推荐小区(普租+公寓)
             RentHouseQuery rentHouseQuery = new RentHouseQuery();
             rentHouseQuery.setZuFangId(String.valueOf(villageRequest.getId()));
-            rentHouseQuery.setRentSign(1);
+//            rentHouseQuery.setRentSign(0);
             Map rent = rentHouseService.queryHouseByparentId(rentHouseQuery);
             if (rent!=null){
                 model.addAttribute("rent",rent);
             }
 
             //推荐小区公寓
-            RentHouseQuery rentApartmentQuery = new RentHouseQuery();
-            rentApartmentQuery.setZuFangId(String.valueOf(villageRequest.getId()));
-            rentApartmentQuery.setRentSign(2);
-            Map apartment = rentHouseService.queryHouseByparentId(rentApartmentQuery);
-            if (apartment!=null){
-                model.addAttribute("apartment",apartment);
-            }
+//            RentHouseQuery rentApartmentQuery = new RentHouseQuery();
+//            rentApartmentQuery.setZuFangId(String.valueOf(villageRequest.getId()));
+//            rentApartmentQuery.setRentSign(1);
+//            Map apartment = rentHouseService.queryHouseByparentId(rentApartmentQuery);
+//            if (apartment!=null){
+//                model.addAttribute("apartment",apartment);
+//            }
 
             //推荐新房
 //            newHouseQuery.setSort(0);

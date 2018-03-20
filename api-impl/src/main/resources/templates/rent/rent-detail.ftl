@@ -156,42 +156,104 @@
     </section>
 </div>
 <div class="border-box">
-    <section>
-        <div class="module-header-message">
-            <h3><#if rentHouse['rent_sign'] == 0>房源点评<#else>公寓简介</#if></h3>
-        </div>
-        <div class="describe-box">
-            <div class="describe-header">
-                <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
-                    <#if rentHouse['rent_sign'] == 0>
+    <#if rentHouse['rent_sign'] == 0>
+        <#if agent?exists>
+            <section>
+                <div class="module-header-message">
+                    <h3>房源点评</h3>
+                </div>
+                <div class="describe-box">
+                    <div class="describe-header">
+                        <#if agent['agent_headphoto']?exists && agent['agent_headphoto'] != ''>
+                            <#if agent['agent_headphoto']?index_of("http") gt -1>
+                                <img class="source-icon" src="${agent['agent_headphoto']}" alt="">
+                            <#else>
+                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}" alt="">
+                            </#if>
+                        <#else >
+                            <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                        </#if>
+                        <p>
+                            <span><#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
+                        <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
+                        </p>
+                        <#if agent['agent_phone']?exists&&agent['agent_phone']!=''>
+                            <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent" id="rentDescPhone"></a>
+                        </#if>
+                    </div>
+                    <#if agent['house_desc']?exists && agent['house_desc'] != ''>
+                        <div class="describe-cont">
+                            <p>${agent['house_desc']}</p>
+                        </div>
+                    </#if>
+                </div>
+            </section>
+        <#else>
+            <section>
+                <div class="module-header-message">
+                    <h3>房源点评</h3>
+                </div>
+                <div class="describe-box">
+                    <div class="describe-header">
+                        <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
+                            <#if rentHouse['agent_headphoto']?index_of("http") gt -1>
+                                <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
+                            <#else>
+                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                            </#if>
+                        <#else >
+                            <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                        </#if>
+                        <p>
+                            <span>${rentHouse['zufang_name']}</span>
+                            <em>${rentHouse['brokerage_agency']}</em>
+                        </p>
+                        <#if rentHouse['phone']?exists>
+                            <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
+                        </#if>
+                    </div>
+                    <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
+                        <div class="describe-cont">
+                            <p>${rentHouse['house_desc']}</p>
+                        </div>
+                    </#if>
+                </div>
+            </section>
+        </#if>
+    <#else>
+        <section>
+            <div class="module-header-message">
+                <h3>公寓简介</h3>
+            </div>
+            <div class="describe-box">
+                <div class="describe-header">
+                    <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
                         <#if rentHouse['agent_headphoto']?index_of("http") gt -1>
                             <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
                         <#else>
                             <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
                         </#if>
                     <#else >
-                        <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
+                        <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
                     </#if>
-                <#else >
-                    <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
-                </#if>
-                <p>
-                    <span><#if rentHouse['rent_sign'] == 0>${rentHouse['estate_agent']}<#else>${rentHouse['zufang_name']}</#if></span>
-                    <em>${rentHouse['brokerage_agency']}</em>
-                </p>
-                <#if agent?exists&&agent['agent_phone']?exists>
-                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent" id="rentDescPhone"></a>
-                <#elseif rentHouse['phone']?exists>
-                    <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
+                    <p>
+                        <span>${rentHouse['zufang_name']}</span>
+                        <em>${rentHouse['brokerage_agency']}</em>
+                    </p>
+                    <#if agent?exists&&agent['agent_phone']?exists>
+                        <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent" id="rentDescPhone"></a>
+                    <#elseif rentHouse['phone']?exists>
+                        <a href="tel:${rentHouse['phone']}" class="issuer-tel-icon rent"></a>
+                    </#if>
+                </div>
+                <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
+                <div class="describe-cont">
+                    <p>${rentHouse['house_desc']}</p>
+                </div>
                 </#if>
             </div>
-            <#if rentHouse['house_desc']?exists && rentHouse['house_desc'] != ''>
-            <div class="describe-cont">
-                <p>${rentHouse['house_desc']}</p>
-            </div>
-            </#if>
-        </div>
-    </section>
+        </section>
+    </#if>
 </div>
 <#if rentHouse['rent_sign'] != 0 && rentHouse['demand']?exists && rentHouse['demand'] != ''>
     <div class="border-box">
