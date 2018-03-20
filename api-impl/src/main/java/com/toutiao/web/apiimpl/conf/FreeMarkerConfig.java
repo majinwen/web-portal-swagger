@@ -47,7 +47,7 @@ public class FreeMarkerConfig  {
         try {
             configuration.setSharedVariable("staticurl", staticUrl);
             configuration.setSharedVariable("qiniuimage",qiniuImage);
-            configuration.setSharedVariable("qiniuzufangimage",qiniuZufangImage);
+            configuration.setSharedVariable("qiniuzufangimage",qiniuImage);
             configuration.setSharedVariable("staticversion", staticVersion);
             configuration.setSharedVariable("getUser",new GetUserMethod());
             configuration.setSharedVariable("router_city",new Router());
