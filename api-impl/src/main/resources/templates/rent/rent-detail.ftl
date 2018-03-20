@@ -205,7 +205,7 @@
                             <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                         <p>
-                            <span>${rentHouse['zufang_name']}</span>
+                            <span>${rentHouse['estate_agent']}</span>
                             <em>${rentHouse['brokerage_agency']}</em>
                         </p>
                         <#if rentHouse['phone']?exists>
