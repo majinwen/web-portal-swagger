@@ -151,7 +151,7 @@
         </a>
         <#if rentHouse['nearest_subway']?exists>
             <#assign subwayDistance = rentHouse['nearest_subway']?split('$')[2]?number>
-            <p class="map-distance"><i class="rent-traffic-icon"></i>距${rentHouse['nearest_subway']?split('$')[1]}[${rentHouse['nearest_subway']?split('$')[0]}]<#if subwayDistance gt 1000>${subwayDistance}km<#else >${subwayDistance}m</#if></p>
+            <p class="map-distance"><i class="rent-traffic-icon"></i>距${rentHouse['nearest_subway']?split('$')[1]}[${rentHouse['nearest_subway']?split('$')[0]}]<#if subwayDistance gt 1000>${(subwayDistance/1000)?string('0.0')}km<#else >${subwayDistance}m</#if></p>
         </#if>
     </section>
 </div>
