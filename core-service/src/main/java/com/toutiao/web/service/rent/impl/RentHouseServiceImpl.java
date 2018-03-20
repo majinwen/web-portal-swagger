@@ -184,12 +184,13 @@ public class RentHouseServiceImpl implements RentHouseService{
             if (rentHouseQuery.getRentSign()==0){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
             }
-            if (rentHouseQuery.getRentSign()==1){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",DISPERSED_APARTMENTS));
+            if (rentHouseQuery.getRentSign()==1 || rentHouseQuery.getRentSign()==2){
+                BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.termQuery("rent_sign",1)).should(QueryBuilders.termQuery("rent_sign",2)));
             }
-            if (rentHouseQuery.getRentSign()==2){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",FOCUS_APARTMENT));
-            }
+//            if (rentHouseQuery.getRentSign()==2){
+//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",FOCUS_APARTMENT));
+//            }
             srb.setSize(4);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
