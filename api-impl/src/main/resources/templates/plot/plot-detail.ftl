@@ -600,7 +600,7 @@
     <section>
         <div class="module-header-message">
             <h3>待租房源</h3>
-            <a href="${router_city('/zufang?newcode='+village['id'])}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a href="${router_city('/zufang?vid='+village['id'])}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
     </section>
 </div>
