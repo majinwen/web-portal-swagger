@@ -72,7 +72,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //从该坐标查询距离为distance的点
             GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear(), DistanceUnit.KILOMETERS);
-            srb.setPostFilter(location1).setSize(4);
+            srb.setPostFilter(location1).setSize(10);
             // 按距离排序
             if (rentHouseQuery.getRentSign()!=0){
                 GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(), rentHouseQuery.getLon());
