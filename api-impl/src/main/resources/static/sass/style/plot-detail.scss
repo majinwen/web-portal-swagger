@@ -110,6 +110,7 @@
                 border-left: rem(1) solid #e1e1e1;
             }
             .font36 {
+                line-height: rem(24);
                 @include font-dpr(36);
             }
 

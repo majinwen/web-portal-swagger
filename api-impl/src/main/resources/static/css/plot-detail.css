@@ -2524,12 +2524,14 @@ a.pswp__share--download:hover {
       .tilelist li.card-item div.price {
         width: 2.7333333333rem;
         border-left: 0.0133333333rem solid #e1e1e1; }
-      [data-dpr="1"] .tilelist li.card-item div .font36 {
-        font-size: 18px; }
-      [data-dpr="2"] .tilelist li.card-item div .font36 {
-        font-size: 36px; }
-      [data-dpr="3"] .tilelist li.card-item div .font36 {
-        font-size: 54px; }
+      .tilelist li.card-item div .font36 {
+        line-height: 0.32rem; }
+        [data-dpr="1"] .tilelist li.card-item div .font36 {
+          font-size: 18px; }
+        [data-dpr="2"] .tilelist li.card-item div .font36 {
+          font-size: 36px; }
+        [data-dpr="3"] .tilelist li.card-item div .font36 {
+          font-size: 54px; }
       .tilelist li.card-item div p {
         position: absolute;
         bottom: 0;
