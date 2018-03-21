@@ -21,6 +21,10 @@
     </#if>
     </div>
 </div>
+<#assign newhouse = discript[0]>
+<#if newhouse?exists && newhouse['sale_status_name']!=''>
+    <#assign sale_status = newhouse['sale_status_name']>
+</#if>
 <div id="all-type" class="module-bottom-fill"><#if layoutDetails?exists>
     <#list layoutDetails as datail>
         <section class="room${datail['room']}">
@@ -54,7 +58,8 @@
             <#else>
                 <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
             </#if>
-                <span class="sale-state">${datail['is_sale']!'在售'}</span>
+                <#--<span class="sale-state">${datail['is_sale']!'在售'}</span>-->
+                <span class="sale-state">${sale_status}</span>
            </div>
         </div>
           <#--<div class="describe-box">

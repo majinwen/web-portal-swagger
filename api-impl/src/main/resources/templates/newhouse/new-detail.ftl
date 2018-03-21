@@ -164,7 +164,7 @@
                                 <img src="${qiniuimage}/${layoutimgs[0]}-tt400x300" alt="${build['building_name']}">
                             <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="${build['building_name']}">
                             </#if>
-                            <span class="sale-state">在售</span>
+                            <span class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></span>
                         </div>
                         <div class="tilelist-content">
                             <p class="cont-first"><span>${item['room']!'暂无数据'}室${item['hall']!'暂无数据'}厅${item['toilet']!'暂无数据'}卫</span><span>${item['building_area']!'暂无数据'}㎡</span></p>
