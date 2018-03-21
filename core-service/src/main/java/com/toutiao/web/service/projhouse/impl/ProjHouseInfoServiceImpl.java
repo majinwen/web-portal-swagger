@@ -169,9 +169,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", projHouseInfoRequest.getHouseBusinessName()));
             }
             //小区id
-            if (StringTool.isNotEmpty(projHouseInfoRequest.getNewcode())) {
-                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", projHouseInfoRequest.getNewcode()));
-            }
+//            if (StringTool.isNotEmpty(projHouseInfoRequest.getNewcode())) {
+//                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", projHouseInfoRequest.getNewcode()));
+//            }
             //商圈id
             if (StringTool.isNotEmpty(projHouseInfoRequest.getAreaId())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", projHouseInfoRequest.getAreaId()));

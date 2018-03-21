@@ -180,7 +180,7 @@
         </div>
     </section>
 </div>-->
-<#if ((reViHouse?exists) && (reViHouse?size>0)) || ((rent['nearHouse']?exists) && (rent['nearHouse']?size>0))>
+<#if (reViHouse?exists && (reViHouse?size>0) || (rent?exists && (rent['nearHouse']?size>0)))>
 <div id="plot_nearby_esf" class="module-bottom-fill">
     <section>
         <div class="module-header-message">
