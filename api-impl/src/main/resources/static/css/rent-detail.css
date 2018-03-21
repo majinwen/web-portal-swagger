@@ -2692,7 +2692,6 @@ a.pswp__share--download:hover {
 .rent-support-nav {
   display: -webkit-flex;
   display: flex;
-  justify-content: center;
   text-align: center;
   flex-wrap: wrap;
   margin: 0 0.2rem 0.4666666667rem; }
@@ -2708,8 +2707,8 @@ a.pswp__share--download:hover {
       font-size: 30px; }
     .rent-support-nav .support-item i {
       display: inline-block;
-      width: 0.48rem;
-      height: 0.48rem;
+      width: 0.5333333333rem;
+      height: 0.5066666667rem;
       margin-bottom: 0.1333333333rem;
       background-image: url("../images/rent/rent-support-icon-gray.png");
       background-repeat: no-repeat;
@@ -2722,35 +2721,35 @@ a.pswp__share--download:hover {
         .rent-support-nav .support-item i {
           background-image: url("../images/rent/rent-support-icon-gray@3x.png"); } }
       .rent-support-nav .support-item i.kongtiao {
-        background-position: 0 0; }
+        background-position: 0.04rem 0; }
       .rent-support-nav .support-item i.dianshi {
-        background-position: -0.8rem 0; }
+        background-position: -0.7733333333rem 0; }
       .rent-support-nav .support-item i.xiyiji {
-        background-position: -1.6rem 0; }
+        background-position: -1.5866666667rem 0; }
       .rent-support-nav .support-item i.reshuiqi {
         background-position: -2.4rem 0; }
       .rent-support-nav .support-item i.bingxiang {
-        background-position: -3.2rem 0; }
+        background-position: -3.2133333333rem 0; }
       .rent-support-nav .support-item i.weibolu {
-        background-position: 0 -0.8rem; }
+        background-position: 0.04rem -0.8rem; }
       .rent-support-nav .support-item i.chuang {
-        background-position: -0.8rem -0.8rem; }
+        background-position: -0.7733333333rem -0.8rem; }
       .rent-support-nav .support-item i.yigui {
-        background-position: -1.6rem -0.8rem; }
+        background-position: -1.5866666667rem -0.8rem; }
       .rent-support-nav .support-item i.shafa {
         background-position: -2.4rem -0.8rem; }
       .rent-support-nav .support-item i.zhuozi {
-        background-position: -3.2rem -0.8rem; }
+        background-position: -3.2133333333rem -0.8rem; }
       .rent-support-nav .support-item i.yizi {
-        background-position: 0 -1.6rem; }
+        background-position: 0.04rem -1.6rem; }
       .rent-support-nav .support-item i.nuanqi {
-        background-position: -0.8rem -1.6rem; }
+        background-position: -0.7733333333rem -1.6rem; }
       .rent-support-nav .support-item i.meiqi {
-        background-position: -1.6rem -1.6rem; }
+        background-position: -1.5866666667rem -1.6rem; }
       .rent-support-nav .support-item i.wangluo {
         background-position: -2.4rem -1.6rem; }
       .rent-support-nav .support-item i.zhinengsuo {
-        background-position: -3.2rem -1.6rem; }
+        background-position: -3.2133333333rem -1.6rem; }
     .rent-support-nav .support-item span {
       display: block;
       width: 0.9866666667rem;
@@ -2767,35 +2766,35 @@ a.pswp__share--download:hover {
           .rent-support-nav .support-item.support i {
             background-image: url("../images/rent/rent-support-icon-black@3x.png"); } }
         .rent-support-nav .support-item.support i.kongtiao {
-          background-position: 0 0; }
+          background-position: 0.04rem 0; }
         .rent-support-nav .support-item.support i.dianshi {
-          background-position: -0.8rem 0; }
+          background-position: -0.7733333333rem 0; }
         .rent-support-nav .support-item.support i.xiyiji {
-          background-position: -1.6rem 0; }
+          background-position: -1.5866666667rem 0; }
         .rent-support-nav .support-item.support i.reshuiqi {
           background-position: -2.4rem 0; }
         .rent-support-nav .support-item.support i.bingxiang {
-          background-position: -3.2rem 0; }
+          background-position: -3.2133333333rem 0; }
         .rent-support-nav .support-item.support i.weibolu {
-          background-position: 0 -0.8rem; }
+          background-position: 0.04rem -0.8rem; }
         .rent-support-nav .support-item.support i.chuang {
-          background-position: -0.8rem -0.8rem; }
+          background-position: -0.7733333333rem -0.8rem; }
         .rent-support-nav .support-item.support i.yigui {
-          background-position: -1.6rem -0.8rem; }
+          background-position: -1.5866666667rem -0.8rem; }
         .rent-support-nav .support-item.support i.shafa {
           background-position: -2.4rem -0.8rem; }
         .rent-support-nav .support-item.support i.zhuozi {
-          background-position: -3.2rem -0.8rem; }
+          background-position: -3.2133333333rem -0.8rem; }
         .rent-support-nav .support-item.support i.yizi {
-          background-position: 0 -1.6rem; }
+          background-position: 0.04rem -1.6rem; }
         .rent-support-nav .support-item.support i.nuanqi {
-          background-position: -0.8rem -1.6rem; }
+          background-position: -0.7733333333rem -1.6rem; }
         .rent-support-nav .support-item.support i.meiqi {
-          background-position: -1.6rem -1.6rem; }
+          background-position: -1.5866666667rem -1.6rem; }
         .rent-support-nav .support-item.support i.wangluo {
           background-position: -2.4rem -1.6rem; }
         .rent-support-nav .support-item.support i.zhinengsuo {
-          background-position: -3.2rem -1.6rem; }
+          background-position: -3.2133333333rem -1.6rem; }
 
 .demand-list {
   margin: 0 0.4rem 0.5333333333rem; }
