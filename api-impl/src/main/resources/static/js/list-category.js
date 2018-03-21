@@ -1478,7 +1478,7 @@ function pullUpAction() {
                                         if (dataCon[i]['house_title_img'].indexOf('http:') > -1 || dataCon[i]['house_title_img'].indexOf('https:') > -1) {
                                             _house_title_img = dataCon[i]['house_title_img'];
                                         }else{
-                                            _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['house_title_img'];
+                                            _house_title_img = 'http://ozptwu1ea.bkt.clouddn.com/' + dataCon[i]['house_title_img'];
                                         }
                                         dataCon[i]['house_title_img'] = _house_title_img;
                                     }
@@ -1681,7 +1681,7 @@ function pullDownAction() {
                                             if (dataCon[i]['house_title_img'].indexOf('http:') > -1 || dataCon[i]['house_title_img'].indexOf('https:') > -1) {
                                                 _house_title_img = dataCon[i]['house_title_img'];
                                             }else{
-                                                _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['house_title_img'];
+                                                _house_title_img = 'http://ozptwu1ea.bkt.clouddn.com/' + dataCon[i]['house_title_img'];
                                             }
                                             dataCon[i]['house_title_img'] = _house_title_img;
                                         }
