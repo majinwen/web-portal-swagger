@@ -21,7 +21,7 @@
                     <#if rentphoto['image_path']?index_of("http") gt -1>
                         <img src="${rentphoto['image_path']}" data-src="${rentphoto['image_path']}" alt="">
                     <#else>
-                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}" data-src="${qiniuzufangimage}/${rentphoto['image_path']}" alt="">
+                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" data-src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" alt="">
                     </#if>
                 </li>
             </#list>
@@ -175,7 +175,7 @@
                         </#if>
                         <p>
                             <span><#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
-                        <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
+                            <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
                         </p>
                         <#if agent['agent_phone']?exists&&agent['agent_phone']!=''>
                             <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon rent" id="rentDescPhone"></a>
@@ -281,7 +281,7 @@
                             <#if builditem.house_title_img?index_of("http") gt -1>
                                 <img src="${builditem.house_title_img}" alt="${builditem.zufang_name}">
                             <#else>
-                                <img src="${qiniuzufangimage}/${builditem.house_title_img}" alt="${builditem.zufang_name}">
+                                <img src="${qiniuzufangimage}/${builditem.house_title_img}-tt400x300" alt="${builditem.zufang_name}">
                             </#if>
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
