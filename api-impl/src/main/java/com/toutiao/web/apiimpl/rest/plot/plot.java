@@ -15,6 +15,7 @@ import com.toutiao.web.service.rent.RentHouseService;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +45,7 @@ public class plot {
     //小区详情页
     @RequestMapping("/getbyid")
     @ResponseBody
-    public NashResult villageDetail(VillageRequest villageRequest) {
+    public NashResult villageDetail(@Validated VillageRequest villageRequest) {
         HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
         List villageList = plotService.findVillageByConditions(villageRequest);
         if (villageList != null && villageList.size() != 0) {
