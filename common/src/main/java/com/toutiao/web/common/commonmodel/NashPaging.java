@@ -3,6 +3,7 @@ package com.toutiao.web.common.commonmodel;
 
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -37,7 +38,15 @@ public class NashPaging<T> implements Serializable {
         tNashPaging.setData(list);
         return tNashPaging;
     }
-
+    public static <T> NashPaging<T> pageInfobuild(T list){
+        NashPaging tNashPaging = new NashPaging();
+        PageInfo pageInfo = (PageInfo)list;
+        tNashPaging.setPageNum(pageInfo.getPageNum());
+        tNashPaging.setPageSize(pageInfo.getSize());
+        tNashPaging.setTotal(pageInfo.getTotal());
+        tNashPaging.setData(pageInfo.getList());
+        return tNashPaging;
+    }
     public static <T> NashPaging<T> noPagebuild(T list){
         NashPaging<T> tNashPaging = new NashPaging<T>();
 
