@@ -12,7 +12,6 @@ public class VillageRequest {
     /**
      * 搜索关键词
      */
-    @NotNull
     private String keyword;
 
     private Integer id; //序号
