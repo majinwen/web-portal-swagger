@@ -1,8 +1,5 @@
 package com.toutiao.web.common.util;
 
-import com.toutiao.web.common.commonmodel.Money;
-import com.toutiao.web.common.util.BeanUtilsConverts.MoneyConvert;
-import com.toutiao.web.common.util.BeanUtilsConverts.NashLongConverter;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 
@@ -16,8 +13,8 @@ public class NashBeanUtils {
         if(!hasInit){
             hasInit=true;
             ConvertUtils.deregister(Long.class);
-            ConvertUtils.register(new NashLongConverter(),Long.class);
-            ConvertUtils.register(new MoneyConvert(),Money.class);
+//            ConvertUtils.register(new NashLongConverter(),Long.class);
+//            ConvertUtils.register(new MoneyConvert(),Money.class);
         }
         try {
             BeanUtils.copyProperties(dest, orig);

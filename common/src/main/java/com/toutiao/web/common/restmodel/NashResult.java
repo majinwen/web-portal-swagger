@@ -1,6 +1,7 @@
 package com.toutiao.web.common.restmodel;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.toutiao.web.common.commonmodel.NashPaging;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,6 +53,8 @@ public class NashResult<T> implements Serializable {
             tResultOK.setData(NashPaging.build(obj));
         } else if(obj instanceof List){
             tResultOK.setData(NashPaging.noPagebuild(obj));
+        } else if(obj instanceof PageInfo){
+            tResultOK.setData(NashPaging.pageInfobuild(obj));
         } else {
             tResultOK.setData(obj);
         }

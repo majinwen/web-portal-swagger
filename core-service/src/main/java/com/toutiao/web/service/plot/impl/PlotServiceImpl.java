@@ -2,7 +2,6 @@ package com.toutiao.web.service.plot.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.assertUtils.Query;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
