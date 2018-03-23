@@ -105,7 +105,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
                 .setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
-                                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName"},
+                                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic"},
                         null)
                 .setFrom((pageNum-1)*aggAdLandingDo.getPs())
                 .setSize(aggAdLandingDo.getPs())
@@ -166,7 +166,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 .setQuery(booleanQueryBuilder).setQuery(booleanQueryBuilder.must(termQuery("of_company", "我爱我家")))
                 .addSort(scrip).setFetchSource(
                         new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
-                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
+                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
                         null)
                 .execute().actionGet();
 
@@ -182,7 +182,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 .setQuery(booleanQueryBuilder1).setQuery(booleanQueryBuilder1.must(termQuery("of_company", "中原地产")))
                 .addSort(scrip).setFetchSource(
                         new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
-                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
+                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
                         null)
                 .execute().actionGet();
 
@@ -198,7 +198,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 .setQuery(booleanQueryBuilder2).setQuery(booleanQueryBuilder2.must(termQuery("of_company", "麦田房产")))
                 .addSort(scrip).setFetchSource(
                         new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
-                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company"},
+                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
                         null)
                 .execute().actionGet();
 
