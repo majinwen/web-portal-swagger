@@ -222,7 +222,7 @@
                 </dl>
             </li>
 
-        <#if houseDetail.traffic?exists>
+        <#if houseDetail.traffic?exists && houseDetail.traffic!=''>
             <li>
                 <p id="traffic_info">
                     交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
