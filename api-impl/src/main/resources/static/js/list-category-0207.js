@@ -1262,20 +1262,22 @@ function pullUpAction() {
                                     var _subwayObj = dataCon[i]['subwayDistince'];
                                     var _key = dataCon[i]['key'];
                                     if (_subwayObj && _key) {
-                                        var _subwayArray = _subwayObj[_key].split('$');
-                                        if (_subwayArray.length > 2) {
-                                            var _subwayDesc;
+                                        if( _subwayObj[_key]!=undefined){
+                                            var _subwayArray = _subwayObj[_key].split('$');
+                                            if (_subwayArray.length > 2) {
+                                                var _subwayDesc;
 
-                                            var _distance = parseInt(_subwayArray[2]);
-                                            if (_distance > 1000) {
-                                                var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + parseFloat(_tempDistance) + "km";
-                                            } else {
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + _distance + "m";
+                                                var _distance = parseInt(_subwayArray[2]);
+                                                if (_distance > 1000) {
+                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + parseFloat(_tempDistance) + "km";
+                                                } else {
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + _distance + "m";
+                                                }
+                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                            dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
                                     };
                                 };
@@ -1286,20 +1288,22 @@ function pullUpAction() {
                                     var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                     var _key = dataCon[i]['key'];
                                     if (_subwayObj && _key) {
-                                        var _subwayArray = _subwayObj[_key].split('$');
-                                        if (_subwayArray.length > 2) {
-                                            var _subwayDesc;
+                                        if(_subwayObj[_key]!=undefined){
+                                            var _subwayArray = _subwayObj[_key].split('$');
+                                            if (_subwayArray.length > 2) {
+                                                var _subwayDesc;
 
-                                            var _distance = parseInt(_subwayArray[2]);
-                                            if (_distance > 1000) {
-                                                var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + parseFloat(_tempDistance) + "km";
-                                            } else {
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + _distance + "m";
+                                                var _distance = parseInt(_subwayArray[2]);
+                                                if (_distance > 1000) {
+                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + parseFloat(_tempDistance) + "km";
+                                                } else {
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + _distance + "m";
+                                                }
+                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                            dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
                                     };
                                 };
@@ -1432,21 +1436,24 @@ function pullDownAction() {
                                         var _subwayObj = dataCon[i]['subwayDistince'];
                                         var _key = dataCon[i]['key'];
                                         if (_subwayObj && _key) {
-                                            var _subwayArray = _subwayObj[_key].split('$');
-                                            if (_subwayArray.length > 2) {
-                                                var _subwayDesc;
+                                            if(_subwayObj[_key]!=undefined){
+                                                var _subwayArray = _subwayObj[_key].split('$');
+                                                if (_subwayArray.length > 2) {
+                                                    var _subwayDesc;
 
-                                                var _distance = parseInt(_subwayArray[2]);
-                                                if (_distance > 1000) {
-                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + parseFloat(_tempDistance) + "km";
-                                                } else {
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + _distance + "m";
+                                                    var _distance = parseInt(_subwayArray[2]);
+                                                    if (_distance > 1000) {
+                                                        var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + parseFloat(_tempDistance) + "km";
+                                                    } else {
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + _distance + "m";
+                                                    }
+                                                    dataCon[i]['subwayDesc'] = _subwayDesc;
                                                 }
-                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
+
                                         };
                                     };
 
@@ -1456,20 +1463,22 @@ function pullDownAction() {
                                         var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                         var _key = dataCon[i]['key'];
                                         if (_subwayObj && _key) {
-                                            var _subwayArray = _subwayObj[_key].split('$');
-                                            if (_subwayArray.length > 2) {
-                                                var _subwayDesc;
+                                            if(_subwayObj[_key]!=undefined){
+                                                var _subwayArray = _subwayObj[_key].split('$');
+                                                if (_subwayArray.length > 2) {
+                                                    var _subwayDesc;
 
-                                                var _distance = parseInt(_subwayArray[2]);
-                                                if (_distance > 1000) {
-                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + parseFloat(_tempDistance) + "km";
-                                                } else {
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + _distance + "m";
+                                                    var _distance = parseInt(_subwayArray[2]);
+                                                    if (_distance > 1000) {
+                                                        var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + parseFloat(_tempDistance) + "km";
+                                                    } else {
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + _distance + "m";
+                                                    }
+                                                    dataCon[i]['subwayDesc'] = _subwayDesc;
                                                 }
-                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
                                         };
                                     };
