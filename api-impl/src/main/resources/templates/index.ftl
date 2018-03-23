@@ -306,7 +306,7 @@
                             <#if map['nearsubway']??>${map['nearsubway']}
                                 <#else>${map['district_name']}
                             </#if>
-                            <#if map['house_min_area']?exists&&map['house_max_area']?exists>
+                            <#if (map['house_min_area']?exists && map['house_min_area'] gt 0)&&(map['house_max_area']?exists && map['house_max_area'] gt 0)>
                                 / ${map['house_min_area']}㎡-${map['house_max_area']}㎡</p>
                             </#if>
                         <div class="cont-block-4 house-labelling gray middle">
