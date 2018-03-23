@@ -7,6 +7,7 @@ import com.toutiao.web.service.rent.RentHouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,7 +28,7 @@ public class rent {
      */
     @RequestMapping("getbyid")
     @ResponseBody
-    public NashResult rentDetail(RentHouseQuery rentHouseQuery){
+    public NashResult rentDetail(@Validated RentHouseQuery rentHouseQuery){
         HashMap<Object, Object> hashMap = new HashMap<>();
         //房源详情
         Map map = rentHouseService.queryHouseById(rentHouseQuery);

@@ -72,8 +72,8 @@ public class plot {
                 areaId = Integer.parseInt(sareaId);
             }
 
-            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
-            objectObjectHashMap.put("tradeline", stringListMap);
+//            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
+//            objectObjectHashMap.put("tradeline", stringListMap);
 
             //推荐小区二手房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
@@ -95,11 +95,11 @@ public class plot {
             MapInfo mapInfo = mapService.getMapInfo(villageRequest.getId());
             JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             if(StringTool.isNotBlank(mapInfo)&&StringTool.isNotBlank(datainfo)){
-                objectObjectHashMap.put("mapInfo", mapInfo);
+//                objectObjectHashMap.put("mapInfo", mapInfo);
                 objectObjectHashMap.put("datainfo",datainfo);
             }
             return NashResult.build(objectObjectHashMap);
         }
-        return NashResult.Fail("not-found","没找到这个小区");
+        return NashResult.Fail("101","没找到这个小区");
     }
 }
