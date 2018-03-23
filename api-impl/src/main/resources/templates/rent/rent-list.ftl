@@ -3,7 +3,7 @@
 <head>
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
-    <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/rent-list.css?v=${staticversion}">
     <title>头条房产看租房</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
@@ -26,7 +26,7 @@
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
         <li data-mark="tab-rent-price"><span><em>租金</em><i></i></span></li>
-        <li data-mark="tab-rent-type"><span><em>整租/合租</em><i></i></span></li>
+        <li data-mark="tab-rent-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none">
@@ -154,7 +154,7 @@
             <div class="list-item-cont">
                 <h3 class="cont-block-top"><span>{{$value.zufang_name}}·{{$value.house_area}}㎡ {{$value.room}}室{{$value.hall}}厅 {{$value.forward}}</span></h3>
                 <div class="address distance"><i class="icon"></i>{{if $value.subwayDesc}}{{$value.subwayDesc}}{{else if $value.area_name}}{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}}-{{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}{{/if}}</div>
-                {{if $value.rent_type_name}}
+                <#--{{if $value.rent_type_name}}
                 <div class="house-labelling big normal">
                     <span class="company">{{$value.rent_type_name}}</span>
                     {{if $value.rent_house_tags_name && $value.rent_house_tags_name.length > 0}}
@@ -165,7 +165,7 @@
                     {{/each}}
                     {{/if}}
                 </div>
-                {{/if}}
+                {{/if}}-->
                 <div class="cont-block-bottom">
                     <p class="high-light-red">¥{{$value.rent_house_price}}<em> 元/月</em></p>
                 </div>
