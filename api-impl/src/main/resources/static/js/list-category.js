@@ -214,7 +214,8 @@ $(function () {
 
                 if ($('li[data-mark="tab-rent-price"]')) {
                     $('li[data-mark="tab-rent-price"]').addClass('choose').find('em').text($(this).text());
-                } else if ($('li[data-mark="tab-price"]')) {
+                }
+                if ($('li[data-mark="tab-price"]')) {
                     $('li[data-mark="tab-price"]').addClass('choose').find('em').text($(this).text());
                 }
             }
