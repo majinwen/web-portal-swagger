@@ -2,7 +2,7 @@ package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
 import com.toutiao.app.service.sellhouse.SellHouseService;
-import com.toutiao.web.api.chance.request.sellhouse.SellHouseDetailsRequest;
+import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.service.plot.PlotService;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;

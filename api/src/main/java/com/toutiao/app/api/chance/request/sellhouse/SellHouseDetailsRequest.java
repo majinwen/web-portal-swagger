@@ -1,4 +1,4 @@
-package com.toutiao.web.api.chance.request.sellhouse;
+package com.toutiao.app.api.chance.request.sellhouse;
 
 import lombok.Data;
 
