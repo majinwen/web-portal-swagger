@@ -24,13 +24,29 @@ public class SellHouseRestController {
 
 
     /**
-     *  二手房详情
+     *  二手房房源详情
      * @param sellHouseDetailsRequest
      * @return
      */
     @RequestMapping("/getSellHouseByHouseId")
     @ResponseBody
     public NashResult getSellHouseByHouseId(@Validated SellHouseDetailsRequest sellHouseDetailsRequest) {
+        SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
+        SellHouseDetailsDo sellHouseDetailsDo = sellHouseService.getSellHouseByHouseId(sellHouseDetailsRequest.getHouseId());
+        BeanUtils.copyProperties(sellHouseDetailsDo, sellHouseDetailsResponse);
+        return NashResult.build(sellHouseDetailsResponse);
+    }
+
+
+
+    /**
+     *  二手房房源列表
+     * @param sellHouseDetailsRequest
+     * @return
+     */
+    @RequestMapping("/getSellHouse")
+    @ResponseBody
+    public NashResult getSellHouse(@Validated SellHouseDetailsRequest sellHouseDetailsRequest) {
         SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
         SellHouseDetailsDo sellHouseDetailsDo = sellHouseService.getSellHouseByHouseId(sellHouseDetailsRequest.getHouseId());
         BeanUtils.copyProperties(sellHouseDetailsDo, sellHouseDetailsResponse);
