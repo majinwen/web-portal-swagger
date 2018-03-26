@@ -1,8 +1,15 @@
 package com.toutiao.app.service.sellhouse;
 
 
+import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
+
+
 public interface SellHouseService {
 
-    //业务接口
-    int queryNearByProjHouseInfo(Integer houseId);
+    /**
+     * 二手房房源详情
+     * @param houseId
+     * @return
+     */
+    SellHouseDetailsDo getSellHouseByHouseId(Integer houseId);
 }
