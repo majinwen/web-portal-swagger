@@ -2,6 +2,7 @@ package com.toutiao.app.domain.sellhouse;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -219,4 +220,13 @@ public class SellHouseDetailsDo {
      * 是否删除(0-未删除/1-已删除)
      */
     private Integer isDel;
+
+    /**
+     * 二手房附件好房
+     */
+    private List<NearBySellHousesDo> NearBySellHousesDo;
+    /**
+     * 二手房房源认领经纪人
+     */
+    private AgentsBySellHouseDo agentsBySellHouseDo;
 }

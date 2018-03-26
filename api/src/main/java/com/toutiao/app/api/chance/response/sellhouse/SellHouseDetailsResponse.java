@@ -1,8 +1,11 @@
 package com.toutiao.app.api.chance.response.sellhouse;
 
 
+import com.toutiao.app.domain.sellhouse.AgentsBySellHouseDo;
+import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -217,8 +220,30 @@ public class SellHouseDetailsResponse {
      */
     private Double houseMonthPayment;
     /**
+     * 经纪人头像
+     */
+    private String houseProxyPhoto;
+    /**
+     * 经纪人姓名
+     */
+    private String houseProxyName;
+    /**
+     * 经纪人电话号
+     */
+    private String houseProxyPhone;
+    /**
      * 是否删除(0-未删除/1-已删除)
      */
     private Integer isDel;
+
+    /**
+     * 二手房附件好房
+     */
+    private List<NearBySellHousesDo> NearBySellHousesDo;
+
+    /**
+     * 二手房房源认领经纪人
+     */
+    private AgentsBySellHouseDo agentsBySellHouseDo;
 
 }
