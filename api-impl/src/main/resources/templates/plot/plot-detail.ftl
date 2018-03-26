@@ -16,10 +16,10 @@
 <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<#assign ptCD0 = tradeline['buildingline']>
-<#assign ptCD1 = tradeline['arealine']>
-<#assign ptCD2 = tradeline['tradearealine']>
-<#assign mouthList = tradeline['mouthList']>
+<#--<#assign ptCD0 = tradeline['buildingline']>-->
+<#--<#assign ptCD1 = tradeline['arealine']>-->
+<#--<#assign ptCD2 = tradeline['tradearealine']>-->
+<#--<#assign mouthList = tradeline['mouthList']>-->
 <img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-ttfc1200x640" alt="">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
@@ -689,13 +689,13 @@
     };
     var baseFontSize = 12 * dpr;
     var baseItemWidth = 25 * dpr;
-    <#if  (mouthList?size>0)>
+    <#--<#if  (mouthList?size>0)>-->
     var myChartline = echarts.init(document.getElementById('village-price-trade'), null, {renderer: 'svg'}, {
         devicePixelRatio: dpr,
         width: '100%',
         height: '100%'
     });
-    </#if>
+    <#--</#if>-->
     option = {
         textStyle: {fontSize: baseFontSize},
         tooltip: {
@@ -705,7 +705,7 @@
         legend: {
             itemGap: 20,
             itemWidth: baseItemWidth,
-            data: ['${village['area']!'区域'}价格', '${village['tradingArea']!'商圈'}价格'],
+            <#--data: ['${village['area']!'区域'}价格', '${village['tradingArea']!'商圈'}价格'],-->
         },
         grid: chartGrid,
         xAxis:
@@ -714,7 +714,7 @@
                     boundaryGap: false,
                     scale: true,
                     axisLabel: {fontSize: baseFontSize - 4},
-                    data: [<#list  mouthList as item >'${item}',</#list>],
+                    <#--data: [<#list  mouthList as item >'${item}',</#list>],-->
                 },
         yAxis: {
             type: 'value',
@@ -735,22 +735,22 @@
         ],
         series: [
             {
-                name: '${village['area']!'区域'}价格',
+                <#--name: '${village['area']!'区域'}价格',-->
                 type: 'line',
-                data: [<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                <#--data: [<#list ptCD1 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],-->
                 showSymbol: false
             },
             {
-                name: '${village['tradingArea']!'商圈'}价格',
+                <#--name: '${village['tradingArea']!'商圈'}价格',-->
                 type: 'line',
-                data: [<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],
+                <#--data: [<#list ptCD2 as item ><#if item['price'] != 0&&item['price']??>['${item['tumonth']}',${item['price']}],<#else></#if></#list>],-->
                 showSymbol: false
             }
         ]
     };
-    <#if (mouthList?size>0)>
+    <#--<#if (mouthList?size>0)>-->
     myChartline.setOption(option);
-    </#if>
+    <#--</#if>-->
     myChartline.on("click", function (param) {
         var plot_first_name = option.series[0].name;
         var plot_second_name = option.series[1].name;
