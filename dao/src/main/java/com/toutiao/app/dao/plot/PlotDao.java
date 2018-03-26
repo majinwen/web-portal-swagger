@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public interface plotDao {
+public interface PlotDao {
     /**
      * 通过id查询详情
      * @param id
      * @return
      */
-    Map queryPlotDetail(Integer plotId);
+    String queryPlotDetail(Integer plotId);
 
     /**
      * 根据坐标和距离查询附近的小区

@@ -1,10 +1,12 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
+import com.toutiao.app.service.plot.PlotService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.service.plot.PlotService;
+//import com.toutiao.web.service.plot.PlotService;
+import com.toutiao.web.domain.query.PlotRequest;
 import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -38,15 +40,32 @@ public class SellHouseRestController {
     @ResponseBody
     public NashResult getByHouseId(@Validated SellHouseDetailsRequest sellHouseDetailsRequest) {
         Map<Object, Object> esfMap = new HashMap<>();
-
-
         System.out.println(sellHouseDetailsRequest.getHouseId());
         int sss = sellHouseService.queryNearByProjHouseInfo(sellHouseDetailsRequest.getHouseId());
-
-
-
         return NashResult.build(sss);
     }
+
+
+    //小区详情页
+    @RequestMapping("/getByHouseId")
+    @ResponseBody
+    public NashResult getByHouseId(@Validated PlotRequest plotRequest) {
+        NashResult nashResult = plotService.queryPlotDetaalByPlotId(plotRequest);
+        return nashResult;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //    //小区详情页

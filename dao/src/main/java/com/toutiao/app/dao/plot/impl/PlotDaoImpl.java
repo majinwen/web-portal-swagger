@@ -1,6 +1,6 @@
 package com.toutiao.app.dao.plot.impl;
 
-import com.toutiao.app.dao.plot.plotDao;
+import com.toutiao.app.dao.plot.PlotDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class plotDaoImpl implements plotDao {
+public class PlotDaoImpl implements PlotDao {
     @Value("${plot.index}")
     private String index ;
     @Value("${plot.parent.type}")
@@ -36,7 +36,7 @@ public class plotDaoImpl implements plotDao {
 
 
     @Override
-    public Map queryPlotDetail(Integer plotId) {
+    public String queryPlotDetail(Integer plotId) {
         try {
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
@@ -45,7 +45,7 @@ public class plotDaoImpl implements plotDao {
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length==1){
-                Map<String, Object> source = hits[0].getSource();
+                String source = hits[0].getSourceAsString();
                 return source;
             }
         }catch (Exception e){
@@ -75,8 +75,8 @@ public class plotDaoImpl implements plotDao {
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
-                    Map<String, Object> source = hit.getSource();
-                    nearPlotList.add(source);
+                    String sourceAsString = hit.getSourceAsString();
+                    nearPlotList.add(sourceAsString);
                 }
                 return nearPlotList;
             }
