@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 @Configuration
-public interface PlotDao {
+public interface AppPlotDao {
     /**
      * 通过id查询详情
      * @param id

@@ -2,8 +2,8 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.dao.plot.PlotDao;
-import com.toutiao.app.dao.rent.RentDao;
+import com.toutiao.app.dao.plot.AppPlotDao;
+import com.toutiao.app.dao.rent.AppRentDao;
 import com.toutiao.app.service.plot.AppPlotService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
@@ -21,9 +21,9 @@ import java.util.Map;
 public class AppPlotServiceImpl implements AppPlotService {
 
     @Autowired
-    private PlotDao plotDao;
+    private AppPlotDao appPlotDao;
     @Autowired
-    private RentDao rentDao;
+    private AppRentDao appRentDao;
     @Autowired
     private MapInfoMapper mapInfoMapper;
 
@@ -31,10 +31,10 @@ public class AppPlotServiceImpl implements AppPlotService {
     public NashResult queryPlotDetaalByPlotId(PlotRequest plotRequest) {
         try {
             Map result = new HashMap();
-            Map plotDetail = plotDao.queryPlotDetail(plotRequest.getPlotId());
+            Map plotDetail = appPlotDao.queryPlotDetail(plotRequest.getPlotId());
             String[] location = ((String) plotDetail.get("location")).split(",");
-            List nearList = plotDao.queryNearPlotByLocationAndDistance(Double.valueOf(location[0]), Double.valueOf(location[1]), Integer.valueOf((Integer) plotDetail.get("id")));
-            Map rentList = rentDao.queryHouseByPlotId(plotRequest.getPlotId());
+            List nearList = appPlotDao.queryNearPlotByLocationAndDistance(Double.valueOf(location[0]), Double.valueOf(location[1]), Integer.valueOf((Integer) plotDetail.get("id")));
+            Map rentList = appRentDao.queryHouseByPlotId(plotRequest.getPlotId());
             MapInfo mapInfo = mapInfoMapper.selectByNewCode((Integer) plotDetail.get("id"));
             JSONObject dataInfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             if (plotDetail!=null){

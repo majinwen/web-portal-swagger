@@ -1,7 +1,6 @@
 package com.toutiao.app.dao.rent.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.dao.rent.RentDao;
+import com.toutiao.app.dao.rent.AppRentDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class RentDaoImpl implements RentDao {
+public class AppRentDaoImpl implements AppRentDao {
     @Autowired
     private ESClientTools esClientTools;
     @Value("${tt.zufang.rent.index}")
