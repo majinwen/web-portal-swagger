@@ -5,7 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -29,11 +32,12 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public int queryNearByProjHouseInfo(Integer houseId) {
+    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
         TransportClient client = esClientTools.init();
-        GetResponse ss = client.prepareGet(projhouseIndex,projhouseType,houseId.toString()).execute().actionGet();
-        JSONObject aa = JSON.parseObject(ss.getSourceAsString());
-        System.out.println(aa);
-        return 1;
+        SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder)
+                .execute().actionGet();
+
+        return searchresponse;
     }
 }
