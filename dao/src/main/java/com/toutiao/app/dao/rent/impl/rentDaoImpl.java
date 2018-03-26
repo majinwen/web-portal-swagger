@@ -1,7 +1,7 @@
-package com.toutiao.web.dao.rest.rent.impl;
+package com.toutiao.app.dao.rent.impl;
 
+import com.toutiao.app.dao.rent.rentDao;
 import com.toutiao.web.common.util.ESClientTools;
-import com.toutiao.web.dao.rest.rent.rentDao;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -10,12 +10,14 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class rentDaoImpl implements rentDao {
     @Autowired
     private ESClientTools esClientTools;
@@ -42,7 +44,7 @@ public class rentDaoImpl implements rentDao {
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",plotId));
+            boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
@@ -53,6 +55,8 @@ public class rentDaoImpl implements rentDao {
                 result.put("houseList",list);
                 result.put("total",searchResponse.getHits().getTotalHits());
                 return result;
+            }else {
+
             }
         }catch (Exception e){
             e.printStackTrace();

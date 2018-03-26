@@ -1,8 +1,11 @@
-package com.toutiao.web.dao.rest.plot;
+package com.toutiao.app.dao.plot;
+
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 import java.util.Map;
 
+@Configuration
 public interface plotDao {
     /**
      * 通过id查询详情

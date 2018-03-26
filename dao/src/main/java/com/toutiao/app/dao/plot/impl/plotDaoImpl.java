@@ -1,7 +1,7 @@
-package com.toutiao.web.dao.rest.plot.impl;
+package com.toutiao.app.dao.plot.impl;
 
+import com.toutiao.app.dao.plot.plotDao;
 import com.toutiao.web.common.util.ESClientTools;
-import com.toutiao.web.dao.rest.plot.plotDao;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -15,11 +15,13 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class plotDaoImpl implements plotDao {
     @Value("${plot.index}")
     private String index ;
@@ -31,7 +33,7 @@ public class plotDaoImpl implements plotDao {
     private Double distance;
     @Autowired
     private ESClientTools esClientTools;
-    @Autowired
+
 
     @Override
     public Map queryPlotDetail(Integer plotId) {
