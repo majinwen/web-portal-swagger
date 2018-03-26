@@ -109,7 +109,10 @@ public class AppPlot {
     @RequestMapping("/getByPlotId")
     @ResponseBody
     public NashResult getByPlotId(@Validated PlotRequest plotRequest) {
-        NashResult nashResult = appPlotService.queryPlotDetaalByPlotId(plotRequest);
+        PlotRequest plotRequest1 = new PlotRequest();
+        plotRequest.setPlotId(11111745);
+        NashResult nashResult = appPlotService.queryPlotDetaalByPlotId(plotRequest1);
+        System.out.println(nashResult);
         return nashResult;
     }
 }
