@@ -12,7 +12,7 @@ public interface PlotDao {
      * @param id
      * @return
      */
-    String queryPlotDetail(Integer plotId);
+    Map queryPlotDetail(Integer plotId);
 
     /**
      * 根据坐标和距离查询附近的小区

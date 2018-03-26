@@ -1,7 +1,6 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
-import com.toutiao.app.service.plot.PlotService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -26,8 +25,6 @@ public class SellHouseRestController {
     @Autowired
     private ProjHouseInfoService projHouseInfoService;
     @Autowired
-    private PlotService plotService;
-    @Autowired
     private SellHouseService sellHouseService;
 
 
@@ -43,15 +40,6 @@ public class SellHouseRestController {
         System.out.println(sellHouseDetailsRequest.getHouseId());
         int sss = sellHouseService.queryNearByProjHouseInfo(sellHouseDetailsRequest.getHouseId());
         return NashResult.build(sss);
-    }
-
-
-    //小区详情页
-    @RequestMapping("/getByHouseId")
-    @ResponseBody
-    public NashResult getByHouseId(@Validated PlotRequest plotRequest) {
-        NashResult nashResult = plotService.queryPlotDetaalByPlotId(plotRequest);
-        return nashResult;
     }
 
 

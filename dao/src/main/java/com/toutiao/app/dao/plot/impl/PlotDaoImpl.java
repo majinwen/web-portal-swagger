@@ -36,7 +36,7 @@ public class PlotDaoImpl implements PlotDao {
 
 
     @Override
-    public String queryPlotDetail(Integer plotId) {
+    public Map queryPlotDetail(Integer plotId) {
         try {
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
@@ -45,7 +45,7 @@ public class PlotDaoImpl implements PlotDao {
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length==1){
-                String source = hits[0].getSourceAsString();
+                Map<String, Object> source = hits[0].getSource();
                 return source;
             }
         }catch (Exception e){
