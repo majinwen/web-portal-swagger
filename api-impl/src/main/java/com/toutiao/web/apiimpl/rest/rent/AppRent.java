@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/rest/zufang")
-public class rent {
+public class AppRent {
     @Autowired
     private RentHouseService rentHouseService;
     @Autowired

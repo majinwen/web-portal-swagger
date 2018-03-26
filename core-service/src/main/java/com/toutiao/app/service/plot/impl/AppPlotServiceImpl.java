@@ -39,7 +39,7 @@ public class AppPlotServiceImpl implements AppPlotService {
             JSONObject dataInfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             if (plotDetail!=null){
                 result.put("plotDetail",plotDetail);
-                result.put("houseList",rentList);
+                result.put("rentList",rentList);
                 result.put("nearList",nearList);
                 result.put("dataInfo",dataInfo);
                 return NashResult.build(result);

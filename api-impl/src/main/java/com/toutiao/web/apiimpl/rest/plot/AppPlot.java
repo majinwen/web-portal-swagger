@@ -29,7 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/plot")
-public class plot {
+public class AppPlot {
     @Autowired
     private AppPlotService appPlotService;
 

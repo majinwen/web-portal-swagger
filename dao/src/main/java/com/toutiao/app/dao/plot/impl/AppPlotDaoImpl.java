@@ -2,6 +2,7 @@ package com.toutiao.app.dao.plot.impl;
 
 import com.toutiao.app.dao.plot.AppPlotDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.domain.query.PlotRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -80,6 +81,26 @@ public class AppPlotDaoImpl implements AppPlotDao {
                 }
                 return nearPlotList;
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Map queryPlotByCondition(PlotRequest plotRequest) {
+        try {
+            String key = null;
+            List nearPlotList = new ArrayList();
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //小区ID
+            if (plotRequest.getPlotId() != null) {
+                boolQueryBuilder.must(QueryBuilders.termQuery("id", plotRequest.getPlotId()));
+            }
+            //关键字
+
         }catch (Exception e){
             e.printStackTrace();
         }

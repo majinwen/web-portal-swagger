@@ -1,5 +1,6 @@
 package com.toutiao.app.dao.plot;
 
+import com.toutiao.web.domain.query.PlotRequest;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -21,4 +22,11 @@ public interface AppPlotDao {
      * @return
      */
     List queryNearPlotByLocationAndDistance(double lat, double lon, Integer plotId);
+
+    /**
+     * 小区条件查询
+     * @param plotRequest
+     * @return
+     */
+    Map queryPlotByCondition(PlotRequest plotRequest);
 }
