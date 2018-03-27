@@ -19,9 +19,9 @@
             <#list rentHouse['rent_house_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
                     <#if rentphoto['image_path']?index_of("http") gt -1>
-                        <img src="${rentphoto['image_path']}" data-src="${rentphoto['image_path']}" alt="">
+                        <img src="${rentphoto['image_path']}" data-src="${rentphoto['image_path']}" onerror="this.src='${staticurl}/images/global/tpzw_banner_image.png'" alt="">
                     <#else>
-                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" data-src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" alt="">
+                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" data-src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" onerror="this.src='${staticurl}/images/global/tpzw_banner_image.png'" alt="">
                     </#if>
                 </li>
             </#list>
@@ -120,14 +120,14 @@
                 <div class="picture-box">
                     <#assign photo = plot['photo']>
                     <#if photo[0]?exists>
-                        <img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot.rc}">
+                        <img src="${qiniuimage}/${photo[0]}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="${plot.rc}">
                     <#else >
                         <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                 </div>
                 <div id="tilePlotDesc" class="tilelist-content">
                     <h4><em>小区：</em>${plot['rc']} [${plot['area']} ${plot['tradingArea']}]</h4>
-                    <p><em>年代：</em><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成住宅</#if><#if plot['sumBuilding']?exists>，共${plot['sumBuilding']}栋</#if></p>
+                    <p><em>简介：</em><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成住宅</#if><#if plot['sumBuilding']?exists><#if plot['abbreviatedAge']?exists && plot['sumBuilding']?exists>，</#if>共${plot['sumBuilding']}栋</#if></p>
                     <p><em>待租：</em><#if total?exists><em class="link">${total}套</em><#else >暂无其他房源</#if></p>
                 </div>
             </a></li>
@@ -158,7 +158,7 @@
     </section>
 </div>
 <div class="border-box">
-    <#if rentHouse['rent_sign'] == 0>
+    <#--<#if rentHouse['rent_sign'] == 0>-->
         <#if agent?exists>
             <section>
                 <div class="module-header-message">
@@ -168,9 +168,13 @@
                     <div class="describe-header">
                         <#if agent['agent_headphoto']?exists && agent['agent_headphoto'] != ''>
                             <#if agent['agent_headphoto']?index_of("http") gt -1>
-                                <img class="source-icon" src="${agent['agent_headphoto']}" alt="">
+                                <#if rentHouse['data_source_sign'] == 1>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='http://beijing.erp.bacic5i5j.com/5i5j/images/man.gif'" alt="名片">
+                                <#else>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
+                                </#if>
                             <#else>
-                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}" alt="">
+                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                             </#if>
                         <#else >
                             <#--<img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">-->
@@ -200,9 +204,13 @@
                     <div class="describe-header">
                         <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
                             <#if rentHouse['agent_headphoto']?index_of("http") gt -1>
-                                <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
+                                <#if rentHouse['data_source_sign'] == 1>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='http://beijing.erp.bacic5i5j.com/5i5j/images/man.gif'" alt="名片">
+                                <#else>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
+                                </#if>
                             <#else>
-                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                             </#if>
                         <#else >
                             <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
@@ -223,7 +231,7 @@
                 </div>
             </section>
         </#if>
-    <#else>
+    <#--<#else>
         <section>
             <div class="module-header-message">
                 <h3>公寓简介</h3>
@@ -256,7 +264,7 @@
                 </#if>
             </div>
         </section>
-    </#if>
+    </#if>-->
 </div>
 <#if rentHouse['rent_sign'] != 0 && rentHouse['demand']?exists && rentHouse['demand'] != ''>
     <div class="border-box">
@@ -282,9 +290,9 @@
                     <div class="list-item-img-box">
                         <#if builditem.house_title_img?exists && builditem.house_title_img!=''>
                             <#if builditem.house_title_img?index_of("http") gt -1>
-                                <img src="${builditem.house_title_img}" alt="${builditem.zufang_name}">
+                                <img src="${builditem.house_title_img}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="${builditem.zufang_name}">
                             <#else>
-                                <img src="${qiniuzufangimage}/${builditem.house_title_img}-tt400x300" alt="${builditem.zufang_name}">
+                                <img src="${qiniuzufangimage}/${builditem.house_title_img}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="${builditem.zufang_name}">
                             </#if>
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
