@@ -1,9 +1,9 @@
-package com.toutiao.app.domain.sellhouse;
+package com.toutiao.app.api.chance.response.sellhouse;
 
 import lombok.Data;
 
 @Data
-public class AgentsBySellHouseDo {
+public class AgentsBySellHouseResponse {
 
 
     /**
@@ -54,5 +54,4 @@ public class AgentsBySellHouseDo {
      * 二手房房源默认id
      */
     private Integer corpHouseId;
-
 }

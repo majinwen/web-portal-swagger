@@ -1,15 +1,14 @@
-package com.toutiao.app.api.chance.request.sellhouse;
+package com.toutiao.app.domain.sellhouse;
 
 import lombok.Data;
 
 @Data
-public class SellHouseRequest {
+public class ChooseSellHouseDo {
 
     /**
      * 关键字
      */
     private String keyWord;
-
     /**
      * 房源id
      */
@@ -71,13 +70,6 @@ public class SellHouseRequest {
      */
     private String buildingTypeId;
 
-
-    /**
-     * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
-     */
-    private Integer sort;
-
-
     /**
      * 房源小区名称
      */
@@ -86,7 +78,7 @@ public class SellHouseRequest {
     /**
      * 小区id
      */
-    private String newcode;
+    private String newCode;
 
     /**
      * 商圈名称
@@ -157,5 +149,8 @@ public class SellHouseRequest {
      * 每页数量
      */
     private Integer pageSize;
-
+    /**
+     * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
+     */
+    private Integer sort;
 }
