@@ -1486,6 +1486,8 @@ function pullUpAction() {
                                         }
                                         dataCon[i]['house_title_img'] = _house_title_img;
                                     }
+
+                                    dataCon[i]['house_area'] = Math.floor(dataCon[i]['house_area'])
                                 }
                             }
                         }
@@ -1692,6 +1694,8 @@ function pullDownAction() {
                                             }
                                             dataCon[i]['house_title_img'] = _house_title_img;
                                         }
+
+                                        dataCon[i]['house_area'] = Math.floor(dataCon[i]['house_area'])
                                     }
                                 }
                             }
