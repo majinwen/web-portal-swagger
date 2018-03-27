@@ -16,7 +16,7 @@ public interface AppPlotDao {
      * @param id
      * @return
      */
-    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder) throws Exception;
 
     /**
      * 根据坐标和距离查询附近的小区
@@ -24,7 +24,7 @@ public interface AppPlotDao {
      * @param lon
      * @return
      */
-    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort);
+    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort) throws Exception;
 
     /**
      * 小区条件查询

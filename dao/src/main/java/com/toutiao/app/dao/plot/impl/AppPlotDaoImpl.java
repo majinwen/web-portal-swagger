@@ -34,7 +34,7 @@ public class AppPlotDaoImpl implements AppPlotDao {
 
 
     @Override
-    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder) throws Exception {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
@@ -42,7 +42,7 @@ public class AppPlotDaoImpl implements AppPlotDao {
     }
 
     @Override
-    public SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort) {
+    public SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort) throws Exception{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(5).setPostFilter(location).addSort(sort).execute().actionGet();

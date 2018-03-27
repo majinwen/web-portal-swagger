@@ -6,6 +6,7 @@ import com.toutiao.app.dao.plot.AppPlotDao;
 import com.toutiao.app.dao.rent.AppRentDao;
 import com.toutiao.app.domain.MapInfo;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
+import com.toutiao.app.domain.Plot.PlotDetailsDoList;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import com.toutiao.app.service.plot.AppPlotService;
@@ -41,15 +42,11 @@ import java.util.Map;
 public class AppPlotServiceImpl implements AppPlotService {
     @Value("${distance}")
     private Double distance;
-
     @Autowired
     private AppPlotDao appPlotDao;
-//    @Autowired
-//    private AppRentDao appRentDao;
     @Autowired
     private MapInfoMapper mapInfoMapper;
-    @Autowired
-    private SellHouseService sellHouseService;
+
 
     /**
      * 小区详情信息
@@ -79,12 +76,13 @@ public class AppPlotServiceImpl implements AppPlotService {
      * @return
      */
     @Override
-    public MapInfo queryPlotMapInfo(Integer plotId) {
+    public JSONObject queryPlotMapInfo(Integer plotId) {
         try {
             MapInfo mapInfo = new MapInfo();
             com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
             BeanUtils.copyProperties(mapInfo,result);
-            return mapInfo;
+            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            return datainfo;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,8 +96,9 @@ public class AppPlotServiceImpl implements AppPlotService {
      * @param plotId
      * @return
      */
-    public List<PlotDetailsDo> queryAroundPlotByLocation(Double lat, Double lon,Integer plotId){
+    public PlotDetailsDoList queryAroundPlotByLocation(Double lat, Double lon, Integer plotId){
         try {
+            PlotDetailsDoList plotDetailsDoList = new PlotDetailsDoList();
             List<PlotDetailsDo> list = new ArrayList<>();
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             //从该坐标查询距离为distance内的小区
@@ -119,8 +118,10 @@ public class AppPlotServiceImpl implements AppPlotService {
                     BeanUtils.populate(plotDetailsDo, source);
                     list.add(plotDetailsDo);
                 }
+                plotDetailsDoList.setPlotDetailsDoList(list);
+                plotDetailsDoList.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                return plotDetailsDoList;
             }
-            return list;
         }catch (Exception e){
             e.printStackTrace();
         }

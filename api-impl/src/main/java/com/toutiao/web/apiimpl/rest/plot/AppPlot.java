@@ -1,12 +1,17 @@
 package com.toutiao.web.apiimpl.rest.plot;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotAroundPlot;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
+import com.toutiao.app.api.chance.response.plot.PlotDetailsResponseList;
 import com.toutiao.app.domain.MapInfo;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
+import com.toutiao.app.domain.Plot.PlotDetailsDoList;
 import com.toutiao.app.service.plot.AppPlotService;
 import com.toutiao.web.common.restmodel.NashResult;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -49,9 +54,9 @@ public class AppPlot {
     @RequestMapping("/getPlotAroundByPlotId")
     @ResponseBody
     public NashResult getPlotAroundByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        MapInfo mapInfo = appPlotService.queryPlotMapInfo(plotDetailsRequest.getPlotId());
-        if (mapInfo!=null){
-            return NashResult.build(mapInfo);
+        JSONObject jsonObject = appPlotService.queryPlotMapInfo(plotDetailsRequest.getPlotId());
+        if (jsonObject!=null){
+            return NashResult.build(jsonObject);
         }
         return NashResult.Fail("102","未找到该小区周边信息");
     }
@@ -64,16 +69,19 @@ public class AppPlot {
     @RequestMapping("/getAroundPlotByLocation")
     @ResponseBody
     public NashResult getPlotAroundByLocation(@Validated PlotAroundPlot plotAroundPlot){
-        List<PlotDetailsResponse> results = new ArrayList<>();
-        List<PlotDetailsDo> plotDetailsDos = appPlotService.queryAroundPlotByLocation(plotAroundPlot.getLat(), plotAroundPlot.getLon(),plotAroundPlot.getPlotId());
-        if (plotDetailsDos!=null&&plotDetailsDos.size()>0){
-            for (int i=0;i<plotDetailsDos.size();i++ ){
+        PlotDetailsDoList plotDetailsDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlot.getLat(), plotAroundPlot.getLon(), plotAroundPlot.getPlotId());
+        if (plotDetailsDoList!=null){
+            PlotDetailsResponseList plotDetailsResponseList = new PlotDetailsResponseList();
+            List<PlotDetailsResponse> list = new ArrayList<>();
+            for (PlotDetailsDo result:plotDetailsDoList.getPlotDetailsDoList()){
                 PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
-                BeanUtils.copyProperties(plotDetailsDos.get(i),plotDetailsResponse);
-                results.add(plotDetailsResponse);
+                BeanUtils.copyProperties(result,plotDetailsResponse);
+                list.add(plotDetailsResponse);
             }
-            return NashResult.build(results);
+            plotDetailsResponseList.setPlotDetailsResponseList(list);
+            return NashResult.build(plotDetailsResponseList);
         }
+
         return NashResult.Fail("103","未找到周边小区");
     }
 

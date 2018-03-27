@@ -9,5 +9,5 @@ public class RentDetailsRequest {
      * 房源id
      */
     @NotNull(message = "缺少房源Id")
-    private Integer rentId;
+    private String rentId;
 }

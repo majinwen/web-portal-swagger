@@ -1,5 +1,7 @@
 package com.toutiao.app.dao.rent;
 
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.context.annotation.Configuration;
 
 import java.awt.*;
@@ -13,19 +15,12 @@ public interface AppRentDao {
      * @param plotId
      * @return
      */
-   List queryHouseByPlotId(Integer plotId);
-
-    /**
-     * 根据房源id查询房源的经纪人
-     * @param houseId
-     * @return
-     */
-   Map queryAgentByRentId(Integer rentId);
+    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder) throws Exception;
 
     /**
      * 根据出租房源的id查询出租房源详情
      * @param rentId
      * @return
      */
-   Map queryRentByRentId(Integer rentId);
+    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder) throws Exception;
 }

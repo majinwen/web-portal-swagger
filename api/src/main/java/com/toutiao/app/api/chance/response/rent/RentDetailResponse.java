@@ -2,8 +2,7 @@ package com.toutiao.app.api.chance.response.rent;
 
 import lombok.Data;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
 @Data
 public class RentDetailResponse {
     /**
@@ -45,7 +44,7 @@ public class RentDetailResponse {
     /**
      * 出租房源Id
      */
-    private Integer house_id;
+    private String house_id;
     /**
      * 租赁方式(1-整租，2-合租)
      */
@@ -81,15 +80,15 @@ public class RentDetailResponse {
     /**
      * 朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
      */
-    private Integer forward;
+    private String forward;
     /**
      * 朝向（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
      */
-    private String forward_type;
+    private Integer forward_type;
     /**
      * 几室
      */
-    private Integer room;
+    private String room;
     /**
      * 几厅
      */
@@ -97,7 +96,7 @@ public class RentDetailResponse {
     /**
      * 供热方式
      */
-    private String heating_type;
+    private Integer heating_type;
     /**
      * 几卫
      */
@@ -153,7 +152,7 @@ public class RentDetailResponse {
     /**
      * 房源图片
      */
-    private Map rent_house_img;
+    private List rent_house_img;
     /**
      * 付款方式(1-面议，2-押一付一，3-押一付二，4-押一付三，5-押二付一，6-押二付二，7-押二付三，8-半年付，9-年付)
      */
@@ -189,15 +188,15 @@ public class RentDetailResponse {
     /**
      * 创建时间
      */
-    private Date create_time;
+    private String create_time;
     /**
      * 更新时间
      */
-    private Date update_time;
+    private String upString_time;
     /**
      * 发版时间
      */
-    private Date publish_time;
+    private String publish_time;
     /**
      * 发布状态
      */
@@ -219,24 +218,24 @@ public class RentDetailResponse {
      */
     private Integer version;
     /**
-     *
+     * 置顶关键词
      */
     private String top_keyword;
     /**
      * 置顶时间
      */
-    private Date top_time;
+    private String top_time;
     /**
      * 经纪人
      */
     private String estate_agent;
     /**
-     *
+     * 整租户型
      */
-    private String erent_layout;
+    private Integer erent_layout;
     /**
-     *
+     * 合租户型
      */
-    private String jrent_layout;
+    private Integer jrent_layout;
 
 }
