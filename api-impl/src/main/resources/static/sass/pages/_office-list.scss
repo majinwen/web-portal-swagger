@@ -138,13 +138,9 @@ $textGrayColor: #888;
             position: absolute;
             width: rem(430);
             bottom: 0;
-            white-space: nowrap;
-            overflow-x: scroll;
-            text-overflow: clip;
 
             &.esf {
                 width: rem(270);
-                @include text-ellipses;
             }
         }
 

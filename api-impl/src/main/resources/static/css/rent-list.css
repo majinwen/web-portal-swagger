@@ -1066,15 +1066,9 @@ body {
     .list-item .list-item-cont .cont-block-4 {
       position: absolute;
       width: 5.7333333333rem;
-      bottom: 0;
-      white-space: nowrap;
-      overflow-x: scroll;
-      text-overflow: clip; }
+      bottom: 0; }
       .list-item .list-item-cont .cont-block-4.esf {
-        width: 3.6rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; }
+        width: 3.6rem; }
     .list-item .list-item-cont .cont-block-price {
       position: absolute;
       right: 0;
