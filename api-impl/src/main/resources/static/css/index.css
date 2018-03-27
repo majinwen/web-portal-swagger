@@ -851,15 +851,9 @@ body {
     .list-item .list-item-cont .cont-block-4 {
       position: absolute;
       width: 5.7333333333rem;
-      bottom: 0;
-      white-space: nowrap;
-      overflow-x: scroll;
-      text-overflow: clip; }
+      bottom: 0; }
       .list-item .list-item-cont .cont-block-4.esf {
-        width: 3.6rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; }
+        width: 3.6rem; }
     .list-item .list-item-cont .cont-block-price {
       position: absolute;
       right: 0;
@@ -1236,6 +1230,9 @@ body {
   padding: 0 0.4rem 0.4133333333rem; }
   .banner-index-box .carousel-swiper {
     margin: 0 -0.4rem; }
+  .banner-index-box .index-slide-overflow {
+    max-width: 10rem;
+    overflow: hidden; }
 
 .index-module-header {
   position: relative;

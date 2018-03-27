@@ -22,8 +22,9 @@
 </header>
 <div class="module-bottom-fill">
     <section class="banner-index-box">
-        <div class="carousel-swiper" id="topbanner">
-           
+        <div class="swiper-container carousel-swiper" id="index-swiper">
+            <ul class="swiper-wrapper" id="topbanner"></ul>
+            <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
             <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})">
@@ -450,19 +451,47 @@
 </script>
 
 <script>
-
-    var config=[{"pid":1,"jqid":"#ad-positon-lefttop"}
-    ,{"pid":2,"jqid":"#ad-positon-leftright"},
-        {"pid":3,"jqid":"#ad-positon-leftbottom"},
-        {"pid":4,"jqid":"#ad-positon-rightbottom"},
-        {"pid":5,"jqid":"#topbanner",callback:function (html) {
+    var config = [{"pid": 1, "jqid": "#ad-positon-lefttop"},
+        {"pid": 2, "jqid": "#ad-positon-leftright"},
+        {"pid": 3, "jqid": "#ad-positon-leftbottom"},
+        {"pid": 4, "jqid": "#ad-positon-rightbottom"}/*,
+        {"pid": 5, "jqid": "#topbanner", callback: function (html) {
             html.click(function () {
-             zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})
-         })
-    }}];
-
+                zhuge.track('banner_大首页', {'banner名称': '智能人居更懂人需'})
+            })
+        }}*/];
     $com.toutiao.ad.json(config);
     var lunbo = [
+        {"pid": 5,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            var nameText = '';
+            if (typeof (html.find('.scaleImg').attr('art')) == 'undefined') {
+                nameText = '智能人居更懂人需'
+            } else {
+                nameText = html.find('.scaleImg').attr('art')
+            }
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': nameText})
+            })
+        }},
+        {"pid": 20,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 21,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
         {"pid":12,callback:function (html) {
             var parent=$('<li></li>');
             parent.append(html);
