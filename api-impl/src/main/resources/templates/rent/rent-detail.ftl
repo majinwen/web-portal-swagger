@@ -173,7 +173,8 @@
                                 <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}" alt="">
                             </#if>
                         <#else >
-                            <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                            <#--<img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">-->
+                            <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                         <p>
                             <span><#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
