@@ -50,4 +50,12 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         return searchResponse;
     }
 
+    @Override
+    public SearchResponse getSellHouseByPlotId(BoolQueryBuilder booleanQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).setSize(5).execute().actionGet();
+        return searchResponse;
+    }
+
 }

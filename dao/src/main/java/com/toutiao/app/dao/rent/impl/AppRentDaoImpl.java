@@ -2,7 +2,6 @@ package com.toutiao.app.dao.rent.impl;
 
 import com.toutiao.app.dao.rent.AppRentDao;
 import com.toutiao.web.common.util.ESClientTools;
-import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.awt.List;
 import java.util.*;
 
 @Service
@@ -34,11 +34,10 @@ public class AppRentDaoImpl implements AppRentDao {
     private static final Integer DISPERSED_APARTMENTS = 1;//公寓:2
     private static final String LAYOUT = "3";
 
+
     @Override
-    public Map queryHouseByPlotId(Integer plotId) {
+    public List queryHouseByPlotId(Integer plotId) {
         try{
-            Map result = new HashMap();
-            List list = new ArrayList();
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -48,13 +47,8 @@ public class AppRentDaoImpl implements AppRentDao {
             if (hits.length>0){
                 for (SearchHit hit:hits){
                     Map<String, Object> source = hit.getSource();
-                    list.add(source);
+                    source.put("total",searchResponse.getHits().getTotalHits());
                 }
-                result.put("houseList",list);
-                result.put("total",searchResponse.getHits().getTotalHits());
-                return result;
-            }else {
-
             }
         }catch (Exception e){
             e.printStackTrace();

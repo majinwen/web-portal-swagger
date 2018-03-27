@@ -24,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
@@ -79,6 +77,23 @@ public class SellHouseServiceImpl implements SellHouseService{
             sellHouseDetailsDo.setAgentsBySellHouseDo(agentsBySellHouseDo);
         }
         return sellHouseDetailsDo;
+    }
+
+    @Override
+    public List<SellHouseDetailsDo> queryEsfByPlotId(Integer plotId) {
+        List<SellHouseDetailsDo> houseList = new ArrayList<>();
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotId));
+        SearchResponse sellHouseByPlotId = sellHouseEsDao.getSellHouseByPlotId(booleanQueryBuilder);
+        SearchHit[] hits = sellHouseByPlotId.getHits().getHits();
+        String details;
+        for (SearchHit hit:hits){
+            details =  hit.getSourceAsString();
+            SellHouseDetailsDo sellHouseDetailsDo = JSON.parseObject(details, SellHouseDetailsDo.class);
+            sellHouseDetailsDo.setTotalNum(Integer.valueOf((int) sellHouseByPlotId.getHits().getTotalHits()));
+            houseList.add(sellHouseDetailsDo);
+        }
+        return houseList;
     }
 
 

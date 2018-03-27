@@ -246,4 +246,9 @@ public class SellHouseDetailsResponse {
      */
     private AgentsBySellHouseDo agentsBySellHouseDo;
 
+    /**
+     * 总个数
+     */
+    private Integer totalNum;
+
 }

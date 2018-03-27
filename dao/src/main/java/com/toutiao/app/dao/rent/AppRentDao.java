@@ -1,8 +1,8 @@
 package com.toutiao.app.dao.rent;
 
-import com.toutiao.web.domain.query.PlotRequest;
 import org.springframework.context.annotation.Configuration;
 
+import java.awt.*;
 import java.util.Map;
 
 @Configuration
@@ -13,7 +13,7 @@ public interface AppRentDao {
      * @param plotId
      * @return
      */
-   Map queryHouseByPlotId(Integer plotId);
+   List queryHouseByPlotId(Integer plotId);
 
     /**
      * 根据房源id查询房源的经纪人

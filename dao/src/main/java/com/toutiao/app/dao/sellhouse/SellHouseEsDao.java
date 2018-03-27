@@ -26,4 +26,11 @@ public interface SellHouseEsDao {
      */
     SearchResponse getSellHouseByHouseIdAndLocation(BoolQueryBuilder booleanQueryBuilder, ScriptSortBuilder scriptSortBuilder, GeoDistanceSortBuilder sort);
 
+    /**
+     * 小区内二手房
+     * @param booleanQueryBuilder
+     * @return
+     */
+    SearchResponse getSellHouseByPlotId(BoolQueryBuilder booleanQueryBuilder);
+
 }

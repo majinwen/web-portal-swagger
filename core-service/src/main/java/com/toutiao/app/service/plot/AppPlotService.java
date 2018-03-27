@@ -1,7 +1,9 @@
 package com.toutiao.app.service.plot;
 
-import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.domain.query.PlotRequest;
+
+import com.toutiao.app.domain.MapInfo;
+import com.toutiao.app.domain.Plot.PlotDetailsDo;
+
 
 public interface AppPlotService {
     /**
@@ -9,5 +11,12 @@ public interface AppPlotService {
      * @param plotId
      * @return
      */
-    NashResult queryPlotDetaalByPlotId(PlotRequest plotRequest);
+    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId);
+
+    /**
+     * 获取小区周边配套
+     * @param plotId
+     * @return
+     */
+    MapInfo queryPlotMapInfo(Integer plotId);
 }
