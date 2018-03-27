@@ -49,7 +49,7 @@ $textGrayColor: #888;
                 margin-left: rem(5);
                 @include font-dpr(20);
                 color: #999;
-                border: rem(1) solid $borderRadiusColor;
+                border: 1px solid $borderRadiusColor;
                 -webkit-border-radius: rem(4);
                 border-radius: rem(4);
                 @include box-sizing;
