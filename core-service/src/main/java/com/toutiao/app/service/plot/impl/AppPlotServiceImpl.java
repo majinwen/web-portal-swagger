@@ -51,10 +51,14 @@ public class AppPlotServiceImpl implements AppPlotService {
     @Autowired
     private SellHouseService sellHouseService;
 
+    /**
+     * 小区详情信息
+     * @param plotId
+     * @return
+     */
     @Override
     public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId) {
         try {
-            //小区详情
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
             SearchResponse searchResponse = appPlotDao.queryPlotDetail(boolQueryBuilder);
@@ -62,30 +66,6 @@ public class AppPlotServiceImpl implements AppPlotService {
             Map<String, Object> source = hits[0].getSource();
             PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
             BeanUtils.populate(plotDetailsDo, source);
-
-//            String details = "";
-//            details = hits[0].getSourceAsString();
-//            PlotDetailsDo plotDetailsDo = JSON.parseObject(details,PlotDetailsDo.class);
-
-            //地图信息
-            MapInfo mapInfo = queryPlotMapInfo(plotId);
-            if (mapInfo!=null){
-                plotDetailsDo.setMapInfo(mapInfo);
-            }
-
-            //小区内二手房
-            List<SellHouseDetailsDo> esfByPlotId = getEsfByPlotId(plotId);
-            if (esfByPlotId!=null){
-                plotDetailsDo.setSellHouseDetailsDo(esfByPlotId);
-            }
-
-            //小区附近小区
-            String[] location = plotDetailsDo.getLocation().split(",");
-            List<PlotDetailsDo> nearPlotByLocationAndDistance = getNearPlotByLocationAndDistance(Double.valueOf(location[0]), Double.valueOf(location[1]), plotDetailsDo.getId());
-            if (nearPlotByLocationAndDistance!=null&&nearPlotByLocationAndDistance.size()>0){
-                plotDetailsDo.setPlotDetailsDoList(nearPlotByLocationAndDistance);
-            }
-    //            Map rentList = appRentDao.queryHouseByPlotId(plotRequest.getPlotId());
             return plotDetailsDo;
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,24 +80,15 @@ public class AppPlotServiceImpl implements AppPlotService {
      */
     @Override
     public MapInfo queryPlotMapInfo(Integer plotId) {
-        MapInfo mapInfo = new MapInfo();
-        com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
         try {
+            MapInfo mapInfo = new MapInfo();
+            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
             BeanUtils.copyProperties(mapInfo,result);
+            return mapInfo;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return mapInfo;
-    }
-
-    /**
-     * 查询小区内的二手房
-     * @param plotId
-     * @return
-     */
-    public List<SellHouseDetailsDo> getEsfByPlotId(Integer plotId){
-        List<SellHouseDetailsDo> sellHouseDetailsDos = sellHouseService.queryEsfByPlotId(plotId);
-        return sellHouseDetailsDos;
+        return null;
     }
 
     /**
@@ -127,30 +98,33 @@ public class AppPlotServiceImpl implements AppPlotService {
      * @param plotId
      * @return
      */
-    public List<PlotDetailsDo> getNearPlotByLocationAndDistance(Double lat, Double lon, Integer plotId) throws Exception {
-        List<PlotDetailsDo> list = new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        //从该坐标查询距离为distance内的小区
-        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
-        //按照距离排序由近到远并获取小区之间的距离
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
-        sort.unit(DistanceUnit.METERS);
-        sort.order(SortOrder.ASC);
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-        boolQueryBuilder.mustNot(QueryBuilders.termQuery("id",plotId));
-        SearchResponse searchResponse = appPlotDao.queryNearPlotByLocationAndDistance(boolQueryBuilder, location, sort);
-        SearchHit[] hits = searchResponse.getHits().getHits();
-        if (hits.length>0){
-            for (SearchHit hit:hits){
-//                String sourceAsString = hit.getSourceAsString();
-                Map<String, Object> source = hit.getSource();
-                PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
-                BeanUtils.populate(plotDetailsDo, source);
-//                PlotDetailsDo plotDetailsDo = JSON.parseObject(sourceAsString,PlotDetailsDo.class);
-                list.add(plotDetailsDo);
+    public List<PlotDetailsDo> queryAroundPlotByLocation(Double lat, Double lon,Integer plotId){
+        try {
+            List<PlotDetailsDo> list = new ArrayList<>();
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            //从该坐标查询距离为distance内的小区
+            GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(distance, DistanceUnit.METERS);
+            //按照距离排序由近到远并获取小区之间的距离
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+            sort.unit(DistanceUnit.METERS);
+            sort.order(SortOrder.ASC);
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+            boolQueryBuilder.mustNot(QueryBuilders.termQuery("id", plotId));
+            SearchResponse searchResponse = appPlotDao.queryNearPlotByLocationAndDistance(boolQueryBuilder, location, sort);
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length>0){
+                for (SearchHit hit:hits){
+                    Map<String, Object> source = hit.getSource();
+                    PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
+                    BeanUtils.populate(plotDetailsDo, source);
+                    list.add(plotDetailsDo);
+                }
             }
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        return list;
+        return null;
     }
 
 

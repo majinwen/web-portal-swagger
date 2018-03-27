@@ -1,12 +1,11 @@
-package com.toutiao.app.domain.Rent;
+package com.toutiao.app.api.chance.response.rent;
 
 import lombok.Data;
 
 import java.util.Date;
 import java.util.Map;
-
 @Data
-public class RentDetailsDo {
+public class RentDetailResponse {
     /**
      * 经纪人头像路径
      */
@@ -220,7 +219,7 @@ public class RentDetailsDo {
      */
     private Integer version;
     /**
-     * 置顶关键词
+     *
      */
     private String top_keyword;
     /**
@@ -232,11 +231,11 @@ public class RentDetailsDo {
      */
     private String estate_agent;
     /**
-     * 整租户型
+     *
      */
     private String erent_layout;
     /**
-     * 合租户型
+     *
      */
     private String jrent_layout;
 

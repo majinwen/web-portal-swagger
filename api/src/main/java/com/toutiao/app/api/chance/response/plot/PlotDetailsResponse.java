@@ -1,14 +1,6 @@
 package com.toutiao.app.api.chance.response.plot;
 
-
-
-import com.toutiao.app.domain.MapInfo;
-import com.toutiao.app.domain.Plot.PlotDetailsDo;
-import com.toutiao.app.domain.Rent.RentDetailsDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import lombok.Data;
-
-import java.util.List;
 import java.util.Map;
 
 
@@ -275,23 +267,23 @@ public class PlotDetailsResponse {
      */
     private Integer pageNum;
 
-    /**
-     * 小区内二手房
-     */
-    private List<SellHouseDetailsDo> sellHouseDetailsDo;
-
-    /**
-     * 小区内出租房源
-     */
-    private List<RentDetailsDo> rentDetailsDo;
-
-    /**
-     * 小区周边配套
-     */
-    private MapInfo mapInfo;
-
-    /**
-     * 附近小区
-     */
-    private List<PlotDetailsDo> plotDetailsDoList;
+//    /**
+//     * 小区内二手房
+//     */
+//    private List<SellHouseDetailsDo> sellHouseDetailsDo;
+//
+//    /**
+//     * 小区内出租房源
+//     */
+//    private List<RentDetailsDo> rentDetailsDo;
+//
+//    /**
+//     * 小区周边配套
+//     */
+//    private MapInfo mapInfo;
+//
+//    /**
+//     * 附近小区
+//     */
+//    private List<PlotDetailsDo> plotDetailsDoList;
 }

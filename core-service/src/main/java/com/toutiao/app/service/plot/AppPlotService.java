@@ -4,6 +4,8 @@ package com.toutiao.app.service.plot;
 import com.toutiao.app.domain.MapInfo;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
 
+import java.util.List;
+
 
 public interface AppPlotService {
     /**
@@ -19,4 +21,12 @@ public interface AppPlotService {
      * @return
      */
     MapInfo queryPlotMapInfo(Integer plotId);
+
+    /**
+     * 获取小区周围小区
+     * @param lat
+     * @param lon
+     * @return
+     */
+    List<PlotDetailsDo> queryAroundPlotByLocation(Double lat,Double lon,Integer plotId);
 }
