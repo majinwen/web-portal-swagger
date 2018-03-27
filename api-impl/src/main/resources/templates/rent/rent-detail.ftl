@@ -108,7 +108,7 @@
     </section>
 </div>
 </#if>
-<#if plot?exists&&rentHouse['rent_sign'] == 0>
+<#if plot?exists>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
