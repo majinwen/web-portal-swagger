@@ -54,7 +54,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     }
 
     @Override
-    public SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, String keyWord, Integer order) {
+    public SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, String keyWord, Integer order,int pageSize,int pageNum) {
 
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = null;
@@ -64,25 +64,25 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         }
         if (order != null && order == 1) {
             searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
-//                    .setFrom((pageNum - 1) * pageSize)
-//                    .setSize(pageSize)
+                    .setFrom((pageNum - 1) * pageSize)
+                    .setSize(pageSize)
                     .execute().actionGet();
         } else if (order != null && order == 2) {
             searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
-//                    .setFrom((pageNum - 1) * pageSize)
-//                    .setSize(pageSize)
+                    .setFrom((pageNum - 1) * pageSize)
+                    .setSize(pageSize)
                     .execute().actionGet();
         } else {
             //如果含有关键字查询，优先显示关键字
             if (StringTool.isNotBlank(keyWord)){
                 searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-//                        .setFrom((pageNum - 1) * pageSize)
-//                        .setSize(pageSize)
+                        .setFrom((pageNum - 1) * pageSize)
+                        .setSize(pageSize)
                         .execute().actionGet();
             } else {
                 searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-//                        .setFrom((pageNum - 1) * pageSize)
-//                        .setSize(pageSize)
+                        .setFrom((pageNum - 1) * pageSize)
+                        .setSize(pageSize)
                         .execute().actionGet();
             }
         }

@@ -288,9 +288,13 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         //去未删除的房源信息
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        int pageNum = 1;
 
+        if(chooseSellHouseDo.getPageNum()!=null && chooseSellHouseDo.getPageNum()>1){
+            pageNum = chooseSellHouseDo.getPageNum();
+        }
         SearchResponse searchresponse  = sellHouseEsDao.getSellHouseByChoose(booleanQueryBuilder, location, sort, chooseSellHouseDo.getKeyWord(),
-                chooseSellHouseDo.getSort());
+                chooseSellHouseDo.getSort(),chooseSellHouseDo.getPageSize(),pageNum);
 
         SearchHits hits = searchresponse.getHits();
         long totalHits = hits.totalHits;

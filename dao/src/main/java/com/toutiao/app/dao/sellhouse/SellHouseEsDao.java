@@ -36,5 +36,5 @@ public interface SellHouseEsDao {
      * @param order
      * @return
      */
-    SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder,GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort,String keyWord,Integer order);
+    SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder,GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort,String keyWord,Integer order,int pageSize,int pageNum);
 }
