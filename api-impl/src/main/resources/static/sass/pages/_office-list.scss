@@ -227,6 +227,12 @@ $textGrayColor: #888;
             position: relative;
             margin-bottom: rem(20);
 
+            .cont-block-1 {
+                em {
+                    border: 1px solid $borderRadiusColor;
+                }
+            }
+
             h3, p {
                 display: inline-block;
                 margin-top: 0;

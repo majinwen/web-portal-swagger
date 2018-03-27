@@ -2348,6 +2348,8 @@ a.pswp__share--download:hover {
   .list-item.new-ad-item .list-item-cont-ad {
     position: relative;
     margin-bottom: 0.2666666667rem; }
+    .list-item.new-ad-item .list-item-cont-ad .cont-block-1 em {
+      border: 1px solid #999; }
     .list-item.new-ad-item .list-item-cont-ad h3, .list-item.new-ad-item .list-item-cont-ad p {
       display: inline-block;
       margin-top: 0;
