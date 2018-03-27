@@ -71,7 +71,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @param distance
      * @return
      */
-    public List<NearBySellHousesDo> getSellHouseByhouseIdAndLocation(String newcode, double lat, double lon, String distance) {
+    public List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(String newcode, double lat, double lon, String distance) {
 
         List<NearBySellHousesDo> nearBySh = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();

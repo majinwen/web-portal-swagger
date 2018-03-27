@@ -1,6 +1,9 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
 import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alibaba.fastjson.JSONArray.*;
 
 
 @RestController
@@ -50,11 +55,11 @@ public class SellHouseRestController {
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
-    public NashResult getSellHouseByhouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
-        List<NearBySellHousesResponse> nearBySellHousesResponses = new ArrayList<>();
-        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByhouseIdAndLocation(nearBySellHousesRequest.getNewhouse(),nearBySellHousesRequest.getLat(),
+    public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
+        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesRequest.getNewhouse(),nearBySellHousesRequest.getLat(),
                 nearBySellHousesRequest.getLon(),nearBySellHousesRequest.getDistance());
-        BeanUtils.copyProperties(nearBySellHousesDos, nearBySellHousesResponses);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos));
+        List<NearBySellHousesResponse> nearBySellHousesResponses = JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
         return NashResult.build(nearBySellHousesResponses);
     }
 
