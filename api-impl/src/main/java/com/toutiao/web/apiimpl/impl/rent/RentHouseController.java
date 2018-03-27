@@ -73,11 +73,7 @@ public class RentHouseController {
                 if (nearHouseApartment!=null){
                     model.addAttribute("total",nearHouseApartment.get("total"));
                 }
-                //小区详情信息
-                Map plot = plotService.queryPlotByRentId(zufang_id);
-                if (plot!=null){
-                    model.addAttribute("plot",plot);
-                }
+
             }else {
                 queryNearHouse.setHouseId(house_id);
                 queryNearHouse.setZuFangId(zufang_id);
@@ -92,7 +88,11 @@ public class RentHouseController {
                     model.addAttribute("total",nearHouse.get("total"));
                 }
             }
-
+            //小区详情信息
+            Map plot = plotService.queryPlotByRentId(zufang_id);
+            if (plot!=null){
+                model.addAttribute("plot",plot);
+            }
 
             //房源经纪人
             Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
