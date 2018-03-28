@@ -352,6 +352,12 @@ $(function () {
         moreOption('ht');
     }
     /**
+     * 特色筛选---多选(租房)
+     */
+    if (req['tags']) {
+        moreOption('tags');
+    }
+    /**
      * 整租筛选---多选
      */
     if (req['elo']) {
@@ -1120,7 +1126,7 @@ $('#moreReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
     req['pageNum'] = null;
     req['propertyTypeId'] = null;
-    req['houseAreaSize'] = null;
+    req['houseAreaSize'] = null; // 面积
     req['elevatorFlag'] = null;
     req['buildingType'] = null;
     req['saleType'] = null;
@@ -1133,7 +1139,10 @@ $('#moreReset').on('click', function () {
     req['ownership'] = null;
     req['lat'] = null;
     req['lon'] = null;
-    req['forward'] = null;
+    req['forward'] = null;  // 朝向(租房)
+    req['source'] = null;   // 来源(租房)
+    req['ht'] = null;   // 供暖(租房)
+    req['tags'] = null;     // 特色(租房)
 });
 /**
  * 租房类型提交
@@ -1186,7 +1195,7 @@ $('#moreRentSubmit').on('click', function (e) {
     });
 });
 /*
- * 更多筛选重置(租房)
+ * 更多筛选重置(租房户型)
  * */
 $('#moreRentReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
