@@ -1057,9 +1057,6 @@ body {
       height: 1.3333333333rem;
       -webkit-background-size: contain;
       background-size: contain; }
-      .banner-nav .banner-nav-item i.index-new-icon, .banner-nav .banner-nav-item i.index-esf-icon, .banner-nav .banner-nav-item i.index-rent-icon, .banner-nav .banner-nav-item i.index-plot-icon, .banner-nav .banner-nav-item i.index-intelligent-icon {
-        width: 1.0666666667rem;
-        height: 1.0666666667rem; }
       .banner-nav .banner-nav-item i.all-buildings {
         background-image: url("/static/images/newindex/newindex-nav-icon-2018030501.png");
         background-repeat: no-repeat; }
@@ -1143,8 +1140,8 @@ body {
       [data-dpr="3"] .banner-nav .banner-nav-item p {
         font-size: 39px; }
     .banner-nav .banner-nav-item.index-nav-item i {
-      width: 1.2533333333rem;
-      height: 1.2533333333rem; }
+      width: 1.0666666667rem;
+      height: 1.0666666667rem; }
 
 .bulletin-board {
   position: relative;

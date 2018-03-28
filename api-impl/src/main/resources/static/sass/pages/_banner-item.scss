@@ -20,11 +20,6 @@
             -webkit-background-size: contain;
             background-size: contain;
 
-            &.index-new-icon, &.index-esf-icon, &.index-rent-icon, &.index-plot-icon, &.index-intelligent-icon {
-                width: rem(80);
-                height: rem(80);
-            }
-
             &.all-buildings {
                 @include bg-image('/static/images/newindex/newindex-nav-icon-2018030501');
             }
@@ -61,8 +56,8 @@
 
         &.index-nav-item {
             i {
-                width: rem(94);
-                height: rem(94);
+                width: rem(80);
+                height: rem(80);
             }
         }
     }
