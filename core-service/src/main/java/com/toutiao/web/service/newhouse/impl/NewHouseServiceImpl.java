@@ -176,13 +176,28 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
-            String[] py = newHouseQuery.getBuildingFeature().split(",");
-            String[] BuildingFeature = new String[py.length];
-            for(int i=0; i<py.length;i++){
-                BuildingFeature[i] = py[i];
-            }
-            booleanQueryBuilder.must(termsQuery("building_tags_id", BuildingFeature));
 
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            String[] py = newHouseQuery.getBuildingFeature().split(",");
+            boolean has_subway = Arrays.asList(py).contains("1");
+
+            if(has_subway){
+                String[] tagOther = new String[py.length-1];
+                int idx = 0;
+                for(int i=0;i<py.length;i++){
+                    if(py[i].equals("1")){
+                        boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", py[i]));
+                    } else {
+                        tagOther[idx++] = py[i];
+                    }
+                }
+                if(tagOther.length!=0){
+                    boolQueryBuilder.should(QueryBuilders.termsQuery("building_tags_id", tagOther));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
+            }else{
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("building_tags_id", py));
+            }
         }
         //装修
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){

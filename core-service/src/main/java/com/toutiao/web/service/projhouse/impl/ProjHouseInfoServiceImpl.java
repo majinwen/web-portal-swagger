@@ -275,8 +275,27 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             //标签(满二，满三，满五)
             if (StringUtil.isNotNullString(projHouseInfoRequest.getHouseLabelId())) {
-                String[] layoutId = projHouseInfoRequest.getHouseLabelId().split(",");
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", layoutId));
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                String[] tags = projHouseInfoRequest.getHouseLabelId().split(",");
+                boolean has_subway = Arrays.asList(tags).contains("1");
+
+                if(has_subway){
+                    String[] tagOther = new String[tags.length-1];
+                    int idx = 0;
+                    for(int i=0;i<tags.length;i++){
+                        if(tags[i].equals("1")){
+                            boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", tags[i]));
+                        } else {
+                            tagOther[idx++] = tags[i];
+                        }
+                    }
+                    if(tagOther.length!=0){
+                        boolQueryBuilder.should(QueryBuilders.termsQuery("tags", tagOther));
+                    }
+                    booleanQueryBuilder.must(boolQueryBuilder);
+                }else{
+                    booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", tags));
+                }
             }
 
             //楼层

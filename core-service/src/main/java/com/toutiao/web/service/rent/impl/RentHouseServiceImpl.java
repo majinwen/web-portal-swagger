@@ -768,8 +768,26 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         //特色
         if (StringTool.isNotEmpty(rentHouseQuery.getTags())) {
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             String[] tag = rentHouseQuery.getTags().split(",");
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", tag));
+            boolean has_subway = Arrays.asList(tag).contains("1");
+            if(has_subway){
+                String[] tagOther = new String[tag.length-1];
+                int idx = 0;
+                for(int i=0;i<tag.length;i++){
+                    if(tag[i].equals("1")){
+                        boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", tag[i]));
+                    } else {
+                        tagOther[idx++] = tag[i];
+                    }
+                }
+                if(tagOther.length!=0){
+                    boolQueryBuilder.should(QueryBuilders.termsQuery("rent_house_tags_id", tagOther));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
+            }else{
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", tag));
+            }
         }
         //房源类型
         if (Integer.valueOf(rentHouseQuery.getRentSign())==0){

@@ -49,7 +49,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         //近地铁
         if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", aggAdLandingDo.getNs()));
+           // booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", aggAdLandingDo.getNs()));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
         }
 
         // 房源标签（满5，满2）
