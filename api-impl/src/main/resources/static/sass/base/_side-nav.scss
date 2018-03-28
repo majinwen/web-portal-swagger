@@ -36,8 +36,12 @@
 
             li {
                 position: relative;
-                padding-left: rem(117);
+                padding-left: rem(40);
                 @include font-dpr(26);
+
+                > a {
+                    display: block;
+                }
 
                 i {
                     position: absolute;
