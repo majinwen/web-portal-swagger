@@ -1278,32 +1278,32 @@ body {
           .banner-nav .banner-nav-item i.index-new-icon {
             background-image: url("/static/images/index/index-nav-icon-2018032801@3x.png"); } }
       .banner-nav .banner-nav-item i.index-esf-icon {
-        background-image: url("/static/images/index/index-nav-icon-2018032802.png");
-        background-repeat: no-repeat; }
-        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/index-nav-icon-2018032802@2x.png"); } }
-        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .banner-nav .banner-nav-item i.index-esf-icon {
-            background-image: url("/static/images/index/index-nav-icon-2018032802@3x.png"); } }
-      .banner-nav .banner-nav-item i.index-rent-icon {
         background-image: url("/static/images/index/index-nav-icon-2018032803.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .banner-nav .banner-nav-item i.index-rent-icon {
+          .banner-nav .banner-nav-item i.index-esf-icon {
             background-image: url("/static/images/index/index-nav-icon-2018032803@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .banner-nav .banner-nav-item i.index-rent-icon {
+          .banner-nav .banner-nav-item i.index-esf-icon {
             background-image: url("/static/images/index/index-nav-icon-2018032803@3x.png"); } }
-      .banner-nav .banner-nav-item i.index-plot-icon {
+      .banner-nav .banner-nav-item i.index-rent-icon {
         background-image: url("/static/images/index/index-nav-icon-2018032804.png");
         background-repeat: no-repeat; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
-          .banner-nav .banner-nav-item i.index-plot-icon {
+          .banner-nav .banner-nav-item i.index-rent-icon {
             background-image: url("/static/images/index/index-nav-icon-2018032804@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
-          .banner-nav .banner-nav-item i.index-plot-icon {
+          .banner-nav .banner-nav-item i.index-rent-icon {
             background-image: url("/static/images/index/index-nav-icon-2018032804@3x.png"); } }
+      .banner-nav .banner-nav-item i.index-plot-icon {
+        background-image: url("/static/images/index/index-nav-icon-2018032802.png");
+        background-repeat: no-repeat; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .banner-nav .banner-nav-item i.index-plot-icon {
+            background-image: url("/static/images/index/index-nav-icon-2018032802@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .banner-nav .banner-nav-item i.index-plot-icon {
+            background-image: url("/static/images/index/index-nav-icon-2018032802@3x.png"); } }
       .banner-nav .banner-nav-item i.index-intelligent-icon {
         background-image: url("/static/images/index/index-nav-icon-2018032805.png");
         background-repeat: no-repeat; }

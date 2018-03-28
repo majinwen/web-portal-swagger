@@ -38,13 +38,13 @@
                 @include bg-image('/static/images/index/index-nav-icon-2018032801');
             }
             &.index-esf-icon {
-                @include bg-image('/static/images/index/index-nav-icon-2018032802');
-            }
-            &.index-rent-icon {
                 @include bg-image('/static/images/index/index-nav-icon-2018032803');
             }
-            &.index-plot-icon {
+            &.index-rent-icon {
                 @include bg-image('/static/images/index/index-nav-icon-2018032804');
+            }
+            &.index-plot-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032802');
             }
             &.index-intelligent-icon {
                 @include bg-image('/static/images/index/index-nav-icon-2018032805');
