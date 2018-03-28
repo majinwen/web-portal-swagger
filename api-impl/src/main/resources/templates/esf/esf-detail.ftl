@@ -435,15 +435,27 @@
     </ul>
 </section>
 </#if>-->
-<#if houseDetail.houseProxyPhone?exists>
+
 <div class="detail-contact-wrapper">
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
-            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+            <#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>
+                <a href="tel:${agent['agent_phone']}" class="only contact-telephone-counseling">咨询经纪人</a>
+            <#else>
+                <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+            </#if>
         </div>
     </section>
 </div>
-</#if>
+<#--<#if houseDetail.houseProxyPhone?exists>-->
+<#--<div class="detail-contact-wrapper">-->
+    <#--<section class="detail-contact-box" id="detailContactState">-->
+        <#--<div class="detail-contact-content">-->
+            <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>-->
+        <#--</div>-->
+    <#--</section>-->
+<#--</div>-->
+<#--</#if>-->
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
