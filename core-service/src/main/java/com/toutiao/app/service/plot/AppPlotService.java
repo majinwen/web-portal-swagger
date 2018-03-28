@@ -2,9 +2,8 @@ package com.toutiao.app.service.plot;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.domain.MapInfo;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
-import com.toutiao.app.domain.Plot.PlotDetailsDoList;
+import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public interface AppPlotService {
      * @param plotId
      * @return
      */
-    JSONObject queryPlotMapInfo(Integer plotId);
+    JSONObject queryPlotDataInfo(Integer plotId);
 
     /**
      * 获取小区周围小区
@@ -30,5 +29,5 @@ public interface AppPlotService {
      * @param lon
      * @return
      */
-    PlotDetailsDoList queryAroundPlotByLocation(Double lat, Double lon, Integer plotId);
+    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId);
 }

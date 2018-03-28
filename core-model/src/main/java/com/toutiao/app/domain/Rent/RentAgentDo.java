@@ -44,7 +44,7 @@ public class RentAgentDo {
     /**
      * 房源标签
      */
-    private String house_tags_name;
+    private String[] house_tags_name;
     /**
      * 房源标题图
      */

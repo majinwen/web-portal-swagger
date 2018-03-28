@@ -9,7 +9,7 @@ public class RentDetailsDoList {
     /**
      * 出租房源集合
      */
-    private List<RentDetailsDo> rentDetailsDoList;
+    private List<RentDetailsFewDo> rentDetailsDoList;
 
     /**
      * 总数

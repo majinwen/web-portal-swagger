@@ -2,6 +2,7 @@ package com.toutiao.app.domain.Rent;
 
 import lombok.Data;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -129,7 +130,7 @@ public class RentDetailsDo {
     /**
      * 附近地铁站
      */
-    private String[] nearby_subway;
+    private HashMap nearby_subway;
     /**
      * 最近的地铁
      */

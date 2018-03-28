@@ -5,7 +5,7 @@ import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.AppRentDao;
 import com.toutiao.app.domain.Rent.RentAgentDo;
 import com.toutiao.app.domain.Rent.RentDetailsDo;
-import com.toutiao.app.domain.Rent.RentDetailsDoList;
+import com.toutiao.app.domain.Rent.RentDetailsFewDo;
 import com.toutiao.app.service.rent.AppRentService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -64,26 +64,21 @@ public class AppRentServiceImpl implements AppRentService {
      * @return
      */
     @Override
-    public RentDetailsDoList queryRentListByPlotId(Integer plotId) {
+    public List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId) {
         try {
-//            RentDetailsDo rentDetailsDo = new RentDetailsDo();
-            List<RentDetailsDo> list = new ArrayList<>();
-            RentDetailsDoList rentDetailsDoList = new RentDetailsDoList();
+            List<RentDetailsFewDo> list = new ArrayList<>();
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
             SearchResponse searchResponse = appRentDao.queryRentListByPlotId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
-                    Map<String, Object> source = hit.getSource();
-//                    BeanUtils.copyProperties(source,rentDetailsDo);
                     String sourceAsString = hit.getSourceAsString();
-                    RentDetailsDo rentDetailsDo = JSON.parseObject(sourceAsString, RentDetailsDo.class);
-                    list.add(rentDetailsDo);
+                    RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                    rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                    list.add(rentDetailsFewDo);
                 }
-                rentDetailsDoList.setTotalNum((int) searchResponse.getHits().getTotalHits());
-                rentDetailsDoList.setRentDetailsDoList(list);
-                return rentDetailsDoList;
+                return list;
             }
         }catch (Exception e){
             e.printStackTrace();

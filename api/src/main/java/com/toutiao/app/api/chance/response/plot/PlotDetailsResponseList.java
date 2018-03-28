@@ -7,9 +7,9 @@ import java.util.List;
 @Data
 public class PlotDetailsResponseList {
     /**
-     * 小区集合
+     * 小区列表
      */
-    private List<PlotDetailsResponse> plotDetailsResponseList;
+    private List<PlotDetailsFewResponse> plotDetailsResponseList;
     /**
      * 总数
      */

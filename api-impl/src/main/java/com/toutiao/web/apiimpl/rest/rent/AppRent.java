@@ -1,13 +1,16 @@
 package com.toutiao.web.apiimpl.rest.rent;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
 import com.toutiao.app.api.chance.response.rent.RentAgentResponse;
+import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
 import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
-import com.toutiao.app.api.chance.response.rent.RentDetailResponseList;
 import com.toutiao.app.domain.Rent.RentAgentDo;
 import com.toutiao.app.domain.Rent.RentDetailsDo;
-import com.toutiao.app.domain.Rent.RentDetailsDoList;
+import com.toutiao.app.domain.Rent.RentDetailsFewDo;
 import com.toutiao.app.service.rent.AppRentService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -51,18 +53,11 @@ public class AppRent {
     @RequestMapping("getRentListByPlotId")
     @ResponseBody
     public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        RentDetailsDoList rentDetailsDoList = appRentService.queryRentListByPlotId(plotDetailsRequest.getPlotId());
-        if (rentDetailsDoList!=null){
-            RentDetailResponseList rentDetailResponseList = new RentDetailResponseList();
-            List<RentDetailResponse> list = new ArrayList<>();
-            for (RentDetailsDo result:rentDetailsDoList.getRentDetailsDoList()){
-                RentDetailResponse rentDetailResponse = new RentDetailResponse();
-                BeanUtils.copyProperties(result,rentDetailResponse);
-                list.add(rentDetailResponse);
-            }
-            BeanUtils.copyProperties(rentDetailsDoList,rentDetailResponseList);
-            rentDetailResponseList.setRentDetailResponseList(list);
-            return NashResult.build(rentDetailResponseList);
+        List<RentDetailsFewDo> rentDetailsFewDoList = appRentService.queryRentListByPlotId(plotDetailsRequest.getPlotId());
+        if (rentDetailsFewDoList!=null&&rentDetailsFewDoList.size()>0){
+            JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
+            List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
+            return NashResult.build(rentDetailFewResponses);
         }
         return NashResult.Fail("101","未找到该小区下的出租房屋");
     }
@@ -83,4 +78,5 @@ public class AppRent {
         }
         return NashResult.Fail("101","未找到相关经纪人");
     }
+
 }
