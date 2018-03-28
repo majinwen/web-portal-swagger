@@ -348,6 +348,14 @@
                 })
             }
         }},
+        {"pid": 11,callback: function (html) {
+            var parent=$('<li class="swiper-slide"></li>');
+            parent.append(html);
+            $("#house-pic-container").append(parent);
+            html.click(function () {
+                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
         {"pid": 22,callback: function (html) {
             var parent=$('<li class="swiper-slide"></li>');
             parent.append(html);
