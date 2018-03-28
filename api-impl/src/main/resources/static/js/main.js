@@ -68,7 +68,7 @@ function detailContactState() {
 }
 function carouselSwiper() {
     var bannerloop;
-    var newIndexloop;
+    var newIndexloop = false;
     if ($('.swiper-container').length) {
         // 详情页
         if (($('#detail-swiper').find('li').not('.swiper-slide-duplicate').length) == 1) {
