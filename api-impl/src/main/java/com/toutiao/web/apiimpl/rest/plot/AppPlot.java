@@ -3,12 +3,15 @@ package com.toutiao.web.apiimpl.rest.plot;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.api.chance.request.plot.PlotAroundPlot;
+import com.toutiao.app.api.chance.request.plot.PlotAroundInfoRequest;
+import com.toutiao.app.api.chance.request.plot.PlotAroundPlotRequest;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
+import com.toutiao.app.api.chance.request.plot.PlotListRequest;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsFewResponse;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
 import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.Plot.PlotListDo;
 import com.toutiao.app.service.plot.AppPlotService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
@@ -36,12 +39,9 @@ public class AppPlot {
     @ResponseBody
     public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
         PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId());
-        if (plotDetailsDo!=null){
-            PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
-            BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
-            return NashResult.build(plotDetailsResponse);
-        }
-        return NashResult.Fail("101","未找到该小区");
+        PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
+        BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
+        return NashResult.build(plotDetailsResponse);
     }
 
     /**
@@ -49,14 +49,11 @@ public class AppPlot {
      * @param plotDetailsRequest
      * @return
      */
-    @RequestMapping("/getPlotAroundByPlotId")
+    @RequestMapping("/getAroundInfoByPlotId")
     @ResponseBody
-    public NashResult getPlotAroundByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        JSONObject jsonObject = appPlotService.queryPlotDataInfo(plotDetailsRequest.getPlotId());
-        if (jsonObject!=null){
-            return NashResult.build(jsonObject);
-        }
-        return NashResult.Fail("102","未找到该小区周边信息");
+    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest){
+        JSONObject jsonObject = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
+        return NashResult.build(jsonObject);
     }
 
     /**
@@ -66,13 +63,27 @@ public class AppPlot {
      */
     @RequestMapping("/getAroundPlotByLocation")
     @ResponseBody
-    public NashResult getPlotAroundByLocation(@Validated PlotAroundPlot plotAroundPlot){
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlot.getLat(), plotAroundPlot.getLon(), plotAroundPlot.getPlotId());
-        if (plotDetailsFewDoList!=null&&plotDetailsFewDoList.size()>0){
-            JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
-            List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
-            return NashResult.build(plotDetailsFewResponseList);
-        }
-        return NashResult.Fail("103","未找到周边小区");
+    public NashResult getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(), plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId());
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
+        List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
+        return NashResult.build(plotDetailsFewResponseList);
     }
+
+    /**
+     * 根据条件获取小区列表
+     * @param plotListRequest
+     * @return
+     */
+    @RequestMapping("getPlotListByRequirement")
+    @ResponseBody
+    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
+        PlotListDo plotListDo = new PlotListDo();
+        BeanUtils.copyProperties(plotListRequest,plotListDo);
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirement(plotListDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
+        List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
+        return NashResult.build(plotDetailsFewResponseList);
+    }
+
 }

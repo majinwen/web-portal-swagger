@@ -2,21 +2,19 @@ package com.toutiao.app.dao.plot.impl;
 
 import com.toutiao.app.dao.plot.AppPlotDao;
 import com.toutiao.web.common.util.ESClientTools;
-import com.toutiao.web.domain.query.PlotRequest;
+import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class AppPlotDaoImpl implements AppPlotDao {
@@ -50,23 +48,25 @@ public class AppPlotDaoImpl implements AppPlotDao {
     }
 
     @Override
-    public Map queryPlotByCondition(PlotRequest plotRequest) {
-        try {
-            String key = null;
-            List nearPlotList = new ArrayList();
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            //小区ID
-            if (plotRequest.getPlotId() != null) {
-                boolQueryBuilder.must(QueryBuilders.termQuery("id", plotRequest.getPlotId()));
+    public SearchResponse queryPlotListByRequirement(String keyword,Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder avgPriceSort, FieldSortBuilder scoreSort, FieldSortBuilder levelSort, FieldSortBuilder plotScoreSort) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = null;
+        if (StringTool.isNotEmpty(avgPriceSort)){
+            if (StringTool.isNotEmpty(keyword)){
+                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(avgPriceSort).addSort(scoreSort).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
+            }else {
+                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(avgPriceSort).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
             }
-            //关键字
-
-        }catch (Exception e){
-            e.printStackTrace();
+        }else {
+            if (StringTool.isNotEmpty(keyword)){
+                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(scoreSort).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
+            }else {
+                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
+            }
         }
-        return null;
+
+        return searchResponse;
     }
 
 

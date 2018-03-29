@@ -95,6 +95,10 @@ public class PlotDetailsFewResponse {
      */
     private String abbreviatedAge;
     /**
+     * key
+     */
+    private String key;
+    /**
      * 小区总个数
      */
     private Integer totalNum;

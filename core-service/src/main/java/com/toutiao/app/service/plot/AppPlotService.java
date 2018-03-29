@@ -4,6 +4,7 @@ package com.toutiao.app.service.plot;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
 import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.Plot.PlotListDo;
 
 import java.util.List;
 
@@ -30,4 +31,11 @@ public interface AppPlotService {
      * @return
      */
     List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId);
+
+    /**
+     * 获取小区列表
+     * @param plotListDo
+     * @return
+     */
+    List<PlotDetailsFewDo> queryPlotListByRequirement(PlotListDo plotListDo);
 }

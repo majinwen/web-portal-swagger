@@ -5,11 +5,11 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PlotAroundPlot {
+public class PlotAroundPlotRequest {
     /**
      * 小区id
      */
-    @NotNull
+    @NotNull(message = "缺少小区id")
     private Integer plotId;
     /**
      * 维度

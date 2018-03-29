@@ -37,12 +37,9 @@ public class AppRent {
     @ResponseBody
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentDetailsDo rentDetailsDo = appRentService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
-        if (rentDetailsDo!=null){
-            RentDetailResponse rentDetailResponse = new RentDetailResponse();
-            BeanUtils.copyProperties(rentDetailsDo,rentDetailResponse);
-            return NashResult.build(rentDetailResponse);
-        }
-        return NashResult.Fail("101","未找到该出租房");
+        RentDetailResponse rentDetailResponse = new RentDetailResponse();
+        BeanUtils.copyProperties(rentDetailsDo,rentDetailResponse);
+        return NashResult.build(rentDetailResponse);
     }
 
     /**
@@ -50,16 +47,13 @@ public class AppRent {
      * @param plotDetailsRequest
      * @return
      */
-    @RequestMapping("getRentListByPlotId")
+    @RequestMapping("getRentOfPlotByPlotId")
     @ResponseBody
     public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
         List<RentDetailsFewDo> rentDetailsFewDoList = appRentService.queryRentListByPlotId(plotDetailsRequest.getPlotId());
-        if (rentDetailsFewDoList!=null&&rentDetailsFewDoList.size()>0){
-            JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
-            List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
-            return NashResult.build(rentDetailFewResponses);
-        }
-        return NashResult.Fail("101","未找到该小区下的出租房屋");
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
+        List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
+        return NashResult.build(rentDetailFewResponses);
     }
 
     /**
@@ -71,12 +65,9 @@ public class AppRent {
     @ResponseBody
     public NashResult getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentAgentDo rentAgentDo = appRentService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
-        if (rentAgentDo!=null){
-            RentAgentResponse rentAgentResponse = new RentAgentResponse();
-            BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
-            return NashResult.build(rentAgentResponse);
-        }
-        return NashResult.Fail("101","未找到相关经纪人");
+        RentAgentResponse rentAgentResponse = new RentAgentResponse();
+        BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
+        return NashResult.build(rentAgentResponse);
     }
 
 }
