@@ -1,4 +1,7 @@
 package com.toutiao.web.apiimpl.rest.Appnewhouse;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
@@ -40,10 +43,10 @@ public class AppNewHouse {
     {
         NashResult nashResult =new NashResult();
            List<NewHouseLayoutDo> newHouseLayoutDos=newHouseService.getNewHouseLayoutByNewcode(newcode);
-          nashResult.setData(newHouseLayoutDos);
+           JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDos));
+           List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
+           nashResult.setData(newHouseLayoutResponses);
           return nashResult;
     }
-
-
 
 }
