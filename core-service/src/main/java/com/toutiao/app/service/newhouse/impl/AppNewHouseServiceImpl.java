@@ -5,6 +5,7 @@ import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import com.toutiao.app.service.newhouse.AppNewHouseService;
+import com.toutiao.web.common.exceptions.BaseException;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -29,6 +30,9 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
     @Autowired
     private AppNewHouseEsDao newHouseEsDao;
 
+    /**
+     * 新房异常2
+     */
 
     /**
      * 根据newcode获取新房详细信息
@@ -45,6 +49,11 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
         }
+        if (details.isEmpty())
+        {
+            throw new BaseException("201","未找到新房信息");
+        }
+
         NewHouseDetailDo newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         return  newHouseDetailDo;
 
@@ -69,6 +78,10 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
             details=searchHit.getSourceAsString();
             NewHouseLayoutDo newHouseLayoutDo=JSON.parseObject(details,NewHouseLayoutDo.class);
             newHouseLayoutDos.add(newHouseLayoutDo);
+        }
+        if(newHouseLayoutDos.isEmpty())
+        {
+            throw  new BaseException("201","未找到新房户型信息");
         }
         return newHouseLayoutDos;
 
