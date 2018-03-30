@@ -436,26 +436,38 @@
 </section>
 </#if>-->
 
-<div class="detail-contact-wrapper">
-    <section class="detail-contact-box" id="detailContactState">
-        <div class="detail-contact-content">
-            <#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>
-                <a href="tel:${agent['agent_phone']}" class="only contact-telephone-counseling">咨询经纪人</a>
-            <#else>
-                <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
-            </#if>
-        </div>
-    </section>
-</div>
-<#--<#if houseDetail.houseProxyPhone?exists>-->
 <#--<div class="detail-contact-wrapper">-->
     <#--<section class="detail-contact-box" id="detailContactState">-->
         <#--<div class="detail-contact-content">-->
-            <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>-->
+            <#--<#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>-->
+                <#--<a href="tel:${agent['agent_phone']}" class="only contact-telephone-counseling">咨询经纪人</a>-->
+            <#--<#else>-->
+                <#--<#if houseDetail.houseProxyPhone?exists>-->
+                    <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>-->
+                <#--</#if>-->
+            <#--</#if>-->
         <#--</div>-->
     <#--</section>-->
 <#--</div>-->
-<#--</#if>-->
+<#if houseDetail.houseProxyPhone?exists>
+<div class="detail-contact-wrapper">
+    <section class="detail-contact-box" id="detailContactState">
+        <div class="detail-contact-content">
+            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+        </div>
+    </section>
+</div>
+<#else >
+    <#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>
+        <div class="detail-contact-wrapper">
+            <section class="detail-contact-box" id="detailContactState">
+                <div class="detail-contact-content">
+                    <a href="tel:${agent['agent_phone']}" class="only contact-telephone-counseling">咨询经纪人</a>
+                </div>
+            </section>
+        </div>
+    </#if>
+</#if>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -508,6 +520,21 @@
         '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
+
+    <#if agent?exists>
+        zhuge.track('出售房源认领统计', {
+            '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
+            '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
+            '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
+            '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+            '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
+            '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+            '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
+            '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
+            'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
+        });
+    </#if>
 
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
