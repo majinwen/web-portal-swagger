@@ -61,6 +61,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private static final String RECOMMEND_TOTAL_PRICE = "ad_recommend_sellHouse_queryBit_totalprice";
     private static final String RECOMMEND_LAYOUT = "ad_recommend_sellHouse_queryBit_layout";
     private static final String RECOMMEND_MANSION = "ad_recommend_sellHouse_queryBit_mansion";
+    private static final String RECOMMEND_DISTRICT = "ad_recommend_sellHouse_queryBit_district";
 
 
 
@@ -165,11 +166,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Integer pageNum = aggAdLandingDo.getPn();
         Integer pageSize = aggAdLandingDo.getPs();
         //如果首次进入，则向redis推送标志数据，判断依据==0
-        if(startBit.equals(queryBit)){
-            sellHouseDomain.setSign(1);
-
-            return sellHouseDomain;
-        }
+//        if(startBit.equals(queryBit)){
+//            sellHouseDomain.setSign(1);
+//            return sellHouseDomain;
+//        }
 //        if(startBit==0){
 //            redisSessionUtils.set("ad_recommend_sellHouse_queryBit","0");
 //        }else{
@@ -188,7 +188,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
 
         // 筛选条件1-默认全部类型的推荐二手房房源
-        if(StringUtil.isNotNullString(aggAdLandingDo.getTj().toString())){
+        if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
             if(startBit==0){
@@ -199,6 +199,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                     //将起始查询数据标志存储到 queryBit 中
                     queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_DEFAULT).toString());
                 }
+            }
+            if(startBit.equals(queryBit)){
+                sellHouseDomain.setSign(1);
+                return sellHouseDomain;
             }
         }
 
@@ -215,6 +219,30 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                     //将起始查询数据标志存储到 queryBit 中
                     queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_SUBWAY).toString());
                 }
+            }
+            if(startBit.equals(queryBit)){
+                sellHouseDomain.setSign(1);
+                return sellHouseDomain;
+            }
+        }
+
+        //区域
+        if(StringTool.isNotEmpty(aggAdLandingDo.getDistrict())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+            if(startBit==0){
+                redisSessionUtils.set(RECOMMEND_DISTRICT,"0");
+            }else{
+                //else 从redis获取起始查询数据的标志
+                if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_DISTRICT))){
+                    //将起始查询数据标志存储到 queryBit 中
+                    queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_DISTRICT).toString());
+                }
+            }
+            if(startBit.equals(queryBit)){
+                sellHouseDomain.setSign(1);
+                return sellHouseDomain;
             }
         }
 
@@ -234,6 +262,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                     queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_TOTAL_PRICE).toString());
                 }
             }
+            if(startBit.equals(queryBit)){
+                sellHouseDomain.setSign(1);
+                return sellHouseDomain;
+            }
         }
 
         //小户型（1居，2居）
@@ -243,13 +275,17 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
             if(startBit==0){
-                redisSessionUtils.set(RECOMMEND_LAYOUT,"0");
+                //redisSessionUtils.set(RECOMMEND_LAYOUT,"0");
             }else{
                 //else 从redis获取起始查询数据的标志
                 if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_LAYOUT))){
                     //将起始查询数据标志存储到 queryBit 中
                     queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_LAYOUT).toString());
                 }
+            }
+            if(startBit.equals(queryBit)){
+                sellHouseDomain.setSign(1);
+                return sellHouseDomain;
             }
         }
 
@@ -266,6 +302,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                     //将起始查询数据标志存储到 queryBit 中
                     queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_MANSION).toString());
                 }
+            }
+            if(startBit.equals(queryBit)){
+                sellHouseDomain.setSign(1);
+                return sellHouseDomain;
             }
         }
 
@@ -294,6 +334,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 redisSessionUtils.set(RECOMMEND_TOTAL_PRICE,"0");
             }else  if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
                 redisSessionUtils.set(RECOMMEND_LAYOUT,"0");
+            }else  if (StringUtil.isNotNullString(aggAdLandingDo.getDistrict().toString())) {
+                redisSessionUtils.set(RECOMMEND_DISTRICT,"0");
             }else  if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
                 redisSessionUtils.set(RECOMMEND_MANSION,"0");
             }
@@ -311,6 +353,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 redisSessionUtils.set(RECOMMEND_LAYOUT,"0");
             }else if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
                 redisSessionUtils.set(RECOMMEND_MANSION,"0");
+            }else if (StringUtil.isNotNullString(aggAdLandingDo.getDistrict().toString())) {
+                redisSessionUtils.set(RECOMMEND_DISTRICT,"0");
             }
             sellHouseDomain.setPageNum(pageNum);
             sellHouseDomain.setSign(1);
@@ -467,7 +511,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //1.获取List对象中adSort中的最大一条的记录
         SellHouseAggAdLandingDo sellHouseAggAdLandingDo = sellHouseAggAdLandingDos.get(sellHouseAggAdLandingDos.size()-1);
         //2.获取adSort元素，更新redis数据
-        if(StringUtil.isNotNullString(aggAdLandingDo.getTj().toString())){
+        if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
             redisSessionUtils.set(RECOMMEND_DEFAULT,sellHouseAggAdLandingDo.getAdSort().toString());
         }else if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
             redisSessionUtils.set(RECOMMEND_SUBWAY,sellHouseAggAdLandingDo.getAdSort().toString());
@@ -476,6 +520,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }else  if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
             redisSessionUtils.set(RECOMMEND_LAYOUT,sellHouseAggAdLandingDo.getAdSort().toString());
         }else  if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
+            redisSessionUtils.set(RECOMMEND_MANSION,sellHouseAggAdLandingDo.getAdSort().toString());
+        }else  if (StringTool.isNotEmpty(aggAdLandingDo.getDistrict())) {
             redisSessionUtils.set(RECOMMEND_MANSION,sellHouseAggAdLandingDo.getAdSort().toString());
         }
 

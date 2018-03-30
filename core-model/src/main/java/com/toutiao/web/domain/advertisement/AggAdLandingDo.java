@@ -69,4 +69,9 @@ public class AggAdLandingDo {
      *  页面上已经存在的数据量
      */
     private Integer existNum;
+
+    /**
+     * 区县
+     */
+    private Integer district;
 }
