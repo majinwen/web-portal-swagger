@@ -339,6 +339,30 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isClaim",0));
 
+        //近地铁
+        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+        }
+
+        //房源总价范围
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("houseTotalPrices")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+
+        }
+
+        //小户型（1居，2居）
+        if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
+            String[] layoutId = aggAdLandingDo.getLs().split(",");
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+        }
+
+        //豪宅
+        if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
+        }
+
         SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
         //计算补充数据的起始位置
         long query_size = searchResponse.getHits().totalHits;
