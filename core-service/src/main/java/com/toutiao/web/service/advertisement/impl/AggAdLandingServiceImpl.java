@@ -37,6 +37,14 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
     @Autowired
     private ESClientTools esClientTools;
+    @Value("${tt.claim.esfhouse.index}")
+    private String recommendEsfIndex;//推荐二手房房源索引
+    @Value("${tt.claim.esfhouse.type}")
+    private String recommendEsfType;//推荐二手房房源索引类型
+    @Value("${tt.esf.agent.index}")
+    private String agentIndex;//认领二手房房源索引
+    @Value("${tt.esf.agent.type}")
+    private String agentType;//认领二手房房源索引类型
     @Value("${tt.projhouse.index}")
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
@@ -149,6 +157,11 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Integer pageNum = aggAdLandingDo.getPn();
         Integer pageSize = aggAdLandingDo.getPs();
         //如果首次进入，则向redis推送标志数据，判断依据==0
+        if(startBit.equals(queryBit)){
+            sellHouseDomain.setSign(1);
+
+            return sellHouseDomain;
+        }
         if(startBit==0){
             redisSessionUtils.set("ad_recommend_sellHouse_queryBit","0");
         }else{
@@ -158,6 +171,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 queryBit = Integer.valueOf(redisSessionUtils.get("ad_recommend_sellHouse_queryBit").toString());
             }
         }
+
         //有了用户的首次进入标志位和用户遍历数据的起始位置，那么就可以开始查询了。。。
         //查询二手房推优表中的数据
         //首先，填充筛选条件
@@ -204,12 +218,12 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
 
         // ES查询了一下
-        SearchResponse searchResponse = this.aggAdLandingDao.getRecommendSellHouseAdLanding(booleanQueryBuilder, pageSize);
+        SearchResponse searchResponse = getRecommendSellHouseAdLanding(booleanQueryBuilder, pageSize);
         //判断ES给我的返回结果
         //1.查询返回的结果数量，默认10条一档级
         long query_size = searchResponse.getHits().totalHits;
         //如果满足10条信息，那么开始遍历数据了
-        if(query_size == 10){
+        if(query_size >= 10){
 
             sellHouseDomain =  getRecommendHits(searchResponse, startBit, pageNum);
             if(startBit==sellHouseDomain.getQueryBit()){
@@ -219,17 +233,19 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             //如果满足0-10之间，还有数据? 那么开始遍历数据了
         }else if(query_size < 10 && query_size > 0){
             sellHouseDomain =  getRecommendHits(searchResponse, startBit, pageNum);
-            if(startBit==sellHouseDomain.getQueryBit()){
-                sellHouseDomain.setSign(1);
-            }
+//            if(startBit==sellHouseDomain.getQueryBit()){
+//                sellHouseDomain.setSign(1);
+//            }
+            sellHouseDomain.setQueryBit(0);
+            redisSessionUtils.set("ad_recommend_sellHouse_queryBit","0");
 
         }else if(query_size == 0){
             sellHouseDomain.setStartBit(startBit);
             sellHouseDomain.setQueryBit(0);
+            redisSessionUtils.set("ad_recommend_sellHouse_queryBit","0");
             sellHouseDomain.setPageNum(pageNum);
-            if(startBit==sellHouseDomain.getQueryBit()){
-                sellHouseDomain.setSign(1);
-            }
+            sellHouseDomain.setSign(1);
+
         }
         return sellHouseDomain;
     }
@@ -282,7 +298,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
 
 
-        SearchResponse searchResponse = this.aggAdLandingDao.getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
+        SearchResponse searchResponse = getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
         //计算补充数据的起始位置
         long query_size = searchResponse.getHits().totalHits;
         if(query_size==0){
@@ -323,7 +339,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isClaim",0));
 
-        SearchResponse searchResponse = this.aggAdLandingDao.getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
+        SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
         //计算补充数据的起始位置
         long query_size = searchResponse.getHits().totalHits;
         if(query_size==0){
@@ -346,12 +362,14 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     public SellHouseDomain getRecommendHits(SearchResponse searchResponse, Integer startBit, Integer pageNum){
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         SearchHit[] searchHists = searchResponse.getHits().getHits();
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = new ArrayList<>();
         String detail="";
         for (SearchHit hit : searchHists) {
             detail = hit.getSourceAsString();
+            SellHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,SellHouseAggAdLandingDo.class);
+            sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
         }
-        //把返回的json字符串，转成List对象
-        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = JSON.parseArray(detail,SellHouseAggAdLandingDo.class);
+
         //把前台的传过来的查询条件返回回去
         //1.获取List对象中adSort中的最大一条的记录
         SellHouseAggAdLandingDo sellHouseAggAdLandingDo = sellHouseAggAdLandingDos.get(sellHouseAggAdLandingDos.size()-1);
@@ -363,6 +381,54 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
         sellHouseDomain.setPageNum(pageNum);
         return sellHouseDomain;
+    }
+
+    public SearchResponse getRecommendSellHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageSize){
+        String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic","adSort"};
+
+        TransportClient client = esClientTools.init();
+
+
+        SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
+                .setQuery(booleanQueryBuilder).addSort("adSort",SortOrder.ASC).setSize(pageSize)
+                .setFetchSource(returnField,null)
+                .execute().actionGet();
+
+
+        return searchResponse;
+    }
+
+    public SearchResponse getClaimSellHouseDetailsAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
+        String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic","adSort"};
+
+        TransportClient client = esClientTools.init();
+
+
+        SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
+                .setQuery(booleanQueryBuilder).setFrom(pageNum).setSize(pageSize)
+                .setFetchSource(returnField,null)
+                .execute().actionGet();
+
+
+        return searchResponse;
+    }
+
+    public SearchResponse getUnClaimSellHouseDetailsAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
+        String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic"};
+
+        TransportClient client = esClientTools.init();
+
+
+        SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder).setFrom(pageNum).setSize(pageSize)
+                .setFetchSource(returnField,null)
+                .execute().actionGet();
+
+
+        return searchResponse;
     }
 
 
