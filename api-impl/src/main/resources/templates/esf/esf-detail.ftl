@@ -436,28 +436,15 @@
 </section>
 </#if>-->
 
+<#--<#if houseDetail.houseProxyPhone?exists>-->
 <#--<div class="detail-contact-wrapper">-->
     <#--<section class="detail-contact-box" id="detailContactState">-->
         <#--<div class="detail-contact-content">-->
-            <#--<#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>-->
-                <#--<a href="tel:${agent['agent_phone']}" class="only contact-telephone-counseling">咨询经纪人</a>-->
-            <#--<#else>-->
-                <#--<#if houseDetail.houseProxyPhone?exists>-->
-                    <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>-->
-                <#--</#if>-->
-            <#--</#if>-->
+            <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>-->
         <#--</div>-->
     <#--</section>-->
 <#--</div>-->
-<#if houseDetail.houseProxyPhone?exists>
-<div class="detail-contact-wrapper">
-    <section class="detail-contact-box" id="detailContactState">
-        <div class="detail-contact-content">
-            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
-        </div>
-    </section>
-</div>
-<#else >
+<#--<#else >-->
     <#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>
         <div class="detail-contact-wrapper">
             <section class="detail-contact-box" id="detailContactState">
@@ -466,8 +453,18 @@
                 </div>
             </section>
         </div>
+        <#else>
+            <#if houseDetail.houseProxyPhone?exists>
+                <div class="detail-contact-wrapper">
+                <section class="detail-contact-box" id="detailContactState">
+                <div class="detail-contact-content">
+                <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+                </div>
+                </section>
+                </div>
+            </#if>
     </#if>
-</#if>
+<#--</#if>-->
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
