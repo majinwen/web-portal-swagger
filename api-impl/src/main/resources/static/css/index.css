@@ -1266,9 +1266,11 @@ body {
   padding: 0 0.4rem 0.4133333333rem; }
   .banner-index-box .carousel-swiper {
     margin: 0 -0.4rem; }
-  .banner-index-box .index-slide-overflow {
-    max-width: 10rem;
-    overflow: hidden; }
+    .banner-index-box .carousel-swiper .swiper-slide {
+      width: 100% !important; }
+    .banner-index-box .carousel-swiper .index-slide-overflow {
+      max-width: 10rem;
+      overflow: hidden; }
 
 .index-module-header {
   position: relative;
