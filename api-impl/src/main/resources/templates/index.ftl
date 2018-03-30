@@ -47,7 +47,7 @@
 </div>
 <div class="module-bottom-fill">
     <section class="bulletin-board">
-        <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
+        <div class="img index-img"><a href="http://www.chengzijianzhan.com/tetris/page/1588848809361416/"><img src="${staticurl}/images/index/index-building-entrance.png" alt="楼市聚焦"></a></div>
         <div class="text-scroll index-text" id="shoppingGuide">
             <ul id="ul_index_lunbo_guanggao">
 

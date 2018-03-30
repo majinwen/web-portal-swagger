@@ -1449,6 +1449,8 @@ body {
 
 .banner-index-box {
   padding: 0.1866666667rem 0.4rem 0.4133333333rem; }
+  .banner-index-box .carousel-swiper .swiper-slide {
+    width: 100% !important; }
   .banner-index-box .carousel-swiper img {
     width: 100%; }
 
