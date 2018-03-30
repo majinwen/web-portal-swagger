@@ -1,9 +1,14 @@
 package com.toutiao.web.service.advertisement.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.RedisSessionUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.advertisement.AggAdLandingDao;
 import com.toutiao.web.domain.advertisement.AggAdLandingDo;
+import com.toutiao.web.domain.advertisement.SellHouseAggAdLandingDo;
+import com.toutiao.web.domain.advertisement.SellHouseDomain;
 import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.apache.commons.collections.map.HashedMap;
 import org.elasticsearch.action.search.SearchResponse;
@@ -38,6 +43,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private String projhouseType;//索引类
     @Value("${distance}")
     private Double distance;
+    @Autowired
+    private RedisSessionUtils redisSessionUtils;
+    @Autowired
+    private AggAdLandingDao aggAdLandingDao;
 
     @Override
     public Map<String, Object> getAdLanding(AggAdLandingDo aggAdLandingDo) {
@@ -125,6 +134,235 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         result.put("total", hits.getTotalHits());
 
         return result;
+    }
+
+
+
+
+    @Override
+    public SellHouseDomain getRecommendAdLanding(AggAdLandingDo aggAdLandingDo) {
+
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        //判断是否首次进入
+        Integer startBit = aggAdLandingDo.getStartBit();
+        Integer queryBit = aggAdLandingDo.getQueryBit();
+        Integer pageNum = aggAdLandingDo.getPn();
+        Integer pageSize = aggAdLandingDo.getPs();
+        //如果首次进入，则向redis推送标志数据，判断依据==0
+        if(startBit==0){
+            redisSessionUtils.set("ad_recommend_sellHouse_queryBit","0");
+        }else{
+            //else 从redis获取起始查询数据的标志
+            if(StringTool.isNotBlank(redisSessionUtils.get("ad_recommend_sellHouse_queryBit"))){
+                //将起始查询数据标志存储到 queryBit 中
+                queryBit = Integer.valueOf(redisSessionUtils.get("ad_recommend_sellHouse_queryBit").toString());
+            }
+        }
+        //有了用户的首次进入标志位和用户遍历数据的起始位置，那么就可以开始查询了。。。
+        //查询二手房推优表中的数据
+        //首先，填充筛选条件
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//构建筛选器
+
+
+
+        // 筛选条件1-默认全部类型的推荐二手房房源
+        if(StringUtil.isNotNullString(aggAdLandingDo.getTj().toString())){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+        }
+
+        //近地铁
+        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+        }
+
+        //房源总价范围
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("houseTotalPrices")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+
+        }
+
+        //小户型（1居，2居）
+        if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
+            String[] layoutId = aggAdLandingDo.getLs().split(",");
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+        }
+
+        //豪宅
+        if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+        }
+
+        // ES查询了一下
+        SearchResponse searchResponse = this.aggAdLandingDao.getRecommendSellHouseAdLanding(booleanQueryBuilder, pageSize);
+        //判断ES给我的返回结果
+        //1.查询返回的结果数量，默认10条一档级
+        long query_size = searchResponse.getHits().totalHits;
+        //如果满足10条信息，那么开始遍历数据了
+        if(query_size == 10){
+
+            sellHouseDomain =  getRecommendHits(searchResponse, startBit, pageNum);
+            if(startBit==sellHouseDomain.getQueryBit()){
+                sellHouseDomain.setSign(1);
+            }
+
+            //如果满足0-10之间，还有数据? 那么开始遍历数据了
+        }else if(query_size < 10 && query_size > 0){
+            sellHouseDomain =  getRecommendHits(searchResponse, startBit, pageNum);
+            if(startBit==sellHouseDomain.getQueryBit()){
+                sellHouseDomain.setSign(1);
+            }
+
+        }else if(query_size == 0){
+            sellHouseDomain.setStartBit(startBit);
+            sellHouseDomain.setQueryBit(0);
+            sellHouseDomain.setPageNum(pageNum);
+            if(startBit==sellHouseDomain.getQueryBit()){
+                sellHouseDomain.setSign(1);
+            }
+        }
+        return sellHouseDomain;
+    }
+
+    /**
+     * 认领房源
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public SellHouseDomain getClaimAdLanding(AggAdLandingDo aggAdLandingDo) {
+
+
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = aggAdLandingDo.getPn();
+        Integer pageSize = aggAdLandingDo.getPs();
+        Integer page_from = 0;
+        if(pageNum==1){
+            page_from = (pageNum-1)*pageSize;
+        }else{
+            page_from = (pageNum-1)*pageSize - 1;
+        }
+        // 筛选条件1-默认全部类型的认领二手房房源
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isRecommend",0));
+
+        //近地铁
+        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+        }
+
+        //房源总价范围
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("houseTotalPrices")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+
+        }
+
+        //小户型（1居，2居）
+        if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
+            String[] layoutId = aggAdLandingDo.getLs().split(",");
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+        }
+
+        //豪宅
+        if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
+        }
+
+
+        SearchResponse searchResponse = this.aggAdLandingDao.getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
+        //计算补充数据的起始位置
+        long query_size = searchResponse.getHits().totalHits;
+        if(query_size==0){
+            sellHouseDomain.setSign(2);
+        }
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+        }
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = JSON.parseArray(detail,SellHouseAggAdLandingDo.class);
+
+        sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
+        sellHouseDomain.setPageNum(pageNum);
+        return sellHouseDomain;
+    }
+
+    /**
+     * 经纪公司导入
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public SellHouseDomain getApiImportAdLanding(AggAdLandingDo aggAdLandingDo) {
+
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = aggAdLandingDo.getPn();
+        Integer pageSize = aggAdLandingDo.getPs();
+        Integer page_from = 0;
+        if(pageNum==1){
+            page_from = (pageNum-1)*pageSize;
+        }else{
+            page_from = (pageNum-1)*pageSize - 1;
+        }
+
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isClaim",0));
+
+        SearchResponse searchResponse = this.aggAdLandingDao.getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
+        //计算补充数据的起始位置
+        long query_size = searchResponse.getHits().totalHits;
+        if(query_size==0){
+            sellHouseDomain.setSign(3);
+        }
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+        }
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = JSON.parseArray(detail,SellHouseAggAdLandingDo.class);
+
+        sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
+        sellHouseDomain.setPageNum(pageNum);
+        return sellHouseDomain;
+    }
+
+
+    public SellHouseDomain getRecommendHits(SearchResponse searchResponse, Integer startBit, Integer pageNum){
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+        String detail="";
+        for (SearchHit hit : searchHists) {
+            detail = hit.getSourceAsString();
+        }
+        //把返回的json字符串，转成List对象
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = JSON.parseArray(detail,SellHouseAggAdLandingDo.class);
+        //把前台的传过来的查询条件返回回去
+        //1.获取List对象中adSort中的最大一条的记录
+        SellHouseAggAdLandingDo sellHouseAggAdLandingDo = sellHouseAggAdLandingDos.get(sellHouseAggAdLandingDos.size()-1);
+        //2.获取adSort元素，更新redis数据
+        redisSessionUtils.set("ad_recommend_sellHouse_queryBit",sellHouseAggAdLandingDo.getAdSort().toString());
+        //3.封装数据返回
+        sellHouseDomain.setQueryBit(sellHouseAggAdLandingDo.getAdSort());
+        sellHouseDomain.setStartBit(startBit);
+        sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
+        sellHouseDomain.setPageNum(pageNum);
+        return sellHouseDomain;
     }
 
 
@@ -217,5 +455,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         advertisement.put("data",buildinglist);
 
         return advertisement;
+
+
+
     }
 }

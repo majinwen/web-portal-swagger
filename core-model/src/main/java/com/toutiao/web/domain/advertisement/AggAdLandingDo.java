@@ -45,4 +45,28 @@ public class AggAdLandingDo {
      */
     private Integer ps=10;
 
+    /**
+     * 用户浏览的起始位置
+     */
+    private Integer startBit;
+
+    /**
+     * 查询位置
+     */
+    private Integer queryBit;
+
+    /**
+     * 是否补充
+     */
+    private Integer sign = 0;
+
+    /**
+     * 推荐房源
+     */
+    private Integer tj;
+
+    /**
+     *  页面上已经存在的数据量
+     */
+    private Integer existNum;
 }
