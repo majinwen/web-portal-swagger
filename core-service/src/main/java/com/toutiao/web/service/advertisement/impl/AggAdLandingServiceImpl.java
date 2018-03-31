@@ -377,7 +377,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
 
 
-        SearchResponse searchResponse = getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
+        SearchResponse searchResponse = getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
         //计算补充数据的起始位置
         long query_size = searchResponse.getHits().getHits().length;
         if(query_size==0){
@@ -444,7 +444,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
         }
 
-        SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
+        SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
         //计算补充数据的起始位置
         long query_size = searchResponse.getHits().getHits().length;
         if(query_size==0){
