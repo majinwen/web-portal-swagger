@@ -2,8 +2,10 @@ package com.toutiao.web.apiimpl.impl.advertisement;
 
 
 import com.toutiao.web.api.chance.request.advertisement.AggAdLandingRequest;
+import com.toutiao.web.api.chance.response.advertisement.SellHouseResponse;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.advertisement.AggAdLandingDo;
+import com.toutiao.web.domain.advertisement.SellHouseDomain;
 import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,61 @@ public class AggAdLandingController {
         return NashResult.build(esfMap.get("data"));
     }
 
+    /**
+     * 推荐（出售[二手房]）
+     * @param aggAdLandingRequest
+     * @return
+     */
+    @RequestMapping(value = "/queryRecommendAggAdLanding")
+    @ResponseBody
+    public NashResult queryRecommendAggAdLanding(AggAdLandingRequest aggAdLandingRequest){
+
+        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+        SellHouseDomain sellHouseDomain = aggAdLandingService.getRecommendAdLanding(aggAdLandingDo);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
+    }
+
+
+    /**
+     * 认领（出售[二手房]）
+     * @param aggAdLandingRequest
+     * @return
+     */
+    @RequestMapping(value = "/queryClaimAggAdLanding")
+    @ResponseBody
+    public NashResult queryClaimAggAdLanding(AggAdLandingRequest aggAdLandingRequest){
+
+        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+        SellHouseDomain sellHouseDomain = aggAdLandingService.getClaimAdLanding(aggAdLandingDo);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
+    }
+
+    /**
+     * 经纪公司导入未认领（出售[二手房]）
+     * @param aggAdLandingRequest
+     * @return
+     */
+    @RequestMapping(value = "/queryUnClaimAggAdLanding")
+    @ResponseBody
+    public NashResult queryUnClaimAggAdLanding(AggAdLandingRequest aggAdLandingRequest){
+
+        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+        SellHouseDomain sellHouseDomain = aggAdLandingService.getApiImportAdLanding(aggAdLandingDo);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
+    }
+
 
 
     @RequestMapping("/cpc1")
@@ -48,6 +105,10 @@ public class AggAdLandingController {
 
         return NashResult.build(advertisementResult.get("data"));
     }
+
+
+
+
 
 
 }
