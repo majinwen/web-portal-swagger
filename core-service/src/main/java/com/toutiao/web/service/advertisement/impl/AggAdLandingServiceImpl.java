@@ -176,21 +176,34 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         // 筛选条件1-默认全部类型的推荐二手房房源
         if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
 
             if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_DEFAULT))) {
                 //将起始查询数据标志存储到 queryBit 中
                 queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_DEFAULT).toString());
+                if(startBit==0){
+                    startBit=queryBit;
+                }
+                if(startBit.equals(queryBit)){
+                    sellHouseDomain.setSign(1);
+                    return sellHouseDomain;
+                }
             }
 
-            if(startBit.equals(queryBit)){
-                sellHouseDomain.setSign(1);
-                return sellHouseDomain;
-            }
-            if(startBit==0){
-                startBit = queryBit;
-            }
+
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+
+
+
+
+
+//            if(startBit.equals(queryBit)){
+//                sellHouseDomain.setSign(1);
+//                return sellHouseDomain;
+//            }
+//            if(startBit==0 && queryBit==null){
+//                 queryBit=startBit;
+//            }
         }
 
         //近地铁
@@ -199,106 +212,110 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
 
-            //else 从redis获取起始查询数据的标志
+
             if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_SUBWAY))){
                 //将起始查询数据标志存储到 queryBit 中
                 queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_SUBWAY).toString());
             }
 
-            if(startBit.equals(queryBit)){
-                sellHouseDomain.setSign(1);
-                return sellHouseDomain;
-            }
-            if(startBit==0){
-                startBit = queryBit;
-            }
+//            if(startBit.equals(queryBit)){
+//                sellHouseDomain.setSign(1);
+//                return sellHouseDomain;
+//            }
+//            if(startBit==0){
+//                startBit = queryBit;
+//            }
         }
 
         //区域
         if(StringTool.isNotEmpty(aggAdLandingDo.getDistrict())){
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
-
-            //else 从redis获取起始查询数据的标志
             if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_DISTRICT))){
                 //将起始查询数据标志存储到 queryBit 中
                 queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_DISTRICT).toString());
             }
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
 
 
-            if(startBit.equals(queryBit)){
-                sellHouseDomain.setSign(1);
-                return sellHouseDomain;
-            }
-            if(startBit==0){
-                startBit = queryBit;
-            }
+
+
+
+//            if(startBit.equals(queryBit)){
+//                sellHouseDomain.setSign(1);
+//                return sellHouseDomain;
+//            }
+//            if(startBit==0){
+//                startBit = queryBit;
+//            }
         }
 
         //房源总价范围
         if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_TOTAL_PRICE))){
+                //将起始查询数据标志存储到 queryBit 中
+                queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_TOTAL_PRICE).toString());
+            }
             booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
                     QueryBuilders.rangeQuery("houseTotalPrices")
                             .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
-            //else 从redis获取起始查询数据的标志
-            if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_TOTAL_PRICE))){
-                //将起始查询数据标志存储到 queryBit 中
-                queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_TOTAL_PRICE).toString());
-            }
 
-            if(startBit.equals(queryBit)){
-                sellHouseDomain.setSign(1);
-                return sellHouseDomain;
-            }
-            if(startBit==0){
-                startBit = queryBit;
-            }
+
+
+//            if(startBit.equals(queryBit)){
+//                sellHouseDomain.setSign(1);
+//                return sellHouseDomain;
+//            }
+//            if(startBit==0){
+//                startBit = queryBit;
+//            }
         }
 
         //小户型（1居，2居）
         if (StringUtil.isNotNullString(aggAdLandingDo.getLs())) {
+            if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_LAYOUT))){
+                //将起始查询数据标志存储到 queryBit 中
+                queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_LAYOUT).toString());
+            }
             String[] layoutId = aggAdLandingDo.getLs().split(",");
             booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
 
-            //else 从redis获取起始查询数据的标志
-            if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_LAYOUT))){
-                //将起始查询数据标志存储到 queryBit 中
-                queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_LAYOUT).toString());
-            }
 
-            if(startBit.equals(queryBit)){
-                sellHouseDomain.setSign(1);
-                return sellHouseDomain;
-            }
-            if(startBit==0){
-                startBit = queryBit;
-            }
+
+
+//            if(startBit.equals(queryBit)){
+//                sellHouseDomain.setSign(1);
+//                return sellHouseDomain;
+//            }
+//            if(startBit==0){
+//                startBit = queryBit;
+//            }
         }
 
         //豪宅
         if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
-
-            //else 从redis获取起始查询数据的标志
             if(StringTool.isNotBlank(redisSessionUtils.get(RECOMMEND_MANSION))){
                 //将起始查询数据标志存储到 queryBit 中
                 queryBit = Integer.valueOf(redisSessionUtils.get(RECOMMEND_MANSION).toString());
             }
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
 
-            if(startBit.equals(queryBit)){
-                sellHouseDomain.setSign(1);
-                return sellHouseDomain;
-            }
-            if(startBit==0){
-                startBit = queryBit;
-            }
+
+
+
+//            if(startBit.equals(queryBit)){
+//                sellHouseDomain.setSign(1);
+//                return sellHouseDomain;
+//            }
+//            if(startBit==0){
+//                startBit = queryBit;
+//            }
         }
 
         // ES查询了一下
