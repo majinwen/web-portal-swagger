@@ -346,10 +346,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Integer pageNum = aggAdLandingDo.getPn();
         Integer pageSize = aggAdLandingDo.getPs();
         Integer page_from = 0;
-        if(pageNum==1){
-            page_from = (pageNum-1)*pageSize;
-        }else{
-            page_from = (pageNum-1)*pageSize - 1;
+        if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
+            pageNum = aggAdLandingDo.getPn();
         }
         // 筛选条件1-默认全部类型的认领二手房房源
         booleanQueryBuilder.must(QueryBuilders.termQuery("isRecommend",0));
@@ -416,12 +414,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Integer pageNum = aggAdLandingDo.getPn();
         Integer pageSize = aggAdLandingDo.getPs();
         Integer page_from = 0;
-        if(pageNum==1){
-            page_from = (pageNum-1)*pageSize;
-        }else{
-            page_from = (pageNum-1)*pageSize - 1;
-        }
 
+        if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
+            pageNum = aggAdLandingDo.getPn();
+        }
         booleanQueryBuilder.must(QueryBuilders.termQuery("isClaim",0));
 
         //近地铁
