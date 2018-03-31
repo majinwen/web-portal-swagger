@@ -338,7 +338,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
 
             //随机取返回的数据
-            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())){
+            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
                 Script script = new Script("Math.random()");
                 ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
                 srb.addSort(scrip);
@@ -422,7 +422,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
 
             //随机取返回的数据
-            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())){
+            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
                 Script script = new Script("Math.random()");
                 ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
                 srb.addSort(scrip);

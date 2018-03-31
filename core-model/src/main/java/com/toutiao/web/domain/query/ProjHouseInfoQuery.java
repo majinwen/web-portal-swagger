@@ -65,7 +65,7 @@ public class ProjHouseInfoQuery {
     /**
      * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
      */
-    private Integer sort;
+    private Integer sort = 0;
 
 
     //房源小区名称
