@@ -414,7 +414,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
             pageNum = aggAdLandingDo.getPn();
         }
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isClaim",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
 
         //近地铁
         if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
@@ -468,7 +468,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
     public SearchResponse getRecommendSellHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageSize){
         String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
-                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic","adSort"};
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
+                "adSort"};
 
         TransportClient client = esClientTools.init();
 
@@ -484,13 +485,17 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
     public SearchResponse getClaimSellHouseDetailsAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
         String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
-                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic","adSort"};
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
+                "adSort"};
 
         TransportClient client = esClientTools.init();
 
+        //随机取返回的数据
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
         SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
-                .setQuery(booleanQueryBuilder).setFrom((pageNum-1)*pageSize).setSize(pageSize)
+                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
                 .setFetchSource(returnField,null)
                 .execute().actionGet();
 
@@ -499,14 +504,16 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     }
 
     public SearchResponse getUnClaimSellHouseDetailsAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
-        String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
-                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic"};
-
         TransportClient client = esClientTools.init();
+        String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
+                "adSort","isClaim","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId"};
 
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
         SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder).setFrom((pageNum-1)*pageSize).setSize(pageSize)
+                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
                 .setFetchSource(returnField,null)
                 .execute().actionGet();
 
