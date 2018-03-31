@@ -316,10 +316,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 if(projHouseInfoRequest.getLat()!=0 && projHouseInfoRequest.getLon()!=0){
                     GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
                     srb.setPostFilter(location1);
-//                    GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-//                    sort.unit(DistanceUnit.KILOMETERS);
-//                    sort.order(SortOrder.ASC);
-//                    srb.addSort(sort);
+                    GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+                    sort.unit(DistanceUnit.KILOMETERS);
+                    sort.order(SortOrder.ASC);
+                    srb.addSort(sort);
                 }
             }
             //去未删除的房源信息
