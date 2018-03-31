@@ -418,12 +418,14 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             sellHouseDomain.setSign(2);
         }
         SearchHit[] searchHists = searchResponse.getHits().getHits();
-
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = new ArrayList<>();
         String detail = "";
         for(SearchHit hit : searchHists){
             detail = hit.getSourceAsString();
+            SellHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,SellHouseAggAdLandingDo.class);
+            sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
         }
-        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = JSON.parseArray(detail,SellHouseAggAdLandingDo.class);
+
 
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
         sellHouseDomain.setPageNum(pageNum);
@@ -484,11 +486,13 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
         SearchHit[] searchHists = searchResponse.getHits().getHits();
 
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = new ArrayList<>();
         String detail = "";
         for(SearchHit hit : searchHists){
             detail = hit.getSourceAsString();
+            SellHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,SellHouseAggAdLandingDo.class);
+            sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
         }
-        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = JSON.parseArray(detail,SellHouseAggAdLandingDo.class);
 
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
         sellHouseDomain.setPageNum(pageNum);
