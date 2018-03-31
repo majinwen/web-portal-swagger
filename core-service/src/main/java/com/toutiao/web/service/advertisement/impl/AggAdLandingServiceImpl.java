@@ -253,13 +253,9 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //1.查询返回的结果数量，默认10条一档级
         long query_size = searchResponse.getHits().getHits().length;
 
-//        if(query_size==0L){
-//            sellHouseDomain.setSign(1);
-//            return sellHouseDomain;
-//        }else{
-//
-//        }
         sellHouseDomain =  getRecommendHits(aggAdLandingDo,searchResponse);
+
+
 
         String newRedisValue = "";
         if(startBit==0){
@@ -322,16 +318,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //把前台的传过来的查询条件返回回去
         //1.获取List对象中adSort中的最大一条的记录
 
-        if(sellHouseAggAdLandingDos.size()>0){
-            SellHouseAggAdLandingDo sellHouseAggAdLandingDo = sellHouseAggAdLandingDos.get(sellHouseAggAdLandingDos.size()-1);
-            sellHouseDomain.setQueryBit(sellHouseAggAdLandingDo.getAdSort());
-        }
-
 
         sellHouseDomain.setSourceStart(source_start);
         sellHouseDomain.setSourceEnd(source_end);
         //3.封装数据返回
-
 //        sellHouseDomain.setStartBit(startBit);
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
         return sellHouseDomain;
