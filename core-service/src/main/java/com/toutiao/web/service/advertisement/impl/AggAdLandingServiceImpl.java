@@ -252,7 +252,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //判断ES给我的返回结果
         //1.查询返回的结果数量，默认10条一档级
         long query_size = searchResponse.getHits().getHits().length;
-        System.out.println(query_size);
+
         if(query_size==0L){
             sellHouseDomain.setSign(1);
         }else{
@@ -343,9 +343,9 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         //构建筛选器
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
-        Integer pageNum = aggAdLandingDo.getPn();
+        Integer pageNum = 1;
         Integer pageSize = aggAdLandingDo.getPs();
-        Integer page_from = 0;
+
         if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
             pageNum = aggAdLandingDo.getPn();
         }
@@ -411,9 +411,9 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         //构建筛选器
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
-        Integer pageNum = aggAdLandingDo.getPn();
+        Integer pageNum = 1;
         Integer pageSize = aggAdLandingDo.getPs();
-        Integer page_from = 0;
+
 
         if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
             pageNum = aggAdLandingDo.getPn();
@@ -494,7 +494,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
 
         SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
-                .setQuery(booleanQueryBuilder).setFrom(pageNum).setSize(pageSize)
+                .setQuery(booleanQueryBuilder).setFrom((pageNum-1)*pageSize).setSize(pageSize)
                 .setFetchSource(returnField,null)
                 .execute().actionGet();
 
@@ -510,7 +510,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
 
         SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder).setFrom(pageNum).setSize(pageSize)
+                .setQuery(booleanQueryBuilder).setFrom((pageNum-1)*pageSize).setSize(pageSize)
                 .setFetchSource(returnField,null)
                 .execute().actionGet();
 
