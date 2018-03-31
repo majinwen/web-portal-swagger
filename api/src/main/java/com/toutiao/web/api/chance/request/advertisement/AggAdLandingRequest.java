@@ -49,12 +49,12 @@ public class AggAdLandingRequest {
     /**
      * 用户浏览的起始位置
      */
-    private Integer startBit;
+    private Long startBit;
 
     /**
      * 查询位置
      */
-    private Integer queryBit;
+    private Long queryBit;
 
     /**
      * 是否补充
