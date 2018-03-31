@@ -584,7 +584,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //声明符合查询方法
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
-            if (RegexUtils.checkIsNum(houseId)){
+            if (!houseId.substring(0,2).equals("FS")){
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
             }else {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
