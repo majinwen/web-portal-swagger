@@ -381,7 +381,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         SearchResponse searchResponse = getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
         //计算补充数据的起始位置
-        long query_size = searchResponse.getHits().totalHits;
+        long query_size = searchResponse.getHits().getHits().length;
         if(query_size==0){
             sellHouseDomain.setSign(2);
         }else{
@@ -450,7 +450,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, page_from, pageSize);
         //计算补充数据的起始位置
-        long query_size = searchResponse.getHits().totalHits;
+        long query_size = searchResponse.getHits().getHits().length;
         if(query_size==0){
             sellHouseDomain.setSign(0);
         }else{
