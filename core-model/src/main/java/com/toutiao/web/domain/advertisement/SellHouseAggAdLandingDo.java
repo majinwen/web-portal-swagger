@@ -22,6 +22,7 @@ public class SellHouseAggAdLandingDo {
     private String traffic;
     private Integer pageNum;
     private Long adSort;
+    private String claimHouseId;
 
 
 }
