@@ -311,6 +311,9 @@ public class ProjHouseInfoResponse {
      */
     private Integer pageNum;
 
-
+    /**
+     * 认领后房源id
+     */
+    private String claimHouseId ;
 
 }

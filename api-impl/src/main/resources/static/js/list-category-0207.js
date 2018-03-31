@@ -1280,6 +1280,15 @@ function pullUpAction() {
                                             }
                                         }
                                     };
+                                    if (dataCon[i]['housePhotoTitle']) {
+                                        var _house_title_img;
+                                        if (dataCon[i]['housePhotoTitle'].indexOf('http') > -1) {
+                                            _house_title_img = dataCon[i]['housePhotoTitle'];
+                                        }else{
+                                            _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['housePhotoTitle'] + "-tt400x300";
+                                        }
+                                        dataCon[i]['housePhotoTitle'] = _house_title_img;
+                                    }
                                 };
 
                                 if (_localHref.indexOf('xiaoqu') > 0) {
@@ -1309,7 +1318,6 @@ function pullUpAction() {
                                 };
                             }
                         }
-
                         if(data.data==null){
                             me.lock();
                             // 无数据
@@ -1500,6 +1508,7 @@ function pullDownAction() {
                             }
 
                             var html = template('listContent', data.data);
+
                             $('#valueList li:first-child').before(html);
                             // 每次数据插入，必须重置
                             me.resetload();

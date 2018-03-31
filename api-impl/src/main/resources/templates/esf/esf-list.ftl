@@ -264,7 +264,11 @@
 <script id="listContent" type="text/html">
     {{each data}}
     <li>
-        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}" onclick="esf_list(this)" url="${router_city('/esf/{{$value.houseId}}.html')}"  href="javascript:void(0);">
+        {{if $value.claimHouseId!=''}}
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}" data-claimHouseId = "{{$value.claimHouseId}}" onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}"    href="javascript:void(0);">
+        {{else}}
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}" data-claimHouseId = "{{$value.claimHouseId}}" onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}"   href="javascript:void(0);">
+        {{/if}}
             <div class="clear">
                 <div class="list-item-img-box">
                     {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}

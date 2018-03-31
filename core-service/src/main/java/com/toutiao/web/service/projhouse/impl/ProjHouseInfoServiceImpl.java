@@ -1,6 +1,7 @@
 package com.toutiao.web.service.projhouse.impl;
 
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.RegexUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
@@ -335,6 +336,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 pageSize = projHouseInfoRequest.getPageSize();
             }
 
+
+            //随机取返回的数据
+            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())){
+                Script script = new Script("Math.random()");
+                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+                srb.addSort(scrip);
+            }
+
+
 //            System.out.println(booleanQueryBuilder);
 
             if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
@@ -367,6 +377,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
                 Map<String, Object> buildings = hit.getSource();
+                buildings = replaceAgentInfo(buildings);
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -410,6 +421,13 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
 
+            //随机取返回的数据
+            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())){
+                Script script = new Script("Math.random()");
+                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+                srb.addSort(scrip);
+            }
+
             if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
                 houseList = queryProjHouseInfo(projHouseInfoRequest);
             }else{
@@ -434,6 +452,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHit[] searchHists = hits.getHits();
                         for (SearchHit hit : searchHists) {
                             Map<String, Object> buildings = hit.getSource();
+                            buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
                             BeanUtils.populate(instance, buildings);
@@ -451,6 +470,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHit[] searchHists = hits.getHits();
                         for (SearchHit hit : searchHists) {
                             Map<String, Object> buildings = hit.getSource();
+                            buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
                             BeanUtils.populate(instance, buildings);
@@ -475,6 +495,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHit[] esfsearchHists = esfhits.getHits();
                         for (SearchHit hit : esfsearchHists) {
                             Map<String, Object> buildings = hit.getSource();
+                            buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
                             BeanUtils.populate(instance, buildings);
@@ -501,6 +522,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHit[] esfsearchHists = esfhits.getHits();
                         for (SearchHit hit : esfsearchHists) {
                             Map<String, Object> buildings = hit.getSource();
+                            buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
                             BeanUtils.populate(instance, buildings);
@@ -554,7 +576,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
      * @date 2017/12/15 11:50
      */
     @Override
-    public Map<String, Object> queryByHouseId(Integer houseId) {
+    public Map<String, Object> queryByHouseId(String houseId) {
 
         Map<String, Object> result = null;
         try {
@@ -562,7 +584,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             //声明符合查询方法
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+            if (RegexUtils.checkIsNum(houseId)){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+            }else {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
+            }
             SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                     .setQuery(booleanQueryBuilder)
                     .setSize(10)
@@ -573,6 +599,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             for (SearchHit hit : searchHists) {
                 Map<String, Object> buildings = hit.getSource();
                 buildings.put("housingDeposit",buildings.get("HousingDeposit"));
+                buildings = replaceAgentInfo(buildings);
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -790,6 +817,20 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 替换经纪人信息
+     */
+    public Map replaceAgentInfo(Map buildings){
+        if(null!=buildings.get("is_claim")&&String.valueOf(buildings.get("is_claim")).equals("1")){
+            buildings.put("houseTitle",buildings.get("claimHouseTitle"));
+            buildings.put("housePhotoTitle",buildings.get("claimHousePhotoTitle"));
+            buildings.put("tags",buildings.get("claimTags"));
+            buildings.put("tagsName",buildings.get("claimTagsName"));
+            buildings.put("houseId",buildings.get("claimHouseId"));
+        }
+        return buildings;
     }
 
 }

@@ -53,11 +53,11 @@ public class ProjHouseInfoController {
     public String queryProjHouseByhouseIdandLocation(Model model, @PathVariable("houseId") String  houseId) {
 
         //判断传递的二手房id是否是数字
-        if (!RegexUtils.checkIsNum(houseId)) {
-            return "404";
-        }
+//        if (!RegexUtils.checkIsNum(houseId)) {
+//            return "404";
+//        }
         //房源详情
-        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(Integer.valueOf(houseId));
+        Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(houseId);
         if (StringTool.isNotBlank(houseDetails)) {
 //            model.addAttribute("pageNum",pageNum);
             model.addAttribute("houseId",houseId);
@@ -80,10 +80,10 @@ public class ProjHouseInfoController {
             }
 
             //房源经纪人
-            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
-            if (agent!=null){
-                model.addAttribute("agent",agent);
-            }
+//            Map agent = projHouseInfoService.queryAgentByHouseId(Integer.valueOf(houseId));
+//            if (agent!=null){
+//                model.addAttribute("agent",agent);
+//            }
         } else {
             //跳转到404页
             return "404";
