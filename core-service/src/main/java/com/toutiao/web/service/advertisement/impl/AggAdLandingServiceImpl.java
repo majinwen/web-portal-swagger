@@ -255,6 +255,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         if(query_size==0L){
             sellHouseDomain.setSign(1);
+            return sellHouseDomain;
         }else{
             sellHouseDomain =  getRecommendHits(aggAdLandingDo,searchResponse);
         }
