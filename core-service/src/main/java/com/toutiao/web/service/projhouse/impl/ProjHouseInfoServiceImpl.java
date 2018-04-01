@@ -317,9 +317,9 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
                     srb.setPostFilter(location1);
                     GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-                    sort.unit(DistanceUnit.KILOMETERS);
-                    sort.order(SortOrder.ASC);
-                    srb.addSort(sort);
+//                    sort.unit(DistanceUnit.KILOMETERS);
+//                    sort.order(SortOrder.ASC);
+//                    srb.addSort(sort);
                 }
             }
             //去未删除的房源信息
@@ -474,11 +474,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
 
             //随机取返回的数据
-            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
-                Script script = new Script("Math.random()");
-                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
-                srb.addSort(scrip);
-            }
+//            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
+//                Script script = new Script("Math.random()");
+//                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+//                srb.addSort(scrip);
+//            }
 
             if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
                 houseList = queryProjHouseInfo(projHouseInfoRequest);
@@ -489,12 +489,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 // 获取距离多少公里 这个才是获取点与点之间的距离的
                 GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
                 sort.unit(DistanceUnit.KILOMETERS);
-                sort.order(SortOrder.ASC);
-                sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-                srb.addSort(sort);
+//                sort.order(SortOrder.ASC);
+//                sort.point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+//                srb.addSort(sort);
                 BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
                 booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
-                SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC).execute().actionGet();
+                SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("sortingScore", SortOrder.DESC).execute().actionGet();
                 long oneKM_size = searchResponse.getHits().getTotalHits();
 
                 if(searchResponse != null){
@@ -539,7 +539,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                         SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
                                 .setFrom((0) * pageSize)
                                 .setSize(pageSize-hits.getHits().length)
                                 .execute().actionGet();
@@ -566,7 +566,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                         SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
                                 .setFrom(Integer.valueOf((int) es_from))
                                 .setSize(pageSize)
                                 .execute().actionGet();
