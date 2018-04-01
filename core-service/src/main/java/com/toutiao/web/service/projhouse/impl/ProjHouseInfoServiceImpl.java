@@ -153,9 +153,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 } else {
                     booleanQueryBuilder.must(QueryBuilders.boolQuery()
                             .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
-                            .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
-                            .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                            .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
+                            );
                 }
             }
 //            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
@@ -318,8 +316,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     srb.setPostFilter(location1);
                     GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
                     sort.unit(DistanceUnit.KILOMETERS);
-                    sort.order(SortOrder.ASC);
-                    srb.addSort(sort);
+//                    sort.order(SortOrder.ASC);
+//                    srb.addSort(sort);
                 }
             }
             //去未删除的房源信息
