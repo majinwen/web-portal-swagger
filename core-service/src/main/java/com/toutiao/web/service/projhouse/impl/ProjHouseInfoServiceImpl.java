@@ -337,12 +337,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
 
 
-            //随机取返回的数据
-            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
-                Script script = new Script("Math.random()");
-                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
-                srb.addSort(scrip);
-            }
+//            //随机取返回的数据
+//            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
+//                Script script = new Script("Math.random()");
+//                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+//                srb.addSort(scrip);
+//            }
 
 
 //            System.out.println(booleanQueryBuilder);
@@ -360,12 +360,12 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             } else {
                 //如果含有关键字查询，优先显示关键字
                 if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
-                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("sortingScore", SortOrder.DESC)
                             .setFrom((pageNum - 1) * pageSize)
                             .setSize(pageSize)
                             .execute().actionGet();
                 }else{
-                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
                             .setFrom((pageNum - 1) * pageSize)
                             .setSize(pageSize)
                             .execute().actionGet();
@@ -400,6 +400,58 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List queryProjHouseInfoByVillageId(ProjHouseInfoQuery projHouseInfoQuery) {
+        TransportClient client = esClientTools.init();
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        int pageNum = 1;
+        int pageSize = 10;
+        if (projHouseInfoQuery.getPageNum() != null && projHouseInfoQuery.getPageNum() > 1) {
+            pageNum = projHouseInfoQuery.getPageNum();
+        }
+        if (projHouseInfoQuery.getPageSize() != null && projHouseInfoQuery.getPageSize()>= 10) {
+            pageSize = projHouseInfoQuery.getPageSize();
+        }
+        try {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+            if (StringTool.isNotEmpty(projHouseInfoQuery.getNewcode())) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", projHouseInfoQuery.getNewcode()));
+
+            }
+            SearchResponse searchresponse = null;
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+                    .setFrom((pageNum - 1) * pageSize)
+                    .setSize(pageSize)
+                    .execute().actionGet();
+            SearchHits hits = searchresponse.getHits();
+            List houseList = new ArrayList();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit hit : searchHists) {
+                Map<String, Object> buildings = hit.getSource();
+                buildings = replaceAgentInfo(buildings);
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                BeanUtils.populate(instance, buildings);
+                instance.setPageNum(projHouseInfoQuery.getPageNum());
+                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                    //小区坐标
+                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                }
+                instance.setTotal(hits.totalHits);
+                instance.setPageNum(projHouseInfoQuery.getPageNum());
+                houseList.add(instance);
+            }
+            if (houseList!=null&&houseList.size()>0){
+                return houseList;
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
         return null;

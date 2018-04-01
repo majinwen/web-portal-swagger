@@ -11,6 +11,8 @@ public interface ProjHouseInfoService {
 
     List queryProjHouseInfo(ProjHouseInfoQuery ProjHouseInfoQuery);
 
+    List queryProjHouseInfoByVillageId(ProjHouseInfoQuery ProjHouseInfoQuery);
+
     List queryNearByProjHouseInfo(ProjHouseInfoQuery ProjHouseInfoQuery);
 
     Map<String, Object> queryByHouseId(String houseId);
