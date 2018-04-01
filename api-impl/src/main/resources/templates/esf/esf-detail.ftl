@@ -18,11 +18,11 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if agent?exists>
-            <#if agent['house_img']?exists&&agent['house_img']?size gt 0>
-                <#list agent['house_img'] as photo>
-                    <li onclick="initphoto(this,${photo_index})" class="swiper-slide">
-                        <img src="${photo['image_path']}" data-src="${photo['image_path']}" alt="">
+        <#if houseDetail['claimHouseId']?exists>
+            <#if houseDetail['housePhoto']?exists&& houseDetail['housePhoto']?size gt 0>
+                <#list houseDetail['housePhoto'] as itemValue>
+                    <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
+                        <img src="${itemValue}" data-src="${itemValue}" alt="">
                     </li>
                 </#list>
             <#else>
@@ -45,9 +45,9 @@
         </#if>
         </ul>
         <div class="banner-title">
-            <#if agent?exists>
-                <#if agent.houseId?exists&&agent.houseId!=''>
-                    <div class="banner-house-number">房源编号：${agent.houseId}</div>
+            <#if houseDetail.claimHouseId?exists>
+                <#if houseDetail.claimHouseId!=''>
+                    <div class="banner-house-number">房源编号：${houseDetail.claimHouseId}</div>
                 </#if>
             <#else >
                 <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
@@ -91,17 +91,17 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <#if agent?exists>
-                <#if agent.house_title?exists&&agent.house_title!=''>
-                    <h2>${agent.house_title}</h2>
+            <#if houseDetail.claimHouseId?exists>
+                <#if houseDetail.claimHouseTitle?exists && houseDetail.claimHouseTitle!=''>
+                    <h2>${houseDetail.claimHouseTitle}</h2>
                 </#if>
             <#else >
                 <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
             </#if>
             <div class="primary-header-tag house-labelling gray">
-            <#if agent?exists>
-                <#if agent['house_tags_name']?exists&&agent['house_tags_name']?size gt 0>
-                    <#list agent['house_tags_name'] as itemValue>
+            <#if houseDetail.claimHouseId?exists>
+                <#if houseDetail['claimTagsName']?exists&&houseDetail['claimTagsName']?size gt 0>
+                    <#list houseDetail['claimTagsName'] as itemValue>
                             <span>${itemValue}</span>
                     </#list>
                 </#if>
@@ -235,7 +235,9 @@
         </ul>
     </section>
 </div>
-<#if agent?exists>
+
+
+<#if houseDetail['claimHouseId']?exists>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -243,20 +245,20 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if agent['agent_headphoto']?exists>src="${agent['agent_headphoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail['houseProxyPhoto']?exists>src="${houseDetail['houseProxyPhoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
-                        <#if agent['of_company']?exists&&agent['of_company']!=''>【${agent['of_company']}】</#if>
-                        <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
+                        <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
+                        <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if></span>
                     <em>房屋信息发布人</em>
                 </p>
-                <#if agent['agent_phone']?exists&&agent['agent_phone']!=''>
-                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon"></a>
+                <#if houseDetail['houseProxyPhone']?exists&&houseDetail['houseProxyPhone']!=''>
+                    <a href="tel:${houseDetail['houseProxyPhone']}" class="issuer-tel-icon"></a>
                 </#if>
             </div>
-            <#if agent['house_desc']?exists&&agent['house_desc']!=''>
+            <#if houseDetail['houseDesc']?exists&&houseDetail['houseDesc']!=''>
                 <div class="describe-cont">
-                    <p>${agent['house_desc']}</p>
+                    <p>${houseDetail['houseDesc']}</p>
                 <#--<span class="describe-show-btn">>>展开</span>-->
                 </div>
             </#if>
@@ -445,15 +447,15 @@
     <#--</section>-->
 <#--</div>-->
 <#--<#else >-->
-    <#if agent?exists&&agent['agent_phone']?exists&&agent['agent_phone']!=''>
+    <#if houseDetail['claimHouseId']?exists&&houseDetail['claimHouseId']!=''>
         <div class="detail-contact-wrapper">
             <section class="detail-contact-box" id="detailContactState">
                 <div class="detail-contact-content">
-                    <a href="tel:${agent['agent_phone']}" class="only contact-telephone-counseling">咨询经纪人</a>
+                    <a href="tel:${houseDetail['houseProxyPhone']}" class="only contact-telephone-counseling">咨询经纪人</a>
                 </div>
             </section>
         </div>
-        <#else>
+    <#else>
             <#if houseDetail.houseProxyPhone?exists>
                 <div class="detail-contact-wrapper">
                 <section class="detail-contact-box" id="detailContactState">
@@ -518,7 +520,8 @@
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
 
-    <#if agent?exists>
+    <#if houseDetail?exists>
+        <#if houseDetail['claimHouseId']?exists && houseDetail['claimHouseId']!=''>
         zhuge.track('出售房源认领统计', {
             '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
             '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
@@ -531,6 +534,7 @@
             '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
             'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
         });
+        </#if>
     </#if>
 
     $(".describe-header").on('click', 'a', function () {

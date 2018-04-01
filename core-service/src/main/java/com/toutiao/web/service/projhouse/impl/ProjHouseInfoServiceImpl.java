@@ -638,8 +638,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             if (!houseId.substring(0,2).equals("FS")){
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+                booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
             }else {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
+
             }
             SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                     .setQuery(booleanQueryBuilder)
