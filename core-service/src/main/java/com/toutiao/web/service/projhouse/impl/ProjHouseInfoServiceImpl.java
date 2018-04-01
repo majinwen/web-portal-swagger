@@ -360,7 +360,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             } else {
                 //如果含有关键字查询，优先显示关键字
                 if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
-                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("sortingScore", SortOrder.DESC)
+                    searchresponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC).addSort("_score",SortOrder.DESC)
                             .setFrom((pageNum - 1) * pageSize)
                             .setSize(pageSize)
                             .execute().actionGet();
