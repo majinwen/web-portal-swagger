@@ -25,7 +25,7 @@
                         <#if itemValue?string?index_of("http") gt -1>
                             <img src="${itemValue}" data-src="${itemValue}" alt="">
                         <#else>
-                            <img src="${qiniuimage}/${itemValue}" data-src="${qiniuimage}/${itemValue}" alt="">
+                            <img src="${qiniuimage}/${itemValue}-ttfc1200x640" data-src="${qiniuimage}/${itemValue}-ttfc1200x640" alt="">
                         </#if>
                     </li>
                 </#list>
