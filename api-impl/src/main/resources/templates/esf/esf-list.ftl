@@ -270,6 +270,7 @@
             <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}"   href="javascript:void(0);">
         {{/if}}
             <div class="clear">
+                {{if $value.claimHouseId==''}}
                 <div class="list-item-img-box">
                     {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
                     <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
@@ -277,8 +278,21 @@
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     {{/if}}
                 </div>
+                {{else}}
+                <div class="list-item-img-box">
+                    {{if $value.claimHousePhotoTitle && $value.claimHousePhotoTitle.length > 0}}
+                    <img src="{{$value.claimHousePhotoTitle}}" alt="{{$value.houseBusinessName}}">
+                    {{else}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    {{/if}}
+                </div>
+                {{/if}}
                 <div class="list-item-cont">
+                    {{if $value.claimHouseId==''}}
                     <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
+                    {{else}}
+                    <h3 class="cont-block-1"><span>{{$value.claimHouseTitle}}</span></h3>
+                    {{/if}}
                     <p class="cont-block-2">
                         {{if $value.buildArea && $value.buildArea > 0}}
                         {{$value.buildArea}}㎡
@@ -304,13 +318,24 @@
                         {{/if}}
                         {{/if}}
                     </p>
+                    {{if $value.claimHouseId==''}}
+                        <div class="cont-block-4 house-labelling gray middle esf">
+                            {{if $value.tagsName}}
+                            {{each $value.tagsName value index}}
+                            <span>{{value}}</span>
+                            {{/each}}
+                            {{/if}}
+                        </div>
+                    {{else}}
                     <div class="cont-block-4 house-labelling gray middle esf">
-                        {{if $value.tagsName}}
-                        {{each $value.tagsName value index}}
+                        {{if $value.claimTagsName}}
+                        {{each $value.claimTagsName value index}}
                         <span>{{value}}</span>
                         {{/each}}
                         {{/if}}
                     </div>
+                    {{/if}}
+
                     <div class="cont-block-price">
                         {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
                         <em>{{$value.houseTotalPrices}}万</em>

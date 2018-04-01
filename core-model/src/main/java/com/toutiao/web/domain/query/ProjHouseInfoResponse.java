@@ -316,4 +316,10 @@ public class ProjHouseInfoResponse {
      */
     private String claimHouseId ;
 
+    private String claimHouseTitle;
+
+    private String claimHousePhotoTitle;
+
+    private String[] claimTagsName;
+
 }
