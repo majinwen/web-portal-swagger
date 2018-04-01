@@ -155,7 +155,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()))
 //                            .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()))
 //                            .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
-                            .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).analyzer("ik_max_word").boost(5)));
+                            .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).boost(5)));
                 }
             }
 //            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
