@@ -22,7 +22,11 @@
             <#if houseDetail['housePhoto']?exists&& houseDetail['housePhoto']?size gt 0>
                 <#list houseDetail['housePhoto'] as itemValue>
                     <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                        <img src="${itemValue}" data-src="${itemValue}" alt="">
+                        <#if itemValue_index?index_of("http") gt -1>
+                            <img src="${itemValue}" data-src="${itemValue}" alt="">
+                        <#else>
+                            <img src="${qiniuimage}/${itemValue}" data-src="${qiniuimage}/${itemValue}" alt="">
+                        </#if>
                     </li>
                 </#list>
             <#else>
@@ -245,7 +249,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail['houseProxyPhoto']?exists>src="${houseDetail['houseProxyPhoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail['houseProxyPhoto']?exists>src="${qiniuimage}/${houseDetail['houseProxyPhoto']}-tt400x300" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
