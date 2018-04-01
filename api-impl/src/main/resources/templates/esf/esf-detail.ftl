@@ -22,7 +22,7 @@
             <#if houseDetail['housePhoto']?exists&& houseDetail['housePhoto']?size gt 0>
                 <#list houseDetail['housePhoto'] as itemValue>
                     <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
-                        <#if itemValue_index?index_of("http") gt -1>
+                        <#if itemValue[itemValue_index]?index_of("http") gt -1>
                             <img src="${itemValue}" data-src="${itemValue}" alt="">
                         <#else>
                             <img src="${qiniuimage}/${itemValue}" data-src="${qiniuimage}/${itemValue}" alt="">
