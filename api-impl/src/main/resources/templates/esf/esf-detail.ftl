@@ -249,7 +249,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail['houseProxyPhoto']?exists&& houseDetail['houseProxyPhoto']!=''>src="${qiniuimage}/${houseDetail['houseProxyPhoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail['houseProxyPhoto']?exists&& houseDetail['houseProxyPhoto']!=''>src="${qiniuimage}/${houseDetail['houseProxyPhoto']}-tt100x200" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
