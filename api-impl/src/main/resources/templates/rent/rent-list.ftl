@@ -121,7 +121,7 @@
                         <dt data-type="tags">特色</dt>
                         <dd>
                             <span data-info="1">近地铁</span>
-                            <span data-info="2">免佣</span>
+                            <#--<span data-info="2">免佣</span>-->
                             <span data-info="6">集中供暖</span>
                             <span data-info="4">有电梯</span>
                         </dd>
