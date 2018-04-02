@@ -740,7 +740,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
-            srb.addSort("updateTimeSort", SortOrder.DESC);
+            boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+            srb.addSort("sortingScore", SortOrder.DESC);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(20).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit : hits) {
