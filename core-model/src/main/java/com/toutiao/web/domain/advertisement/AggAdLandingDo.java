@@ -26,12 +26,12 @@ public class AggAdLandingDo {
     private String ep;
 
     /**
-     * 小户型（90㎡内）
+     * 小户型（1,2局）
      */
     private String ls;
 
     /**
-     * 豪宅 （200㎡以上）
+     * 豪宅（大于1000w）
      */
     private String lh;
 
@@ -76,4 +76,13 @@ public class AggAdLandingDo {
     private Integer district;
 
     private Integer count;
+    /**
+     * 房源面积
+     */
+    private String houseArea;
+    /**
+     * 房源面积标志  1.等于，2大于，3小于，4之间
+     */
+    private Integer haSign;
+
 }

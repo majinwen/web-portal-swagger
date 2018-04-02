@@ -239,7 +239,28 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         }
 
-
+        //面积
+        if (StringUtil.isNotNullString(aggAdLandingDo.getHouseArea())) {
+            if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==1){//等于
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("buildArea",aggAdLandingDo.getHouseArea()));
+            }else if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==2){
+                booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(aggAdLandingDo.getHouseArea()));
+            }else if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==3){
+                booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lt(aggAdLandingDo.getHouseArea()));
+            }else if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==4){
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                String area = aggAdLandingDo.getHouseArea().replaceAll("\\[","").replaceAll("]","")
+                        .replaceAll("-",",");
+                String[] layoutId = area.split(",");
+                for (int i = 0; i < layoutId.length; i = i + 2) {
+                    if (i + 1 > layoutId.length) {
+                        break;
+                    }
+                    boolQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gt(layoutId[i]).lte(layoutId[i + 1]));
+                    booleanQueryBuilder.must(boolQueryBuilder);
+                }
+            }
+        }
 
         queryBit = getNextIndex(redisCatogory,startBit,queryBit);
         RangeQueryBuilder range = QueryBuilders.rangeQuery("adSort").gt(queryBit);
@@ -372,6 +393,34 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
         }
 
+        //区县
+        if (StringTool.isEmpty(aggAdLandingDo.getDistrict())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
+        }
+
+        //面积
+        if (StringUtil.isNotNullString(aggAdLandingDo.getHouseArea())) {
+            if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==1){//等于
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("buildArea",aggAdLandingDo.getHouseArea()));
+            }else if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==2){
+                booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(aggAdLandingDo.getHouseArea()));
+            }else if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==3){
+                booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lt(aggAdLandingDo.getHouseArea()));
+            }else if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==4){
+                String area = aggAdLandingDo.getHouseArea().replaceAll("\\[","").replaceAll("]","")
+                        .replaceAll("-",",");
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                String[] layoutId = area.split(",");
+                for (int i = 0; i < layoutId.length; i = i + 2) {
+                    if (i + 1 > layoutId.length) {
+                        break;
+                    }
+                    boolQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gt(layoutId[i]).lte(layoutId[i + 1]));
+                    booleanQueryBuilder.must(boolQueryBuilder);
+                }
+            }
+        }
+
 
         SearchResponse searchResponse = getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
         //计算补充数据的起始位置
@@ -438,6 +487,11 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //豪宅
         if (StringUtil.isNotNullString(aggAdLandingDo.getLh())) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(aggAdLandingDo.getLh()));
+        }
+
+        //区县
+        if (StringTool.isEmpty(aggAdLandingDo.getDistrict())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
         }
 
         SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
