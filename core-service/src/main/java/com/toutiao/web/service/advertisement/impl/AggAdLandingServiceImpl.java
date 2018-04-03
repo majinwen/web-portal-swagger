@@ -6,9 +6,7 @@ import com.toutiao.web.common.util.RedisSessionUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.advertisement.AggAdLandingDao;
-import com.toutiao.web.domain.advertisement.AggAdLandingDo;
-import com.toutiao.web.domain.advertisement.SellHouseAggAdLandingDo;
-import com.toutiao.web.domain.advertisement.SellHouseDomain;
+import com.toutiao.web.domain.advertisement.*;
 import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
@@ -51,12 +49,14 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
     private String projhouseType;//索引类
+    @Value("${tt.claim.renthouse.index}")
+    private String recommendRentIndex;
+    @Value("${tt.claim.renthouse.type}")
+    private String recommendRentType;
     @Value("${distance}")
     private Double distance;
     @Autowired
     private RedisSessionUtils redisSessionUtils;
-    @Autowired
-    private AggAdLandingDao aggAdLandingDao;
 
     private static final String RECOMMEND_DEFAULT = "ad_recommend_sellHouse_queryBit";
     private static final String RECOMMEND_SUBWAY = "ad_recommend_sellHouse_queryBit_subway";
@@ -64,6 +64,13 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private static final String RECOMMEND_LAYOUT = "ad_recommend_sellHouse_queryBit_layout";
     private static final String RECOMMEND_MANSION = "ad_recommend_sellHouse_queryBit_mansion";
     private static final String RECOMMEND_DISTRICT = "ad_recommend_sellHouse_queryBit_district";
+
+
+    private static final String RENT_RECOMMEND_DEFAULT = "ad_recommend_rentHouse_queryBit";
+    private static final String RENT_RECOMMEND_PRICE = "ad_recommend_rentHouse_queryBit_price";
+    private static final String RENT_RECOMMEND_SUBWAY = "ad_recommend_rentHouse_queryBit_subway";
+    private static final String RENT_RECOMMEND_MONTHPAY = "ad_recommend_rentHouse_queryBit_monthPay";
+    private static final String RENT_RECOMMEND_ENTIRERENT = "ad_recommend_rentHouse_queryBit_entireRent";
 
 
 
@@ -336,16 +343,39 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
         }
 
-        //把前台的传过来的查询条件返回回去
-        //1.获取List对象中adSort中的最大一条的记录
-
-
         sellHouseDomain.setSourceStart(source_start);
         sellHouseDomain.setSourceEnd(source_end);
-        //3.封装数据返回
-//        sellHouseDomain.setStartBit(startBit);
+
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
         return sellHouseDomain;
+    }
+
+
+    public RentHouseDomain getRentRecommendHits(SearchResponse searchResponse){
+        RentHouseDomain rentHouseDomain = new RentHouseDomain();
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+        List<RentHouseAggAdLandingDo> rentHouseAggAdLandingDos = new ArrayList<>();
+        String detail="";
+        Long source_start=0L;
+        Long source_end = 0L;
+        for (int i=0;i<searchHists.length;i++) {
+            SearchHit hit = searchHists[i];
+            if(i==0){
+                source_start =Long.parseLong(hit.getSource().get("adSort").toString());
+            }
+            if((i+1)==searchHists.length){
+                source_end =Long.parseLong(hit.getSource().get("adSort").toString());
+            }
+            detail = hit.getSourceAsString();
+            RentHouseAggAdLandingDo rentHouseAggAdLandingDo = JSON.parseObject(detail,RentHouseAggAdLandingDo.class);
+            rentHouseAggAdLandingDos.add(rentHouseAggAdLandingDo);
+        }
+
+        rentHouseDomain.setSourceStart(source_start);
+        rentHouseDomain.setSourceEnd(source_end);
+
+        rentHouseDomain.setRentHouseAggAdLandingDoList(rentHouseAggAdLandingDos);
+        return rentHouseDomain;
     }
 
     /**
@@ -517,7 +547,256 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         return sellHouseDomain;
     }
 
+    /**
+     * 出租推荐房源
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public RentHouseDomain getRentRecommendAdLanding(AggAdLandingDo aggAdLandingDo) {
 
+        RentHouseDomain rentHouseDomain = new RentHouseDomain();
+        //判断是否首次进入
+        Long startBit = aggAdLandingDo.getStartBit();
+
+        Long queryBit = aggAdLandingDo.getQueryBit();
+
+        Integer pageSize = aggAdLandingDo.getPs();
+
+
+        //有了用户的首次进入标志位和用户遍历数据的起始位置，那么就可以开始查询了。。。
+        //查询二手房推优表中的数据
+        //首先，填充筛选条件
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//构建筛选器
+        booleanQueryBuilder.must(QueryBuilders.termQuery("rent_sign",0));
+        String redisCatogory = RENT_RECOMMEND_DEFAULT;
+
+        // 筛选条件1-默认全部类型的推荐出租房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
+            redisCatogory = RENT_RECOMMEND_DEFAULT;
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+
+        }
+
+        //近地铁
+        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+            redisCatogory = RENT_RECOMMEND_SUBWAY;
+
+        }
+
+
+        //房源总价范围
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            redisCatogory = RENT_RECOMMEND_PRICE;
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+        }
+
+        //标签，月付
+        if(StringUtil.isNotNullString(aggAdLandingDo.getTag())){
+            redisCatogory = RENT_RECOMMEND_MONTHPAY;
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", aggAdLandingDo.getTag()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+        }
+
+        //整租
+        if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
+            redisCatogory = RENT_RECOMMEND_ENTIRERENT;
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+        }
+
+
+        queryBit = getNextIndex(redisCatogory,startBit,queryBit);
+        RangeQueryBuilder range = QueryBuilders.rangeQuery("adSort").gt(queryBit);
+        if(queryBit<startBit){
+            range.lt(startBit);
+        }
+        booleanQueryBuilder.must(range);
+        // ES查询了一下
+        SearchResponse searchResponse = getRecommendRentHouseAdLanding(booleanQueryBuilder, pageSize);
+        //判断ES给我的返回结果
+        //1.查询返回的结果数量，默认10条一档级
+        long query_size = searchResponse.getHits().getHits().length;
+
+        rentHouseDomain =  getRentRecommendHits(searchResponse);
+
+
+
+        String newRedisValue = "";
+        if(startBit==0){
+            newRedisValue=rentHouseDomain.getSourceEnd().toString();
+            rentHouseDomain.setStartBit(rentHouseDomain.getSourceStart());
+        }
+        else {
+            rentHouseDomain.setStartBit(startBit);
+        }
+
+        if(query_size < 10){
+            //到一圈了
+            if(queryBit<startBit || (startBit==0 && queryBit==0) ){
+                rentHouseDomain.setSign(1);
+            }
+            //到队尾了
+            else {
+                newRedisValue = "0";
+            }
+            rentHouseDomain.setQueryBit(0L);
+        }
+        else {
+            rentHouseDomain.setQueryBit(rentHouseDomain.getSourceEnd());
+            newRedisValue = rentHouseDomain.getSourceEnd().toString();
+        }
+
+        if(StringUtils.isNotBlank(newRedisValue)) {
+            redisSessionUtils.set(redisCatogory, newRedisValue);
+        }
+        return rentHouseDomain;
+    }
+
+    /**
+     * 出租录入房源
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public RentHouseDomain getRentInputAdLanding(AggAdLandingDo aggAdLandingDo) {
+
+
+        RentHouseDomain sellHouseDomain = new RentHouseDomain();
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = 1;
+        Integer pageSize = aggAdLandingDo.getPs();
+
+        if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
+            pageNum = aggAdLandingDo.getPn();
+        }
+        // 筛选条件1-默认全部类型的录入出租房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
+
+        }
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_recommend",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+
+        //近地铁
+        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+        }
+
+        //房源总价范围
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+
+        }
+
+        //标签，月付
+        if(StringUtil.isNotNullString(aggAdLandingDo.getTag())){
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", aggAdLandingDo.getTag()));
+        }
+
+        //整租
+        if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+        }
+
+
+        SearchResponse searchResponse = getInputRentHouseAdLanding(booleanQueryBuilder, pageNum, pageSize);
+        //计算补充数据的起始位置
+        long query_size = searchResponse.getHits().getHits().length;
+        if(query_size==0){
+            sellHouseDomain.setSign(2);
+        }else{
+            sellHouseDomain.setSign(1);
+        }
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+        List<RentHouseAggAdLandingDo> rentHouseAggAdLandingDos = new ArrayList<>();
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+            RentHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,RentHouseAggAdLandingDo.class);
+            rentHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
+        }
+
+
+        sellHouseDomain.setRentHouseAggAdLandingDoList(rentHouseAggAdLandingDos);
+        sellHouseDomain.setPageNum(pageNum);
+        return sellHouseDomain;
+    }
+
+    @Override
+    public RentHouseDomain getRentImportAdLanding(AggAdLandingDo aggAdLandingDo) {
+
+        RentHouseDomain rentHouseDomain = new RentHouseDomain();
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = 1;
+        Integer pageSize = aggAdLandingDo.getPs();
+
+
+        if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
+            pageNum = aggAdLandingDo.getPn();
+        }
+
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_recommend",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",3));
+        //近地铁
+        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+        }
+
+        //房源总价范围
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+
+        }
+
+        //标签，月付
+        if(StringUtil.isNotNullString(aggAdLandingDo.getTag())){
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", aggAdLandingDo.getTag()));
+        }
+
+        //整租
+        if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+        }
+
+        SearchResponse searchResponse = getImportRentHouseAdLanding(booleanQueryBuilder, pageNum, pageSize);
+        //计算补充数据的起始位置
+        long query_size = searchResponse.getHits().getHits().length;
+        if(query_size==0){
+            rentHouseDomain.setSign(0);
+        }else{
+            rentHouseDomain.setSign(2);
+        }
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+
+        List<RentHouseAggAdLandingDo> rentHouseAggAdLandingDos = new ArrayList<>();
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+            RentHouseAggAdLandingDo rentHouseAggAdLandingDo = JSON.parseObject(detail,RentHouseAggAdLandingDo.class);
+            rentHouseAggAdLandingDos.add(rentHouseAggAdLandingDo);
+        }
+
+        rentHouseDomain.setRentHouseAggAdLandingDoList(rentHouseAggAdLandingDos);
+        rentHouseDomain.setPageNum(pageNum);
+        return rentHouseDomain;
+    }
 
 
     public SearchResponse getRecommendSellHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageSize){
@@ -526,10 +805,77 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 "adSort","claimHouseId"};
 
         TransportClient client = esClientTools.init();
-
-
         SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
                 .setQuery(booleanQueryBuilder).addSort("adSort",SortOrder.ASC).setSize(pageSize)
+                .setFetchSource(returnField,null)
+                .execute().actionGet();
+
+
+        return searchResponse;
+    }
+
+    /**
+     * 出租推荐房源
+     * @param booleanQueryBuilder
+     * @param pageSize
+     * @return
+     */
+    public SearchResponse getRecommendRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageSize){
+        String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
+                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name"};
+
+        TransportClient client = esClientTools.init();
+        SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
+                .setQuery(booleanQueryBuilder).addSort("adSort",SortOrder.ASC).setSize(pageSize)
+                .setFetchSource(returnField,null)
+                .execute().actionGet();
+
+
+        return searchResponse;
+    }
+
+    /**
+     * 出租录入房源
+     * @param booleanQueryBuilder
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public SearchResponse getInputRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
+        String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
+                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name"};
+        TransportClient client = esClientTools.init();
+
+        //随机取返回的数据
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+
+        SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
+                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
+                .setFetchSource(returnField,null)
+                .execute().actionGet();
+
+
+        return searchResponse;
+    }
+
+    /**
+     * 出租导入房源
+     * @param booleanQueryBuilder
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public SearchResponse getImportRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
+        TransportClient client = esClientTools.init();
+        String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
+                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name"};
+        //随机取返回的数据
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+
+        SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
+                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
                 .setFetchSource(returnField,null)
                 .execute().actionGet();
 

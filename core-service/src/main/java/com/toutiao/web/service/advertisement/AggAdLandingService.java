@@ -1,6 +1,7 @@
 package com.toutiao.web.service.advertisement;
 
 import com.toutiao.web.domain.advertisement.AggAdLandingDo;
+import com.toutiao.web.domain.advertisement.RentHouseDomain;
 import com.toutiao.web.domain.advertisement.SellHouseAggAdLandingDo;
 import com.toutiao.web.domain.advertisement.SellHouseDomain;
 
@@ -23,5 +24,27 @@ public interface AggAdLandingService {
 
 
     SellHouseDomain getApiImportAdLanding(AggAdLandingDo aggAdLandingDo);
+
+    /**
+     * 出租推荐房源
+     * @param aggAdLandingDo
+     * @return
+     */
+    RentHouseDomain getRentRecommendAdLanding(AggAdLandingDo aggAdLandingDo);
+
+    /**
+     * 出租录入房源
+     * @param aggAdLandingDo
+     * @return
+     */
+    RentHouseDomain getRentInputAdLanding(AggAdLandingDo aggAdLandingDo);
+
+    /**
+     * 出租导入房源
+     * @param aggAdLandingDo
+     * @return
+     */
+    RentHouseDomain getRentImportAdLanding(AggAdLandingDo aggAdLandingDo);
+
 
 }

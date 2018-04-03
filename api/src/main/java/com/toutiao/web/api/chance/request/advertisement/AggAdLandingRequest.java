@@ -66,4 +66,9 @@ public class AggAdLandingRequest {
      */
     private Integer tj;
 
+    /**
+     * 整租
+     */
+    private Integer rentType;
+
 }

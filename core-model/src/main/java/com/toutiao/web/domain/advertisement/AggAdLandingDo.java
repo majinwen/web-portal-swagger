@@ -84,5 +84,9 @@ public class AggAdLandingDo {
      * 房源面积标志  1.等于，2大于，3小于，4之间
      */
     private Integer haSign;
+    /**
+     * 整租
+     */
+    private Integer rentType;
 
 }
