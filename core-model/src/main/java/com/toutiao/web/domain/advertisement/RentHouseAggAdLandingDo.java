@@ -27,5 +27,7 @@ public class RentHouseAggAdLandingDo {
 
     private Integer rentSign;
 
+    private String nearestSubway;
+
 
 }
