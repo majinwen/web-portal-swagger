@@ -71,4 +71,14 @@ public class AggAdLandingRequest {
      */
     private Integer rentType;
 
+    /**
+     * 区县
+     */
+    private Integer district;
+
+    /**
+     * 区县（居室）
+     */
+    private String room;
+
 }

@@ -74,6 +74,10 @@ public class AggAdLandingDo {
      * 区县
      */
     private Integer district;
+    /**
+     * 区县（居室）
+     */
+    private String room;
 
     private Integer count;
     /**

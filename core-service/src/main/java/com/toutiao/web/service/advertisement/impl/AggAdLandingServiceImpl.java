@@ -211,10 +211,17 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         //区域
         if(StringTool.isNotEmpty(aggAdLandingDo.getDistrict())){
-            redisCatogory = RECOMMEND_DISTRICT;
+            redisCatogory = RECOMMEND_DISTRICT+"_"+aggAdLandingDo.getDistrict();
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
-
+            if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
+                redisCatogory = redisCatogory+"_"+aggAdLandingDo.getRoom();
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                }else{
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+                }
+            }
         }
 
         //房源总价范围
@@ -426,6 +433,14 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //区县
         if (StringTool.isEmpty(aggAdLandingDo.getDistrict())){
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
+            if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                }else{
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+                }
+
+            }
         }
 
         //面积
@@ -522,6 +537,12 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //区县
         if (StringTool.isEmpty(aggAdLandingDo.getDistrict())){
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
+            if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                }
+                booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+            }
         }
 
         SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
