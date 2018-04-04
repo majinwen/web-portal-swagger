@@ -435,7 +435,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
 
         //区县
-        if (StringTool.isEmpty(aggAdLandingDo.getDistrict())){
+        if (StringTool.isNotEmpty(aggAdLandingDo.getDistrict())){
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
@@ -539,7 +539,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
 
         //区县
-        if (StringTool.isEmpty(aggAdLandingDo.getDistrict())){
+        if (StringTool.isNotEmpty(aggAdLandingDo.getDistrict())){
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
