@@ -827,7 +827,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     public SearchResponse getRecommendSellHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageSize){
         String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
-                "adSort","claimHouseId"};
+                "adSort","claimHouseId","claimHouseTitle","claimHousePhotoTitle","claimTagsName"};
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
@@ -911,7 +911,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     public SearchResponse getClaimSellHouseDetailsAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
         String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
-                "adSort","claimHouseId"};
+                "adSort","claimHouseId","claimHouseTitle","claimHousePhotoTitle","claimTagsName"};
 
         TransportClient client = esClientTools.init();
 
