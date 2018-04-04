@@ -107,7 +107,9 @@ public class RentHouseServiceImpl implements RentHouseService{
                             }
                         }
                     }else {
-                        list.add(source);
+                        if (list.size()<3) {
+                            list.add(source);
+                        }
                     }
                 }
                 result.put("nearHouse",list);
@@ -173,47 +175,56 @@ public class RentHouseServiceImpl implements RentHouseService{
                 }else{
                     if (StringUtils.isNotBlank(rentHouseQuery.getZuFangName())){
                         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_name",rentHouseQuery.getZuFangName()));
+                        boolQueryBuilder.mustNot(QueryBuilders.termQuery("house_id",rentHouseQuery.getHouseId()));
                     }
                 }
             }else{
                 if (StringUtils.isNotBlank(rentHouseQuery.getZuFangId())){
                     boolQueryBuilder.must(QueryBuilders.termsQuery("zufang_id",rentHouseQuery.getZuFangId()));
+                    srb.addSort("rent_house_price",SortOrder.ASC);
                 }
             }
 
 
             //按价格由低到高排序
-            srb.addSort("rent_house_price",SortOrder.ASC);
+
             //是否删除
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
             //发布状态
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
             //小区/公寓
-            if (rentHouseQuery.getRentSign()==0){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
-            }
-            if (rentHouseQuery.getRentSign()==1 || rentHouseQuery.getRentSign()==2){
-                BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.termQuery("rent_sign",1)).should(QueryBuilders.termQuery("rent_sign",2)));
-            }
+//            if (rentHouseQuery.getRentSign()==0){
+//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",RENT));
+//            }
+//            if (rentHouseQuery.getRentSign()==1 || rentHouseQuery.getRentSign()==2){
+//                BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+//                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.termQuery("rent_sign",1)).should(QueryBuilders.termQuery("rent_sign",2)));
+//            }
 //            if (rentHouseQuery.getRentSign()==2){
 //                boolQueryBuilder.must(QueryBuilders.termQuery("rent_sign",FOCUS_APARTMENT));
 //            }
-            srb.setSize(4);
+            Script script = new Script("Math.random()");
+            ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+            srb.setSize(3).addSort(scrip);
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
                     Map source = hit.getSource();
-                    if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
-                        if(!(String.valueOf(source.get("house_id"))).equals(String.valueOf(rentHouseQuery.getHouseId()))){
-                            if (list.size()<3){
-                                list.add(source);
-                            }
-                        }
-                    }else {
-                        list.add(source);
-                    }
+//                    if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
+//                        if(!(String.valueOf(source.get("house_id"))).equals(String.valueOf(rentHouseQuery.getHouseId()))){
+//                            if (list.size()<3){
+//                                list.add(source);
+//                            }
+//                        }
+//                    }else {
+//                        if (list.size()<3) {
+//                            list.add(source);
+//                        }
+//                    }
+
+                    list.add(source);
+
                 }
                 result.put("total",searchResponse.getHits().getTotalHits());
                 result.put("nearHouse",list);
