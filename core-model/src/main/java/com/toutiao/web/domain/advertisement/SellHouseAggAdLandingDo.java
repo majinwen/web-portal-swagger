@@ -23,6 +23,11 @@ public class SellHouseAggAdLandingDo {
     private Integer pageNum;
     private Long adSort;
     private String claimHouseId;
+    private String claimHouseTitle;
+
+    private String claimHousePhotoTitle;
+
+    private String[] claimTagsName;
 
 
 }
