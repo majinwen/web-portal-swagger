@@ -2,9 +2,11 @@ package com.toutiao.web.apiimpl.impl.advertisement;
 
 
 import com.toutiao.web.api.chance.request.advertisement.AggAdLandingRequest;
+import com.toutiao.web.api.chance.response.advertisement.RentHouseResponse;
 import com.toutiao.web.api.chance.response.advertisement.SellHouseResponse;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.advertisement.AggAdLandingDo;
+import com.toutiao.web.domain.advertisement.RentHouseDomain;
 import com.toutiao.web.domain.advertisement.SellHouseDomain;
 import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.springframework.beans.BeanUtils;
@@ -107,8 +109,59 @@ public class AggAdLandingController {
     }
 
 
+    /**
+     * cpc出租房源推荐
+     * @param aggAdLandingRequest
+     * @return
+     */
+    @RequestMapping(value = "/queryRentRecommendAggAdLanding")
+    @ResponseBody
+    public NashResult queryRentRecommendAggAdLanding(AggAdLandingRequest aggAdLandingRequest){
 
+        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentRecommendAdLanding(aggAdLandingDo);
+        RentHouseResponse rentHouseResponse = new RentHouseResponse();
+        BeanUtils.copyProperties(rentHouseDomain,rentHouseResponse);
 
+        return NashResult.build(rentHouseResponse);
+    }
+
+    /**
+     * cpc 录入房源推荐
+     * @param aggAdLandingRequest
+     * @return
+     */
+    @RequestMapping(value = "/queryRentInputAggAdLanding")
+    @ResponseBody
+    public NashResult queryRentInputAggAdLanding(AggAdLandingRequest aggAdLandingRequest){
+
+        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentInputAdLanding(aggAdLandingDo);
+        RentHouseResponse rentHouseResponse = new RentHouseResponse();
+        BeanUtils.copyProperties(rentHouseDomain,rentHouseResponse);
+
+        return NashResult.build(rentHouseResponse);
+    }
+
+    /**
+     * cpc 导入房源推荐
+     * @param aggAdLandingRequest
+     * @return
+     */
+    @RequestMapping(value = "/queryRentImportAggAdLanding")
+    @ResponseBody
+    public NashResult queryRentImportAggAdLanding(AggAdLandingRequest aggAdLandingRequest){
+
+        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentImportAdLanding(aggAdLandingDo);
+        RentHouseResponse rentHouseResponse = new RentHouseResponse();
+        BeanUtils.copyProperties(rentHouseDomain,rentHouseResponse);
+
+        return NashResult.build(rentHouseResponse);
+    }
 
 
 }
