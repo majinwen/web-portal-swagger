@@ -173,7 +173,11 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         return currentBit;
     }
 
-
+    /**
+     * 二手房推荐房源
+     * @param aggAdLandingDo
+     * @return
+     */
     @Override
     public SellHouseDomain getRecommendAdLanding(AggAdLandingDo aggAdLandingDo) {
 
@@ -386,7 +390,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     }
 
     /**
-     * 认领房源
+     * 二手房认领房源
      * @param aggAdLandingDo
      * @return
      */
@@ -491,7 +495,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     }
 
     /**
-     * 经纪公司导入
+     * 二手房经纪公司导入
      * @param aggAdLandingDo
      * @return
      */
