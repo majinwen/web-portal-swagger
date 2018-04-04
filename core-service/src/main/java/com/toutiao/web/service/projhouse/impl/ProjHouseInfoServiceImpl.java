@@ -107,6 +107,68 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 instance.setHousetToPlotDistance(distance1);
                 BeanUtils.populate(instance, buildings);
                 buildinglist.add(instance);
+
+            }
+
+            if(buildinglist.size()>0 && buildinglist.size()< 5){
+                buildinglist.addAll(queryProjHouseByUnClaim(newhouse,lat,lon,distance,5-buildinglist.size()));
+            }else if(buildinglist.size()==0){
+                buildinglist.addAll(queryProjHouseByUnClaim(newhouse,lat,lon,distance,5));
+            }
+
+            if(buildinglist!=null&&buildinglist.size()>0){
+                return buildinglist;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public List queryProjHouseByUnClaim(String newhouse, double lat, double lon,String distance,Integer querySize) {
+
+
+        Map<String, Object> result = null;
+        try {
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            //从该坐标查询距离为distance      housePlotLocation
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
+            boolQueryBuilder.must(termQuery("is_claim",0));
+            boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.KILOMETERS));
+            srb.setQuery(boolQueryBuilder).setFetchSource(
+                    new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall",
+                            "buildArea", "plotName","forwardName","houseTitle","tagsName","claimHouseId","claimHousePhotoTitle",
+                            "claimHouseTitle","claimTagsName"}, null)
+                    .execute().actionGet();
+
+            // 获取距离多少公里 这个才是获取点与点之间的距离的
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
+            Script script = new Script("Math.random()");
+            ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+            sort.unit(DistanceUnit.KILOMETERS);
+            sort.geoDistance(GeoDistance.ARC);
+            srb.addSort("sortingScore",SortOrder.DESC).addSort(scrip).addSort(sort);
+            SearchResponse searchResponse = srb.setSize(querySize).execute().actionGet();
+            SearchHits hits = searchResponse.getHits();
+            String[] house = new String[(int) hits.getTotalHits()];
+
+            ArrayList buildinglist = new ArrayList<>();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit hit : searchHists) {
+                Map<String, Object> buildings = hit.getSource();
+                //排除自身
+                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                ProjHouseInfoResponse instance = entityClass.newInstance();
+                //获取距离值，并保留两位小数点
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[1]);
+                String distance1 = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                instance.setHousetToPlotDistance(distance1);
+                BeanUtils.populate(instance, buildings);
+                buildinglist.add(instance);
 //                if (instance.getHouseId().equals(instance.getHouseId())) {
 //                    buildinglist.remove(instance);
 //                }
