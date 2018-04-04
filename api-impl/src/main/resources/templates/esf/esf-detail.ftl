@@ -369,43 +369,122 @@
         </div>
         <ul class="tilelist-type">
             <#list plot as map>
-                <li>
-                    <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
-                    <#else><a href="#">
-                    </#if>
-                    <div class="picture-box">
-                        <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
-                            <img src="${map.housePhotoTitle}" alt="${map.plotName}">
-                        <#else >
-                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <#if map.claimHouseId?exists>
+
+                    <li>
+                        <#if map.claimHouseId?exists><a href="${router_city('/esf/'+map.claimHouseId+'.html')}">
+                        <#else><a href="#">
                         </#if>
-                        <div class="bottom-text">
-                            <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
+                        <div class="picture-box">
+                            <#if map.claimHousePhotoTitle?exists && map.claimHousePhotoTitle!=''>
+                                <img src="${map.claimHousePhotoTitle}" alt="${map.plotName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tilelist-content">
-                        <h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>
-                        <p class="cont-first">
+                        <div class="tilelist-content">
+                            <h4 class="cont-last"><#if map.claimHouseTitle?exists>${map.claimHouseTitle}</#if></h4>
+                            <p class="cont-first">
                             <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>
                                 <#if map.room?exists&&map.hall?exists>
-                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                                 <#if map.forwardName?exists> ${map.forwardName}</#if>
-                        </p>
-                        <div class="cont-block-4 house-labelling normal">
-                            <#if map.tagsName?exists>
-                                <#assign item = map.tagsName>
-                                <#list item as itemValue>
-                                    <#if itemValue?exists>
-                                        <#if itemValue_index lt 3>
-                                            <span>${itemValue}</span>
+                            </p>
+                            <div class="cont-block-4 house-labelling normal">
+                                <#if map.claimTagsName?exists>
+                                    <#assign item = map.claimTagsName>
+                                    <#list item as itemValue>
+                                        <#if itemValue?exists>
+                                            <#if itemValue_index lt 3>
+                                                <span>${itemValue}</span>
+                                            </#if>
                                         </#if>
-                                    </#if>
-                                </#list>
-                            </#if>
+                                    </#list>
+                                </#if>
+                            </div>
                         </div>
-                    </div>
-                </a></li>
+                    </a></li>
+                <#else>
+                    <li>
+                        <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
+                        <#else><a href="#">
+                        </#if>
+                        <div class="picture-box">
+                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                                <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
+                            </div>
+                        </div>
+                        <div class="tilelist-content">
+                            <h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>
+                            <p class="cont-first">
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                                <#if map.forwardName?exists> ${map.forwardName}</#if>
+                            </p>
+                            <div class="cont-block-4 house-labelling normal">
+                                <#if map.tagsName?exists>
+                                    <#assign item = map.tagsName>
+                                    <#list item as itemValue>
+                                        <#if itemValue?exists>
+                                            <#if itemValue_index lt 3>
+                                                <span>${itemValue}</span>
+                                            </#if>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </div>
+                        </div>
+                    </a></li>
+
+                </#if>
+                <#--<li>-->
+                    <#--<#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">-->
+                    <#--<#else><a href="#">-->
+                    <#--</#if>-->
+                    <#--<div class="picture-box">-->
+                        <#--<#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>-->
+                            <#--<img src="${map.housePhotoTitle}" alt="${map.plotName}">-->
+                        <#--<#else >-->
+                            <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">-->
+                        <#--</#if>-->
+                        <#--<div class="bottom-text">-->
+                            <#--<#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                    <#--<div class="tilelist-content">-->
+                        <#--<h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>-->
+                        <#--<p class="cont-first">-->
+                            <#--<em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>-->
+                                <#--<#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>-->
+                                <#--<#if map.room?exists&&map.hall?exists>-->
+                                <#--<#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>-->
+                                <#--<#if map.forwardName?exists> ${map.forwardName}</#if>-->
+                        <#--</p>-->
+                        <#--<div class="cont-block-4 house-labelling normal">-->
+                            <#--<#if map.tagsName?exists>-->
+                                <#--<#assign item = map.tagsName>-->
+                                <#--<#list item as itemValue>-->
+                                    <#--<#if itemValue?exists>-->
+                                        <#--<#if itemValue_index lt 3>-->
+                                            <#--<span>${itemValue}</span>-->
+                                        <#--</#if>-->
+                                    <#--</#if>-->
+                                <#--</#list>-->
+                            <#--</#if>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</a></li>-->
             </#list>
         </ul>
     </section>

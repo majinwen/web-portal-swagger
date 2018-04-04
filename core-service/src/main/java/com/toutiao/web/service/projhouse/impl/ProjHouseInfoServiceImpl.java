@@ -84,7 +84,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             sort.unit(DistanceUnit.KILOMETERS);
             sort.geoDistance(GeoDistance.ARC);
-            srb.addSort(scrip).addSort(sort);
+            srb.addSort("sortingScore",SortOrder.DESC).addSort(scrip).addSort(sort);
             SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
