@@ -77,7 +77,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
             boolQueryBuilder.must(termQuery("is_claim",1));
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.KILOMETERS));
-            srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea", "plotName","forwardName","houseTitle","tagsName"}, null).execute().actionGet();
+            srb.setQuery(boolQueryBuilder).setFetchSource(
+                    new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall",
+                            "buildArea", "plotName","forwardName","houseTitle","tagsName","claimHouseId","claimHousePhotoTitle",
+                    "claimHouseTitle","claimTagsName"}, null)
+                    .execute().actionGet();
 
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
