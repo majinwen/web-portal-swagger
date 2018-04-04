@@ -29,5 +29,7 @@ public class RentHouseAggAdLandingDo {
 
     private String nearestSubway;
 
+    private String houseTitleImg;
+
 
 }
