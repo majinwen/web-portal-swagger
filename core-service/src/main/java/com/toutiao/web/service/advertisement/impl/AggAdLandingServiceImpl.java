@@ -847,7 +847,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
      */
     public SearchResponse getRecommendRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageSize){
         String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
-                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name"};
+                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name","house_title_img"};
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
@@ -868,7 +868,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
      */
     public SearchResponse getInputRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
         String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
-                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name"};
+                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name","house_title_img"};
         TransportClient client = esClientTools.init();
 
         //随机取返回的数据
@@ -894,7 +894,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     public SearchResponse getImportRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
         TransportClient client = esClientTools.init();
         String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
-                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name"};
+                "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name","house_title_img"};
         //随机取返回的数据
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
