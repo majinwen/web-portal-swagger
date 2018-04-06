@@ -322,4 +322,8 @@ public class ProjHouseInfoResponse {
 
     private String[] claimTagsName;
 
+    private Integer sortingScore;
+
+    private Integer is_claim;
+
 }
