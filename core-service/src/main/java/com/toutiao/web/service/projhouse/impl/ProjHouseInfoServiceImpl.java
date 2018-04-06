@@ -22,7 +22,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.terms.InternalTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -439,34 +444,241 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 }
 
             }
-            SearchHits hits = searchresponse.getHits();
+
+//            AggregationBuilder aggregation = AggregationBuilders.topHits("group_hits").from((pageNum - 1) * pageSize).size(pageSize)
+//                    .sort("sortingScore", SortOrder.DESC);
+//            searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.terms("groups").field("is_claim").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(aggregation))
+//                    .execute().actionGet();
+            AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").from((pageNum - 1) * pageSize).size(pageSize).sort("sortingScore", SortOrder.DESC);
+            AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(agg_tophits);
+            searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group)).execute().actionGet();
+            InternalFilter isClaimGroup = searchresponse.getAggregations().get("isClaimGroup");
+
+            Terms agg = isClaimGroup.getAggregations().get("groups");
+            Terms.Bucket bucket = agg.getBucketByKey("2");
+            TopHits topHits = bucket.getAggregations().get("group_hits");
+            long top_size = topHits.getHits().getHits().length;
+            long oneKM_size = topHits.getHits().getTotalHits();
             List houseList = new ArrayList();
-            SearchHit[] searchHists = hits.getHits();
-            for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
-                buildings = replaceAgentInfo(buildings);
-                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
-                ProjHouseInfoResponse instance = entityClass.newInstance();
-                BeanUtils.populate(instance, buildings);
-                instance.setKey(key);
-                instance.setPageNum(projHouseInfoRequest.getPageNum());
-                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
-                    //小区坐标
-                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
-                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+            if(top_size == 10){
+                for (SearchHit hit : topHits.getHits().getHits()) {
+                    Map<String, Object> buildings = hit.getSource();
+                    buildings = replaceAgentInfo(buildings);
+                    Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                    ProjHouseInfoResponse instance = entityClass.newInstance();
+                    BeanUtils.populate(instance, buildings);
+                    instance.setKey(key);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                        //小区坐标
+                        instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                        instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }
+                    instance.setTotal(topHits.getHits().totalHits);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    houseList.add(instance);
                 }
-                instance.setTotal(hits.totalHits);
-                instance.setPageNum(projHouseInfoRequest.getPageNum());
-                houseList.add(instance);
+            }else if(top_size<10 && top_size>0){
+                for (SearchHit hit : topHits.getHits().getHits()) {
+                    Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                    ProjHouseInfoResponse instance = entityClass.newInstance();
+                    Map<String, Object> buildings = hit.getSource();
+                    buildings = replaceAgentInfo(buildings);
+
+                    BeanUtils.populate(instance, buildings);
+                    instance.setKey(key);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                        //小区坐标
+                        instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                        instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }
+                    instance.setTotal(topHits.getHits().totalHits);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    houseList.add(instance);
+                }
+
+                SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
+                SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
+                InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
+                Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
+                Terms.Bucket bucket_repair = agg_repair.getBucketByKey("1");
+                TopHits topHits_repair = bucket_repair.getAggregations().get("group_hits");
+
+                for (SearchHit hit : topHits_repair.getHits().getHits()) {
+
+                    Map<String, Object> buildings = hit.getSource();
+                    buildings = replaceAgentInfo(buildings);
+                    Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                    ProjHouseInfoResponse instance = entityClass.newInstance();
+                    BeanUtils.populate(instance, buildings);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    instance.setKey(key);
+                    if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                        //小区坐标
+                        instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                        instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }
+                    instance.setTotal(topHits.getHits().totalHits);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    houseList.add(instance);
+                }
+
+            }else if(top_size == 0){
+                long es_from = (pageNum-1)*pageSize - oneKM_size;
+
+                SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from)).size(pageSize-topHits.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
+                SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
+                InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
+                Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
+                Terms.Bucket bucket_repair = agg_repair.getBucketByKey("1");
+                TopHits topHits_repair = bucket_repair.getAggregations().get("group_hits");
+
+                long top_size_1 = topHits_repair.getHits().getHits().length;
+                long oneKM_size_1 = topHits_repair.getHits().getTotalHits();
+
+                if(top_size_1==10){
+                    for (SearchHit hit : topHits_repair.getHits().getHits()) {
+
+                        Map<String, Object> buildings = hit.getSource();
+                        buildings = replaceAgentInfo(buildings);
+                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                        ProjHouseInfoResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        instance.setKey(key);
+                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                            //小区坐标
+                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                        }
+                        instance.setTotal(topHits.getHits().totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        houseList.add(instance);
+                    }
+                }else if(top_size_1<10 && top_size_1>0){
+                    for (SearchHit hit : topHits_repair.getHits().getHits()) {
+
+                        Map<String, Object> buildings = hit.getSource();
+                        buildings = replaceAgentInfo(buildings);
+                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                        ProjHouseInfoResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        instance.setKey(key);
+                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                            //小区坐标
+                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                        }
+                        instance.setTotal(topHits.getHits().totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        houseList.add(instance);
+                    }
+
+                    SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                    AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                    AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
+                    SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
+                    InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
+                    Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
+                    Terms.Bucket bucket_repair_0 = agg_repair_0.getBucketByKey("0");
+                    TopHits topHits_repair_0 = bucket_repair_0.getAggregations().get("group_hits");
+
+                    for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
+
+                        Map<String, Object> buildings = hit.getSource();
+                        buildings = replaceAgentInfo(buildings);
+                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                        ProjHouseInfoResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        instance.setKey(key);
+                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                            //小区坐标
+                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                        }
+                        instance.setTotal(topHits.getHits().totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        houseList.add(instance);
+                    }
+
+
+                }else if(top_size_1 == 0){
+                    long es_from0 = (pageNum-1)*pageSize - (oneKM_size_1+oneKM_size);
+                    SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                    AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from0)).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                    AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
+                    SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
+                    InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
+                    Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
+                    Terms.Bucket bucket_repair_0 = agg_repair_0.getBucketByKey("0");
+                    TopHits topHits_repair_0 = bucket_repair_0.getAggregations().get("group_hits");
+
+                    for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
+
+                        Map<String, Object> buildings = hit.getSource();
+                        buildings = replaceAgentInfo(buildings);
+                        Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                        ProjHouseInfoResponse instance = entityClass.newInstance();
+                        BeanUtils.populate(instance, buildings);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        instance.setKey(key);
+                        if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                            //小区坐标
+                            instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                            instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                        }
+                        instance.setTotal(topHits.getHits().totalHits);
+                        instance.setPageNum(projHouseInfoRequest.getPageNum());
+                        houseList.add(instance);
+                    }
+
+                }
+
+
+
+
             }
+
+
+
+
+
+
+
+
+
+
+//            SearchHits hits = searchresponse.getHits();
+//            List houseList = new ArrayList();
+//            SearchHit[] searchHists = hits.getHits();
+//            for (SearchHit hit : searchHists) {
+//                Map<String, Object> buildings = hit.getSource();
+//                buildings = replaceAgentInfo(buildings);
+//                Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+//                ProjHouseInfoResponse instance = entityClass.newInstance();
+//                BeanUtils.populate(instance, buildings);
+//                instance.setKey(key);
+//                instance.setPageNum(projHouseInfoRequest.getPageNum());
+//                if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+//                    //小区坐标
+//                    instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+//                    instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+//                }
+//                instance.setTotal(hits.totalHits);
+//                instance.setPageNum(projHouseInfoRequest.getPageNum());
+//                houseList.add(instance);
+//            }
             if (houseList!=null&&houseList.size()>0){
                 return houseList;
             }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
