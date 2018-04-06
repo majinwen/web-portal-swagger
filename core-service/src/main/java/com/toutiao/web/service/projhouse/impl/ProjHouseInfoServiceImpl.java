@@ -426,11 +426,59 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         .setFrom((pageNum - 1) * pageSize)
                         .setSize(pageSize)
                         .execute().actionGet();
+                SearchHits hits = searchresponse.getHits();
+                List houseList = new ArrayList();
+                SearchHit[] searchHists = hits.getHits();
+                for (SearchHit hit : searchHists) {
+                    Map<String, Object> buildings = hit.getSource();
+                    buildings = replaceAgentInfo(buildings);
+                    Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                    ProjHouseInfoResponse instance = entityClass.newInstance();
+                    BeanUtils.populate(instance, buildings);
+                    instance.setKey(key);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                        //小区坐标
+                        instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                        instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }
+                    instance.setTotal(hits.totalHits);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    houseList.add(instance);
+                }
+                if (houseList!=null&&houseList.size()>0){
+                    return houseList;
+                }
+
             } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
                 searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
                         .setFrom((pageNum - 1) * pageSize)
                         .setSize(pageSize)
                         .execute().actionGet();
+                SearchHits hits = searchresponse.getHits();
+                List houseList = new ArrayList();
+                SearchHit[] searchHists = hits.getHits();
+                for (SearchHit hit : searchHists) {
+                    Map<String, Object> buildings = hit.getSource();
+                    buildings = replaceAgentInfo(buildings);
+                    Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
+                    ProjHouseInfoResponse instance = entityClass.newInstance();
+                    BeanUtils.populate(instance, buildings);
+                    instance.setKey(key);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    if(StringTool.isNotBlank(instance.getHousePlotLocation())&&instance.getHousePlotLocation().length()>0){
+                        //小区坐标
+                        instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
+                        instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                    }
+                    instance.setTotal(hits.totalHits);
+                    instance.setPageNum(projHouseInfoRequest.getPageNum());
+                    houseList.add(instance);
+                }
+                if (houseList!=null&&houseList.size()>0){
+                    return houseList;
+                }
+
             } else {
                 //如果含有关键字查询，优先显示关键字
                 if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())){
