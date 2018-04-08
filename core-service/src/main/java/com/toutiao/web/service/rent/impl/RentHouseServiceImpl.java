@@ -12,18 +12,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
-import org.elasticsearch.index.query.GeoDistanceRangeQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.ScriptSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -359,14 +354,15 @@ public class RentHouseServiceImpl implements RentHouseService{
             if (rentInfo==10){
                 zufangMap = computeRentList_1(searchRentResponse, rentHouseQuery, keys);
             }else if(rentInfo<10&&rentInfo>0){
-                List zufangList = new ArrayList();
+//                List zufangList = new ArrayList();
                 Map map1 = computeRentList_1(searchRentResponse, rentHouseQuery, keys);
                 Map map2 = computeRentList_2(searchRentResponse, rentHouseQuery, client, keys);
                 Integer map1Count = Integer.valueOf(map1.get("dataCount").toString());
-                zufangList.add(map1.get("data"));
-                zufangList.add(map2.get("data"));
+                List list = (List)map1.get("data");
+                List list1 = (List)map2.get("data");
                 Integer count = Integer.valueOf(map2.get("dataCount").toString());
-                zufangMap.put("data",zufangList);
+                list.addAll(list1);
+                zufangMap.put("data",list);
                 zufangMap.put("dataCount",map1Count+count);
             }else if(rentInfo==0){
                 zufangMap = computeRentList_3(rentHouseQuery, client, keys, top_size);
@@ -374,8 +370,8 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         result.put("data",zufangMap.get("data"));
         result.put("pageNum",rentHouseQuery.getPageNum());
-        ArrayList<Object> strings = new ArrayList<>((Collection<?>) zufangMap.get("data"));
-        result.put("total", strings.size());
+//        ArrayList<Object> strings = new ArrayList<>((Collection<?>) zufangMap.get("data"));
+        result.put("total", ((List)zufangMap.get("data")).size());
         result.put("dataCount",zufangMap.get("dataCount"));
         return result;
     }
@@ -604,18 +600,18 @@ public class RentHouseServiceImpl implements RentHouseService{
 
         Map<String,Object> filter = getFilterCondition_1(rentHouseQuery);
         booleanQueryBuilder = (BoolQueryBuilder) filter.get("booleanQueryBuilder");
-        GeoDistanceQueryBuilder location = (GeoDistanceQueryBuilder) filter.get("location");
+//        GeoDistanceQueryBuilder location = (GeoDistanceQueryBuilder) filter.get("location");
         GeoDistanceSortBuilder geoDistanceSort = (GeoDistanceSortBuilder) filter.get("geoDistanceSort");
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
-        if(location!=null && geoDistanceSort!=null){
-            searchRequestBuilder.setPostFilter(location);
+        if(/*location!=null &&*/ geoDistanceSort!=null){
+//            searchRequestBuilder.setPostFilter(location);
             searchRequestBuilder.addSort(geoDistanceSort);
         }
         if (rentHouseQuery.getFrom()!=null){
             searchRequestBuilder.setFrom(rentHouseQuery.getFrom()).setSize(1);
         }else {
-            searchRequestBuilder.setFrom(((0) * pageSize)*rentHouseQuery.getPageSize())
+            searchRequestBuilder.setFrom(count)
                     .setSize(pageSize-count);
         }
         SearchResponse searchresponse =  new SearchResponse();
@@ -723,14 +719,14 @@ public class RentHouseServiceImpl implements RentHouseService{
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
 
 
-        Map<String,Object> filter = getFilterCondition(rentHouseQuery);
+        Map<String,Object> filter = getFilterCondition_1(rentHouseQuery);
         booleanQueryBuilder = (BoolQueryBuilder) filter.get("booleanQueryBuilder");
-        GeoDistanceQueryBuilder location = (GeoDistanceQueryBuilder) filter.get("location");
+//        GeoDistanceRangeQueryBuilder location = (GeoDistanceRangeQueryBuilder) filter.get("location");
         GeoDistanceSortBuilder geoDistanceSort = (GeoDistanceSortBuilder) filter.get("geoDistanceSort");
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
-        if(location!=null && geoDistanceSort!=null){
-            searchRequestBuilder.setPostFilter(location);
+        if(/*location!=null &&*/ geoDistanceSort!=null){
+//            searchRequestBuilder.setPostFilter(location);
             searchRequestBuilder.addSort(geoDistanceSort);
         }
         if (rentHouseQuery.getFrom()!=null){
@@ -836,7 +832,17 @@ public class RentHouseServiceImpl implements RentHouseService{
                                     "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
                             null)
                     .execute().actionGet();
-        }else{
+        }else if("1.5".equals(rentHouseQuery.getKeyword())){
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder).addSort("sortingScore",SortOrder.DESC)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }
+        else {
             searchresponse = searchRequestBuilder
                     .setQuery(booleanQueryBuilder).addSort("top_time",SortOrder.ASC).addSort("sortingScore",SortOrder.DESC)
                     .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
@@ -924,7 +930,17 @@ public class RentHouseServiceImpl implements RentHouseService{
                                     "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
                             null)
                     .execute().actionGet();
-        }else{
+        }else if("1.5".equals(rentHouseQuery.getNear())){
+            searchresponse = searchRequestBuilder
+                    .setQuery(booleanQueryBuilder).addSort("sortingScore",SortOrder.DESC)
+                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
+                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
+                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
+                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
+                            null)
+                    .execute().actionGet();
+        }
+        else {
             searchresponse = searchRequestBuilder
                     .setQuery(booleanQueryBuilder).addSort("top_time",SortOrder.ASC).addSort("sortingScore",SortOrder.DESC)
                     .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
@@ -1087,8 +1103,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         GeoDistanceQueryBuilder location = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
         if(StringUtil.isNotNullString(rentHouseQuery.getNear()) && rentHouseQuery.getLat()!=0 && rentHouseQuery.getLon()!=0){
-            location = QueryBuilders.geoDistanceQuery("location")
-                    .point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear()
+            location = QueryBuilders.geoDistanceQuery("location").point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear()
                             , DistanceUnit.KILOMETERS);
 
             geoDistanceSort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(),
@@ -1276,15 +1291,13 @@ public class RentHouseServiceImpl implements RentHouseService{
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{rentHouseQuery.getSubwayStationId()}));
         }
         //1.5km外普通房源
-        GeoDistanceRangeQueryBuilder location = null;
+//        GeoDistanceQueryBuilder location = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
         if(StringUtil.isNotNullString(rentHouseQuery.getNear()) && rentHouseQuery.getLat()!=0 && rentHouseQuery.getLon()!=0&&"1.5".equals(rentHouseQuery.getNear())){
 //            location = QueryBuilders.geoDistanceQuery("location")
 //                    .point(rentHouseQuery.getLat(), rentHouseQuery.getLon()).distance(rentHouseQuery.getNear()
 //                            , DistanceUnit.KILOMETERS);
-            location = QueryBuilders.geoDistanceRangeQuery("location", rentHouseQuery.getLat(), rentHouseQuery.getLon()).unit(DistanceUnit.KILOMETERS).from(1.5);
-
-
+//            location = QueryBuilders.geoDistanceRangeQuery("location", rentHouseQuery.getLat(), rentHouseQuery.getLon()).from(1.5).unit(DistanceUnit.KILOMETERS);
             geoDistanceSort = SortBuilders.geoDistanceSort("location", rentHouseQuery.getLat(),
                     rentHouseQuery.getLon());
             geoDistanceSort.unit(DistanceUnit.KILOMETERS);
@@ -1409,7 +1422,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(QueryBuilders.termQuery("release_status", RELEASE_STATUS));
         result.put("booleanQueryBuilder",booleanQueryBuilder);
-        result.put("location",location);
+//        result.put("location",location);
         result.put("geoDistanceSort",geoDistanceSort);
 
         return result;
