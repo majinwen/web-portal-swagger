@@ -1323,7 +1323,7 @@ function pullUpAction() {
             paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
 
             if (_localHref.indexOf('/zufang') > 0){
-                if(("near" in paramData)){
+                // if(("near" in paramData)){
                     if (window["$toutiao_customer_pullUpAction_latlon"]) {
                         paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
                         paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
@@ -1332,7 +1332,7 @@ function pullUpAction() {
                             delete paramData["lon"];
                         }
                     }
-                }
+                // }
             }else{
                 if (window["$toutiao_customer_pullUpAction_latlon"]) {
                     var hasAnotherParam=false;

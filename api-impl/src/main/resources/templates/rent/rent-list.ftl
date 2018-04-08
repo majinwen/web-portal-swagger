@@ -192,29 +192,32 @@
             pullUpAction();
         } else {
             var hasTimeOut = false;
-            var timeout = setTimeout(function () {
-                if (hasTimeOut) {
-                    return
-                }
-                hasTimeOut = true;
-                pullUpAction();
-            }, 2000);
+//            var timeout = setTimeout(function () {
+//                if (hasTimeOut) {
+//                    return
+//                }
+//                hasTimeOut = true;
+//                pullUpAction();
+//            }, 2000);
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function (r) {
-                clearTimeout(timeout);
+//                clearTimeout(timeout);
                 if (hasTimeOut) {
                     return
                 }
                 hasTimeOut = true;
                 lon = r.point.lng;
                 lat = r.point.lat;
-                if (lon == 116.40387397 && lat == 39.91488908) {
-//                    window["$toutiao_customer_pullUpAction_latlon"] = [39.91931152343750000000, 116.49440002441400000000]
-                    pullUpAction();
-                } else {
-                    window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
-                    pullUpAction();
-                }
+//                if (lon == 116.40387397 && lat == 39.91488908) {
+////                    window["$toutiao_customer_pullUpAction_latlon"] = [39.91931152343750000000, 116.49440002441400000000]
+//                    pullUpAction();
+//                } else {
+//                    window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+//                    pullUpAction();
+//                }
+
+                window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+                pullUpAction();
             });
         }
     });
