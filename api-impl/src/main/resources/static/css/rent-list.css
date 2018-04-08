@@ -1330,12 +1330,14 @@ body {
             }
         }
     }
-}*/
-[data-dpr="1"] .category-box > ul li {
-  font-size: 19px; }
-[data-dpr="2"] .category-box > ul li {
-  font-size: 38px; }
-[data-dpr="3"] .category-box > ul li {
-  font-size: 57px; }
+}
+
+.category-box {
+    > ul {
+        li {
+            @include font-dpr(38);
+        }
+    }
+} */
 
 /*# sourceMappingURL=rent-list.css.map */

@@ -143,7 +143,7 @@
 <script id="listContent" type="text/html">
     {{each data}}
     <li>
-        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.house_id}}&__topic__=zufangbaoguang'/>-->
+        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.house_id}}&__topic__=zufangbaoguang'/>
         <a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
         <div class="clear">
             <div class="list-item-img-box">
