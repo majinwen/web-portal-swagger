@@ -169,7 +169,9 @@
             </#if>
             <#if map['claimHouseId']?exists>
 
-                <li><a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.claimHouseId+'.html')}">
+                <li style="line-height: 0">
+                    <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>
+                    <a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.claimHouseId+'.html')}" style="line-height: 1.2">
                     <div class="clear">
                         <div class="list-item-img-box">
                             <#assign item=map['claimHousePhotoTitle']>
@@ -244,7 +246,9 @@
 
 
             <#else >
-            <li><a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+            <li style="line-height: 0">
+                <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.houseId}&__topic__=esfbaoguang'/>
+                <a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}" style="line-height: 1.2">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>

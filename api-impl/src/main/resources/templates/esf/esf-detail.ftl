@@ -372,6 +372,7 @@
                 <#if map.claimHouseId?exists>
 
                     <li>
+                        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>
                         <#if map.claimHouseId?exists><a href="${router_city('/esf/'+map.claimHouseId+'.html')}">
                         <#else><a href="#">
                         </#if>
@@ -410,7 +411,9 @@
                     </a></li>
                 <#else>
                     <li>
+
                         <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
+                        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.houseId}&__topic__=esfbaoguang'/>
                         <#else><a href="#">
                         </#if>
                         <div class="picture-box">

@@ -263,11 +263,13 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li>
+    <li style="line-height: 0">
         {{if $value.claimHouseId!=''}}
-            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}"    href="javascript:void(0);">
+            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.claimHouseId}}&__topic__=esfbaoguang'/>
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.claimHouseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}" href="javascript:void(0);" style="line-height: 1.2">
         {{else}}
-            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}"   href="javascript:void(0);">
+            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.houseId}}&__topic__=esfbaoguang'/>
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}" href="javascript:void(0);" style="line-height: 1.2">
         {{/if}}
             <div class="clear">
                 {{if $value.claimHouseId==''}}

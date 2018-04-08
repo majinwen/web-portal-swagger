@@ -970,7 +970,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             SearchResponse searchresponse = null;
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
                     .setFrom((pageNum - 1) * pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
