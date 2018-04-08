@@ -2658,9 +2658,9 @@ a.pswp__share--download:hover {
       .map-distance .rent-traffic-icon {
         background-image: url("../images/rent/rent-traffic-icon@3x.png"); } }
 
-.list-item:first-child {
-  padding-top: 0; }
-.list-item:last-child {
+.list-item {
+  line-height: 1.2;
+  padding-top: 0;
   border-bottom: none; }
 
 .detail-contact-box .detail-contact-content {
