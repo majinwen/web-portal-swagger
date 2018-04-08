@@ -1297,6 +1297,12 @@ body {
   [data-dpr="3"] .dropload-up {
     font-size: 36px; }
 
+#valueList li {
+  line-height: 0; }
+
+.list-item {
+  line-height: 1.2; }
+
 /*.list-item {
     .list-item-cont {
         .cont-block-top {

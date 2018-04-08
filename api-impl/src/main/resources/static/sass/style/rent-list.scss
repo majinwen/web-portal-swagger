@@ -35,6 +35,17 @@
     @include font-dpr(24);
     background-color: #f2f2f2;
 }
+
+#valueList {
+    li {
+        line-height: 0;
+    }
+}
+
+.list-item {
+    line-height: 1.2;
+}
+
 /*.list-item {
     .list-item-cont {
         .cont-block-top {
