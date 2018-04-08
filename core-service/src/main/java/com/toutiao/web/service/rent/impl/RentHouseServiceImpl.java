@@ -206,7 +206,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             Script script = new Script("Math.random()");
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             srb.setSize(3).addSort(scrip);
-            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
