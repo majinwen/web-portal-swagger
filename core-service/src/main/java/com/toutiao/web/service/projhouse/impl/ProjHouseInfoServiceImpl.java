@@ -860,7 +860,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 }
 
                                 SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-                                AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                                AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair_0.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
                                 AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
                                 SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
                                 InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
