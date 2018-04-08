@@ -119,8 +119,7 @@ public class RentHouseQuery {
      * 附近1,3,5km
      *
      */
-    private String near;
-
+    private String near = "1.5";
     /**
      * 小区公寓标志
      */

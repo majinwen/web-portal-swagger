@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -162,7 +163,12 @@ public class RentHouseController {
     @RequestMapping(value = {""},produces="application/json")
     @ResponseBody
     public NashResult queryRentHousePageList(RentHouseQuery rentHouseQuery) {
-        Map<String,Object> rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+        Map<String,Object> rentHouseList = new HashMap<>();
+        if (rentHouseQuery.getLat()!=0&&rentHouseQuery.getLon()!=0&&"1.5".equals(rentHouseQuery.getNear())){
+            rentHouseList =rentHouseService.getRentHouseListByNear(rentHouseQuery);
+        }else {
+            rentHouseList =rentHouseService.getRentHouseList(rentHouseQuery);
+        }
         return NashResult.build(rentHouseList);
     }
 }
