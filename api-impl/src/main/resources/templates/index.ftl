@@ -573,6 +573,22 @@
                 zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
             })
         }},
+        {"pid": 24,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 25,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
         {"pid":12,callback:function (html) {
             var parent=$('<li></li>');
             parent.append(html);
