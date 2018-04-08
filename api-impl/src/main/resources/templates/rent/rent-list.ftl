@@ -142,7 +142,9 @@
 <#include "../search.ftl">
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
+    <li>
+        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.house_id}}&__topic__=zufangbaoguang'/>-->
+        <a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.house_title_img && $value.house_title_img.length > 0}}
@@ -154,7 +156,7 @@
             <div class="list-item-cont">
                 <h3 class="cont-block-top"><span>{{$value.zufang_name}}·{{$value.house_area}}㎡ {{$value.room}}室{{$value.hall}}厅 {{$value.forward}}</span></h3>
                 <div class="address distance"><i class="icon"></i>{{if $value.subwayDesc}}{{$value.subwayDesc}}{{else if $value.area_name}}{{if $value.district_name}}{{$value.district_name}}{{else}}暂无数据{{/if}}-{{if $value.area_name}}{{$value.area_name}}{{else}}暂无数据{{/if}}{{/if}}</div>
-                <#--{{if $value.rent_type_name}}
+                {{if $value.rent_type_name}}
                 <div class="house-labelling big normal">
                     <span class="company">{{$value.rent_type_name}}</span>
                     {{if $value.rent_house_tags_name && $value.rent_house_tags_name.length > 0}}
@@ -165,7 +167,7 @@
                     {{/each}}
                     {{/if}}
                 </div>
-                {{/if}}-->
+                {{/if}}
                 <div class="cont-block-bottom">
                     <p class="high-light-red">¥{{$value.rent_house_price}}<em> 元/月</em></p>
                 </div>

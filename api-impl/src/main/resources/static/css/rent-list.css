@@ -1297,47 +1297,40 @@ body {
   [data-dpr="3"] .dropload-up {
     font-size: 36px; }
 
-.list-item .list-item-cont .cont-block-top {
-  height: auto;
-  line-height: inherit; }
-  [data-dpr="1"] .list-item .list-item-cont .cont-block-top {
-    font-size: 19px; }
-  [data-dpr="2"] .list-item .list-item-cont .cont-block-top {
-    font-size: 38px; }
-  [data-dpr="3"] .list-item .list-item-cont .cont-block-top {
-    font-size: 57px; }
-.list-item .list-item-cont .address {
-  margin-top: 0.2933333333rem;
-  line-height: inherit; }
-  [data-dpr="1"] .list-item .list-item-cont .address {
-    font-size: 18px; }
-  [data-dpr="2"] .list-item .list-item-cont .address {
-    font-size: 36px; }
-  [data-dpr="3"] .list-item .list-item-cont .address {
-    font-size: 54px; }
-  .list-item .list-item-cont .address .icon {
-    top: 0.0533333333rem;
-    width: 0.4533333333rem;
-    height: 0.4533333333rem;
-    -webkit-background-size: contain;
-    background-size: contain; }
-  .list-item .list-item-cont .address.distance {
-    padding-left: 0.5333333333rem; }
-.list-item .list-item-cont .cont-block-bottom {
-  line-height: inherit; }
-  [data-dpr="1"] .list-item .list-item-cont .cont-block-bottom {
-    font-size: 19px; }
-  [data-dpr="2"] .list-item .list-item-cont .cont-block-bottom {
-    font-size: 38px; }
-  [data-dpr="3"] .list-item .list-item-cont .cont-block-bottom {
-    font-size: 57px; }
-  [data-dpr="1"] .list-item .list-item-cont .cont-block-bottom em {
-    font-size: 15px; }
-  [data-dpr="2"] .list-item .list-item-cont .cont-block-bottom em {
-    font-size: 30px; }
-  [data-dpr="3"] .list-item .list-item-cont .cont-block-bottom em {
-    font-size: 45px; }
+/*.list-item {
+    .list-item-cont {
+        .cont-block-top {
+            height: auto;
+            line-height: inherit;
+            @include font-dpr(38);
+        }
+        .address {
+            margin-top: rem(22);
+            line-height: inherit;
+            @include font-dpr(36);
 
+            .icon {
+                top: rem(4);
+                width: rem(34);
+                height: rem(34);
+                -webkit-background-size: contain;
+                background-size: contain;
+            }
+
+            &.distance {
+                padding-left: rem(40);
+            }
+        }
+        .cont-block-bottom {
+            line-height: inherit;
+            @include font-dpr(38);
+
+            em {
+                @include font-dpr(30);
+            }
+        }
+    }
+}*/
 [data-dpr="1"] .category-box > ul li {
   font-size: 19px; }
 [data-dpr="2"] .category-box > ul li {
