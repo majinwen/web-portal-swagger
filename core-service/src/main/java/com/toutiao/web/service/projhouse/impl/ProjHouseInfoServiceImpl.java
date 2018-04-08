@@ -618,9 +618,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                     Terms agg = isClaimGroup.getAggregations().get("groups");
                     Terms.Bucket bucket = agg.getBucketByKey("2");
-                    TopHits topHits = bucket.getAggregations().get("group_hits");
-                    long top_size = topHits.getHits().getHits().length;
-                    long oneKM_size = topHits.getHits().getTotalHits();
+                    long top_size = 0;
+                    long oneKM_size = 0;
+                    TopHits topHits = null;
+                    if(bucket!=null){
+                        topHits = bucket.getAggregations().get("group_hits");
+                        top_size = topHits.getHits().getHits().length;
+                        oneKM_size = topHits.getHits().getTotalHits();
+                    }
+
                     List houseList = new ArrayList();
                     if(top_size == 10){
                         for (SearchHit hit : topHits.getHits().getHits()) {
@@ -636,7 +642,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                             }
-                            instance.setTotal(topHits.getHits().totalHits);
+                          //  instance.setTotal(topHits.getHits().totalHits);
                             instance.setPageNum(projHouseInfoRequest.getPageNum());
                             houseList.add(instance);
                         }
@@ -655,7 +661,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                             }
-                            instance.setTotal(topHits.getHits().totalHits);
+                           // instance.setTotal(topHits.getHits().totalHits);
                             instance.setPageNum(projHouseInfoRequest.getPageNum());
                             houseList.add(instance);
                         }
@@ -683,25 +689,38 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                             }
-                            instance.setTotal(topHits.getHits().totalHits);
+                           // instance.setTotal(topHits.getHits().totalHits);
                             instance.setPageNum(projHouseInfoRequest.getPageNum());
                             houseList.add(instance);
                         }
 
                     }else if(top_size == 0){
                         long es_from = (pageNum-1)*pageSize - oneKM_size;
-
+                        int pageSizes = 0;
+                        if(topHits==null){
+                            pageSizes = 10;
+                        }else {
+                            pageSizes = pageSize-topHits.getHits().getHits().length;
+                        }
                         SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-                        AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from)).size(pageSize-topHits.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                        AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from)).size(pageSizes).sort("sortingScore", SortOrder.DESC);
                         AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
                         SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
                         InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
                         Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
-                        Terms.Bucket bucket_repair = agg_repair.getBucketByKey("1");
-                        TopHits topHits_repair = bucket_repair.getAggregations().get("group_hits");
 
-                        long top_size_1 = topHits_repair.getHits().getHits().length;
-                        long oneKM_size_1 = topHits_repair.getHits().getTotalHits();
+
+                        Terms.Bucket bucket_repair = agg_repair.getBucketByKey("1");
+                        long top_size_1 = 0;
+                        long oneKM_size_1 = 0;
+                        TopHits topHits_repair = null;
+                        if(bucket_repair!=null){
+                            topHits_repair = bucket_repair.getAggregations().get("group_hits");
+
+                            top_size_1 = topHits_repair.getHits().getHits().length;
+                            oneKM_size_1 = topHits_repair.getHits().getTotalHits();
+                        }
+
 
                         if(top_size_1==10){
                             for (SearchHit hit : topHits_repair.getHits().getHits()) {
@@ -718,7 +737,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                     instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                     instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                 }
-                                instance.setTotal(topHits.getHits().totalHits);
+                              //  instance.setTotal(topHits.getHits().totalHits);
                                 instance.setPageNum(projHouseInfoRequest.getPageNum());
                                 houseList.add(instance);
                             }
@@ -737,7 +756,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                     instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                     instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                 }
-                                instance.setTotal(topHits.getHits().totalHits);
+                               // instance.setTotal(topHits.getHits().totalHits);
                                 instance.setPageNum(projHouseInfoRequest.getPageNum());
                                 houseList.add(instance);
                             }
@@ -765,7 +784,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                     instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                     instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                 }
-                                instance.setTotal(topHits.getHits().totalHits);
+                              //  instance.setTotal(topHits.getHits().totalHits);
                                 instance.setPageNum(projHouseInfoRequest.getPageNum());
                                 houseList.add(instance);
                             }
@@ -773,18 +792,33 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                         }else if(top_size_1 == 0){
                             long es_from0 = (pageNum-1)*pageSize - (oneKM_size_1+oneKM_size);
+                            int pageSizes1 = 0;
+                            if(topHits_repair==null){
+                                pageSizes1 = 10;
+                            }else {
+                                pageSizes1 = pageSize-topHits_repair.getHits().getHits().length;
+                            }
+
                             SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-                            AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from0)).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                            AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from0)).size(pageSizes1).sort("sortingScore", SortOrder.DESC);
                             AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
                             SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
                             InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
                             Terms.Bucket bucket_repair_0 = agg_repair_0.getBucketByKey("0");
-                            TopHits topHits_repair_0 = bucket_repair_0.getAggregations().get("group_hits");
+
+                            TopHits topHits_repair_0 = null;
+                            long top_size_2 = 0;
+                            long oneKM_size_2 = 0;
+                            if(bucket_repair_0!=null){
+                                topHits_repair_0 = bucket_repair_0.getAggregations().get("group_hits");
 
 
-                            long top_size_2 = topHits_repair_0.getHits().getHits().length;
-                            long oneKM_size_2 = topHits_repair_0.getHits().getTotalHits();
+                                top_size_2 = topHits_repair_0.getHits().getHits().length;
+                                oneKM_size_2 = topHits_repair_0.getHits().getTotalHits();
+                            }
+
+
 
                             if(top_size_2==10){
                                 for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
@@ -801,7 +835,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                         instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                         instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                     }
-                                    instance.setTotal(topHits.getHits().totalHits);
+                                 //   instance.setTotal(topHits.getHits().totalHits);
                                     instance.setPageNum(projHouseInfoRequest.getPageNum());
                                     houseList.add(instance);
                                 }
@@ -820,7 +854,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                         instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                         instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                     }
-                                    instance.setTotal(topHits.getHits().totalHits);
+                                   // instance.setTotal(topHits.getHits().totalHits);
                                     instance.setPageNum(projHouseInfoRequest.getPageNum());
                                     houseList.add(instance);
                                 }
@@ -848,7 +882,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                         instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                         instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                     }
-                                    instance.setTotal(topHits.getHits().totalHits);
+                                    //instance.setTotal(topHits.getHits().totalHits);
                                     instance.setPageNum(projHouseInfoRequest.getPageNum());
                                     houseList.add(instance);
                                 }
@@ -857,10 +891,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 long es_from1 = (pageNum-1)*pageSize - (oneKM_size_1+oneKM_size+oneKM_size_2);
 
-
+                                int pageSizes2 = 0;
+                                if(topHits_repair_0==null){
+                                    pageSizes2 = 10;
+                                }else {
+                                    pageSizes2 = pageSize-topHits_repair_0.getHits().getHits().length;
+                                }
 
                                 SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-                                AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from1)).size(pageSize-topHits_repair_0.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+                                AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from1)).size(pageSizes2).sort("sortingScore", SortOrder.DESC);
                                 AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
                                 SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
                                 InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
@@ -882,7 +921,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                         instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                                         instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
                                     }
-                                    instance.setTotal(topHits.getHits().totalHits);
+                                    //instance.setTotal(topHits.getHits().totalHits);
                                     instance.setPageNum(projHouseInfoRequest.getPageNum());
                                     houseList.add(instance);
                                 }
