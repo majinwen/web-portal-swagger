@@ -36,6 +36,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -43,9 +44,13 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class PlotServiceImpl implements PlotService {
+
+    private static org.slf4j.Logger logger = LoggerFactory.getLogger(PlotServiceImpl.class);
+
     @Value("${plot.index}")
     private String index ;
     @Value("${plot.parent.type}")
@@ -596,6 +601,7 @@ public class PlotServiceImpl implements PlotService {
             }
         }catch (Exception e){
             e.printStackTrace();
+            logger.error("小区异常",e);
         }
         return houseList;
     }
