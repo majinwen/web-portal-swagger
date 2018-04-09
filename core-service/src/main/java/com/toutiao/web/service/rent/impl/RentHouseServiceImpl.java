@@ -1029,6 +1029,16 @@ public class RentHouseServiceImpl implements RentHouseService{
             }
             booleanQueryBuilder.must(boolQueryBuilder);
         }
+
+        //整租
+        if(StringTool.isNotEmpty(rentHouseQuery.getErt())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", rentHouseQuery.getErt()));
+        }
+        //合租
+        if(StringTool.isNotEmpty(rentHouseQuery.getJrt())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", rentHouseQuery.getJrt()));
+        }
+
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
             String[] source = rentHouseQuery.getSource().split(",");
