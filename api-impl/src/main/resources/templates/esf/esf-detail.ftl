@@ -370,9 +370,8 @@
         <ul class="tilelist-type">
             <#list plot as map>
                 <#if map.claimHouseId?exists>
-
                     <li>
-                        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>
+                        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>-->
                         <#if map.claimHouseId?exists><a href="${router_city('/esf/'+map.claimHouseId+'.html')}">
                         <#else><a href="#">
                         </#if>
@@ -411,9 +410,8 @@
                     </a></li>
                 <#else>
                     <li>
-
                         <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
-                        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.houseId}&__topic__=esfbaoguang'/>
+                        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.houseId}&__topic__=esfbaoguang'/>-->
                         <#else><a href="#">
                         </#if>
                         <div class="picture-box">
@@ -449,7 +447,6 @@
                             </div>
                         </div>
                     </a></li>
-
                 </#if>
                 <#--<li>-->
                     <#--<#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">-->
@@ -542,15 +539,15 @@
             </section>
         </div>
     <#else>
-            <#if houseDetail.houseProxyPhone?exists>
-                <div class="detail-contact-wrapper">
-                <section class="detail-contact-box" id="detailContactState">
-                <div class="detail-contact-content">
-                <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
-                </div>
-                </section>
-                </div>
-            </#if>
+        <#if houseDetail.houseProxyPhone?exists>
+            <div class="detail-contact-wrapper">
+            <section class="detail-contact-box" id="detailContactState">
+            <div class="detail-contact-content">
+            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+            </div>
+            </section>
+            </div>
+        </#if>
     </#if>
 <#--</#if>-->
 <!-------- photoswipe -------->

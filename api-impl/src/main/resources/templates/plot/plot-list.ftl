@@ -149,7 +149,7 @@
     </div>
 </section>
 <section id="result-section">
-    <ul id="valueList">
+    <ul id="valueList" class="list-item-wrapper">
     <#--<#if villageList?exists>-->
         <#--<#list villageList as plot>-->
             <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->
@@ -242,7 +242,9 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="plot_list(this)" url="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>" href="javascript:void(0);">
+    <li>
+        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.id}}&__topic__=xiaoqubaoguang'/>-->
+        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="plot_list(this)" url="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>" href="javascript:void(0);">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.photo && $value.photo.length > 0}}
