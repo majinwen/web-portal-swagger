@@ -673,7 +673,7 @@ public class RentHouseServiceImpl implements RentHouseService{
     }
 
     /**
-     * 普通房源过滤条件 and 返回结果集合(topinfo==0)
+     * 普通房源过滤条件 and 返回结果集合(topinfo==0)(1.5km外)
      * @param rentHouseQuery
      * @param client
      * @param top_size
@@ -879,32 +879,7 @@ public class RentHouseServiceImpl implements RentHouseService{
 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
-        //置顶数据只根据区域、商圈确定
-        List<String> topKeywords = new ArrayList<>();
-        if (StringTool.isNotBlank(rentHouseQuery.getDistrictId())) {
-            if (StringUtil.isNotNullString(DistrictMap.getDistrict(rentHouseQuery.getDistrictId().toString()))) {
-                topKeywords.add(DistrictMap.getDistrict(rentHouseQuery.getDistrictId().toString()));
-            }
-        }
-        if (StringTool.isNotBlank(rentHouseQuery.getAreaId())) {
-            if (StringUtil.isNotNullString(AreaMap.getArea(rentHouseQuery.getAreaId().toString()))) {
-                topKeywords.add(AreaMap.getArea(rentHouseQuery.getAreaId().toString()));
-            }
-        }
-        if(StringTool.isNotBlank(rentHouseQuery.getKeyword())){
-            if (StringUtil.isNotNullString(DistrictMap.getDistricts(rentHouseQuery.getKeyword()))) {
-                topKeywords.add(rentHouseQuery.getKeyword());
-            }
-            if (StringUtil.isNotNullString(AreaMap.getAreas(rentHouseQuery.getKeyword()))){
-                topKeywords.add(rentHouseQuery.getKeyword());
-            }
-        }
-        //匹配置顶关键字（区域、商圈）查询
-        if(null!=topKeywords && !topKeywords.isEmpty()){
-            String topkey = String.join(",", topKeywords);
-            String[] key = topkey.split(",");
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("top_keyword", key));
-        }
+
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_top", 1));
 
         //获取公共筛选条件
@@ -924,18 +899,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         }else {
             searchRequestBuilder.setFrom((pageNum-1)*rentHouseQuery.getPageSize()).setSize(rentHouseQuery.getPageSize());
         }
-        SearchResponse searchresponse =  new SearchResponse();
-        if(StringUtil.isNotNullString(rentHouseQuery.getKeyword())){
-            searchresponse = searchRequestBuilder
-                    .setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("sortingScore",SortOrder.DESC)
-                    .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
-                                    "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
-                                    "house_id","location","nearest_subway","rent_house_tags_name","nearby_subway",
-                                    "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
-                            null)
-                    .execute().actionGet();
-        }else{
-            searchresponse = searchRequestBuilder
+        SearchResponse searchresponse = searchRequestBuilder
                     .setQuery(booleanQueryBuilder).addSort("top_time",SortOrder.ASC).addSort("sortingScore",SortOrder.DESC)
                     .setFetchSource(new String[]{"zufang_name","zufang_id","house_area","forward","room","hall",
                                     "toilet","kitchen","balcony","area_name","area_id","district_name","district_id",
@@ -943,10 +907,6 @@ public class RentHouseServiceImpl implements RentHouseService{
                                     "house_title_img","rent_house_price","rent_sign","rent_type","rent_type_name"},
                             null)
                     .execute().actionGet();
-        }
-
-
-
 
         return searchresponse;
     }
