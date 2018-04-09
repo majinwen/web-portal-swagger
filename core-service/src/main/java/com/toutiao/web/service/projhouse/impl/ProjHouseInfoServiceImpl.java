@@ -18,6 +18,7 @@ import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
@@ -25,6 +26,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.filters.InternalFilters;
 import org.elasticsearch.search.aggregations.bucket.range.InternalRange;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.InternalTerms;
@@ -386,16 +388,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             //按距离排序
-            if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
-                if(projHouseInfoRequest.getLat()!=0 && projHouseInfoRequest.getLon()!=0){
-                    GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
-                    srb.setPostFilter(location1);
-                    GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
-//                    sort.unit(DistanceUnit.KILOMETERS);
-//                    sort.order(SortOrder.ASC);
-//                    srb.addSort(sort);
-                }
-            }
+//            if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
+//                if(projHouseInfoRequest.getLat()!=0 && projHouseInfoRequest.getLon()!=0){
+//                    GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
+//                    srb.setPostFilter(location1);
+//                    GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
+////                    sort.unit(DistanceUnit.KILOMETERS);
+////                    sort.order(SortOrder.ASC);
+////                    srb.addSort(sort);
+//                }
+//            }
             //去未删除的房源信息
             booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
             /**
@@ -612,11 +614,24 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                            .execute().actionGet();
                     AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").from((pageNum - 1) * pageSize).size(pageSize).sort("sortingScore", SortOrder.DESC);
                     AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(agg_tophits);
-                    searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group)).execute().actionGet();
+                    BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                    QueryBuilder is_claim = QueryBuilders.termQuery("is_claim",1);
+                    bqb.should(is_claim);
+                    if(StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
+                        QueryBuilder point = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
+                        bqb.should(point);
+                    }
+                    BoolQueryBuilder query = QueryBuilders.boolQuery();
+                    query.must(bqb);
 
-                    InternalFilter isClaimGroup = searchresponse.getAggregations().get("isClaimGroup");
+                    searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filters("isClaimGroup",query).subAggregation(agg_group)).execute().actionGet();
 
-                    Terms agg = isClaimGroup.getAggregations().get("groups");
+
+
+
+                    InternalFilters isClaimGroup = searchresponse.getAggregations().get("isClaimGroup");
+                    Terms agg = isClaimGroup.getBuckets().get(0).getAggregations().get("groups");
+//                    Terms agg = isClaimGroup.getAggregations().get("groups");
                     Terms.Bucket bucket = agg.getBucketByKey("2");
                     long top_size = 0;
                     long oneKM_size = 0;
@@ -1039,7 +1054,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                srb.addSort(sort);
                 BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
                 booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
-                SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("sortingScore", SortOrder.DESC).execute().actionGet();
+                SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
                 long oneKM_size = searchResponse.getHits().getTotalHits();
 
                 if(searchResponse != null){
