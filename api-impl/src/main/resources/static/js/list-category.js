@@ -896,8 +896,8 @@ function submitNearbyNumber(nearNumber, e) {
         req['areaId'] = null;
         req['subwayLineId'] = null;
         req['subwayStationId'] = null;
-        // req['lat'] = null;
-        // req['lon'] = null;
+        req['lat'] = null;
+        req['lon'] = null;
     }
     req['near'] = nearNumber;
     params = joinParams(req);
