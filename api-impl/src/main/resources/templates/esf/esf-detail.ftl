@@ -370,7 +370,6 @@
         <ul class="tilelist-type">
             <#list plot as map>
                 <#if map.claimHouseId?exists>
-
                     <li>
                         <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>
                         <#if map.claimHouseId?exists><a href="${router_city('/esf/'+map.claimHouseId+'.html')}">

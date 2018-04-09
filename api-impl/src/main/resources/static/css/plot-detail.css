@@ -2119,8 +2119,12 @@ a.pswp__share--download:hover {
   .detail-contact-box.bottom {
     position: relative; }
 
+.list-item-wrapper li {
+  line-height: 0; }
+
 .list-item {
   display: block;
+  line-height: 1.2;
   padding: 0.56rem 0;
   margin: 0 0.4rem;
   color: #3a3a3a;

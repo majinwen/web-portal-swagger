@@ -1,7 +1,14 @@
 $textGrayColor: #888;
 
+.list-item-wrapper {
+    li {
+        line-height: 0;
+    }
+}
+
 .list-item {
     display: block;
+    line-height: 1.2;
     padding: rem(42) 0;
     margin: 0 rem(30);
     color: $baseBlack;

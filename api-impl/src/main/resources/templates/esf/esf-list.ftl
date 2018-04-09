@@ -170,7 +170,7 @@
 <section id="result-section">
 <#--<#if builds?exists>-->
     <#--<p class="dropload-up none"></p>-->
-    <ul id="valueList">
+    <ul id="valueList" class="list-item-wrapper">
     <#--<#list builds as map>-->
         <#--<li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">-->
             <#--<div class="clear">-->
@@ -263,13 +263,13 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
-    <li style="line-height: 0">
+    <li>
         {{if $value.claimHouseId!=''}}
             <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.claimHouseId}}&__topic__=esfbaoguang'/>
-            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.claimHouseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}" href="javascript:void(0);" style="line-height: 1.2">
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.claimHouseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}" href="javascript:void(0);">
         {{else}}
             <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.houseId}}&__topic__=esfbaoguang'/>
-            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}" href="javascript:void(0);" style="line-height: 1.2">
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}" href="javascript:void(0);">
         {{/if}}
             <div class="clear">
                 {{if $value.claimHouseId==''}}

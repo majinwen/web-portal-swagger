@@ -190,51 +190,88 @@
         <div id="houseContentTab">
             <#if reViHouse?exists && (reViHouse?size>0)>
             <div id="forSale" class="none">
-                <ul><#list reViHouse as reitem>
+                <ul class="list-item-wrapper"><#list reViHouse as reitem>
                     <#if reitem_index==3>
                         <#break >
                     </#if>
                     <#assign itemLocation=reitem['housePlotLocation']>
-                    <li id="${reitem_index+1}"><a class="list-item" href="${router_city('/esf/'+reitem.houseId)+'.html'}">
-                        <div class="clear">
-                            <div class="list-item-img-box">
-                                <#if reitem['housePhotoTitle']?exists>
-                                    <#assign photoitem=reitem['housePhotoTitle']>
-                                    <#if photoitem?? && photoitem != ''><img src="${photoitem}" alt="">
-                                    <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    <#if reitem.claimHouseId?exists && reitem.claimHouseId != ''>
+                        <li id="${reitem_index+1}">
+                            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${reitem.claimHouseId}&__topic__=xiaoqubaoguang'/>
+                            <a class="list-item" href="${router_city('/esf/'+ reitem.claimHouseId)+'.html'}">
+                            <div class="clear">
+                                <div class="list-item-img-box">
+                                    <#if reitem['claimHousePhotoTitle']?exists && reitem['claimHousePhotoTitle'] != ''>
+                                        <#assign photoitem=reitem['claimHousePhotoTitle']>
+                                        <#if photoitem?index_of('http') gt -1>
+                                            <img src="${photoitem}" alt="" onerror="this.src='${staticurl}/images/global/tpzw_image.png'">
+                                        <#else >
+                                            <img src="${qiniuzufangimage}/${rentitem['house_title_img']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="">
+                                        </#if>
+                                    <#else >
+                                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                     </#if>
-                                </#if>
-                            </div>
-                            <div class="list-item-cont">
-                                <h3 class="cont-block-top"><span>${reitem['houseTitle']}</span></h3>
-                                <div class="address font22">${reitem['buildArea']}㎡/${reitem['room']}室${reitem['hall']}厅/${reitem['forwardName']}</div>
-                                <p class="price-block high-light-red"><#if reitem['houseTotalPrices']?exists>¥${reitem['houseTotalPrices']}<em> 万</em><#else>暂无数据</#if></p>
-                                <div class="cont-block-bottom">
-                                    <#if reitem['tagsName']?exists && (reitem['tagsName']?size gt 0)>
-                                        <div class="house-labelling ellipsis big normal">
-                                            <#if reitem['tagsName']?exists && (reitem['tagsName']?size gt 0)><#list reitem['tagsName'] as label><#if label?exists><span>${label}</span> </#if></#list></#if>
-                                        </div>
-                                    </#if>
-
+                                </div>
+                                <div class="list-item-cont">
+                                    <h3 class="cont-block-top"><span>${reitem['claimHouseTitle']}</span></h3>
+                                    <div class="address font22">${reitem['buildArea']}㎡/${reitem['room']}室${reitem['hall']}厅/${reitem['forwardName']}</div>
+                                    <p class="price-block high-light-red"><#if reitem['houseTotalPrices']?exists>¥${reitem['houseTotalPrices']}<em> 万</em><#else>暂无数据</#if></p>
+                                    <div class="cont-block-bottom">
+                                        <#if reitem['claimTagsName']?exists && (reitem['claimTagsName']?size gt 0)>
+                                            <div class="house-labelling ellipsis big normal">
+                                                <#if reitem['claimTagsName']?exists && (reitem['claimTagsName']?size gt 0)><#list reitem['claimTagsName'] as label><#if label?exists><span>${label}</span> </#if></#list></#if>
+                                            </div>
+                                        </#if>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a></li>
+                        </a></li>
+                    <#else >
+                        <li id="${reitem_index+1}">
+                            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${reitem.houseId}&__topic__=xiaoqubaoguang'/>
+                            <a class="list-item" href="${router_city('/esf/'+ reitem.houseId)+'.html'}">
+                            <div class="clear">
+                                <div class="list-item-img-box">
+                                    <#if reitem['housePhotoTitle']?exists>
+                                        <#assign photoitem=reitem['housePhotoTitle']>
+                                        <#if photoitem?? && photoitem != ''><img src="${photoitem}" alt="">
+                                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                        </#if>
+                                    </#if>
+                                </div>
+                                <div class="list-item-cont">
+                                    <h3 class="cont-block-top"><span>${reitem['houseTitle']}</span></h3>
+                                    <div class="address font22">${reitem['buildArea']}㎡/${reitem['room']}室${reitem['hall']}厅/${reitem['forwardName']}</div>
+                                    <p class="price-block high-light-red"><#if reitem['houseTotalPrices']?exists>¥${reitem['houseTotalPrices']}<em> 万</em><#else>暂无数据</#if></p>
+                                    <div class="cont-block-bottom">
+                                        <#if reitem['tagsName']?exists && (reitem['tagsName']?size gt 0)>
+                                            <div class="house-labelling ellipsis big normal">
+                                                <#if reitem['tagsName']?exists && (reitem['tagsName']?size gt 0)><#list reitem['tagsName'] as label><#if label?exists><span>${label}</span> </#if></#list></#if>
+                                            </div>
+                                        </#if>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </a></li>
+                    </#if>
                 </#list></ul>
                 <div class="all-house-link-box"><a href="${router_city('/esf?newcode='+village['id'])}" class="all-house-link">小区在售${reViHouse[0]['total']}套</a></div>
             </div>
             </#if>
             <#if rent?exists && (rent['nearHouse']?size>0)>
             <div id="inRent" class="none">
-                <ul><#list rent['nearHouse'] as rentitem>
+                <ul class="list-item-wrapper"><#list rent['nearHouse'] as rentitem>
                     <#if rentitem_index==3>
                         <#break >
                     </#if>
-                    <li id="${rentitem_index+1}"><a class="list-item" href="${router_city('/zufang/'+rentitem.house_id)+'.html'}">
+                    <li id="${rentitem_index+1}">
+                        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${rentitem.house_id}&__topic__=xiaoqubaoguang'/>
+                        <a class="list-item" href="${router_city('/zufang/'+rentitem.house_id)+'.html'}">
                         <div class="clear">
                             <div class="list-item-img-box">
                                 <#if rentitem['house_title_img']?exists && rentitem['house_title_img']!=''>
-                                    <#if rentitem['house_title_img']?index_of("http") gt -1 || rentitem['house_title_img']?index_of("https") gt -1>
+                                    <#if rentitem['house_title_img']?index_of("http") gt -1>
                                         <img src="${rentitem['house_title_img']}" alt="${rentitem['zufang_name']}">
                                     <#else>
                                         <img src="${qiniuzufangimage}/${rentitem['house_title_img']}" alt="${rentitem['zufang_name']}">
@@ -615,7 +652,8 @@
             <#if nearviitem_index == 4>
                 <#break>
             </#if>
-            <li><a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
+            <li>
+                <a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
                     <#if photos[0]?exists>
