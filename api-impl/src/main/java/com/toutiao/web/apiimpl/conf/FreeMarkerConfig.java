@@ -31,12 +31,6 @@ public class FreeMarkerConfig  {
     private String staticVersion;
     @Value("${qiniu.img_domain}")
     private String qiniuImage;
-    @Value("${tt.esf.baoguang.log.host}")
-    private String exposureLogHost;
-    @Value("${tt.esf.baoguang.log.project}")
-    private String exposureLogProject;
-    @Value("${tt.esf.baoguang.log.logstore}")
-    private String exposureLogStore;
 //    @Value("${qiniu.img_zufang_domain}")
 //    private String qiniuZufangImage;
 
@@ -55,9 +49,6 @@ public class FreeMarkerConfig  {
             configuration.setSharedVariable("qiniuimage",qiniuImage);
             configuration.setSharedVariable("qiniuzufangimage",qiniuImage);
             configuration.setSharedVariable("staticversion", staticVersion);
-            configuration.setSharedVariable("exposureloghost",exposureLogHost);
-            configuration.setSharedVariable("exposurelogproject",exposureLogProject);
-            configuration.setSharedVariable("exposurelogstore",exposureLogStore);
             configuration.setSharedVariable("getUser",new GetUserMethod());
             configuration.setSharedVariable("router_city",new Router());
 
