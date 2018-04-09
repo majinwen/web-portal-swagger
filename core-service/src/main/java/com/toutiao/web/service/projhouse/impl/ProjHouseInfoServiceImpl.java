@@ -1026,12 +1026,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 //                srb.addSort(scrip);
 //            }
-
+            String distance = "1.6";
             if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
-                houseList = queryProjHouseInfo(projHouseInfoRequest);
-            }else{
+                distance = projHouseInfoRequest.getNear();
+            }
+
+//            if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
+//                houseList = queryProjHouseInfo(projHouseInfoRequest);
+//            }else{
                 //从该坐标查询距离为distance
-                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance("1.6", DistanceUnit.KILOMETERS);
+                GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(distance, DistanceUnit.KILOMETERS);
                 srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
                 // 获取距离多少公里 这个才是获取点与点之间的距离的
                 GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
@@ -1136,7 +1140,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         }
                     }
                 }
-            }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
