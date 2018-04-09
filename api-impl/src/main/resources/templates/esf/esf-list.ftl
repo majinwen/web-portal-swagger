@@ -265,10 +265,10 @@
     {{each data}}
     <li>
         {{if $value.claimHouseId!=''}}
-            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.claimHouseId}}&__topic__=esfbaoguang'/>
+            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.claimHouseId}}&__topic__=esfbaoguang'/>-->
             <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.claimHouseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}" href="javascript:void(0);">
         {{else}}
-            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.houseId}}&__topic__=esfbaoguang'/>
+            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.houseId}}&__topic__=esfbaoguang'/>-->
             <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}" href="javascript:void(0);">
         {{/if}}
             <div class="clear">
@@ -311,7 +311,6 @@
                     </p>
                     <p class="cont-block-3 distance">
                         <i class="icon"></i>
-
                         {{if $value.subwayDesc}}
                         {{$value.subwayDesc}}
                         {{else}}
@@ -337,7 +336,6 @@
                         {{/if}}
                     </div>
                     {{/if}}
-
                     <div class="cont-block-price">
                         {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
                         <em>{{$value.houseTotalPrices}}万</em>
@@ -357,13 +355,8 @@
 <script>
     //二手房拦截默认的下拉加载
     window["$toutiao_customer_pullUpAction"]=true;
-
     $(function () {
-
-
         var urlparam =GetRequest();
-
-
         if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
             pullUpAction();
@@ -486,7 +479,5 @@
         setPageNum($(e).attr('data-id'))
         window.location.href = $(e).attr('url')
     }
-
 </script>
-
 </html>

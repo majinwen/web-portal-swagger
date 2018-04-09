@@ -284,9 +284,9 @@
         <div class="module-header-message">
             <h3><#if rentHouse['rent_sign'] == 0>附近相似好房<#else>${rentHouse['zufang_name']}好房推荐</#if></h3>
         </div>
-        <ul><#list nearHouse as builditem>
-            <li style="line-height: 0">
-                <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${builditem.house_id}&__topic__=zufangbaoguang'/>
+        <ul class="list-item-wrapper"><#list nearHouse as builditem>
+            <li>
+                <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${builditem.house_id}&__topic__=zufangbaoguang'/>-->
                 <a class="list-item" href="${router_city('/zufang/'+builditem['house_id']+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">

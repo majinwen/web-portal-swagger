@@ -197,7 +197,7 @@
                     <#assign itemLocation=reitem['housePlotLocation']>
                     <#if reitem.claimHouseId?exists && reitem.claimHouseId != ''>
                         <li id="${reitem_index+1}">
-                            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${reitem.claimHouseId}&__topic__=xiaoqubaoguang'/>
+                            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${reitem.claimHouseId}&__topic__=xiaoqubaoguang'/>-->
                             <a class="list-item" href="${router_city('/esf/'+ reitem.claimHouseId)+'.html'}">
                             <div class="clear">
                                 <div class="list-item-img-box">
@@ -228,7 +228,7 @@
                         </a></li>
                     <#else >
                         <li id="${reitem_index+1}">
-                            <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${reitem.houseId}&__topic__=xiaoqubaoguang'/>
+                            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${reitem.houseId}&__topic__=xiaoqubaoguang'/>-->
                             <a class="list-item" href="${router_city('/esf/'+ reitem.houseId)+'.html'}">
                             <div class="clear">
                                 <div class="list-item-img-box">
@@ -266,7 +266,7 @@
                         <#break >
                     </#if>
                     <li id="${rentitem_index+1}">
-                        <img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${rentitem.house_id}&__topic__=xiaoqubaoguang'/>
+                        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${rentitem.house_id}&__topic__=xiaoqubaoguang'/>-->
                         <a class="list-item" href="${router_city('/zufang/'+rentitem.house_id)+'.html'}">
                         <div class="clear">
                             <div class="list-item-img-box">
@@ -653,6 +653,7 @@
                 <#break>
             </#if>
             <li>
+            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${nearviitem.id}&__topic__=xiaoqubaoguang'/>-->
                 <a href="${router_city('/xiaoqu/'+nearviitem['id']?c+'.html')}">
                 <div class="picture-box">
                     <#assign photos = nearviitem['photo']>
