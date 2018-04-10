@@ -247,7 +247,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,projHouseInfoRequest.getKeyword());
                     ikRequest.setTokenizer("ik_max_word");
                     List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
-                    ikTokenList.forEach(ikToken -> { searchTermList.add(ikToken.getTerm()); });
+                    if(projHouseInfoRequest.getKeyword().length()>1){
+                        ikTokenList.forEach(ikToken -> {
+                            if(ikToken.getTerm().length()>1){
+                                searchTermList.add(ikToken.getTerm());
+                            }
+                        });
+                    } else {
+                        ikTokenList.forEach(ikToken -> { searchTermList.add(ikToken.getTerm()); });
+                    }
+
 
                 }
             }
