@@ -80,5 +80,8 @@ public class AggAdLandingRequest {
      * 区县（居室）
      */
     private String room;
-
+    /**
+     * 品质公寓(1:true)
+     */
+    private String qualityRent;
 }
