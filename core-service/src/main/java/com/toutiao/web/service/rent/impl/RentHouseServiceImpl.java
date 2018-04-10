@@ -340,6 +340,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         Map<String, Object> result = new HashMap<>();
         Map<String,Object> zufangMap = new HashMap<>();
         long top_size = 0;
+        String keys = "";
         if (searchRentResponse!=null){
             top_size = searchRentResponse.getHits().getTotalHits();
             int rentInfo = searchRentResponse.getHits().getHits().length;
@@ -348,7 +349,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             }else if(rentInfo<10&&rentInfo>0){
 //                List zufangList = new ArrayList();
                 Map map1 = computeRentList_1(searchRentResponse, rentHouseQuery);
-                Map map2 = computeRentList_2(searchRentResponse, rentHouseQuery, client);
+                Map map2 = computeRentList_2(searchRentResponse, rentHouseQuery, client, keys);
                 Integer map1Count = Integer.valueOf(map1.get("dataCount").toString());
                 List list = (List)map1.get("data");
                 List list1 = (List)map2.get("data");
@@ -357,7 +358,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                 zufangMap.put("data",list);
                 zufangMap.put("dataCount",map1Count+count);
             }else if(rentInfo==0){
-                zufangMap = computeRentList_3(rentHouseQuery, client, top_size);
+                zufangMap = computeRentList_3(rentHouseQuery, client, keys,top_size);
             }
         }
         result.put("data",zufangMap.get("data"));
@@ -399,13 +400,13 @@ public class RentHouseServiceImpl implements RentHouseService{
      * @param
      * @return
      */
-    public Map computeRentList_2(SearchResponse searchRentResponse, RentHouseQuery rentHouseQuery, TransportClient client){
+    public Map computeRentList_2(SearchResponse searchRentResponse, RentHouseQuery rentHouseQuery, TransportClient client, String keys){
         SearchResponse searchFreeRentResponse = getCommonRentHouseList_1(searchRentResponse, rentHouseQuery, client);
         SearchHits hits = searchFreeRentResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,rentHouseQuery);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -422,7 +423,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,rentHouseQuery);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -445,7 +446,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,rentHouseQuery);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -469,7 +470,7 @@ public class RentHouseServiceImpl implements RentHouseService{
 //        List<Map<String,Object>> zufanglist = new ArrayList<>();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,rentHouseQuery);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
@@ -483,24 +484,26 @@ public class RentHouseServiceImpl implements RentHouseService{
      * @return
      */
     public Map<String,Object> computeRentList_3(RentHouseQuery rentHouseQuery,
-                                    TransportClient client, long top_size){
+                                    TransportClient client, String keys, long top_size){
 
         SearchResponse searchRentResponse = getCommonRentHouseList_2(rentHouseQuery, client, top_size);
         SearchHits hits = searchRentResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         Map<String,Object> result = new HashMap<>();
         result.put("dataCount",hits.totalHits);
-        List<Map<String,Object>> zufanglist = getZufangList(searchHists,rentHouseQuery);
+        List<Map<String,Object>> zufanglist = getZufangList(searchHists,keys,rentHouseQuery);
         result.put("data",zufanglist);
         return result;
     }
 
-    public List<Map<String,Object>> getZufangList(SearchHit[] searchHists,RentHouseQuery rentHouseQuery){
+    public List<Map<String,Object>> getZufangList(SearchHit[] searchHists,String keys,RentHouseQuery rentHouseQuery){
 
         List<Map<String,Object>> zufanglist = new ArrayList<>();
         for (SearchHit hit : searchHists) {
             Map<String,String> nearbysubway = (Map<String, String>) hit.getSource().get("nearby_subway");
+            String nearbysubwayKey = nearbysubway.get(keys);
             Map<String,Object> zufangMap = hit.getSourceAsMap();
+            zufangMap.put("nearsubway",nearbysubwayKey);
             zufangMap.put("pageNum",rentHouseQuery.getPageNum());
             zufanglist.add(zufangMap);
         }
