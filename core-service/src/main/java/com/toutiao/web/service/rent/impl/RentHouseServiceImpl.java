@@ -990,48 +990,90 @@ public class RentHouseServiceImpl implements RentHouseService{
         }
         //户型
         if(StringTool.isNotBlank(rentHouseQuery.getElo()) && !StringTool.isNotBlank(rentHouseQuery.getJlo())){
-            String[] room = rentHouseQuery.getElo().split(",");
-            String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
-            boolean roomflag = Arrays.asList(room).contains(LAYOUT);
-            if(roomflag){
-                String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
-                booleanQueryBuilder.must(termsQuery("erent_layout", roomresult));
+
+            if(rentHouseQuery.getElo().equals("0")){
+                booleanQueryBuilder.must(rangeQuery("erent_layout").gt(0));
             }else{
-                booleanQueryBuilder.must(termsQuery("erent_layout", room));
+                String[] room = rentHouseQuery.getElo().split(",");
+                String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                boolean roomflag = Arrays.asList(room).contains(LAYOUT);
+                if(roomflag){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    booleanQueryBuilder.must(termsQuery("erent_layout", roomresult));
+                }else{
+                    booleanQueryBuilder.must(termsQuery("erent_layout", room));
+                }
             }
 
+
         }else if(!StringTool.isNotBlank(rentHouseQuery.getElo()) && StringTool.isNotBlank(rentHouseQuery.getJlo())){
-            String[] room = rentHouseQuery.getJlo().split(",");
-            String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
-            boolean roomflag = Arrays.asList(room).contains(LAYOUT);
-            if(roomflag){
-                String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
-                booleanQueryBuilder.must(termsQuery("jrent_layout", roomresult));
+            if(rentHouseQuery.getJlo().equals("0")){
+                booleanQueryBuilder.must(rangeQuery("jrent_layout").gt(0));
             }else{
-                booleanQueryBuilder.must(termsQuery("jrent_layout", room));
+                String[] room = rentHouseQuery.getJlo().split(",");
+                String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                boolean roomflag = Arrays.asList(room).contains(LAYOUT);
+                if(roomflag){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    booleanQueryBuilder.must(termsQuery("jrent_layout", roomresult));
+                }else{
+                    booleanQueryBuilder.must(termsQuery("jrent_layout", room));
+                }
             }
 
         }else if(StringTool.isNotBlank(rentHouseQuery.getElo()) && StringTool.isNotBlank(rentHouseQuery.getJlo())){
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            String[] jroom = rentHouseQuery.getJlo().split(",");
-            String[] eroom = rentHouseQuery.getElo().split(",");
             String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
-            boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
-            boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
-            if(jroomflag){
-                String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
-                boolQueryBuilder.should(termsQuery("jrent_layout", jroomresult));
+            if(rentHouseQuery.getJlo().equals("0") && rentHouseQuery.getElo().equals("0")){
+                boolQueryBuilder.should(rangeQuery("jrent_layout").gt(0));
+                boolQueryBuilder.should(rangeQuery("erent_layout").gt(0));
+                booleanQueryBuilder.must(boolQueryBuilder);
+            }else if(rentHouseQuery.getElo().equals("0") && !rentHouseQuery.getJlo().equals("0")){
+                boolQueryBuilder.should(rangeQuery("erent_layout").gt(0));
+                String[] jroom = rentHouseQuery.getJlo().split(",");
+                boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
+                if(jroomflag){
+                    String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
+                    boolQueryBuilder.should(termsQuery("jrent_layout", jroomresult));
+                }else{
+                    boolQueryBuilder.should(termsQuery("jrent_layout", jroom));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
+            }else if(!rentHouseQuery.getElo().equals("0") && rentHouseQuery.getJlo().equals("0")){
+                boolQueryBuilder.should(rangeQuery("jrent_layout").gt(0));
+                String[] eroom = rentHouseQuery.getElo().split(",");
+                boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
+                if(eroomflag){
+                    String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
+                    boolQueryBuilder.should(termsQuery("erent_layout", eroomresult));
+                }else{
+                    boolQueryBuilder.should(termsQuery("erent_layout", eroom));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
             }else{
-                boolQueryBuilder.should(termsQuery("jrent_layout", jroom));
+                String[] jroom = rentHouseQuery.getJlo().split(",");
+                String[] eroom = rentHouseQuery.getElo().split(",");
+                //String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
+                boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
+                if(jroomflag){
+                    String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
+                    boolQueryBuilder.should(termsQuery("jrent_layout", jroomresult));
+                }else{
+                    boolQueryBuilder.should(termsQuery("jrent_layout", jroom));
+                }
+                if(eroomflag){
+                    String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
+                    boolQueryBuilder.should(termsQuery("erent_layout", eroomresult));
+                }else{
+                    boolQueryBuilder.should(termsQuery("erent_layout", eroom));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
             }
-            if(eroomflag){
-                String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
-                boolQueryBuilder.should(termsQuery("erent_layout", eroomresult));
-            }else{
-                boolQueryBuilder.should(termsQuery("erent_layout", eroom));
-            }
-            booleanQueryBuilder.must(boolQueryBuilder);
+
         }
+
+
         //来源
         if(StringUtil.isNotNullString(rentHouseQuery.getSource())){
             String[] source = rentHouseQuery.getSource().split(",");
