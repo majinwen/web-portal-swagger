@@ -535,7 +535,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }
 
-                    searchresponse = srb.setQuery(query).execute().actionGet();
+                    searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
                     if(searchresponse!=null){
                         long oneKM_size = searchresponse.getHits().getTotalHits();
                         long top_size = searchresponse.getHits().getHits().length;
