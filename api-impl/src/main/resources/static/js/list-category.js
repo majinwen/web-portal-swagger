@@ -1054,18 +1054,18 @@ $('#typeSubmit').on('click', function (e) {
  * 更多选择
  * */
 $('.more-list').on('click','span', function () {
-    if ($(this).hasClass('only')) {
-        $(this).toggleClass('current').siblings().removeClass('current');
-    } else {
-        $(this).toggleClass('current');
-    }
-
     if ($(this).parents('.filter-item').data('mark')=='panel-rent-type'){
         if ($(this).hasClass('rent-only')) {
-            $(this).addClass('current').siblings().removeClass('current');
+            $(this).toggleClass('current').siblings().removeClass('current');
         } else {
-            $(this).siblings('span[data-info=""]').removeClass('current');
-            $(this).addClass('current');
+            $(this).siblings('span.rent-only').removeClass('current');
+            $(this).toggleClass('current');
+        }
+    } else {
+        if ($(this).hasClass('only')) {
+            $(this).toggleClass('current').siblings().removeClass('current');
+        } else {
+            $(this).toggleClass('current');
         }
     }
 });
@@ -1153,11 +1153,27 @@ $('#moreRentSubmit').on('click', function (e) {
     $(domList).each(function () {
         var dataType = $(this).find('dt').attr('data-type'),
             dataTypeArr = $(this).find('.current');
-            var arr = [];
+        var arr = [];
         if (dataTypeArr.length) {
             $(dataTypeArr).each(function () {
                 arr.push($(this).attr('data-info'));
+                /*if (!$(this).hasClass('rent-only')) {
+                    arr.push($(this).attr('data-info'));
+                }
+                /*if ($(this).hasClass('ert') && $(this).hasClass('current')) {
+                    req['ert'] = '1';
+                }
+                if ($(this).hasClass('jrt') && $(this).hasClass('current')) {
+                    req['jrt'] = '0';
+                }*/
             });
+
+           /* if (!$('.ert').hasClass('current')) {
+                req['ert'] = null;
+            }
+            if (!$('.jrt').hasClass('current')) {
+                req['jrt'] = null;
+            }*/
             req[dataType]= arr.join().toString();
         } else {
             req[dataType] = null;
@@ -1175,6 +1191,7 @@ $('#moreRentSubmit').on('click', function (e) {
     req['pageNum'] = null;
     req['lat'] = null;
     req['lon'] = null;
+    console.log(params);
     params = joinParams(req);
     url = _localHref + params;
     var houseName = null;
