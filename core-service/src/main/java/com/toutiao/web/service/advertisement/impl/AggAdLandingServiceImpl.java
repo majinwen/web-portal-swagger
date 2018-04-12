@@ -71,6 +71,13 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private static final String RENT_RECOMMEND_SUBWAY = "ad_recommend_rentHouse_queryBit_subway";
     private static final String RENT_RECOMMEND_MONTHPAY = "ad_recommend_rentHouse_queryBit_monthPay";
     private static final String RENT_RECOMMEND_ENTIRERENT = "ad_recommend_rentHouse_queryBit_entireRent";
+    private static final String RENT_RECOMMEND_DEFAULT_V2 = "ad_recommend_rentHouse_queryBit_v2";
+    private static final String RENT_RECOMMEND_SOLEPRICE_V2 = "ad_recommend_rentHouse_queryBit_price_v2";
+    private static final String RENT_RECOMMEND_DOUBLEPRICE_V2 = "ad_recommend_rentHouse_queryBit_price_v2";
+    private static final String RENT_RECOMMEND_SUBWAY_V2 = "ad_recommend_rentHouse_queryBit_subway_v2";
+    private static final String RENT_RECOMMEND_MONTHPAY_V2 = "ad_recommend_rentHouse_queryBit_monthPay_v2";
+    private static final String RENT_RECOMMEND_RENT_V2 = "ad_recommend_rentHouse_queryBit_rent_v2";
+    private static final String RENT_RECOMMEND_QUALITYRENT_V2 = "ad_recommend_rentHouse_queryBit_qualityRent_v2";
 
 
 
@@ -798,6 +805,308 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //整租
         if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
             booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+        }
+
+        SearchResponse searchResponse = getImportRentHouseAdLanding(booleanQueryBuilder, pageNum, pageSize);
+        //计算补充数据的起始位置
+        long query_size = searchResponse.getHits().getHits().length;
+        if(query_size==0){
+            rentHouseDomain.setSign(0);
+        }else{
+            rentHouseDomain.setSign(2);
+        }
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+
+        List<RentHouseAggAdLandingDo> rentHouseAggAdLandingDos = new ArrayList<>();
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+            RentHouseAggAdLandingDo rentHouseAggAdLandingDo = JSON.parseObject(detail,RentHouseAggAdLandingDo.class);
+            rentHouseAggAdLandingDos.add(rentHouseAggAdLandingDo);
+        }
+
+        rentHouseDomain.setRentHouseAggAdLandingDoList(rentHouseAggAdLandingDos);
+        rentHouseDomain.setPageNum(pageNum);
+        return rentHouseDomain;
+    }
+
+    /**
+     * 出租推荐房源v2
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public RentHouseDomain getRentRecommendAdLandingV2(AggAdLandingDo aggAdLandingDo) {
+        RentHouseDomain rentHouseDomain = new RentHouseDomain();
+        //判断是否首次进入
+        Long startBit = aggAdLandingDo.getStartBit();
+
+        Long queryBit = aggAdLandingDo.getQueryBit();
+
+        Integer pageSize = aggAdLandingDo.getPs();
+
+
+        //有了用户的首次进入标志位和用户遍历数据的起始位置，那么就可以开始查询了。。。
+        //查询二手房推优表中的数据
+        //首先，填充筛选条件
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//构建筛选器
+//        booleanQueryBuilder.must(QueryBuilders.termQuery("rent_sign",0));
+        String redisCatogory = RENT_RECOMMEND_DEFAULT_V2;
+
+        // 筛选条件1-默认全部类型的推荐出租房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
+            redisCatogory = RENT_RECOMMEND_DEFAULT_V2;
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("adSort").gt(queryBit));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+        }
+
+        //近地铁
+//        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+//            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+//            redisCatogory = RENT_RECOMMEND_SUBWAY_V2;
+//
+//        }
+
+        //房源租金(solo)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isEmpty(aggAdLandingDo.getEp())) {
+            redisCatogory = RENT_RECOMMEND_SOLEPRICE_V2;
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp())));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+
+        }
+
+        //房源租金(double)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            redisCatogory = RENT_RECOMMEND_DOUBLEPRICE_V2;
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));//isRecommend大于0，都是推荐房源
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+
+        }
+
+        //整租/合租
+        if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
+            redisCatogory = RENT_RECOMMEND_RENT_V2;
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+            //如果是合租则过滤公寓
+            if (aggAdLandingDo.getRentType()==2){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("rent_sign", 0));
+            }
+        }
+
+        //品质公寓(公寓中合租的房源)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getQualityRent())&&"1".equals(aggAdLandingDo.getQualityRent())){
+            redisCatogory = RENT_RECOMMEND_QUALITYRENT_V2;
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", 2));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_sign").gt(0));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+        }
+
+        queryBit = getNextIndex(redisCatogory,startBit,queryBit);
+        RangeQueryBuilder range = QueryBuilders.rangeQuery("adSort").gt(queryBit);
+        if(queryBit<startBit){
+            range.lt(startBit);
+        }
+        booleanQueryBuilder.must(range);
+        // ES查询了一下
+        SearchResponse searchResponse = getRecommendRentHouseAdLanding(booleanQueryBuilder, pageSize);
+        //判断ES给我的返回结果
+        //1.查询返回的结果数量，默认10条一档级
+        long query_size = searchResponse.getHits().getHits().length;
+
+        rentHouseDomain =  getRentRecommendHits(searchResponse);
+
+
+
+        String newRedisValue = "";
+        if(startBit==0){
+            newRedisValue=rentHouseDomain.getSourceEnd().toString();
+            rentHouseDomain.setStartBit(rentHouseDomain.getSourceStart());
+        }
+        else {
+            rentHouseDomain.setStartBit(startBit);
+        }
+
+        if(query_size < 10){
+            //到一圈了
+            if(queryBit<startBit || (startBit==0 && queryBit==0) ){
+                rentHouseDomain.setSign(1);
+            }
+            //到队尾了
+            else {
+                newRedisValue = "0";
+            }
+            rentHouseDomain.setQueryBit(0L);
+        }
+        else {
+            rentHouseDomain.setQueryBit(rentHouseDomain.getSourceEnd());
+            newRedisValue = rentHouseDomain.getSourceEnd().toString();
+        }
+
+        if(StringUtils.isNotBlank(newRedisValue)) {
+            redisSessionUtils.set(redisCatogory, newRedisValue);
+        }
+        return rentHouseDomain;
+    }
+
+    /**
+     * 出租录入房源v2
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public RentHouseDomain getRentInputAdLandingV2(AggAdLandingDo aggAdLandingDo) {
+        RentHouseDomain sellHouseDomain = new RentHouseDomain();
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = 1;
+        Integer pageSize = aggAdLandingDo.getPs();
+
+        if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
+            pageNum = aggAdLandingDo.getPn();
+        }
+        // 筛选条件1-默认全部类型的录入出租房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getTj())){
+
+        }
+        //非推荐
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_recommend",0));
+        //录入
+        booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+
+        //近地铁
+//        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+//        }
+
+        //租金范围(solo)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp())));
+        }
+
+        //租金范围(double)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+        }
+
+        //标签，月付
+//        if(StringUtil.isNotNullString(aggAdLandingDo.getTag())){
+//            booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", aggAdLandingDo.getTag()));
+//        }
+
+        //整租/合租
+        if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+            //如果是合租则过滤公寓
+            if (aggAdLandingDo.getRentType()==2){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("rent_sign", 0));
+            }
+        }
+
+        //品质公寓(公寓中合租的房源)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getQualityRent())&&"1".equals(aggAdLandingDo.getQualityRent())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", 2));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_sign").gt(0));
+        }
+
+
+        SearchResponse searchResponse = getInputRentHouseAdLanding(booleanQueryBuilder, pageNum, pageSize);
+        //计算补充数据的起始位置
+        long query_size = searchResponse.getHits().getHits().length;
+        if(query_size==0){
+            sellHouseDomain.setSign(2);
+        }else{
+            sellHouseDomain.setSign(1);
+        }
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+        List<RentHouseAggAdLandingDo> rentHouseAggAdLandingDos = new ArrayList<>();
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+            RentHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,RentHouseAggAdLandingDo.class);
+            rentHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
+        }
+
+
+        sellHouseDomain.setRentHouseAggAdLandingDoList(rentHouseAggAdLandingDos);
+        sellHouseDomain.setPageNum(pageNum);
+        return sellHouseDomain;
+    }
+
+    /**
+     * 出租导入房源v2
+     * @param aggAdLandingDo
+     * @return
+     */
+    @Override
+    public RentHouseDomain getRentImportAdLandingV2(AggAdLandingDo aggAdLandingDo) {
+        RentHouseDomain rentHouseDomain = new RentHouseDomain();
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = 1;
+        Integer pageSize = aggAdLandingDo.getPs();
+
+
+        if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
+            pageNum = aggAdLandingDo.getPn();
+        }
+        //非推荐
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_recommend",0));
+        //导入房源
+        booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",3));
+        //近地铁
+//        if(StringUtil.isNotNullString(aggAdLandingDo.getNs())){
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", aggAdLandingDo.getNs()));
+//        }
+
+        //租金范围(solo)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp())));
+
+        }
+
+        //租金范围(double)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getBp()) && StringTool.isNotEmpty(aggAdLandingDo.getEp())) {
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().should(
+                    QueryBuilders.rangeQuery("rent_house_price")
+                            .gte(aggAdLandingDo.getBp()).lte(aggAdLandingDo.getEp())));
+
+        }
+
+        //标签，月付
+//        if(StringUtil.isNotNullString(aggAdLandingDo.getTag())){
+//            booleanQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", aggAdLandingDo.getTag()));
+//        }
+
+        //整租/合租
+        if(StringTool.isNotEmpty(aggAdLandingDo.getRentType())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", aggAdLandingDo.getRentType()));
+            //如果是合租则过滤公寓
+            if (aggAdLandingDo.getRentType()==2){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("rent_sign", 0));
+            }
+        }
+
+        //品质公寓(公寓中合租的房源)
+        if (StringTool.isNotEmpty(aggAdLandingDo.getQualityRent())&&"1".equals(aggAdLandingDo.getQualityRent())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rent_type", 2));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_sign").gt(0));
         }
 
         SearchResponse searchResponse = getImportRentHouseAdLanding(booleanQueryBuilder, pageNum, pageSize);

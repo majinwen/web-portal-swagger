@@ -120,7 +120,7 @@ public class AggAdLandingController {
 
         AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
         BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
-        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentRecommendAdLanding(aggAdLandingDo);
+        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentRecommendAdLandingV2(aggAdLandingDo);
         RentHouseResponse rentHouseResponse = new RentHouseResponse();
         BeanUtils.copyProperties(rentHouseDomain,rentHouseResponse);
 
@@ -138,7 +138,7 @@ public class AggAdLandingController {
 
         AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
         BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
-        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentInputAdLanding(aggAdLandingDo);
+        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentInputAdLandingV2(aggAdLandingDo);
         RentHouseResponse rentHouseResponse = new RentHouseResponse();
         BeanUtils.copyProperties(rentHouseDomain,rentHouseResponse);
 
@@ -156,7 +156,7 @@ public class AggAdLandingController {
 
         AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
         BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
-        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentImportAdLanding(aggAdLandingDo);
+        RentHouseDomain rentHouseDomain = aggAdLandingService.getRentImportAdLandingV2(aggAdLandingDo);
         RentHouseResponse rentHouseResponse = new RentHouseResponse();
         BeanUtils.copyProperties(rentHouseDomain,rentHouseResponse);
 

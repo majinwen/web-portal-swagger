@@ -46,5 +46,25 @@ public interface AggAdLandingService {
      */
     RentHouseDomain getRentImportAdLanding(AggAdLandingDo aggAdLandingDo);
 
+    /**
+     * 出租推荐房源(v2)
+     * @param aggAdLandingDo
+     * @return
+     */
+    RentHouseDomain getRentRecommendAdLandingV2(AggAdLandingDo aggAdLandingDo);
+    /**
+     * 出租录入房源(v2)
+     * @param aggAdLandingDo
+     * @return
+     */
+    RentHouseDomain getRentInputAdLandingV2(AggAdLandingDo aggAdLandingDo);
+
+    /**
+     * 出租导入房源(v2)
+     * @param aggAdLandingDo
+     * @return
+     */
+    RentHouseDomain getRentImportAdLandingV2(AggAdLandingDo aggAdLandingDo);
+
 
 }

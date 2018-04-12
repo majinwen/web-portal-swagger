@@ -92,5 +92,9 @@ public class AggAdLandingDo {
      * 整租
      */
     private Integer rentType;
+    /**
+     * 品质公寓(1:true)
+     */
+    private String qualityRent;
 
 }
