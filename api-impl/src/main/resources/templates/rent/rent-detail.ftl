@@ -210,7 +210,7 @@
                                     <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                                 </#if>
                             <#else>
-                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
+                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}-tt100x141" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                             </#if>
                         <#else >
                             <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
