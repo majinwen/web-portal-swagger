@@ -174,7 +174,7 @@
                                     <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                                 </#if>
                             <#else>
-                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
+                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}-tt100x141" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                             </#if>
                         <#else >
                             <#--<img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">-->

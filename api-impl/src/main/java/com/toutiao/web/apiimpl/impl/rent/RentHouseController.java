@@ -96,10 +96,10 @@ public class RentHouseController {
             }
 
             //房源经纪人
-            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
-            if (agent!=null){
-                model.addAttribute("agent",agent);
-            }
+//            Map agent = rentHouseService.queryAgentByHouseId(rentHouseQuery.getHouseId());
+//            if (agent!=null){
+//                model.addAttribute("agent",agent);
+//            }
             return "rent/rent-detail";
         }
         return "404";

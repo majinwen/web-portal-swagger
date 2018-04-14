@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -63,6 +64,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String agentIndex;
     @Value("${tt.esf.agent.type}")
     private String agentType;
+    @Value("${tt.agent.index}")
+    private String agentBaseIndex;
+    @Value("${tt.agent.type}")
+    private String agentBaseType;
 
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
@@ -1263,6 +1268,20 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 //小区坐标
                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+
+                if(null!=instance.getUserId() && !"".equals(instance.getUserId())){
+                    GetResponse agentBaseResponse = client.prepareGet(agentBaseIndex,agentBaseType,instance.getUserId().toString()).execute().actionGet();
+                    Map<String, Object> agentBaseMap = agentBaseResponse.getSourceAsMap();
+                    //经济人id
+//                    instance.setUserId(Integer.valueOf(agentBaseMap.get("userId").toString()));
+                    //经济人名称
+                    instance.setHouseProxyName(agentBaseMap.get("agent_name").toString());
+                    //展示电话
+                    instance.setHouseProxyPhone(agentBaseMap.get("display_phone").toString());
+                    //经纪人头像
+                    instance.setHouseProxyPhoto(agentBaseMap.get("head_photo").toString());
+                }
+
 //                //朝向
 //                String forWard = ForWardMap.getForWard(instance.getFloor());
 //                instance.setForwardName(forWard);
@@ -1291,7 +1310,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             }
             result = new HashMap<>();
             if (houseList!=null&&houseList.size()>0){
-                result.put("data_house",houseList.get(0) );
+                result.put("data_house",houseList.get(0));
                 result.put("total_house", hits.getTotalHits());
                 return result;
             }

@@ -326,4 +326,6 @@ public class ProjHouseInfoResponse {
 
     private Integer is_claim;
 
+    private Integer userId;
+
 }

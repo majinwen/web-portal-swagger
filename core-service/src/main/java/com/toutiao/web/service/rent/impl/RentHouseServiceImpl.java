@@ -9,6 +9,7 @@ import com.toutiao.web.domain.query.RentHouseQuery;
 import com.toutiao.web.service.rent.RentHouseService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -45,6 +46,10 @@ public class RentHouseServiceImpl implements RentHouseService{
     private String agentIndex;
     @Value("${tt.zufang.agent.type}")
     private String agentType;
+    @Value("${tt.agent.index}")
+    private String agentBaseIndex;
+    @Value("${tt.agent.type}")
+    private String agentBaseType;
     private static final Integer IS_DEL = 0;//房源未删除 0-未删除
     private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
     private static final Integer RENT = 0;//出租:1
@@ -141,6 +146,16 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchHit[] searchHists = response.getHits().getHits();
             if(searchHists.length>0){
                 Map source = searchHists[0].getSource();
+
+                if(StringTool.isNotEmpty(source.get("userId"))){
+                    GetResponse agentBaseResponse = client.prepareGet(agentBaseIndex,agentBaseType,source.get("userId").toString()).execute().actionGet();
+                    if(agentBaseResponse.getSourceAsMap()!=null){
+                        Map<String, Object> agentBaseMap = agentBaseResponse.getSourceAsMap();
+                        source.put("estate_agent",agentBaseMap.get("agent_name").toString());
+                        source.put("phone",agentBaseMap.get("display_phone").toString());
+                        source.put("agent_headphoto",agentBaseMap.get("head_photo").toString());
+                    }
+                }
                 return source;
             }
         }catch (Exception e){
