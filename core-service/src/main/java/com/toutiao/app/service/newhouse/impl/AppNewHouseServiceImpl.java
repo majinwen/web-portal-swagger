@@ -13,6 +13,7 @@ import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.beans.BeanInfo;
@@ -29,6 +30,8 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
 
     @Autowired
     private AppNewHouseEsDao newHouseEsDao;
+    @Value("${tt.newhouse.type}")
+    private String newhouseType;
 
     /**
      * 根据newcode获取新房详细信息
@@ -67,7 +70,7 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
 
         List<NewHouseLayoutDo> newHouseLayoutDos=new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("building_id",newcode));
+        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
         SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayout(boolQueryBuilder);
         SearchHits hits = layoutResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -82,8 +85,6 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
             throw  new BaseException("201","未找到新房户型信息");
         }
         return newHouseLayoutDos;
-
-
     }
 
 
