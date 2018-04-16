@@ -385,6 +385,9 @@
         if(url.indexOf('zufang')>-1){
             return '租房-进入租房详情页'
         }
+        if(url.indexOf('/ad')>-1){
+            return '广告-进入租房详情页'
+        }
         if(url.indexOf(window.location.hostname)>-1){
             return '大首页-点击租房推荐'
         }
