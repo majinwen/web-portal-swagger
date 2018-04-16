@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
+import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import com.toutiao.app.service.newhouse.AppNewHouseService;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -88,7 +89,13 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
 
     }
 
+    @Override
+    public List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo) {
+        List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
+        SearchResponse searchResponse=newHouseEsDao.getNewHouseList(newHouseListDo);
+        return newHouseListDoList;
 
+    }
 
 
 }
