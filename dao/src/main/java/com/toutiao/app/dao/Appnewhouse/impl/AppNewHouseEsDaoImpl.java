@@ -57,28 +57,23 @@ public class AppNewHouseEsDaoImpl implements AppNewHouseEsDao {
     private static final Integer IS_APPROVE = 1;//新房未下架
 
     @Override
-    public SearchResponse getNewHouseBulidByNewCode(Integer newcode) {
+    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
-        //查询新房信息
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id", newcode));
+        //查询详情
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                .setQuery(booleanQueryBuilder)
+                .setQuery(boolQueryBuilder)
                 .execute().actionGet();
-       return  searchresponse;
+        return  searchresponse;
     }
 
 
     @Override
-    public SearchResponse getNewHouseLayoutByNewCode(Integer newcode) {
+    public SearchResponse getNewHouseLayout(BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
-      //查询户型信息
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();
-        booleanQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
+        //查询户型信息
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType)
-                .setQuery(booleanQueryBuilder)
+                .setQuery(boolQueryBuilder)
                 .execute().actionGet();
-
         return searchresponse;
 
 

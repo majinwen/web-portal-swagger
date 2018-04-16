@@ -1,11 +1,17 @@
-package com.toutiao.web.domain.query;
+package com.toutiao.app.domain.Plot;
 
+
+import com.toutiao.app.domain.MapInfo;
+import com.toutiao.app.domain.Rent.RentDetailsDo;
+import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import lombok.Data;
 
+
+import java.util.List;
 import java.util.Map;
 
 @Data
-public class VillageResponse {
+public class PlotDetailsDo {
     /**
      * 小区编号
      */
@@ -266,10 +272,25 @@ public class VillageResponse {
      * 页数
      */
     private Integer pageNum;
+//
+//    /**
+//     * 小区内二手房
+//     */
+//    private List<SellHouseDetailsDo> sellHouseDetailsDo;
+//
+//    /**
+//     * 小区内出租房源
+//     */
+//    private List<RentDetailsDo> rentDetailsDo;
+//
+//    /**
+//     * 小区周边配套
+//     */
+//    private MapInfo mapInfo;
+//
+//    /**
+//     * 附近小区
+//     */
+//    private List<PlotDetailsDo> plotDetailsDoList;
 
-
-//    private Double pm;  //pm2.5
-//    private Double noiseindex;  //噪声指数
-//    private String[] mainpushhouse;  //主推房源
-//    private String recommendedreasons;  //推荐理由
 }

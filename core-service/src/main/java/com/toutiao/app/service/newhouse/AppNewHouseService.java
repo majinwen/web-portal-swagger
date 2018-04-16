@@ -8,8 +8,18 @@ import java.util.List;
 
 public interface AppNewHouseService {
 
-     NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
+    /**
+     * 根据newcode获取新房数据
+     * @param newcode
+     * @return
+     */
+    NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
 
+    /**
+     * 根据newcode获取户型信息
+     * @param newcode
+     * @return
+     */
     List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode);
 
     List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo);

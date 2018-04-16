@@ -229,4 +229,8 @@ public class SellHouseDetailsDo {
      * 二手房房源认领经纪人
      */
     private AgentsBySellHouseDo agentsBySellHouseDo;
+    /**
+     * 房源总数
+     */
+    private Integer totalNum;
 }

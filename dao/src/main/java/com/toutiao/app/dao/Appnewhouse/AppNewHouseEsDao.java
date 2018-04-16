@@ -7,9 +7,19 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 
 public interface AppNewHouseEsDao {
 
-    SearchResponse getNewHouseBulidByNewCode(Integer newcode);
+    /**
+     * 根据新房id获取新房详情
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder);
 
-    SearchResponse  getNewHouseLayoutByNewCode(Integer newcode);
+    /**
+     * 根据新房id获取新房户型
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse  getNewHouseLayout(BoolQueryBuilder boolQueryBuilder);
 
     SearchResponse getNewHouseList(NewHouseListDo newHouseListDo);
 

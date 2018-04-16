@@ -59,4 +59,9 @@ public class NearBySellHousesDo {
      */
     private String housetToPlotDistance;
 
+    /**
+     * 总个数
+     */
+    private Integer totalNum;
+
 }

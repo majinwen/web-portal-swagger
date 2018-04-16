@@ -1,10 +1,12 @@
 package com.toutiao.app.dao.plot;
 
-import com.toutiao.web.domain.query.PlotRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-import java.util.Map;
 
 @Configuration
 public interface AppPlotDao {
@@ -13,7 +15,7 @@ public interface AppPlotDao {
      * @param id
      * @return
      */
-    Map queryPlotDetail(Integer plotId);
+    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder) throws Exception;
 
     /**
      * 根据坐标和距离查询附近的小区
@@ -21,12 +23,12 @@ public interface AppPlotDao {
      * @param lon
      * @return
      */
-    List queryNearPlotByLocationAndDistance(double lat, double lon, Integer plotId);
+    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort) throws Exception;
 
     /**
      * 小区条件查询
      * @param plotRequest
      * @return
      */
-    Map queryPlotByCondition(PlotRequest plotRequest);
+    SearchResponse queryPlotListByRequirement(String keyword,Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder avgPriceSort,FieldSortBuilder scoreSort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort);
 }
