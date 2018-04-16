@@ -52,6 +52,7 @@ public class NewHouseListRequest {
     /**
      * 页码
      */
+    @NotNull(message = "缺少页码")
     private Integer pageNum = 1;
     /**
      * 每页数量
