@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Map;
 
 @Configuration
-public interface AppRentDao {
+public interface RentDao {
 
     /**
      * 查询小区内的出租房屋(普租+公寓)

@@ -2,7 +2,7 @@ package com.toutiao.app.service.rent.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
-import com.toutiao.app.dao.rent.AppRentDao;
+import com.toutiao.app.dao.rent.RentDao;
 import com.toutiao.app.domain.Rent.RentAgentDo;
 import com.toutiao.app.domain.Rent.RentDetailsDo;
 import com.toutiao.app.domain.Rent.RentDetailsFewDo;
@@ -30,7 +30,7 @@ public class RentRestRestServiceImpl implements RentRestService {
     private static final String LAYOUT = "3";
 
     @Autowired
-    private AppRentDao appRentDao;
+    private RentDao rentDao;
     @Autowired
     private AgentHouseEsDao agentHouseEsDao;
 
@@ -46,7 +46,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-            SearchResponse searchResponse = appRentDao.queryRentByRentId(boolQueryBuilder);
+            SearchResponse searchResponse = rentDao.queryRentByRentId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             Map<String, Object> source = hits[0].getSource();
             RentDetailsDo rentDetailsDo = RentDetailsDo.class.newInstance();
@@ -69,7 +69,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             List<RentDetailsFewDo> list = new ArrayList<>();
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
-            SearchResponse searchResponse = appRentDao.queryRentListByPlotId(boolQueryBuilder);
+            SearchResponse searchResponse = rentDao.queryRentListByPlotId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 @Configuration
-public interface AppPlotDao {
+public interface PlotDao {
     /**
      * 通过id查询详情
      * @param id

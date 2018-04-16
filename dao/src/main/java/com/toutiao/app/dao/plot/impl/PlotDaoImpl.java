@@ -1,6 +1,6 @@
 package com.toutiao.app.dao.plot.impl;
 
-import com.toutiao.app.dao.plot.AppPlotDao;
+import com.toutiao.app.dao.plot.PlotDao;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class AppPlotDaoImpl implements AppPlotDao {
+public class PlotDaoImpl implements PlotDao {
     @Value("${plot.index}")
     private String index ;
     @Value("${plot.parent.type}")

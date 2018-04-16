@@ -1,6 +1,6 @@
 package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
-import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
+import com.toutiao.app.dao.Appnewhouse.NewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
@@ -8,6 +8,7 @@ import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -31,7 +32,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
-    private AppNewHouseEsDao newHouseEsDao;
+    private NewHouseEsDao newHouseEsDao;
 
 
     private static final Integer IS_DEL = 0;//新房未删除
@@ -50,6 +51,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
      */
     @Override
     public NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode) {
+        NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newcode));
         SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
@@ -58,12 +60,13 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
         }
-        if (details.isEmpty())
-        {
-            throw new BaseException("201","未找到新房信息");
+//        if (details.isEmpty())
+//        {
+//            throw new BaseException("201","未找到新房信息");
+//        }
+        if (StringUtils.isNotEmpty(details)){
+            newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         }
-
-        NewHouseDetailDo newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         return  newHouseDetailDo;
 
     }
@@ -90,10 +93,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             NewHouseLayoutDo newHouseLayoutDo=JSON.parseObject(details,NewHouseLayoutDo.class);
             newHouseLayoutDos.add(newHouseLayoutDo);
         }
-        if(newHouseLayoutDos.isEmpty())
-        {
-            throw  new BaseException("201","未找到新房户型信息");
-        }
+//        if(newHouseLayoutDos.isEmpty())
+//        {
+//            throw  new BaseException("201","未找到新房户型信息");
+//        }
         return newHouseLayoutDos;
 
 
