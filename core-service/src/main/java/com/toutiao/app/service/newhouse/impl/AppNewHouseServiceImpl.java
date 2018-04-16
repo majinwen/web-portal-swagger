@@ -169,7 +169,6 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
 
         }
 
-
         //面积
         if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHouse_max_area()!=0)
         {
@@ -184,6 +183,9 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
+
+        //按附近搜索
+
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
