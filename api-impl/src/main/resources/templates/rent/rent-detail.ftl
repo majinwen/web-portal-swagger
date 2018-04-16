@@ -322,9 +322,9 @@
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
             <#if agent?exists&&agent['agent_phone']?exists>
-                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
+                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling" id="rentBottomPhone">立即咨询底价</a>
             <#elseif rentHouse['phone']?exists>
-                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
+                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling" id="rentBottomPhone">立即咨询底价</a>
             </#if>
             <#--<a href="#" class="contact-like">喜欢</a>-->
             <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next"><i class="next-icon"></i>下一个</a>

@@ -534,7 +534,7 @@
         <div class="detail-contact-wrapper">
             <section class="detail-contact-box" id="detailContactState">
                 <div class="detail-contact-content">
-                    <a href="tel:${houseDetail['houseProxyPhone']}" class="only contact-telephone-counseling">咨询经纪人</a>
+                    <a href="tel:${houseDetail['houseProxyPhone']}" class="only contact-telephone-counseling">立即咨询底价</a>
                 </div>
             </section>
         </div>
@@ -543,7 +543,7 @@
             <div class="detail-contact-wrapper">
             <section class="detail-contact-box" id="detailContactState">
             <div class="detail-contact-content">
-            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">立即咨询底价</a>
             </div>
             </section>
             </div>
