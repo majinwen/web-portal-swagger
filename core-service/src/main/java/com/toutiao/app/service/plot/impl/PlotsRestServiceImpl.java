@@ -1,6 +1,5 @@
 package com.toutiao.app.service.plot.impl;
 
-import com.alibaba.druid.sql.visitor.functions.If;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.AppPlotDao;
@@ -8,7 +7,7 @@ import com.toutiao.app.domain.MapInfo;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
 import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.Plot.PlotListDo;
-import com.toutiao.app.service.plot.AppPlotService;
+import com.toutiao.app.service.plot.PlotsRestService;
 
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -16,7 +15,6 @@ import com.toutiao.web.dao.mapper.officeweb.MapInfoMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -35,7 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class AppPlotServiceImpl implements AppPlotService {
+public class PlotsRestServiceImpl implements PlotsRestService {
     @Value("${distance}")
     private Double distance;
     @Value("${plot.child.type}")

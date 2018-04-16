@@ -9,7 +9,7 @@ import com.toutiao.app.domain.Plot.PlotListDo;
 import java.util.List;
 
 
-public interface AppPlotService {
+public interface PlotsRestService {
     /**
      * 根据小区id查询小区详情
      * @param plotId

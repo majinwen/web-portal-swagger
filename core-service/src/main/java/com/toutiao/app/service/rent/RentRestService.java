@@ -6,10 +6,10 @@ import com.toutiao.app.domain.Rent.RentDetailsFewDo;
 
 import java.util.List;
 
-public interface AppRentService {
+public interface RentRestService {
     /**
      * 根据id查找出租房源详情
-     * @param rentRequest
+     * @param rentId
      * @return
      */
     RentDetailsDo queryRentDetailByHouseId(String rentId);

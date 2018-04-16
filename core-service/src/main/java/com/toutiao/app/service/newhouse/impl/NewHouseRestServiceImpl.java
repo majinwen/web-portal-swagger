@@ -4,8 +4,7 @@ import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
-import com.toutiao.app.service.newhouse.AppNewHouseService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -21,21 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
-public class AppNewHouseServiceImpl implements AppNewHouseService {
+public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
     private AppNewHouseEsDao newHouseEsDao;

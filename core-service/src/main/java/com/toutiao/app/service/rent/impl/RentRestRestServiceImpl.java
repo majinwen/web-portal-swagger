@@ -6,7 +6,7 @@ import com.toutiao.app.dao.rent.AppRentDao;
 import com.toutiao.app.domain.Rent.RentAgentDo;
 import com.toutiao.app.domain.Rent.RentDetailsDo;
 import com.toutiao.app.domain.Rent.RentDetailsFewDo;
-import com.toutiao.app.service.rent.AppRentService;
+import com.toutiao.app.service.rent.RentRestService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class AppRentServiceImpl implements AppRentService {
+public class RentRestRestServiceImpl implements RentRestService {
     private static final Integer IS_DEL = 0;//房源未删除 0-未删除
     private static final Integer RELEASE_STATUS = 1;//房源发布状态 1-已发布
     private static final Integer RENT = 0;//出租:1
