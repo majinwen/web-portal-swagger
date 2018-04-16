@@ -66,7 +66,9 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
     public List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode) {
 
         List<NewHouseLayoutDo> newHouseLayoutDos=new ArrayList<>();
-        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayoutByNewCode(newcode);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("building_id",newcode));
+        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayout(boolQueryBuilder);
         SearchHits hits = layoutResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit searchHit : searchHists) {
@@ -83,8 +85,6 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
 
 
     }
-
-
 
 
 }

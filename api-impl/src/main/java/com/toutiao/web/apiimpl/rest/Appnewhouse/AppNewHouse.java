@@ -41,12 +41,10 @@ public class AppNewHouse {
     @RequestMapping(value = "/getLayoutByNewCode",method = RequestMethod.GET)
     public NashResult getNewHouseLayoutByNewCode (@RequestParam(value = "newcode",required = true) Integer newcode)
     {
-        NashResult nashResult =new NashResult();
-           List<NewHouseLayoutDo> newHouseLayoutDos=newHouseService.getNewHouseLayoutByNewcode(newcode);
-           JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDos));
-           List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
-           nashResult.setData(newHouseLayoutResponses);
-          return nashResult;
+        List<NewHouseLayoutDo> newHouseLayoutDos=newHouseService.getNewHouseLayoutByNewcode(newcode);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDos));
+        List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
+        return NashResult.build(newHouseLayoutResponses);
     }
 
 

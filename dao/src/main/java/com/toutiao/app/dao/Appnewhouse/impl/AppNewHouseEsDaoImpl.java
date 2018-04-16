@@ -37,15 +37,12 @@ public class AppNewHouseEsDaoImpl implements AppNewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseLayoutByNewCode(Integer newcode) {
+    public SearchResponse getNewHouseLayout(BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
         //查询户型信息
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();
-        booleanQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
         SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType)
-                .setQuery(booleanQueryBuilder)
+                .setQuery(boolQueryBuilder)
                 .execute().actionGet();
-
         return searchresponse;
 
 
