@@ -144,6 +144,21 @@ public class DateUtil {
 	}
 
 	/**
+	 * 获取指定日期的前两天
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static Date beforeYesterday(Date date) {
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(date);
+		calender.add(Calendar.DATE, -2);
+		date = parseDate(format(calender.getTime(), datePattern), datePattern);
+
+		return date;
+	}
+
+	/**
 	 * 获取前一天日期
 	 * 
 	 * @param currDate
