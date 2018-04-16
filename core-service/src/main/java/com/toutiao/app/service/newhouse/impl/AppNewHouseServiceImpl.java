@@ -163,10 +163,10 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
 
 
         //面积
-        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHosue_max_area()!=0)
+        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHouse_max_area()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouse_min_area())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHosue_max_area())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHouse_max_area())));
         }
 
 
@@ -186,10 +186,8 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
         for (SearchHit searchHit : searchHists) {
             String details = "";
             details=searchHit.getSourceAsString();
-            NewHouseListDo newHouseLayoutDo=JSON.parseObject(details,NewHouseListDo.class);
-            //计算户型
-
-            newHouseListDoList.add(newHouseLayoutDo);
+            NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
+            newHouseListDoList.add(newHouseListDos);
         }
 
         return newHouseListDoList;

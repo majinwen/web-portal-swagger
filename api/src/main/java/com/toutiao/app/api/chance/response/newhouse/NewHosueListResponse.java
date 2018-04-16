@@ -13,7 +13,7 @@ public class NewHosueListResponse {
     /**
      * 最大面积
      */
-    private  Double hosue_max_area;
+    private  Double house_max_area;
 
     /**
      * 楼盘名称
@@ -46,10 +46,22 @@ public class NewHosueListResponse {
 
     private  String deliver_time;
 
+
     /**
-     * 车辆配比
+     * 车位配比
      */
-    private  String park_radio;
+    private String park_radio;
+
+    /**
+     * 均价
+     */
+    private  String average_price;
+
+    /**
+     * 销售状态
+     */
+    private  String  sale_status_name;
+
 
 
 

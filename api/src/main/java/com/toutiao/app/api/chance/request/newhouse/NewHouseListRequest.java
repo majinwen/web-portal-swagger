@@ -41,10 +41,6 @@ public class NewHouseListRequest {
      */
     private  String[] layout;
 
-    /**
-     * 销售状态
-     */
-    private  Integer sale_status_id;
 
     /**
      * 标签
