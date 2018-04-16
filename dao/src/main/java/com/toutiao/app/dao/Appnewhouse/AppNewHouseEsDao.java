@@ -21,6 +21,6 @@ public interface AppNewHouseEsDao {
      */
     SearchResponse  getNewHouseLayout(BoolQueryBuilder boolQueryBuilder);
 
-    SearchResponse getNewHouseList(NewHouseListDo newHouseListDo);
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
 
 }
