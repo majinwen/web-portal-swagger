@@ -21,7 +21,7 @@ public class AppNewHouse {
     private AppNewHouseService newHouseService;
 
     /**
-     *根据newcode获取新房数据的接口
+     * 根据newcode获取新房数据
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)

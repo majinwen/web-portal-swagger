@@ -31,20 +31,16 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
     private AppNewHouseEsDao newHouseEsDao;
 
     /**
-     * 新房异常2
-     */
-
-    /**
      * 根据newcode获取新房详细信息
      * @param newcode
      * @return
      */
     @Override
     public NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode) {
-        //查询新房信息
-        SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulidByNewCode(newcode);
-        SearchHits hits = bulidResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newcode));
+        SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
+        SearchHit[] searchHists = bulidResponse.getHits().getHits();
         String details = "";
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();

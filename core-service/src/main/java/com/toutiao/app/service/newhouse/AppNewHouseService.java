@@ -7,7 +7,12 @@ import java.util.List;
 
 public interface AppNewHouseService {
 
-     NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
+    /**
+     * 根据newcode获取新房数据
+     * @param newcode
+     * @return
+     */
+    NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
 
     List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode);
 
