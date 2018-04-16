@@ -11,6 +11,6 @@ public interface AppNewHouseEsDao {
 
     SearchResponse  getNewHouseLayoutByNewCode(Integer newcode);
 
-    SearchResponse getNewHouseList(NewHouseListDo newHouseListDo);
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
 
 }

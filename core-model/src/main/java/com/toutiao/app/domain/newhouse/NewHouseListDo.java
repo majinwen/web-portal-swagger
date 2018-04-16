@@ -22,11 +22,6 @@ public class NewHouseListDo {
 
     private String building_name;
 
-    /**
-     * 户型数量
-     */
-    private Integer layoutCount;
-
 
     /**
      * 大楼标题图
@@ -71,11 +66,6 @@ public class NewHouseListDo {
      private String park_radio;
 
     /**
-     * 收藏数量
-     */
-     private  Integer collectionCount;
-
-    /**
      * 最小价格
      */
 
@@ -103,12 +93,6 @@ public class NewHouseListDo {
      * 标签
      */
     private  Integer [] labelId;
-
-
-    /**
-     * 附近5km
-     */
-    private  Boolean isNearby;
 
 
     /**
@@ -167,5 +151,6 @@ public class NewHouseListDo {
      * 距离
      */
     private  Integer distance;
+
 
 }

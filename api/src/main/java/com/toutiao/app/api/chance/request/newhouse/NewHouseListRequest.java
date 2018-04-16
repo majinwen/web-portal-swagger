@@ -52,11 +52,6 @@ public class NewHouseListRequest {
     private  Integer [] labelId;
 
     /**
-     * 附近5km
-     */
-    private  Boolean isNearby;
-
-    /**
      * 页码
      */
     private Integer pageNum = 1;
@@ -86,21 +81,6 @@ public class NewHouseListRequest {
      * 地铁站Id
      */
     private Integer subwayStationId;
-
-
-    /**
-     * y坐标
-     */
-    private  Double  lat;
-    /**
-     * X坐标
-     */
-    private  Double lon;
-
-    /**
-     * 距离
-     */
-    private  Integer distance;
 
 
 
