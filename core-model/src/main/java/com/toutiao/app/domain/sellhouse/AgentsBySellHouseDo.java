@@ -55,12 +55,4 @@ public class AgentsBySellHouseDo {
      */
     private Integer corpHouseId;
 
-
-
-
-
-
-
-
-
 }

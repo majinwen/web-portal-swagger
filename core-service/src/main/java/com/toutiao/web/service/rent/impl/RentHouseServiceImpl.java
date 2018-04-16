@@ -128,22 +128,24 @@ public class RentHouseServiceImpl implements RentHouseService{
     @Override
     public Map queryHouseById(RentHouseQuery rentHouseQuery) {
         try{
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            //出租房源ID
-            if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
-                boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
-            }
-            //是否删除
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
-            //发布状态
-            boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-            SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
-            SearchHit[] searchHists = response.getHits().getHits();
-            if(searchHists.length>0){
-                Map source = searchHists[0].getSource();
-                return source;
+            if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
+                TransportClient client = esClientTools.init();
+                SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                //出租房源ID
+                if(StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("house_id",rentHouseQuery.getHouseId()));
+                }
+                //是否删除
+                boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
+                //发布状态
+                boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
+                SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
+                SearchHit[] searchHists = response.getHits().getHits();
+                if(searchHists.length>0){
+                    Map source = searchHists[0].getSource();
+                    return source;
+                }
             }
         }catch (Exception e){
             e.printStackTrace();

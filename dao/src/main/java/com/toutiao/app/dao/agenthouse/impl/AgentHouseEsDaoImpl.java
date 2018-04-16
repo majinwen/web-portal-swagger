@@ -19,12 +19,24 @@ public class AgentHouseEsDaoImpl implements AgentHouseEsDao{
     private String agentIndex;
     @Value("${tt.esf.agent.type}")
     private String agentType;
+    @Value("${tt.zufang.agent.index}")
+    private String agentRentIndex;
+    @Value("${tt.zufang.agent.type}")
+    private String agentRentType;
 
     @Override
     public SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = client.prepareSearch(agentIndex).setTypes(agentType).setQuery(booleanQueryBuilder)
+                .execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchResponse searchResponse = client.prepareSearch(agentRentIndex).setTypes(agentRentType).setQuery(booleanQueryBuilder)
                 .execute().actionGet();
         return searchResponse;
     }

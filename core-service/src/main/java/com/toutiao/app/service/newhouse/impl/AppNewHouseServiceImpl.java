@@ -18,6 +18,7 @@ import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.beans.BeanInfo;
@@ -46,6 +47,8 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
     /**
      * 新房异常2
      */
+    @Value("${tt.newhouse.type}")
+    private String newhouseType;
 
     /**
      * 根据newcode获取新房详细信息
@@ -54,10 +57,10 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
      */
     @Override
     public NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode) {
-        //查询新房信息
-        SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulidByNewCode(newcode);
-        SearchHits hits = bulidResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newcode));
+        SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
+        SearchHit[] searchHists = bulidResponse.getHits().getHits();
         String details = "";
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
@@ -83,7 +86,9 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
     public List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode) {
 
         List<NewHouseLayoutDo> newHouseLayoutDos=new ArrayList<>();
-        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayoutByNewCode(newcode);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
+        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayout(boolQueryBuilder);
         SearchHits hits = layoutResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit searchHit : searchHists) {

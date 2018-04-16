@@ -236,14 +236,19 @@ public class SellHouseDetailsResponse {
      */
     private Integer isDel;
 
-    /**
-     * 二手房附件好房
-     */
-    private List<NearBySellHousesDo> NearBySellHousesDo;
+//    /**
+//     * 二手房附件好房
+//     */
+//    private List<NearBySellHousesDo> NearBySellHousesDo;
+//
+//    /**
+//     * 二手房房源认领经纪人
+//     */
+//    private AgentsBySellHouseDo agentsBySellHouseDo;
 
     /**
-     * 二手房房源认领经纪人
+     * 总个数
      */
-    private AgentsBySellHouseDo agentsBySellHouseDo;
+    private Integer totalNum;
 
 }

@@ -12,5 +12,6 @@ public interface AgentHouseEsDao {
      */
     SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
 
+    SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder);
 
 }
