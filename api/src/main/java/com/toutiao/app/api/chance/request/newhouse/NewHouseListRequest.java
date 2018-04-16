@@ -2,6 +2,8 @@ package com.toutiao.app.api.chance.request.newhouse;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class NewHouseListRequest {
 
@@ -39,7 +41,7 @@ public class NewHouseListRequest {
      *
      * 居室
      */
-    private  String[] layout;
+    private  Integer[] layout;
 
 
     /**
@@ -65,6 +67,7 @@ public class NewHouseListRequest {
      *
      * 城市id
      */
+    @NotNull(message ="缺少城市id")
     private Integer cityId;
 
 

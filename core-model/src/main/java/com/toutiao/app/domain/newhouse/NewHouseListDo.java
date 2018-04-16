@@ -119,7 +119,7 @@ public class NewHouseListDo {
     /**
      * 地铁线Id
      */
-    private Integer subwayLineId;
+    private Integer  subwayLineId;
 
 
     /**

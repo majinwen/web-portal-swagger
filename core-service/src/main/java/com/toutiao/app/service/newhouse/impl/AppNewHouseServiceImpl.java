@@ -153,10 +153,18 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getMin_price()).lte(newHouseListDo.getMax_price())));
         }
 
-        //户型
+        //标签
         if(null!=newHouseListDo.getLabelId() && newHouseListDo.getLabelId().length!=0){
 
             Integer[] longs = newHouseListDo.getLabelId();
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+
+        }
+
+        //户型
+        if(newHouseListDo.getLayout()!=null && newHouseListDo.getLayout().length!=0 ){
+
+            Integer[] longs =  newHouseListDo.getLayout();
             booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
 
         }
@@ -189,6 +197,7 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
             NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
             newHouseListDoList.add(newHouseListDos);
         }
+
 
         return newHouseListDoList;
 
