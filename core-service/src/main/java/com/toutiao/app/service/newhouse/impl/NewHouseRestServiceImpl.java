@@ -4,6 +4,7 @@ import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.newhouse.AppNewHouseService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -21,21 +22,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
-public class AppNewHouseServiceImpl implements AppNewHouseService {
+public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
     private AppNewHouseEsDao newHouseEsDao;
@@ -175,10 +170,10 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
         }
 
         //面积
-        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHouse_max_area()!=0)
+        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHosue_max_area()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouse_min_area())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHouse_max_area())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHosue_max_area())));
         }
 
 
@@ -188,9 +183,6 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
-
-        //按附近搜索
-
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));

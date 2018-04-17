@@ -6,7 +6,7 @@ import com.toutiao.app.domain.newhouse.NewHouseListDo;
 
 import java.util.List;
 
-public interface AppNewHouseService {
+public interface NewHouseRestService {
 
     /**
      * 根据newcode获取新房数据

@@ -12,7 +12,7 @@ import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
 import com.toutiao.app.domain.Plot.PlotDetailsDo;
 import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.Plot.PlotListDo;
-import com.toutiao.app.service.plot.AppPlotService;
+import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/rest/plot")
-public class AppPlot {
+public class PlotsRestController {
     @Autowired
-    private AppPlotService appPlotService;
+    private PlotsRestService appPlotService;
 
     /**
      * 获取小区详情信息

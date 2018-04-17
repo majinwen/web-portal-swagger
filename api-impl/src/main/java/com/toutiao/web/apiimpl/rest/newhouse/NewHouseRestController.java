@@ -9,7 +9,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.service.newhouse.AppNewHouseService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/rest/newhouse")
 public class NewHouseRestController {
     @Autowired
-    private AppNewHouseService newHouseService;
+    private NewHouseRestService newHouseService;
 
     /**
      * 根据newcode获取新房数据

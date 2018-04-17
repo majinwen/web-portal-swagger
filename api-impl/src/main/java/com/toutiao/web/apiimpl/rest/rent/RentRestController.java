@@ -11,7 +11,7 @@ import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
 import com.toutiao.app.domain.Rent.RentAgentDo;
 import com.toutiao.app.domain.Rent.RentDetailsDo;
 import com.toutiao.app.domain.Rent.RentDetailsFewDo;
-import com.toutiao.app.service.rent.AppRentService;
+import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/rest/zufang")
-public class AppRent {
+public class RentRestController {
     @Autowired
-    private AppRentService appRentService;
+    private RentRestService appRentRestService;
 
     /**
      * 查找出租房源详情信息
@@ -36,7 +36,7 @@ public class AppRent {
     @RequestMapping("getRentDetailByRentId")
     @ResponseBody
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
-        RentDetailsDo rentDetailsDo = appRentService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
+        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo,rentDetailResponse);
         return NashResult.build(rentDetailResponse);
@@ -50,7 +50,7 @@ public class AppRent {
     @RequestMapping("getRentOfPlotByPlotId")
     @ResponseBody
     public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        List<RentDetailsFewDo> rentDetailsFewDoList = appRentService.queryRentListByPlotId(plotDetailsRequest.getPlotId());
+        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
         return NashResult.build(rentDetailFewResponses);
@@ -64,7 +64,7 @@ public class AppRent {
     @RequestMapping("getRentAgentByRentId")
     @ResponseBody
     public NashResult getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest){
-        RentAgentDo rentAgentDo = appRentService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
+        RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
         RentAgentResponse rentAgentResponse = new RentAgentResponse();
         BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
         return NashResult.build(rentAgentResponse);
