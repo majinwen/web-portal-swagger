@@ -1,11 +1,10 @@
 package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
-import com.toutiao.app.dao.Appnewhouse.NewHouseEsDao;
+import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
-import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang3.StringUtils;

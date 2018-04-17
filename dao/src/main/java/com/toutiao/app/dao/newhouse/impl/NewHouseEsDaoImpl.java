@@ -1,5 +1,5 @@
-package com.toutiao.app.dao.Appnewhouse.impl;
-import com.toutiao.app.dao.Appnewhouse.NewHouseEsDao;
+package com.toutiao.app.dao.newhouse.impl;
+import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
