@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class SuggestRestController {
      * @param suggestRequest
      * @return
      */
-    @RequestMapping("/getSuggestByKeyword")
+    @RequestMapping(value = "/getSuggestByKeyword",method = RequestMethod.GET)
     public NashResult getSuggestByKeyword(@Validated SuggestRequest suggestRequest){
         SuggestResponse suggestResponse = new SuggestResponse();
         SuggestDo suggest = suggestService.suggest(suggestRequest.getKeyword(), suggestRequest.getProperty());
