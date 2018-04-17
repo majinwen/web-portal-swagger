@@ -19,7 +19,14 @@ public interface CpcSellHouseMapper extends BaseDao {
 
     int updateByPrimaryKey(CpcSellHouse record);
 
-    List<CpcSellHouse> selectByLastDate(@Param("lastData")String lastData, @Param("status")int status);
+    List<CpcSellHouse> selectByLastDate(@Param("lastData")String lastData);
+
+
+    List<CpcSellHouse> selectByLastDateRepair(@Param("lastData")String lastData);
+
 
     List<CpcSellHouse> selectByBeforeYesterday(@Param("beforeYesterday")String beforeYesterday);
+
+
+    List<CpcSellHouse> selectByBeforeYesterdayRepair(@Param("beforeYesterday")String beforeYesterday);
 }

@@ -20,12 +20,22 @@
 
   <select id="selectByLastDate"  resultMap="BaseResultMap">
 
-    SELECT * FROM cpc_sell_house where date= #{lastData} and status = #{status}
+    SELECT * FROM cpc_sell_house where date= #{lastData} order by click DESC LIMIT 10 OFFSET 0
+  </select>
+
+  <select id="selectByLastDateRepair"  resultMap="BaseResultMap">
+
+    SELECT * FROM cpc_sell_house where date= #{lastData} order by click DESC LIMIT 30 OFFSET 10
   </select>
 
   <select id="selectByBeforeYesterday"  resultMap="BaseResultMap">
 
-    SELECT * FROM cpc_sell_house where date= #{beforeYesterday}
+    SELECT * FROM cpc_sell_house where date= #{beforeYesterday} order by click DESC LIMIT 10 OFFSET 0
+  </select>
+
+  <select id="selectByBeforeYesterdayRepair"  resultMap="BaseResultMap">
+
+    SELECT * FROM cpc_sell_house where date= #{beforeYesterday} order by click DESC LIMIT 30 OFFSET 10
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

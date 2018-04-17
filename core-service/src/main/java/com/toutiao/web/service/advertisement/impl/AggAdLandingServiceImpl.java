@@ -1149,7 +1149,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Date date = DateUtil.lastDate(new Date());
         String cpcDate = DateUtil.format(date);
 
-        List<CpcSellHouse> cpcSellHouseList = cpcSellHouseMapper.selectByLastDate(cpcDate,CPC_STATUS_TOP10_0);
+        List<CpcSellHouse> cpcSellHouseList = cpcSellHouseMapper.selectByLastDate(cpcDate);
         QueryBuilder queryBuilder;
         SearchResponse searchResponse;
         String[] houseId = new String[10];
@@ -1179,6 +1179,43 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             detail = hit.getSourceAsString();
             SellHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,SellHouseAggAdLandingDo.class);
             sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
+        }
+
+        if(sellHouseAggAdLandingDos.size() < 10){
+            String[] houseId_repair = new String[20];
+            List<CpcSellHouse> cpcSellHousesRepairs = cpcSellHouseMapper.selectByLastDateRepair(cpcDate);
+            if(null != cpcSellHousesRepairs && cpcSellHousesRepairs.size() > 0){
+                for(int i = 0; i< cpcSellHousesRepairs.size(); i++){
+                    houseId_repair[i] = cpcSellHousesRepairs.get(i).getHouseId();
+                }
+            }else{
+                Date beforeYesterday = DateUtil.beforeYesterday(new Date());
+                String cpcbeforeYesterday = DateUtil.format(beforeYesterday);
+                List<CpcSellHouse> cpcBeforeYesterdaySellHouseRepairs = cpcSellHouseMapper.selectByBeforeYesterdayRepair(cpcbeforeYesterday);
+                if(null !=cpcBeforeYesterdaySellHouseRepairs && cpcBeforeYesterdaySellHouseRepairs.size() > 0){
+                    for(int i = 0; i< cpcBeforeYesterdaySellHouseRepairs.size(); i++){
+                        houseId_repair[i] = cpcBeforeYesterdaySellHouseRepairs.get(i).getHouseId();
+                    }
+                }
+            }
+
+
+            queryBuilder = QueryBuilders.idsQuery(projhouseType).addIds(houseId_repair);
+            searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                    .setQuery(queryBuilder).setFetchSource(returnField,null).execute().actionGet();
+
+            SearchHit[] searchHits = searchResponse.getHits().getHits();
+            String details = "";
+
+            for(SearchHit hit : searchHits){
+                details = hit.getSourceAsString();
+                SellHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(details,SellHouseAggAdLandingDo.class);
+                sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
+                if(sellHouseAggAdLandingDos.size() == 10){
+                    break;
+                }
+            }
+
         }
 
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
