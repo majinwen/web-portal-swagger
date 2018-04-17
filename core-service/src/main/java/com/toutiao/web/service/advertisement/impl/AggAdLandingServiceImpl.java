@@ -1,11 +1,9 @@
 package com.toutiao.web.service.advertisement.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.toutiao.web.common.util.ESClientTools;
-import com.toutiao.web.common.util.RedisSessionUtils;
-import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.advertisement.AggAdLandingDao;
+import com.toutiao.web.common.util.*;
+import com.toutiao.web.dao.entity.officeweb.CpcSellHouse;
+import com.toutiao.web.dao.mapper.officeweb.CpcSellHouseMapper;
 import com.toutiao.web.domain.advertisement.*;
 import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.apache.commons.collections.map.HashedMap;
@@ -57,6 +55,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private Double distance;
     @Autowired
     private RedisSessionUtils redisSessionUtils;
+    @Autowired
+    private CpcSellHouseMapper cpcSellHouseMapper;
 
     private static final String RECOMMEND_DEFAULT = "ad_recommend_sellHouse_queryBit";
     private static final String RECOMMEND_SUBWAY = "ad_recommend_sellHouse_queryBit_subway";
@@ -78,6 +78,9 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private static final String RENT_RECOMMEND_MONTHPAY_V2 = "ad_recommend_rentHouse_queryBit_monthPay_v2";
     private static final String RENT_RECOMMEND_RENT_V2 = "ad_recommend_rentHouse_queryBit_rent_v2";
     private static final String RENT_RECOMMEND_QUALITYRENT_V2 = "ad_recommend_rentHouse_queryBit_qualityRent_v2";
+
+    private static final Integer CPC_STATUS_TOP10_1 = 1;
+    private static final Integer CPC_STATUS_TOP10_0 = 0;
 
 
 
@@ -1130,6 +1133,57 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         rentHouseDomain.setRentHouseAggAdLandingDoList(rentHouseAggAdLandingDos);
         rentHouseDomain.setPageNum(pageNum);
         return rentHouseDomain;
+    }
+
+    /**
+     * 二手房点击量top10
+     * @return
+     */
+    @Override
+    public SellHouseDomain getSellHouseTop10() {
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
+                "adSort","isClaim","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId"};
+        TransportClient client = esClientTools.init();
+        Date date = DateUtil.lastDate(new Date());
+        String cpcDate = DateUtil.format(date);
+
+        List<CpcSellHouse> cpcSellHouseList = cpcSellHouseMapper.selectByLastDate(cpcDate,CPC_STATUS_TOP10_0);
+        QueryBuilder queryBuilder;
+        SearchResponse searchResponse;
+        String[] houseId = new String[10];
+        if(null !=cpcSellHouseList && cpcSellHouseList.size() > 0){
+            for(int i = 0; i< cpcSellHouseList.size(); i++){
+                houseId[i] = cpcSellHouseList.get(i).getHouseId();
+            }
+        }else{
+            Date beforeYesterday = DateUtil.beforeYesterday(new Date());
+            String cpcbeforeYesterday = DateUtil.format(beforeYesterday);
+            List<CpcSellHouse> cpcBeforeYesterdaySellHouseList = cpcSellHouseMapper.selectByBeforeYesterday(cpcbeforeYesterday);
+            if(null !=cpcBeforeYesterdaySellHouseList && cpcBeforeYesterdaySellHouseList.size() > 0){
+                for(int i = 0; i< cpcBeforeYesterdaySellHouseList.size(); i++){
+                    houseId[i] = cpcBeforeYesterdaySellHouseList.get(i).getHouseId();
+                }
+            }
+        }
+        queryBuilder = QueryBuilders.idsQuery(projhouseType).addIds(houseId);
+        searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(queryBuilder).setFetchSource(returnField,null).execute().actionGet();
+
+        SearchHit[] searchHists = searchResponse.getHits().getHits();
+
+        List<SellHouseAggAdLandingDo> sellHouseAggAdLandingDos = new ArrayList<>();
+        String detail = "";
+        for(SearchHit hit : searchHists){
+            detail = hit.getSourceAsString();
+            SellHouseAggAdLandingDo sellHouseAggAdLandingDo = JSON.parseObject(detail,SellHouseAggAdLandingDo.class);
+            sellHouseAggAdLandingDos.add(sellHouseAggAdLandingDo);
+        }
+
+        sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
+
+        return sellHouseDomain;
     }
 
 

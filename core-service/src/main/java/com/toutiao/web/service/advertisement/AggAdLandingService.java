@@ -67,4 +67,9 @@ public interface AggAdLandingService {
     RentHouseDomain getRentImportAdLandingV2(AggAdLandingDo aggAdLandingDo);
 
 
+
+    SellHouseDomain getSellHouseTop10();
+
+
+
 }

@@ -164,4 +164,14 @@ public class AggAdLandingController {
     }
 
 
+    @RequestMapping(value = "/querySellHouseTop10")
+    @ResponseBody
+    public NashResult querySellHouseTop10(){
+
+        SellHouseDomain sellHouseDomain = aggAdLandingService.getSellHouseTop10();
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+        return NashResult.build(sellHouseResponse);
+    }
+
 }

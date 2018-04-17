@@ -10,6 +10,8 @@
           content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script type="text/javascript" src="${staticurl}/js/loghub-tracking.js" async></script>
+
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <#include "../StatisticsHeader.ftl">
 </head>
@@ -564,6 +566,13 @@
         if (text.indexOf(",") == 0) {
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
+        }
+
+        if(document.referrer.indexOf('esfTop10') > -1){
+            var logger = new window.Tracker('${trackingHost}','${trackingProject}','${trackingLogstore}');
+            logger.push('houseId', '${houseDetail.houseId}');
+            logger.push('__topic__', 'esfTop10');
+            logger.logger();
         }
     });
     function desc(url) {
