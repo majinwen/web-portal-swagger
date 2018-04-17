@@ -9,18 +9,17 @@ public class NewHouseLayoutDo {
      *
      *销售状态(0-售完,1-在售,2-不在售,3-出租,4-租售,5-待售)
      */
-    private  Integer is_sale;
+    private  Integer isSale;
 
     /**
      * 楼盘id
      */
-    private  Integer building_id;
+    private  Integer buildingId;
 
     /**
      * 户型id
      */
-    private  Integer layout_id;
-
+    private  Integer layoutId;
 
     /**
      * 厅
@@ -30,22 +29,22 @@ public class NewHouseLayoutDo {
     /**
      * 建筑面积
      */
-    private  Double building_area;
+    private  Double buildingArea;
 
     /**
      * 参考均价
      */
-    private  Double reference_price;
+    private  Double referencePrice;
 
     /**
      * 户型标题
      */
-     private  String layout_title;
+     private  String layoutTitle;
 
     /**
      * 户型图片
      */
-    private  String layout_img;
+    private  String layoutImg;
 
     /**
      * 室
@@ -60,27 +59,27 @@ public class NewHouseLayoutDo {
     /**
      * 参考总价
      */
-    private  Double reference_total_price;
+    private  Double referenceTotalPrice;
 
     /**
      * 销售面积
      */
-    private  Double sale_area;
+    private  Double saleArea;
 
     /**
      * 是否推荐
      */
-    private  Integer is_recommend;
+    private  Integer isRecommend;
 
     /**
      * 户型描述/户型解析
      */
-    private  String layout_desc;
+    private  String layoutDesc;
 
     /**
      * 居住面积
      */
-    private  Double living_area;
+    private  Double livingArea;
 
     /**
      * 厨房

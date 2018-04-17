@@ -1,0 +1,111 @@
+package com.toutiao.app.service.newhouse.impl;
+
+import com.alibaba.fastjson.JSON;
+import com.toutiao.app.dao.newhouse.NewHouseLayoutEsDao;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
+import com.toutiao.app.service.newhouse.NewHouseLayoutService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.join.query.JoinQueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+
+@Service
+public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
+
+    private Logger logger = LoggerFactory.getLogger(NewHouseLayoutServiceImpl.class);
+
+    //索引类型
+    @Value("${tt.newhouse.type}")
+    private String newHouseType;
+    @Autowired
+    private NewHouseLayoutEsDao newHouseLayoutEsDao;
+
+    /**
+     * 根据新房id获取该id下所有的户型以及数量
+     * @param newHouseId
+     * @return
+     */
+    @Override
+    public List<NewHouseLayoutCountDo> getNewHouseLayoutByNewHouseId(Integer newHouseId) {
+
+        List<NewHouseLayoutCountDo> newHouseLayoutCountDoList = new ArrayList<>();
+
+        BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+        try {
+            SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder);
+
+            Map aggMap =searchresponse.getAggregations().asMap();
+            LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
+            if(gradeTerms.getBuckets().size() == 0){
+                throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
+            }
+
+            Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+            while(roomBucketIt.hasNext()) {
+                NewHouseLayoutCountDo newHouseLayoutCountDo = new NewHouseLayoutCountDo();
+                Terms.Bucket roomBucket = (Terms.Bucket) roomBucketIt.next();
+
+                newHouseLayoutCountDo.setRoom(roomBucket.getKey());
+                newHouseLayoutCountDo.setCount(roomBucket.getDocCount());
+                newHouseLayoutCountDoList.add(newHouseLayoutCountDo);
+            }
+        }catch (Exception e){
+            logger.error("调用新房id获取该id下所有的户型以及数量异常","新房newHouseId:"+newHouseId+"异常信息:"+e);
+        }
+        return newHouseLayoutCountDoList;
+    }
+
+    /**
+     * 根据新房id获取该户型下的户型列表
+     * @param newHouseId
+     * @param roomCount
+     * @return
+     */
+    @Override
+    public List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount) {
+
+        BoolQueryBuilder detailsBuilder = boolQuery();
+        List<NewHouseLayoutDo> newHouseLayoutDoList = new ArrayList<>();
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+        if(roomCount > 0){
+            detailsBuilder.must(QueryBuilders.termQuery("room",roomCount));
+        }
+        try {
+            SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutListByNewHouseIdAndRoomCount(detailsBuilder);
+
+            SearchHits layoutHits = searchresponse.getHits();
+            SearchHit[] searchHists = layoutHits.getHits();
+            if(searchHists.length == 0){
+                throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
+            }else{
+            String details = "";
+                for (SearchHit hit : searchHists) {
+                    details = hit.getSourceAsString();
+                    NewHouseLayoutDo newHouseLayoutDo = JSON.parseObject(details,NewHouseLayoutDo.class);
+                    newHouseLayoutDoList.add(newHouseLayoutDo);
+                }
+            }
+        }catch (Exception e){
+            logger.error("调用新房id获取该户型下的户型列表异常","新房newHouseId:"+newHouseId+"异常信息:"+e);
+        }
+
+        return newHouseLayoutDoList;
+    }
+}
