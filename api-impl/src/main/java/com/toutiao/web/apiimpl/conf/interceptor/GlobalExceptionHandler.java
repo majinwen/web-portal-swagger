@@ -175,7 +175,8 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         logger.error("异常:"+request.getRequestURI(),ex);
         if(isRestful(request)){
             response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
-            return NashResult.Fail(HttpStatus.NOT_FOUND.toString(),"找不到接口地址",getExceptionDetail(ex));
+            BaseException e=(BaseException)ex;
+            return NashResult.Fail(e.getCode().toString(),e.getMsg(),getExceptionDetail(ex));
         }
         NashResult nashResult = new NashResult();
         if(ex instanceof BaseException){

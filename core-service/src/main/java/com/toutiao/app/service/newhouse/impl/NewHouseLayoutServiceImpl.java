@@ -49,7 +49,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
         sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
-        try {
+//        try {
             SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder);
 
             Map aggMap =searchresponse.getAggregations().asMap();
@@ -76,9 +76,9 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
                 }
                 newHouseLayoutCountDomain.setTotalCount(totalCount);
             }
-        }catch (Exception e){
-            logger.error("调用新房id获取该id下所有的户型以及数量异常={}","新房newHouseId:"+newHouseId+"==异常信息:"+e.getMessage());
-        }
+//        }catch (Exception e){
+//            logger.error("调用新房id获取该id下所有的户型以及数量异常={}","新房newHouseId:"+newHouseId+"==异常信息:"+e.getMessage());
+//        }
         return newHouseLayoutCountDomain;
     }
 
