@@ -12,7 +12,7 @@ public interface SuggestEsDao {
     SearchResponse getAreaAndDistrictSuggest(BoolQueryBuilder booleanQueryBuilder);
 
     /**
-     * 获取关键字联想词
+     * 获取房源联想词
      * @param booleanQueryBuilder
      * @return
      */

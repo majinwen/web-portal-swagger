@@ -25,7 +25,7 @@ public class SuggestRestController {
     private SuggestService suggestService;
 
     /**
-     * 关键词提示
+     * 搜索联想词提示
      * @param suggestRequest
      * @return
      */
@@ -36,7 +36,5 @@ public class SuggestRestController {
         BeanUtils.copyProperties(suggest,suggestResponse);
         return NashResult.build(suggestResponse);
     }
-
-
 
 }

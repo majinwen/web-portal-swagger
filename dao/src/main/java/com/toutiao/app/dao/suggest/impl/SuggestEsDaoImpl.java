@@ -52,7 +52,7 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
     }
 
     /**
-     * 关键字联想词
+     * 房源联想词
      * @param booleanQueryBuilder
      * @return
      */

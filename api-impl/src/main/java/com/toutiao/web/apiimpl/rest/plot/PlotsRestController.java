@@ -46,7 +46,7 @@ public class PlotsRestController {
 
     /**
      * 获取小区周边信息
-     * @param plotDetailsRequest
+     * @param plotAroundInfoRequest
      * @return
      */
     @RequestMapping("/getAroundInfoByPlotId")
@@ -58,7 +58,7 @@ public class PlotsRestController {
 
     /**
      * 获取周边小区
-     * @param plotAroundPlot
+     * @param plotAroundPlotRequest
      * @return
      */
     @RequestMapping("/getAroundPlotByLocation")

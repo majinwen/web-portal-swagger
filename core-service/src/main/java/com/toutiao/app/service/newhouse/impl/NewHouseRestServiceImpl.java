@@ -52,6 +52,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
      */
     @Override
     public NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode) {
+        NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newcode));
         SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
@@ -60,12 +61,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
         }
-        if (details.isEmpty())
+        if (StringUtils.isNotEmpty(details))
         {
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND,"未找到新房信息");
+            newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         }
-
-        NewHouseDetailDo newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         return  newHouseDetailDo;
 
     }
