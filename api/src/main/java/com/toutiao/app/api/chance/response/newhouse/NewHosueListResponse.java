@@ -62,6 +62,11 @@ public class NewHosueListResponse {
      */
     private  String  sale_status_name;
 
+    /**
+     * 大楼标题图
+     */
+    private  String building_title_img;
+
 
 
 

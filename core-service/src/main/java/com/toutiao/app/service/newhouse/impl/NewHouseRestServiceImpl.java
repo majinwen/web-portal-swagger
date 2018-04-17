@@ -5,7 +5,6 @@ import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
-import com.toutiao.app.service.newhouse.AppNewHouseService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
@@ -170,10 +170,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //面积
-        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHosue_max_area()!=0)
+        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHouse_max_area()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouse_min_area())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHosue_max_area())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHouse_max_area())));
         }
 
 
@@ -196,10 +196,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
             newHouseListDoList.add(newHouseListDos);
         }
-        if (newHouseListDoList.isEmpty())
-        {
-            throw new BaseException();
-        }
+//        if (newHouseListDoList.isEmpty())
+//        {
+//            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND);
+//        }
 
         return newHouseListDoList;
 
