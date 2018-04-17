@@ -153,4 +153,10 @@ public class NewHouseListDo {
     private  String average_price;
 
 
+    /**
+     *  户型数量
+     */
+    private  long roomTotalCount;
+
+
 }

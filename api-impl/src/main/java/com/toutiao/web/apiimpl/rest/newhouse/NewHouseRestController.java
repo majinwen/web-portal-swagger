@@ -6,13 +6,13 @@ import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
 import com.toutiao.app.api.chance.response.newhouse.NewHosueListResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListDominResponse;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.domain.newhouse.NewHouseListVo;
+import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.service.map.MapService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,14 +61,17 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
+    public  NashResult getNewHouseList(NewHouseListRequest newHouseListRequest)
     {
+        NewHouseListDominResponse newHouseListDominResponse = new NewHouseListDominResponse();
         NewHouseListDo newHouseListDo=new NewHouseListDo();
-         BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
-        NewHouseListVo newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
-         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
-         List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
-        return  NashResult.build(newHosueListResponses);
+        BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
+        NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
+        List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
+        newHouseListDominResponse.setNewHosueList(newHosueListResponses);
+        newHouseListDominResponse.setTotalCount(newHouseListVo.getTotalCount());
+        return  NashResult.build(newHouseListDominResponse);
     }
 
 }

@@ -6,12 +6,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class NewHouseListVo {
+public class NewHouseListDomain {
 
 
     private List<NewHouseListDo> listDoList;
 
-    private  long TotalCount;
+    private  long totalCount;
 
 
 }

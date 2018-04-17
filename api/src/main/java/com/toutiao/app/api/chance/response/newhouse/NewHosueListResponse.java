@@ -68,6 +68,9 @@ public class NewHosueListResponse {
     private  String building_title_img;
 
 
+    private  long roomTotalCount;
+
+
 
 
 

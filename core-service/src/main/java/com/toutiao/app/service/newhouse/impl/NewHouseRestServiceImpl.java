@@ -1,13 +1,10 @@
 package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
-import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.domain.newhouse.NewHouseListVo;
+import com.toutiao.app.domain.newhouse.*;
+import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -19,6 +16,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
@@ -36,6 +34,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
     private NewHouseEsDao newHouseEsDao;
+
+    @Autowired
+    private NewHouseLayoutService newHouseLayoutService;
+
+    private Logger logger = LoggerFactory.getLogger(NewHouseRestServiceImpl.class);
 
 
     private static final Integer IS_DEL = 0;//新房未删除
@@ -104,8 +107,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public NewHouseListVo getNewHouseList(NewHouseListDo newHouseListDo) {
-        NewHouseListVo newHouseListVo=new NewHouseListVo();
+    public NewHouseListDomain getNewHouseList(NewHouseListDo newHouseListDo) {
+        NewHouseListDomain newHouseListVo=new NewHouseListDomain();
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
@@ -189,20 +192,33 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
-
-        SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseListDo.getPageNum(),newHouseListDo.getPageSize());
-        SearchHits hits = searchResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
-            newHouseListDoList.add(newHouseListDos);
+        try{
+            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseListDo.getPageNum(),newHouseListDo.getPageSize());
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
+                //获取新房下户型的数量
+                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuilding_name_id());
+                if (newHouseLayoutCountDomain.getTotalCount()!=null && newHouseLayoutCountDomain.getTotalCount()!=0)
+                {
+                    newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
+                }
+                else
+                {
+                    newHouseListDos.setRoomTotalCount(0);
+                }
+                newHouseListDoList.add(newHouseListDos);
+            }
+            newHouseListVo.setListDoList(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+        }catch (Exception e)
+        {
+            logger.error("获取房源列表信息异常信息:"+e);
         }
-        newHouseListVo.setListDoList(newHouseListDoList);
-        newHouseListVo.setTotalCount(hits.getTotalHits());
         return newHouseListVo ;
-
     }
 
 
