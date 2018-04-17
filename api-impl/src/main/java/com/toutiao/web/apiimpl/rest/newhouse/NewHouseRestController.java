@@ -61,7 +61,7 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(NewHouseListRequest newHouseListRequest)
+    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
         NewHouseListDominResponse newHouseListDominResponse = new NewHouseListDominResponse();
         NewHouseListDo newHouseListDo=new NewHouseListDo();

@@ -202,7 +202,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
                 //获取新房下户型的数量
                 NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuilding_name_id());
-                if (newHouseLayoutCountDomain.getTotalCount()!=null)
+                if (null!=newHouseLayoutCountDomain.getTotalCount())
                 {
                     newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
                 }
