@@ -12,10 +12,13 @@ import lombok.Data;
  */
 @Data
 public class BaseException extends RuntimeException {
+    private String msg;
     private Integer code;
     public BaseException(Integer code,String msg) {
+
         super(msg);
         this.setCode(code);
+        this.setMsg(msg);
     }
 
 
@@ -29,23 +32,27 @@ public class BaseException extends RuntimeException {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 
     public BaseException(PlotsInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 
     public BaseException(RentInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 
     public BaseException(SellHouseInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 }

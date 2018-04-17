@@ -29,7 +29,7 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 @Service
 public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
-    private Logger logger = LoggerFactory.getLogger(NewHouseLayoutServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(NewHouseLayoutServiceImpl.class);
 
     //索引类型
     @Value("${tt.newhouse.type}")
@@ -49,36 +49,33 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
         sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
-        try {
-            SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder);
+        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder);
 
-            Map aggMap =searchresponse.getAggregations().asMap();
-            LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
-            if(gradeTerms.getBuckets().size() == 0){
-                throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
-            }
-
-            Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
-            while(roomBucketIt.hasNext()) {
-                NewHouseLayoutCountDo newHouseLayoutCountDo = new NewHouseLayoutCountDo();
-                Terms.Bucket roomBucket = (Terms.Bucket) roomBucketIt.next();
-
-                newHouseLayoutCountDo.setRoom(roomBucket.getKey());
-                newHouseLayoutCountDo.setCount(roomBucket.getDocCount());
-                newHouseLayoutCountDoList.add(newHouseLayoutCountDo);
-            }
-
-            newHouseLayoutCountDomain.setRooms(newHouseLayoutCountDoList);
-            Long totalCount = 0L;
-            if(null != newHouseLayoutCountDoList && newHouseLayoutCountDoList.size() > 0){
-                for(int i=0; i < newHouseLayoutCountDoList.size(); i++){
-                    totalCount = totalCount+ Integer.valueOf(String.valueOf(newHouseLayoutCountDoList.get(i).getCount()));
-                }
-                newHouseLayoutCountDomain.setTotalCount(totalCount);
-            }
-        }catch (Exception e){
-            logger.error("调用新房id获取该id下所有的户型以及数量异常","新房newHouseId:"+newHouseId+"异常信息:"+e);
+        Map aggMap =searchresponse.getAggregations().asMap();
+        LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
+        if(gradeTerms.getBuckets().size() == 0){
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
         }
+
+        Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+        while(roomBucketIt.hasNext()) {
+            NewHouseLayoutCountDo newHouseLayoutCountDo = new NewHouseLayoutCountDo();
+            Terms.Bucket roomBucket = (Terms.Bucket) roomBucketIt.next();
+
+            newHouseLayoutCountDo.setRoom(roomBucket.getKey());
+            newHouseLayoutCountDo.setCount(roomBucket.getDocCount());
+            newHouseLayoutCountDoList.add(newHouseLayoutCountDo);
+        }
+
+        newHouseLayoutCountDomain.setRooms(newHouseLayoutCountDoList);
+        Long totalCount = 0L;
+        if(null != newHouseLayoutCountDoList && newHouseLayoutCountDoList.size() > 0){
+            for(int i=0; i < newHouseLayoutCountDoList.size(); i++){
+                totalCount = totalCount+ Integer.valueOf(String.valueOf(newHouseLayoutCountDoList.get(i).getCount()));
+            }
+            newHouseLayoutCountDomain.setTotalCount(totalCount);
+        }
+
         return newHouseLayoutCountDomain;
     }
 
@@ -97,25 +94,21 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         if(roomCount > 0){
             detailsBuilder.must(QueryBuilders.termQuery("room",roomCount));
         }
-        try {
-            SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutListByNewHouseIdAndRoomCount(detailsBuilder);
 
-            SearchHits layoutHits = searchresponse.getHits();
-            SearchHit[] searchHists = layoutHits.getHits();
-            if(searchHists.length == 0){
-                throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
-            }else{
-            String details = "";
-                for (SearchHit hit : searchHists) {
-                    details = hit.getSourceAsString();
-                    NewHouseLayoutDo newHouseLayoutDo = JSON.parseObject(details,NewHouseLayoutDo.class);
-                    newHouseLayoutDoList.add(newHouseLayoutDo);
-                }
+        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutListByNewHouseIdAndRoomCount(detailsBuilder);
+
+        SearchHits layoutHits = searchresponse.getHits();
+        SearchHit[] searchHists = layoutHits.getHits();
+        if(searchHists.length == 0){
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
+        }else{
+        String details = "";
+            for (SearchHit hit : searchHists) {
+                details = hit.getSourceAsString();
+                NewHouseLayoutDo newHouseLayoutDo = JSON.parseObject(details,NewHouseLayoutDo.class);
+                newHouseLayoutDoList.add(newHouseLayoutDo);
             }
-        }catch (Exception e){
-            logger.error("调用新房id获取该户型下的户型列表异常","新房newHouseId:"+newHouseId+"异常信息:"+e);
         }
-
         return newHouseLayoutDoList;
     }
 }
