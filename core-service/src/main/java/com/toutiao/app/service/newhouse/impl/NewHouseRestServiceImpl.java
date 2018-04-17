@@ -5,6 +5,8 @@ import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +52,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
      */
     @Override
     public NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode) {
-        NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newcode));
         SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
@@ -59,47 +60,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
         }
-//        if (details.isEmpty())
-//        {
-//            throw new BaseException("201","未找到新房信息");
-//        }
-        if (StringUtils.isNotEmpty(details)){
-            newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
+        if (details.isEmpty())
+        {
+            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND,"未找到新房信息");
         }
+
+        NewHouseDetailDo newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         return  newHouseDetailDo;
 
     }
 
-
-    /**
-     *
-     * @param newcode
-     * 根据newcode查询户型信息
-     * @return
-     */
-    @Override
-    public List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode) {
-
-        List<NewHouseLayoutDo> newHouseLayoutDos=new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
-        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayout(boolQueryBuilder);
-        SearchHits hits = layoutResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            NewHouseLayoutDo newHouseLayoutDo=JSON.parseObject(details,NewHouseLayoutDo.class);
-            newHouseLayoutDos.add(newHouseLayoutDo);
-        }
-//        if(newHouseLayoutDos.isEmpty())
-//        {
-//            throw  new BaseException("201","未找到新房户型信息");
-//        }
-        return newHouseLayoutDos;
-
-
-    }
 
     @Override
     public List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo) {

@@ -38,19 +38,6 @@ public class NewHouseRestController {
 
 
     /**
-     * 根据newcode获取户型信息
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getLayoutByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseLayoutByNewCode (@RequestParam(value = "newcode",required = true) Integer newcode)
-    {
-        List<NewHouseLayoutDo> newHouseLayoutDos=newHouseService.getNewHouseLayoutByNewcode(newcode);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDos));
-        List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
-        return NashResult.build(newHouseLayoutResponses);
-    }
-
-    /**
      * 获取新房列表页
      */
     @ResponseBody
@@ -61,8 +48,8 @@ public class NewHouseRestController {
          BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
          List<NewHouseListDo> newHouseListDoList=newHouseService.getNewHouseList(newHouseListDo);
          JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDoList));
-         List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
-        return  NashResult.build(newHosueListResponses);
+         List<NewHosueListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
+        return  NashResult.build(newHouseListResponses);
     }
 
 }

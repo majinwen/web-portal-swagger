@@ -15,7 +15,11 @@ public enum NewHouseInterfaceErrorCodeEnum implements IntBaseType {
      * 新房枚举参数
      *
      */
-    NEWHOUSE_NOT_FOUND("新房楼盘列表为空！", 40101);
+    NEWHOUSE_NOT_FOUND("新房楼盘列表为空！", 40101),
+    //户型为空
+    NEWHOUSE_LAYOUT_NOT_FOUND("该新房下不存在户型信息",40301),
+    //调用户型信息异常
+    NEWHOUSE_LAYOUT_EXPTION("调用新房信息异常",40399);
 
 
 

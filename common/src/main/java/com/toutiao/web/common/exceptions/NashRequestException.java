@@ -5,7 +5,7 @@ package com.toutiao.web.common.exceptions;
  */
 public class NashRequestException extends BaseException{
 
-    public NashRequestException(String code, String msg) {
+    public NashRequestException(Integer code, String msg) {
         super(code, msg);
     }
 }

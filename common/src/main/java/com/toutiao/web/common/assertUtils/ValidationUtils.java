@@ -24,7 +24,7 @@ public class ValidationUtils {
      * @param msg  错误描述信息(可不传)
      * @throws NashRequestException
      */
-    public static void checkValidate(Object obj,String code,String... msg) throws NashRequestException {
+    public static void checkValidate(Object obj,Integer code,String... msg) throws NashRequestException {
         ValidationResult result = validateEntity(obj);
         if(msg==null || msg.length==0){
             AssertUtils.assertTrue(result.isHasErrors(),code,result.getMsg());
@@ -32,7 +32,7 @@ public class ValidationUtils {
             AssertUtils.assertTrue(result.isHasErrors(),code,msg[0]);
         }
     }
-    public static void checkValidate(Object obj,String code,Class group,String... msg) throws NashRequestException {
+    public static void checkValidate(Object obj,Integer code,Class group,String... msg) throws NashRequestException {
         ValidationResult result = validateEntity(obj,group);
         if(msg==null || msg.length==0){
             AssertUtils.assertTrue(result.isHasErrors(),code,result.getMsg());
