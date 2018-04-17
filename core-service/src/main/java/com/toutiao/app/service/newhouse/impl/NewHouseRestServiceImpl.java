@@ -112,7 +112,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
-        SearchResponse searchresponse = new SearchResponse();
         if(StringUtil.isNotNullString(newHouseListDo.getKeyword())){
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseListDo.getKeyword()))){
                 queryBuilder = QueryBuilders.disMaxQuery()
