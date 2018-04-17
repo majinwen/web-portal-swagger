@@ -13,6 +13,7 @@ import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(NewHouseListRequest newHouseListRequest)
+    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
         NewHouseListDo newHouseListDo=new NewHouseListDo();
          BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
@@ -64,5 +65,12 @@ public class NewHouseRestController {
          List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
         return  NashResult.build(newHosueListResponses);
     }
+
+    /**
+     * 新房交通配套
+     */
+    @ResponseBody
+    @RequestMapping(value = "",method = RequestMethod.GET)
+    public  NashResult getNewHouseTraffic(@RequestParam(value=""),Integer )
 
 }
