@@ -1182,10 +1182,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         }
 
         if(sellHouseAggAdLandingDos.size() < 10){
-            String[] houseId_repair = new String[20];
+            String[] houseId_repair = new String[10-sellHouseAggAdLandingDos.size()];
             List<CpcSellHouse> cpcSellHousesRepairs = cpcSellHouseMapper.selectByLastDateRepair(cpcDate);
             if(null != cpcSellHousesRepairs && cpcSellHousesRepairs.size() > 0){
-                for(int i = 0; i< cpcSellHousesRepairs.size(); i++){
+                for(int i = 0; i< 10-sellHouseAggAdLandingDos.size(); i++){
                     houseId_repair[i] = cpcSellHousesRepairs.get(i).getHouseId();
                 }
             }else{
@@ -1193,7 +1193,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 String cpcbeforeYesterday = DateUtil.format(beforeYesterday);
                 List<CpcSellHouse> cpcBeforeYesterdaySellHouseRepairs = cpcSellHouseMapper.selectByBeforeYesterdayRepair(cpcbeforeYesterday);
                 if(null !=cpcBeforeYesterdaySellHouseRepairs && cpcBeforeYesterdaySellHouseRepairs.size() > 0){
-                    for(int i = 0; i< cpcBeforeYesterdaySellHouseRepairs.size(); i++){
+                    for(int i = 0; i< 10-sellHouseAggAdLandingDos.size(); i++){
                         houseId_repair[i] = cpcBeforeYesterdaySellHouseRepairs.get(i).getHouseId();
                     }
                 }
