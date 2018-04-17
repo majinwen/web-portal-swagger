@@ -4,8 +4,8 @@ import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import com.toutiao.app.service.newhouse.AppNewHouseService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -204,7 +204,10 @@ public class AppNewHouseServiceImpl implements AppNewHouseService {
             NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
             newHouseListDoList.add(newHouseListDos);
         }
-
+        if (newHouseListDoList.isEmpty())
+        {
+            throw new BaseException();
+        }
 
         return newHouseListDoList;
 

@@ -12,4 +12,5 @@ public class BaseException extends RuntimeException {
         super(msg);
         this.setCode(code);
     }
+
 }
