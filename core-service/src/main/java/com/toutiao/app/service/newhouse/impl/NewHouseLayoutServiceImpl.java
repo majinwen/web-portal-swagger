@@ -29,7 +29,7 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 @Service
 public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
-    private Logger logger = LoggerFactory.getLogger(NewHouseLayoutServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(NewHouseLayoutServiceImpl.class);
 
     //索引类型
     @Value("${tt.newhouse.type}")
@@ -77,7 +77,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
                 newHouseLayoutCountDomain.setTotalCount(totalCount);
             }
         }catch (Exception e){
-            logger.error("调用新房id获取该id下所有的户型以及数量异常","新房newHouseId:"+newHouseId+"异常信息:"+e);
+            logger.error("调用新房id获取该id下所有的户型以及数量异常={}","新房newHouseId:"+newHouseId+"==异常信息:"+e.getMessage());
         }
         return newHouseLayoutCountDomain;
     }
