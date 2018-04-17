@@ -1,11 +1,12 @@
 package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
-import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
+import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.domain.newhouse.NewHouseListVo;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringUtil;
@@ -34,7 +35,7 @@ import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
-    private AppNewHouseEsDao newHouseEsDao;
+    private NewHouseEsDao newHouseEsDao;
 
 
     private static final Integer IS_DEL = 0;//新房未删除
@@ -63,7 +64,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         if (details.isEmpty())
         {
-            throw new BaseException("201","未找到新房信息");
+            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND,"未找到新房信息");
         }
 
         NewHouseDetailDo newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
@@ -95,7 +96,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         if(newHouseLayoutDos.isEmpty())
         {
-            throw  new BaseException("201","未找到新房户型信息");
+            throw  new BaseException(201,"未找到新房户型信息");
         }
         return newHouseLayoutDos;
 

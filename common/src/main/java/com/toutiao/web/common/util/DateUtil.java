@@ -90,7 +90,7 @@ public class DateUtil {
 		try {
 			return new SimpleDateFormat(pattern).parse(date);
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 	}
 
@@ -124,7 +124,7 @@ public class DateUtil {
 			Date sdate = new SimpleDateFormat(datePattern).parse(date);
 			return new java.sql.Date(sdate.getTime());
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 	}
 
@@ -790,7 +790,7 @@ public class DateUtil {
 			String s = t.format(f.parse(date));
 			return s;
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 	}
 
@@ -808,7 +808,7 @@ public class DateUtil {
 				time = new Timestamp(f.parse(s).getTime());
 			}
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 		return time;
 	}

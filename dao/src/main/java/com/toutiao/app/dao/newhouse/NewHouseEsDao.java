@@ -1,11 +1,9 @@
-package com.toutiao.app.dao.Appnewhouse;
+package com.toutiao.app.dao.newhouse;
 
-import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
-public interface AppNewHouseEsDao {
+public interface NewHouseEsDao {
 
     /**
      * 根据新房id获取新房详情
