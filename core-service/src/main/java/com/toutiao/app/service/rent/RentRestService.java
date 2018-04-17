@@ -1,8 +1,8 @@
 package com.toutiao.app.service.rent;
 
-import com.toutiao.app.domain.Rent.RentAgentDo;
-import com.toutiao.app.domain.Rent.RentDetailsDo;
-import com.toutiao.app.domain.Rent.RentDetailsFewDo;
+import com.toutiao.app.domain.rent.RentAgentDo;
+import com.toutiao.app.domain.rent.RentDetailsDo;
+import com.toutiao.app.domain.rent.RentDetailsFewDo;
 
 import java.util.List;
 

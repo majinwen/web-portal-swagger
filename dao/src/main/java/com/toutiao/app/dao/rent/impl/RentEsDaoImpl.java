@@ -1,6 +1,6 @@
 package com.toutiao.app.dao.rent.impl;
 
-import com.toutiao.app.dao.rent.RentDao;
+import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RentDaoImpl implements RentDao {
+public class RentEsDaoImpl implements RentEsDao {
     @Autowired
     private ESClientTools esClientTools;
     @Value("${tt.zufang.rent.index}")

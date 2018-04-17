@@ -1,13 +1,9 @@
-package com.toutiao.app.domain.Plot;
+package com.toutiao.app.domain.plot;
 
 
-import com.toutiao.app.domain.MapInfo;
-import com.toutiao.app.domain.Rent.RentDetailsDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import lombok.Data;
 
 
-import java.util.List;
 import java.util.Map;
 
 @Data

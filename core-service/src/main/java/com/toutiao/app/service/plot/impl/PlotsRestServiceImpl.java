@@ -2,11 +2,11 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.dao.plot.PlotDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.MapInfo;
-import com.toutiao.app.domain.Plot.PlotDetailsDo;
-import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.Plot.PlotListDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.plot.PlotListDo;
 import com.toutiao.app.service.plot.PlotsRestService;
 
 import com.toutiao.web.common.util.StringTool;
@@ -39,7 +39,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     @Value("${plot.child.type}")
     private String childType;
     @Autowired
-    private PlotDao plotDao;
+    private PlotEsDao plotEsDao;
     @Autowired
     private MapInfoMapper mapInfoMapper;
 
@@ -54,7 +54,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
-            SearchResponse searchResponse = plotDao.queryPlotDetail(boolQueryBuilder);
+            SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             Map<String, Object> source = hits[0].getSource();
             PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
@@ -123,7 +123,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             sort.order(SortOrder.ASC);
             boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
             boolQueryBuilder.mustNot(QueryBuilders.termQuery("id", plotId));
-            SearchResponse searchResponse = plotDao.queryNearPlotByLocationAndDistance(boolQueryBuilder, location, sort);
+            SearchResponse searchResponse = plotEsDao.queryNearPlotByLocationAndDistance(boolQueryBuilder, location, sort);
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
@@ -258,7 +258,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             FieldSortBuilder levelSort = SortBuilders.fieldSort("level").order(SortOrder.ASC);
             //小区分数
             FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
-            SearchResponse searchResponse = plotDao.queryPlotListByRequirement(plotListDo.getKeyword(), plotListDo.getFrom(), boolQueryBuilder, avgPriceSort, scoreSort, levelSort, plotScoreSort);
+            SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(plotListDo.getKeyword(), plotListDo.getFrom(), boolQueryBuilder, avgPriceSort, scoreSort, levelSort, plotScoreSort);
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();

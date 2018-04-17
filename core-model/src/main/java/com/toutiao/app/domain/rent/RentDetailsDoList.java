@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.Rent;
+package com.toutiao.app.domain.rent;
 
 import lombok.Data;
 

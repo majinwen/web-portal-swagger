@@ -2,9 +2,9 @@ package com.toutiao.app.service.plot;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.domain.Plot.PlotDetailsDo;
-import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.Plot.PlotListDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.plot.PlotListDo;
 
 import java.util.List;
 

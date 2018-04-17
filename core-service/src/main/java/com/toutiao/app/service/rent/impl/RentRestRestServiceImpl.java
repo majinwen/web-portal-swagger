@@ -2,10 +2,10 @@ package com.toutiao.app.service.rent.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
-import com.toutiao.app.dao.rent.RentDao;
-import com.toutiao.app.domain.Rent.RentAgentDo;
-import com.toutiao.app.domain.Rent.RentDetailsDo;
-import com.toutiao.app.domain.Rent.RentDetailsFewDo;
+import com.toutiao.app.dao.rent.RentEsDao;
+import com.toutiao.app.domain.rent.RentAgentDo;
+import com.toutiao.app.domain.rent.RentDetailsDo;
+import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.service.rent.RentRestService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,7 +30,7 @@ public class RentRestRestServiceImpl implements RentRestService {
     private static final String LAYOUT = "3";
 
     @Autowired
-    private RentDao rentDao;
+    private RentEsDao rentEsDao;
     @Autowired
     private AgentHouseEsDao agentHouseEsDao;
 
@@ -46,7 +46,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-            SearchResponse searchResponse = rentDao.queryRentByRentId(boolQueryBuilder);
+            SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             Map<String, Object> source = hits[0].getSource();
             RentDetailsDo rentDetailsDo = RentDetailsDo.class.newInstance();
@@ -69,7 +69,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             List<RentDetailsFewDo> list = new ArrayList<>();
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
-            SearchResponse searchResponse = rentDao.queryRentListByPlotId(boolQueryBuilder);
+            SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
