@@ -102,7 +102,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //城市
         if(newHouseListDo.getCityId()!=null && newHouseListDo.getCityId()!=0){
-            booleanQueryBuilder.must(termQuery("city_id", newHouseListDo.getDistrict_id()));
+            booleanQueryBuilder.must(termQuery("city_id",newHouseListDo.getCityId()));
         }
         //区域
         if(newHouseListDo.getDistrict_id()!=null && newHouseListDo.getDistrict_id() !=0){
