@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 新房户型
+ * 新房户型接口
  *
  */
 @RestController
