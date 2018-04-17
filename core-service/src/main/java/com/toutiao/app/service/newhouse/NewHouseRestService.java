@@ -15,12 +15,6 @@ public interface NewHouseRestService {
      */
     NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
 
-    /**
-     * 根据newcode获取户型信息
-     * @param newcode
-     * @return
-     */
-    List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode);
 
     List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo);
 

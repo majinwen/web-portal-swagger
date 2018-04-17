@@ -49,6 +49,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
         sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+        
         SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder);
 
         Map aggMap =searchresponse.getAggregations().asMap();

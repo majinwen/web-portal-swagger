@@ -70,36 +70,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
 
-    /**
-     *
-     * @param newcode
-     * 根据newcode查询户型信息
-     * @return
-     */
-    @Override
-    public List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode) {
-
-        List<NewHouseLayoutDo> newHouseLayoutDos=new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
-        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayout(boolQueryBuilder);
-        SearchHits hits = layoutResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            NewHouseLayoutDo newHouseLayoutDo=JSON.parseObject(details,NewHouseLayoutDo.class);
-            newHouseLayoutDos.add(newHouseLayoutDo);
-        }
-        if(newHouseLayoutDos.isEmpty())
-        {
-            throw  new BaseException(201,"未找到新房户型信息");
-        }
-        return newHouseLayoutDos;
-
-
-    }
-
     @Override
     public List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo) {
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
