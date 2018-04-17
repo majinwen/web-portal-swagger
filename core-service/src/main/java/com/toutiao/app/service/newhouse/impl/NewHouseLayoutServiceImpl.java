@@ -53,9 +53,6 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
         Map aggMap =searchresponse.getAggregations().asMap();
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
-        if(gradeTerms.getBuckets().size() == 0){
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
-        }
 
         Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
         while(roomBucketIt.hasNext()) {
@@ -99,15 +96,12 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
         SearchHits layoutHits = searchresponse.getHits();
         SearchHit[] searchHists = layoutHits.getHits();
-        if(searchHists.length == 0){
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_LAYOUT_NOT_FOUND,"新房newHouseId:"+newHouseId+"不存在户型信息");
-        }else{
+
         String details = "";
-            for (SearchHit hit : searchHists) {
-                details = hit.getSourceAsString();
-                NewHouseLayoutDo newHouseLayoutDo = JSON.parseObject(details,NewHouseLayoutDo.class);
-                newHouseLayoutDoList.add(newHouseLayoutDo);
-            }
+        for (SearchHit hit : searchHists) {
+            details = hit.getSourceAsString();
+            NewHouseLayoutDo newHouseLayoutDo = JSON.parseObject(details,NewHouseLayoutDo.class);
+            newHouseLayoutDoList.add(newHouseLayoutDo);
         }
         return newHouseLayoutDoList;
     }
