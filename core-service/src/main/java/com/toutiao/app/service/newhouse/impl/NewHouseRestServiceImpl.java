@@ -216,7 +216,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             newHouseListVo.setTotalCount(hits.getTotalHits());
         }catch (Exception e)
         {
-            logger.error("获取房源列表信息异常信息={}",e.getStackTrace());
+            logger.error("获取新房列表信息异常信息={}",e.getStackTrace());
         }
         return newHouseListVo ;
     }
