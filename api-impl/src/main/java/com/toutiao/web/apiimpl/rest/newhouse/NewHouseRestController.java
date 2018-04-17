@@ -9,8 +9,11 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.domain.newhouse.NewHouseListVo;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.dao.entity.officeweb.MapInfo;
+import com.toutiao.web.service.map.MapService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +26,8 @@ import java.util.List;
 public class NewHouseRestController {
     @Autowired
     private NewHouseRestService newHouseService;
+    @Autowired
+    private MapService mapService;
 
     /**
      * 根据newcode获取新房数据
@@ -60,17 +65,10 @@ public class NewHouseRestController {
     {
         NewHouseListDo newHouseListDo=new NewHouseListDo();
          BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
-         List<NewHouseListDo> newHouseListDoList=newHouseService.getNewHouseList(newHouseListDo);
-         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDoList));
+        NewHouseListVo newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
+         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
          List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
         return  NashResult.build(newHosueListResponses);
     }
-
-    /**
-     * 新房交通配套
-     */
-    @ResponseBody
-    @RequestMapping(value = "",method = RequestMethod.GET)
-    public  NashResult getNewHouseTraffic(@RequestParam(value=""),Integer )
 
 }

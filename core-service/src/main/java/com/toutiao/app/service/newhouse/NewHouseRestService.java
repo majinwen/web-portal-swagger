@@ -3,6 +3,7 @@ package com.toutiao.app.service.newhouse;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.domain.newhouse.NewHouseListVo;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public interface NewHouseRestService {
      */
     List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode);
 
-    List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo);
+    NewHouseListVo getNewHouseList(NewHouseListDo newHouseListDo);
 
 }

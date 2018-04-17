@@ -4,6 +4,7 @@ import com.toutiao.app.dao.Appnewhouse.AppNewHouseEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.domain.newhouse.NewHouseListVo;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -102,7 +103,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo) {
+    public NewHouseListVo getNewHouseList(NewHouseListDo newHouseListDo) {
+        NewHouseListVo newHouseListVo=new NewHouseListVo();
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
@@ -196,12 +198,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
             newHouseListDoList.add(newHouseListDos);
         }
-//        if (newHouseListDoList.isEmpty())
-//        {
-//            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND);
-//        }
-
-        return newHouseListDoList;
+        newHouseListVo.setListDoList(newHouseListDoList);
+        newHouseListVo.setTotalCount(hits.getTotalHits());
+        return newHouseListVo ;
 
     }
 
