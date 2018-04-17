@@ -7,17 +7,22 @@ import com.toutiao.app.api.chance.request.newhouse.NewHouseLayoutRequest;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutCountResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * 新房户型
+ *
+ */
 @RestController
 @RequestMapping("/rest/layout")
 public class NewHouseLayoutRestController {
@@ -36,10 +41,10 @@ public class NewHouseLayoutRestController {
     @RequestMapping(value = "/getLayoutCountByNewHouseId")
     public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewHouseId();
-        List<NewHouseLayoutCountDo> newHouseLayoutCountDoList = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutCountDoList));
-        List<NewHouseLayoutCountResponse> newHouseLayoutCountResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutCountResponse.class);
-        return NashResult.build(newHouseLayoutCountResponses);
+        NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
+        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId);
+        BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
+        return NashResult.build(newHouseLayoutCountResponse);
     }
 
     /**

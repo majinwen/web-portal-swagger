@@ -3,6 +3,7 @@ package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.newhouse.NewHouseLayoutEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
@@ -42,10 +43,10 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
      * @return
      */
     @Override
-    public List<NewHouseLayoutCountDo> getNewHouseLayoutByNewHouseId(Integer newHouseId) {
+    public NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId) {
 
         List<NewHouseLayoutCountDo> newHouseLayoutCountDoList = new ArrayList<>();
-
+        NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
         sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
         try {
@@ -66,10 +67,19 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
                 newHouseLayoutCountDo.setCount(roomBucket.getDocCount());
                 newHouseLayoutCountDoList.add(newHouseLayoutCountDo);
             }
+
+            newHouseLayoutCountDomain.setRooms(newHouseLayoutCountDoList);
+            Long totalCount = 0L;
+            if(null != newHouseLayoutCountDoList && newHouseLayoutCountDoList.size() > 0){
+                for(int i=0; i < newHouseLayoutCountDoList.size(); i++){
+                    totalCount = totalCount+ Integer.valueOf(String.valueOf(newHouseLayoutCountDoList.get(i).getCount()));
+                }
+                newHouseLayoutCountDomain.setTotalCount(totalCount);
+            }
         }catch (Exception e){
             logger.error("调用新房id获取该id下所有的户型以及数量异常","新房newHouseId:"+newHouseId+"异常信息:"+e);
         }
-        return newHouseLayoutCountDoList;
+        return newHouseLayoutCountDomain;
     }
 
     /**

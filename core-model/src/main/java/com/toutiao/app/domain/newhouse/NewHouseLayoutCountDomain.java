@@ -1,12 +1,11 @@
-package com.toutiao.app.api.chance.response.newhouse;
+package com.toutiao.app.domain.newhouse;
 
-import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class NewHouseLayoutCountResponse {
+public class NewHouseLayoutCountDomain {
 
     /**
      * 户型数量
