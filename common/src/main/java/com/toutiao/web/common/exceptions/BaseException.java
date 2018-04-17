@@ -32,23 +32,27 @@ public class BaseException extends RuntimeException {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 
     public BaseException(PlotsInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 
     public BaseException(RentInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 
     public BaseException(SellHouseInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
     }
 }
