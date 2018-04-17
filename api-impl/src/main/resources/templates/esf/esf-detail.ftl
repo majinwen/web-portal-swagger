@@ -568,7 +568,7 @@
             $("tilePlotDesc").find("p").html(s);
         }
 
-        if(document.referrer.indexOf('esfTop10') > -1){
+        if(window.location.href.indexOf('esfTop10') > -1){
             var logger = new window.Tracker('${trackingHost}','${trackingProject}','${trackingLogstore}');
             logger.push('houseId', '${houseDetail.houseId}');
             logger.push('__topic__', 'esfTop10');
