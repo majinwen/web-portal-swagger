@@ -14,7 +14,7 @@ public class NewHouseListDo {
     /**
      * 最大面积
      */
-    private  Double hosue_max_area;
+    private  Double house_max_area;
 
     /**
      * 楼盘名称
@@ -28,11 +28,6 @@ public class NewHouseListDo {
      */
     private  String building_title_img;
 
-
-    /**
-     * 周边配套数
-     */
-     private  Integer matchingCount=100;
 
     /**
      * 销售状态
@@ -124,7 +119,7 @@ public class NewHouseListDo {
     /**
      * 地铁线Id
      */
-    private Integer subwayLineId;
+    private Integer  subwayLineId;
 
 
     /**
@@ -151,6 +146,17 @@ public class NewHouseListDo {
      * 距离
      */
     private  Integer distance;
+
+    /**
+     * 均价
+     */
+    private  String average_price;
+
+
+    /**
+     *  户型数量
+     */
+    private  long roomTotalCount;
 
 
 }
