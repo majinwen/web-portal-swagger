@@ -48,7 +48,7 @@ public class NewHouseRestController {
         NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
         List<NewHouseListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHouseListResponse.class);
-        newHouseListDomainResponse.setNewHosueList(newHouseListResponses);
+        newHouseListDomainResponse.setNewHouseList(newHouseListResponses);
         newHouseListDomainResponse.setTotalCount(newHouseListVo.getTotalCount());
         return  NashResult.build(newHouseListDomainResponse);
     }
