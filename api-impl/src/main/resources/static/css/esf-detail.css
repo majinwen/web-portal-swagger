@@ -2190,4 +2190,172 @@ a.pswp__share--download:hover {
       margin-left: 0.2666666667rem;
       white-space: nowrap; }
 
+.reservation-pop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 10rem;
+  z-index: 1000; }
+  .reservation-pop .mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6); }
+  .reservation-pop .reservation-content {
+    position: absolute;
+    top: 43%;
+    left: 50%;
+    width: 6.1333333333rem;
+    margin-top: -3.7333333333rem;
+    margin-left: -3.6rem;
+    padding: 0.5333333333rem;
+    text-align: center;
+    background-color: #fff;
+    -webkit-border-radius: 0.0666666667rem;
+    -moz-border-radius: 0.0666666667rem;
+    border-radius: 0.0666666667rem; }
+    .reservation-pop .reservation-content h2 {
+      margin-bottom: 0.4rem;
+      font-weight: 700; }
+      [data-dpr="1"] .reservation-pop .reservation-content h2 {
+        font-size: 13px; }
+      [data-dpr="2"] .reservation-pop .reservation-content h2 {
+        font-size: 26px; }
+      [data-dpr="3"] .reservation-pop .reservation-content h2 {
+        font-size: 39px; }
+    .reservation-pop .reservation-content p {
+      margin-bottom: 0.4rem;
+      line-height: 1.6;
+      color: #999; }
+      [data-dpr="1"] .reservation-pop .reservation-content p {
+        font-size: 11px; }
+      [data-dpr="2"] .reservation-pop .reservation-content p {
+        font-size: 22px; }
+      [data-dpr="3"] .reservation-pop .reservation-content p {
+        font-size: 33px; }
+    .reservation-pop .reservation-content .user-phone {
+      text-align: left; }
+      .reservation-pop .reservation-content .user-phone span, .reservation-pop .reservation-content .user-phone input {
+        display: inline-block;
+        height: 0.6666666667rem;
+        line-height: 0.6666666667rem;
+        vertical-align: middle; }
+      .reservation-pop .reservation-content .user-phone span {
+        width: 22%; }
+      .reservation-pop .reservation-content .user-phone input {
+        width: 78%;
+        padding-left: 0.2rem;
+        border: 1px solid #e1e1e1;
+        -webkit-border-radius: 0.0533333333rem;
+        -moz-border-radius: 0.0533333333rem;
+        border-radius: 0.0533333333rem;
+        box-sizing: border-box; }
+      .reservation-pop .reservation-content .user-phone ::-webkit-input-placeholder {
+        color: #999; }
+    .reservation-pop .reservation-content .textarea-content {
+      margin-top: 0.2666666667rem;
+      text-align: left; }
+      .reservation-pop .reservation-content .textarea-content p {
+        display: inline;
+        width: 22%;
+        color: #3a3a3a;
+        margin-bottom: 0.0666666667rem; }
+      .reservation-pop .reservation-content .textarea-content textarea {
+        float: right;
+        width: 78%;
+        height: 1.4666666667rem;
+        padding: 0.2rem;
+        border: 1px solid #e1e1e1;
+        -webkit-border-radius: 0.0533333333rem;
+        -moz-border-radius: 0.0533333333rem;
+        border-radius: 0.0533333333rem;
+        box-sizing: border-box; }
+    .reservation-pop .reservation-content .required {
+      color: #fb3939; }
+    .reservation-pop .reservation-content .reservation-submit {
+      width: 100%;
+      height: 0.8rem;
+      margin-top: 0.5333333333rem;
+      margin-bottom: 0.4266666667rem;
+      background-color: #fb3939;
+      color: #fff;
+      -webkit-border-radius: 0.0533333333rem;
+      -moz-border-radius: 0.0533333333rem;
+      border-radius: 0.0533333333rem; }
+      [data-dpr="1"] .reservation-pop .reservation-content .reservation-submit {
+        font-size: 14px; }
+      [data-dpr="2"] .reservation-pop .reservation-content .reservation-submit {
+        font-size: 28px; }
+      [data-dpr="3"] .reservation-pop .reservation-content .reservation-submit {
+        font-size: 42px; }
+    .reservation-pop .reservation-content .dialing {
+      display: block;
+      color: #5288dc;
+      text-decoration: underline; }
+    .reservation-pop .reservation-content .error span.error-text {
+      float: right;
+      color: #fb3939;
+      width: 80%;
+      height: auto;
+      line-height: 1;
+      margin-top: 0.0666666667rem;
+      padding-left: 0.2rem;
+      box-sizing: border-box; }
+      [data-dpr="1"] .reservation-pop .reservation-content .error span.error-text {
+        font-size: 10px; }
+      [data-dpr="2"] .reservation-pop .reservation-content .error span.error-text {
+        font-size: 20px; }
+      [data-dpr="3"] .reservation-pop .reservation-content .error span.error-text {
+        font-size: 30px; }
+
+.detail-contact-box .detail-contact-content {
+  padding: 0;
+  background-color: transparent;
+  border-top: 0.0133333333rem solid #e8e8e8; }
+  .detail-contact-box .detail-contact-content a {
+    -webkit-flex: 1;
+    flex: 1;
+    height: 1.3066666667rem;
+    line-height: 1.3066666667rem; }
+    .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
+      width: 4rem;
+      height: 1.3066666667rem;
+      line-height: 1.3066666667rem;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0; }
+    .detail-contact-box .detail-contact-content a.contact-like, .detail-contact-box .detail-contact-content a.contact-next {
+      background-color: #fff;
+      color: #333;
+      text-align: center; }
+      [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-like, [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-next {
+        font-size: 16px; }
+      [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-like, [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-next {
+        font-size: 32px; }
+      [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-like, [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-next {
+        font-size: 48px; }
+    .detail-contact-box .detail-contact-content a.contact-like {
+      width: 2.6533333333rem;
+      border-right: 0.0133333333rem solid #e8e8e8; }
+    .detail-contact-box .detail-contact-content a.contact-next {
+      width: 3.3333333333rem; }
+      .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+        display: inline-block;
+        width: 0.4266666667rem;
+        height: 1.3066666667rem;
+        background-image: url("../images/rent/rent-next-icon.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+            background-image: url("../images/rent/rent-next-icon@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+            background-image: url("../images/rent/rent-next-icon@3x.png"); } }
+
 /*# sourceMappingURL=esf-detail.css.map */
