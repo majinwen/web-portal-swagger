@@ -621,21 +621,6 @@
                 reservationData['userPhone'] = $('.userPhone').val();
                 reservationData['content'] = $('.user-content').val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
-                    data: reservationData,
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.code == '0' && data.data == 'success') {
-                            $('.reservation-pop').addClass('none');
-                        }
-                    },
-                    error: function (msg) {
-                        console.log(msg)
-                    }
-                });
-
                 zhuge.track('二手房-预约咨询', {
                     "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
                     "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
@@ -645,10 +630,29 @@
                     '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
                     'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>',
                     '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
-                    '用户电话': $('.userPhone').val(),
-                    '用户留言': $('.user-content').val()
-                })
+                    '用户电话': reservationData['userPhone'],
+                    '用户留言': reservationData['content']
+                });
 
+                console.log(reservationData);
+                $.ajax({
+                    type: 'POST',
+                    url: '/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
+                    data: reservationData,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == '0' && data.data == 'success') {
+                            $('.userPhone').val('');
+                            $('.user-content').val('');
+                            reservationData['userPhone'] = null;
+                            reservationData['content'] = null;
+                            $('.reservation-pop').addClass('none');
+                        }
+                    },
+                    error: function (msg) {
+                        console.log(msg)
+                    }
+                });
             } else {
                 if ($('.userPhone').val() == '') {
                     $('.user-phone').find('.error').removeClass('none');
