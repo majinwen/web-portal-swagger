@@ -620,6 +620,7 @@
             if ($('.userPhone').val() != '' && $('.user-content').val() != '') {
                 reservationData['userPhone'] = $('.userPhone').val();
                 reservationData['content'] = $('.user-content').val();
+                console.log($('.userPhone').val(),$('.user-content').val());
 
                 zhuge.track('二手房-预约咨询', {
                     "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
@@ -642,11 +643,9 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data.code == '0' && data.data == 'success') {
+                            $('.reservation-pop').addClass('none');
                             $('.userPhone').val('');
                             $('.user-content').val('');
-                            reservationData['userPhone'] = null;
-                            reservationData['content'] = null;
-                            $('.reservation-pop').addClass('none');
                         }
                     },
                     error: function (msg) {
