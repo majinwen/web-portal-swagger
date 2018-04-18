@@ -32,7 +32,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
 
 
     @Override
-    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder) throws Exception {
+    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder){
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
@@ -40,7 +40,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort) throws Exception{
+    public SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort){
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(5).setPostFilter(location).addSort(sort).execute().actionGet();
@@ -48,26 +48,19 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryPlotListByRequirement(String keyword,Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder avgPriceSort, FieldSortBuilder scoreSort, FieldSortBuilder levelSort, FieldSortBuilder plotScoreSort) {
+    public SearchResponse queryNearPlotListByLocationAndDistance(BoolQueryBuilder boolQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort){
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchResponse searchResponse = null;
-        if (StringTool.isNotEmpty(avgPriceSort)){
-            if (StringTool.isNotEmpty(keyword)){
-                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(avgPriceSort).addSort(scoreSort).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
-            }else {
-                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(avgPriceSort).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
-            }
-        }else {
-            if (StringTool.isNotEmpty(keyword)){
-                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(scoreSort).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
-            }else {
-                searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
-            }
-        }
-
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setPostFilter(location).addSort(sort).execute().actionGet();
         return searchResponse;
     }
 
+    @Override
+    public SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,  FieldSortBuilder levelSort, FieldSortBuilder plotScoreSort,Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
+        return searchResponse;
+    }
 
 }

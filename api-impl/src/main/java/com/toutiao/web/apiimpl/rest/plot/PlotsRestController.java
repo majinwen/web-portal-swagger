@@ -45,18 +45,6 @@ public class PlotsRestController {
     }
 
     /**
-     * 获取小区周边信息
-     * @param plotAroundInfoRequest
-     * @return
-     */
-    @RequestMapping("/getAroundInfoByPlotId")
-    @ResponseBody
-    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest){
-        JSONObject jsonObject = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
-        return NashResult.build(jsonObject);
-    }
-
-    /**
      * 获取周边小区
      * @param plotAroundPlotRequest
      * @return
@@ -80,7 +68,7 @@ public class PlotsRestController {
     public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDo plotListDo = new PlotListDo();
         BeanUtils.copyProperties(plotListRequest,plotListDo);
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirement(plotListDo);
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirementWithLocation(plotListDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
         return NashResult.build(plotDetailsFewResponseList);

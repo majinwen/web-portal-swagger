@@ -60,14 +60,7 @@ public class PlotListDo {
      * 楼盘特色(楼盘标签1-近地铁，3-现房，4-精装修，5-花园洋房，6-复式，7-车位充足，8-低密度，9-500强房企，10-优质物业，11-购物方便，12-教育配套，13-医疗配套，14-换手率高，15-租金月供比高，16-五证齐全，17-人车分流)
      */
     private String buildingFeature;
-    /**
-     * 排序id(1:价格由低到高,2:价格由高到低)
-     */
-    private String sortId;
-    /**
-     * 起始位置
-     */
-    private Integer from;
+
     /**
      * 每页大小
      */
@@ -76,5 +69,12 @@ public class PlotListDo {
      * 当前页数
      */
     private Integer pageNum = 1;
-
+    /**
+     * 维度 附近找房
+     */
+    private double lat;
+    /**
+     * 经度 附近找房
+     */
+    private double lon;
 }

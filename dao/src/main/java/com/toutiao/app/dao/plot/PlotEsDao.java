@@ -12,23 +12,40 @@ import org.springframework.context.annotation.Configuration;
 public interface PlotEsDao {
     /**
      * 通过id查询详情
-     * @param id
+     * @param
      * @return
      */
-    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder) throws Exception;
+    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder);
 
     /**
      * 根据坐标和距离查询附近的小区
-     * @param lat
-     * @param lon
+     * @param
+     * @param
      * @return
      */
-    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort) throws Exception;
+    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort);
 
     /**
-     * 小区条件查询
-     * @param plotRequest
+     * 查询附近小区列表
+     * @param boolQueryBuilder
+     * @param location
+     * @param sort
+     * @return
+     * @throws Exception
+     */
+    SearchResponse queryNearPlotListByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort);
+
+    /**
+     * 查询小区列表
+     * @param from
+     * @param boolQueryBuilder
+     * @param scoreSort
+     * @param plotScoreSort
      * @return
      */
-    SearchResponse queryPlotListByRequirement(String keyword,Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder avgPriceSort,FieldSortBuilder scoreSort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort);
+    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,FieldSortBuilder scoreSort,FieldSortBuilder plotScoreSort,Integer size);
+
+
+
+
 }
