@@ -58,15 +58,15 @@ public class NewHouseRestController {
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
     public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
-        NewHouseListDominResponse newHouseListDominResponse = new NewHouseListDominResponse();
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseListDo newHouseListDo=new NewHouseListDo();
         BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
         NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
         List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
-        newHouseListDominResponse.setNewHosueList(newHosueListResponses);
-        newHouseListDominResponse.setTotalCount(newHouseListVo.getTotalCount());
-        return  NashResult.build(newHouseListDominResponse);
+        newHouseListDomainResponse.setNewHosueList(newHosueListResponses);
+        newHouseListDomainResponse.setTotalCount(newHouseListVo.getTotalCount());
+        return  NashResult.build(newHouseListDomainResponse);
     }
 
 

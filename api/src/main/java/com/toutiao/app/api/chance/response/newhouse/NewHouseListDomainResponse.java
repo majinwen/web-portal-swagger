@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.List;
 @Data
-public class NewHouseListDominResponse {
+public class NewHouseListDomainResponse {
 
 
     private  List<NewHosueListResponse> newHosueList;
