@@ -598,7 +598,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: 'http://m.test.toutiaofangchan/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
+                url: 'http://m.test.toutiaofangchan.com/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
                 data: reservationData,
                 dataType: 'json',
                 success: function (data) {
