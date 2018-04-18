@@ -1,14 +1,18 @@
 package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
-import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.domain.newhouse.*;
+import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.commons.lang3.StringUtils;
+import com.unboundid.util.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -18,6 +22,8 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,6 +40,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
     private NewHouseEsDao newHouseEsDao;
+
+    @Autowired
+    private NewHouseLayoutService newHouseLayoutService;
+
+    private Logger logger = LoggerFactory.getLogger(NewHouseRestServiceImpl.class);
 
 
     private static final Integer IS_DEL = 0;//新房未删除
@@ -71,11 +82,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
 
     @Override
-    public List<NewHouseListDo> getNewHouseList(NewHouseListDo newHouseListDo) {
+    public NewHouseListDomain getNewHouseList(NewHouseListDo newHouseListDo) {
+        NewHouseListDomain newHouseListVo=new NewHouseListDomain();
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
-        SearchResponse searchresponse = new SearchResponse();
         if(StringUtil.isNotNullString(newHouseListDo.getKeyword())){
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseListDo.getKeyword()))){
                 queryBuilder = QueryBuilders.disMaxQuery()
@@ -96,11 +107,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //城市
         if(newHouseListDo.getCityId()!=null && newHouseListDo.getCityId()!=0){
-            booleanQueryBuilder.must(termQuery("city_id", newHouseListDo.getDistrict_id()));
+            booleanQueryBuilder.must(termQuery("city_id",newHouseListDo.getCityId()));
+            booleanQueryBuilder.must(termQuery("city_id", newHouseListDo.getCityId()));
         }
         //区域
-        if(newHouseListDo.getDistrict_id()!=null && newHouseListDo.getDistrict_id() !=0){
-            booleanQueryBuilder.must(termQuery("district_id",newHouseListDo.getDistrict_id()));
+        if(newHouseListDo.getDistrictId()!=null && newHouseListDo.getDistrictId() !=0){
+            booleanQueryBuilder.must(termQuery("district_id",newHouseListDo.getDistrictId()));
         }
         //商圈
         if(newHouseListDo.getAreaId()!=null && newHouseListDo.getAreaId()!=0){
@@ -118,11 +130,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseListDo.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseListDo.getMin_price()!=null && newHouseListDo.getMax_price()!=0){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getMin_price()).lte(newHouseListDo.getMax_price())));
+        if(newHouseListDo.getMinPrice()!=null && newHouseListDo.getMaxPrice()!=0){
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getMinPrice()).lte(newHouseListDo.getMaxPrice())));
         }
 
-        //户型
+        //标签
         if(null!=newHouseListDo.getLabelId() && newHouseListDo.getLabelId().length!=0){
 
             Integer[] longs = newHouseListDo.getLabelId();
@@ -130,39 +142,81 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         }
 
+        //户型
+        if(newHouseListDo.getLayout()!=null && newHouseListDo.getLayout().length!=0 ){
+
+            Integer[] longs =  newHouseListDo.getLayout();
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+
+        }
 
         //面积
-        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHosue_max_area()!=0)
+        if(newHouseListDo.getHouseMinArea()!=null && newHouseListDo.getHouseMaxArea()!=0)
         {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouse_min_area())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHosue_max_area())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouseMinArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHouseMaxArea())));
         }
 
 
         //销售状态
-        if(StringUtil.isNotNullString(newHouseListDo.getSale_status_name())){
-            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseListDo.getSale_status_name()));
+        if(StringUtil.isNotNullString(newHouseListDo.getSaleStatusName())){
+            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseListDo.getSaleStatusName()));
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+        try{
+            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseListDo.getPageNum(),newHouseListDo.getPageSize());
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
+                //获取新房下户型的数量
+                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
+                if (null!=newHouseLayoutCountDomain.getTotalCount())
+                {
+                    newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
+                }
+                else
+                {
+                    newHouseListDos.setRoomTotalCount(0);
+                }
+                newHouseListDoList.add(newHouseListDos);
+            }
+            newHouseListVo.setListDoList(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+        }catch (Exception e)
+        {
+            logger.error("获取新房列表信息异常信息={}",e.getStackTrace());
+        }
+        return newHouseListVo ;
+    }
 
-        SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseListDo.getPageNum(),newHouseListDo.getPageSize());
-        SearchHits hits = searchResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            NewHouseListDo newHouseLayoutDo=JSON.parseObject(details,NewHouseListDo.class);
-            //计算户型
-
-            newHouseListDoList.add(newHouseLayoutDo);
+    @Override
+    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDo newHouseDynamicDo) {
+        List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
+        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDo.getNewCode()));
+        try {
+            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDo.getPageNum(),newHouseDynamicDo.getPageSize());
+            SearchHits hits = dynamicResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                NewHouseDynamicDo newHouseDynamic=JSON.parseObject(details,NewHouseDynamicDo.class);
+                newHouseDynamicDoList.add(newHouseDynamic);
+            }
+        }catch (Exception e)
+        {
+            logger.error("获取新房动态信息异常信息"+newHouseDynamicDo.getNewCode().toString()+"={}",e.getStackTrace());
         }
 
-        return newHouseListDoList;
-
+        return  newHouseDynamicDoList;
     }
 
 

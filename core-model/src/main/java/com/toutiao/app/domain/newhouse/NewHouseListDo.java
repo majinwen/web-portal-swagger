@@ -9,72 +9,67 @@ public class NewHouseListDo {
     /**
      * 最小面积
      */
-    private Double house_min_area;
+    private Double houseMinArea;
 
     /**
      * 最大面积
      */
-    private  Double hosue_max_area;
+    private  Double houseMaxArea;
 
     /**
      * 楼盘名称
      */
 
-    private String building_name;
+    private String buildingName;
 
 
     /**
      * 大楼标题图
      */
-    private  String building_title_img;
+    private  String buildingTitleImg;
 
-
-    /**
-     * 周边配套数
-     */
-     private  Integer matchingCount=100;
 
     /**
      * 销售状态
      */
-     private  String sale_status_name;
+     private  String saleStatusName;
 
     /**
      *区域名称
      */
-    private  String  district_name;
+    private  String  districtName;
 
     /**
      * 楼盘id
      */
-    private Integer building_name_id;
+    private Integer buildingNameId;
 
     /**
      * 附近地铁信息
      */
-    private  String roundstation;
+    private  String roundStation;
 
     /**
      * 交房日期
      */
-    private  String deliver_time;
+    private  String deliverTime;
 
 
     /**
      * 车位配比
      */
-     private String park_radio;
+     private String parkRadio;
 
     /**
      * 最小价格
      */
 
-    private  Double min_price;
+    private  Double minPrice;
 
     /**
      *最大价格
      */
-    private  Double max_price;
+    private  Double maxPrice;
 
     /**
      * 页码
@@ -99,7 +94,7 @@ public class NewHouseListDo {
      *
      * 区域
      */
-    private Integer district_id;
+    private Integer districtId;
 
 
     /**
@@ -124,7 +119,7 @@ public class NewHouseListDo {
     /**
      * 地铁线Id
      */
-    private Integer subwayLineId;
+    private Integer  subwayLineId;
 
 
     /**
@@ -151,6 +146,17 @@ public class NewHouseListDo {
      * 距离
      */
     private  Integer distance;
+
+    /**
+     * 均价
+     */
+    private  String average_price;
+
+
+    /**
+     *  户型数量
+     */
+    private  long roomTotalCount;
 
 
 }

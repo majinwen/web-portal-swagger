@@ -2,17 +2,15 @@ package com.toutiao.web.apiimpl.rest.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHosueListResponse;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
-import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.api.chance.response.newhouse.*;
+import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,14 +40,33 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(NewHouseListRequest newHouseListRequest)
+    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseListDo newHouseListDo=new NewHouseListDo();
-         BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
-         List<NewHouseListDo> newHouseListDoList=newHouseService.getNewHouseList(newHouseListDo);
-         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDoList));
-         List<NewHosueListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
-        return  NashResult.build(newHouseListResponses);
+        BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
+        NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
+        List<NewHouseListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHouseListResponse.class);
+        newHouseListDomainResponse.setNewHouseList(newHouseListResponses);
+        newHouseListDomainResponse.setTotalCount(newHouseListVo.getTotalCount());
+        return  NashResult.build(newHouseListDomainResponse);
+    }
+
+
+    /**
+     * 根据newcode获取新房动态
+     */
+    @ResponseBody
+    @RequestMapping(value = "getNewHouseDynamic",method = RequestMethod.GET)
+    public  NashResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
+    {
+        NewHouseDynamicDo newHouseDynamicDo =new NewHouseDynamicDo();
+        BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDo);
+        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseDynamicDoList));
+         List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
+        return  NashResult.build(newHouseDynamicResponses);
     }
 
 }
