@@ -216,8 +216,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if (StringTool.isNotEmpty(plotListDo.getBuildingFeature())){
             boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics",plotListDo.getBuildingFeature().split(",")));
         }
+        Integer from = 0;
         //分页起始位置
-        Integer from = (plotListDo.getPageNum()-1)*plotListDo.getSize();
+        if (StringTool.isNotEmpty(plotListDo.getPageNum())&&plotListDo.getPageNum()>1&&StringTool.isNotEmpty(plotListDo.getSize())&&plotListDo.getSize()>0){
+            from = (plotListDo.getPageNum()-1)*plotListDo.getSize();
+        }
+        if (StringTool.isEmpty(plotListDo.getSize())||plotListDo.getSize()<1){
+            plotListDo.setSize(10);
+        }
 
         //是否上架
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
