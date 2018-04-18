@@ -2196,8 +2196,14 @@ a.pswp__share--download:hover {
   bottom: 0;
   width: 100%;
   max-width: 10rem;
-  z-index: 1000;
-  background-color: rgba(0, 0, 0, 0.6); }
+  z-index: 1000; }
+  .reservation-pop .mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6); }
   .reservation-pop .reservation-content {
     position: absolute;
     top: 43%;
@@ -2304,5 +2310,52 @@ a.pswp__share--download:hover {
         font-size: 20px; }
       [data-dpr="3"] .reservation-pop .reservation-content .error span.error-text {
         font-size: 30px; }
+
+.detail-contact-box .detail-contact-content {
+  padding: 0;
+  background-color: transparent;
+  border-top: 0.0133333333rem solid #e8e8e8; }
+  .detail-contact-box .detail-contact-content a {
+    -webkit-flex: 1;
+    flex: 1;
+    height: 1.3066666667rem;
+    line-height: 1.3066666667rem; }
+    .detail-contact-box .detail-contact-content a.contact-telephone-counseling {
+      width: 4rem;
+      height: 1.3066666667rem;
+      line-height: 1.3066666667rem;
+      -webkit-border-radius: 0;
+      -moz-border-radius: 0;
+      border-radius: 0; }
+    .detail-contact-box .detail-contact-content a.contact-like, .detail-contact-box .detail-contact-content a.contact-next {
+      background-color: #fff;
+      color: #333;
+      text-align: center; }
+      [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-like, [data-dpr="1"] .detail-contact-box .detail-contact-content a.contact-next {
+        font-size: 16px; }
+      [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-like, [data-dpr="2"] .detail-contact-box .detail-contact-content a.contact-next {
+        font-size: 32px; }
+      [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-like, [data-dpr="3"] .detail-contact-box .detail-contact-content a.contact-next {
+        font-size: 48px; }
+    .detail-contact-box .detail-contact-content a.contact-like {
+      width: 2.6533333333rem;
+      border-right: 0.0133333333rem solid #e8e8e8; }
+    .detail-contact-box .detail-contact-content a.contact-next {
+      width: 3.3333333333rem; }
+      .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+        display: inline-block;
+        width: 0.4266666667rem;
+        height: 1.3066666667rem;
+        background-image: url("../images/rent/rent-next-icon.png");
+        background-repeat: no-repeat;
+        background-position: center;
+        -webkit-background-size: contain;
+        background-size: contain; }
+        @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+          .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+            background-image: url("../images/rent/rent-next-icon@2x.png"); } }
+        @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+          .detail-contact-box .detail-contact-content a.contact-next .next-icon {
+            background-image: url("../images/rent/rent-next-icon@3x.png"); } }
 
 /*# sourceMappingURL=esf-detail.css.map */

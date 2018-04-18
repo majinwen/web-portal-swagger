@@ -534,8 +534,8 @@
         <div class="detail-contact-wrapper">
             <section class="detail-contact-box" id="detailContactState">
                 <div class="detail-contact-content">
-                    <#--<a href="tel:${houseDetail['houseProxyPhone']}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>-->
-                    <a href="javascript:void(0)" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
+                    <a href="tel:${houseDetail['houseProxyPhone']}" class="contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 60%;margin-top: -0.06rem;">立即咨询底价</a>
+                    <a href="javascript:void(0)" class="contact-next">预约咨询</a>
                 </div>
             </section>
         </div>
@@ -544,8 +544,8 @@
             <div class="detail-contact-wrapper">
                 <section class="detail-contact-box" id="detailContactState">
                     <div class="detail-contact-content">
-                        <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>-->
-                        <a href="javascript:void(0)" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
+                        <a href="tel:${houseDetail.houseProxyPhone}" class="contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 60%;margin-top: -0.06rem;">立即咨询底价</a>
+                        <a href="javascript:void(0)" class="contact-next">预约咨询</a>
                     </div>
                 </section>
             </div>
@@ -554,6 +554,7 @@
 <#--</#if>-->
 
 <div class="reservation-pop none">
+    <div class="mask"></div>
     <div class="reservation-content">
         <h2>预约咨询</h2>
         <p>您对本房源和小区还想多了解一点？请马上与本小区资深顾问预约联系！您可以提供进一步信息，以便获得更深入解答</p>
@@ -584,8 +585,11 @@
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $(function () {
-        $('.contact-telephone-counseling').on('click', function () {
+        $('.contact-next').on('click', function () {
             $('.reservation-pop').removeClass('none');
+        });
+        $('.reservation-pop').on('click', '.mask', function (e) {
+            $('.reservation-pop').addClass('none');
         });
 
         var reservationData = {};
