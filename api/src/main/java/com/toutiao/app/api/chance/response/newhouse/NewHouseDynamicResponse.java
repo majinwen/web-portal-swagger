@@ -41,4 +41,10 @@ public class NewHouseDynamicResponse {
     private  String createTime;
 
 
+    /**
+     * 动态跳转
+     */
+    private  String linkUrl;
+
+
 }
