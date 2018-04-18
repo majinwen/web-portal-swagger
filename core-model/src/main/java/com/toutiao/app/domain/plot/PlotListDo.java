@@ -77,4 +77,8 @@ public class PlotListDo {
      * 经度 附近找房
      */
     private double lon;
+    /**
+     * 楼盘标签
+     */
+    private String labelId;
 }

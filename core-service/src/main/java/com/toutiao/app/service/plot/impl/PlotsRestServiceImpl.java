@@ -9,7 +9,6 @@ import com.toutiao.app.service.plot.PlotsRestService;
 
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.mapper.officeweb.MapInfoMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.beanutils.BeanUtils;
@@ -182,6 +181,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("age")
                     .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[1]))))
                     .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[0])))));
+        }
+        //标签
+        if (StringTool.isNotEmpty(plotListDo.getLabelId())){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",plotListDo.getLabelId().split(",")));
         }
         //物业类型
         if (StringTool.isNotEmpty(plotListDo.getPropertyTypeId())){
