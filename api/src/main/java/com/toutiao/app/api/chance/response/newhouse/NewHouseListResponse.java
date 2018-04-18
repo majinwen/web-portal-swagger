@@ -3,7 +3,7 @@ package com.toutiao.app.api.chance.response.newhouse;
 import lombok.Data;
 
 @Data
-public class NewHosueListResponse {
+public class NewHouseListResponse {
 
     /**
      * 最小面积
