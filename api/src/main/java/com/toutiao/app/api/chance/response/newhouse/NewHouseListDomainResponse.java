@@ -7,7 +7,7 @@ import java.util.List;
 public class NewHouseListDomainResponse {
 
 
-    private  List<NewHouseListResponse> newHosueList;
+    private  List<NewHouseListResponse> newHouseList;
     private long totalCount;
 
 }
