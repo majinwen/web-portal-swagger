@@ -1,9 +1,6 @@
 package com.toutiao.app.service.newhouse;
 
-import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.newhouse.*;
 
 import java.util.List;
 
@@ -17,6 +14,17 @@ public interface NewHouseRestService {
     NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
 
 
+
+    /**
+     * 新房列表
+     * @param newHouseListDo
+     * @return
+     */
     NewHouseListDomain getNewHouseList(NewHouseListDo newHouseListDo);
+
+    /**
+     *  新房动态
+     */
+    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDo newHouseDynamicDo);
 
 }

@@ -2,15 +2,10 @@ package com.toutiao.web.apiimpl.rest.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHosueListResponse;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseListDominResponse;
-import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
-import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.api.chance.response.newhouse.*;
+import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.service.map.MapService;
@@ -57,6 +52,22 @@ public class NewHouseRestController {
         newHouseListDominResponse.setNewHosueList(newHosueListResponses);
         newHouseListDominResponse.setTotalCount(newHouseListVo.getTotalCount());
         return  NashResult.build(newHouseListDominResponse);
+    }
+
+
+    /**
+     * 根据newcode获取新房动态
+     */
+    @ResponseBody
+    @RequestMapping(value = "getNewHouseDynamic",method = RequestMethod.GET)
+    public  NashResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
+    {
+        NewHouseDynamicDo newHouseDynamicDo =new NewHouseDynamicDo();
+        BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDo);
+        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseDynamicDoList));
+         List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
+        return  NashResult.build(newHouseDynamicResponses);
     }
 
 }

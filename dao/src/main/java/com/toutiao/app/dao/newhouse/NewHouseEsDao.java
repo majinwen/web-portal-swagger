@@ -13,6 +13,19 @@ public interface NewHouseEsDao {
     SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder);
 
 
+    /**
+     * 获取新房列表
+     * @param boolQueryBuilder
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
+
+
+
+    SearchResponse getDynamicByNewCode(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
+
+
 
 }

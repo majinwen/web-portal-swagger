@@ -25,10 +25,12 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     @Value("${distance}")
     private Double distance;
 
+    //房源动态索引
+    @Value("${tt.dynamic.index}")
+    private String houseDynamicIndex;
+    @Value("${tt.dynamic.type}")
+    private  String dynamicType;
 
-
-    private static final Integer IS_DEL = 0;//新房未删除
-    private static final Integer IS_APPROVE = 1;//新房未下架
 
     @Override
     public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder) {
@@ -57,6 +59,21 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
+        TransportClient client = esClientTools.init();
+        SearchResponse searchresponse = new SearchResponse();
+        searchresponse= client.prepareSearch(houseDynamicIndex).setTypes(dynamicType)
+                .setQuery(boolQueryBuilder).addSort("create_time",SortOrder.DESC).setFetchSource(
+                        new String[]{"title","time","link_url","detail","newcode","create_time","type","is_del"},null
+                )
+                .setFrom((pageNum-1)*pageSize)
+                .setSize(pageSize)
+                .execute().actionGet();
+        return  searchresponse;
+
     }
 
 }
