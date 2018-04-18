@@ -1,13 +1,17 @@
 package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import com.unboundid.util.json.JSONArray;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -218,6 +222,34 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             logger.error("获取新房列表信息异常信息={}",e.getStackTrace());
         }
         return newHouseListVo ;
+    }
+
+    @Override
+    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDo newHouseDynamicDo) {
+        List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
+        booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newHouseDynamicDo.getNewCode()));
+        try {
+            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDo.getPageNum(),newHouseDynamicDo.getPageSize());
+            SearchHits hits = dynamicResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                newHouseDynamicDoList=JSON.parseArray( JSON.parseObject(details).get("newhouse_dynamic").toString(),NewHouseDynamicDo.class);
+
+            }
+
+        }catch (Exception e)
+        {
+            logger.error("获取新房动态信息异常信息"+newHouseDynamicDo.getNewCode().toString()+"={}",e.getStackTrace());
+        }
+        if (newHouseDynamicDoList.isEmpty())
+        {
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_DYNAMIC_EXPTION);
+        }
+
+        return  newHouseDynamicDoList;
     }
 
 
