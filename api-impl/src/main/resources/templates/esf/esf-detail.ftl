@@ -597,7 +597,7 @@
             reservationData['content'] = $('.user-content').val();
 
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: '/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
                 data: reservationData,
                 dataType: 'json',
