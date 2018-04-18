@@ -63,8 +63,8 @@ public class NewHouseRestController {
         BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
         NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
-        List<NewHosueListResponse> newHosueListResponses=JSONObject.parseArray(json.toJSONString(),NewHosueListResponse.class);
-        newHouseListDomainResponse.setNewHosueList(newHosueListResponses);
+        List<NewHouseListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHouseListResponse.class);
+        newHouseListDomainResponse.setNewHouseList(newHouseListResponses);
         newHouseListDomainResponse.setTotalCount(newHouseListVo.getTotalCount());
         return  NashResult.build(newHouseListDomainResponse);
     }
