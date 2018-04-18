@@ -702,6 +702,10 @@ $(function(){
                                 }
                             }
                         })
+
+                        $('#search-container-wrapper').addClass('none');
+                    }else{
+                        $('#search-container-wrapper').removeClass('none');
                     }
                 }
             })
