@@ -25,6 +25,12 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     @Value("${distance}")
     private Double distance;
 
+    //房源动态索引
+    @Value("${tt.dynamic.index}")
+    private String houseDynamicIndex;
+    @Value("${tt.dynamic.type}")
+    private  String dynamicType;
+
 
     @Override
     public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder) {
@@ -71,9 +77,9 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
-        searchresponse= client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                .setQuery(boolQueryBuilder).setFetchSource(
-                    "newhouse_dynamic",null
+        searchresponse= client.prepareSearch(houseDynamicIndex).setTypes(dynamicType)
+                .setQuery(boolQueryBuilder).addSort("create_time",SortOrder.DESC).setFetchSource(
+                        new String[]{"title","time","link_url","detail","newcode","create_time","type"},null
                 )
                 .setFrom((pageNum-1)*pageSize)
                 .setSize(pageSize)

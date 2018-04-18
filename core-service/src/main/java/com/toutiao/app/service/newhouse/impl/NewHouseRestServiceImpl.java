@@ -228,7 +228,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDo newHouseDynamicDo) {
         List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
-        booleanQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newHouseDynamicDo.getNewCode()));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDo.getNewCode()));
         try {
             SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDo.getPageNum(),newHouseDynamicDo.getPageSize());
             SearchHits hits = dynamicResponse.getHits();
@@ -236,17 +236,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             for (SearchHit searchHit : searchHists) {
                 String details = "";
                 details=searchHit.getSourceAsString();
-                newHouseDynamicDoList=JSON.parseArray( JSON.parseObject(details).get("newhouse_dynamic").toString(),NewHouseDynamicDo.class);
-
+                NewHouseDynamicDo newHouseDynamic=JSON.parseObject(details,NewHouseDynamicDo.class);
+                newHouseDynamicDoList.add(newHouseDynamic);
             }
-
         }catch (Exception e)
         {
             logger.error("获取新房动态信息异常信息"+newHouseDynamicDo.getNewCode().toString()+"={}",e.getStackTrace());
-        }
-        if (newHouseDynamicDoList.isEmpty())
-        {
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_DYNAMIC_EXPTION);
         }
 
         return  newHouseDynamicDoList;
