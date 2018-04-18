@@ -5,6 +5,7 @@ $(function(){
     $('#search-index').removeClass('none');
 
 
+
     var houseTypeChoose = $('.type-menu').find('span.current').index();
 
     if ($('.type-tab-box').hasClass('none')) {
@@ -15,6 +16,11 @@ $(function(){
      * 各列表页搜索框获取焦点
      */
     $('.search-link').on('focus', function () {
+
+        if ($('.search-link').hasClass('recommend-index')) {
+            $('.hot-recommend-index').removeClass('none');
+        }
+
         init();
         $('body').addClass('fixed-scroll');
         $('.search-page-wrapper').removeClass('none');
@@ -154,7 +160,7 @@ $(function(){
                 hashPush(rentStorageArray,_keyword+',,公寓,,4')
                 localStorage.setItem('rent', JSON.stringify(rentStorageArray));
                 location.href= router_city('/zufang?keyword=') + $.trim($(this).val());
-            }else {
+            } else {
                 if (_keyword!=null&&_keyword!=''){
                     $('#search-index').addClass('none');
                     $('#automatedWord').addClass('none');
@@ -575,9 +581,12 @@ $(function(){
         $('#automatedWord').removeClass('none')
         $('#indexWord').html('')
 
-        if (_keyword=='') { $('#automatedWord').hide(); return };
+        if (_keyword=='') {
+            $('#automatedWord').hide();
+            $('#search-container-wrapper').removeClass('none');
+            return
+        };
         if (_keyword!=null&&_keyword.length>0){
-
             var newHouseStorageArray = JSON.parse(localStorage.getItem('newHouse')) || [];
             var esfStorageArray = JSON.parse(localStorage.getItem('esf')) || [];
             var plotStorageArray = JSON.parse(localStorage.getItem('plot')) || [];
@@ -704,8 +713,6 @@ $(function(){
                         })
 
                         $('#search-container-wrapper').addClass('none');
-                    }else{
-                        $('#search-container-wrapper').removeClass('none');
                     }
                 }
             })
