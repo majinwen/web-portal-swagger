@@ -172,5 +172,19 @@
             color: #5288dc;
             text-decoration: underline;
         }
+
+        .error {
+            span.error-text {
+                float: right;
+                color: $baseRed;
+                width: 80%;
+                height: auto;
+                line-height: 1;
+                margin-top: rem(5);
+                padding-left: rem(15);
+                @include box-sizing;
+                @include font-dpr(20);
+            }
+        }
     }
 }

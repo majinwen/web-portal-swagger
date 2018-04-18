@@ -2289,5 +2289,20 @@ a.pswp__share--download:hover {
       display: block;
       color: #5288dc;
       text-decoration: underline; }
+    .reservation-pop .reservation-content .error span.error-text {
+      float: right;
+      color: #fb3939;
+      width: 80%;
+      height: auto;
+      line-height: 1;
+      margin-top: 0.0666666667rem;
+      padding-left: 0.2rem;
+      box-sizing: border-box; }
+      [data-dpr="1"] .reservation-pop .reservation-content .error span.error-text {
+        font-size: 10px; }
+      [data-dpr="2"] .reservation-pop .reservation-content .error span.error-text {
+        font-size: 20px; }
+      [data-dpr="3"] .reservation-pop .reservation-content .error span.error-text {
+        font-size: 30px; }
 
 /*# sourceMappingURL=esf-detail.css.map */
