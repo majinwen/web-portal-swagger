@@ -71,3 +71,106 @@
     }
 }
 
+.reservation-pop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: rem(750);
+    z-index: 1000;
+    background-color: rgba(0,0,0,0.6);
+
+    .reservation-content {
+        position: absolute;
+        top: 43%;
+        left: 50%;
+        width: rem(460);
+        margin-top: rem(-280);
+        margin-left: rem(-270);
+        padding: rem(40);
+        text-align: center;
+        background-color: $baseWhite;
+        -webkit-border-radius: rem(5);
+        -moz-border-radius: rem(5);
+        border-radius: rem(5);
+
+        h2 {
+            margin-bottom: rem(30);
+            font-weight: 700;
+            @include font-dpr(26);
+        }
+        p {
+            margin-bottom: rem(30);
+            line-height: 1.6;
+            color: #999;
+            @include font-dpr(22);
+        }
+        .user-phone {
+            text-align: left;
+            span, input {
+                display: inline-block;
+                height: rem(50);
+                line-height: rem(50);
+                vertical-align: middle;
+            }
+            span {
+                width: 22%;
+            }
+            input {
+                width: 78%;
+                padding-left: rem(15);
+                border: 1px solid #e1e1e1;
+                -webkit-border-radius: rem(4);
+                -moz-border-radius: rem(4);
+                border-radius: rem(4);
+                @include box-sizing;
+            }
+            ::-webkit-input-placeholder {
+                color: #999;
+            }
+        }
+        .textarea-content {
+            margin-top: rem(20);
+            text-align: left;
+
+            p {
+                display: inline;
+                width: 22%;
+                color: $baseBlack;
+                margin-bottom: rem(5);
+            }
+
+            textarea {
+                float: right;
+                width: 78%;
+                height: rem(110);
+                padding: rem(15);
+                border: 1px solid #e1e1e1;
+                -webkit-border-radius: rem(4);
+                -moz-border-radius: rem(4);
+                border-radius: rem(4);
+                @include box-sizing;
+            }
+        }
+        .required {
+            color: $baseRed;
+        }
+        .reservation-submit {
+            width: 100%;
+            height: rem(60);
+            margin-top: rem(40);
+            margin-bottom: rem(32);
+            background-color: $baseRed;
+            color: $baseWhite;
+            @include font-dpr(28);
+            -webkit-border-radius: rem(4);
+            -moz-border-radius: rem(4);
+            border-radius: rem(4);
+        }
+        .dialing {
+            display: block;
+            color: #5288dc;
+            text-decoration: underline;
+        }
+    }
+}

@@ -51,12 +51,10 @@
         </#if>
         </ul>
         <div class="banner-title">
-            <#if houseDetail.claimHouseId?exists>
-                <#if houseDetail.claimHouseId!=''>
-                    <div class="banner-house-number">房源编号：${houseDetail.claimHouseId}</div>
-                </#if>
+            <#if houseDetail.claimHouseId?exists && houseDetail.claimHouseId!=''>
+                <div class="banner-house-number">房源编号：<em class="sellHouseId">${houseDetail.claimHouseId}</em></div>
             <#else >
-                <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
+                <div class="banner-house-number">房源编号：<em class="sellHouseId">${houseDetail.houseId}</em></div>
             </#if>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
@@ -536,22 +534,42 @@
         <div class="detail-contact-wrapper">
             <section class="detail-contact-box" id="detailContactState">
                 <div class="detail-contact-content">
-                    <a href="tel:${houseDetail['houseProxyPhone']}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
+                    <#--<a href="tel:${houseDetail['houseProxyPhone']}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>-->
+                    <a href="javascript:void(0)" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
                 </div>
             </section>
         </div>
     <#else>
         <#if houseDetail.houseProxyPhone?exists>
             <div class="detail-contact-wrapper">
-            <section class="detail-contact-box" id="detailContactState">
-            <div class="detail-contact-content">
-            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
-            </div>
-            </section>
+                <section class="detail-contact-box" id="detailContactState">
+                    <div class="detail-contact-content">
+                        <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>-->
+                        <a href="javascript:void(0)" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
+                    </div>
+                </section>
             </div>
         </#if>
     </#if>
 <#--</#if>-->
+
+<div class="reservation-pop none">
+    <div class="reservation-content">
+        <h2>预约咨询</h2>
+        <p>您对本房源和小区还想多了解一点？请马上与本小区资深顾问预约联系！您可以提供进一步信息，以便获得更深入解答</p>
+
+        <div class="user-phone">
+            <span>电话<em class="required">*</em>：</span><input class="userPhone" type="tel" placeholder="请输入您的手机号码" maxlength="11" />
+        </div>
+        <div class="textarea-content clear">
+            <p>留言<em class="required">*</em>：</p>
+            <textarea class="user-content"></textarea>
+        </div>
+        <button class="reservation-submit">确定预约</button>
+        <a class="dialing" href="tel:${houseDetail.houseProxyPhone}">等不及？马上拨打经纪人电话</a>
+    </div>
+</div>
+
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -562,6 +580,39 @@
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $(function () {
+        $('.contact-telephone-counseling').on('click', function () {
+            $('.reservation-pop').removeClass('none');
+        });
+
+        var reservationData = {};
+
+        reservationData['sellHouseId'] = $('.sellHouseId').text();
+        reservationData['price'] = <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}<#else ></#if>;
+        reservationData['area'] = <#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}<#else ></#if>;
+        reservationData['room'] = <#if houseDetail.room?exists>${houseDetail.room}<#else ></#if>;
+        reservationData['hall'] = <#if houseDetail.hall?exists>${houseDetail.hall}<#else ></#if>;
+
+        $('.reservation-submit').on('click', function () {
+            reservationData['userPhone'] = $('.userPhone').val();
+            reservationData['content'] = $('.user-content').val();
+
+            $.ajax({
+                type: 'POST',
+                url: ':8085/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
+                data: reservationData,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == '0' && data.data == 'success') {
+                        $('.reservation-pop').addClass('none');
+                        console.log('提交成功')
+                    }
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        });
+
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
             var s = text.substring(1);
@@ -591,7 +642,7 @@
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
         '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
-    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
         '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
