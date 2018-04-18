@@ -2,6 +2,8 @@ package com.toutiao.app.api.chance.request.newhouse;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class NewHouseListRequest {
 
@@ -39,12 +41,8 @@ public class NewHouseListRequest {
      *
      * 居室
      */
-    private  String[] layout;
+    private  Integer[] layout;
 
-    /**
-     * 销售状态
-     */
-    private  Integer sale_status_id;
 
     /**
      * 标签
@@ -54,6 +52,7 @@ public class NewHouseListRequest {
     /**
      * 页码
      */
+    @NotNull(message = "缺少页码")
     private Integer pageNum = 1;
     /**
      * 每页数量
@@ -69,6 +68,7 @@ public class NewHouseListRequest {
      *
      * 城市id
      */
+    @NotNull(message ="缺少城市id")
     private Integer cityId;
 
 
@@ -81,7 +81,6 @@ public class NewHouseListRequest {
      * 地铁站Id
      */
     private Integer subwayStationId;
-
 
 
 
