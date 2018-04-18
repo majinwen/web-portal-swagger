@@ -139,8 +139,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(termQuery("city_id", newHouseListDo.getCityId()));
         }
         //区域
-        if(newHouseListDo.getDistrict_id()!=null && newHouseListDo.getDistrict_id() !=0){
-            booleanQueryBuilder.must(termQuery("district_id",newHouseListDo.getDistrict_id()));
+        if(newHouseListDo.getDistrictId()!=null && newHouseListDo.getDistrictId() !=0){
+            booleanQueryBuilder.must(termQuery("district_id",newHouseListDo.getDistrictId()));
         }
         //商圈
         if(newHouseListDo.getAreaId()!=null && newHouseListDo.getAreaId()!=0){
@@ -158,8 +158,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseListDo.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseListDo.getMin_price()!=null && newHouseListDo.getMax_price()!=0){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getMin_price()).lte(newHouseListDo.getMax_price())));
+        if(newHouseListDo.getMinPrice()!=null && newHouseListDo.getMaxPrice()!=0){
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getMinPrice()).lte(newHouseListDo.getMaxPrice())));
         }
 
         //标签
@@ -179,16 +179,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //面积
-        if(newHouseListDo.getHouse_min_area()!=null && newHouseListDo.getHouse_max_area()!=0)
+        if(newHouseListDo.getHouseMinArea()!=null && newHouseListDo.getHouseMaxArea()!=0)
         {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouse_min_area())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHouse_max_area())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getHouseMinArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getHouseMaxArea())));
         }
 
 
         //销售状态
-        if(StringUtil.isNotNullString(newHouseListDo.getSale_status_name())){
-            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseListDo.getSale_status_name()));
+        if(StringUtil.isNotNullString(newHouseListDo.getSaleStatusName())){
+            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseListDo.getSaleStatusName()));
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
@@ -204,7 +204,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 details=searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
                 //获取新房下户型的数量
-                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuilding_name_id());
+                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
                 if (null!=newHouseLayoutCountDomain.getTotalCount())
                 {
                     newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());

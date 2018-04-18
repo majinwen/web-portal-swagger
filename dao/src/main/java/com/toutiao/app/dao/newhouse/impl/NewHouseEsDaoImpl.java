@@ -79,7 +79,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         SearchResponse searchresponse = new SearchResponse();
         searchresponse= client.prepareSearch(houseDynamicIndex).setTypes(dynamicType)
                 .setQuery(boolQueryBuilder).addSort("create_time",SortOrder.DESC).setFetchSource(
-                        new String[]{"title","time","link_url","detail","newcode","create_time","type"},null
+                        new String[]{"title","time","link_url","detail","newcode","create_time","type","is_del"},null
                 )
                 .setFrom((pageNum-1)*pageSize)
                 .setSize(pageSize)
