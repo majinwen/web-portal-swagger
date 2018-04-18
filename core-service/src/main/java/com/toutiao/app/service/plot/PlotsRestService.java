@@ -1,7 +1,6 @@
 package com.toutiao.app.service.plot;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.plot.PlotListDo;
@@ -17,12 +16,6 @@ public interface PlotsRestService {
      */
     PlotDetailsDo queryPlotDetailByPlotId(Integer plotId);
 
-    /**
-     * 获取小区周边配套
-     * @param plotId
-     * @return
-     */
-    JSONObject queryPlotDataInfo(Integer plotId);
 
     /**
      * 获取小区周围小区
@@ -38,4 +31,14 @@ public interface PlotsRestService {
      * @return
      */
     List<PlotDetailsFewDo> queryPlotListByRequirement(PlotListDo plotListDo);
+
+    /**
+     * 获取小区列表含坐标
+     * @param plotListDo
+     * @return
+     */
+    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDo plotListDo);
+
+
+
 }

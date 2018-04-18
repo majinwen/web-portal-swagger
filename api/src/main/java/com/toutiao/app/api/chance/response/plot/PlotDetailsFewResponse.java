@@ -95,9 +95,9 @@ public class PlotDetailsFewResponse {
      */
     private String abbreviatedAge;
     /**
-     * key
+     * 车位配比
      */
-    private String key;
+    private String carPositionRatio;
     /**
      * 小区总个数
      */
