@@ -9,6 +9,8 @@ import com.toutiao.app.domain.plot.PlotListDo;
 import com.toutiao.app.domain.plot.PlotTrafficDo;
 import com.toutiao.app.service.plot.PlotsRestService;
 
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
@@ -108,6 +110,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             MapInfo mapInfo = new MapInfo();
             PlotTrafficDo plotTrafficDo=new PlotTrafficDo();
             mapInfo =  mapService.getMapInfo(plotId);
+            if (mapInfo==null)
+            {
+                throw  new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_TRAFFIC_NOT_FOUND);
+            }
             JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             //获取小区交通
             JSONObject businfo= (JSONObject) datainfo.get("gongjiao");
@@ -121,7 +127,6 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotTrafficDo.setSubwayLine(trafficInfo[0]);
                 plotTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
             }
-
             return plotTrafficDo;
     }
 
