@@ -16,7 +16,7 @@
     <a href="/" onclick="dashouyelogo(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="">
+        <input type="text" class="search-link recommend-index" placeholder="">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
@@ -622,6 +622,14 @@
                     }
                 })
             }
+        }},
+        {"pid": 28,callback: function (html) {
+//            var parent=$('<div class="searchpage-hot-recommend clear">');
+//            parent.append(html);
+            $('#index-hot-recommend').append(html);
+            html.click(function () {
+                zhuge.track('大首页热门推荐', {'名称': html.find('a').text()})
+            })
         }}
     ]
     $com.toutiao.ad.json_chain(lunbo);

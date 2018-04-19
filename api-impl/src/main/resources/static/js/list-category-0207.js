@@ -1280,14 +1280,26 @@ function pullUpAction() {
                                             }
                                         }
                                     };
-                                    if (dataCon[i]['housePhotoTitle']) {
-                                        var _house_title_img;
-                                        if (dataCon[i]['housePhotoTitle'].indexOf('http') > -1) {
-                                            _house_title_img = dataCon[i]['housePhotoTitle'];
-                                        }else{
-                                            _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['housePhotoTitle'] + "-tt400x300";
+                                    if(dataCon[i]['is_claim']==1){
+                                        if (dataCon[i]['claimHousePhotoTitle']) {
+                                            var _house_title_img;
+                                            if (dataCon[i]['claimHousePhotoTitle'].indexOf('http') > -1) {
+                                                _house_title_img = dataCon[i]['claimHousePhotoTitle'];
+                                            }else{
+                                                _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['claimHousePhotoTitle'] + "-tt400x300";
+                                            }
+                                            dataCon[i]['claimHousePhotoTitle'] = _house_title_img;
                                         }
-                                        dataCon[i]['housePhotoTitle'] = _house_title_img;
+                                    }else{
+                                        if (dataCon[i]['housePhotoTitle']) {
+                                            var _house_title_img;
+                                            if (dataCon[i]['housePhotoTitle'].indexOf('http') > -1) {
+                                                _house_title_img = dataCon[i]['housePhotoTitle'];
+                                            }else{
+                                                _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['housePhotoTitle'] + "-tt400x300";
+                                            }
+                                            dataCon[i]['housePhotoTitle'] = _house_title_img;
+                                        }
                                     }
                                 };
 
@@ -1463,6 +1475,29 @@ function pullDownAction() {
                                             }
 
                                         };
+
+                                        if(dataCon[i]['is_claim']==1){
+                                            if (dataCon[i]['claimHousePhotoTitle']) {
+                                                var _house_title_img;
+                                                if (dataCon[i]['claimHousePhotoTitle'].indexOf('http') > -1) {
+                                                    _house_title_img = dataCon[i]['claimHousePhotoTitle'];
+                                                }else{
+                                                    _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['claimHousePhotoTitle'] + "-tt400x300";
+                                                }
+                                                dataCon[i]['claimHousePhotoTitle'] = _house_title_img;
+                                            }
+                                        }else{
+                                            if (dataCon[i]['housePhotoTitle']) {
+                                                var _house_title_img;
+                                                if (dataCon[i]['housePhotoTitle'].indexOf('http') > -1) {
+                                                    _house_title_img = dataCon[i]['housePhotoTitle'];
+                                                }else{
+                                                    _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['housePhotoTitle'] + "-tt400x300";
+                                                }
+                                                dataCon[i]['housePhotoTitle'] = _house_title_img;
+                                            }
+                                        }
+
                                     };
 
                                     if (_localHref.indexOf('xiaoqu') > 0) {
