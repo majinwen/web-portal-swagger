@@ -1,7 +1,7 @@
 package com.toutiao.app.service.plot;
 
 
-import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.plot.PlotListDo;
 
@@ -39,6 +39,11 @@ public interface PlotsRestService {
      */
     List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDo plotListDo);
 
+
+    /**
+     * 获取交通配套
+     */
+    JSONObject   queryPlotDataInfo(Integer plotId);
 
 
 }

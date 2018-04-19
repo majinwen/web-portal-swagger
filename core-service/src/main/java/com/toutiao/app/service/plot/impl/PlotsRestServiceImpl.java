@@ -60,8 +60,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             Map<String, Object> source = hits[0].getSource();
-            PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
-            BeanUtils.populate(plotDetailsDo, source);
+            PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
+            BeanUtils.copyProperties(plotDetailsDo, source);
             if ("商电".equals(plotDetailsDo.getElectricSupply())){
                 plotDetailsDo.setElectricFee("1.33");
             }else {
@@ -93,23 +93,23 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param plotId
      * @return
      */
-//    @Override
-//    public JSONObject queryPlotDataInfo(Integer plotId) {
-//        try {
-//            MapInfo mapInfo = new MapInfo();
-//            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
-//            BeanUtils.copyProperties(mapInfo,result);
-//            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-//            //获取地铁和环线位置
-//            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
-//            plotDetailsDo.getTrafficInformation().split("$");
-//
-//            return datainfo;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @Override
+    public JSONObject queryPlotDataInfo(Integer plotId) {
+        try {
+            MapInfo mapInfo = new MapInfo();
+            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
+            BeanUtils.copyProperties(mapInfo,result);
+            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            //获取地铁和环线位置
+            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
+            plotDetailsDo.getTrafficInformation().split("$");
+
+            return datainfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 附近小区

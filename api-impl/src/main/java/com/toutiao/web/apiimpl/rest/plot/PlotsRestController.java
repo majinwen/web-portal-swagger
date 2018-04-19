@@ -75,4 +75,13 @@ public class PlotsRestController {
         return NashResult.build(plotDetailsFewResponseList);
     }
 
-}
+    @RequestMapping("/getAroundInfoByPlotId")
+    @ResponseBody
+    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) {
+        JSONObject jsonObject = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
+        return NashResult.build(jsonObject);
+
+    }
+
+
+    }

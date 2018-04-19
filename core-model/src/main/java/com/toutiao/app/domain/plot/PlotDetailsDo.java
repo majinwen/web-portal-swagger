@@ -71,7 +71,7 @@ public class PlotDetailsDo {
     /**
      * 交通信息
      */
-    private String TrafficInformation;
+    private String 31;
     /**
      * 标签编号
      */
