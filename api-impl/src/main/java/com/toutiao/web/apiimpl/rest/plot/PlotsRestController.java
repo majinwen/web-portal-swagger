@@ -9,9 +9,11 @@ import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.plot.PlotListRequest;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsFewResponse;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
+import com.toutiao.app.api.chance.response.plot.PlotTrafficResponse;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.plot.PlotListDo;
+import com.toutiao.app.domain.plot.PlotTrafficDo;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -77,9 +80,12 @@ public class PlotsRestController {
 
     @RequestMapping("/getAroundInfoByPlotId")
     @ResponseBody
-    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) {
-        JSONObject jsonObject = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
-        return NashResult.build(jsonObject);
+    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
+
+        PlotTrafficResponse plotTrafficResponse=new PlotTrafficResponse();
+        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
+        BeanUtils.copyProperties(plotTrafficDo,plotTrafficResponse);
+        return NashResult.build(plotTrafficResponse);
 
     }
 
