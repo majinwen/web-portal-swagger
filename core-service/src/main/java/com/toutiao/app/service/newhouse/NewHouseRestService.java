@@ -27,4 +27,11 @@ public interface NewHouseRestService {
      */
     List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDo newHouseDynamicDo);
 
+
+    /**
+     * 新房交通配套
+     */
+
+      NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode);
+
 }

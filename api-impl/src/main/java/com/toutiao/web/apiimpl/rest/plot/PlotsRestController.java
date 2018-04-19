@@ -90,12 +90,10 @@ public class PlotsRestController {
     @RequestMapping(value = "/getAroundInfoByPlotId",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
-
         PlotTrafficResponse plotTrafficResponse=new PlotTrafficResponse();
         PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
         BeanUtils.copyProperties(plotTrafficDo,plotTrafficResponse);
         return NashResult.build(plotTrafficResponse);
-
     }
 
 

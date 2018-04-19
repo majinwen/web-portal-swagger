@@ -127,6 +127,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotTrafficDo.setSubwayLine(trafficInfo[0]);
                 plotTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
             }
+            if (null!=plotDetailsDo.getRingRoadName() && !"".equals(plotDetailsDo.getRingRoadName()))
+            {
+                plotTrafficDo.setRingRoadName(plotDetailsDo.getRingRoadName());
+            }
+            if (null!=plotDetailsDo.getRingRoadDistance())
+            {
+                plotTrafficDo.setRingRoadDistance(Double.valueOf(plotDetailsDo.getRingRoadDistance().toString()));
+            }
             return plotTrafficDo;
     }
 
