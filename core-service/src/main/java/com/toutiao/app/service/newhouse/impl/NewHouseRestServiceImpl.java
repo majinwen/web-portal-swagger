@@ -252,7 +252,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             newHouseTrafficDo.setSubwayLine(trafficInfo[0]);
             newHouseTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
         }
-        if(null!=newHouseDetailDo.getRingRoadName() && "".equals(newHouseDetailDo.getRingRoadName()))
+        if(null!=newHouseDetailDo.getRingRoadName() && !"".equals(newHouseDetailDo.getRingRoadName()))
         {
             newHouseTrafficDo.setRingRoadName(newHouseDetailDo.getRingRoadName());
         }
