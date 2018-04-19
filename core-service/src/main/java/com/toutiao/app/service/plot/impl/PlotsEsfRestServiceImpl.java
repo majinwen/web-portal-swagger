@@ -55,7 +55,6 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         Map aggMap =searchResponse.getAggregations().asMap();
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
 
-        //TODO 判断
         if(gradeTerms.getBuckets().size() == 0){
             throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_ESF_NOT_FOUND,"小区没有出售房源信息");
         }
