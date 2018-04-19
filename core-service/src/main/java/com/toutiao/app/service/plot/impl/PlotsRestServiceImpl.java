@@ -42,6 +42,9 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private AppPlotDao appPlotDao;
     @Autowired
     private MapInfoMapper mapInfoMapper;
+    @Autowired
+    private PlotsRestService appPlotService;
+
 
 
     /**
@@ -97,6 +100,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
             BeanUtils.copyProperties(mapInfo,result);
             JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            //获取地铁和环线位置
+            PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId);
+//            String distance=plotDetailsDo.
+
             return datainfo;
         } catch (Exception e) {
             e.printStackTrace();
