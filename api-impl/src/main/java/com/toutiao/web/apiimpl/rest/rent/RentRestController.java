@@ -35,7 +35,7 @@ public class RentRestController {
      * @param rentDetailsRequest
      * @return
      */
-    @RequestMapping("getRentDetailByRentId")
+    @RequestMapping(value = "getRentDetailByRentId",method = RequestMethod.GET)
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
@@ -61,7 +61,7 @@ public class RentRestController {
      * @param rentDetailsRequest
      * @return
      */
-    @RequestMapping("getRentAgentByRentId")
+    @RequestMapping(value = "getRentAgentByRentId",method = RequestMethod.GET)
     public NashResult getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
         RentAgentResponse rentAgentResponse = new RentAgentResponse();

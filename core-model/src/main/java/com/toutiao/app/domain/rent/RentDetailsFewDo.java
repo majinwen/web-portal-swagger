@@ -56,4 +56,8 @@ public class RentDetailsFewDo {
      * 总数
      */
     private Integer totalNum;
+    /**
+     * 房源标题图
+     */
+    private String house_title_img;
 }
