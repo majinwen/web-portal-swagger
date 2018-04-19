@@ -7,7 +7,9 @@ import com.toutiao.app.domain.rent.RentAgentDo;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.util.StringTool;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -64,26 +66,25 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId) {
-        try {
-            List<RentDetailsFewDo> list = new ArrayList<>();
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
-            SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder);
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            if (hits.length>0){
-                for (SearchHit hit:hits){
-                    String sourceAsString = hit.getSourceAsString();
-                    RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                    rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
-                    list.add(rentDetailsFewDo);
-                }
-                return list;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+    public List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+        List<RentDetailsFewDo> list = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
+        if (StringTool.isNotEmpty(rentType)){
+            boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
-        return null;
+        Integer from = (pageNum-1)*10;
+        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder,from);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                list.add(rentDetailsFewDo);
+            }
+        }
+        return list;
     }
 
     /**
@@ -99,7 +100,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             SearchResponse searchResponse = agentHouseEsDao.getAgentRentByRentId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
-                long time = new Date().getTime();
+                long time = System.currentTimeMillis();
                 long index = (time / 600000) % hits.length;
                 String sourceAsString = hits[(int) index].getSourceAsString();
                 RentAgentDo rentAgentDo = JSON.parseObject(sourceAsString, RentAgentDo.class);

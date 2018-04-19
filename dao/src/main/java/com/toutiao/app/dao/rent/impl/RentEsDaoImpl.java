@@ -21,15 +21,15 @@ public class RentEsDaoImpl implements RentEsDao {
 
 
     @Override
-    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder) throws Exception {
+    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
-        SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).setSize(3).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).setFrom(from).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder) throws Exception{
+    public SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder){
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();

@@ -18,12 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/rest/zufang")
+@RestController
+@RequestMapping("/rest/rent")
 public class RentRestController {
     @Autowired
     private RentRestService appRentRestService;
@@ -34,7 +36,6 @@ public class RentRestController {
      * @return
      */
     @RequestMapping("getRentDetailByRentId")
-    @ResponseBody
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
@@ -43,14 +44,13 @@ public class RentRestController {
     }
 
     /**
-     * 查询该出租房所在小区下的其他出租房
+     * 查询小区下出租房
      * @param plotDetailsRequest
      * @return
      */
-    @RequestMapping("getRentOfPlotByPlotId")
-    @ResponseBody
+    @RequestMapping(value = "getRentOfPlotByPlotId",method = RequestMethod.GET)
     public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId());
+        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId(),plotDetailsRequest.getRentType(),plotDetailsRequest.getPageNum());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
         return NashResult.build(rentDetailFewResponses);
@@ -62,7 +62,6 @@ public class RentRestController {
      * @return
      */
     @RequestMapping("getRentAgentByRentId")
-    @ResponseBody
     public NashResult getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
         RentAgentResponse rentAgentResponse = new RentAgentResponse();
