@@ -622,6 +622,14 @@
                     }
                 })
             }
+        }},
+        {"pid": 28,callback: function (html) {
+//            var parent=$('<div class="searchpage-hot-recommend clear">');
+//            parent.append(html);
+            $('#index-hot-recommend').append(html);
+            html.click(function () {
+                zhuge.track('大首页热门推荐', {'名称': html.find('a').text()})
+            })
         }}
     ]
     $com.toutiao.ad.json_chain(lunbo);
