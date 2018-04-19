@@ -17,5 +17,5 @@ public interface NearbyPlotsEsDao {
      * @param size 每页查询数量
      * @return
      */
-    SearchResponse queryNearbyPlotsListByUserCoordinate(GeoDistanceQueryBuilder geoDistanceQueryBuilder, GeoDistanceSortBuilder sort, BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer size);
+    SearchResponse queryNearbyPlotsListByUserCoordinate(GeoDistanceQueryBuilder geoDistanceQueryBuilder, GeoDistanceSortBuilder sort, BoolQueryBuilder boolQueryBuilder, String keyword, Integer pageNum, Integer size);
 }

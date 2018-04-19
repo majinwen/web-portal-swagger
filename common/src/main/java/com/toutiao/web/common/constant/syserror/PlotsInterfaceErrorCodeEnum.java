@@ -15,7 +15,8 @@ public enum PlotsInterfaceErrorCodeEnum implements IntBaseType {
      * 小区枚举参数
      *
      */
-    PLOTS_NOT_FOUND("小区楼盘列表为空！", 50101);
+    PLOTS_NOT_FOUND("小区楼盘列表为空！", 50101),
+    NEARBY_PLOTS_NOT_FOUND("附近小区楼盘列表为空！",50701);
 
 
 

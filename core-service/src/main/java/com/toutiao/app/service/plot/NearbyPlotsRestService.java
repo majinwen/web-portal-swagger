@@ -2,9 +2,8 @@ package com.toutiao.app.service.plot;
 
 
 import com.toutiao.app.domain.plot.NearbyPlotsListDo;
-import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 
-import java.util.List;
 
 public interface NearbyPlotsRestService {
 
@@ -13,6 +12,6 @@ public interface NearbyPlotsRestService {
      * @param nearbyPlotsListDo
      * @return
      */
-    List<PlotDetailsFewDo> queryNearbyPlotsListByUserCoordinate(NearbyPlotsListDo nearbyPlotsListDo);
+    PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsListDo nearbyPlotsListDo);
 
 }
