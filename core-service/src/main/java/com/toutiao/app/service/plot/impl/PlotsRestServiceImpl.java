@@ -187,19 +187,19 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         //区域id
         if (StringTool.isNotEmpty(plotListDo.getDistrictId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("areaId",plotListDo.getDistrictId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotListDo.getDistrictId()));
         }
         //商圈id
         if (StringTool.isNotEmpty(plotListDo.getAreaId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId",plotListDo.getAreaId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("tradingAreaId",plotListDo.getAreaId()));
         }
         //地铁线id
         if (StringTool.isNotEmpty(plotListDo.getSubwayLineId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId",plotListDo.getSubwayLineId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId",plotListDo.getSubwayLineId()));
         }
         //地铁站id
         if (StringTool.isNotEmpty(plotListDo.getSubwayStationId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId",plotListDo.getSubwayStationId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("metroStationId",plotListDo.getSubwayStationId()));
         }
         //均价
         if (StringTool.isNotEmpty(plotListDo.getBeginPrice())&&StringTool.isNotEmpty(plotListDo.getEndPrice())){
