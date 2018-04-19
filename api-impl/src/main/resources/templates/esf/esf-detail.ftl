@@ -615,7 +615,7 @@
             var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
             if (reg.test(str)) {
                 subPhone = true;
-                $('.user-phone').find('.error-text').addClass('none');
+                $('.user-phone').find('.error').addClass('none');
             } else {
                 subPhone = false;
                 $('.user-phone').find('.error').removeClass('none');
@@ -623,8 +623,7 @@
             }
         };
 
-        $('.reservation-submit').bind('click', function () {
-
+        $('.reservation-submit').on('click', function () {
             if ($('.userPhone').val() != '' && $('.user-content').val() != '' && subPhone) {
                 reservationData['userPhone'] = $('.userPhone').val();
                 reservationData['content'] = $('.user-content').val();
