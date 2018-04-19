@@ -591,8 +591,9 @@
         $('.reservation-pop').on('click', '.mask', function (e) {
             $('.reservation-pop').addClass('none');
         });
-
+        var subPhone = false;
         var reservationData = {};
+
 
         reservationData['sellHouseId'] = $('.sellHouseId').text();
         reservationData['price'] = <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}<#else ></#if>;
@@ -613,18 +614,20 @@
         var isPhone = function (str) {
             var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
             if (reg.test(str)) {
+                subPhone = true;
                 $('.user-phone').find('.error-text').addClass('none');
             } else {
+                subPhone = false;
                 $('.user-phone').find('.error').removeClass('none');
                 $('.user-phone').find('.error-text').text('请输入正确格式的手机号码');
             }
         };
 
-        $('.reservation-submit').on('click', function () {
-            if ($('.userPhone').val() != '' && $('.user-content').val() != '') {
+        $('.reservation-submit').bind('click', function () {
+
+            if ($('.userPhone').val() != '' && $('.user-content').val() != '' && subPhone) {
                 reservationData['userPhone'] = $('.userPhone').val();
                 reservationData['content'] = $('.user-content').val();
-
                 $.ajax({
                     type: 'POST',
                     url: '/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
@@ -642,6 +645,11 @@
                     }
                 });
             } else {
+                if ($('.userPhone').val() != '' && subPhone) {
+                    $('.user-phone').find('.error').removeClass('none');
+                    $('.user-phone').find('.error-text').text('请输入正确格式的手机号码！')
+                }
+
                 if ($('.userPhone').val() == '') {
                     $('.user-phone').find('.error').removeClass('none');
                     $('.user-phone').find('.error-text').text('手机号码不能为空！')
