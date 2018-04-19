@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.Plot;
+package com.toutiao.app.domain.plot;
 
 import lombok.Data;
 
