@@ -8,7 +8,6 @@ import com.toutiao.app.api.chance.response.newhouse.*;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.service.map.MapService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,8 +20,6 @@ import java.util.List;
 public class NewHouseRestController {
     @Autowired
     private NewHouseRestService newHouseService;
-    @Autowired
-    private MapService mapService;
 
     /**
      * 根据newcode获取新房数据
@@ -37,19 +34,6 @@ public class NewHouseRestController {
         return NashResult.build(newHouseDetailResponse);
     }
 
-
-    /**
-     * 根据newcode获取户型信息
-     */
-    @ResponseBody
-    @RequestMapping(value = "/getLayoutByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseLayoutByNewCode (@RequestParam(value = "newcode",required = true) Integer newcode)
-    {
-        List<NewHouseLayoutDo> newHouseLayoutDos=newHouseService.getNewHouseLayoutByNewcode(newcode);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDos));
-        List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
-        return NashResult.build(newHouseLayoutResponses);
-    }
 
     /**
      * 获取新房列表页

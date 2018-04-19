@@ -689,7 +689,8 @@ $(function(){
                                     }
                                 }
                                 if(search_type == '出租'||search_type == '公寓'){
-                                    hashPush(plotStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings+','+search_type_sings)
+                                    hashPush(rentStorageArray,search_name+','+search_id+','+search_type+','+location_type_sings+','+search_type_sings)
+                                    console.log('*******************1111111111111')
                                     localStorage.setItem('rent', JSON.stringify(rentStorageArray));
                                     if(location_type_sings == 1){
                                         window.location.href = url+'/zufang?districtId='+search_id

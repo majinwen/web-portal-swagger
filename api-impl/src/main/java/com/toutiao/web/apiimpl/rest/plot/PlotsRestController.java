@@ -9,15 +9,16 @@ import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.plot.PlotListRequest;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsFewResponse;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
-import com.toutiao.app.domain.Plot.PlotDetailsDo;
-import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.Plot.PlotListDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.plot.PlotListDo;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,20 +46,8 @@ public class PlotsRestController {
     }
 
     /**
-     * 获取小区周边信息
-     * @param plotDetailsRequest
-     * @return
-     */
-    @RequestMapping("/getAroundInfoByPlotId")
-    @ResponseBody
-    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest){
-        JSONObject jsonObject = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
-        return NashResult.build(jsonObject);
-    }
-
-    /**
      * 获取周边小区
-     * @param plotAroundPlot
+     * @param plotAroundPlotRequest
      * @return
      */
     @RequestMapping("/getAroundPlotByLocation")
@@ -75,12 +64,12 @@ public class PlotsRestController {
      * @param plotListRequest
      * @return
      */
-    @RequestMapping("getPlotListByRequirement")
+    @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDo plotListDo = new PlotListDo();
         BeanUtils.copyProperties(plotListRequest,plotListDo);
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirement(plotListDo);
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirementWithLocation(plotListDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
         return NashResult.build(plotDetailsFewResponseList);

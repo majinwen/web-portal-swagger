@@ -44,18 +44,6 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseLayout(BoolQueryBuilder boolQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        //查询户型信息
-        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType)
-                .setQuery(boolQueryBuilder)
-                .execute().actionGet();
-        return searchresponse;
-
-
-    }
-
-    @Override
     public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();

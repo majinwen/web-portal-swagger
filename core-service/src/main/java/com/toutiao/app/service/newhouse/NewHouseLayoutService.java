@@ -1,6 +1,5 @@
 package com.toutiao.app.service.newhouse;
 
-import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 

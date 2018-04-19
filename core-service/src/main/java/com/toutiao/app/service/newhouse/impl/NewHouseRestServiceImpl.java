@@ -11,7 +11,9 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.commons.lang3.StringUtils;
 import com.unboundid.util.json.JSONArray;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -61,6 +63,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
      */
     @Override
     public NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode) {
+        NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newcode));
         SearchResponse bulidResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
@@ -69,46 +72,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
         }
-        if (details.isEmpty())
+        if (StringUtils.isNotEmpty(details))
         {
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND,"未找到新房信息");
+            newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         }
-
-        NewHouseDetailDo newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         return  newHouseDetailDo;
 
     }
 
-
-    /**
-     *
-     * @param newcode
-     * 根据newcode查询户型信息
-     * @return
-     */
-    @Override
-    public List<NewHouseLayoutDo> getNewHouseLayoutByNewcode(Integer newcode) {
-
-        List<NewHouseLayoutDo> newHouseLayoutDos=new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",newcode) ,false));
-        SearchResponse layoutResponse =newHouseEsDao.getNewHouseLayout(boolQueryBuilder);
-        SearchHits hits = layoutResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            NewHouseLayoutDo newHouseLayoutDo=JSON.parseObject(details,NewHouseLayoutDo.class);
-            newHouseLayoutDos.add(newHouseLayoutDo);
-        }
-        if(newHouseLayoutDos.isEmpty())
-        {
-            throw  new BaseException(201,"未找到新房户型信息");
-        }
-        return newHouseLayoutDos;
-
-
-    }
 
     @Override
     public NewHouseListDomain getNewHouseList(NewHouseListDo newHouseListDo) {
@@ -136,6 +107,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //城市
         if(newHouseListDo.getCityId()!=null && newHouseListDo.getCityId()!=0){
+            booleanQueryBuilder.must(termQuery("city_id",newHouseListDo.getCityId()));
             booleanQueryBuilder.must(termQuery("city_id", newHouseListDo.getCityId()));
         }
         //区域

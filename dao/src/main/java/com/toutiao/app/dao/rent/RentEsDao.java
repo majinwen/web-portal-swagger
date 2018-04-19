@@ -8,19 +8,19 @@ import java.awt.*;
 import java.util.Map;
 
 @Configuration
-public interface AppRentDao {
+public interface RentEsDao {
 
     /**
      * 查询小区内的出租房屋(普租+公寓)
-     * @param plotId
+     * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder) throws Exception;
+    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from) ;
 
     /**
      * 根据出租房源的id查询出租房源详情
-     * @param rentId
+     * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder) throws Exception;
+    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder) ;
 }

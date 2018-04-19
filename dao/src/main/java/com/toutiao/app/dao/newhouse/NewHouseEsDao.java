@@ -12,12 +12,6 @@ public interface NewHouseEsDao {
      */
     SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder);
 
-    /**
-     * 根据新房id获取新房户型
-     * @param boolQueryBuilder
-     * @return
-     */
-    SearchResponse  getNewHouseLayout(BoolQueryBuilder boolQueryBuilder);
 
     /**
      * 获取新房列表

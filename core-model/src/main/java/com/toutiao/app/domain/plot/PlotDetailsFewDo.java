@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.Plot;
+package com.toutiao.app.domain.plot;
 
 import lombok.Data;
 
@@ -95,9 +95,9 @@ public class PlotDetailsFewDo {
      */
     private String abbreviatedAge;
     /**
-     * key
+     * 车位配比
      */
-    private String key;
+    private String carPositionRatio;
     /**
      * 小区总个数
      */
