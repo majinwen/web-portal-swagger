@@ -102,7 +102,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             //获取地铁和环线位置
             PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId);
-//            String distance=plotDetailsDo.
+            plotDetailsDo.getTrafficInformation().split("$");
 
             return datainfo;
         } catch (Exception e) {
