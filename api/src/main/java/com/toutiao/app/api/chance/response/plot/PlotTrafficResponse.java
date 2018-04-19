@@ -1,9 +1,9 @@
-package com.toutiao.app.domain.plot;
+package com.toutiao.app.api.chance.response.plot;
 
 import lombok.Data;
 
 @Data
-public class PlotTrafficDo {
+public class PlotTrafficResponse {
 
     /**
      * 公交站
@@ -23,12 +23,12 @@ public class PlotTrafficDo {
     /**
      * 环线距离
      */
-    private  Double ringRoadDistance=0.0;
+    private  Double ringRoadDistance;
 
     /**
      * 地铁站
      */
-     private  String subwayStation;
+    private  String subwayStation;
 
     /**
      * 地铁线

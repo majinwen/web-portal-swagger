@@ -4,6 +4,7 @@ package com.toutiao.app.domain.plot;
 import lombok.Data;
 
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -23,7 +24,7 @@ public class PlotDetailsDo {
     /**
      * 小区照片
      */
-    private String[] photo;
+    private List<String> photo;
     /**
      * 区域编号
      */
@@ -51,11 +52,11 @@ public class PlotDetailsDo {
     /**
      * 地铁站编号
      */
-    private String[] metroStationId;
+    private  List<String> metroStationId;
     /**
      * 地铁站
      */
-    private String[] metroStation;
+    private List<String> metroStation;
     /**
      * 地铁站与小区的距离
      */
@@ -63,11 +64,11 @@ public class PlotDetailsDo {
     /**
      * 地铁线路编号
      */
-    private String[] subwayLineId;
+    private List<String> subwayLineId;
     /**
      * 地铁线路
      */
-    private String[] subwayLine;
+    private List<String> subwayLine;
     /**
      * 交通信息
      */
@@ -75,15 +76,15 @@ public class PlotDetailsDo {
     /**
      * 标签编号
      */
-    private String[] labelId;
+    private List<String> labelId;
     /**
      * 标签
      */
-    private String[] label;
+    private List<String> label;
     /**
      * 待售房源
      */
-    private String[] saleHouse;
+    private List<String> saleHouse;
     /**
      * 均价
      */
@@ -175,11 +176,11 @@ public class PlotDetailsDo {
     /**
      * 建筑类型编号
      */
-    private String[] architectureTypeId;
+    private List<String> architectureTypeId;
     /**
      * 建筑类型
      */
-    private String[] architectureType;
+    private List<String> architectureType;
     /**
      * 建筑结构
      */
