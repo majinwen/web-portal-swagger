@@ -1,6 +1,7 @@
 package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
@@ -9,8 +10,11 @@ import com.toutiao.app.service.plot.PlotsRestService;
 
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.officeweb.MapInfo;
+import com.toutiao.web.dao.mapper.officeweb.MapInfoMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import com.toutiao.web.service.map.MapService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -21,6 +25,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.*;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,6 +43,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private PlotEsDao plotEsDao;
     @Autowired
     private PlotsRestService plotsRestService;
+    @Autowired
+    private MapInfoMapper mapInfoMapper;
 
 
     /**
@@ -86,23 +93,23 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param plotId
      * @return
      */
-    @Override
-    public JSONObject queryPlotDataInfo(Integer plotId) {
-        try {
-            MapInfo mapInfo = new MapInfo();
-            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
-            BeanUtils.copyProperties(mapInfo,result);
-            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-            //获取地铁和环线位置
-            PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId);
-            plotDetailsDo.getTrafficInformation().split("$");
-
-            return datainfo;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @Override
+//    public JSONObject queryPlotDataInfo(Integer plotId) {
+//        try {
+//            MapInfo mapInfo = new MapInfo();
+//            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
+//            BeanUtils.copyProperties(mapInfo,result);
+//            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+//            //获取地铁和环线位置
+//            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
+//            plotDetailsDo.getTrafficInformation().split("$");
+//
+//            return datainfo;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     /**
      * 附近小区
