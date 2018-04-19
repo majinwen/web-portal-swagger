@@ -1,14 +1,17 @@
 package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.toutiao.app.dao.plot.PlotEsDao;
-import com.toutiao.app.domain.plot.PlotDetailsDo;
-import com.toutiao.app.domain.plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.plot.PlotListDo;
+import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.dao.plot.AppPlotDao;
+import com.toutiao.app.domain.MapInfo;
+import com.toutiao.app.domain.Plot.PlotDetailsDo;
+import com.toutiao.app.domain.Plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.Plot.PlotListDo;
 import com.toutiao.app.service.plot.PlotsRestService;
 
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.mapper.officeweb.MapInfoMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.beanutils.BeanUtils;
@@ -21,6 +24,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.*;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,9 +39,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     @Value("${plot.child.type}")
     private String childType;
     @Autowired
-    private PlotEsDao plotEsDao;
+    private AppPlotDao appPlotDao;
     @Autowired
-    private PlotsRestService plotsRestService;
+    private MapInfoMapper mapInfoMapper;
+    @Autowired
+    private PlotsRestService appPlotService;
 
 
     /**
@@ -50,7 +56,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
-            SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
+            SearchResponse searchResponse = appPlotDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
             Map<String, Object> source = hits[0].getSource();
             PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
@@ -75,6 +81,29 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotDetailsDo.setHeatingMode("自供暖");
             }
             return plotDetailsDo;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取小区周边配套
+     * @param plotId
+     * @return
+     */
+    @Override
+    public JSONObject queryPlotDataInfo(Integer plotId) {
+        try {
+            MapInfo mapInfo = new MapInfo();
+            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
+            BeanUtils.copyProperties(mapInfo,result);
+            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            //获取地铁和环线位置
+            PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId);
+//            String distance=plotDetailsDo.
+
+            return datainfo;
         } catch (Exception e) {
             e.printStackTrace();
         }
