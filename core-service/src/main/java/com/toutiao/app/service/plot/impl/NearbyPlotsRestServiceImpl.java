@@ -163,8 +163,8 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
         }
         //房源面积大小
         if ((StringTool.isNotEmpty(nearbyPlotsListDo.getHouseAreaSize()))){
-            BoolQueryBuilder QueryBuilder = QueryBuilders.boolQuery();
             String[] houseArea = nearbyPlotsListDo.getHouseAreaSize().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
+            BoolQueryBuilder QueryBuilder = QueryBuilders.boolQuery();
             for (int i = 0; i < houseArea.length; i = i + 2) {
                 if (i + 1 > houseArea.length) {
                     break;
