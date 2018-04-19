@@ -646,6 +646,7 @@
                 });
             } else {
                 if ($('.userPhone').val() != '' && subPhone) {
+                    alert('不正确')
                     $('.user-phone').find('.error').removeClass('none');
                     $('.user-phone').find('.error-text').text('请输入正确格式的手机号码！')
                 }
