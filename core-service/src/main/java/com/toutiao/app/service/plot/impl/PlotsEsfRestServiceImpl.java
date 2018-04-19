@@ -2,7 +2,6 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
@@ -11,7 +10,6 @@ import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
@@ -26,7 +24,6 @@ import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 /**
  * 小区下二手房服务实现类
