@@ -1,6 +1,9 @@
 package com.toutiao.web.domain.query;
 
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+
 //小区
 //(查找范围的数组字段，按照顺序赋值就可以)
 @Data
