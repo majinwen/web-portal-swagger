@@ -544,8 +544,8 @@
             <div class="detail-contact-wrapper">
                 <section class="detail-contact-box" id="detailContactState">
                     <div class="detail-contact-content">
-                        <a href="tel:${houseDetail.houseProxyPhone}" class="contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 60%;margin-top: -0.06rem;">立即咨询底价</a>
-                        <a href="javascript:void(0)" class="contact-next">预约咨询</a>
+                        <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 60%;margin-top: -0.06rem;">立即咨询底价</a>
+                        <#--<a href="javascript:void(0)" class="contact-next">预约咨询</a>-->
                     </div>
                 </section>
             </div>
