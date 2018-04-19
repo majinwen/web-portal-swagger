@@ -78,7 +78,16 @@ public class PlotsRestController {
         return NashResult.build(plotDetailsFewResponseList);
     }
 
-    @RequestMapping("/getAroundInfoByPlotId")
+    /**
+     *
+     * @param plotAroundInfoRequest
+     * @return
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     *  获取小区交通配套
+     */
+
+    @RequestMapping(value = "/getAroundInfoByPlotId",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
 

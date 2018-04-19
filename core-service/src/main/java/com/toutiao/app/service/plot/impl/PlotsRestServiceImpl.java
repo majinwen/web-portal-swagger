@@ -104,7 +104,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @return
      */
     @Override
-    public PlotTrafficDo queryPlotDataInfo(Integer plotId) throws InvocationTargetException, IllegalAccessException {
+    public PlotTrafficDo queryPlotDataInfo(Integer plotId){
             MapInfo mapInfo = new MapInfo();
             PlotTrafficDo plotTrafficDo=new PlotTrafficDo();
             mapInfo =  mapService.getMapInfo(plotId);
@@ -121,9 +121,6 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotTrafficDo.setSubwayLine(trafficInfo[0]);
                 plotTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
             }
-
-
-
 
             return plotTrafficDo;
     }
