@@ -64,7 +64,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     /**
-     * 二手房附近好房列表
+     * 二手房附近列表
      * @param newcode
      * @param lat
      * @param lon
@@ -73,28 +73,23 @@ public class SellHouseServiceImpl implements SellHouseService{
      */
     public List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
 
-        List<NearBySellHousesDo> nearBySh = new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS));
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon());
-        Script script = new Script("Math.random()");
-        ScriptSortBuilder scriptSortBuilder = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
-        sort.unit(DistanceUnit.KILOMETERS);
-        sort.geoDistance(GeoDistance.ARC);
+        SearchResponse searchresponse = null;
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
+        String key = null;
+        //关键字搜索
+        List<String> searchDistrictsList = new ArrayList<>();
+        List<String> searchAreasList = new ArrayList<>();
+        List<String> searchTermList = new ArrayList<>();
+        if (StringTool.isNotBlank(nearBySellHousesDo.getKeyword()))
+        {
 
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseIdAndLocation(boolQueryBuilder,scriptSortBuilder,sort);
-        SearchHits hits = searchResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        String details;
-        for (SearchHit searchHit : searchHists) {
-            details = searchHit.getSourceAsString();
-            BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[1]);
-            String range = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-            NearBySellHousesDo nearBySellHouses = JSON.parseObject(details,NearBySellHousesDo.class);
-            nearBySellHousesDo.setHousetToPlotDistance(range);
-            nearBySh.add(nearBySellHousesDo);
         }
-        return nearBySh;
+
+
+
+
+
+
     }
 
     /**

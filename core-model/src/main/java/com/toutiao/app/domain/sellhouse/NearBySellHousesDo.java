@@ -109,4 +109,10 @@ public class NearBySellHousesDo {
      */
     private Integer distance;
 
+
+    /**
+     * /**
+     * 关键字
+     */
+    private String keyword;
 }
