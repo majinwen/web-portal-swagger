@@ -115,11 +115,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder)
+                .setQuery(booleanQueryBuilder).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                 .execute().actionGet();
         return searchResponse;
     }

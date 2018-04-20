@@ -46,5 +46,5 @@ public interface SellHouseEsDao {
     SearchResponse getSellHouseCountByPlotsId(Integer plotsId);
 
 
-    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize);
 }

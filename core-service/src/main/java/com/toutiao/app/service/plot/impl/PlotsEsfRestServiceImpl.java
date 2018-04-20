@@ -13,6 +13,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId);
         Map aggMap =searchResponse.getAggregations().asMap();
-        LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
+        StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
 
         if(gradeTerms.getBuckets().size() == 0){
             throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_ESF_NOT_FOUND,"小区没有出售房源信息");
@@ -81,7 +82,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
      * @return
      */
     @Override
-    public List<SellHouseDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room) {
+    public List<SellHouseDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize) {
 
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<SellHouseDo> sellHouseDoList = new ArrayList<>();
@@ -89,8 +90,11 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         if(room != 0){
             detailsBuilder.must(termQuery("room",room));
         }
-        SearchResponse searchresponse = sellHouseEsDao.getEsfByPlotsIdAndRoom(detailsBuilder);
+        SearchResponse searchresponse = sellHouseEsDao.getEsfByPlotsIdAndRoom(detailsBuilder,pageNum,pageSize);
 
+        if(searchresponse.getHits().totalHits==0){
+            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_ESF_NOT_FOUND,"小区没有出售房源信息");
+        }
         SearchHits layoutHits = searchresponse.getHits();
         SearchHit[] searchHists = layoutHits.getHits();
 

@@ -24,5 +24,5 @@ public interface PlotsEsfRestService {
      * @param room
      * @return
      */
-    List<SellHouseDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room);
+    List<SellHouseDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize);
 }
