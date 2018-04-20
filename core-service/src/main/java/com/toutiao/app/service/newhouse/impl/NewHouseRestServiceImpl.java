@@ -10,7 +10,10 @@ import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import com.toutiao.web.service.map.MapService;
+import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.commons.lang3.StringUtils;
 import com.unboundid.util.json.JSONArray;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +25,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +47,13 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
     private NewHouseLayoutService newHouseLayoutService;
+
+    @Autowired
+    private MapService mapService;
+
+    @Autowired
+    private NewHouseRestService newHouseService;
+
 
     private Logger logger = LoggerFactory.getLogger(NewHouseRestServiceImpl.class);
 
@@ -217,6 +228,40 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         return  newHouseDynamicDoList;
+    }
+
+    @Override
+    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode) {
+        MapInfo mapInfo = new MapInfo();
+        NewHouseTrafficDo newHouseTrafficDo=new NewHouseTrafficDo();
+        mapInfo =  mapService.getMapInfo(newCode);
+        if (mapInfo==null)
+        {
+            throw  new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_TRAFFIC_NOT_FOUND);
+        }
+        //获取新房交通配套
+        JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+        JSONObject businfo= (JSONObject) datainfo.get("gongjiao");
+        newHouseTrafficDo.setBusStation(businfo.get("name").toString());
+        newHouseTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
+        //获取地铁和环线位置
+        NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBulidByNewcode(newCode);
+        if (null!=newHouseDetailDo.getRoundstation() &&!"".equals(newHouseDetailDo.getRoundstation()))
+        {  String []  trafficInfo=newHouseDetailDo.getRoundstation().split("\\$");
+            newHouseTrafficDo.setSubwayStation(trafficInfo[1]);
+            newHouseTrafficDo.setSubwayLine(trafficInfo[0]);
+            newHouseTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
+        }
+        if(null!=newHouseDetailDo.getRingRoadName() && !"".equals(newHouseDetailDo.getRingRoadName()))
+        {
+            newHouseTrafficDo.setRingRoadName(newHouseDetailDo.getRingRoadName());
+        }
+        if(null!=newHouseDetailDo.getRingRoadDistance())
+        {
+            newHouseTrafficDo.setRingRoadDistance(Double.valueOf(newHouseDetailDo.getRingRoadDistance().toString()));
+        }
+
+        return  newHouseTrafficDo;
     }
 
 

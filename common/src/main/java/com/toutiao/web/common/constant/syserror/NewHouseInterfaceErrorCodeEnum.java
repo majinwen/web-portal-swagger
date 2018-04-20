@@ -21,7 +21,8 @@ public enum NewHouseInterfaceErrorCodeEnum implements IntBaseType {
     //调用户型信息异常
     NEWHOUSE_LAYOUT_EXPTION("调用新房信息异常",40399),
     //新房动态为空
-    NEWHOUSE_DYNAMIC_EXPTION("新房动态为空",40401);
+    NEWHOUSE_DYNAMIC_EXPTION("新房动态为空",40401),
+    NEWHOUSE_TRAFFIC_NOT_FOUND("新房交通配套为空",40501);
 
 
     private String desc;
