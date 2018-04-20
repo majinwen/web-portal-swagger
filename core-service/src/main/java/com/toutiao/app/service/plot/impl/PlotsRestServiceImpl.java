@@ -158,6 +158,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
     @Override
     public List<PlotDetailsFewDo> queryPlotListByRequirement(PlotListDo plotListDo) {
+        String key = "";
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -196,10 +197,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //地铁线id
         if (StringTool.isNotEmpty(plotListDo.getSubwayLineId())){
             boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId",plotListDo.getSubwayLineId()));
+            key = String.valueOf(plotListDo.getSubwayLineId());
         }
         //地铁站id
         if (StringTool.isNotEmpty(plotListDo.getSubwayStationId())){
             boolQueryBuilder.must(QueryBuilders.termQuery("metroStationId",plotListDo.getSubwayStationId()));
+            key = key+"$"+plotListDo.getSubwayStationId();
         }
         //均价
         if (StringTool.isNotEmpty(plotListDo.getBeginPrice())&&StringTool.isNotEmpty(plotListDo.getEndPrice())){
@@ -274,6 +277,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 String sourceAsString = hit.getSourceAsString();
                 PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
                 plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                plotDetailsFewDo.setKey(key);
                 plotDetailsFewDoList.add(plotDetailsFewDo);
             }
         }
