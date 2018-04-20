@@ -513,6 +513,23 @@
                     location.href = link.find('a').attr('href');
                 });
                 return false;
+            }else
+            if($(this).children().hasClass('ad29')){
+                zhuge.track('大首页-点击新房推荐广告N0.2', {
+                    "房屋类型":link.find('div.list-item-cont').find('h3.cont-block-1').find('em').text().trim(),
+                    "参考均价":link.find('div.list-item-cont').find('p.cont-block-2.high-light-red').text().trim(),
+                    "区域":link.find('div.list-item-cont').find('p.cont-block-3').text().split("/")[0].trim(),
+                    "面积范围":link.find('div.list-item-cont').find('p.cont-block-3').text().split("/")[1]==undefined?'':link.find('div.list-item-cont').find('p.cont-block-3').text().split("/")[1].trim(),
+                    "标签":link.find('div.cont-block-4.house-labelling.gray.middle').find("span").text().trim(),
+                    "业态":"",
+                    "优惠活动":link.find('div.new-active').find("span").text().trim(),
+                    "楼盘名称":link.find('div.list-item-cont').find('span.ellipsis').text().trim(),
+                    "页面位置及序号":$(this).index()+1
+
+                }, function () {
+                    location.href = link.find('a').attr('href');
+                });
+                return false;
             }else{
 //                    var property = text.find(".newhouse_property").text();
                 zhuge.track('大首页-点击新房推荐房屋', {
