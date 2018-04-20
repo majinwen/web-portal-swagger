@@ -13,6 +13,8 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -82,6 +84,15 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<String> searchTermList = new ArrayList<>();
         if (StringTool.isNotBlank(nearBySellHousesDo.getKeyword()))
         {
+            //区域关键词
+            if (StringUtil.isNotNullString(DistrictMap.getDistricts(nearBySellHousesDo.getKeyword()))) {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", nearBySellHousesDo.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area", nearBySellHousesDo.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", nearBySellHousesDo.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", nearBySellHousesDo.getKeyword()).analyzer("ik_smart")));
+                AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,nearBySellHousesDo.getKeyword());
+            }
 
         }
 
