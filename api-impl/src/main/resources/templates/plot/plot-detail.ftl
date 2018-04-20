@@ -206,7 +206,7 @@
                                         <#if photoitem?index_of('http') gt -1>
                                             <img src="${photoitem}" alt="" onerror="this.src='${staticurl}/images/global/tpzw_image.png'">
                                         <#else >
-                                            <img src="${qiniuzufangimage}/${rentitem['house_title_img']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="">
+                                            <img src="${qiniuzufangimage}/${rentitem['house_title_img']}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="">
                                         </#if>
                                     <#else >
                                         <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
@@ -234,8 +234,14 @@
                                 <div class="list-item-img-box">
                                     <#if reitem['housePhotoTitle']?exists>
                                         <#assign photoitem=reitem['housePhotoTitle']>
-                                        <#if photoitem?? && photoitem != ''><img src="${photoitem}" alt="">
-                                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                        <#if photoitem?? && photoitem != ''>
+                                            <#if photoitem?index_of('http') gt -1>
+                                                <img src="${photoitem}" alt="" onerror="this.src='${staticurl}/images/global/tpzw_image.png'">
+                                            <#else >
+                                                <img src="${qiniuimage}/${photoitem}-tt400x300" alt="" onerror="this.src='${staticurl}/images/global/tpzw_image.png'">
+                                            </#if>
+                                        <#else >
+                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                         </#if>
                                     </#if>
                                 </div>
@@ -274,7 +280,7 @@
                                     <#if rentitem['house_title_img']?index_of("http") gt -1>
                                         <img src="${rentitem['house_title_img']}" alt="${rentitem['zufang_name']}">
                                     <#else>
-                                        <img src="${qiniuzufangimage}/${rentitem['house_title_img']}" alt="${rentitem['zufang_name']}">
+                                        <img src="${qiniuzufangimage}/${rentitem['house_title_img']}-tt400x300" alt="${rentitem['zufang_name']}">
                                     </#if>
                                 <#else >
                                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">

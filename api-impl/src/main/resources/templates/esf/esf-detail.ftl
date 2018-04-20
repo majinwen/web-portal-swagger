@@ -381,7 +381,11 @@
                         </#if>
                         <div class="picture-box">
                             <#if map.claimHousePhotoTitle?exists && map.claimHousePhotoTitle!=''>
-                                <img src="${map.claimHousePhotoTitle}" alt="${map.plotName}">
+                                <#if map.claimHousePhotoTitle?string?index_of("http") gt -1>
+                                    <img src="${map.claimHousePhotoTitle}" alt="${map.plotName}">
+                                <#else>
+                                    <img src="${qiniuimage}/${map.claimHousePhotoTitle}-tt400x300" alt="${map.plotName}">
+                                </#if>
                             <#else >
                                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
@@ -420,7 +424,11 @@
                         </#if>
                         <div class="picture-box">
                             <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
-                                <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                                <#if map.housePhotoTitle?string?index_of("http") gt -1>
+                                    <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                                <#else>
+                                    <img src="${qiniuimage}/${map.housePhotoTitle}-tt400x300" alt="${map.plotName}" >
+                                </#if>
                             <#else >
                                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                             </#if>
