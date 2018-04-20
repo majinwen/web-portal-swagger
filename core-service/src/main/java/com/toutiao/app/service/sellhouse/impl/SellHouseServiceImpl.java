@@ -71,13 +71,12 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @param distance
      * @return
      */
-    public List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(String newcode, double lat, double lon, String distance) {
+    public List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
 
         List<NearBySellHousesDo> nearBySh = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.mustNot(termQuery("newcode",newcode));
-        boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.KILOMETERS));
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
+        boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS));
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon());
         Script script = new Script("Math.random()");
         ScriptSortBuilder scriptSortBuilder = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
         sort.unit(DistanceUnit.KILOMETERS);
@@ -91,7 +90,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             details = searchHit.getSourceAsString();
             BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[1]);
             String range = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-            NearBySellHousesDo nearBySellHousesDo = JSON.parseObject(details,NearBySellHousesDo.class);
+            NearBySellHousesDo nearBySellHouses = JSON.parseObject(details,NearBySellHousesDo.class);
             nearBySellHousesDo.setHousetToPlotDistance(range);
             nearBySh.add(nearBySellHousesDo);
         }

@@ -24,7 +24,7 @@ public interface SellHouseService {
      * @param distance
      * @return
      */
-    List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(String newcode, double lat, double lon, String distance);
+    List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo);
 
 
     /**

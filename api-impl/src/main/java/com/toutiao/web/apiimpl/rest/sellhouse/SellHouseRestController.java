@@ -50,15 +50,17 @@ public class SellHouseRestController {
     }
 
     /**
-     * 二手房附近好房列表
+     * 二手房附近列表
      * @param nearBySellHousesRequest
      * @return
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
     public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
-        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesRequest.getNewhouse(),nearBySellHousesRequest.getLat(),
-                nearBySellHousesRequest.getLon(),nearBySellHousesRequest.getDistance());
+
+        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
+        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
+        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos));
         List<NearBySellHousesResponse> nearBySellHousesResponses = JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
         return NashResult.build(nearBySellHousesResponses);
