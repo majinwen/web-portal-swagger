@@ -38,14 +38,14 @@ public @interface HouseTypeValidator {
             String[] type = values.split(",");
             boolean isFlag = false;
 
+            //不能等于空字符串
+            if ("".equals(value)){
+                return false;
+            }
+
             //当在大首页时为空值
             if (StringUtils.isEmpty(value)){
                 return true;
-            }
-
-            //不能等于空字符串
-            if (value.trim().equals("")){
-                return false;
             }
 
             //遍历比对的有效值
