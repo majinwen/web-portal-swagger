@@ -23,6 +23,11 @@ import org.elasticsearch.index.query.functionscore.FieldValueFactorFunctionBuild
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -108,6 +113,26 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                         .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
             searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
+        }
+        else
+        {
+            AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").from((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).size(nearBySellHousesDo.getPageSize()).sort("sortingScore", SortOrder.DESC);
+            AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(agg_tophits);
+            searchResponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group)).execute().actionGet();
+
+
+            InternalFilter isClaimGroup = searchResponse.getAggregations().get("isClaimGroup");
+
+            Terms agg = isClaimGroup.getAggregations().get("groups");
+            Terms.Bucket bucket = agg.getBucketByKey("2");
+            long top_size = 0;
+            long oneKM_size = 0;
+            TopHits topHits = null;
+            if(bucket!=null){
+                topHits = bucket.getAggregations().get("group_hits");
+                top_size = topHits.getHits().getHits().length;
+                oneKM_size = topHits.getHits().getTotalHits();
+            }
         }
 
         return searchResponse;
