@@ -89,17 +89,17 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHousesDo.getDistrictId()));
         }
 
-        //地铁线id
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayLineId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", nearBySellHousesDo.getSubwayLineId()));
-            key =nearBySellHousesDo.getSubwayLineId().toString();
-        }
+//        //地铁线id
+//        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayLineId())) {
+//            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", nearBySellHousesDo.getSubwayLineId()));
+//            key =nearBySellHousesDo.getSubwayLineId().toString();
+//        }
 
-        //地铁站id
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayStationId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", nearBySellHousesDo.getSubwayStationId()));
-            key = nearBySellHousesDo.getSubwayLineId() + "$" + nearBySellHousesDo.getSubwayStationId();
-        }
+//        //地铁站id
+//        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayStationId())) {
+//            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", nearBySellHousesDo.getSubwayStationId()));
+//            key = nearBySellHousesDo.getSubwayLineId() + "$" + nearBySellHousesDo.getSubwayStationId();
+//        }
 
         //总价查询
         if (StringTool.isNotEmpty(nearBySellHousesDo.getBeginPrice()) && StringTool.isNotEmpty(nearBySellHousesDo.getEndPrice())) {
@@ -178,7 +178,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
 
-
+        return  null;
     }
 
     /**

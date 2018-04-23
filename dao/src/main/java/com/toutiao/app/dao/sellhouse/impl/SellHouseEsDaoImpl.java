@@ -71,7 +71,8 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
             List<String> searchTermList =  fenCiMatching(nearBySellHousesDo.getKeyword(),booleanQueryBuilder,client);
             booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gte(0));
-            FunctionScoreQueryBuilder query = null;
+            FieldValueFactorFunctionBuilder fieldValueFactorFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim");
+            FunctionScoreQueryBuilder functionScoreQueryBuilder = new FunctionScoreQueryBuilder(booleanQueryBuilder,fieldValueFactorFunctionBuilder);
             if(searchTermList!=null && searchTermList.size() > 0){
                 FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchTermList.size()];
                 for(int i=0 ;i<searchTermList.size();i++){
@@ -80,7 +81,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                 }
-                query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
+                functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
 
             }else if(searchAreasList!=null && searchAreasList.size() > 0)
@@ -92,7 +93,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize-i);
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                 }
-                query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
+                functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }else if(searchAreasList!=null && searchAreasList.size() > 0)
             {
@@ -103,10 +104,10 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i);
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                 }
-                query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
+                functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
-            searchResponse = srb.setQuery(query).addSort(sort).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
+            searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
         }
 
         return searchResponse;

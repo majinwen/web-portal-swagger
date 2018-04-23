@@ -56,7 +56,7 @@ public class SellHouseRestController {
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
-    public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
+    public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
 
         NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
         BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
