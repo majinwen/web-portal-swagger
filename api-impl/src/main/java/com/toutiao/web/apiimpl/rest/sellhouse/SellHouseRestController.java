@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
 import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 
@@ -59,11 +60,14 @@ public class SellHouseRestController {
     public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
 
         NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
+        NearBySellHouseDomainResponse NearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
         BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
-        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos));
-        List<NearBySellHousesResponse> nearBySellHousesResponses = JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
-        return NashResult.build(nearBySellHousesResponses);
+        NearBySellHouseDomain nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos.getNearBySellHousesDos()));
+        List<NearBySellHousesResponse> nearBySellHousesResponses=JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
+        NearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
+        NearBySellHouseDomainResponse.setTotalCount(nearBySellHousesDos.getTotalCount());
+        return NashResult.build(NearBySellHouseDomainResponse);
     }
 
     /**

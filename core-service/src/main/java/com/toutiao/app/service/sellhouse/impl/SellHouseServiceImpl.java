@@ -4,6 +4,8 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
+import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
@@ -73,12 +75,10 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @param distance
      * @return
      */
-    public List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
-
-        SearchResponse searchresponse = null;
-        String key = null;
+    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
+        NearBySellHouseDomain newHouseListDoList= new NearBySellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
-
+        List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         //商圈
         if (StringTool.isNotEmpty(nearBySellHousesDo.getAreaId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHousesDo.getAreaId()));
@@ -89,17 +89,15 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHousesDo.getDistrictId()));
         }
 
-//        //地铁线id
-//        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayLineId())) {
-//            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", nearBySellHousesDo.getSubwayLineId()));
-//            key =nearBySellHousesDo.getSubwayLineId().toString();
-//        }
+        //地铁线id
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayLineId())) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", new int[]{ nearBySellHousesDo.getSubwayLineId()}));
+        }
 
-//        //地铁站id
-//        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayStationId())) {
-//            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", nearBySellHousesDo.getSubwayStationId()));
-//            key = nearBySellHousesDo.getSubwayLineId() + "$" + nearBySellHousesDo.getSubwayStationId();
-//        }
+        //地铁站id
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayStationId())) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId",  new int[]{nearBySellHousesDo.getSubwayStationId()}));
+        }
 
         //总价查询
         if (StringTool.isNotEmpty(nearBySellHousesDo.getBeginPrice()) && StringTool.isNotEmpty(nearBySellHousesDo.getEndPrice())) {
@@ -175,10 +173,17 @@ public class SellHouseServiceImpl implements SellHouseService{
         sort.point(nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon());
 
         SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(sort,nearBySellHousesDo,booleanQueryBuilder);
-
-
-
-        return  null;
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit searchHit : searchHists) {
+            String details = "";
+            details=searchHit.getSourceAsString();
+            nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+            nearBySellHouses.add(nearBySellHousesDo);
+        }
+        newHouseListDoList.setNearBySellHousesDos(nearBySellHouses);
+        newHouseListDoList.setTotalCount(hits.getTotalHits());
+        return newHouseListDoList;
     }
 
     /**

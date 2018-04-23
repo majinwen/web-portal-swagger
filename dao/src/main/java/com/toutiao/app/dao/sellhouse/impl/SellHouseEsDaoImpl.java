@@ -14,6 +14,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
+import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -76,7 +77,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
             List<String> searchTermList =  fenCiMatching(nearBySellHousesDo.getKeyword(),booleanQueryBuilder,client);
             booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gte(0));
-            FieldValueFactorFunctionBuilder fieldValueFactorFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim");
+            FieldValueFactorFunctionBuilder fieldValueFactorFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11);
             FunctionScoreQueryBuilder functionScoreQueryBuilder = new FunctionScoreQueryBuilder(booleanQueryBuilder,fieldValueFactorFunctionBuilder);
             if(searchTermList!=null && searchTermList.size() > 0){
                 FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchTermList.size()];
@@ -112,27 +113,19 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                 functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
-            searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
+            searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFetchSource(
+
+                    new String[] {"houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year"} ,null
+            ).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
         }
         else
         {
-            AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").from((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).size(nearBySellHousesDo.getPageSize()).sort("sortingScore", SortOrder.DESC);
-            AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(agg_tophits);
-            searchResponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group)).execute().actionGet();
+            FieldValueFactorFunctionBuilder fieldValueFactorFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11);
+            FunctionScoreQueryBuilder functionScoreQueryBuilder = new FunctionScoreQueryBuilder(booleanQueryBuilder,fieldValueFactorFunctionBuilder);
+            searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFetchSource(
 
-
-            InternalFilter isClaimGroup = searchResponse.getAggregations().get("isClaimGroup");
-
-            Terms agg = isClaimGroup.getAggregations().get("groups");
-            Terms.Bucket bucket = agg.getBucketByKey("2");
-            long top_size = 0;
-            long oneKM_size = 0;
-            TopHits topHits = null;
-            if(bucket!=null){
-                topHits = bucket.getAggregations().get("group_hits");
-                top_size = topHits.getHits().getHits().length;
-                oneKM_size = topHits.getHits().getTotalHits();
-            }
+                    new String[] {"houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year"} ,null
+            ).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
         }
 
         return searchResponse;

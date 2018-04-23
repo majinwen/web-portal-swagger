@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.sellhouse;
 
 import lombok.Data;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -57,10 +58,6 @@ public class NearBySellHousesDo {
      */
     private String forwardName;
 
-    /**
-     * 当前房源距离附件小区的距离
-     */
-    private String housetToPlotDistance;
 
      /**
         * 附近地铁信息
@@ -194,4 +191,22 @@ public class NearBySellHousesDo {
      * 房屋标签
      */
     private  Integer [] houseLabelId;
+
+    /**
+     * 认领标识
+     */
+    private  Integer isClaim;
+
+
+    /**
+     * 地铁最近
+     */
+    private  String traffic;
+
+    /**
+     * 楼盘名称
+     */
+    private  String plotNameAccurate;
+
+
 }
