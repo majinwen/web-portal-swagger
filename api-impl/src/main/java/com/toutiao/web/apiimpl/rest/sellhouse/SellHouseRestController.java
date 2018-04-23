@@ -7,6 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
 import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 
@@ -50,18 +51,23 @@ public class SellHouseRestController {
     }
 
     /**
-     * 二手房附近好房列表
+     * 二手房附近列表
      * @param nearBySellHousesRequest
      * @return
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
-    public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
-        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesRequest.getNewhouse(),nearBySellHousesRequest.getLat(),
-                nearBySellHousesRequest.getLon(),nearBySellHousesRequest.getDistance());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos));
-        List<NearBySellHousesResponse> nearBySellHousesResponses = JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
-        return NashResult.build(nearBySellHousesResponses);
+    public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
+
+        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
+        NearBySellHouseDomainResponse NearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
+        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
+        NearBySellHouseDomain nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos.getNearBySellHousesDos()));
+        List<NearBySellHousesResponse> nearBySellHousesResponses=JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
+        NearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
+        NearBySellHouseDomainResponse.setTotalCount(nearBySellHousesDos.getTotalCount());
+        return NashResult.build(NearBySellHouseDomainResponse);
     }
 
     /**

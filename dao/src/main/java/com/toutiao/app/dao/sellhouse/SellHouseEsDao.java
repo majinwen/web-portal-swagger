@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.sellhouse;
 
 
+import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -25,7 +26,7 @@ public interface SellHouseEsDao {
      * @param sort
      * @return
      */
-    SearchResponse getSellHouseByHouseIdAndLocation(BoolQueryBuilder booleanQueryBuilder, ScriptSortBuilder scriptSortBuilder, GeoDistanceSortBuilder sort);
+    SearchResponse getSellHouseByHouseIdAndLocation(GeoDistanceSortBuilder sort, NearBySellHousesDo nearBySellHousesDo, BoolQueryBuilder booleanQueryBuilder );
 
 
     /**

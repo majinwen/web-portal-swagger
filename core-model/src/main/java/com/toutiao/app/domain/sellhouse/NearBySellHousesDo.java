@@ -1,6 +1,10 @@
 package com.toutiao.app.domain.sellhouse;
 
 import lombok.Data;
+import org.omg.PortableInterceptor.INACTIVE;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 public class NearBySellHousesDo {
@@ -30,9 +34,9 @@ public class NearBySellHousesDo {
     private Integer toilet;
 
     /**
-     * 二手房房源标题图
+     * 二手房房源图片
      */
-    private String housePhotoTitle;
+    private List<String> housePhoto;
 
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
@@ -54,14 +58,155 @@ public class NearBySellHousesDo {
      */
     private String forwardName;
 
-    /**
-     * 当前房源距离附件小区的距离
+
+     /**
+        * 附近地铁信息
      */
-    private String housetToPlotDistance;
+    private  String roundStation;
+
 
     /**
-     * 总个数
+     *
+     * 车位配比
      */
-    private Integer totalNum;
+    private String parkRadio;
+
+    /**
+     * 建成年代
+     */
+    private String year;
+
+
+    /**
+     * 页码
+     */
+    private Integer pageNum = 1;
+
+    /**
+     * 页数
+     */
+    private  Integer pageSize=10;
+
+
+    /**
+     *
+     * 城市id
+     */
+    private Integer cityId;
+
+
+    /**
+     * y坐标
+     */
+    private Double lat;
+
+    /**
+     * x坐标
+     */
+    private Double lon;
+
+
+    /**
+     * 附近距离
+     */
+    private Integer distance;
+
+
+    /**
+     * /**
+     * 关键字
+     */
+    private String keyword;
+
+
+    /**
+     * 商圈id
+     */
+    private Integer areaId;
+
+
+    /**
+     * 区域
+     */
+    private Integer districtId;
+
+
+
+    /**
+     * 地铁线Id
+     */
+    private Integer subwayLineId;
+
+    /**
+     * 地铁站Id
+     */
+    private Integer subwayStationId;
+
+
+    /**
+     *   起始价格
+     */
+
+    private Integer beginPrice;
+
+    /**
+     * 结束价格
+     */
+
+    private  Integer endPrice;
+
+
+    /**
+     * 面积起始值
+     */
+
+     private  Integer beginArea;
+
+
+    /**
+     * 面积结束值
+     */
+    private  Integer endArea;
+
+
+
+    /**
+     * 楼龄[0-5]
+     */
+    private String houseYearId;
+
+
+    /**
+     * 居室id
+     */
+    private  Integer [] layoutId;
+
+
+    /**
+     * 朝向
+     */
+    private  Integer []  forward;
+
+    /**
+     * 房屋标签
+     */
+    private  Integer [] houseLabelId;
+
+    /**
+     * 认领标识
+     */
+    private  Integer isClaim;
+
+
+    /**
+     * 地铁最近
+     */
+    private  String traffic;
+
+    /**
+     * 楼盘名称
+     */
+    private  String plotNameAccurate;
+
 
 }

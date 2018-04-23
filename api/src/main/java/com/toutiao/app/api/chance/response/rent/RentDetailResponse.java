@@ -9,63 +9,63 @@ public class RentDetailResponse {
     /**
      * 经纪人头像路径
      */
-    private String agent_headphoto;
+    private String agentHeadPhoto;
     /**
      * 小区Id
      */
-    private Integer zufang_id;
+    private Integer zufangId;
     /**
      * 小区名称
      */
-    private String zufang_name;
+    private String zufangName;
     /**
      * 小区分数
      */
-    private Integer zufang_score;
+    private Integer zufangScore;
     /**
      * 城市编号
      */
-    private Integer city_id;
+    private Integer cityId;
     /**
      * 区域编号
      */
-    private Integer district_id;
+    private Integer districtId;
     /**
      * 区域名称
      */
-    private String district_name;
+    private String districtName;
     /**
      * 商圈编号
      */
-    private Integer area_id;
+    private Integer areaId;
     /**
      * 商圈名称
      */
-    private String area_name;
+    private String areaName;
     /**
      * 出租房源Id
      */
-    private String house_id;
+    private String houseId;
     /**
      * 租赁方式(1-整租，2-合租)
      */
-    private Integer rent_type;
+    private Integer rentType;
     /**
      * 租赁方式名称
      */
-    private String rent_type_name;
+    private String rentTypeName;
     /**
      * 出租房源标志(普租/公寓)
      */
-    private Integer rent_sign;
+    private Integer rentSign;
     /**
      * 出租房源标志名称(出租/公寓)
      */
-    private String rent_sign_name;
+    private String rentSignName;
     /**
      * 楼盘ID(楼盘/小区)
      */
-    private Integer village_id;
+    private Integer villageId;
     /**
      * 需求
      */
@@ -85,7 +85,7 @@ public class RentDetailResponse {
     /**
      * 朝向（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
      */
-    private Integer forward_type;
+    private Integer forwardType;
     /**
      * 几室
      */
@@ -97,7 +97,7 @@ public class RentDetailResponse {
     /**
      * 供热方式
      */
-    private Integer heating_type;
+    private Integer heatingType;
     /**
      * 几卫
      */
@@ -117,59 +117,59 @@ public class RentDetailResponse {
     /**
      * 总楼层数
      */
-    private Integer total_floor;
+    private Integer totalFloor;
     /**
      * 楼盘3km地铁线ID
      */
-    private Integer[] subway_line_id;
+    private Integer[] subwayLineId;
     /**
      * 楼盘3km地铁站ID
      */
-    private Integer[] subway_station_id;
+    private Integer[] subwayStationId;
     /**
      * 附近地铁站
      */
-    private HashMap nearby_subway;
+    private HashMap nearbySubway;
     /**
      * 最近的地铁
      */
-    private String nearest_subway;
+    private String nearestSubway;
     /**
      * 出租房源标签(1-采光好，2-地铁近，3-首次出租，4-独立阳台，5-独立卫生间，6-集中供暖，7-可注册办公)
      */
-    private Integer[] rent_house_tags_id;
+    private Integer[] rentHouseTagsId;
     /**
      * 出租房源标签名称
      */
-    private String[] rent_house_tags_name;
+    private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
      */
-    private Double rent_house_price;
+    private Double rentHousePrice;
     /**
      * 房源标题图片
      */
-    private String house_title_img;
+    private String houseTitleImg;
     /**
      * 房源图片
      */
-    private List rent_house_img;
+    private List rentHouseImg;
     /**
      * 付款方式(1-面议，2-押一付一，3-押一付二，4-押一付三，5-押二付一，6-押二付二，7-押二付三，8-半年付，9-年付)
      */
-    private Integer pay_mode;
+    private Integer payMode;
     /**
      * 付款方式名称
      */
-    private String pay_mode_name;
+    private String payModeName;
     /**
      * 配套设施(字符串数组)
      */
-    private String[] supporting_facilities;
+    private String[] supportingFacilities;
     /**
      * 经纪机构
      */
-    private String brokerage_agency;
+    private String brokerageAgency;
     /**
      * 电话
      */
@@ -177,43 +177,43 @@ public class RentDetailResponse {
     /**
      * 房源描述
      */
-    private String house_desc;
+    private String houseDesc;
     /**
      * 房源来源
      */
-    private String data_source_name;
+    private String dataSourceName;
     /**
      * 房源来源标志
      */
-    private Integer data_source_sign;
+    private Integer dataSourceSign;
     /**
      * 创建时间
      */
-    private String create_time;
+    private String createTime;
     /**
      * 更新时间
      */
-    private String upString_time;
+    private String upStringTime;
     /**
      * 发版时间
      */
-    private String publish_time;
+    private String publishTime;
     /**
      * 发布状态
      */
-    private Integer release_status;
+    private Integer releaseStatus;
     /**
      * 是否上架
      */
-    private Integer is_del;
+    private Integer isDel;
     /**
      * 是否是推荐
      */
-    private Integer is_recommend;
+    private Integer isRecommend;
     /**
      * 是否是置顶
      */
-    private Integer is_top;
+    private Integer isTop;
     /**
      * 版本
      */
@@ -221,22 +221,22 @@ public class RentDetailResponse {
     /**
      * 置顶关键词
      */
-    private String top_keyword;
+    private String topKeyword;
     /**
      * 置顶时间
      */
-    private String top_time;
+    private String topTime;
     /**
      * 经纪人
      */
-    private String estate_agent;
+    private String estateAgent;
     /**
      * 整租户型
      */
-    private Integer erent_layout;
+    private Integer erentLayout;
     /**
      * 合租户型
      */
-    private Integer jrent_layout;
+    private Integer jrentLayout;
 
 }
