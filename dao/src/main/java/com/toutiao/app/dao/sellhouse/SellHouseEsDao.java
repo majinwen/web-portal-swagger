@@ -26,7 +26,7 @@ public interface SellHouseEsDao {
      * @param sort
      * @return
      */
-    SearchResponse getSellHouseByHouseIdAndLocation(GeoDistanceSortBuilder sort, NearBySellHousesDo nearBySellHousesDo, BoolQueryBuilder booleanQueryBuilder );
+    SearchResponse getSellHouseByHouseIdAndLocation(BoolQueryBuilder boolQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, Integer from, Integer size );
 
 
     /**

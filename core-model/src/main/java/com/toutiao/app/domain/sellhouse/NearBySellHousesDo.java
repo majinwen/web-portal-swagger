@@ -80,7 +80,7 @@ public class NearBySellHousesDo {
     /**
      * 页码
      */
-    private Integer pageNum = 1;
+    private Integer pageNum;
 
     /**
      * 页数

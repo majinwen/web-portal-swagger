@@ -72,38 +72,69 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     /**
-     * 二手房附近好房列表
-     * @param newcode
-     * @param lat
-     * @param lon
-     * @param distance
+     * 附近房源列表列表
      * @return
      */
-    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
-        NearBySellHouseDomain newHouseListDoList= new NearBySellHouseDomain();
+    public List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
 
-        //坐标5公里附近
-        booleanQueryBuilder.filter(QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS));
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon());
+        //从该坐标查询距离为5000内的小区
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS);
+        //按照距离排序由近到远并获取小区之间的距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon());
         sort.unit(DistanceUnit.METERS);
-        sort.order(SortOrder.DESC);
-        sort.point(nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon());
-
-        SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(sort,nearBySellHousesDo,booleanQueryBuilder);
+        sort.order(SortOrder.ASC);
+        Integer size = 10;
+        Integer pageNum=nearBySellHousesDo.getPageNum();
+        Integer from = (pageNum-1)*size;
+        SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, from,size);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
-            nearBySellHouses.add(nearBySellHousesDo);
+        if (searchHists.length>0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+                nearBySellHouses.add(nearBySellHousesDo);
+            }
         }
-        newHouseListDoList.setNearBySellHousesDos(nearBySellHouses);
-        newHouseListDoList.setTotalCount(hits.getTotalHits());
-        return newHouseListDoList;
+        if(searchHists.length>0&&searchHists.length<10)
+        {
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();//声明符合查询方法
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
+            long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
+            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, (int) From,size-searchHists.length);
+            SearchHit[] hits1 = response.getHits().getHits();
+            for (SearchHit hit : hits1) {
+                String details = "";
+                details=hit.getSourceAsString();
+                nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+                nearBySellHouses.add(nearBySellHousesDo);
+            }
+        }
+        if (searchHists.length==0)
+        {
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();//声明符合查询方法
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
+            long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
+            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, (int) From,size);
+            SearchHit[] hits1 = response.getHits().getHits();
+            for (SearchHit hit : hits1) {
+                String details = "";
+                details=hit.getSourceAsString();
+                nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+                nearBySellHouses.add(nearBySellHousesDo);
+            }
+        }
+
+
+
+        return nearBySellHouses;
     }
 
     /**
