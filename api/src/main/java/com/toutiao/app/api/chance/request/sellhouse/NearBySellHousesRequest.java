@@ -16,7 +16,7 @@ public class NearBySellHousesRequest {
     /**
      * 区域
      */
-    private Integer district_id;
+    private Integer districtId;
 
     /**
      * 最小价格

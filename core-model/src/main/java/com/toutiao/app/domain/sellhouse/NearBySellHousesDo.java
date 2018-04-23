@@ -85,6 +85,11 @@ public class NearBySellHousesDo {
      */
     private Integer pageNum = 1;
 
+    /**
+     * 页数
+     */
+    private  Integer pageSize=10;
+
 
     /**
      *
@@ -115,4 +120,78 @@ public class NearBySellHousesDo {
      * 关键字
      */
     private String keyword;
+
+
+    /**
+     * 商圈id
+     */
+    private Integer areaId;
+
+
+    /**
+     * 区域
+     */
+    private Integer districtId;
+
+
+
+    /**
+     * 地铁线Id
+     */
+    private Integer subwayLineId;
+
+    /**
+     * 地铁站Id
+     */
+    private Integer subwayStationId;
+
+
+    /**
+     *   起始价格
+     */
+
+    private Integer beginPrice;
+
+    /**
+     * 结束价格
+     */
+
+    private  Integer endPrice;
+
+
+    /**
+     * 面积起始值
+     */
+
+     private  Integer beginArea;
+
+
+    /**
+     * 面积结束值
+     */
+    private  Integer endArea;
+
+
+
+    /**
+     * 楼龄[0-5]
+     */
+    private String houseYearId;
+
+
+    /**
+     * 居室id
+     */
+    private  Integer [] layoutId;
+
+
+    /**
+     * 朝向
+     */
+    private  Integer []  forward;
+
+    /**
+     * 房屋标签
+     */
+    private  Integer [] houseLabelId;
 }
