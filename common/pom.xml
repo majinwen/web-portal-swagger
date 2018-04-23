@@ -139,7 +139,11 @@
         <version>2.5.0</version>
     </dependency>
     <!-- 阿里云短信服务  -->
-
+    <dependency>
+        <groupId>cn.rongcloud.im</groupId>
+        <artifactId>server.sdk.java</artifactId>
+        <version>3.0.0</version>
+    </dependency>
     <dependency>
         <groupId>com.aliyun</groupId>
         <artifactId>aliyun-java-sdk-core</artifactId>
@@ -192,6 +196,7 @@
         <scope>compile</scope>
         <optional>true</optional>
     </dependency>
+
     <!--<dependency>-->
         <!--<groupId>org.elasticsearch.client</groupId>-->
         <!--<artifactId>elasticsearch-rest-high-level-client</artifactId>-->
@@ -199,21 +204,20 @@
     <!--</dependency>-->
 
 </dependencies>
-    <!--<repositories>-->
-
-        <!--<repository>-->
-            <!--<id>nexus</id>-->
-            <!--<name>Nexus Repository</name>-->
-            <!--<url>http://47.104.96.88:9004/nexus/content/groups/public/</url>-->
-            <!--<releases>-->
-                <!--<enabled>true</enabled>-->
-            <!--</releases>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-        <!--</repository>-->
-
-    <!--</repositories>-->
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>nexus Repository</name>
+            <url>http://47.104.96.88:9004/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!--snapshots默认是关闭的,需要开启  -->
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 
 </project>

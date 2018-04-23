@@ -1,10 +1,7 @@
 package com.toutiao.web.common.exceptions;
 
 import com.toutiao.web.common.constant.base.IntBaseType;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.*;
 import lombok.Data;
 
 /**
@@ -50,6 +47,20 @@ public class BaseException extends RuntimeException {
     }
 
     public BaseException(SellHouseInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
+
+        super(msg);
+        this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
+    }
+
+    public BaseException(ShortMessageInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
+
+        super(msg);
+        this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
+    }
+
+    public BaseException(UserInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
 
         super(msg);
         this.setCode(serviceErrorCodeEnum.getValue());

@@ -1,8 +1,5 @@
 package com.toutiao.web.apiimpl.controller.sys;
 
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
