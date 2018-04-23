@@ -179,7 +179,7 @@ public class NearBySellHousesDo {
     /**
      * 居室id
      */
-    private  Integer [] layoutId;
+    private  Integer [] layout;
 
 
     /**

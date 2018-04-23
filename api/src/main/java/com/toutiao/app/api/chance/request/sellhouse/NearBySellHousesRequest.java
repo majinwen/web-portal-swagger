@@ -49,7 +49,7 @@ public class NearBySellHousesRequest {
     /**
      * 标签
      */
-    private  Integer [] labelId;
+    private  Integer [] houseLabelId;
 
     /**
      * 页码

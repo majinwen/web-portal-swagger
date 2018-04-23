@@ -130,8 +130,8 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
         }
          //居室
-        if (StringTool.isNotNull(nearBySellHousesDo.getLayoutId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", nearBySellHousesDo.getLayoutId()));
+        if (StringTool.isNotNull(nearBySellHousesDo.getLayout())) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", nearBySellHousesDo.getLayout()));
         }
 
         //朝向

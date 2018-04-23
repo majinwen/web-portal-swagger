@@ -51,7 +51,7 @@ public class SellHouseRestController {
     }
 
     /**
-     * 二手房附近列表
+     * 二手房附近5km列表
      * @param nearBySellHousesRequest
      * @return
      */
