@@ -60,4 +60,16 @@ public class RentDetailsFewDo {
      * 房源标题图
      */
     private String house_title_img;
+    /**
+     * 录入房源标题
+     */
+    private String entry_house_title;
+    /**
+     * 导入房源标题
+     */
+    private String import_house_title;
+    /**
+     * 房源来源类型(录入/导入)
+     */
+    private Integer rentHouseType;
 }

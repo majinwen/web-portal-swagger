@@ -11,9 +11,14 @@ import com.toutiao.web.common.util.StringTool;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -112,6 +117,64 @@ public class RentRestRestServiceImpl implements RentRestService {
         return null;
 
     }
-
-
+    /**
+     * 附近5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
+     * @param lat
+     * @param lon
+     * @return
+     */
+    @Override
+    public List<RentDetailsFewDo> queryNearHouseByLocation(Double lat, Double lon, Integer pageNum) {
+        List<RentDetailsFewDo> list = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",1));
+        //从该坐标查询距离为5000内的小区
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(lat, lon).distance(5000, DistanceUnit.METERS);
+        //按照距离排序由近到远并获取小区之间的距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", lat, lon);
+        sort.unit(DistanceUnit.METERS);
+        sort.order(SortOrder.ASC);
+        Integer size = 10;
+        Integer from = (pageNum-1)*size;
+        SearchResponse searchResponse = rentEsDao.queryNearHouseByLocation(boolQueryBuilder, location, sort, from, size);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                list.add(rentDetailsFewDo);
+            }
+        }
+        if (hits.length>0&&hits.length<10){
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",3));
+            long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
+            SearchResponse response = rentEsDao.queryNearHouseByLocation(booleanQueryBuilder, location, sort, (int) From,size-hits.length);
+            SearchHit[] hits1 = response.getHits().getHits();
+            if (hits1.length>0){
+                for (SearchHit hit:hits1){
+                    String sourceAsString = hit.getSourceAsString();
+                    RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                    rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits()+(int)response.getHits().getTotalHits());
+                    list.add(rentDetailsFewDo);
+                }
+            }
+        }else if (hits.length==0){
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+            booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",3));
+            long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
+            SearchResponse response = rentEsDao.queryNearHouseByLocation(booleanQueryBuilder, location, sort, (int) From,size);
+            SearchHit[] hits1 = response.getHits().getHits();
+            if (hits1.length>0){
+                for (SearchHit hit:hits1){
+                    String sourceAsString = hit.getSourceAsString();
+                    RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                    rentDetailsFewDo.setTotalNum((int)response.getHits().getTotalHits());
+                    list.add(rentDetailsFewDo);
+                }
+            }
+        }
+        return list;
+    }
 }
