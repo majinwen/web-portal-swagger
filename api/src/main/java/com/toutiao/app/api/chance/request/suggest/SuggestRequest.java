@@ -15,6 +15,6 @@ public class SuggestRequest {
     /**
      * 房源类型
      */
-    @HouseTypeValidator(value = "plot,sellhouse,newhouse",message = "房源路径类型错误")
+    @HouseTypeValidator(value = "plot,sellhouse,newhouse,rent",message = "房源路径类型错误")
     private String property;
 }
