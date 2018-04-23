@@ -107,7 +107,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
             booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
             long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
-            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, (int) From,size-searchHists.length);
+            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size-searchHists.length);
             SearchHit[] hits1 = response.getHits().getHits();
             for (SearchHit hit : hits1) {
                 String details = "";
@@ -122,7 +122,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
             booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
             long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
-            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, (int) From,size);
+            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size);
             SearchHit[] hits1 = response.getHits().getHits();
             for (SearchHit hit : hits1) {
                 String details = "";
