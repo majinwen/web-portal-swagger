@@ -308,5 +308,10 @@ public class NewHouseDetailResponse {
      * 容积率(%)
      */
     private  Double dimension;
+    /**
+     * 绿化率
+     */
+    private Double virescencerate;
+
 
 }

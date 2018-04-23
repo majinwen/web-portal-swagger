@@ -19,9 +19,9 @@
             <#list rentHouse['rent_house_img'] as rentphoto>
                 <li onclick="initphoto(this,${rentphoto_index},window.location.href)" class="swiper-slide">
                     <#if rentphoto['image_path']?index_of("http") gt -1>
-                        <img src="${rentphoto['image_path']}" data-src="${rentphoto['image_path']}" alt="">
+                        <img src="${rentphoto['image_path']}" data-src="${rentphoto['image_path']}" onerror="this.src='${staticurl}/images/global/tpzw_banner_image.png'" alt="">
                     <#else>
-                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" data-src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" alt="">
+                        <img src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" data-src="${qiniuzufangimage}/${rentphoto['image_path']}-ttfc1200x640" onerror="this.src='${staticurl}/images/global/tpzw_banner_image.png'" alt="">
                     </#if>
                 </li>
             </#list>
@@ -80,6 +80,7 @@
         </#if>
     </div>
 </section>
+<#if rentHouse?exists && rentHouse['supporting_facilities']?exists && rentHouse['supporting_facilities']?size gt 0>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
@@ -87,26 +88,27 @@
         </div>
         <ul class="rent-support-nav">
             <#if rentHouse['supporting_facilities']?exists>
-                ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '<li class="support-item"><i class="kongtiao"></i><span>空调</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("电视")?string('<li class="support-item support"><i class="dianshi"></i><span>电视</span></li>', '<li class="support-item"><i class="dianshi"></i><span>电视</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("洗衣机")?string('<li class="support-item support"><i class="xiyiji"></i><span>洗衣机</span></li>', '<li class="support-item"><i class="xiyiji"></i><span>洗衣机</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("热水器")?string('<li class="support-item support"><i class="reshuiqi"></i><span>热水器</span></li>', '<li class="support-item"><i class="reshuiqi"></i><span>热水器</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("冰箱")?string('<li class="support-item support"><i class="bingxiang"></i><span>冰箱</span></li>', '<li class="support-item"><i class="bingxiang"></i><span>冰箱</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("微波炉")?string('<li class="support-item support"><i class="weibolu"></i><span>微波炉</span></li>', '<li class="support-item"><i class="weibolu"></i><span>微波炉</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("床")?string('<li class="support-item support"><i class="chuang"></i><span>床</span></li>', '<li class="support-item"><i class="chuang"></i><span>床</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("衣柜")?string('<li class="support-item support"><i class="yigui"></i><span>衣柜</span></li>', '<li class="support-item"><i class="yigui"></i><span>衣柜</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("沙发")?string('<li class="support-item support"><i class="shafa"></i><span>沙发</span></li>', '<li class="support-item"><i class="shafa"></i><span>沙发</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("桌子")?string('<li class="support-item support"><i class="zhuozi"></i><span>桌子</span></li>', '<li class="support-item"><i class="zhuozi"></i><span>桌子</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("椅子")?string('<li class="support-item support"><i class="yizi"></i><span>椅子</span></li>', '<li class="support-item"><i class="yizi"></i><span>椅子</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("暖气")?string('<li class="support-item support"><i class="nuanqi"></i><span>暖气</span></li>', '<li class="support-item"><i class="nuanqi"></i><span>暖气</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("煤气")?string('<li class="support-item support"><i class="meiqi"></i><span>煤气</span></li>', '<li class="support-item"><i class="meiqi"></i><span>煤气</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("网络")?string('<li class="support-item support"><i class="wangluo"></i><span>网络</span></li>', '<li class="support-item"><i class="wangluo"></i><span>网络</span></li>')}
-                ${rentHouse['supporting_facilities']?seq_contains("智能锁")?string('<li class="support-item support"><i class="zhinengsuo"></i><span>智能锁</span></li>', '<li class="support-item"><i class="zhinengsuo"></i><span>智能锁</span></li>')}
+                ${rentHouse['supporting_facilities']?seq_contains("空调")?string('<li class="support-item support"><i class="kongtiao"></i><span>空调</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("电视")?string('<li class="support-item support"><i class="dianshi"></i><span>电视</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("洗衣机")?string('<li class="support-item support"><i class="xiyiji"></i><span>洗衣机</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("热水器")?string('<li class="support-item support"><i class="reshuiqi"></i><span>热水器</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("冰箱")?string('<li class="support-item support"><i class="bingxiang"></i><span>冰箱</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("微波炉")?string('<li class="support-item support"><i class="weibolu"></i><span>微波炉</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("床")?string('<li class="support-item support"><i class="chuang"></i><span>床</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("衣柜")?string('<li class="support-item support"><i class="yigui"></i><span>衣柜</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("沙发")?string('<li class="support-item support"><i class="shafa"></i><span>沙发</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("桌子")?string('<li class="support-item support"><i class="zhuozi"></i><span>桌子</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("椅子")?string('<li class="support-item support"><i class="yizi"></i><span>椅子</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("暖气")?string('<li class="support-item support"><i class="nuanqi"></i><span>暖气</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("煤气")?string('<li class="support-item support"><i class="meiqi"></i><span>煤气</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("网络")?string('<li class="support-item support"><i class="wangluo"></i><span>网络</span></li>', '')}
+                ${rentHouse['supporting_facilities']?seq_contains("智能锁")?string('<li class="support-item support"><i class="zhinengsuo"></i><span>智能锁</span></li>', '')}
             </#if>
         </ul>
     </section>
 </div>
-<#if plot?exists&&rentHouse['rent_sign'] == 0>
+</#if>
+<#if plot?exists>
 <div class="border-box">
     <section>
         <div  class="module-header-message">
@@ -118,14 +120,14 @@
                 <div class="picture-box">
                     <#assign photo = plot['photo']>
                     <#if photo[0]?exists>
-                        <img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot.rc}">
+                        <img src="${qiniuimage}/${photo[0]}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="${plot.rc}">
                     <#else >
                         <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                 </div>
                 <div id="tilePlotDesc" class="tilelist-content">
                     <h4><em>小区：</em>${plot['rc']} [${plot['area']} ${plot['tradingArea']}]</h4>
-                    <p><em>年代：</em><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成住宅</#if><#if plot['sumBuilding']?exists>，共${plot['sumBuilding']}栋</#if></p>
+                    <p><em>简介：</em><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成住宅</#if><#if plot['sumBuilding']?exists><#if plot['abbreviatedAge']?exists && plot['sumBuilding']?exists>，</#if>共${plot['sumBuilding']}栋</#if></p>
                     <p><em>待租：</em><#if total?exists><em class="link">${total}套</em><#else >暂无其他房源</#if></p>
                 </div>
             </a></li>
@@ -149,14 +151,14 @@
                 <img src="http://api.map.baidu.com/staticimage/v2?ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS&width=700&height=350&center=116.382001,39.913329&&zoom=16" alt="">
             </#if>
         </a>
-        <#if rentHouse['nearest_subway']?exists>
+        <#if rentHouse['nearest_subway']?exists && rentHouse['nearest_subway']!=''>
             <#assign subwayDistance = rentHouse['nearest_subway']?split('$')[2]?number>
             <p class="map-distance"><i class="rent-traffic-icon"></i>距${rentHouse['nearest_subway']?split('$')[1]}[${rentHouse['nearest_subway']?split('$')[0]}]<#if subwayDistance gt 1000>${(subwayDistance/1000)?string('0.0')}km<#else >${subwayDistance}m</#if></p>
         </#if>
     </section>
 </div>
 <div class="border-box">
-    <#if rentHouse['rent_sign'] == 0>
+    <#--<#if rentHouse['rent_sign'] == 0>-->
         <#if agent?exists>
             <section>
                 <div class="module-header-message">
@@ -166,12 +168,17 @@
                     <div class="describe-header">
                         <#if agent['agent_headphoto']?exists && agent['agent_headphoto'] != ''>
                             <#if agent['agent_headphoto']?index_of("http") gt -1>
-                                <img class="source-icon" src="${agent['agent_headphoto']}" alt="">
+                                <#if rentHouse['data_source_sign'] == 1>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='http://beijing.erp.bacic5i5j.com/5i5j/images/man.gif'" alt="名片">
+                                <#else>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
+                                </#if>
                             <#else>
-                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}" alt="">
+                                <img class="source-icon" src="${qiniuzufangimage}/${agent['agent_headphoto']}-tt100x141" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                             </#if>
                         <#else >
-                            <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                            <#--<img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">-->
+                            <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                         <p>
                             <span><#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
@@ -197,9 +204,13 @@
                     <div class="describe-header">
                         <#if rentHouse['agent_headphoto']?exists && rentHouse['agent_headphoto'] != ''>
                             <#if rentHouse['agent_headphoto']?index_of("http") gt -1>
-                                <img class="source-icon" src="${rentHouse['agent_headphoto']}" alt="">
+                                <#if rentHouse['data_source_sign'] == 1>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='http://beijing.erp.bacic5i5j.com/5i5j/images/man.gif'" alt="名片">
+                                <#else>
+                                    <img class="source-icon" src="${rentHouse['agent_headphoto']}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
+                                </#if>
                             <#else>
-                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
+                                <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}-tt100x141" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="名片">
                             </#if>
                         <#else >
                             <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
@@ -220,7 +231,7 @@
                 </div>
             </section>
         </#if>
-    <#else>
+    <#--<#else>
         <section>
             <div class="module-header-message">
                 <h3>公寓简介</h3>
@@ -234,7 +245,7 @@
                             <img class="source-icon" src="${qiniuzufangimage}/${rentHouse['agent_headphoto']}" alt="">
                         </#if>
                     <#else >
-                        <img class="source-icon" src="http://pic.centanet.com/beijing/pic/agent/2016050161.jpg" alt="">
+                        <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     </#if>
                     <p>
                         <span>${rentHouse['zufang_name']}</span>
@@ -253,7 +264,7 @@
                 </#if>
             </div>
         </section>
-    </#if>
+    </#if>-->
 </div>
 <#if rentHouse['rent_sign'] != 0 && rentHouse['demand']?exists && rentHouse['demand'] != ''>
     <div class="border-box">
@@ -273,15 +284,17 @@
         <div class="module-header-message">
             <h3><#if rentHouse['rent_sign'] == 0>附近相似好房<#else>${rentHouse['zufang_name']}好房推荐</#if></h3>
         </div>
-        <ul><#list nearHouse as builditem>
-            <li><a class="list-item" href="${router_city('/zufang/'+builditem['house_id']+'.html')}">
+        <ul class="list-item-wrapper"><#list nearHouse as builditem>
+            <li>
+                <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${builditem.house_id}&__topic__=zufangbaoguang'/>-->
+                <a class="list-item" href="${router_city('/zufang/'+builditem['house_id']+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#if builditem.house_title_img?exists && builditem.house_title_img!=''>
                             <#if builditem.house_title_img?index_of("http") gt -1>
-                                <img src="${builditem.house_title_img}" alt="${builditem.zufang_name}">
+                                <img src="${builditem.house_title_img}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="${builditem.zufang_name}">
                             <#else>
-                                <img src="${qiniuzufangimage}/${builditem.house_title_img}-tt400x300" alt="${builditem.zufang_name}">
+                                <img src="${qiniuzufangimage}/${builditem.house_title_img}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="${builditem.zufang_name}">
                             </#if>
                         <#else >
                             <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
@@ -309,9 +322,9 @@
     <section class="detail-contact-box" id="detailContactState">
         <div class="detail-contact-content">
             <#if agent?exists&&agent['agent_phone']?exists>
-                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
+                <a href="tel:${agent['agent_phone']}" class="contact-telephone-counseling" id="rentBottomPhone"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
             <#elseif rentHouse['phone']?exists>
-                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling" id="rentBottomPhone">咨询经纪人</a>
+                <a href="tel:${rentHouse['phone']}" class="contact-telephone-counseling" id="rentBottomPhone"><img src="${staticurl}/images/tel0415.png" style="height: 83%;margin-top: -0.06rem;">立即咨询底价</a>
             </#if>
             <#--<a href="#" class="contact-like">喜欢</a>-->
             <a href="javascript:void(0);" onclick="nextPage(this)" class="contact-next"><i class="next-icon"></i>下一个</a>
@@ -372,6 +385,9 @@
         if(url.indexOf('zufang')>-1){
             return '租房-进入租房详情页'
         }
+        if(url.indexOf('/ad')>-1){
+            return '广告-进入租房详情页'
+        }
         if(url.indexOf(window.location.hostname)>-1){
             return '大首页-点击租房推荐'
         }
@@ -379,7 +395,7 @@
     zhuge.track(desc(document.referrer), {
         '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
         '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
-        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 0>小区名称<#else >${rentHouse.zufang_name}</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
         '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
         '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
         '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
@@ -392,7 +408,7 @@
     zhuge.track('租房详情页点击量', {
         '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
         '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
-        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 1>小区名称</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 0>小区名称<#else >${rentHouse.zufang_name}</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
         '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
         '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
         '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
@@ -401,6 +417,43 @@
         'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
         'location' : '${rentHouse.location}'
     });
+
+
+    <#if rentHouse?exists >
+        <#if rentHouse['rentHouseType']?exists && rentHouse['rentHouseType']==1>
+        zhuge.track('出租房源认领统计', {
+            '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
+            '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
+            '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 0>小区名称<#else >${rentHouse.zufang_name}</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+            '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
+            '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
+            '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
+            '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
+            '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
+            'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
+            'location' : '${rentHouse.location}'
+        });
+        </#if>
+    </#if>
+
+    <#if agent?exists>
+        zhuge.track('出租房源认领统计', {
+            '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
+            '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
+            '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 0>小区名称<#else >${rentHouse.zufang_name}</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+            '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
+            '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
+            '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
+            '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
+            '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
+            'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
+            'location' : '${rentHouse.location}'
+        });
+    </#if>
+
+
+
+
     function rent_map_1(a) {
         var link = $(a);
         zhuge.track('租房-点击配套地图', {

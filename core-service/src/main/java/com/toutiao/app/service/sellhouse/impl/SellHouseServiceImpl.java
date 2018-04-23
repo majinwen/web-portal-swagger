@@ -55,21 +55,24 @@ public class SellHouseServiceImpl implements SellHouseService{
     public SellHouseDetailsDo getSellHouseByHouseId(Integer houseId) {
 
         //二手房房源详情
+        SellHouseDetailsDo sellHouseDetailsDo = new SellHouseDetailsDo();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         String details = "";
-        for (SearchHit searchHit : searchHists) {
-            details = searchHit.getSourceAsString();
+        if (searchHists.length>0){
+            for (SearchHit searchHit : searchHists) {
+                details = searchHit.getSourceAsString();
+            }
+            sellHouseDetailsDo = JSON.parseObject(details,SellHouseDetailsDo.class);
         }
-        SellHouseDetailsDo sellHouseDetailsDo = JSON.parseObject(details,SellHouseDetailsDo.class);
         return sellHouseDetailsDo;
     }
 
     /**
-     * 二手房附近列表
+     * 二手房附近好房列表
      * @param newcode
      * @param lat
      * @param lon
@@ -108,6 +111,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @param houseId
      * @return
      */
+    @Override
     public AgentsBySellHouseDo getAgentByHouseId(Integer houseId){
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -115,7 +119,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchResponse searchResponse = agentHouseEsDao.getAgentHouseByHouseId(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
-            long time = new Date().getTime();
+            long time = System.currentTimeMillis();
             long index = (time / 600000) % hits.length;
             String details = hits[(int) index].getSourceAsString();
             AgentsBySellHouseDo agentsBySellHouseDo = JSON.parseObject(details,AgentsBySellHouseDo.class);

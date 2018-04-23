@@ -102,4 +102,8 @@ public class PlotDetailsFewDo {
      * 小区总个数
      */
     private Integer totalNum;
+    /**
+     * 获取地铁站与小区的距离
+     */
+    private String key;
 }

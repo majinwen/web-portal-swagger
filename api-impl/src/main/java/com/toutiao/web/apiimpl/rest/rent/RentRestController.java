@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
+import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
 import com.toutiao.app.api.chance.response.rent.RentAgentResponse;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
@@ -35,7 +36,7 @@ public class RentRestController {
      * @param rentDetailsRequest
      * @return
      */
-    @RequestMapping("getRentDetailByRentId")
+    @RequestMapping(value = "getRentDetailByRentId",method = RequestMethod.GET)
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
@@ -61,12 +62,25 @@ public class RentRestController {
      * @param rentDetailsRequest
      * @return
      */
-    @RequestMapping("getRentAgentByRentId")
+    @RequestMapping(value = "getRentAgentByRentId",method = RequestMethod.GET)
     public NashResult getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
         RentAgentResponse rentAgentResponse = new RentAgentResponse();
         BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
         return NashResult.build(rentAgentResponse);
+    }
+
+    /**
+     * 附近5km出租房源(app的是吧，那就优先三公里的录入房源由近到远)
+     * @param nearHouseRequest
+     * @return
+     */
+    @RequestMapping(value = "getNearRentHouseByLocation",method = RequestMethod.GET)
+    public NashResult getNearRentHouseByLocation(@Validated NearHouseRequest nearHouseRequest){
+        List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseRequest.getLat(), nearHouseRequest.getLon(), nearHouseRequest.getPageNum());
+        JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
+        List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
+        return NashResult.build(rentDetailFewResponses);
     }
 
 }

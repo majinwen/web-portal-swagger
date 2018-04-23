@@ -176,13 +176,28 @@ public class NewHouseServiceImpl implements NewHouseService{
         }
         //楼盘特色
         if(StringUtil.isNotNullString(newHouseQuery.getBuildingFeature())){
-            String[] py = newHouseQuery.getBuildingFeature().split(",");
-            String[] BuildingFeature = new String[py.length];
-            for(int i=0; i<py.length;i++){
-                BuildingFeature[i] = py[i];
-            }
-            booleanQueryBuilder.must(termsQuery("building_tags_id", BuildingFeature));
 
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            String[] py = newHouseQuery.getBuildingFeature().split(",");
+            boolean has_subway = Arrays.asList(py).contains("1");
+
+            if(has_subway){
+                String[] tagOther = new String[py.length-1];
+                int idx = 0;
+                for(int i=0;i<py.length;i++){
+                    if(py[i].equals("1")){
+                        boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", py[i]));
+                    } else {
+                        tagOther[idx++] = py[i];
+                    }
+                }
+                if(tagOther.length!=0){
+                    boolQueryBuilder.should(QueryBuilders.termsQuery("building_tags_id", tagOther));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
+            }else{
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("building_tags_id", py));
+            }
         }
         //装修
         if(StringUtil.isNotNullString(newHouseQuery.getDeliverStyle())){
@@ -255,7 +270,7 @@ public class NewHouseServiceImpl implements NewHouseService{
             if(StringUtil.isNotNullString(newHouseQuery.getKeyword())){
                 if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseQuery.getKeyword()))){
                     searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                            .setQuery(booleanQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).addSort("_score",SortOrder.DESC).setFetchSource(
+                            .setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC).setFetchSource(
                                     new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                             "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                             "location","house_min_area","house_max_area","nearbysubway","total_price"},

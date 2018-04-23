@@ -244,12 +244,8 @@
 }
 
 .list-item {
-    &:first-child {
-        padding-top: 0;
-    }
-    &:last-child {
-        border-bottom: none;
-    }
+    padding-top: 0;
+    border-bottom: none;
 }
 
 .detail-contact-box {
@@ -302,7 +298,6 @@
 .rent-support-nav {
     display: -webkit-flex;
     display: flex;
-    justify-content: center;
     text-align: center;
     flex-wrap: wrap;
     margin: 0 rem(15) rem(35);
@@ -316,57 +311,57 @@
 
         i {
             display: inline-block;
-            width: rem(36);
-            height: rem(36);
+            width: rem(40);
+            height: rem(38);
             margin-bottom: rem(10);
             @include bg-image('../images/rent/rent-support-icon-gray');
             -webkit-background-size: rem(276) rem(156);
             background-size: rem(278) rem(156);
 
             &.kongtiao {
-                background-position: 0 0;
+                background-position: rem(3) 0;
             }
             &.dianshi {
-                background-position: rem(-60) 0;
+                background-position: rem(-58) 0;
             }
             &.xiyiji {
-                background-position: rem(-120) 0;
+                background-position: rem(-119) 0;
             }
             &.reshuiqi {
                 background-position: rem(-180) 0;
             }
             &.bingxiang {
-                background-position: rem(-240) 0;
+                background-position: rem(-241) 0;
             }
             &.weibolu {
-                background-position: 0 rem(-60);
+                background-position: rem(3) rem(-60);
             }
             &.chuang {
-                background-position: rem(-60) rem(-60);
+                background-position: rem(-58) rem(-60);
             }
             &.yigui {
-                background-position: rem(-120) rem(-60);
+                background-position: rem(-119) rem(-60);
             }
             &.shafa {
                 background-position: rem(-180) rem(-60);
             }
             &.zhuozi {
-                background-position: rem(-240) rem(-60);
+                background-position: rem(-241) rem(-60);
             }
             &.yizi {
-                background-position: 0 rem(-120);
+                background-position: rem(3) rem(-120);
             }
             &.nuanqi {
-                background-position: rem(-60) rem(-120);
+                background-position: rem(-58) rem(-120);
             }
             &.meiqi {
-                background-position: rem(-120) rem(-120);
+                background-position: rem(-119) rem(-120);
             }
             &.wangluo {
                 background-position: rem(-180) rem(-120);
             }
             &.zhinengsuo {
-                background-position: rem(-240) rem(-120);
+                background-position: rem(-241) rem(-120);
             }
         }
 
@@ -383,49 +378,49 @@
                 @include bg-image('../images/rent/rent-support-icon-black');
 
                 &.kongtiao {
-                    background-position: 0 0;
+                    background-position: rem(3) 0;
                 }
                 &.dianshi {
-                    background-position: rem(-60) 0;
+                    background-position: rem(-58) 0;
                 }
                 &.xiyiji {
-                    background-position: rem(-120) 0;
+                    background-position: rem(-119) 0;
                 }
                 &.reshuiqi {
                     background-position: rem(-180) 0;
                 }
                 &.bingxiang {
-                    background-position: rem(-240) 0;
+                    background-position: rem(-241) 0;
                 }
                 &.weibolu {
-                    background-position: 0 rem(-60);
+                    background-position: rem(3) rem(-60);
                 }
                 &.chuang {
-                    background-position: rem(-60) rem(-60);
+                    background-position: rem(-58) rem(-60);
                 }
                 &.yigui {
-                    background-position: rem(-120) rem(-60);
+                    background-position: rem(-119) rem(-60);
                 }
                 &.shafa {
                     background-position: rem(-180) rem(-60);
                 }
                 &.zhuozi {
-                    background-position: rem(-240) rem(-60);
+                    background-position: rem(-241) rem(-60);
                 }
                 &.yizi {
-                    background-position: 0 rem(-120);
+                    background-position: rem(3) rem(-120);
                 }
                 &.nuanqi {
-                    background-position: rem(-60) rem(-120);
+                    background-position: rem(-58) rem(-120);
                 }
                 &.meiqi {
-                    background-position: rem(-120) rem(-120);
+                    background-position: rem(-119) rem(-120);
                 }
                 &.wangluo {
                     background-position: rem(-180) rem(-120);
                 }
                 &.zhinengsuo {
-                    background-position: rem(-240) rem(-120);
+                    background-position: rem(-241) rem(-120);
                 }
             }
         }

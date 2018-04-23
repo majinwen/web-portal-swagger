@@ -1,7 +1,14 @@
 $textGrayColor: #888;
 
+.list-item-wrapper {
+    li {
+        line-height: 0;
+    }
+}
+
 .list-item {
     display: block;
+    line-height: 1.2;
     padding: rem(42) 0;
     margin: 0 rem(30);
     color: $baseBlack;
@@ -49,7 +56,7 @@ $textGrayColor: #888;
                 margin-left: rem(5);
                 @include font-dpr(20);
                 color: #999;
-                border: rem(1) solid $borderRadiusColor;
+                border: 1px solid $borderRadiusColor;
                 -webkit-border-radius: rem(4);
                 border-radius: rem(4);
                 @include box-sizing;
@@ -138,13 +145,9 @@ $textGrayColor: #888;
             position: absolute;
             width: rem(430);
             bottom: 0;
-            white-space: nowrap;
-            overflow-x: scroll;
-            text-overflow: clip;
 
             &.esf {
                 width: rem(270);
-                @include text-ellipses;
             }
         }
 
@@ -231,10 +234,34 @@ $textGrayColor: #888;
             position: relative;
             margin-bottom: rem(20);
 
+            .cont-block-1 {
+                @include font-dpr(28);
+
+                span {
+                    display: inline-block;
+                }
+
+                em {
+                    position: relative;
+                    top: rem(-3);
+                    display: inline-block;
+                    height: rem(28);
+                    line-height: rem(26);
+                    padding: 0 rem(12);
+                    margin-left: rem(5);
+                    color: $borderRadiusColor;
+                    border: 1px solid $borderRadiusColor;
+                    -webkit-border-radius: rem(4);
+                    border-radius: rem(4);
+                    @include font-dpr(20);
+                    @include box-sizing;
+                }
+            }
+
             h3, p {
                 display: inline-block;
                 margin-top: 0;
-                vertical-align: top;
+                vertical-align: middle;
             }
             p {
                 margin-left: rem(20);

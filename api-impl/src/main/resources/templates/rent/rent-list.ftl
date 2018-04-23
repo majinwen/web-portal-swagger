@@ -3,7 +3,7 @@
 <head>
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
-    <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
+    <link rel="stylesheet" href="${staticurl}/css/rent-list.css?v=${staticversion}">
     <title>头条房产看租房</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
@@ -26,7 +26,7 @@
     <ul id="category-tab">
         <li data-mark="tab-place"><span><em>区域</em><i></i></span></li>
         <li data-mark="tab-rent-price"><span><em>租金</em><i></i></span></li>
-        <li data-mark="tab-rent-type"><span><em>整租/合租</em><i></i></span></li>
+        <li data-mark="tab-rent-type"><span><em>户型</em><i></i></span></li>
         <li data-mark="tab-more"><span><em>更多</em><i></i></span></li>
     </ul>
     <div class="global-mark none">
@@ -59,7 +59,7 @@
                     <dl class="rent-sign">
                         <dt class="text-center" data-type="elo">整租</dt>
                         <dd>
-                            <span class="rent-only" data-info="">不限</span>
+                            <span class="rent-only ert" data-info="0">全部</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
                             <span data-info="3">三居+</span>
@@ -68,7 +68,7 @@
                     <dl class="rent-sign">
                         <dt class="text-center" data-type="jlo">合租</dt>
                         <dd>
-                            <span class="only" data-info="">不限</span>
+                            <span class="rent-only jrt" data-info="0">全部</span>
                             <span data-info="1">一居</span>
                             <span data-info="2">二居</span>
                             <span data-info="3">三居+</span>
@@ -121,7 +121,7 @@
                         <dt data-type="tags">特色</dt>
                         <dd>
                             <span data-info="1">近地铁</span>
-                            <span data-info="2">免佣</span>
+                            <#--<span data-info="2">免佣</span>-->
                             <span data-info="6">集中供暖</span>
                             <span data-info="4">有电梯</span>
                         </dd>
@@ -142,11 +142,13 @@
 <#include "../search.ftl">
 <script id="listContent" type="text/html">
     {{each data}}
-    <li><a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
+    <li>
+        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.house_id}}&__topic__=zufangbaoguang'/>-->
+        <a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
         <div class="clear">
             <div class="list-item-img-box">
                 {{if $value.house_title_img && $value.house_title_img.length > 0}}
-                <img src="{{$value.house_title_img}}" alt="{{$value.village_name}}">
+                <img src="{{$value.house_title_img}}" alt="{{$value.village_name}}" onerror="this.src='${staticurl}/images/global/tpzw_image.png'">
                 {{else}}
                 <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                 {{/if}}
@@ -215,6 +217,9 @@
                     window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
                     pullUpAction();
                 }
+
+//                window["$toutiao_customer_pullUpAction_latlon"] = [lat, lon]
+//                pullUpAction();
             });
         }
     });

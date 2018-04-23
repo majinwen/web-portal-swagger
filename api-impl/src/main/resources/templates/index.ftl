@@ -16,24 +16,28 @@
     <a href="/" onclick="dashouyelogo(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
     <div class="search-box">
         <i class="icon"></i>
-        <input type="text" class="search-link" placeholder="">
+        <input type="text" class="search-link recommend-index" placeholder="">
     </div>
     <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="个人中心"></a>
 </header>
 <div class="module-bottom-fill">
     <section class="banner-index-box">
-        <div class="carousel-swiper" id="topbanner">
-           
+        <div class="swiper-container carousel-swiper" id="index-swiper">
+            <ul class="swiper-wrapper" id="topbanner"></ul>
+            <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
             <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})">
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
-                <i class="index-plot-icon"></i><p>小区</p>
-            </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-esf" href="${router_city('/esf/')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
+            </a></div>
+            <div class="banner-nav-item index-nav-item"><a id="index-renthouse" class="index-renthouse" href="${router_city('/zufang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'租房','页面来源URL':window.location.href})">
+                <i class="index-rent-icon"></i><p>租房</p>
+            </a></div>
+            <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
+                <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})">
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
@@ -43,7 +47,7 @@
 </div>
 <div class="module-bottom-fill">
     <section class="bulletin-board">
-        <div class="img index-img"><img src="${staticurl}/images/index/index_shopping_guide.png" alt="购物指南"></div>
+        <div class="img index-img"><a href="http://www.chengzijianzhan.com/tetris/page/1588848809361416/"><img src="${staticurl}/images/index/index-building-entrance.png" alt="楼市聚焦"></a></div>
         <div class="text-scroll index-text" id="shoppingGuide">
             <ul id="ul_index_lunbo_guanggao">
 
@@ -128,7 +132,7 @@
     <div class="index-module-header">
         <h3>最新挂牌二手房</h3>
     </div>
-    <ul><#if esfList?exists>
+    <ul class="list-item-wrapper"><#if esfList?exists>
         <#list esfList as map>
         <#--<#if map_index==3>-->
         <#--<li><a class="list-item new new-ad-item" href="#">-->
@@ -163,7 +167,82 @@
             <#if map_index==5>
                 <#break>
             </#if>
-            <li><a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
+            <#if map['claimHouseId']?exists>
+                <li>
+                    <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>-->
+                    <a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.claimHouseId+'.html')}">
+                    <div class="clear">
+                        <div class="list-item-img-box">
+                            <#assign item=map['claimHousePhotoTitle']>
+                            <#if item?? && item!=''><img src="${item}" alt="${map.claimHouseTitle}">
+                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.claimHouseTitle}">
+                            </#if>
+                        </div>
+                        <div class="list-item-cont">
+                            <h3 class="cont-block-1"><span>${map.claimHouseTitle}</span></h3>
+                            <p class="cont-block-2">
+                                <#if map.buildArea?exists&&(map.buildArea>0)>
+                                ${map.buildArea}㎡
+                                </#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                    / <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅
+                                </#if>
+                                <#if map.forwardName?exists>
+                                    / ${map.forwardName}
+                                </#if>
+                                <#if map.plotName?exists>
+                                    / ${map.plotName}
+                                </#if>
+                            </p>
+                            <#if map['subwayDistince']?exists>
+                                <#assign item=map['subwayDistince']>
+                                <#if map['key']?exists>
+                                    <#if item[map['key']]?exists>
+                                        <p class="cont-block-3 distance"><i class="icon"></i>
+                                            <#assign rounditems=item[map['key']]?split("$")>
+                                            <#if rounditems[2]?number gt 1000>
+                                                <#assign x = rounditems[2]?number/1000>
+                                                距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
+                                            <#else>
+                                                距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
+                                            </#if>
+                                        </p>
+                                    </#if>
+                                <#else>
+                                    <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>
+                                </#if>
+                            <#else >
+                                <p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>
+                            </#if>
+                            <div class="cont-block-4 house-labelling gray middle esf">
+                                <#if map['claimTagsName']?exists>
+                                    <#assign item =map['claimTagsName']>
+                                    <#list item as itemValue>
+                                        <#if itemValue?exists>
+                                            <span>${itemValue}</span>
+                                        </#if>
+                                    <#else>
+                                    </#list>
+                                <#else >
+                                </#if>
+                            </div>
+                            <div class="cont-block-price">
+                                <#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>
+                                    <em>${map.houseTotalPrices}万</em>
+                                </#if>
+                                <#if map.houseTotalPrices?exists && map.buildArea?exists>
+                                    <#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>
+                                        <span>${(((map.houseTotalPrices?number / (map.buildArea?number))) * 10000)}元/㎡</span>
+                                    </#if>
+                                </#if>
+                            </div>
+                        </div>
+                    </div>
+                </a></li>
+            <#else >
+            <li>
+                <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.houseId}&__topic__=esfbaoguang'/>-->
+                <a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
                         <#assign item=map['housePhotoTitle']>
@@ -232,6 +311,7 @@
                     </div>
                 </div>
             </a></li>
+            </#if>
         </#list>
     </#if></ul>
 </section>
@@ -306,7 +386,7 @@
                             <#if map['nearsubway']??>${map['nearsubway']}
                                 <#else>${map['district_name']}
                             </#if>
-                            <#if map['house_min_area']?exists&&map['house_max_area']?exists>
+                            <#if (map['house_min_area']?exists && map['house_min_area'] gt 0)&&(map['house_max_area']?exists && map['house_max_area'] gt 0)>
                                 / ${map['house_min_area']}㎡-${map['house_max_area']}㎡</p>
                             </#if>
                         <div class="cont-block-4 house-labelling gray middle">
@@ -450,19 +530,63 @@
 </script>
 
 <script>
-
-    var config=[{"pid":1,"jqid":"#ad-positon-lefttop"}
-    ,{"pid":2,"jqid":"#ad-positon-leftright"},
-        {"pid":3,"jqid":"#ad-positon-leftbottom"},
-        {"pid":4,"jqid":"#ad-positon-rightbottom"},
-        {"pid":5,"jqid":"#topbanner",callback:function (html) {
+    var config = [{"pid": 1, "jqid": "#ad-positon-lefttop"},
+        {"pid": 2, "jqid": "#ad-positon-leftright"},
+        {"pid": 3, "jqid": "#ad-positon-leftbottom"},
+        {"pid": 4, "jqid": "#ad-positon-rightbottom"}/*,
+        {"pid": 5, "jqid": "#topbanner", callback: function (html) {
             html.click(function () {
-             zhuge.track('banner_大首页',{'banner名称':'智能人居更懂人需'})
-         })
-    }}];
-
+                zhuge.track('banner_大首页', {'banner名称': '智能人居更懂人需'})
+            })
+        }}*/];
     $com.toutiao.ad.json(config);
     var lunbo = [
+        {"pid": 5,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            var nameText = '';
+            if (typeof (html.find('.scaleImg').attr('art')) == 'undefined') {
+                nameText = '智能人居更懂人需'
+            } else {
+                nameText = html.find('.scaleImg').attr('art')
+            }
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': nameText})
+            })
+        }},
+        {"pid": 20,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 21,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 24,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 25,callback: function (html) {
+            var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
+            parent.append(html);
+            $("#topbanner").append(parent);
+            html.click(function () {
+                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
         {"pid":12,callback:function (html) {
             var parent=$('<li></li>');
             parent.append(html);
@@ -498,6 +622,14 @@
                     }
                 })
             }
+        }},
+        {"pid": 28,callback: function (html) {
+//            var parent=$('<div class="searchpage-hot-recommend clear">');
+//            parent.append(html);
+            $('#index-hot-recommend').append(html);
+            html.click(function () {
+                zhuge.track('大首页热门推荐', {'名称': html.find('a').text()})
+            })
         }}
     ]
     $com.toutiao.ad.json_chain(lunbo);

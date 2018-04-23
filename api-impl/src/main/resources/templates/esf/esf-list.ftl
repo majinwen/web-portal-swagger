@@ -170,7 +170,7 @@
 <section id="result-section">
 <#--<#if builds?exists>-->
     <#--<p class="dropload-up none"></p>-->
-    <ul id="valueList">
+    <ul id="valueList" class="list-item-wrapper">
     <#--<#list builds as map>-->
         <#--<li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">-->
             <#--<div class="clear">-->
@@ -264,8 +264,15 @@
 <script id="listContent" type="text/html">
     {{each data}}
     <li>
-        <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}" onclick="esf_list(this)" url="${router_city('/esf/{{$value.houseId}}.html')}"  href="javascript:void(0);">
+        {{if $value.claimHouseId!=''}}
+            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.claimHouseId}}&__topic__=esfbaoguang'/>-->
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.claimHouseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.claimHouseId}}.html')}" href="javascript:void(0);">
+        {{else}}
+            <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.houseId}}&__topic__=esfbaoguang'/>-->
+            <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" house-id ="{{$value.houseId}}"  onclick="esf_list(this)"  url="${router_city('/esf/{{$value.houseId}}.html')}" href="javascript:void(0);">
+        {{/if}}
             <div class="clear">
+                {{if $value.claimHouseId==''}}
                 <div class="list-item-img-box">
                     {{if $value.housePhotoTitle && $value.housePhotoTitle.length > 0}}
                     <img src="{{$value.housePhotoTitle}}" alt="{{$value.houseBusinessName}}">
@@ -273,8 +280,21 @@
                     <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                     {{/if}}
                 </div>
+                {{else}}
+                <div class="list-item-img-box">
+                    {{if $value.claimHousePhotoTitle && $value.claimHousePhotoTitle.length > 0}}
+                    <img src="{{$value.claimHousePhotoTitle}}" alt="{{$value.houseBusinessName}}">
+                    {{else}}
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                    {{/if}}
+                </div>
+                {{/if}}
                 <div class="list-item-cont">
+                    {{if $value.claimHouseId==''}}
                     <h3 class="cont-block-1"><span>{{$value.houseTitle}}</span></h3>
+                    {{else}}
+                    <h3 class="cont-block-1"><span>{{$value.claimHouseTitle}}</span></h3>
+                    {{/if}}
                     <p class="cont-block-2">
                         {{if $value.buildArea && $value.buildArea > 0}}
                         {{$value.buildArea}}㎡
@@ -291,7 +311,6 @@
                     </p>
                     <p class="cont-block-3 distance">
                         <i class="icon"></i>
-
                         {{if $value.subwayDesc}}
                         {{$value.subwayDesc}}
                         {{else}}
@@ -300,13 +319,23 @@
                         {{/if}}
                         {{/if}}
                     </p>
+                    {{if $value.claimHouseId==''}}
+                        <div class="cont-block-4 house-labelling gray middle esf">
+                            {{if $value.tagsName}}
+                            {{each $value.tagsName value index}}
+                            <span>{{value}}</span>
+                            {{/each}}
+                            {{/if}}
+                        </div>
+                    {{else}}
                     <div class="cont-block-4 house-labelling gray middle esf">
-                        {{if $value.tagsName}}
-                        {{each $value.tagsName value index}}
+                        {{if $value.claimTagsName}}
+                        {{each $value.claimTagsName value index}}
                         <span>{{value}}</span>
                         {{/each}}
                         {{/if}}
                     </div>
+                    {{/if}}
                     <div class="cont-block-price">
                         {{if $value.houseTotalPrices && $value.houseTotalPrices > 0}}
                         <em>{{$value.houseTotalPrices}}万</em>
@@ -326,13 +355,8 @@
 <script>
     //二手房拦截默认的下拉加载
     window["$toutiao_customer_pullUpAction"]=true;
-
     $(function () {
-
-
         var urlparam =GetRequest();
-
-
         if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]
             pullUpAction();
@@ -455,7 +479,5 @@
         setPageNum($(e).attr('data-id'))
         window.location.href = $(e).attr('url')
     }
-
 </script>
-
 </html>

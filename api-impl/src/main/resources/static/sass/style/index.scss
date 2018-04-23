@@ -10,6 +10,15 @@
 
     .carousel-swiper {
         margin: 0 rem(-30);
+
+        .swiper-slide {
+            width: 100% !important;
+        }
+
+        .index-slide-overflow {
+            max-width: rem(750);
+            overflow: hidden;
+        }
     }
 }
 

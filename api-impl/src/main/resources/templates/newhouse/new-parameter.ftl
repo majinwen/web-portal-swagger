@@ -63,7 +63,7 @@
                 <p>产权年限：<#if (discript['building_life']?exists && discript['building_life']>0)>${discript['building_life']}<#else>暂无数据</#if></p>
                 <p>占地面积：<#if (discript['ground_area']?exists && discript['ground_area']>0)>${discript['ground_area']}㎡<#else>暂无数据</#if></p>
                 <p>建筑面积：<#if (discript['purpose_area']?exists && discript['purpose_area']>0)>${discript['purpose_area']}㎡<#else>暂无数据</#if></p>
-                <p>容积率：<#if discript['dimension']?exists && discript['dimension']?number gt 0>${discript['dimension']}<#else>暂无数据</#if></p>
+                <p>容积率：<#if discript['dimension']?exists && discript['dimension'] gt 0>${discript['dimension']?string("#.########")}<#else>暂无数据</#if></p>
                 <p>绿化率：<#if (discript['virescencerate']?exists && discript['virescencerate']>0)>${discript['virescencerate']?string("#.##")}%<#else>暂无数据</#if></p>
                 <p>规划户数：<#if discript['totaldoor']?exists && (discript['totaldoor']?number gt 0)>${discript['totaldoor']}<#else>暂无数据</#if></p>
                 <p>规划车位：<#if (discript['park_space']?exists && discript['park_space']>0)>${discript['park_space']}<#else>暂无数据</#if></p>

@@ -26,12 +26,12 @@ public class AggAdLandingDo {
     private String ep;
 
     /**
-     * 小户型（90㎡内）
+     * 小户型（1,2局）
      */
     private String ls;
 
     /**
-     * 豪宅 （200㎡以上）
+     * 豪宅（大于1000w）
      */
     private String lh;
 
@@ -44,5 +44,57 @@ public class AggAdLandingDo {
      * 每页数量
      */
     private Integer ps=10;
+
+    /**
+     * 用户浏览的起始位置
+     */
+    private Long startBit;
+
+    /**
+     * 查询位置
+     */
+    private Long queryBit;
+
+    /**
+     * 是否补充
+     */
+    private Integer sign = 0;
+
+    /**
+     * 推荐房源
+     */
+    private Integer tj;
+
+    /**
+     *  页面上已经存在的数据量
+     */
+    private Integer existNum;
+
+    /**
+     * 区县
+     */
+    private Integer district;
+    /**
+     * 区县（居室）
+     */
+    private String room;
+
+    private Integer count;
+    /**
+     * 房源面积
+     */
+    private String houseArea;
+    /**
+     * 房源面积标志  1.等于，2大于，3小于，4之间
+     */
+    private Integer haSign;
+    /**
+     * 整租
+     */
+    private Integer rentType;
+    /**
+     * 品质公寓(1:true)
+     */
+    private String qualityRent;
 
 }

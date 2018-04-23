@@ -31,6 +31,12 @@ public class FreeMarkerConfig  {
     private String staticVersion;
     @Value("${qiniu.img_domain}")
     private String qiniuImage;
+    @Value("${tt.log.tracking.host}")
+    private String trackingHost;
+    @Value("${tt.log.tracking.project}")
+    private String trackingProject;
+    @Value("${tt.log.tracking.logstore}")
+    private String trackingLogstore;
 //    @Value("${qiniu.img_zufang_domain}")
 //    private String qiniuZufangImage;
 
@@ -49,6 +55,9 @@ public class FreeMarkerConfig  {
             configuration.setSharedVariable("qiniuimage",qiniuImage);
             configuration.setSharedVariable("qiniuzufangimage",qiniuImage);
             configuration.setSharedVariable("staticversion", staticVersion);
+            configuration.setSharedVariable("trackingHost", trackingHost);
+            configuration.setSharedVariable("trackingProject", trackingProject);
+            configuration.setSharedVariable("trackingLogstore", trackingLogstore);
             configuration.setSharedVariable("getUser",new GetUserMethod());
             configuration.setSharedVariable("router_city",new Router());
 

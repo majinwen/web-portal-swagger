@@ -286,8 +286,8 @@
                     {{/if}}
                     {{else}}
                     {{$value.district_name}}
-                    {{if $value.house_min_area != null}}
-                    {{if $value.house_max_area != null}}
+                    {{if $value.house_min_area != null && $value.house_min_area > 0}}
+                    {{if $value.house_max_area != null && $value.house_max_area > 0}}
                     / {{$value.house_min_area}}㎡-{{$value.house_max_area}}㎡
                     {{/if}}
                     {{/if}}

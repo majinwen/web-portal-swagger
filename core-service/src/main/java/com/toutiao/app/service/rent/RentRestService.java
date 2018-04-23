@@ -27,4 +27,12 @@ public interface RentRestService {
      * @return
      */
     RentAgentDo queryRentAgentByRentId(String rentId);
+
+    /**
+     * 附近5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
+     * @param lat
+     * @param lon
+     * @return
+     */
+    List<RentDetailsFewDo> queryNearHouseByLocation(Double lat,Double lon,Integer pageNum);
 }

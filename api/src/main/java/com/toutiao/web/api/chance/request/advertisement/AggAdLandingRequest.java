@@ -46,4 +46,42 @@ public class AggAdLandingRequest {
      */
     private Integer ps=10;
 
+    /**
+     * 用户浏览的起始位置
+     */
+    private Long startBit;
+
+    /**
+     * 查询位置
+     */
+    private Long queryBit;
+
+    /**
+     * 是否补充
+     */
+    private Integer sign = 0;
+
+    /**
+     * 推荐房源
+     */
+    private Integer tj;
+
+    /**
+     * 整租
+     */
+    private Integer rentType;
+
+    /**
+     * 区县
+     */
+    private Integer district;
+
+    /**
+     * 区县（居室）
+     */
+    private String room;
+    /**
+     * 品质公寓(1:true)
+     */
+    private String qualityRent;
 }

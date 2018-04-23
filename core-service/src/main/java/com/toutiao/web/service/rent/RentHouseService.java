@@ -27,6 +27,14 @@ public interface RentHouseService {
      */
     Map<String,Object> getRentHouseList(RentHouseQuery rentHouseQuery);
 
+    /**
+     * 1.5km内房源优先展示
+     * @param rentHouseQuery
+     * @return
+     */
+    Map<String,Object> getRentHouseListByNear(RentHouseQuery rentHouseQuery);
+
+
 
 
 }

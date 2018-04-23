@@ -41,10 +41,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class PlotServiceImpl implements PlotService {
@@ -200,9 +197,36 @@ public class PlotServiceImpl implements PlotService {
             String buildingFeature = villageRequest.getBuildingFeature();
             if (buildingFeature != null && buildingFeature.length() != 0) {
                 String[] BuildingFeature = buildingFeature.split(",");
-                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", BuildingFeature));
-                boolQueryBuilder.must(queryBuilder1);
+//                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+//                BoolQueryBuilder queryBuilder1 = booleanQueryBuilder.should(QueryBuilders.termsQuery("labelId", BuildingFeature));
+//                boolQueryBuilder.must(queryBuilder1);
+
+
+                BoolQueryBuilder query = QueryBuilders.boolQuery();
+
+                boolean has_subway = Arrays.asList(BuildingFeature).contains("1");
+
+                if(has_subway){
+                    String[] tagOther = new String[BuildingFeature.length-1];
+                    int idx = 0;
+                    for(int i=0;i<BuildingFeature.length;i++){
+                        if(BuildingFeature[i].equals("1")){
+                            query.should(QueryBuilders.termQuery("has_subway", BuildingFeature[i]));
+                        } else {
+                            tagOther[idx++] = BuildingFeature[i];
+                        }
+                    }
+                    if(tagOther.length!=0){
+                        query.should(QueryBuilders.termsQuery("labelId", tagOther));
+                    }
+                    boolQueryBuilder.must(query);
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("labelId", BuildingFeature));
+                }
+
+
+
+
             }
 
             //均价
@@ -440,8 +464,10 @@ public class PlotServiceImpl implements PlotService {
                             instance.setHeatingMode("自供暖");
                         }
                         PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
-                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        if(plotRatio!=null){
+                            instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                            instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        }
                         instance.setTotal(hits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
@@ -474,8 +500,10 @@ public class PlotServiceImpl implements PlotService {
                             instance.setHeatingMode("自供暖");
                         }
                         PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
-                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        if(plotRatio!=null){
+                            instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                            instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        }
                         instance.setTotal(hits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
@@ -517,8 +545,10 @@ public class PlotServiceImpl implements PlotService {
                             instance.setHeatingMode("自供暖");
                         }
                         PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
-                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        if(plotRatio!=null){
+                            instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                            instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        }
                         instance.setTotal(hits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);
@@ -561,8 +591,10 @@ public class PlotServiceImpl implements PlotService {
                             instance.setHeatingMode("自供暖");
                         }
                         PlotRatio plotRatio = plotRatioMapper.selectByPrimaryKey(instance.getId());
-                        instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
-                        instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        if(plotRatio!=null){
+                            instance.setTongbi(Double.valueOf(plotRatio.getTongbi()));
+                            instance.setHuanbi(Double.valueOf(plotRatio.getHuanbi()));
+                        }
                         instance.setTotal(polthits.totalHits);
                         instance.setPageNum(villageRequest.getPageNum());
                         houseList.add(instance);

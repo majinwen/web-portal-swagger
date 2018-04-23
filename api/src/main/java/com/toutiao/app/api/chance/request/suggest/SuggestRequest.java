@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.request.suggest;
 
+import com.toutiao.web.common.assertUtils.HouseTypeValidator;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -14,5 +15,6 @@ public class SuggestRequest {
     /**
      * 房源类型
      */
+    @HouseTypeValidator(value = "plot,sellhouse,newhouse,rent",message = "房源路径类型错误")
     private String property;
 }

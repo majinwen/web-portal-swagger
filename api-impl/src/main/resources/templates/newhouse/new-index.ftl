@@ -299,14 +299,14 @@
                 });*!/
         return false;
     });*/
-    })
+    });
     config=[
         {"pid":6,"jqid":"#left"},
         {"pid":7,"jqid":"#right"},
         {"pid":8,"jqid":"#secleft"},
         {"pid":9,"jqid":"#secmid"},
-        {"pid":10,"jqid":"#secright"},
-        {"pid":11,"jqid":"#house-pic-container"}];
+        {"pid":10,"jqid":"#secright"}/*,
+        {"pid":11,"jqid":"#house-pic-container"}*/];
     $com.toutiao.ad.json(config);
 
     var lunbo = [
@@ -347,8 +347,48 @@
                     }
                 })
             }
+        }},
+        {"pid": 11,callback: function (html) {
+            var parent=$('<li class="swiper-slide"></li>');
+            parent.append(html);
+            $("#house-pic-container").append(parent);
+            html.click(function () {
+                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 22,callback: function (html) {
+            var parent=$('<li class="swiper-slide"></li>');
+            parent.append(html);
+            $("#house-pic-container").append(parent);
+            html.click(function () {
+                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 23,callback: function (html) {
+            var parent=$('<li class="swiper-slide"></li>');
+            parent.append(html);
+            $("#house-pic-container").append(parent);
+            html.click(function () {
+                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 26,callback: function (html) {
+            var parent=$('<li class="swiper-slide"></li>');
+            parent.append(html);
+            $("#house-pic-container").append(parent);
+            html.click(function () {
+                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
+        }},
+        {"pid": 27,callback: function (html) {
+            var parent=$('<li class="swiper-slide"></li>');
+            parent.append(html);
+            $("#house-pic-container").append(parent);
+            html.click(function () {
+                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+            })
         }}
-    ]
+    ];
     $com.toutiao.ad.json_chain(lunbo);
 
     var addHeight;

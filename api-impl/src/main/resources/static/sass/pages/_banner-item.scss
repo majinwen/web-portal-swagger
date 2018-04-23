@@ -1,14 +1,12 @@
 .banner-nav {
     display: -webkit-flex;
     display: flex;
-    margin: rem(40) rem(-30) 0;
+    margin: rem(40) rem(-15) 0;
     justify-content: space-between;
 
     .banner-nav-item {
         -webkit-flex: 1;
         flex: 1;
-        margin-left: rem(30);
-        margin-right: rem(30);
         text-align: center;
 
         a {
@@ -31,18 +29,22 @@
             &.houses-open {
                 @include bg-image('/static/images/newindex/newindex-nav-icon-2018030503');
             }
+            &.index-new-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032801');
+            }
             &.index-esf-icon {
-                @include bg-image('/static/images/index/index-nav-icon-2018030503');
+                @include bg-image('/static/images/index/index-nav-icon-2018032803');
+            }
+            &.index-rent-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032804');
             }
             &.index-plot-icon {
-                @include bg-image('/static/images/index/index-nav-icon-2018030502');
-            }
-            &.index-new-icon {
-                @include bg-image('/static/images/index/index-nav-icon-2018030501');
+                @include bg-image('/static/images/index/index-nav-icon-2018032802');
             }
             &.index-intelligent-icon {
-                @include bg-image('/static/images/index/index-nav-icon-2018030504');
+                @include bg-image('/static/images/index/index-nav-icon-2018032805');
             }
+
         }
 
         p {
@@ -54,8 +56,8 @@
 
         &.index-nav-item {
             i {
-                width: rem(94);
-                height: rem(94);
+                width: rem(80);
+                height: rem(80);
             }
         }
     }

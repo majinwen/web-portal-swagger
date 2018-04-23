@@ -125,7 +125,8 @@ public class PlotConterller {
             //推荐小区二手房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();
             projHouseInfoQuery.setNewcode(String.valueOf(village.getId()));
-            List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+//            List reViHouse = projHouseInfoService.queryProjHouseInfo(projHouseInfoQuery);
+            List reViHouse = projHouseInfoService.queryProjHouseInfoByVillageId(projHouseInfoQuery);
             model.addAttribute("reViHouse", reViHouse);
 
             //推荐小区(普租+公寓)

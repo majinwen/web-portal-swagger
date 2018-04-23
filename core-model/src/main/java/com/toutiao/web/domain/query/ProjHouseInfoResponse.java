@@ -311,6 +311,21 @@ public class ProjHouseInfoResponse {
      */
     private Integer pageNum;
 
+    /**
+     * 认领后房源id
+     */
+    private String claimHouseId ;
 
+    private String claimHouseTitle;
+
+    private String claimHousePhotoTitle;
+
+    private String[] claimTagsName;
+
+    private Integer sortingScore;
+
+    private Integer is_claim;
+
+    private Integer userId;
 
 }

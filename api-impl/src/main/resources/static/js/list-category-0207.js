@@ -1262,22 +1262,45 @@ function pullUpAction() {
                                     var _subwayObj = dataCon[i]['subwayDistince'];
                                     var _key = dataCon[i]['key'];
                                     if (_subwayObj && _key) {
-                                        var _subwayArray = _subwayObj[_key].split('$');
-                                        if (_subwayArray.length > 2) {
-                                            var _subwayDesc;
+                                        if( _subwayObj[_key]!=undefined){
+                                            var _subwayArray = _subwayObj[_key].split('$');
+                                            if (_subwayArray.length > 2) {
+                                                var _subwayDesc;
 
-                                            var _distance = parseInt(_subwayArray[2]);
-                                            if (_distance > 1000) {
-                                                var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + parseFloat(_tempDistance) + "km";
-                                            } else {
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + _distance + "m";
+                                                var _distance = parseInt(_subwayArray[2]);
+                                                if (_distance > 1000) {
+                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + parseFloat(_tempDistance) + "km";
+                                                } else {
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + _distance + "m";
+                                                }
+                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                            dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
                                     };
+                                    if(dataCon[i]['is_claim']==1){
+                                        if (dataCon[i]['claimHousePhotoTitle']) {
+                                            var _house_title_img;
+                                            if (dataCon[i]['claimHousePhotoTitle'].indexOf('http') > -1) {
+                                                _house_title_img = dataCon[i]['claimHousePhotoTitle'];
+                                            }else{
+                                                _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['claimHousePhotoTitle'] + "-tt400x300";
+                                            }
+                                            dataCon[i]['claimHousePhotoTitle'] = _house_title_img;
+                                        }
+                                    }else{
+                                        if (dataCon[i]['housePhotoTitle']) {
+                                            var _house_title_img;
+                                            if (dataCon[i]['housePhotoTitle'].indexOf('http') > -1) {
+                                                _house_title_img = dataCon[i]['housePhotoTitle'];
+                                            }else{
+                                                _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['housePhotoTitle'] + "-tt400x300";
+                                            }
+                                            dataCon[i]['housePhotoTitle'] = _house_title_img;
+                                        }
+                                    }
                                 };
 
                                 if (_localHref.indexOf('xiaoqu') > 0) {
@@ -1286,26 +1309,27 @@ function pullUpAction() {
                                     var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                     var _key = dataCon[i]['key'];
                                     if (_subwayObj && _key) {
-                                        var _subwayArray = _subwayObj[_key].split('$');
-                                        if (_subwayArray.length > 2) {
-                                            var _subwayDesc;
+                                        if(_subwayObj[_key]!=undefined){
+                                            var _subwayArray = _subwayObj[_key].split('$');
+                                            if (_subwayArray.length > 2) {
+                                                var _subwayDesc;
 
-                                            var _distance = parseInt(_subwayArray[2]);
-                                            if (_distance > 1000) {
-                                                var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + parseFloat(_tempDistance) + "km";
-                                            } else {
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + _distance + "m";
+                                                var _distance = parseInt(_subwayArray[2]);
+                                                if (_distance > 1000) {
+                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + parseFloat(_tempDistance) + "km";
+                                                } else {
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + _distance + "m";
+                                                }
+                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                            dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
                                     };
                                 };
                             }
                         }
-
                         if(data.data==null){
                             me.lock();
                             // 无数据
@@ -1432,22 +1456,48 @@ function pullDownAction() {
                                         var _subwayObj = dataCon[i]['subwayDistince'];
                                         var _key = dataCon[i]['key'];
                                         if (_subwayObj && _key) {
-                                            var _subwayArray = _subwayObj[_key].split('$');
-                                            if (_subwayArray.length > 2) {
-                                                var _subwayDesc;
+                                            if(_subwayObj[_key]!=undefined){
+                                                var _subwayArray = _subwayObj[_key].split('$');
+                                                if (_subwayArray.length > 2) {
+                                                    var _subwayDesc;
 
-                                                var _distance = parseInt(_subwayArray[2]);
-                                                if (_distance > 1000) {
-                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + parseFloat(_tempDistance) + "km";
-                                                } else {
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + _distance + "m";
+                                                    var _distance = parseInt(_subwayArray[2]);
+                                                    if (_distance > 1000) {
+                                                        var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + parseFloat(_tempDistance) + "km";
+                                                    } else {
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + _distance + "m";
+                                                    }
+                                                    dataCon[i]['subwayDesc'] = _subwayDesc;
                                                 }
-                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
+
                                         };
+
+                                        if(dataCon[i]['is_claim']==1){
+                                            if (dataCon[i]['claimHousePhotoTitle']) {
+                                                var _house_title_img;
+                                                if (dataCon[i]['claimHousePhotoTitle'].indexOf('http') > -1) {
+                                                    _house_title_img = dataCon[i]['claimHousePhotoTitle'];
+                                                }else{
+                                                    _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['claimHousePhotoTitle'] + "-tt400x300";
+                                                }
+                                                dataCon[i]['claimHousePhotoTitle'] = _house_title_img;
+                                            }
+                                        }else{
+                                            if (dataCon[i]['housePhotoTitle']) {
+                                                var _house_title_img;
+                                                if (dataCon[i]['housePhotoTitle'].indexOf('http') > -1) {
+                                                    _house_title_img = dataCon[i]['housePhotoTitle'];
+                                                }else{
+                                                    _house_title_img = 'http://s1.qn.toutiaofangchan.com/' + dataCon[i]['housePhotoTitle'] + "-tt400x300";
+                                                }
+                                                dataCon[i]['housePhotoTitle'] = _house_title_img;
+                                            }
+                                        }
+
                                     };
 
                                     if (_localHref.indexOf('xiaoqu') > 0) {
@@ -1456,20 +1506,22 @@ function pullDownAction() {
                                         var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                         var _key = dataCon[i]['key'];
                                         if (_subwayObj && _key) {
-                                            var _subwayArray = _subwayObj[_key].split('$');
-                                            if (_subwayArray.length > 2) {
-                                                var _subwayDesc;
+                                            if(_subwayObj[_key]!=undefined){
+                                                var _subwayArray = _subwayObj[_key].split('$');
+                                                if (_subwayArray.length > 2) {
+                                                    var _subwayDesc;
 
-                                                var _distance = parseInt(_subwayArray[2]);
-                                                if (_distance > 1000) {
-                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + parseFloat(_tempDistance) + "km";
-                                                } else {
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + _distance + "m";
+                                                    var _distance = parseInt(_subwayArray[2]);
+                                                    if (_distance > 1000) {
+                                                        var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + parseFloat(_tempDistance) + "km";
+                                                    } else {
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + _distance + "m";
+                                                    }
+                                                    dataCon[i]['subwayDesc'] = _subwayDesc;
                                                 }
-                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
                                         };
                                     };
@@ -1491,6 +1543,7 @@ function pullDownAction() {
                             }
 
                             var html = template('listContent', data.data);
+
                             $('#valueList li:first-child').before(html);
                             // 每次数据插入，必须重置
                             me.resetload();

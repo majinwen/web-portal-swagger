@@ -10,6 +10,8 @@
           content="我在头条房产发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script type="text/javascript" src="${staticurl}/js/loghub-tracking.js" async></script>
+
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <#include "../StatisticsHeader.ftl">
 </head>
@@ -18,11 +20,15 @@
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
-        <#if agent?exists>
-            <#if agent['house_img']?exists&&agent['house_img']?size gt 0>
-                <#list agent['house_img'] as photo>
-                    <li onclick="initphoto(this,${photo_index})" class="swiper-slide">
-                        <img src="${photo['image_path']}" data-src="${photo['image_path']}" alt="">
+        <#if houseDetail['claimHouseId']?exists>
+            <#if houseDetail['housePhoto']?exists&& houseDetail['housePhoto']?size gt 0>
+                <#list houseDetail['housePhoto'] as itemValue>
+                    <li onclick="initphoto(this,${itemValue_index})" class="swiper-slide">
+                        <#if itemValue?string?index_of("http") gt -1>
+                            <img src="${itemValue}" data-src="${itemValue}" alt="">
+                        <#else>
+                            <img src="${qiniuimage}/${itemValue}-ttfc1200x640" data-src="${qiniuimage}/${itemValue}-ttfc1200x640" alt="">
+                        </#if>
                     </li>
                 </#list>
             <#else>
@@ -45,12 +51,10 @@
         </#if>
         </ul>
         <div class="banner-title">
-            <#if agent?exists>
-                <#if agent.houseId?exists&&agent.houseId!=''>
-                    <div class="banner-house-number">房源编号：${agent.houseId}</div>
-                </#if>
+            <#if houseDetail.claimHouseId?exists && houseDetail.claimHouseId!=''>
+                <div class="banner-house-number">房源编号：<em class="sellHouseId">${houseDetail.claimHouseId}</em></div>
             <#else >
-                <div class="banner-house-number">房源编号：${houseDetail.houseId}</div>
+                <div class="banner-house-number">房源编号：<em class="sellHouseId">${houseDetail.houseId}</em></div>
             </#if>
             <div class="swiper-pagination pictrue-index"></div>
         </div>
@@ -91,17 +95,17 @@
 <div class="module-bottom-fill">
     <section class="primary-message">
         <div class="primary-header text-center">
-            <#if agent?exists>
-                <#if agent.house_title?exists&&agent.house_title!=''>
-                    <h2>${agent.house_title}</h2>
+            <#if houseDetail.claimHouseId?exists>
+                <#if houseDetail.claimHouseTitle?exists && houseDetail.claimHouseTitle!=''>
+                    <h2>${houseDetail.claimHouseTitle}</h2>
                 </#if>
             <#else >
                 <h2><#if houseDetail.houseTitle?exists>${houseDetail.houseTitle}</#if></h2>
             </#if>
             <div class="primary-header-tag house-labelling gray">
-            <#if agent?exists>
-                <#if agent['house_tags_name']?exists&&agent['house_tags_name']?size gt 0>
-                    <#list agent['house_tags_name'] as itemValue>
+            <#if houseDetail.claimHouseId?exists>
+                <#if houseDetail['claimTagsName']?exists&&houseDetail['claimTagsName']?size gt 0>
+                    <#list houseDetail['claimTagsName'] as itemValue>
                             <span>${itemValue}</span>
                     </#list>
                 </#if>
@@ -222,7 +226,7 @@
                 </dl>
             </li>
 
-        <#if houseDetail.traffic?exists>
+        <#if houseDetail.traffic?exists && houseDetail.traffic!=''>
             <li>
                 <p id="traffic_info">
                     交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
@@ -235,7 +239,9 @@
         </ul>
     </section>
 </div>
-<#if agent?exists>
+
+
+<#if houseDetail['claimHouseId']?exists>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">
@@ -243,20 +249,20 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if agent['agent_headphoto']?exists>src="${agent['agent_headphoto']}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail['houseProxyPhoto']?exists&& houseDetail['houseProxyPhoto']!=''>src="${qiniuimage}/${houseDetail['houseProxyPhoto']}-tt100x141" alt="名片" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
-                        <#if agent['of_company']?exists&&agent['of_company']!=''>【${agent['of_company']}】</#if>
-                        <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
+                        <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
+                        <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if></span>
                     <em>房屋信息发布人</em>
                 </p>
-                <#if agent['agent_phone']?exists&&agent['agent_phone']!=''>
-                    <a href="tel:${agent['agent_phone']}" class="issuer-tel-icon"></a>
+                <#if houseDetail['houseProxyPhone']?exists&&houseDetail['houseProxyPhone']!=''>
+                    <a href="tel:${houseDetail['houseProxyPhone']}" class="issuer-tel-icon"></a>
                 </#if>
             </div>
-            <#if agent['house_desc']?exists&&agent['house_desc']!=''>
+            <#if houseDetail['houseDesc']?exists&&houseDetail['houseDesc']!=''>
                 <div class="describe-cont">
-                    <p>${agent['house_desc']}</p>
+                    <p>${houseDetail['houseDesc']}</p>
                 <#--<span class="describe-show-btn">>>展开</span>-->
                 </div>
             </#if>
@@ -272,7 +278,7 @@
         </div>
         <div class="describe-box">
             <div class="describe-header">
-                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
+                <img class="source-icon" <#if houseDetail.houseProxyPhoto?exists>src="${houseDetail.houseProxyPhoto}" alt="" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" <#else >src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"</#if>>
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
@@ -363,43 +369,122 @@
         </div>
         <ul class="tilelist-type">
             <#list plot as map>
-                <li>
-                    <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
-                    <#else><a href="#">
-                    </#if>
-                    <div class="picture-box">
-                        <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
-                            <img src="${map.housePhotoTitle}" alt="${map.plotName}">
-                        <#else >
-                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                <#if map.claimHouseId?exists>
+                    <li>
+                        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.claimHouseId}&__topic__=esfbaoguang'/>-->
+                        <#if map.claimHouseId?exists><a href="${router_city('/esf/'+map.claimHouseId+'.html')}">
+                        <#else><a href="#">
                         </#if>
-                        <div class="bottom-text">
-                            <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
+                        <div class="picture-box">
+                            <#if map.claimHousePhotoTitle?exists && map.claimHousePhotoTitle!=''>
+                                <img src="${map.claimHousePhotoTitle}" alt="${map.plotName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
+                            </div>
                         </div>
-                    </div>
-                    <div class="tilelist-content">
-                        <h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>
-                        <p class="cont-first">
+                        <div class="tilelist-content">
+                            <h4 class="cont-last"><#if map.claimHouseTitle?exists>${map.claimHouseTitle}</#if></h4>
+                            <p class="cont-first">
                             <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>
                                 <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>
                                 <#if map.room?exists&&map.hall?exists>
-                                <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
                                 <#if map.forwardName?exists> ${map.forwardName}</#if>
-                        </p>
-                        <div class="cont-block-4 house-labelling normal">
-                            <#if map.tagsName?exists>
-                                <#assign item = map.tagsName>
-                                <#list item as itemValue>
-                                    <#if itemValue?exists>
-                                        <#if itemValue_index lt 3>
-                                            <span>${itemValue}</span>
+                            </p>
+                            <div class="cont-block-4 house-labelling normal">
+                                <#if map.claimTagsName?exists>
+                                    <#assign item = map.claimTagsName>
+                                    <#list item as itemValue>
+                                        <#if itemValue?exists>
+                                            <#if itemValue_index lt 3>
+                                                <span>${itemValue}</span>
+                                            </#if>
                                         </#if>
-                                    </#if>
-                                </#list>
-                            </#if>
+                                    </#list>
+                                </#if>
+                            </div>
                         </div>
-                    </div>
-                </a></li>
+                    </a></li>
+                <#else>
+                    <li>
+                        <#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">
+                        <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId=${map.houseId}&__topic__=esfbaoguang'/>-->
+                        <#else><a href="#">
+                        </#if>
+                        <div class="picture-box">
+                            <#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>
+                                <img src="${map.housePhotoTitle}" alt="${map.plotName}">
+                            <#else >
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                            </#if>
+                            <div class="bottom-text">
+                                <#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>
+                            </div>
+                        </div>
+                        <div class="tilelist-content">
+                            <h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>
+                            <p class="cont-first">
+                            <em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>
+                                <#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>
+                                <#if map.room?exists&&map.hall?exists>
+                                    <#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>
+                                <#if map.forwardName?exists> ${map.forwardName}</#if>
+                            </p>
+                            <div class="cont-block-4 house-labelling normal">
+                                <#if map.tagsName?exists>
+                                    <#assign item = map.tagsName>
+                                    <#list item as itemValue>
+                                        <#if itemValue?exists>
+                                            <#if itemValue_index lt 3>
+                                                <span>${itemValue}</span>
+                                            </#if>
+                                        </#if>
+                                    </#list>
+                                </#if>
+                            </div>
+                        </div>
+                    </a></li>
+                </#if>
+                <#--<li>-->
+                    <#--<#if map.houseId?exists><a href="${router_city('/esf/'+map.houseId+'.html')}">-->
+                    <#--<#else><a href="#">-->
+                    <#--</#if>-->
+                    <#--<div class="picture-box">-->
+                        <#--<#if map.housePhotoTitle?exists && map.housePhotoTitle!=''>-->
+                            <#--<img src="${map.housePhotoTitle}" alt="${map.plotName}">-->
+                        <#--<#else >-->
+                            <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">-->
+                        <#--</#if>-->
+                        <#--<div class="bottom-text">-->
+                            <#--<#if map.housetToPlotDistance?exists>${map.housetToPlotDistance}以内</#if>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                    <#--<div class="tilelist-content">-->
+                        <#--<h4 class="cont-last"><#if map.houseTitle?exists>${map.houseTitle}</#if></h4>-->
+                        <#--<p class="cont-first">-->
+                            <#--<em><#if map.houseTotalPrices?exists && map.houseTotalPrices!=0>${map.houseTotalPrices}万</em></#if>-->
+                                <#--<#if map.buildArea?exists&&(map.buildArea>0)>${map.buildArea}㎡</#if>-->
+                                <#--<#if map.room?exists&&map.hall?exists>-->
+                                <#--<#if map.room?number lt 99> ${map.room}<#elseif map.room?number gte 99>多</#if>室</#if>-->
+                                <#--<#if map.forwardName?exists> ${map.forwardName}</#if>-->
+                        <#--</p>-->
+                        <#--<div class="cont-block-4 house-labelling normal">-->
+                            <#--<#if map.tagsName?exists>-->
+                                <#--<#assign item = map.tagsName>-->
+                                <#--<#list item as itemValue>-->
+                                    <#--<#if itemValue?exists>-->
+                                        <#--<#if itemValue_index lt 3>-->
+                                            <#--<span>${itemValue}</span>-->
+                                        <#--</#if>-->
+                                    <#--</#if>-->
+                                <#--</#list>-->
+                            <#--</#if>-->
+                        <#--</div>-->
+                    <#--</div>-->
+                <#--</a></li>-->
             </#list>
         </ul>
     </section>
@@ -435,15 +520,61 @@
     </ul>
 </section>
 </#if>-->
-<#if houseDetail.houseProxyPhone?exists>
-<div class="detail-contact-wrapper">
-    <section class="detail-contact-box" id="detailContactState">
-        <div class="detail-contact-content">
-            <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>
+
+<#--<#if houseDetail.houseProxyPhone?exists>-->
+<#--<div class="detail-contact-wrapper">-->
+    <#--<section class="detail-contact-box" id="detailContactState">-->
+        <#--<div class="detail-contact-content">-->
+            <#--<a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling">咨询经纪人</a>-->
+        <#--</div>-->
+    <#--</section>-->
+<#--</div>-->
+<#--<#else >-->
+    <#if houseDetail['claimHouseId']?exists&&houseDetail['claimHouseId']!=''>
+        <div class="detail-contact-wrapper">
+            <section class="detail-contact-box" id="detailContactState">
+                <div class="detail-contact-content">
+                    <a href="tel:${houseDetail['houseProxyPhone']}" class="contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 60%;margin-top: -0.06rem;">立即咨询底价</a>
+                    <a href="javascript:void(0)" class="contact-next">预约咨询</a>
+                </div>
+            </section>
         </div>
-    </section>
+    <#else>
+        <#if houseDetail.houseProxyPhone?exists>
+            <div class="detail-contact-wrapper">
+                <section class="detail-contact-box" id="detailContactState">
+                    <div class="detail-contact-content">
+                        <a href="tel:${houseDetail.houseProxyPhone}" class="only contact-telephone-counseling"><img src="${staticurl}/images/tel0415.png" style="height: 60%;margin-top: -0.06rem;">立即咨询底价</a>
+                        <#--<a href="javascript:void(0)" class="contact-next">预约咨询</a>-->
+                    </div>
+                </section>
+            </div>
+        </#if>
+    </#if>
+<#--</#if>-->
+
+<div class="reservation-pop none">
+    <div class="mask"></div>
+    <div class="reservation-content">
+        <h2>预约咨询</h2>
+        <p>您对本房源和小区还想多了解一点？请马上与本小区资深顾问预约联系！您可以提供进一步信息，以便获得更深入解答</p>
+
+        <div class="user-phone">
+            <div class="clear"><span>电话<em class="required">*</em>：</span><input class="userPhone" type="tel" placeholder="请输入您的手机号码" maxlength="11" /></div>
+            <div class="error clear none"><span class="error-text"></span></div>
+        </div>
+        <div class="textarea-content">
+            <div class="clear">
+                <p>留言<em class="required">*</em>：</p>
+                <textarea class="user-content"></textarea>
+            </div>
+            <div class="error clear none"><span class="error-text"></span></div>
+        </div>
+        <button class="reservation-submit">确定预约</button>
+        <a class="dialing" href="tel:${houseDetail.houseProxyPhone}">等不及？马上拨打经纪人电话</a>
+    </div>
 </div>
-</#if>
+
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -454,10 +585,96 @@
 <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
 <script>
     $(function () {
+        $('.contact-next').on('click', function () {
+            $('.reservation-pop').removeClass('none');
+        });
+        $('.reservation-pop').on('click', '.mask', function (e) {
+            $('.reservation-pop').addClass('none');
+        });
+        var subPhone = false;
+        var reservationData = {};
+
+
+        reservationData['sellHouseId'] = $('.sellHouseId').text();
+        reservationData['price'] = <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}<#else ></#if>;
+        reservationData['area'] = <#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}<#else ></#if>;
+        reservationData['room'] = <#if houseDetail.room?exists>${houseDetail.room}<#else ></#if>;
+        reservationData['hall'] = <#if houseDetail.hall?exists>${houseDetail.hall}<#else ></#if>;
+
+        $('.userPhone').on('blur', function () {
+            isPhone($(this).val());
+        });
+
+        $('.user-content').on('blur', function () {
+            if ($(this).val() != '') {
+                $('.textarea-content').find('.error').addClass('none');
+                $('.textarea-content').find('.error-text').text('');
+            }
+        });
+        var isPhone = function (str) {
+            var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+            if (reg.test(str)) {
+                subPhone = true;
+                $('.user-phone').find('.error').addClass('none');
+            } else {
+                subPhone = false;
+                $('.user-phone').find('.error').removeClass('none');
+                $('.user-phone').find('.error-text').text('请输入正确格式的手机号码');
+            }
+        };
+
+        $('.reservation-submit').on('click', function () {
+            if ($('.userPhone').val() != '' && $('.user-content').val() != '' && subPhone) {
+                reservationData['userPhone'] = $('.userPhone').val();
+                reservationData['content'] = $('.user-content').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/duankou/v1.0.0/agentHouseSell/saveAgentHouseSellLeaveMessage',
+                    data: reservationData,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == '0' && data.data == 'success') {
+                            $('.reservation-pop').addClass('none');
+                            $('.userPhone').val('');
+                            $('.user-content').val('');
+                        }
+                    },
+                    error: function (msg) {
+                        console.log(msg)
+                    }
+                });
+            } else {
+                if ($('.userPhone').val() != '' && !subPhone) {
+                    $('.user-phone').find('.error').removeClass('none');
+                    $('.user-phone').find('.error-text').text('请输入正确格式的手机号码！')
+                }
+
+                if ($('.userPhone').val() == '') {
+                    $('.user-phone').find('.error').removeClass('none');
+                    $('.user-phone').find('.error-text').text('手机号码不能为空！')
+                }
+                if ($('.user-content').val() == '') {
+                    $('.textarea-content').find('.error').removeClass('none');
+                    $('.textarea-content').find('.error-text').text('留言内容不能为空！')
+                }
+            }
+        });
+
+        $('.dialing').on('click', function () {
+            $('.reservation-pop').addClass('none');
+        });
+
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
             var s = text.substring(1);
             $("tilePlotDesc").find("p").html(s);
+        }
+
+        if(window.location.href.indexOf('cpcesfTOP10_detail') > -1){
+            var logger = new window.Tracker('${trackingHost}','${trackingProject}','${trackingLogstore}');
+            logger.push('houseId', '${houseDetail.houseId}');
+            logger.push('__topic__', 'esfTop10');
+            logger.logger();
         }
     });
     function desc(url) {
@@ -476,7 +693,7 @@
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
         '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
-    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
         '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
@@ -489,13 +706,30 @@
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
         '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
-    '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
         '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
         '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
         '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
         '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
+
+    <#if houseDetail?exists>
+        <#if houseDetail['claimHouseId']?exists && houseDetail['claimHouseId']!=''>
+        zhuge.track('出售房源认领统计', {
+            '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
+            '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
+            '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
+            '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
+            '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+            '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
+            '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+            '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
+            '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
+            'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
+        });
+        </#if>
+    </#if>
 
     $(".describe-header").on('click', 'a', function () {
         var link = $(this);
@@ -507,7 +741,8 @@
             location.href = link.attr('href');
         });
         return false;
-    })
+    });
+
     $(".detail-contact-content").on('click', 'a', function () {
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
@@ -518,7 +753,18 @@
             location.href = link.attr('href');
         });
         return false;
-    })
+    });
+    $(".dialing").on('click', 'a', function () {
+        var link = $(this);
+        zhuge.track('二手房-点击拨打电话', {
+            "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
+            "经纪人电话": '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!="">${houseDetail.houseProxyPhone}</#if>',
+            "位置": "预约咨询"
+        }, function () {
+            location.href = link.attr('href');
+        });
+        return false;
+    });
     $("#nearbynewesf").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('二手房-看过本房的用户正在看', {

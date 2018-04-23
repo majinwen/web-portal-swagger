@@ -214,7 +214,8 @@ $(function () {
 
                 if ($('li[data-mark="tab-rent-price"]')) {
                     $('li[data-mark="tab-rent-price"]').addClass('choose').find('em').text($(this).text());
-                } else if ($('li[data-mark="tab-price"]')) {
+                }
+                if ($('li[data-mark="tab-price"]')) {
                     $('li[data-mark="tab-price"]').addClass('choose').find('em').text($(this).text());
                 }
             }
@@ -349,6 +350,12 @@ $(function () {
      */
     if (req['ht']) {
         moreOption('ht');
+    }
+    /**
+     * 特色筛选---多选(租房)
+     */
+    if (req['tags']) {
+        moreOption('tags');
     }
     /**
      * 整租筛选---多选
@@ -1047,18 +1054,18 @@ $('#typeSubmit').on('click', function (e) {
  * 更多选择
  * */
 $('.more-list').on('click','span', function () {
-    if ($(this).hasClass('only')) {
-        $(this).toggleClass('current').siblings().removeClass('current');
-    } else {
-        $(this).toggleClass('current');
-    }
-
     if ($(this).parents('.filter-item').data('mark')=='panel-rent-type'){
         if ($(this).hasClass('rent-only')) {
-            $(this).addClass('current').siblings().removeClass('current');
+            $(this).toggleClass('current').siblings().removeClass('current');
         } else {
-            $(this).siblings('span[data-info=""]').removeClass('current');
-            $(this).addClass('current');
+            $(this).siblings('span.rent-only').removeClass('current');
+            $(this).toggleClass('current');
+        }
+    } else {
+        if ($(this).hasClass('only')) {
+            $(this).toggleClass('current').siblings().removeClass('current');
+        } else {
+            $(this).toggleClass('current');
         }
     }
 });
@@ -1119,7 +1126,7 @@ $('#moreReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
     req['pageNum'] = null;
     req['propertyTypeId'] = null;
-    req['houseAreaSize'] = null;
+    req['houseAreaSize'] = null; // 面积
     req['elevatorFlag'] = null;
     req['buildingType'] = null;
     req['saleType'] = null;
@@ -1132,7 +1139,10 @@ $('#moreReset').on('click', function () {
     req['ownership'] = null;
     req['lat'] = null;
     req['lon'] = null;
-    req['forward'] = null;
+    req['forward'] = null;  // 朝向(租房)
+    req['source'] = null;   // 来源(租房)
+    req['ht'] = null;   // 供暖(租房)
+    req['tags'] = null;     // 特色(租房)
 });
 /**
  * 租房类型提交
@@ -1143,11 +1153,27 @@ $('#moreRentSubmit').on('click', function (e) {
     $(domList).each(function () {
         var dataType = $(this).find('dt').attr('data-type'),
             dataTypeArr = $(this).find('.current');
-            var arr = [];
+        var arr = [];
         if (dataTypeArr.length) {
             $(dataTypeArr).each(function () {
                 arr.push($(this).attr('data-info'));
+                /*if (!$(this).hasClass('rent-only')) {
+                    arr.push($(this).attr('data-info'));
+                }
+                /*if ($(this).hasClass('ert') && $(this).hasClass('current')) {
+                    req['ert'] = '1';
+                }
+                if ($(this).hasClass('jrt') && $(this).hasClass('current')) {
+                    req['jrt'] = '0';
+                }*/
             });
+
+           /* if (!$('.ert').hasClass('current')) {
+                req['ert'] = null;
+            }
+            if (!$('.jrt').hasClass('current')) {
+                req['jrt'] = null;
+            }*/
             req[dataType]= arr.join().toString();
         } else {
             req[dataType] = null;
@@ -1165,6 +1191,7 @@ $('#moreRentSubmit').on('click', function (e) {
     req['pageNum'] = null;
     req['lat'] = null;
     req['lon'] = null;
+    console.log(params);
     params = joinParams(req);
     url = _localHref + params;
     var houseName = null;
@@ -1185,7 +1212,7 @@ $('#moreRentSubmit').on('click', function (e) {
     });
 });
 /*
- * 更多筛选重置(租房)
+ * 更多筛选重置(租房户型)
  * */
 $('#moreRentReset').on('click', function () {
     $('.more-list').find('.current').removeClass('current');
@@ -1313,8 +1340,24 @@ function pullUpAction() {
             paramData['pageNum'] = (initLoad_pageNum==pageNumUp?pageNumUp:pageNumUp+1);
 
             if (_localHref.indexOf('/zufang') > 0){
-                if(("near" in paramData)){
+                if(("near" in paramData)||(Object.getOwnPropertyNames(paramData).length==1&&"pageNum" in paramData)){
                     if (window["$toutiao_customer_pullUpAction_latlon"]) {
+                        paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0];
+                        paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
+                        if(hasAnotherParam){
+                            delete paramData["lat"];
+                            delete paramData["lon"];
+                        }
+                    }
+                }else{
+                    if (window["$toutiao_customer_pullUpAction_latlon"]) {
+                        var hasAnotherParam=false;
+                        for(var key in paramData){
+                            // alert(key+'='+$.inArray(key,['lat','lon']))
+                            if($.trim(key)!='' && key!='pageNum' && $.inArray(key,['lat','lon'])<0){
+                                hasAnotherParam = true;
+                            }
+                        }
                         paramData["lat"] =window["$toutiao_customer_pullUpAction_latlon"][0] ;
                         paramData["lon"] =window["$toutiao_customer_pullUpAction_latlon"][1];
                         if(hasAnotherParam){
@@ -1435,21 +1478,24 @@ function pullUpAction() {
                                     var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                     var _key = dataCon[i]['key'];
                                     if (_subwayObj && _key) {
-                                        var _subwayArray = _subwayObj[_key].split('$');
-                                        if (_subwayArray.length > 2) {
-                                            var _subwayDesc;
+                                        if( _subwayObj[_key]!=undefined){
+                                            var _subwayArray = _subwayObj[_key].split('$');
+                                            if (_subwayArray.length > 2) {
+                                                var _subwayDesc;
 
-                                            var _distance = parseInt(_subwayArray[2]);
-                                            if (_distance > 1000) {
-                                                var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + parseFloat(_tempDistance) + "km";
-                                            } else {
-                                                _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                    + _distance + "m";
+                                                var _distance = parseInt(_subwayArray[2]);
+                                                if (_distance > 1000) {
+                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + parseFloat(_tempDistance) + "km";
+                                                } else {
+                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                        + _distance + "m";
+                                                }
+                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
-                                            dataCon[i]['subwayDesc'] = _subwayDesc;
                                         }
+
                                     }
                                 }
 
@@ -1482,6 +1528,8 @@ function pullUpAction() {
                                         }
                                         dataCon[i]['house_title_img'] = _house_title_img;
                                     }
+
+                                    dataCon[i]['house_area'] = Math.floor(dataCon[i]['house_area'])
                                 }
                             }
                         }
@@ -1638,21 +1686,24 @@ function pullDownAction() {
                                         var _subwayObj = dataCon[i]['metroWithPlotsDistance'];
                                         var _key = dataCon[i]['key'];
                                         if (_subwayObj && _key) {
-                                            var _subwayArray = _subwayObj[_key].split('$');
-                                            if (_subwayArray.length > 2) {
-                                                var _subwayDesc;
+                                            if( _subwayObj[_key]!=undefined){
+                                                var _subwayArray = _subwayObj[_key].split('$');
+                                                if (_subwayArray.length > 2) {
+                                                    var _subwayDesc;
 
-                                                var _distance = parseInt(_subwayArray[2]);
-                                                if (_distance > 1000) {
-                                                    var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + parseFloat(_tempDistance) + "km";
-                                                } else {
-                                                    _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
-                                                        + _distance + "m";
+                                                    var _distance = parseInt(_subwayArray[2]);
+                                                    if (_distance > 1000) {
+                                                        var _tempDistance = parseFloat(_distance / 1000).toFixed(1);
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + parseFloat(_tempDistance) + "km";
+                                                    } else {
+                                                        _subwayDesc = "距离" + _subwayArray[1] + "[" + _subwayArray[0] + "] "
+                                                            + _distance + "m";
+                                                    }
+                                                    dataCon[i]['subwayDesc'] = _subwayDesc;
                                                 }
-                                                dataCon[i]['subwayDesc'] = _subwayDesc;
                                             }
+
                                         }
                                     }
 
@@ -1685,6 +1736,8 @@ function pullDownAction() {
                                             }
                                             dataCon[i]['house_title_img'] = _house_title_img;
                                         }
+
+                                        dataCon[i]['house_area'] = Math.floor(dataCon[i]['house_area'])
                                     }
                                 }
                             }
