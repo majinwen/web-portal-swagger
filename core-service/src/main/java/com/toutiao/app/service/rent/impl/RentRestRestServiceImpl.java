@@ -122,13 +122,15 @@ public class RentRestRestServiceImpl implements RentRestService {
         SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
-        rentNumDo.setTotalNum((int) zhengzu);
+        rentNumDo.setNum((int) zhengzu);
         rentNumDo.setRent_sign(1);
         rentNumDo.setRent_sign_name("整租");
+        rentNumDo.setTotalNum((int) zhengzu+(int) hezu);
         list.add(rentNumDo);
-        rentNumDo2.setTotalNum((int) hezu);
+        rentNumDo2.setNum((int) hezu);
         rentNumDo2.setRent_sign(2);
         rentNumDo2.setRent_sign_name("合租");
+        rentNumDo2.setTotalNum((int) zhengzu+(int) hezu);
         list.add(rentNumDo2);
         return list;
     }
