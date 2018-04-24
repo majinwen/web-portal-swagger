@@ -29,6 +29,8 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -111,5 +113,38 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         return searchresponse;
     }
 
+
+    /**
+     * 根据小区id获取小区的房源数量
+     * @param plotsId
+     * @return
+     */
+    @Override
+    public SearchResponse getSellHouseCountByPlotsId(Integer plotsId) {
+
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
+        TransportClient client = esClientTools.init();
+
+        SearchRequestBuilder srb =client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//        srb.setQuery(booleanQueryBuilder)
+//                .addAggregation(AggregationBuilders.terms("roomCount").field("room"));
+
+        SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType).setQuery(booleanQueryBuilder)
+                .addAggregation(AggregationBuilders.terms("roomCount").field("layout"))
+                .execute().actionGet();
+        return searchResponse;
+    }
+
+
+    @Override
+    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
+
+        TransportClient client = esClientTools.init();
+        SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .setQuery(booleanQueryBuilder).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                .execute().actionGet();
+        return searchResponse;
+    }
 
 }

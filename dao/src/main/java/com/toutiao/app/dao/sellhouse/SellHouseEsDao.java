@@ -38,4 +38,14 @@ public interface SellHouseEsDao {
      * @return
      */
     SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder,GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort,String keyWord,Integer order,int pageSize,int pageNum);
+
+    /**
+     * 根据小区id获取小区的房源数量
+     * @param plotsId
+     * @return
+     */
+    SearchResponse getSellHouseCountByPlotsId(Integer plotsId);
+
+
+    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize);
 }

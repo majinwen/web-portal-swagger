@@ -1,8 +1,6 @@
 package com.toutiao.app.service.rent;
 
-import com.toutiao.app.domain.rent.RentAgentDo;
-import com.toutiao.app.domain.rent.RentDetailsDo;
-import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.domain.rent.*;
 
 import java.util.List;
 
@@ -22,6 +20,13 @@ public interface RentRestService {
     List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum);
 
     /**
+     * 根据小区id查询该小区下的出租房源个数
+     * @param plotId
+     * @return
+     */
+    RentNumListDo queryRentNumByPlotId(Integer plotId);
+
+    /**
      * 根据出租房源的id查询该房源的经纪人
      * @param rentId
      * @return
@@ -30,9 +35,8 @@ public interface RentRestService {
 
     /**
      * 附近5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
-     * @param lat
-     * @param lon
+     * @param nearHouseDo
      * @return
      */
-    List<RentDetailsFewDo> queryNearHouseByLocation(Double lat,Double lon,Integer pageNum);
+    List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo);
 }

@@ -1,8 +1,5 @@
 package com.toutiao.web.apiimpl.controller.sys;
 
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
@@ -53,7 +50,7 @@ public class MessageSendController {
             String code = StringUtil.randomFourDigits();
             //获取手机号码
               sendSmsMessage = smsUtils.sendSms(phone, code);
-            if (StringTool.isEmpty(sendSmsMessage)) {
+            if (StringTool.isNotEmpty(sendSmsMessage)) {
                 // 请求成功,将用户的手机号码与短信验证码存入redis缓存中
                 redisSession.set2(phone, MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix() + RedisNameUtil.separativeSign
                                 + code)),

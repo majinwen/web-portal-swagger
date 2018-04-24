@@ -6,22 +6,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
-import com.toutiao.app.api.chance.response.rent.RentAgentResponse;
-import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
-import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
-import com.toutiao.app.domain.rent.RentAgentDo;
-import com.toutiao.app.domain.rent.RentDetailsDo;
-import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.api.chance.response.rent.*;
+import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,7 +29,7 @@ public class RentRestController {
      * @param rentDetailsRequest
      * @return
      */
-    @RequestMapping(value = "getRentDetailByRentId",method = RequestMethod.GET)
+    @RequestMapping(value = "/getRentDetailByRentId",method = RequestMethod.GET)
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
@@ -49,7 +42,7 @@ public class RentRestController {
      * @param plotDetailsRequest
      * @return
      */
-    @RequestMapping(value = "getRentOfPlotByPlotId",method = RequestMethod.GET)
+    @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
     public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
         List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId(),plotDetailsRequest.getRentType(),plotDetailsRequest.getPageNum());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
@@ -58,11 +51,24 @@ public class RentRestController {
     }
 
     /**
+     * 查询小区下出租房的个数
+     * @param plotId
+     * @return
+     */
+    @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
+    public NashResult getRentNumByPlotId(@RequestParam(value = "plotId",required =true) Integer plotId){
+        RentNumListResponse rentNumResponses = new RentNumListResponse();
+        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId);
+        BeanUtils.copyProperties(rentNumListDo,rentNumResponses);
+        return NashResult.build(rentNumResponses);
+    }
+
+    /**
      * 根据id获取该出租房源对应的经纪人
      * @param rentDetailsRequest
      * @return
      */
-    @RequestMapping(value = "getRentAgentByRentId",method = RequestMethod.GET)
+    @RequestMapping(value = "/getRentAgentByRentId",method = RequestMethod.GET)
     public NashResult getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest){
         RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
         RentAgentResponse rentAgentResponse = new RentAgentResponse();
@@ -75,9 +81,11 @@ public class RentRestController {
      * @param nearHouseRequest
      * @return
      */
-    @RequestMapping(value = "getNearRentHouseByLocation",method = RequestMethod.GET)
+    @RequestMapping(value = "/getNearRentHouseByLocation",method = RequestMethod.GET)
     public NashResult getNearRentHouseByLocation(@Validated NearHouseRequest nearHouseRequest){
-        List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseRequest.getLat(), nearHouseRequest.getLon(), nearHouseRequest.getPageNum());
+        NearHouseDo nearHouseDo = new NearHouseDo();
+        BeanUtils.copyProperties(nearHouseRequest,nearHouseDo);
+        List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
         JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
         return NashResult.build(rentDetailFewResponses);

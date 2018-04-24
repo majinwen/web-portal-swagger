@@ -27,20 +27,20 @@
                         connectionURL="${database.url}" userId="${database.user}" password="${database.password}"/>
 
         <!--javaModelGenerator指定生成pojo的包和此包在项目中的地址-->
-        <javaModelGenerator targetPackage="com.toutiao.web.dao.entity.officeweb"
+        <javaModelGenerator targetPackage="com.toutiao.web.dao.entity.officeweb.user"
                             targetProject="..\dao\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
 
         <!--sqlMapGenerator指定生成pojo的映射xml文件的所在包和此包在项目中的地址-->
-        <sqlMapGenerator targetPackage="mapper.officeweb"
+        <sqlMapGenerator targetPackage="mapper.officeweb.user"
                          targetProject="..\dao\src\main\resources\">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
         <!--javaClientGenerator指定生成访问映射xml文件的接口所在包和此包在项目中的地址-->
-        <javaClientGenerator targetPackage="com.toutiao.web.dao.mapper.app"
+        <javaClientGenerator targetPackage="com.toutiao.web.dao.mapper.officeweb.user"
                              targetProject="..\dao\src\main\java" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
             <property name="rootInterface" value="com.toutiao.web.dao.BaseDao" />
@@ -67,7 +67,7 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="user_favorite_newhouse" domainObjectName="UserFavoriteNewHouse"
+        <table tableName="user_basic" domainObjectName="UserBasic"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
