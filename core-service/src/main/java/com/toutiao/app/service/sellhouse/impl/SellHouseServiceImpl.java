@@ -81,8 +81,6 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
         long count=0;
         //增加搜索框
         addSearch(booleanQueryBuilder,nearBySellHousesDo);
@@ -95,6 +93,12 @@ public class SellHouseServiceImpl implements SellHouseService{
         Integer size = 10;
         Integer pageNum=nearBySellHousesDo.getPageNum();
         Integer from = (pageNum-1)*size;
+        //先查找总量
+        SearchResponse  searchResponsecount= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, from,size);
+        count= searchResponsecount.getHits().getTotalHits();
+        booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
+        addSearch(booleanQueryBuilder,nearBySellHousesDo);
         SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, from,size);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -122,7 +126,6 @@ public class SellHouseServiceImpl implements SellHouseService{
             long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size-searchHists.length);
             SearchHit[] hits1 = response.getHits().getHits();
-            count=response.getHits().getTotalHits();
             for (SearchHit hit : hits1) {
                 String details = "";
                 details=hit.getSourceAsString();
@@ -148,7 +151,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
         }
         nearBySellHouseDomain.setNearBySellHousesDos(nearBySellHouses);
-        nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getTotalHits()+count);
+        nearBySellHouseDomain.setTotalCount(count);
         return nearBySellHouseDomain;
     }
 
