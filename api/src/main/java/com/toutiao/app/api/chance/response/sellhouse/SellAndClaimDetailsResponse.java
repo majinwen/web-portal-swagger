@@ -257,4 +257,8 @@ public class SellAndClaimDetailsResponse {
      * 认领房源图片
      */
     private String claimHousePhotoTitle;
+    /**
+     * 车位配比
+     */
+    private String carPositionRatio;
 }
