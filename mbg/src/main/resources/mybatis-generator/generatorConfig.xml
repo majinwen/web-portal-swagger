@@ -40,7 +40,7 @@
         </sqlMapGenerator>
 
         <!--javaClientGenerator指定生成访问映射xml文件的接口所在包和此包在项目中的地址-->
-        <javaClientGenerator targetPackage="com.toutiao.web.dao.mapper.officeweb"
+        <javaClientGenerator targetPackage="com.toutiao.web.dao.mapper.app"
                              targetProject="..\dao\src\main\java" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
             <property name="rootInterface" value="com.toutiao.web.dao.BaseDao" />
@@ -67,7 +67,7 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="cpc_sell_house" domainObjectName="CpcSellHouse"
+        <table tableName="user_favorite_newhouse" domainObjectName="UserFavoriteNewHouse"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
