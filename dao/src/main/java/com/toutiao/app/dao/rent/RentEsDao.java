@@ -35,4 +35,11 @@ public interface RentEsDao {
      */
     SearchResponse queryNearHouseByLocation(BoolQueryBuilder boolQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, Integer from, Integer size);
 
+    /**
+     * 根据小区id查询该小区下的出租房源的个数
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder);
+
 }

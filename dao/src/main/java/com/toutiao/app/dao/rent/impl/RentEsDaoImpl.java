@@ -7,6 +7,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,8 @@ public class RentEsDaoImpl implements RentEsDao {
     private String rentIndex;
     @Value("${tt.zufang.rent.type}")
     private String rentType;
+    private static final Integer ZHENGZU = 1;
+    private static final Integer HEZU = 2;
 
 
     @Override
@@ -42,6 +46,17 @@ public class RentEsDaoImpl implements RentEsDao {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).setFrom(from).setSize(size).setPostFilter(location).addSort(sort)
+                .execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder)
+                .addAggregation(AggregationBuilders.filter("ZHENGZU", QueryBuilders.termQuery("rent_type", ZHENGZU)))
+                .addAggregation(AggregationBuilders.filter("HEZU", QueryBuilders.termQuery("rent_type", HEZU)))
                 .execute().actionGet();
         return searchResponse;
     }

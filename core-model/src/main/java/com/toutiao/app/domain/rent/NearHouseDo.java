@@ -1,12 +1,11 @@
-package com.toutiao.app.api.chance.request.rent;
+package com.toutiao.app.domain.rent;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NearHouseRequest {
+public class NearHouseDo {
     /**
      * 关键字
      */
@@ -30,7 +29,7 @@ public class NearHouseRequest {
     /**
      * 附近距离
      */
-    private Integer distance = 5000;
+    private Integer distance;
     /**
      * 起始租金
      */
@@ -66,12 +65,12 @@ public class NearHouseRequest {
     /**
      * 维度
      */
-    @NotNull(message = "维度不能为空")
+    @NotNull
     private Double lat;
     /**
      * 经度
      */
-    @NotNull(message = "经度不能为空")
+    @NotNull
     private Double lon;
     /**
      * 当前页
