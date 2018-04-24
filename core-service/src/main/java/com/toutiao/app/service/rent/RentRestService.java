@@ -24,7 +24,7 @@ public interface RentRestService {
      * @param plotId
      * @return
      */
-    List<RentNumDo> queryRentNumByPlotId(Integer plotId);
+    RentNumListDo queryRentNumByPlotId(Integer plotId);
 
     /**
      * 根据出租房源的id查询该房源的经纪人

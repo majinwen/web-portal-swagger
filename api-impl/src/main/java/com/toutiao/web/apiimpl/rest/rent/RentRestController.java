@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
-import com.toutiao.app.api.chance.response.rent.RentAgentResponse;
-import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
-import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
-import com.toutiao.app.api.chance.response.rent.RentNumResponse;
+import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -60,9 +57,9 @@ public class RentRestController {
      */
     @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
     public NashResult getRentNumByPlotId(@RequestParam(value = "plotId",required =true) Integer plotId){
-        List<RentNumDo> list = appRentRestService.queryRentNumByPlotId(plotId);
-        JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
-        List<RentNumResponse> rentNumResponses = JSONObject.parseArray(objects.toJSONString(), RentNumResponse.class);
+        RentNumListResponse rentNumResponses = new RentNumListResponse();
+        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId);
+        BeanUtils.copyProperties(rentNumListDo,rentNumResponses);
         return NashResult.build(rentNumResponses);
     }
 

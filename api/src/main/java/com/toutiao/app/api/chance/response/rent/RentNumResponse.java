@@ -16,8 +16,5 @@ public class RentNumResponse {
      * 个数
      */
     private Integer num;
-    /**
-     * 总数
-     */
-    private Integer totalNum;
+
 }
