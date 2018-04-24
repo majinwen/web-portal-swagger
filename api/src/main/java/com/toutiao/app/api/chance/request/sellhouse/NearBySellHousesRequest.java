@@ -22,22 +22,22 @@ public class NearBySellHousesRequest {
      * 最小价格
      */
 
-    private  Double min_price;
+    private  Double beginPrice;
 
     /**
      *最大价格
      */
-    private  Double max_price;
+    private  Double endPrice;
 
     /**
      * 最小面积
      */
-    private  Double house_min_area;
+    private  Double beginArea;
 
     /**
      * 最大面积
      */
-    private  Double house_max_area;
+    private  Double endArea;
 
     /**
      *
@@ -105,7 +105,5 @@ public class NearBySellHousesRequest {
      */
     @NotEmpty(message = "缺少附近距离")
     private Integer distance;
-
-
 
 }
