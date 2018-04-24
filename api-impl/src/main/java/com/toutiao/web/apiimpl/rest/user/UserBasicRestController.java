@@ -35,9 +35,9 @@ public class UserBasicRestController {
     }
 
 
-    @RequestMapping(value = "/queryUserBasic", method = RequestMethod.POST)
+    @RequestMapping(value = "/queryUserBasic", method = RequestMethod.GET)
     @ResponseBody
-    public InvokeResult queryUserBasic(@Validated @RequestBody QueryUserBasicRequest queryUserBasicRequest) {
+    public InvokeResult queryUserBasic(@Validated QueryUserBasicRequest queryUserBasicRequest) {
 
         UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(queryUserBasicRequest.getUserId());
         UserBasicResponse userBasicResponse = new UserBasicResponse();

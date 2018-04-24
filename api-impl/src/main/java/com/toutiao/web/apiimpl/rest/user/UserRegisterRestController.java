@@ -40,7 +40,7 @@ public class UserRegisterRestController {
             try {
                 setCookieAndCache(loginRequest.getUserName(),request,response);
             } catch (Exception e) {
-                InvokeResult.Fail(30002,"用户数据存储失败！");
+                InvokeResult.Fail(30099,"用户cookie数据存储失败！");
             }
         }
         return InvokeResult.build(userLoginResponse);
