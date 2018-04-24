@@ -30,7 +30,7 @@ public class NearHouseRequest {
     /**
      * 附近距离
      */
-    private Integer distance = 5000;
+    private Integer distance = 5;
     /**
      * 起始租金
      */
