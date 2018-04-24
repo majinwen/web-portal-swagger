@@ -70,9 +70,10 @@ public class NewHouseListResponse {
 
     private  long roomTotalCount;
 
-
-
-
+    /**
+     * 新房收藏数量
+     */
+    private Integer newHouseFavorite;
 
 
 }
