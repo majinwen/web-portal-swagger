@@ -171,10 +171,10 @@ public class RentRestRestServiceImpl implements RentRestService {
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //从该坐标查询距离为5000内的小区
-        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(nearHouseDo.getLat(), nearHouseDo.getLon()).distance(nearHouseDo.getDistance(), DistanceUnit.METERS);
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(nearHouseDo.getLat(), nearHouseDo.getLon()).distance(nearHouseDo.getDistance(), DistanceUnit.KILOMETERS);
         //按照距离排序由近到远并获取小区之间的距离
         GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearHouseDo.getLat(), nearHouseDo.getLon());
-        sort.unit(DistanceUnit.METERS);
+        sort.unit(DistanceUnit.KILOMETERS);
         sort.order(SortOrder.ASC);
         Integer size = 10;
         Integer from = (nearHouseDo.getPageNum()-1)*size;

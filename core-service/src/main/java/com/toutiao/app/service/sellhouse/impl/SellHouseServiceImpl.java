@@ -43,12 +43,16 @@ public class SellHouseServiceImpl implements SellHouseService{
     private AgentHouseEsDao agentHouseEsDao;
 
     @Override
-    public SellHouseDetailsDo getSellHouseByHouseId(Integer houseId) {
+    public SellAndClaimHouseDetailsDo getSellHouseByHouseId(String houseId) {
 
         //二手房房源详情
-        SellHouseDetailsDo sellHouseDetailsDo = new SellHouseDetailsDo();
+        SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+        if ("FS".equals(houseId.substring(0,2))){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
+        }else {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+        }
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -57,9 +61,9 @@ public class SellHouseServiceImpl implements SellHouseService{
             for (SearchHit searchHit : searchHists) {
                 details = searchHit.getSourceAsString();
             }
-            sellHouseDetailsDo = JSON.parseObject(details,SellHouseDetailsDo.class);
+            sellAndClaimHouseDetailsDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
         }
-        return sellHouseDetailsDo;
+        return sellAndClaimHouseDetailsDo;
     }
 
     /**
