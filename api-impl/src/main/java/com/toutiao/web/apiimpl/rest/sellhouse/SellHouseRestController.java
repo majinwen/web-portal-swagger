@@ -7,17 +7,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
 import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
-import com.toutiao.app.service.sellhouse.SellHouseService;
+
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,31 +36,34 @@ public class SellHouseRestController {
 
     /**
      *  二手房房源详情
-     * @param sellHouseDetailsRequest
+     * @param houseId
      * @return
      */
-    @RequestMapping("/getSellHouseByHouseId")
-    @ResponseBody
-    public NashResult getSellHouseByHouseId(@Validated SellHouseDetailsRequest sellHouseDetailsRequest) {
-        SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
-        SellHouseDetailsDo sellHouseDetailsDo = sellHouseService.getSellHouseByHouseId(sellHouseDetailsRequest.getHouseId());
-        BeanUtils.copyProperties(sellHouseDetailsDo, sellHouseDetailsResponse);
-        return NashResult.build(sellHouseDetailsResponse);
+    @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
+    public NashResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
+        SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
+        SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(houseId);
+        BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
+        return NashResult.build(sellAndClaimDetailsResponse);
     }
 
     /**
-     * 二手房附近好房列表
+     * 二手房附近5km列表
      * @param nearBySellHousesRequest
      * @return
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
-    public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
-        List<NearBySellHousesDo> nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesRequest.getNewhouse(),nearBySellHousesRequest.getLat(),
-                nearBySellHousesRequest.getLon(),nearBySellHousesRequest.getDistance());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos));
-        List<NearBySellHousesResponse> nearBySellHousesResponses = JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
-        return NashResult.build(nearBySellHousesResponses);
+    public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
+        NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
+        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
+        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
+        NearBySellHouseDomain  nearBySellHouseDomain =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
+        List<NearBySellHousesResponse> nearBySellHousesResponses=JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
+        nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
+        nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());
+        return NashResult.build(nearBySellHouseDomainResponse);
     }
 
     /**

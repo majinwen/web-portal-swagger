@@ -1,9 +1,9 @@
-package com.toutiao.app.domain.plot;
+package com.toutiao.app.domain.newhouse;
 
 import lombok.Data;
 
 @Data
-public class PlotTrafficDo {
+public class NewHouseTrafficDo {
 
     /**
      * 公交站
@@ -28,7 +28,7 @@ public class PlotTrafficDo {
     /**
      * 地铁站
      */
-     private  String subwayStation;
+    private  String subwayStation;
 
     /**
      * 地铁线
@@ -39,5 +39,4 @@ public class PlotTrafficDo {
      * 地铁站距离
      */
     private  Double subwayDistance;
-
 }

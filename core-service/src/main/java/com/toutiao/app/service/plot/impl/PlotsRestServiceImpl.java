@@ -6,16 +6,20 @@ import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.plot.PlotListDo;
+import com.toutiao.app.domain.plot.PlotTrafficDo;
 import com.toutiao.app.service.plot.PlotsRestService;
 
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
-import com.toutiao.web.dao.mapper.officeweb.MapInfoMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+
 import com.toutiao.web.service.map.MapService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -30,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -44,7 +49,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     @Autowired
     private PlotsRestService plotsRestService;
     @Autowired
-    private MapInfoMapper mapInfoMapper;
+    private MapService mapService;
 
 
     /**
@@ -59,28 +64,35 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
             SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
-            Map<String, Object> source = hits[0].getSource();
-            PlotDetailsDo plotDetailsDo = PlotDetailsDo.class.newInstance();
-            BeanUtils.populate(plotDetailsDo, source);
-            if ("商电".equals(plotDetailsDo.getElectricSupply())){
-                plotDetailsDo.setElectricFee("1.33");
-            }else {
-                plotDetailsDo.setElectricFee("0.48");
+            String details = "";
+            PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
+            for (SearchHit searchHit : hits) {
+                details = searchHit.getSourceAsString();
             }
-            if ("商水".equals(plotDetailsDo.getWaterSupply())){
-                plotDetailsDo.setWaterFee("6");
-            }else {
-                plotDetailsDo.setWaterFee("5");
+            if (StringUtils.isNotEmpty(details))
+            {
+                plotDetailsDo = JSON.parseObject(details,PlotDetailsDo.class);
+                if ("商电".equals(plotDetailsDo.getElectricSupply())){
+                    plotDetailsDo.setElectricFee("1.33");
+                }else {
+                    plotDetailsDo.setElectricFee("0.48");
+                }
+                if ("商水".equals(plotDetailsDo.getWaterSupply())){
+                    plotDetailsDo.setWaterFee("6");
+                }else {
+                    plotDetailsDo.setWaterFee("5");
+                }
+                if ("0".equals(plotDetailsDo.getHeatingMode())){
+                    plotDetailsDo.setHeatingMode("未知");
+                }
+                if ("1".equals(plotDetailsDo.getHeatingMode())){
+                    plotDetailsDo.setHeatingMode("集中供暖");
+                }
+                if ("2".equals(plotDetailsDo.getHeatingMode())){
+                    plotDetailsDo.setHeatingMode("自供暖");
+                }
             }
-            if ("0".equals(plotDetailsDo.getHeatingMode())){
-                plotDetailsDo.setHeatingMode("未知");
-            }
-            if ("1".equals(plotDetailsDo.getHeatingMode())){
-                plotDetailsDo.setHeatingMode("集中供暖");
-            }
-            if ("2".equals(plotDetailsDo.getHeatingMode())){
-                plotDetailsDo.setHeatingMode("自供暖");
-            }
+
             return plotDetailsDo;
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,23 +105,38 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param plotId
      * @return
      */
-//    @Override
-//    public JSONObject queryPlotDataInfo(Integer plotId) {
-//        try {
-//            MapInfo mapInfo = new MapInfo();
-//            com.toutiao.web.dao.entity.officeweb.MapInfo result = mapInfoMapper.selectByNewCode(plotId);
-//            BeanUtils.copyProperties(mapInfo,result);
-//            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-//            //获取地铁和环线位置
-//            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
-//            plotDetailsDo.getTrafficInformation().split("$");
-//
-//            return datainfo;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    @Override
+    public PlotTrafficDo queryPlotDataInfo(Integer plotId){
+            MapInfo mapInfo = new MapInfo();
+            PlotTrafficDo plotTrafficDo=new PlotTrafficDo();
+            mapInfo =  mapService.getMapInfo(plotId);
+            if (mapInfo==null)
+            {
+                throw  new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_TRAFFIC_NOT_FOUND);
+            }
+            JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+            //获取小区交通
+            JSONObject businfo= (JSONObject) datainfo.get("gongjiao");
+            plotTrafficDo.setBusStation(businfo.get("name").toString());
+            plotTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
+            //获取地铁和环线位置
+            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
+            if (!"".equals(plotDetailsDo.getTrafficInformation()))
+            {  String []  trafficInfo=plotDetailsDo.getTrafficInformation().split("\\$");
+                plotTrafficDo.setSubwayStation(trafficInfo[1]);
+                plotTrafficDo.setSubwayLine(trafficInfo[0]);
+                plotTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
+            }
+            if (null!=plotDetailsDo.getRingRoadName() && !"".equals(plotDetailsDo.getRingRoadName()))
+            {
+                plotTrafficDo.setRingRoadName(plotDetailsDo.getRingRoadName());
+            }
+            if (null!=plotDetailsDo.getRingRoadDistance())
+            {
+                plotTrafficDo.setRingRoadDistance(Double.valueOf(plotDetailsDo.getRingRoadDistance().toString()));
+            }
+            return plotTrafficDo;
+    }
 
     /**
      * 附近小区
@@ -158,6 +185,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
     @Override
     public List<PlotDetailsFewDo> queryPlotListByRequirement(PlotListDo plotListDo) {
+        String key = "";
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -187,19 +215,21 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         //区域id
         if (StringTool.isNotEmpty(plotListDo.getDistrictId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("areaId",plotListDo.getDistrictId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotListDo.getDistrictId()));
         }
         //商圈id
         if (StringTool.isNotEmpty(plotListDo.getAreaId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId",plotListDo.getAreaId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("tradingAreaId",plotListDo.getAreaId()));
         }
         //地铁线id
         if (StringTool.isNotEmpty(plotListDo.getSubwayLineId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId",plotListDo.getSubwayLineId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId",plotListDo.getSubwayLineId()));
+            key = String.valueOf(plotListDo.getSubwayLineId());
         }
         //地铁站id
         if (StringTool.isNotEmpty(plotListDo.getSubwayStationId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId",plotListDo.getSubwayStationId().split(",")));
+            boolQueryBuilder.must(QueryBuilders.termQuery("metroStationId",plotListDo.getSubwayStationId()));
+            key = key+"$"+plotListDo.getSubwayStationId();
         }
         //均价
         if (StringTool.isNotEmpty(plotListDo.getBeginPrice())&&StringTool.isNotEmpty(plotListDo.getEndPrice())){
@@ -274,6 +304,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 String sourceAsString = hit.getSourceAsString();
                 PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
                 plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                plotDetailsFewDo.setKey(key);
                 plotDetailsFewDoList.add(plotDetailsFewDo);
             }
         }

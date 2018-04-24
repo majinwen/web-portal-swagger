@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
+import com.toutiao.app.api.chance.request.newhouse.NewHouseTrafficRequest;
 import com.toutiao.app.api.chance.response.newhouse.*;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
@@ -58,7 +59,7 @@ public class NewHouseRestController {
      * 根据newcode获取新房动态
      */
     @ResponseBody
-    @RequestMapping(value = "getNewHouseDynamic",method = RequestMethod.GET)
+    @RequestMapping(value = "/getNewHouseDynamic",method = RequestMethod.GET)
     public  NashResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
     {
         NewHouseDynamicDo newHouseDynamicDo =new NewHouseDynamicDo();
@@ -68,5 +69,20 @@ public class NewHouseRestController {
          List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
         return  NashResult.build(newHouseDynamicResponses);
     }
+
+
+    /**
+     * 根据newcode获取新房交通信息
+     */
+    @ResponseBody
+    @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
+    public  NashResult getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest)
+    {
+        NewHouseTrafficResponse newHouseTrafficResponse =new   NewHouseTrafficResponse();
+        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode());
+        BeanUtils.copyProperties(newHouseTrafficDo,newHouseTrafficResponse);
+        return  NashResult.build(newHouseTrafficResponse);
+    }
+
 
 }

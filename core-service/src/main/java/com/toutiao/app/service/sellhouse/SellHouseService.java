@@ -14,17 +14,14 @@ public interface SellHouseService {
      * @param houseId
      * @return
      */
-    SellHouseDetailsDo getSellHouseByHouseId(Integer houseId);
+    SellAndClaimHouseDetailsDo getSellHouseByHouseId(String houseId);
 
     /**
      * 二手房附近好房列表
-     * @param newcode
-     * @param lat
-     * @param lon
-     * @param distance
+     * @param nearBySellHousesDo
      * @return
      */
-    List<NearBySellHousesDo> getSellHouseByHouseIdAndLocation(String newcode, double lat, double lon, String distance);
+    NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo);
 
 
     /**

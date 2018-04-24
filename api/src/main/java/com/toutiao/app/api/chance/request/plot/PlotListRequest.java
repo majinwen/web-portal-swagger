@@ -15,27 +15,27 @@ public class PlotListRequest {
     /**
      * 区域id
      */
-    private String districtId;
+    private Integer districtId;
     /**
      * 商圈id
      */
-    private String areaId;
+    private Integer areaId;
     /**
      * 地铁线id
      */
-    private String subwayLineId;
+    private Integer subwayLineId;
     /**
      * 地铁站id
      */
-    private String subwayStationId;
+    private Integer subwayStationId;
     /**
      * 均价起始
      */
-    private String beginPrice;
+    private Integer beginPrice;
     /**
      * 均价结束
      */
-    private String endPrice;
+    private Integer endPrice;
     /**
      * 楼龄
      */

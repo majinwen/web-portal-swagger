@@ -2,6 +2,8 @@ package com.toutiao.app.api.chance.response.sellhouse;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class NearBySellHousesResponse {
 
@@ -9,7 +11,7 @@ public class NearBySellHousesResponse {
     /**
      * 二手房房源id
      */
-    private Integer houseId;
+    private String houseId;
 
     /**
      * 房源标题
@@ -54,8 +56,39 @@ public class NearBySellHousesResponse {
      */
     private String forwardName;
 
+
     /**
-     * 当前房源距离附件小区的距离
+     * 二手房房源图片
      */
-    private String housetToPlotDistance;
+    private List<String> housePhoto;
+
+    /**
+     *
+     * 认领标识
+     */
+    private  Integer isClaim;
+
+
+    /**
+     * 建成年代
+     */
+    private String year;
+
+    /**
+     * 地铁最近
+     */
+    private  String traffic;
+
+    /**
+     * 楼盘名称
+     */
+    private  String plotNameAccurate;
+
+
+    /**
+     * 车辆配比
+     */
+    private  String parkRadio;
+
+
 }
