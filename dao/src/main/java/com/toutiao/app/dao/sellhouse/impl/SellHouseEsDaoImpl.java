@@ -70,7 +70,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         SearchResponse searchResponse =new SearchResponse();
         searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).setPostFilter(location).addSort(sort).setFetchSource(
-                    new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId"} ,null
+                    new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId","parkRadio"} ,null
             ).execute().actionGet();
         return searchResponse;
     }

@@ -85,4 +85,10 @@ public class NearBySellHousesResponse {
     private  String plotNameAccurate;
 
 
+    /**
+     * 车辆配比
+     */
+    private  String parkRadio;
+
+
 }

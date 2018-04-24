@@ -141,7 +141,6 @@ public class SellHouseServiceImpl implements SellHouseService{
             addSearch(booleanQuery,nearBySellHousesDo);
             long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size);
-            count=response.getHits().getTotalHits();
             SearchHit[] hits1 = response.getHits().getHits();
             for (SearchHit hit : hits1) {
                 String details = "";
