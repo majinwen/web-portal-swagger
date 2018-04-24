@@ -67,7 +67,7 @@
                             replaceString=""/>&ndash;&gt;
         </table>-->
 
-        <table tableName="user_favorite_newhouse" domainObjectName="userFavoriteNewHouse"
+        <table tableName="user_favorite_village" domainObjectName="userFavoritePlot"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
