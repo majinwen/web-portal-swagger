@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 @Data
-public class UserLoginResponse {
+public class UserBasicResponse {
 
 
 

@@ -2,13 +2,18 @@ package com.toutiao.web.common.util;
 
 import com.google.gson.Gson;
 import com.qiniu.storage.model.DefaultPutRet;
+import com.toutiao.web.common.constant.syserror.RestfulInterfaceErrorCodeEnum;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +30,7 @@ import java.util.UUID;
 @Component
 public class UploadUtil {
 
+    private static final Logger logger = LoggerFactory.getLogger(UploadUtil.class);
 
     private static String qiniu_Access_key;
     @Value("${qiniu.access_key}")
@@ -238,5 +244,45 @@ public class UploadUtil {
         int srcHeight = image .getHeight();    // 源图高度
 
         return srcWidth + "X" + srcHeight;//分滨率格式 400X600
+    }
+
+    /**
+     * 图片上传
+     * @param file
+     * @return
+     */
+    public static InvokeResult uploadImages(MultipartFile file) {
+
+        if(qiniu_auth==null){
+            init_qiniu();
+        }
+
+        String upToken = qiniu_auth.uploadToken(qiniu_bucketname);
+
+        //构造一个带指定Zone对象的配置类
+        Configuration cfg = new Configuration(Zone.zone1());
+        UploadManager uploadManager = new UploadManager(cfg);
+
+        //生成uuid作为文件名称
+        String uuid = UUID.randomUUID().toString().replaceAll("-","");
+        //获得文件类型（可以判断如果不是图片，禁止上传）
+        String contentType = file.getContentType();
+        //获得文件后缀名称
+        String key = uuid + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+
+        InvokeResult result;
+        try {
+            byte[] data = file.getBytes();
+            Response response = uploadManager.put(data, key, upToken);
+            //解析上传成功的结果
+            DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+
+            result = InvokeResult.build(putRet);
+        } catch (IOException e) {
+            logger.error("图片上传失败", e);
+            return InvokeResult.Fail(RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL);
+        }
+
+        return result;
     }
 }

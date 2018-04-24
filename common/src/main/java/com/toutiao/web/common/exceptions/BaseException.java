@@ -66,4 +66,11 @@ public class BaseException extends RuntimeException {
         this.setCode(serviceErrorCodeEnum.getValue());
         this.setMsg(msg);
     }
+
+    public BaseException(RestfulInterfaceErrorCodeEnum serviceErrorCodeEnum, String msg) {
+
+        super(msg);
+        this.setCode(serviceErrorCodeEnum.getValue());
+        this.setMsg(msg);
+    }
 }

@@ -10,7 +10,9 @@ public enum UserInterfaceErrorCodeEnum implements IntBaseType {
      */
     //系统短信息
     USER_LOGIN_EXCEPTION("用户登录异常", 30001),
-    SAVE_COOKIE_ERROR("存储用户信息失败",30002);
+    SAVE_COOKIE_ERROR("存储用户信息失败",30002),
+    UPDATE_USER_AVATAR_ERROR("更新用户头像失败",30003),
+    QUERY_USER_BASIC_ERROR("用户不存在",30004);
 
 
     private String desc;

@@ -5,6 +5,7 @@ import com.toutiao.web.common.constant.syserror.SystemExceptionErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import io.rong.RongCloud;
 import io.rong.methods.user.User;
+import io.rong.models.Result;
 import io.rong.models.response.TokenResult;
 import io.rong.models.user.UserModel;
 import org.slf4j.Logger;
@@ -45,5 +46,24 @@ public class IMServiceImpl implements IMService {
         }
         System.out.println(result.getToken());
         return result.getToken();
+    }
+
+
+
+    @Override
+    public Result refreshRongCloudByUser(String userId, String userName, String avatar) {
+        RongCloud rongCloud = RongCloud.getInstance(rongCloudAppKey, rongCloudSecret);
+        User User = rongCloud.user;
+        UserModel user = new UserModel()
+                .setId(userId)
+                .setName(userName)
+                .setPortrait(avatar);
+        Result result = null;
+        try {
+            result = User.update(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
