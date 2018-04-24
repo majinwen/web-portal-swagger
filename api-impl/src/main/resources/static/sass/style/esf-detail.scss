@@ -117,8 +117,8 @@
             text-align: left;
             span, input {
                 display: inline-block;
-                height: rem(50);
-                line-height: rem(50);
+                padding-top: rem(20);
+                padding-bottom: rem(20);
                 vertical-align: middle;
             }
             span {
@@ -165,9 +165,9 @@
         }
         .reservation-submit {
             width: 100%;
-            height: rem(60);
+            height: rem(70);
             margin-top: rem(40);
-            margin-bottom: rem(32);
+            margin-bottom: rem(12);
             background-color: $baseRed;
             color: $baseWhite;
             @include font-dpr(28);
@@ -178,6 +178,7 @@
         .dialing {
             display: block;
             color: #5288dc;
+            padding-top: rem(20);
             text-decoration: underline;
         }
 
@@ -189,7 +190,7 @@
                 height: auto;
                 line-height: 1;
                 margin-top: rem(5);
-                padding-left: rem(15);
+                padding: 0 rem(15);
                 @include box-sizing;
                 @include font-dpr(20);
             }

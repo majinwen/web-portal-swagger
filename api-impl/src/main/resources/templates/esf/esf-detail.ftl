@@ -617,12 +617,12 @@
             isPhone($(this).val());
         });
 
-        $('.user-content').on('blur', function () {
+        /*$('.user-content').on('blur', function () {
             if ($(this).val() != '') {
                 $('.textarea-content').find('.error').addClass('none');
                 $('.textarea-content').find('.error-text').text('');
             }
-        });
+        });*/
         var isPhone = function (str) {
             var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
             if (reg.test(str)) {
@@ -636,7 +636,7 @@
         };
 
         $('.reservation-submit').on('click', function () {
-            if ($('.userPhone').val() != '' && $('.user-content').val() != '' && subPhone) {
+            if ($('.userPhone').val() != '' && subPhone) {
                 reservationData['userPhone'] = $('.userPhone').val();
                 reservationData['content'] = $('.user-content').val();
                 $.ajax({
@@ -665,10 +665,10 @@
                     $('.user-phone').find('.error').removeClass('none');
                     $('.user-phone').find('.error-text').text('手机号码不能为空！')
                 }
-                if ($('.user-content').val() == '') {
+                /*if ($('.user-content').val() == '') {
                     $('.textarea-content').find('.error').removeClass('none');
                     $('.textarea-content').find('.error-text').text('留言内容不能为空！')
-                }
+                }*/
             }
         });
 
