@@ -72,13 +72,10 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     /**
      * 二手房附近列表
-     * @param newcode
-     * @param lat
-     * @param lon
-     * @param distance
+     * @param nearBySellHousesDo
      * @return
      */
-
+    @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
         NearBySellHouseDomain newHouseListDoList= new NearBySellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
