@@ -17,10 +17,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +36,15 @@ public class SellHouseRestController {
 
     /**
      *  二手房房源详情
-     * @param sellHouseDetailsRequest
+     * @param houseId
      * @return
      */
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
-    public NashResult getSellHouseByHouseId(@Validated SellHouseDetailsRequest sellHouseDetailsRequest) {
-        SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
-        SellHouseDetailsDo sellHouseDetailsDo = sellHouseService.getSellHouseByHouseId(sellHouseDetailsRequest.getHouseId());
-        BeanUtils.copyProperties(sellHouseDetailsDo, sellHouseDetailsResponse);
-        return NashResult.build(sellHouseDetailsResponse);
+    public NashResult getSellHouseByHouseId(@RequestParam(value = "houseId",required =true) String houseId) {
+        SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
+        SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(houseId);
+        BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
+        return NashResult.build(sellAndClaimDetailsResponse);
     }
 
     /**
