@@ -62,7 +62,7 @@
       #{registerSource,jdbcType=SMALLINT}, #{identityType,jdbcType=SMALLINT}, #{identifier,jdbcType=VARCHAR}, 
       #{rongCloudToken,jdbcType=VARCHAR}, #{userOnlySign,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
     insert into user_basic
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
