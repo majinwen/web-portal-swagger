@@ -80,7 +80,6 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
-
         //从该坐标查询距离为5000内的小区
         GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS);
         //按照距离排序由近到远并获取小区之间的距离
@@ -350,6 +349,18 @@ public class SellHouseServiceImpl implements SellHouseService{
         chooseSellHouseDomain.setTotal(totalHits);
 
         return chooseSellHouseDomain;
+    }
+
+
+    /**
+     * 增加搜索框搜索
+     */
+    private BoolQueryBuilder addSearch(NearBySellHousesDo nearBySellHousesDo)
+    {
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
+
+        return  booleanQueryBuilder;
+
     }
 
 }
