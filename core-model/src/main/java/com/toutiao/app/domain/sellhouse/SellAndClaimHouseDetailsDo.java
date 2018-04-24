@@ -260,6 +260,6 @@ public class SellAndClaimHouseDetailsDo {
     /**
      * 车位配比
      */
-    private String carPositionRatio;
+    private String parkRadio;
 
 }

@@ -260,5 +260,5 @@ public class SellAndClaimDetailsResponse {
     /**
      * 车位配比
      */
-    private String carPositionRatio;
+    private String parkRadio;
 }
