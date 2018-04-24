@@ -107,6 +107,10 @@ public class SellAndClaimDetailsResponse {
      */
     private Integer elevator;
     /**
+     * 电梯
+     */
+    private String elevatorName;
+    /**
      *供暖
      */
     private Integer houseHeating;
