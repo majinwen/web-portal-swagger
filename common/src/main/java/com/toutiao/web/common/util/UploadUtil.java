@@ -50,6 +50,12 @@ public class UploadUtil {
         qiniu_bucketname = a;
     }
 
+    private static String qiniu_wapapp_bucketname;
+    @Value("${qiniu.houseimg_wapapp_buckname}")
+    public void setQiniu_wapapp_bucketname(String a) {
+        qiniu_wapapp_bucketname = a;
+    }
+
     private static String qiniu_houseimg_path;
     @Value("${qiniu.houseimg_directory}")
     public void setQiniu_houseimg_path(String a) {
@@ -257,7 +263,7 @@ public class UploadUtil {
             init_qiniu();
         }
 
-        String upToken = qiniu_auth.uploadToken(qiniu_bucketname);
+        String upToken = qiniu_auth.uploadToken(qiniu_wapapp_bucketname);
 
         //构造一个带指定Zone对象的配置类
         Configuration cfg = new Configuration(Zone.zone1());
