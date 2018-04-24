@@ -67,69 +67,13 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     }
 
     @Override
-    public SearchResponse getSellHouseByHouseIdAndLocation(GeoDistanceSortBuilder sort, NearBySellHousesDo nearBySellHousesDo,BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getSellHouseByHouseIdAndLocation(BoolQueryBuilder boolQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, Integer from, Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         SearchResponse searchResponse =new SearchResponse();
-        if (null!=nearBySellHousesDo.getKeyword() && !"".equals(nearBySellHousesDo.getKeyword()))
-        {
-            //分词匹配
-            List<String> searchDistrictsList = fenCiMatching(nearBySellHousesDo.getKeyword(),booleanQueryBuilder,client);
-            List<String> searchAreasList =  fenCiMatching(nearBySellHousesDo.getKeyword(),booleanQueryBuilder,client);
-            List<String> searchTermList =  fenCiMatching(nearBySellHousesDo.getKeyword(),booleanQueryBuilder,client);
-            booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gte(0));
-            FieldValueFactorFunctionBuilder fieldValueFactorFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11);
-            FunctionScoreQueryBuilder functionScoreQueryBuilder = new FunctionScoreQueryBuilder(booleanQueryBuilder,fieldValueFactorFunctionBuilder);
-            if(searchTermList!=null && searchTermList.size() > 0){
-                FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchTermList.size()];
-                for(int i=0 ;i<searchTermList.size();i++){
-                    int searchTermSize = searchTermList.size();
-                    QueryBuilder filter = QueryBuilders.termsQuery("plotName",searchTermList.get(i));
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-                functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                        .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-
-            }else if(searchAreasList!=null && searchAreasList.size() > 0)
-            {
-                FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchDistrictsList.size()];
-                for(int i=0 ;i<searchDistrictsList.size();i++){
-                    int searchDistrictsSize = searchDistrictsList.size();
-                    QueryBuilder filter = QueryBuilders.termsQuery("area",searchDistrictsList.get(i));
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize-i);
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-                functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                        .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }else if(searchAreasList!=null && searchAreasList.size() > 0)
-            {
-                FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchAreasList.size()];
-                for(int i=0 ;i<searchAreasList.size();i++){
-                    int searchAreasSize = searchAreasList.size();
-                    QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchAreasList.get(i));
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i);
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-                functionScoreQueryBuilder =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                        .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }
-            searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFetchSource(
-
-                    new String[] {"houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year"} ,null
-            ).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
-        }
-        else
-        {
-            FieldValueFactorFunctionBuilder fieldValueFactorFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11);
-            FunctionScoreQueryBuilder functionScoreQueryBuilder = new FunctionScoreQueryBuilder(booleanQueryBuilder,fieldValueFactorFunctionBuilder);
-            searchResponse = srb.setQuery(functionScoreQueryBuilder).addSort(sort).setFetchSource(
-
-                    new String[] {"houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year"} ,null
-            ).setFrom((nearBySellHousesDo.getPageNum() - 1) * nearBySellHousesDo.getPageSize()).setSize(nearBySellHousesDo.getPageSize()).execute().actionGet();
-        }
-
+        searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).setPostFilter(location).addSort(sort).setFetchSource(
+                    new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId"} ,null
+            ).execute().actionGet();
         return searchResponse;
     }
 

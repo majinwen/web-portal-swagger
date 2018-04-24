@@ -11,6 +11,10 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.javassist.runtime.Desc;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -26,6 +30,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class SellHouseServiceImpl implements SellHouseService{
@@ -56,120 +63,83 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     /**
-     * 二手房附近列表
-     * @param nearBySellHousesDo
+     * 附近房源列表列表
      * @return
      */
-    @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
-        NearBySellHouseDomain newHouseListDoList= new NearBySellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
-        //商圈
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHousesDo.getAreaId()));
-
-        }
-        //区域
-        if (StringTool.isNotEmpty((nearBySellHousesDo.getDistrictId()))) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHousesDo.getDistrictId()));
-        }
-
-        //地铁线id
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayLineId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", new int[]{ nearBySellHousesDo.getSubwayLineId()}));
-        }
-
-        //地铁站id
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayStationId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId",  new int[]{nearBySellHousesDo.getSubwayStationId()}));
-        }
-
-        //总价查询
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getBeginPrice()) && StringTool.isNotEmpty(nearBySellHousesDo.getEndPrice())) {
-            booleanQueryBuilder
-                    .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHousesDo.getBeginPrice()).lte(nearBySellHousesDo.getEndPrice())));
-
-        }
-        //面积
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getBeginArea()) && StringTool.isNotEmpty(nearBySellHousesDo.getEndArea())) {
-
-            booleanQueryBuilder
-                    .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHousesDo.getBeginArea()).lte(nearBySellHousesDo.getEndArea())));
-
-        }
-        //楼龄
-        if (StringUtil.isNotNullString(nearBySellHousesDo.getHouseYearId())) {
-            String houseyear = nearBySellHousesDo.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            String[] layoutId = houseyear.split(",");
-            for (int i = 0; i < layoutId.length; i = i + 2) {
-                if (i + 1 > layoutId.length) {
-                    break;
-                }
-                boolQueryBuilder.should(QueryBuilders.rangeQuery("year")
-                        //计算房源建成年代
-                        .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i+1]))))
-                        .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i])))));
-                booleanQueryBuilder.must(boolQueryBuilder);
-
-            }
-        }
-         //居室
-        if (StringTool.isNotNull(nearBySellHousesDo.getLayoutId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", nearBySellHousesDo.getLayoutId()));
-        }
-
-        //朝向
-        if (StringTool.isNotNull(nearBySellHousesDo.getForward())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", nearBySellHousesDo.getForward()));
-        }
-
-        //标签(满二，满三，满五)
-        if (StringTool.isNotNull(nearBySellHousesDo.getHouseLabelId())) {
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            Integer [] tags=nearBySellHousesDo.getHouseLabelId();
-            boolean has_subway = Arrays.asList(tags).contains(1);
-            if(has_subway){
-                Integer[] tagOther = new Integer[tags.length-1];
-                int idx = 0;
-                for(int i=0;i<tags.length;i++){
-                    if(tags[i].equals(1)){
-                        boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", tags[i]));
-                    } else {
-                        tagOther[idx++] = tags[i];
-                    }
-                }
-                if(tagOther.length!=0){
-                    boolQueryBuilder.should(QueryBuilders.termsQuery("tags", tagOther));
-                }
-                booleanQueryBuilder.must(boolQueryBuilder);
-            }else{
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", tags));
-            }
-        }
-        //未删除的
+        NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
+        ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-
-        //坐标5公里附近
-        booleanQueryBuilder.filter(QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS));
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon());
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
+        long count=0;
+        //增加搜索框
+        addSearch(booleanQueryBuilder,nearBySellHousesDo);
+        //从该坐标查询距离为5000内的小区
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS);
+        //按照距离排序由近到远并获取小区之间的距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon());
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
-        sort.point(nearBySellHousesDo.getLat(),nearBySellHousesDo.getLon());
-
-        SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(sort,nearBySellHousesDo,booleanQueryBuilder);
+        Integer size = 10;
+        Integer pageNum=nearBySellHousesDo.getPageNum();
+        Integer from = (pageNum-1)*size;
+        SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, from,size);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
-            nearBySellHouses.add(nearBySellHousesDo);
+        if (searchHists.length>0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+                claimSellHouseDo=JSON.parseObject(details,ClaimSellHouseDo.class);
+                if (null!=claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim()==1)
+                {   //将认领信息替换
+                    nearBySellHousesDo.setHouseId(claimSellHouseDo.getClaimHouseId());
+                    nearBySellHousesDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
+                    nearBySellHousesDo.setTagsName(claimSellHouseDo.getClaimTagsName());
+                }
+                nearBySellHouses.add(nearBySellHousesDo);
+            }
         }
-        newHouseListDoList.setNearBySellHousesDos(nearBySellHouses);
-        newHouseListDoList.setTotalCount(hits.getTotalHits());
-        return newHouseListDoList;
+        if(searchHists.length>0&&searchHists.length<10)
+        {
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();//声明符合查询方法
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
+            addSearch(booleanQuery,nearBySellHousesDo);
+            long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
+            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size-searchHists.length);
+            SearchHit[] hits1 = response.getHits().getHits();
+            count=response.getHits().getTotalHits();
+            for (SearchHit hit : hits1) {
+                String details = "";
+                details=hit.getSourceAsString();
+                nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+                nearBySellHouses.add(nearBySellHousesDo);
+            }
+        }
+        if (searchHists.length==0)
+        {
+            BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();//声明符合查询方法
+            booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
+            booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
+            addSearch(booleanQuery,nearBySellHousesDo);
+            long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
+            SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size);
+            count=response.getHits().getTotalHits();
+            SearchHit[] hits1 = response.getHits().getHits();
+            for (SearchHit hit : hits1) {
+                String details = "";
+                details=hit.getSourceAsString();
+                nearBySellHousesDo=JSON.parseObject(details,NearBySellHousesDo.class);
+                nearBySellHouses.add(nearBySellHousesDo);
+            }
+        }
+        nearBySellHouseDomain.setNearBySellHousesDos(nearBySellHouses);
+        nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getTotalHits()+count);
+        return nearBySellHouseDomain;
     }
 
     /**
@@ -385,6 +355,107 @@ public class SellHouseServiceImpl implements SellHouseService{
         chooseSellHouseDomain.setTotal(totalHits);
 
         return chooseSellHouseDomain;
+    }
+
+
+    /**
+     * 增加搜索框搜索
+     */
+    private void addSearch(BoolQueryBuilder booleanQueryBuilder ,  NearBySellHousesDo nearBySellHousesDo)
+    {
+        if (StringTool.isNotBlank(nearBySellHousesDo.getKeyword())) {
+
+            if (StringUtil.isNotNullString(DistrictMap.getDistricts(nearBySellHousesDo.getKeyword()))) {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", nearBySellHousesDo.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area", nearBySellHousesDo.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("houseBusinessName",nearBySellHousesDo.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", nearBySellHousesDo.getKeyword()).analyzer("ik_smart")));
+
+            } else if (StringUtil.isNotNullString(AreaMap.getAreas(nearBySellHousesDo.getKeyword()))) {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", nearBySellHousesDo.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area", nearBySellHousesDo.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", nearBySellHousesDo.getKeyword()).analyzer("ik_max_word").boost(2))
+                        .should(QueryBuilders.matchQuery("plotName", nearBySellHousesDo.getKeyword()).analyzer("ik_smart").boost(2)));
+            } else {
+                booleanQueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", nearBySellHousesDo.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("area", nearBySellHousesDo.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", nearBySellHousesDo.getKeyword()))
+                        .should(QueryBuilders.matchQuery("plotName", nearBySellHousesDo.getKeyword())));
+            }
+        }
+        //商圈id
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getAreaId())) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHousesDo.getAreaId()));
+        }
+        //区域id
+        if (StringTool.isNotEmpty((nearBySellHousesDo.getDistrictId()))) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHousesDo.getDistrictId()));
+
+        }
+        //地铁线id
+        String key = null;
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayLineId())) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayLineId", new int[] {nearBySellHousesDo.getSubwayLineId()}));
+            key = nearBySellHousesDo.getSubwayLineId().toString();
+        }
+
+        //地铁站id
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getSubwayStationId())) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", new int[] {nearBySellHousesDo.getSubwayStationId()}));
+        }
+
+        //面积
+        if(nearBySellHousesDo.getBeginArea()!=null && nearBySellHousesDo.getEndArea()!=0)
+        {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHousesDo.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("buildArea").lte(nearBySellHousesDo.getEndArea())));
+        }
+
+        //总价
+        if(nearBySellHousesDo.getBeginPrice()!=null &&nearBySellHousesDo.getEndPrice()!=0){
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(nearBySellHousesDo.getBeginPrice()).lte(nearBySellHousesDo.getEndPrice())));
+        }
+
+        //户型(室)
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getLayout())) {
+            Integer[] layoutId =nearBySellHousesDo.getLayout();
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+        }
+
+        //朝向
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getForward())) {
+            Integer [] forward =nearBySellHousesDo.getForward();
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", forward));
+        }
+
+        //标签(满二，满三，满五)
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLabelId())) {
+            Integer[] houseLabelId = nearBySellHousesDo.getHouseLabelId();
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", houseLabelId));
+        }
+
+        //楼龄
+        if (StringUtil.isNotNullString(nearBySellHousesDo.getHouseYearId())) {
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            String houseyear = nearBySellHousesDo.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+
+            String[] layoutId = houseyear.split(",");
+            for (int i = 0; i < layoutId.length; i = i + 2) {
+                if (i + 1 > layoutId.length) {
+                    break;
+                }
+                boolQueryBuilder.should(QueryBuilders.rangeQuery("year")
+                        //计算房源建成年代
+                        .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i+1]))))
+                        .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i])))));
+                booleanQueryBuilder.must(boolQueryBuilder);
+
+            }
+        }
+
     }
 
 }

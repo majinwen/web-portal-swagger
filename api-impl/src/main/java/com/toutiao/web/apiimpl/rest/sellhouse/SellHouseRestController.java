@@ -51,23 +51,22 @@ public class SellHouseRestController {
     }
 
     /**
-     * 二手房附近列表
+     * 二手房附近5km列表
      * @param nearBySellHousesRequest
      * @return
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
     public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
-
+        NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
         NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
-        NearBySellHouseDomainResponse NearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
         BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
-        NearBySellHouseDomain nearBySellHousesDos =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHousesDos.getNearBySellHousesDos()));
+        NearBySellHouseDomain  nearBySellHouseDomain =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
         List<NearBySellHousesResponse> nearBySellHousesResponses=JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
-        NearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
-        NearBySellHouseDomainResponse.setTotalCount(nearBySellHousesDos.getTotalCount());
-        return NashResult.build(NearBySellHouseDomainResponse);
+        nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
+        nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());
+        return NashResult.build(nearBySellHouseDomainResponse);
     }
 
     /**

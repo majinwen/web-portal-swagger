@@ -13,7 +13,7 @@ public class NearBySellHousesDo {
     /**
      * 二手房房源id
      */
-    private Integer houseId;
+    private String houseId;
 
     /**
      * 房源标题
@@ -80,7 +80,7 @@ public class NearBySellHousesDo {
     /**
      * 页码
      */
-    private Integer pageNum = 1;
+    private Integer pageNum;
 
     /**
      * 页数
@@ -179,7 +179,7 @@ public class NearBySellHousesDo {
     /**
      * 居室id
      */
-    private  Integer [] layoutId;
+    private  Integer [] layout;
 
 
     /**
