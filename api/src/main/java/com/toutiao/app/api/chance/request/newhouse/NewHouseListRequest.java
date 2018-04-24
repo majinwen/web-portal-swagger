@@ -14,28 +14,28 @@ public class NewHouseListRequest {
     /**
      * 区域
      */
-    private Integer district_id;
+    private Integer districtId;
 
     /**
      * 最小价格
      */
 
-    private  Double min_price;
+    private  Double minPrice;
 
     /**
      *最大价格
      */
-    private  Double max_price;
+    private  Double maxPrice;
 
     /**
      * 最小面积
      */
-    private  Double house_min_area;
+    private  Double houseMinArea;
 
     /**
      * 最大面积
      */
-    private  Double house_max_area;
+    private  Double houseMaxArea;
 
     /**
      *
