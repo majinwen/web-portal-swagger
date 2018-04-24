@@ -3,6 +3,10 @@ package com.toutiao.app.service.rent.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.rent.RentAgentDo;
+import com.toutiao.app.domain.rent.RentDetailsDo;
+import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.util.StringTool;
@@ -61,9 +65,14 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
             SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
-            Map<String, Object> source = hits[0].getSource();
-            RentDetailsDo rentDetailsDo = RentDetailsDo.class.newInstance();
-            BeanUtils.populate(rentDetailsDo, source);
+            String details = "";
+            RentDetailsDo rentDetailsDo = new RentDetailsDo();
+            for (SearchHit searchHit : hits) {
+                details = searchHit.getSourceAsString();
+            }
+            if (org.apache.commons.lang.StringUtils.isNotEmpty(details)) {
+                rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
+            }
             return rentDetailsDo;
         }catch (Exception e){
             e.printStackTrace();

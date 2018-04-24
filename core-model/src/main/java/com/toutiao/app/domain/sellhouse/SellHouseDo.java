@@ -91,5 +91,13 @@ public class SellHouseDo {
      * 地铁筛选key值，前端使用
      */
     private String subwayKeys;
+    /**
+     * 标题图
+     */
+    private String housePhotoTitle;
+    /**
+     * 朝向
+     */
+    private String forwardName;
 
 }

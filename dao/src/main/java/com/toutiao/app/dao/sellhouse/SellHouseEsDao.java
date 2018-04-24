@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.sellhouse;
 
 
+import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -25,7 +26,7 @@ public interface SellHouseEsDao {
      * @param sort
      * @return
      */
-    SearchResponse getSellHouseByHouseIdAndLocation(BoolQueryBuilder booleanQueryBuilder, ScriptSortBuilder scriptSortBuilder, GeoDistanceSortBuilder sort);
+    SearchResponse getSellHouseByHouseIdAndLocation(GeoDistanceSortBuilder sort, NearBySellHousesDo nearBySellHousesDo, BoolQueryBuilder booleanQueryBuilder );
 
 
     /**
@@ -37,4 +38,14 @@ public interface SellHouseEsDao {
      * @return
      */
     SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder,GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort,String keyWord,Integer order,int pageSize,int pageNum);
+
+    /**
+     * 根据小区id获取小区的房源数量
+     * @param plotsId
+     * @return
+     */
+    SearchResponse getSellHouseCountByPlotsId(Integer plotsId);
+
+
+    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize);
 }
