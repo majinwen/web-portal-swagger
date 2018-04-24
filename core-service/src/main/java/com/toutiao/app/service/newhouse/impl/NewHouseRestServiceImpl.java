@@ -196,6 +196,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 {
                     newHouseListDos.setRoomTotalCount(0);
                 }
+                //获取新房的收藏数量
+
                 newHouseListDoList.add(newHouseListDos);
             }
             newHouseListVo.setListDoList(newHouseListDoList);
