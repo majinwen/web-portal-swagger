@@ -1,6 +1,7 @@
 package com.toutiao.app.service.user;
 
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -22,4 +23,18 @@ public interface UserBasicInfoService {
      * @return
      */
     UserBasicDo queryUserBasic(String userId);
+
+    /**
+     * 根据用户电话查询用户信息
+     * @param phone
+     * @return
+     */
+    UserBasicDo queryUserBasicByPhone(String phone);
+
+    /**
+     * 新增用户信息
+     * @param userBasic
+     * @return
+     */
+    int addUserBasic(UserBasic userBasic);
 }

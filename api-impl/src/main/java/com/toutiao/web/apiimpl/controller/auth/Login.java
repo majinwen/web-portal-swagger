@@ -1,11 +1,16 @@
 package com.toutiao.web.apiimpl.controller.auth;
 
 
+import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.service.sys.IMService;
+import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.SysUserEntity;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.service.rediscache.RedisAndCookieService;
 import com.toutiao.web.service.repository.admin.SysUserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Controller;
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user")
@@ -33,6 +41,11 @@ public class Login {
 
     @Autowired
     private RedisSession redisSession;
+
+    @Autowired
+    private UserBasicInfoService userBasicInfoService;
+    @Autowired
+    private IMService imService;
 
     /**
      * 功能描述：去登陆页面
@@ -111,11 +124,38 @@ public class Login {
 
             }
             //查询该电话号是否存在
-            SysUserEntity sysUser = sysUserService.selectByPhone(phone);
-            if (StringTool.isBlank(sysUser)) {
-                //首次登陆
-                //登陆成功后需要将用户手机号插入的数据库
-                sysUserService.insertPhone(phone);
+//            SysUserEntity sysUser = sysUserService.selectByPhone(phone);
+//            if (StringTool.isBlank(sysUser)) {
+//                //首次登陆
+//                //登陆成功后需要将用户手机号插入的数据库
+//                sysUserService.insertPhone(phone);
+//            }
+
+            UserBasicDo userBasicDo =userBasicInfoService.queryUserBasicByPhone(phone);
+            if(StringTool.isEmpty(userBasicDo)){
+                //注册新用户
+                UserBasic insertUserBasic = new UserBasic();
+                Date date = new Date();
+                insertUserBasic.setUserName(phone);
+
+                String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
+                int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
+                insertUserBasic.setAvatar(userAvatar[avatarNum]);
+                insertUserBasic.setCreateTime(date);
+                insertUserBasic.setLoginTime(date);
+                insertUserBasic.setPhone(phone);
+                insertUserBasic.setUpdateTime(date);
+                insertUserBasic.setUserStatus(ServiceStateConstant.USER_BASIC_STATUS);
+                insertUserBasic.setRegisterSource(ServiceStateConstant.USER_REGISTER_SOURCE_WAP);
+                insertUserBasic.setIdentityType(ServiceStateConstant.USER_REGISTER_IDENTITY_PHONE);
+                insertUserBasic.setIdentifier(phone);
+
+                insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+                //用户注册融云信息
+                String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), insertUserBasic.getUserName(), insertUserBasic.getAvatar());
+                insertUserBasic.setRongCloudToken(rcToken);
+
+                userBasicInfoService.addUserBasic(insertUserBasic);
             }
             //将用户登录信息放置到cookie中判断用户登录状态
             setCookieAndCache(phone, request, response);

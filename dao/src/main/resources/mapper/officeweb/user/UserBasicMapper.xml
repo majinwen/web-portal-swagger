@@ -39,6 +39,13 @@
     and identifier = #{identifier,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectUserByPhone" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    select
+    <include refid="Base_Column_List" />
+    from user_basic
+    where phone =  #{phone,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from user_basic
     where user_id = #{userId,jdbcType=VARCHAR}

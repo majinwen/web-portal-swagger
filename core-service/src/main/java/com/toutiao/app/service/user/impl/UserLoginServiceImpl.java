@@ -66,7 +66,10 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                     userBasic = userBasicMapper.selectUserByExample(userBasic);
                     if (StringTool.isNotBlank(userBasic)) {
-                        //验证成功后，清除缓存
+                        //验证成功后，更新用户登录时间，清除缓存
+                        UserBasic user = new UserBasic();
+                        user.setUserId(userBasic.getUserId());
+                        user.setLoginTime(new Date());
                         redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + userBasicDo.getUserName());
                         BeanUtils.copyProperties(userBasic, ubd);
                     } else {

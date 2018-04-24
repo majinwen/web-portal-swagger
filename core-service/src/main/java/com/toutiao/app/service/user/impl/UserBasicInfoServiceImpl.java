@@ -76,4 +76,28 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         BeanUtils.copyProperties(userBasic,userBasicDo);
         return userBasicDo;
     }
+
+    /**
+     * 根据用户电话查询用户信息
+     * @param phone
+     * @return
+     */
+    @Override
+    public UserBasicDo queryUserBasicByPhone(String phone) {
+        UserBasic userBasic = new UserBasic();
+        UserBasicDo userBasicDo = new UserBasicDo();
+        userBasic.setPhone(phone);
+        userBasic = userBasicMapper.selectUserByPhone(userBasic);
+        if(null!=userBasic){
+            BeanUtils.copyProperties(userBasic,userBasicDo);
+        }
+        userBasicDo = null;
+        return userBasicDo;
+    }
+
+    @Override
+    public int addUserBasic(UserBasic userBasic) {
+
+        return  userBasicMapper.insertSelective(userBasic);
+    }
 }
