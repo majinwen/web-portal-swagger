@@ -1,48 +1,30 @@
 package com.toutiao.app.service.sellhouse.impl;
-
-
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
-import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import com.toutiao.web.domain.query.ProjHouseInfoResponse;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.javassist.runtime.Desc;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class SellHouseServiceImpl implements SellHouseService{
@@ -81,9 +63,11 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
+        NearBySellHousesDo search=new NearBySellHousesDo();
+        BeanUtils.copyProperties(nearBySellHousesDo,search);
         long count=0;
         //增加搜索框
-        addSearch(booleanQueryBuilder,nearBySellHousesDo);
+        addSearch(booleanQueryBuilder,search);
         //从该坐标查询距离为5000内的小区
         GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS);
         //按照距离排序由近到远并获取小区之间的距离
@@ -98,7 +82,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         count= searchResponsecount.getHits().getTotalHits();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
-        addSearch(booleanQueryBuilder,nearBySellHousesDo);
+        addSearch(booleanQueryBuilder,search);
         SearchResponse  searchResponse= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQueryBuilder, location, sort, from,size);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -122,7 +106,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();//声明符合查询方法
             booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
             booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
-            addSearch(booleanQuery,nearBySellHousesDo);
+            addSearch(booleanQuery,search);
             long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size-searchHists.length);
             SearchHit[] hits1 = response.getHits().getHits();
@@ -138,7 +122,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();//声明符合查询方法
             booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
             booleanQuery.must(QueryBuilders.termQuery("is_claim",0));
-            addSearch(booleanQuery,nearBySellHousesDo);
+            addSearch(booleanQuery,search);
             long From = ((pageNum - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse  response= sellHouseEsDao.getSellHouseByHouseIdAndLocation(booleanQuery, location, sort, (int) From,size);
             SearchHit[] hits1 = response.getHits().getHits();
