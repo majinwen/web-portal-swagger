@@ -49,7 +49,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
                 return InvokeResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_LIMIT);
             }else {//其它返回码
 
-                return InvokeResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_SEND_ERROR);
+                return InvokeResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_SEND_ERROR,sendResult);
             }
         } catch (ClientException e) {
             logger.error("短信发送失败，请检查短信平台相关配置");
