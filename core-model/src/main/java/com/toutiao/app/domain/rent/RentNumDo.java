@@ -16,9 +16,6 @@ public class RentNumDo {
      * 个数
      */
     private Integer num;
-    /**
-     * 总数
-     */
-    private Integer totalNum;
+
 
 }
