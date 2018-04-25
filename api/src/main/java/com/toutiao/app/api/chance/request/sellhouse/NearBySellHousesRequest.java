@@ -2,7 +2,6 @@ package com.toutiao.app.api.chance.request.sellhouse;
 
 
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
@@ -103,7 +102,7 @@ public class NearBySellHousesRequest {
     /**
      * 附近距离
      */
-    @NotEmpty(message = "缺少附近距离")
+    @NotNull(message = "缺少附近距离")
     private Integer distance;
 
 }

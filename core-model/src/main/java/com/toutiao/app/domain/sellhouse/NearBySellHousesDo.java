@@ -1,14 +1,11 @@
 package com.toutiao.app.domain.sellhouse;
 
 import lombok.Data;
-import org.omg.PortableInterceptor.INACTIVE;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class NearBySellHousesDo {
-
 
     /**
      * 二手房房源id
@@ -167,7 +164,6 @@ public class NearBySellHousesDo {
      * 面积结束值
      */
     private  Integer endArea;
-
 
 
     /**
