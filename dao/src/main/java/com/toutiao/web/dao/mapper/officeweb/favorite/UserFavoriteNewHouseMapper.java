@@ -17,4 +17,6 @@ public interface UserFavoriteNewHouseMapper extends BaseDao {
     int updateByPrimaryKey(userFavoriteNewHouse record);
 
     Integer newHouseFavoriteByNewCode(Integer newCode);
+
+    Integer selectFavoriteNewHouseByUserId(Integer userId);
 }
