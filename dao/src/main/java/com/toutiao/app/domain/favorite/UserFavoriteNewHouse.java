@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 @Data
-public class userFavoriteNewHouse {
+public class UserFavoriteNewHouse {
     /**
      * 新房收藏id
      */
@@ -28,5 +28,5 @@ public class userFavoriteNewHouse {
     /**
      * 是否删除(0-未删除，1-已删除)
      */
-
+     private Integer isDel;
 }

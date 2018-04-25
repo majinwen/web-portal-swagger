@@ -2,6 +2,9 @@ package com.toutiao.app.service.favorite;
 
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
+import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
+import com.toutiao.app.domain.favorite.UserFavoriteVillage;
+import com.toutiao.web.common.restmodel.NashResult;
 
 public interface FavoriteRestService {
 
@@ -28,6 +31,16 @@ public interface FavoriteRestService {
     Boolean  getIsFavorite(Integer type, IsFavoriteDo isFavoriteDo);
 
 
+    /**
+     * 取消新房收藏
+     */
+
+    NashResult cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse);
+
+    /**
+     * 取消小区收藏
+     */
+    NashResult cancelVillageByVillageId(UserFavoriteVillage userFavoriteVillage);
 
 
 }

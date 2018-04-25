@@ -17,4 +17,6 @@ public interface UserFavoriteVillageMapper extends BaseDao {
     int updateByPrimaryKey(UserFavoriteVillage record);
 
     Integer selectVillageFavoriteByUserId(Integer userId);
+
+    int  cancelVillageByVillageIdAndUserId(UserFavoriteVillage userFavoriteVillage);
 }

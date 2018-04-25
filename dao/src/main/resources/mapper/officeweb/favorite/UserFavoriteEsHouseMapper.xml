@@ -95,4 +95,10 @@
     SELECT  count(*) from user_favorite_eshouse
     where user_id=#{userId} and is_del=0
   </select>
+
+  <select id="isEsfFavoriteByHouseIdAndUserId" resultType="Integer">
+      SELECT  count(1) from user_favorite_eshouse
+      where eshouse_id=#{houseId} and user_id=#{userId} and is_del=0
+  </select>
+
 </mapper>

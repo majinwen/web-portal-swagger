@@ -1,10 +1,10 @@
 package com.toutiao.app.service.favorite.impl;
 
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
-import com.toutiao.app.domain.favorite.UserFavoriteRent;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.impl.NewHouseRestServiceImpl;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteRentMapper;
@@ -88,6 +88,12 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
     }
 
+    /**
+     *
+     * @param type
+     * @param isFavoriteDo
+     * @return 出租和二手房查看是否被收藏
+     */
     @Override
     public Boolean getIsFavorite(Integer type, IsFavoriteDo isFavoriteDo) {
         boolean isFavorite=false;
@@ -101,7 +107,53 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
               return isFavorite;
           }
         }
-
+        if(null!=type && type==2)
+        {
+            int esfCount=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(isFavoriteDo.getHouseId(),isFavoriteDo.getUserId());
+            if (esfCount>0)
+            {
+                isFavorite=true;
+                return isFavorite;
+            }
+        }
      return  isFavorite;
+    }
+
+    /**
+     *新房取消收藏接口
+     * @param userFavoriteNewHouse
+     * @return
+     */
+    @Override
+    public NashResult cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse) {
+        try {
+            userFavoriteNewHouse.setIsDel(1);
+          int result=userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+          if(result>0)
+          {
+              return NashResult.build(true);
+          }
+        }catch (Exception e)
+        {
+            logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getNewHouseId()+"={}",e.getStackTrace());
+        }
+
+        return  NashResult.Fail("收藏取消失败");
+    }
+
+    @Override
+    public NashResult cancelVillageByVillageId(UserFavoriteVillage userFavoriteVillage) {
+      try {
+          userFavoriteVillage.setIsDel((short) 1);
+         int result= userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(userFavoriteVillage);
+         if (result>0)
+         {
+             return  NashResult.build(true);
+         }
+      }catch (Exception e)
+      {
+          logger.error("取消小区收藏接口异常"+userFavoriteVillage.getVillageId()+"={}",e.getStackTrace());
+      }
+      return NashResult.Fail("收藏取消失败");
     }
 }

@@ -1,22 +1,27 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
-import com.toutiao.app.domain.favorite.userFavoriteNewHouse;
+import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
+import com.toutiao.app.domain.favorite.UserFavoriteVillage;
 import com.toutiao.web.dao.BaseDao;
 
 public interface UserFavoriteNewHouseMapper extends BaseDao {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(userFavoriteNewHouse record);
+    int insert(UserFavoriteNewHouse record);
 
-    int insertSelective(userFavoriteNewHouse record);
+    int insertSelective(UserFavoriteNewHouse record);
 
-    userFavoriteNewHouse selectByPrimaryKey(Integer id);
+    UserFavoriteNewHouse selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(userFavoriteNewHouse record);
+    int updateByPrimaryKeySelective(UserFavoriteNewHouse record);
 
-    int updateByPrimaryKey(userFavoriteNewHouse record);
+    int updateByPrimaryKey(UserFavoriteNewHouse record);
 
     Integer newHouseFavoriteByNewCode(Integer newCode);
 
     Integer selectFavoriteNewHouseByUserId(Integer userId);
+
+    int  cancelNewHouseFavoriteByUserIdAndHouseId(UserFavoriteNewHouse userFavoriteNewHouse);
+
+
 }

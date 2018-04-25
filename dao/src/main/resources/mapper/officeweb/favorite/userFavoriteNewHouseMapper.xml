@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper" >
-  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.userFavoriteNewHouse" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="new_house_id" property="newHouseId" jdbcType="INTEGER" />
@@ -21,13 +21,13 @@
     delete from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.userFavoriteNewHouse" >
+  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     insert into user_favorite_newhouse (id, user_id, new_house_id, 
       create_time, is_del)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{newHouseId,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.userFavoriteNewHouse" >
+  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     insert into user_favorite_newhouse
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -64,7 +64,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.userFavoriteNewHouse" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     update user_favorite_newhouse
     <set >
       <if test="userId != null" >
@@ -82,7 +82,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.userFavoriteNewHouse" >
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     update user_favorite_newhouse
     set user_id = #{userId,jdbcType=INTEGER},
       new_house_id = #{newHouseId,jdbcType=INTEGER},
@@ -100,4 +100,25 @@
     select count(1) from  user_favorite_newhouse
     where user_id=#{userId} and is_del=0
   </select>
+
+
+  <update id="cancelNewHouseFavoriteByUserIdAndHouseId" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    update user_favorite_newhouse
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="newHouseId != null" >
+        new_house_id = #{newHouseId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where new_house_id=#{newHouseId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
+  </update>
+
 </mapper>

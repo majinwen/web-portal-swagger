@@ -15,6 +15,9 @@ public class IsFavoriteDo {
      */
     private Integer userId;
 
-    private  boolean isFavorite;
+    /**
+     * 二手房id
+     */
+    private String houseId;
 
 }
