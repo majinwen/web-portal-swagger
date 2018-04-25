@@ -19,4 +19,6 @@ public interface UserFavoritePlotMapper extends BaseDao {
     Integer selectPlotFavoriteByUserId(Integer userId);
 
     Integer queryPlotFavoriteByPlotId(Integer plotId);
+
+    Integer updateEsfFavoriteByEsfIdAndUserId(Integer esfId,Integer userId);
 }

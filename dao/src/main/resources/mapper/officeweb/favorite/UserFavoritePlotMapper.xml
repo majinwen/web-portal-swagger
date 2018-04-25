@@ -98,4 +98,9 @@
     SELECT count(1) from  user_favorite_village
     where village_id=#{plotId} and is_del=0
   </select>
+  <update id="updateEsfFavoriteByEsfIdAndUserId">
+    UPDATE user_favorite_eshouse
+    SET is_del = 1
+    WHERE user_id = #{userId} AND eshouse_id = VARCHAR (#{esfId})
+  </update>
 </mapper>

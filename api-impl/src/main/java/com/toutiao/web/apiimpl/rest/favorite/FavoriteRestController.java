@@ -24,4 +24,10 @@ public class FavoriteRestController {
         Integer integer = favoriteRestService.queryPlotFavoriteByPlotId(11);
         return integer;
     }
+
+    @RequestMapping("/test02")
+    public String test02(){
+        Integer integer = favoriteRestService.updateEsfFavoriteByEsfIdAndUserId(1234, 1);
+        return String.valueOf(integer);
+    }
 }

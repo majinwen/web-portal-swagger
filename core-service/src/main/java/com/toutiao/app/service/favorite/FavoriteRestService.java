@@ -20,4 +20,12 @@ public interface FavoriteRestService {
      * 列表页小区总收藏数量展示
      */
     Integer queryPlotFavoriteByPlotId(Integer plotId);
+
+    /**
+     * 个人中心二手房取消收藏
+     * @param esfId
+     * @param userId
+     * @return
+     */
+    Integer updateEsfFavoriteByEsfIdAndUserId(Integer esfId,Integer userId);
 }

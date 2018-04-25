@@ -66,4 +66,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         }
         return  favoriteCount;
     }
+
+    @Override
+    public Integer updateEsfFavoriteByEsfIdAndUserId(Integer esfId, Integer userId) {
+        Integer integer = userFavoritePlotMapper.updateEsfFavoriteByEsfIdAndUserId(esfId, userId);
+        return integer;
+    }
 }
