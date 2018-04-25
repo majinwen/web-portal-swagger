@@ -16,6 +16,12 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Autowired
     private UserFavoriteNewHouseMapper userFavoriteNewHouseMapper;
 
+    /**
+     *
+     * @param newCode
+     * @return
+     * 获取新房收藏数量
+     */
 
     @Override
     public Integer newHouseFavoriteByNewCode(Integer newCode)
