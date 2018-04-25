@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
+import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
 import com.toutiao.app.domain.favorite.UserFavoriteEsHouse;
 import com.toutiao.web.dao.BaseDao;
 
@@ -16,6 +17,8 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
 
     int updateByPrimaryKey(UserFavoriteEsHouse record);
 
-
     Integer selectEsHouseFavoriteByUserId(Integer userId);
+
+    Integer updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo);
+
 }

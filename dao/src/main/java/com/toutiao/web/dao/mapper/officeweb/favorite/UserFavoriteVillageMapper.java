@@ -3,6 +3,8 @@ package com.toutiao.web.dao.mapper.officeweb.favorite;
 import com.toutiao.app.domain.favorite.UserFavoriteVillage;
 import com.toutiao.web.dao.BaseDao;
 
+import java.util.List;
+
 public interface UserFavoriteVillageMapper extends BaseDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -17,4 +19,8 @@ public interface UserFavoriteVillageMapper extends BaseDao {
     int updateByPrimaryKey(UserFavoriteVillage record);
 
     Integer selectVillageFavoriteByUserId(Integer userId);
+
+    Integer selectPlotFavoriteCountByPlotId(Integer plotId);
+
+
 }

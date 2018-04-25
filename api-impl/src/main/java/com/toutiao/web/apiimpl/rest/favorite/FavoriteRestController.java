@@ -1,8 +1,12 @@
 package com.toutiao.web.apiimpl.rest.favorite;
 
 
+import com.toutiao.app.api.chance.request.favorite.DeleteEsfFavoriteResquest;
+import com.toutiao.app.api.chance.request.favorite.DeleteRentFavoriteRequest;
 import com.toutiao.app.api.chance.request.favorite.IsFavoriteRequest;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
+import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
+import com.toutiao.app.domain.favorite.DeleteRentFavoriteDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
@@ -17,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("rest/favorite")
 public class FavoriteRestController {
 
-    @Autowired
-    private FavoriteRestService favoriteRestService;
      @Autowired
      private FavoriteRestService favoriteRestService;
 
@@ -57,21 +59,42 @@ public class FavoriteRestController {
         return  NashResult.build(isFavorite);
     }
 
-    @RequestMapping("/test")
-    public Integer test(){
-        Integer integer = favoriteRestService.queryPlotFavoriteByUserId(111);
-        return integer;
+    /**
+     * 列表页小区收藏数量
+     * @param plotId
+     * @return
+     */
+    @RequestMapping(value = "/getPlotFavoriteCountByPlotId",method = RequestMethod.GET)
+    public NashResult getPlotFavoriteCountByPlotId(@RequestParam("plotId") Integer plotId){
+        Integer plotFavoriteCountByPlotId = favoriteRestService.getPlotFavoriteCountByPlotId(plotId);
+        return NashResult.build(plotFavoriteCountByPlotId);
     }
 
-    @RequestMapping("/test01")
-    public Integer test01(){
-        Integer integer = favoriteRestService.queryPlotFavoriteByPlotId(11);
-        return integer;
+    /**
+     * 二手房取消收藏
+     * @param deleteEsfFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/deleteEsfFavoriteByEsfIdAndUserId",method = RequestMethod.GET)
+    public NashResult deleteEsfFavoriteByEsfIdAndUserId(@Validated DeleteEsfFavoriteResquest deleteEsfFavoriteResquest){
+        DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
+        BeanUtils.copyProperties(deleteEsfFavoriteResquest,deleteEsfFavoriteDo);
+        Boolean aBoolean = favoriteRestService.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+        return NashResult.build(aBoolean);
     }
 
-    @RequestMapping("/test02")
-    public String test02(){
-        Integer integer = favoriteRestService.updateEsfFavoriteByEsfIdAndUserId(1234, 1);
-        return String.valueOf(integer);
+    /**
+     * 租房取消收藏
+     * @param deleteRentFavoriteRequest
+     * @return
+     */
+    @RequestMapping(value = "/deleteRentFavoriteByRentIdAndUserId",method = RequestMethod.GET)
+    public NashResult deleteRentFavoriteByRentIdAndUserId(@Validated DeleteRentFavoriteRequest deleteRentFavoriteRequest){
+        DeleteRentFavoriteDo deleteRentFavoriteDo = new DeleteRentFavoriteDo();
+        BeanUtils.copyProperties(deleteRentFavoriteRequest,deleteRentFavoriteDo);
+        Boolean aBoolean = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDo);
+        return NashResult.build(aBoolean);
     }
+
+
 }

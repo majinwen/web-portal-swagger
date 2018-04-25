@@ -1,14 +1,12 @@
 package com.toutiao.app.service.favorite.impl;
 
-import com.toutiao.app.domain.favorite.UserFavoritePlot;
+import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
+import com.toutiao.app.domain.favorite.DeleteRentFavoriteDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
-import com.toutiao.app.domain.favorite.UserFavoriteRent;
 import com.toutiao.app.service.favorite.FavoriteRestService;
-import com.toutiao.app.service.newhouse.impl.NewHouseRestServiceImpl;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
-import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoritePlotMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteRentMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteVillageMapper;
 import org.slf4j.Logger;
@@ -24,8 +22,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Autowired
     private UserFavoriteNewHouseMapper userFavoriteNewHouseMapper;
 
-    @Autowired
-    private UserFavoritePlotMapper userFavoritePlotMapper;
     @Autowired
     private UserFavoriteEsHouseMapper userFavoriteEsHouseMapper;
 
@@ -57,39 +53,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         }
        return  favoriteCount;
     }
-
-    @Override
-    public Integer queryPlotFavoriteByUserId(Integer userId) {
-        int favoriteCount=0;
-        try {
-            favoriteCount= userFavoritePlotMapper.selectPlotFavoriteByUserId(userId);
-            return favoriteCount;
-        }catch (Exception e)
-        {
-            logger.error("获取个人中心小区数量异常"+userId.toString()+"={}",e.getStackTrace());
-        }
-        return  favoriteCount;
-    }
-
-    @Override
-    public Integer queryPlotFavoriteByPlotId(Integer plotId) {
-        int favoriteCount=0;
-        try {
-            favoriteCount= userFavoritePlotMapper.queryPlotFavoriteByPlotId(plotId);
-            return favoriteCount;
-        }catch (Exception e)
-        {
-            logger.error("获取小区总收藏数量异常"+plotId.toString()+"={}",e.getStackTrace());
-        }
-        return  favoriteCount;
-    }
-
-    @Override
-    public Integer updateEsfFavoriteByEsfIdAndUserId(Integer esfId, Integer userId) {
-        Integer integer = userFavoritePlotMapper.updateEsfFavoriteByEsfIdAndUserId(esfId, userId);
-        return integer;
-    }
-
 
     /**
      *
@@ -139,5 +102,38 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         }
 
      return  isFavorite;
+    }
+
+    @Override
+    public Integer getPlotFavoriteCountByPlotId(Integer plotId) {
+        int favoriteCount=0;
+        try {
+            favoriteCount= userFavoriteVillageMapper.selectPlotFavoriteCountByPlotId(plotId);
+            return favoriteCount;
+        }catch (Exception e)
+        {
+            logger.error("获取小区收藏数量异常"+plotId.toString()+"={}",e.getStackTrace());
+        }
+        return  favoriteCount;
+    }
+
+    @Override
+    public Boolean updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo) {
+        boolean flag = false;
+        Integer integer = userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+        if (integer>0){
+            flag = true;
+        }
+        return flag;
+    }
+
+    @Override
+    public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo) {
+        boolean flag = false;
+        Integer integer = userFavoriteRentMapper.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDo);
+        if (integer>0){
+            flag = true;
+        }
+        return flag;
     }
 }
