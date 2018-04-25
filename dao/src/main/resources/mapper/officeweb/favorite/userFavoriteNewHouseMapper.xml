@@ -95,4 +95,9 @@
     SELECT count(1) from  user_favorite_newhouse
     where new_house_id=#{newCode} and is_del=0
   </select>
+
+  <select id="selectFavoriteNewHouseByUserId" resultType="Integer">
+    select count(1) from  user_favorite_newhouse
+    where user_id=#{userId} and is_del=0
+  </select>
 </mapper>
