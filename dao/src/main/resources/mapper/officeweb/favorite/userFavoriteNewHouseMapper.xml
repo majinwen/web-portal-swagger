@@ -100,4 +100,9 @@
     select count(1) from  user_favorite_newhouse
     where user_id=#{userId} and is_del=0
   </select>
+
+  <select id="getNewHouseIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDo">
+    SELECT COUNT(1) FROM user_favorite_newhouse
+    WHERE user_id=#{userId} and is_del=0 AND new_house_id = #{newHouseId}
+  </select>
 </mapper>

@@ -1,10 +1,7 @@
 package com.toutiao.app.service.favorite;
 
 
-import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
-import com.toutiao.app.domain.favorite.DeleteRentFavoriteDo;
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
+import com.toutiao.app.domain.favorite.*;
 
 public interface FavoriteRestService {
 
@@ -46,5 +43,19 @@ public interface FavoriteRestService {
      * @return
      */
     Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo);
+
+    /**
+     * 小区是否收藏
+     * @param plotIsFavoriteDo
+     * @return
+     */
+    Boolean getPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo);
+
+    /**
+     * 新房是否收藏
+     * @param newHouseIsFavoriteDo
+     * @return
+     */
+    Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo);
 
 }

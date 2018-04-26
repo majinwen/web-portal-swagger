@@ -1,9 +1,6 @@
 package com.toutiao.app.service.favorite.impl;
 
-import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
-import com.toutiao.app.domain.favorite.DeleteRentFavoriteDo;
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
@@ -135,5 +132,27 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
             flag = true;
         }
         return flag;
+    }
+
+    @Override
+    public Boolean getPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo) {
+        boolean isFavorite=false;
+        //判断小区是否被收藏
+        Integer integer = userFavoriteVillageMapper.selectPlotIsFavorite(plotIsFavoriteDo);
+        if (integer>0){
+            isFavorite = true;
+        }
+        return  isFavorite;
+    }
+
+    @Override
+    public Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo) {
+        boolean isFavorite=false;
+        //判断新房是否被收藏
+        Integer newHouseIsFavorite = userFavoriteNewHouseMapper.getNewHouseIsFavorite(newHouseIsFavoriteDo);
+        if (newHouseIsFavorite>0){
+            isFavorite = true;
+        }
+        return isFavorite;
     }
 }

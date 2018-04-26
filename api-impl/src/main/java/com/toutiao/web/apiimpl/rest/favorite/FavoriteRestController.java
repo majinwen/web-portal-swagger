@@ -1,14 +1,9 @@
 package com.toutiao.web.apiimpl.rest.favorite;
 
 
-import com.toutiao.app.api.chance.request.favorite.DeleteEsfFavoriteResquest;
-import com.toutiao.app.api.chance.request.favorite.DeleteRentFavoriteRequest;
-import com.toutiao.app.api.chance.request.favorite.IsFavoriteRequest;
+import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
-import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
-import com.toutiao.app.domain.favorite.DeleteRentFavoriteDo;
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -96,5 +91,30 @@ public class FavoriteRestController {
         return NashResult.build(aBoolean);
     }
 
+    /**
+     * 判断小区是否被收藏
+     * @param plotIsFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/getPlotIsFavoriteByPlotIdAndUserId",method = RequestMethod.GET)
+    public NashResult getPlotIsFavorite(PlotIsFavoriteResquest plotIsFavoriteResquest){
+        PlotIsFavoriteDo plotIsFavoriteDo = new PlotIsFavoriteDo();
+        BeanUtils.copyProperties(plotIsFavoriteResquest,plotIsFavoriteDo);
+        Boolean plotIsFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDo);
+        return NashResult.build(plotIsFavorite);
+    }
+
+    /**
+     * 判断新房是否被收藏
+     * @param newHouseIsFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/getNewHouseIsFavorite",method = RequestMethod.GET)
+    public NashResult getNewHouseIsFavorite(@Validated NewHouseIsFavoriteResquest newHouseIsFavoriteResquest){
+        NewHouseIsFavoriteDo newHouseIsFavoriteDo = new NewHouseIsFavoriteDo();
+        BeanUtils.copyProperties(newHouseIsFavoriteResquest,newHouseIsFavoriteDo);
+        Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDo);
+        return NashResult.build(newHouseIsFavorite);
+    }
 
 }
