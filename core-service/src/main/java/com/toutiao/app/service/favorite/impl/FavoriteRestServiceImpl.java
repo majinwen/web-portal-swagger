@@ -54,7 +54,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
        return  favoriteCount;
     }
 
-
     /**
      *
      * @param userId
@@ -119,6 +118,61 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      return  isFavorite;
     }
 
+    @Override
+    public Integer getPlotFavoriteCountByPlotId(Integer plotId) {
+        int favoriteCount=0;
+        try {
+            favoriteCount= userFavoriteVillageMapper.selectPlotFavoriteCountByPlotId(plotId);
+            return favoriteCount;
+        }catch (Exception e)
+        {
+            logger.error("获取小区收藏数量异常"+plotId.toString()+"={}",e.getStackTrace());
+        }
+        return  favoriteCount;
+    }
+
+    @Override
+    public Boolean updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo) {
+        boolean flag = false;
+        Integer integer = userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+        if (integer>0){
+            flag = true;
+        }
+        return flag;
+    }
+
+    @Override
+    public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo) {
+        boolean flag = false;
+        Integer integer = userFavoriteRentMapper.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDo);
+        if (integer>0){
+            flag = true;
+        }
+        return flag;
+    }
+
+    @Override
+    public Boolean getPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo) {
+        boolean isFavorite=false;
+        //判断小区是否被收藏
+        Integer integer = userFavoriteVillageMapper.selectPlotIsFavorite(plotIsFavoriteDo);
+        if (integer>0){
+            isFavorite = true;
+        }
+        return  isFavorite;
+    }
+
+    @Override
+    public Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo) {
+        boolean isFavorite=false;
+        //判断新房是否被收藏
+        Integer newHouseIsFavorite = userFavoriteNewHouseMapper.getNewHouseIsFavorite(newHouseIsFavoriteDo);
+        if (newHouseIsFavorite>0){
+            isFavorite = true;
+        }
+        return isFavorite;
+    }
+
     /**
      *新房取消收藏接口
      * @param userFavoriteNewHouse
@@ -127,7 +181,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Override
     public NashResult cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse) {
         try {
-            userFavoriteNewHouse.setIsDel(1);
+            userFavoriteNewHouse.setIsDel((short) 1);
           int result=userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
           if(result>0)
           {

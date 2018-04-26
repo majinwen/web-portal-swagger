@@ -1,14 +1,9 @@
 package com.toutiao.app.service.favorite;
 
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
-import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
-import com.toutiao.app.domain.favorite.UserFavoriteVillage;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.web.common.restmodel.NashResult;
 
 public interface FavoriteRestService {
-
-
 
     /**
      * 获取列表新房收藏数量
@@ -16,13 +11,11 @@ public interface FavoriteRestService {
 
     Integer newHouseFavoriteByNewCode(Integer newCode);
 
-
     /**
      * 获取个人中心收藏数量
      */
 
     UserCenterFavoriteCountDo getFavoriteCountByUser(Integer userId);
-
 
     /**
      * 判断是否被收藏
@@ -30,6 +23,12 @@ public interface FavoriteRestService {
 
     Boolean  getIsFavorite(Integer type, IsFavoriteDo isFavoriteDo);
 
+    /**
+     * 列表页获取小区收藏数量
+     * @param plotId
+     * @return
+     */
+    Integer getPlotFavoriteCountByPlotId(Integer plotId);
 
     /**
      * 取消新房收藏
@@ -42,5 +41,33 @@ public interface FavoriteRestService {
      */
     NashResult cancelVillageByVillageId(UserFavoriteVillage userFavoriteVillage);
 
+
+    /**
+     * 二手房取消收藏
+     * @param deleteEsfFavoriteDo
+     * @return
+     */
+    Boolean updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo);
+
+    /**
+     * 租房取消收藏
+     * @param deleteRentFavoriteDo
+     * @return
+     */
+    Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo);
+
+    /**
+     * 小区是否收藏
+     * @param plotIsFavoriteDo
+     * @return
+     */
+    Boolean getPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo);
+
+    /**
+     * 新房是否收藏
+     * @param newHouseIsFavoriteDo
+     * @return
+     */
+    Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo);
 
 }

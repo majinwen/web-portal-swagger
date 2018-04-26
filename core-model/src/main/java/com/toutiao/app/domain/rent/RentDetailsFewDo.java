@@ -7,19 +7,19 @@ public class RentDetailsFewDo {
     /**
      * 出租房源Id
      */
-    private String house_id;
+    private String houseId;
     /**
      * 小区Id
      */
-    private Integer zufang_id;
+    private Integer zufangId;
     /**
      * 小区名称
      */
-    private String zufang_name;
+    private String zufangName;
     /**
      * 房源面积
      */
-    private Double house_area;
+    private Double houseArea;
     /**
      * 几室
      */
@@ -35,23 +35,23 @@ public class RentDetailsFewDo {
     /**
      * 商圈名称
      */
-    private String area_name;
+    private String areaName;
     /**
      * 区域名称
      */
-    private String district_name;
+    private String districtName;
     /**
      * 租赁方式名称
      */
-    private String rent_type_name;
+    private String rentTypeName;
     /**
      * 出租房源标签名称
      */
-    private String[] rent_house_tags_name;
+    private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
      */
-    private Double rent_house_price;
+    private Double rentHousePrice;
     /**
      * 总数
      */
@@ -59,17 +59,17 @@ public class RentDetailsFewDo {
     /**
      * 房源标题图
      */
-    private String house_title_img;
+    private String houseTitleImg;
     /**
-     * 录入房源标题
+     * 录入/导入房源标题
      */
-    private String entry_house_title;
-    /**
-     * 导入房源标题
-     */
-    private String import_house_title;
+    private String houseTitle;
     /**
      * 房源来源类型(录入/导入)
      */
     private Integer rentHouseType;
+    /**
+     * 租房推优查询uid
+     */
+    private String uid;
 }

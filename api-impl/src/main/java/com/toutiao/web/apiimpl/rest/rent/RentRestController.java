@@ -5,10 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
+import com.toutiao.app.api.chance.request.rent.RecommendRentRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
+import com.toutiao.app.api.chance.request.rent.RentHouseRequest;
 import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +94,40 @@ public class RentRestController {
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
         return NashResult.build(rentDetailFewResponses);
     }
+
+    /**
+     * 租房推进列表
+     * @param rentHouseRequest
+     * @return
+     */
+    @RequestMapping(value = "/getRentList",method = RequestMethod.GET)
+    @ResponseBody
+    public InvokeResult getRentList(@Validated RentHouseRequest rentHouseRequest){
+        NearHouseDo nearHouseDo = new NearHouseDo();
+        BeanUtils.copyProperties(rentHouseRequest,nearHouseDo);
+        RentDetailsDoList rentDetailsDoList = appRentRestService.getRentList(nearHouseDo);
+        JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsDoList);
+        RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject),RentListResponse.class);
+        return InvokeResult.build(rentListResponse);
+    }
+
+
+    /**
+     * 租房推优房源
+     * @param rentHouseRequest
+     * @return
+     */
+    @RequestMapping(value = "/getRecommendRent",method = RequestMethod.POST)
+    @ResponseBody
+    public InvokeResult getRecommendRent(@Validated(First.class) @RequestBody  RentHouseRequest rentHouseRequest){
+
+        RentHouseDo rentHouseDo = new RentHouseDo();
+        BeanUtils.copyProperties(rentHouseRequest,rentHouseDo);
+        RentDetailsFewDo rentDetailsFewDo = appRentRestService.queryRecommendRent(rentHouseDo);
+        RecommendRentResponse recommendRentResponse = new RecommendRentResponse();
+        BeanUtils.copyProperties(rentDetailsFewDo,recommendRentResponse);
+        return InvokeResult.build(recommendRentResponse);
+    }
+
 
 }

@@ -28,5 +28,6 @@ public class UserFavoriteNewHouse {
     /**
      * 是否删除(0-未删除，1-已删除)
      */
-     private Integer isDel;
+    private Short isDel;
+
 }

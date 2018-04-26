@@ -96,9 +96,14 @@
     where user_id=#{userId} and is_del=0
   </select>
 
-  <select id="isEsfFavoriteByHouseIdAndUserId" resultType="Integer">
-      SELECT  count(1) from user_favorite_eshouse
-      where eshouse_id=#{houseId} and user_id=#{userId} and is_del=0
-  </select>
+    <select id="isEsfFavoriteByHouseIdAndUserId" resultType="Integer">
+        SELECT  count(1) from user_favorite_eshouse
+        where eshouse_id=#{houseId} and user_id=#{userId} and is_del=0
+    </select>
 
+    <update id="updateEsfFavoriteByEsfIdAndUserId" parameterType="com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo">
+    UPDATE user_favorite_eshouse
+    SET is_del = 1
+    WHERE eshouse_id = #{esfId,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=INTEGER} AND is_del = 0
+  </update>
 </mapper>

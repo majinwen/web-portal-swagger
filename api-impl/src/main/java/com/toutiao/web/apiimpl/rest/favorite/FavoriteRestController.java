@@ -1,13 +1,9 @@
 package com.toutiao.web.apiimpl.rest.favorite;
 
 
-import com.toutiao.app.api.chance.request.favorite.CancelFavoriteRequest;
-import com.toutiao.app.api.chance.request.favorite.IsFavoriteRequest;
+import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
-import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
-import com.toutiao.app.domain.favorite.UserFavoriteVillage;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
@@ -74,7 +70,16 @@ public class FavoriteRestController {
         boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF,isFavoriteDo);
         return  NashResult.build(isFavorite);
     }
-
+    /**
+     * 列表页小区收藏数量
+     * @param plotId
+     * @return
+     */
+    @RequestMapping(value = "/getPlotFavoriteCountByPlotId",method = RequestMethod.GET)
+    public NashResult getPlotFavoriteCountByPlotId(@RequestParam("plotId") Integer plotId){
+        Integer plotFavoriteCountByPlotId = favoriteRestService.getPlotFavoriteCountByPlotId(plotId);
+        return NashResult.build(plotFavoriteCountByPlotId);
+    }
     /**
      * 新房取消收藏
      */
@@ -99,6 +104,57 @@ public class FavoriteRestController {
         BeanUtils.copyProperties(cancelFavoriteRequest,userFavoriteVillage);
         return favoriteRestService.cancelVillageByVillageId(userFavoriteVillage);
 
+    }
+    /**
+     * 二手房取消收藏
+     * @param deleteEsfFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/deleteEsfFavoriteByEsfIdAndUserId",method = RequestMethod.GET)
+    public NashResult deleteEsfFavoriteByEsfIdAndUserId(@Validated DeleteEsfFavoriteResquest deleteEsfFavoriteResquest){
+        DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
+        BeanUtils.copyProperties(deleteEsfFavoriteResquest,deleteEsfFavoriteDo);
+        Boolean aBoolean = favoriteRestService.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+        return NashResult.build(aBoolean);
+    }
+
+    /**
+     * 租房取消收藏
+     * @param deleteRentFavoriteRequest
+     * @return
+     */
+    @RequestMapping(value = "/deleteRentFavoriteByRentIdAndUserId",method = RequestMethod.GET)
+    public NashResult deleteRentFavoriteByRentIdAndUserId(@Validated DeleteRentFavoriteRequest deleteRentFavoriteRequest){
+        DeleteRentFavoriteDo deleteRentFavoriteDo = new DeleteRentFavoriteDo();
+        BeanUtils.copyProperties(deleteRentFavoriteRequest,deleteRentFavoriteDo);
+        Boolean aBoolean = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDo);
+        return NashResult.build(aBoolean);
+    }
+
+    /**
+     * 判断小区是否被收藏
+     * @param plotIsFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/getPlotIsFavoriteByPlotIdAndUserId",method = RequestMethod.GET)
+    public NashResult getPlotIsFavorite(PlotIsFavoriteResquest plotIsFavoriteResquest){
+        PlotIsFavoriteDo plotIsFavoriteDo = new PlotIsFavoriteDo();
+        BeanUtils.copyProperties(plotIsFavoriteResquest,plotIsFavoriteDo);
+        Boolean plotIsFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDo);
+        return NashResult.build(plotIsFavorite);
+    }
+
+    /**
+     * 判断新房是否被收藏
+     * @param newHouseIsFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/getNewHouseIsFavorite",method = RequestMethod.GET)
+    public NashResult getNewHouseIsFavorite(@Validated NewHouseIsFavoriteResquest newHouseIsFavoriteResquest){
+        NewHouseIsFavoriteDo newHouseIsFavoriteDo = new NewHouseIsFavoriteDo();
+        BeanUtils.copyProperties(newHouseIsFavoriteResquest,newHouseIsFavoriteDo);
+        Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDo);
+        return NashResult.build(newHouseIsFavorite);
     }
 
 }

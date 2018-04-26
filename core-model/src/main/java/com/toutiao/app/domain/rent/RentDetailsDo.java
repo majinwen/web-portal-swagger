@@ -234,11 +234,11 @@ public class RentDetailsDo {
     /**
      * 整租户型
      */
-    private Integer eRentLayout;
+    private Integer erentLayout;
     /**
      * 合租户型
      */
-    private Integer jRentLayout;
+    private Integer jrentLayout;
 
     /**
      * 类型
@@ -246,9 +246,9 @@ public class RentDetailsDo {
     private  Integer rentHouseType;
 
     /**
-     * 房源标题
+     * 录入/导入房源标题
      */
-    private  String houseTitle;
+    private String houseTitle;
 
 
     /**
