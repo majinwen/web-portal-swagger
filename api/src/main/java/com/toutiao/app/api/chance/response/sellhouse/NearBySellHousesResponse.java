@@ -91,4 +91,23 @@ public class NearBySellHousesResponse {
     private  String parkRadio;
 
 
+
+    /**
+     * 区域
+     */
+
+    private  String area;
+
+    /**
+     * 商圈
+     */
+    private  String houseBusinessName;
+
+
+    /**
+     * 均价
+     */
+    private  Double houseUnitCost;
+
+
 }
