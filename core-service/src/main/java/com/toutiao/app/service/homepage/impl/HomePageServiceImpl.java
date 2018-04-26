@@ -5,6 +5,7 @@ import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.service.homepage.HomePageRestService;
+import com.toutiao.web.domain.query.ProjHouseInfoResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class HomePageServiceImpl implements HomePageRestService {
@@ -23,6 +25,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Override
     public List<HomePageEsfDo> getHomePageEsf() {
+        Random random = new Random();
         List<HomePageEsfDo> homePageEsfDos=new ArrayList<>();
         List<HomePageEsfDo> result=new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -42,10 +45,26 @@ public class HomePageServiceImpl implements HomePageRestService {
         {
             while (result.size()<5)
             {
-                result=hashPush()
+                result=hashPush(result,homePageEsfDos.get(random.nextInt(20));
             }
         }
 
 
+    }
+
+
+     private List hashPush(List<HomePageEsfDo> result ,  List<HomePageEsfDo> homePageEsfDos ){
+        Boolean flag = false;
+        if(homePageEsfDos.size()>0){
+            for (int i = 0; i <homePageEsfDos.size() ; i++) {
+                if (result.get(i).getHouseId().equals(homePageEsfDos.get(i).getHouseId())){
+                    flag = true;
+                }
+            }
+        }
+        if(!flag){
+            result.add();
+        }
+        return list;
     }
 }
