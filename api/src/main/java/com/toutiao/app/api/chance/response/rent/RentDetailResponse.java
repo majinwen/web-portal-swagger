@@ -259,7 +259,7 @@ public class RentDetailResponse {
     /**
      * 电梯情况
      */
-    private  Integer hasLift;
+    private  String hasLift;
 
     /**
      * 楼层级别
