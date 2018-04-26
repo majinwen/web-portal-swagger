@@ -7,23 +7,23 @@ public class RentAgentResponse {
     /**
      * 经纪人id
      */
-    private Integer agent_id;
+    private Integer agentId;
     /**
      * 经纪人姓名
      */
-    private String agent_name;
+    private String agentName;
     /**
      * 经纪人电话
      */
-    private String agent_phone;
+    private String agentPhone;
     /**
      * 经纪人头像
      */
-    private String agent_headphoto;
+    private String agentHeadphoto;
     /**
      * 经纪公司
      */
-    private String of_company;
+    private String ofCompany;
     /**
      * 认领后房源id（不做业务逻辑使用）
      */
@@ -31,25 +31,25 @@ public class RentAgentResponse {
     /**
      * 房源图片
      */
-    private String[] house_img;
+    private String[] houseImg;
     /**
      * 房源标题
      */
-    private String house_title;
+    private String houseTitle;
     /**
      * 房源描述
      */
-    private String house_desc;
+    private String houseDesc;
     /**
      * 房源标签
      */
-    private String[] house_tags_name;
+    private String[] houseTagsName;
     /**
      * 房源标题图
      */
-    private String house_title_img;
+    private String houseTitleImg;
     /**
      * 房源默认id
      */
-    private String corp_house_id;
+    private String corpHouseId;
 }

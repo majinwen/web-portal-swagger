@@ -52,6 +52,7 @@ public class SellHouseRestController {
      * @param nearBySellHousesRequest
      * @return
      */
+    @DeleteMapping
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
     public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {

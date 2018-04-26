@@ -7,11 +7,11 @@ public class RentNumDo {
     /**
      * 出租房源标志(普租/公寓)
      */
-    private Integer rent_sign;
+    private Integer rentSign;
     /**
      * 出租房源标志名称(出租/公寓)
      */
-    private String rent_sign_name;
+    private String rentSignName;
     /**
      * 个数
      */

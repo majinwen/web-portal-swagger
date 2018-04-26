@@ -77,7 +77,7 @@ public class RentDetailResponse {
     /**
      * 房源面积
      */
-    private Double house_area;
+    private Double houseArea;
     /**
      * 朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
      */
@@ -255,6 +255,16 @@ public class RentDetailResponse {
      * 录入的房源标题
      */
     private  String entryHouseTitle;
+
+    /**
+     * 电梯情况
+     */
+    private  Integer hasLift;
+
+    /**
+     * 楼层级别
+     */
+    private  String  floorLevel;
 
 
 

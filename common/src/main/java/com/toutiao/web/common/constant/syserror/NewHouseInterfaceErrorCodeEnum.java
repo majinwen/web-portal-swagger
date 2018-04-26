@@ -25,6 +25,7 @@ public enum NewHouseInterfaceErrorCodeEnum implements IntBaseType {
     NEWHOUSE_TRAFFIC_NOT_FOUND("新房交通配套为空",40501);
 
 
+
     private String desc;
     private int value;
 

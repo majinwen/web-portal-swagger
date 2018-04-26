@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.newhouse.*;
+import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
@@ -53,6 +54,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     @Autowired
     private NewHouseRestService newHouseService;
+
+    @Autowired
+    private FavoriteRestService favoriteRestService;
 
 
     private Logger logger = LoggerFactory.getLogger(NewHouseRestServiceImpl.class);
@@ -196,6 +200,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 {
                     newHouseListDos.setRoomTotalCount(0);
                 }
+                //获取新房的收藏数量
+                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
+                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
                 newHouseListDoList.add(newHouseListDos);
             }
             newHouseListVo.setListDoList(newHouseListDoList);
