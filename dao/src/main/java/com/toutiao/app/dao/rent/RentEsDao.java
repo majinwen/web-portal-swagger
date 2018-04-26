@@ -42,4 +42,13 @@ public interface RentEsDao {
      */
     SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder);
 
+    /**
+     * 获取租房推荐列表
+     * @param boolQueryBuilder
+     * @param from
+     * @param size
+     * @return
+     */
+    SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder,Integer from, Integer size);
+
 }

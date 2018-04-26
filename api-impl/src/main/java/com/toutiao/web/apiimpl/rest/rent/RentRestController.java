@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
+import com.toutiao.app.api.chance.request.rent.RentHouseRequest;
 import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
@@ -89,6 +90,25 @@ public class RentRestController {
         JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
         return NashResult.build(rentDetailFewResponses);
+    }
+
+    /**
+     * 租房推进列表
+     * @param rentHouseRequest
+     * @return
+     */
+    @RequestMapping(value = "/getRentList",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getRentList(@Validated RentHouseRequest rentHouseRequest){
+        NearHouseDo nearHouseDo = new NearHouseDo();
+        BeanUtils.copyProperties(rentHouseRequest,nearHouseDo);
+        RentDetailsDoList rentDetailsDoList = appRentRestService.getRentList(nearHouseDo);
+        JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsDoList);
+
+
+        RentDetailResponseList rentDetailResponseList = JSONObject.parseObject(String.valueOf(jsonObject),RentDetailResponseList.class);
+
+        return NashResult.build(rentDetailResponseList);
     }
 
 }

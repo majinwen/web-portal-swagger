@@ -11,7 +11,7 @@ import com.toutiao.web.common.constant.base.IntBaseType;
 public enum RentInterfaceErrorCodeEnum implements IntBaseType {
 
 
-    CONTENT_HAS_SENSITIVE_WORD("房源标题或房源描述含有敏感词，请检查！", 70101);
+    RENT_NOT_FOUND("租房推荐列表为空", 70101);
 
     /**
      * 支付模块，模块代码05

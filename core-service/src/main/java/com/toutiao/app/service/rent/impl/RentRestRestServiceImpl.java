@@ -9,6 +9,9 @@ import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
@@ -29,6 +32,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -221,6 +225,48 @@ public class RentRestRestServiceImpl implements RentRestService {
     }
 
     /**
+     * 推荐租房列表，7天内上新
+     * @param nearHouseDo
+     * @return
+     */
+    @Override
+    public RentDetailsDoList getRentList(NearHouseDo nearHouseDo) {
+
+        List<RentDetailsFewDo> list = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder = getBoolQueryBuilder(boolQueryBuilder, nearHouseDo);
+        Date date = new Date();
+        String nowDate = DateUtil.format(date);
+        nowDate = nowDate+" 00:00:00";
+
+        String pastDate = DateUtil.getPastDate(7);
+        pastDate = pastDate+" 00:00:00";
+//
+        boolQueryBuilder.must(QueryBuilders.rangeQuery("update_time").gt(pastDate).lte(nowDate));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_recommend","0"));
+        Integer size = 10;
+        Integer from = (nearHouseDo.getPageNum()-1)*size;
+
+        SearchResponse searchResponse = rentEsDao.queryRentList(boolQueryBuilder, from, size);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+
+        RentDetailsDoList rentDetailsDoList = new RentDetailsDoList();
+        if (hits.length>0){
+            for (SearchHit searchHit:hits){
+                String sourceAsString = searchHit.getSourceAsString();
+                RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                list.add(rentDetailsFewDo);
+            }
+            rentDetailsDoList.setRentDetailsDoList(list);
+            rentDetailsDoList.setTotalNum(hits.length);
+        }else{
+            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND,"租房推荐列表为空");
+        }
+
+        return rentDetailsDoList;
+    }
+
+    /**
      * 获取boolQueryBuilder
      * @param boolQueryBuilder
      * @param nearHouseDo
@@ -321,4 +367,6 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
         return boolQueryBuilder;
     }
+
+
 }
