@@ -62,13 +62,9 @@ public class RentDetailFewResponse {
      */
     private String houseTitleImg;
     /**
-     * 录入房源标题
+     * 录入/导入房源标题
      */
-    private String entryHouseTitle;
-    /**
-     * 导入房源标题
-     */
-    private String importHouseTitle;
+    private String houseTitle;
     /**
      * 房源来源类型(录入/导入)
      */
