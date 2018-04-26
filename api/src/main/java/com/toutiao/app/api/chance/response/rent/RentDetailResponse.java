@@ -247,14 +247,9 @@ public class RentDetailResponse {
     private  Integer rentHouseType;
 
     /**
-     * 导入房源标题
+     * 录入/导入房源标题
      */
-    private  String importHouseTitle;
-
-    /**
-     * 录入的房源标题
-     */
-    private  String entryHouseTitle;
+    private String houseTitle;
 
     /**
      * 电梯情况
