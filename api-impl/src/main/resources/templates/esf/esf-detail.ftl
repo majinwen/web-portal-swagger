@@ -11,9 +11,24 @@
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="${staticurl}/js/loghub-tracking.js" async></script>
-
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
-<#include "../StatisticsHeader.ftl">
+    <#include "../StatisticsHeader.ftl">
+    <script type="text/javascript">
+        (function(root) {
+            root._tt_config = true;
+            var ta = document.createElement('script'); ta.type = 'text/javascript'; ta.async = true;
+            ta.src = document.location.protocol + '//' + 's1.pstatp.com/bytecom/resource/track_log/src/toutiao-track-log.js';
+            ta.onerror = function () {
+                var request = new XMLHttpRequest();
+                var web_url = window.encodeURIComponent(window.location.href);
+                var js_url  = ta.src;
+                var url = '//ad.toutiao.com/link_monitor/cdn_failed?web_url=' + web_url + '&js_url=' + js_url + '&convert_id=1598714777660436';
+                request.open('GET', url, true);
+                request.send(null);
+            }
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ta, s);
+        })(window);
+    </script>
 </head>
 <body>
 <img class="shareTopImg" height="0" width="0" src="<#if houseDetail['housePhoto']?? && (houseDetail['housePhoto']?size>0)>${houseDetail['housePhoto'][0]!""}</#if>" alt="">
@@ -606,7 +621,6 @@
         var subPhone = false;
         var reservationData = {};
 
-
         reservationData['sellHouseId'] = $('.sellHouseId').text();
         reservationData['price'] = <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}<#else ></#if>;
         reservationData['area'] = <#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}<#else ></#if>;
@@ -616,13 +630,6 @@
         $('.userPhone').on('blur', function () {
             isPhone($(this).val());
         });
-
-        /*$('.user-content').on('blur', function () {
-            if ($(this).val() != '') {
-                $('.textarea-content').find('.error').addClass('none');
-                $('.textarea-content').find('.error-text').text('');
-            }
-        });*/
         var isPhone = function (str) {
             var reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
             if (reg.test(str)) {
@@ -665,10 +672,6 @@
                     $('.user-phone').find('.error').removeClass('none');
                     $('.user-phone').find('.error-text').text('手机号码不能为空！')
                 }
-                /*if ($('.user-content').val() == '') {
-                    $('.textarea-content').find('.error').removeClass('none');
-                    $('.textarea-content').find('.error-text').text('留言内容不能为空！')
-                }*/
             }
         });
 
@@ -744,6 +747,7 @@
     </#if>
 
     $(".describe-header").on('click', 'a', function () {
+        _taq.push({convert_id:'1598714777660436', event_type:'phone'});
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
             "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
@@ -755,7 +759,8 @@
         return false;
     });
 
-    $(".detail-contact-content").on('click', 'a', function () {
+    $(".detail-contact-content").on('click', '.contact-telephone-counseling', function () {
+        _taq.push({convert_id:'1598714777660436', event_type:'phone'});
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
             "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
@@ -766,7 +771,8 @@
         });
         return false;
     });
-    $(".dialing").on('click', 'a', function () {
+    $(".dialing").on('click', function () {
+        _taq.push({convert_id:'1598714777660436', event_type:'phone'});
         var link = $(this);
         zhuge.track('二手房-点击拨打电话', {
             "经济人" : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
@@ -789,7 +795,7 @@
             location.href = link.find('a').attr('href');
         });
         return false;
-    })
+    });
     /*$("#nearbypLOT").on('click', 'li', function () {
         var link = $(this);
         zhuge.track('二手房-点击查看推荐小区', {
@@ -845,7 +851,7 @@
             location.href = link.attr('href');
         });
         return false;
-    })
+    });
 
     <#--var page = ${pageNum}-->
     <#--var houseId = ${houseId}-->
