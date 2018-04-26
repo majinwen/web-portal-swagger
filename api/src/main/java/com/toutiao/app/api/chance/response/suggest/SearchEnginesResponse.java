@@ -7,23 +7,23 @@ public class SearchEnginesResponse {
     /**
      * 房源id
      */
-    private Integer search_id;
+    private Integer searchId;
     /**
      * 房源名称
      */
-    private String search_name;
+    private String searchName;
     /**
      * 排序名称
      */
-    private String search_sort;
+    private String searchSort;
     /**
      * 房屋类型
      */
-    private String search_type;
+    private String searchType;
     /**
      * 房屋类型标志
      */
-    private Integer search_type_sings;
+    private Integer searchTypeSings;
     /**
      * 区县名称
      */
@@ -31,7 +31,7 @@ public class SearchEnginesResponse {
     /**
      * 区县id
      */
-    private Integer district_id;
+    private Integer districtId;
     /**
      * 商圈名称
      */
@@ -39,17 +39,17 @@ public class SearchEnginesResponse {
     /**
      * 商圈id
      */
-    private Integer area_id;
+    private Integer areaId;
     /**
      * 是否发布
      */
-    private Integer is_approve;
+    private Integer isApprove;
     /**
      * 是否删除
      */
-    private Integer is_del;
+    private Integer isDel;
     /**
      * 城市id
      */
-    private Integer city_id;
+    private Integer cityId;
 }

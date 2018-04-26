@@ -181,7 +181,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Override
     public NashResult cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse) {
         try {
-            userFavoriteNewHouse.setIsDel(1);
+            userFavoriteNewHouse.setIsDel((short) 1);
           int result=userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
           if(result>0)
           {

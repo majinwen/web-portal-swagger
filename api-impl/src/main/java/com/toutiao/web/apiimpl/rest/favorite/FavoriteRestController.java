@@ -1,13 +1,9 @@
 package com.toutiao.web.apiimpl.rest.favorite;
 
 
-import com.toutiao.app.api.chance.request.favorite.CancelFavoriteRequest;
-import com.toutiao.app.api.chance.request.favorite.IsFavoriteRequest;
+import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
-import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
-import com.toutiao.app.domain.favorite.UserFavoriteVillage;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;

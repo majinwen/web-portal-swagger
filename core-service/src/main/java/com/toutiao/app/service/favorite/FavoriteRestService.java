@@ -1,9 +1,6 @@
 package com.toutiao.app.service.favorite;
 
-import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
-import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
-import com.toutiao.app.domain.favorite.UserFavoriteVillage;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.web.common.restmodel.NashResult;
 
 public interface FavoriteRestService {
