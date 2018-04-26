@@ -14,6 +14,7 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -58,26 +59,21 @@ public class RentRestRestServiceImpl implements RentRestService {
      */
     @Override
     public RentDetailsDo queryRentDetailByHouseId(String rentId) {
-        try {
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
-            boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-            SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            String details = "";
-            RentDetailsDo rentDetailsDo = new RentDetailsDo();
-            for (SearchHit searchHit : hits) {
-                details = searchHit.getSourceAsString();
-            }
-            if (org.apache.commons.lang.StringUtils.isNotEmpty(details)) {
-                rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
-            }
-            return rentDetailsDo;
-        }catch (Exception e){
-            e.printStackTrace();
+        RentDetailsDo rentDetailsDo = new RentDetailsDo();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
+        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        String details = "";
+        for (SearchHit searchHit : hits) {
+            details = searchHit.getSourceAsString();
         }
-        return null;
+        if (!"".equals(details)) {
+            rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
+        }
+        return rentDetailsDo;
     }
 
     /**
