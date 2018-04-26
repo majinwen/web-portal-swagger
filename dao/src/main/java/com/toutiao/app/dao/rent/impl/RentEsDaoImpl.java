@@ -68,7 +68,7 @@ public class RentEsDaoImpl implements RentEsDao {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).setSize(size)
-                .execute().actionGet();
+                .setFetchSource(new String[]{"area_id",},null).execute().actionGet();
         return searchResponse;
     }
 }
