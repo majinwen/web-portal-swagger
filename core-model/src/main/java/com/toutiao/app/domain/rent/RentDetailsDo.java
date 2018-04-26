@@ -255,4 +255,15 @@ public class RentDetailsDo {
      */
     private  String entryHouseTitle;
 
+
+    /**
+     * 电梯情况
+     */
+    private  Integer hasLift;
+
+    /**
+     * 楼层级别
+     */
+    private  String  floorLevel;
+
 }
