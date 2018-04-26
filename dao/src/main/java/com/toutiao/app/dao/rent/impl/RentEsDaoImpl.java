@@ -83,7 +83,7 @@ public class RentEsDaoImpl implements RentEsDao {
         if(!uid.equals("0")){
             searchRequestBuilder.searchAfter(new String[]{uid});
         }
-        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setSize(1)
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("_uid", SortOrder.DESC).setSize(1)
                 .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
                         "district_name","area_name","zufang_name","rent_house_tags_name"},null).execute().actionGet();
 

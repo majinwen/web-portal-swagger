@@ -287,7 +287,9 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                rentDetailsFewDo.setUid(searchHit.getSortValues()[0].toString());
             }
+
         }else{
             throw new BaseException(RentInterfaceErrorCodeEnum.RECOMMEND_RENT_NOT_FOUND,"未查询到租房推优房源");
         }

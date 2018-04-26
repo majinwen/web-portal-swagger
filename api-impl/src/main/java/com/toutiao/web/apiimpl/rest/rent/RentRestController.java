@@ -111,22 +111,21 @@ public class RentRestController {
     }
 
 
-
-
-    @RequestMapping(value = "/getRecommendRent",method = RequestMethod.GET)
+    /**
+     * 租房推优房源
+     * @param rentHouseRequest
+     * @return
+     */
+    @RequestMapping(value = "/getRecommendRent",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult getRecommendRent(@Validated(First.class) RentHouseRequest rentHouseRequest){
-//        NearHouseDo nearHouseDo = new NearHouseDo();
-//        BeanUtils.copyProperties(rentHouseRequest,nearHouseDo);
-//        RentDetailsDoList rentDetailsDoList = appRentRestService.getRentList(nearHouseDo);
-//        JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsDoList);
-//        RentDetailResponseList rentDetailResponseList = JSONObject.parseObject(String.valueOf(jsonObject),RentDetailResponseList.class);
+    public NashResult getRecommendRent(@Validated(First.class) @RequestBody  RentHouseRequest rentHouseRequest){
 
         RentHouseDo rentHouseDo = new RentHouseDo();
         BeanUtils.copyProperties(rentHouseRequest,rentHouseDo);
         RentDetailsFewDo rentDetailsFewDo = appRentRestService.queryRecommendRent(rentHouseDo);
-
-        return NashResult.build("");
+        RecommendRentResponse recommendRentResponse = new RecommendRentResponse();
+        BeanUtils.copyProperties(rentDetailsFewDo,recommendRentResponse);
+        return NashResult.build(recommendRentResponse);
     }
 
 

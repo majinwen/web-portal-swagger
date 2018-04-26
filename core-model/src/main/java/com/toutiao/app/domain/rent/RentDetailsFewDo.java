@@ -68,4 +68,8 @@ public class RentDetailsFewDo {
      * 房源来源类型(录入/导入)
      */
     private Integer rentHouseType;
+    /**
+     * 租房推优查询uid
+     */
+    private String uid;
 }
