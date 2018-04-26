@@ -1,12 +1,11 @@
-package com.toutiao.app.api.chance.request.rent;
+package com.toutiao.app.domain.rent;
 
-import com.toutiao.web.common.assertUtils.First;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 
 @Data
-public class RentHouseRequest {
+public class RentHouseDo {
     /**
      * 关键字
      */
@@ -83,11 +82,8 @@ public class RentHouseRequest {
      * 导入:3/录入:1
      */
     private Integer rentHouseType = 1;
-
     /**
-     * 租房推优查询uid
+     * 过滤标志
      */
-    @NotEmpty(groups = {First.class},message = "缺少查询uid")
     private String uid;
-
 }

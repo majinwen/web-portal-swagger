@@ -68,7 +68,25 @@ public class RentEsDaoImpl implements RentEsDao {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).setSize(size)
-                .setFetchSource(new String[]{"area_id",},null).execute().actionGet();
+                .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
+                        "district_name","area_name","zufang_name","rent_house_tags_name"},null).execute().actionGet();
+
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder, String uid) {
+
+        TransportClient client = esClientTools.init();
+
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        if(!uid.equals("0")){
+            searchRequestBuilder.searchAfter(new String[]{uid});
+        }
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setSize(1)
+                .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
+                        "district_name","area_name","zufang_name","rent_house_tags_name"},null).execute().actionGet();
+
         return searchResponse;
     }
 }

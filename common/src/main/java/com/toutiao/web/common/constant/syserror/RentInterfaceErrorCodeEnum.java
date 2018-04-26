@@ -11,7 +11,9 @@ import com.toutiao.web.common.constant.base.IntBaseType;
 public enum RentInterfaceErrorCodeEnum implements IntBaseType {
 
 
-    RENT_NOT_FOUND("租房推荐列表为空", 70101);
+    RENT_NOT_FOUND("租房推荐列表为空", 70101),
+
+    RECOMMEND_RENT_NOT_FOUND("未查询到租房推优房源", 70102);
 
     /**
      * 支付模块，模块代码05

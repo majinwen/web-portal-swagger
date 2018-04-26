@@ -46,4 +46,11 @@ public interface RentRestService {
      * @return
      */
     RentDetailsDoList getRentList(NearHouseDo nearHouseDo);
+
+    /**
+     * 推优房源
+     * @param rentHouseDo
+     * @return
+     */
+    RentDetailsFewDo queryRecommendRent(RentHouseDo rentHouseDo);
 }
