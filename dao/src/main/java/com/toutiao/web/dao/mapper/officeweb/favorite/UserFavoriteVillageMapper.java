@@ -21,6 +21,8 @@ public interface UserFavoriteVillageMapper extends BaseDao {
 
     Integer selectVillageFavoriteByUserId(Integer userId);
 
+    int  cancelVillageByVillageIdAndUserId(UserFavoriteVillage userFavoriteVillage);
+
     Integer selectPlotFavoriteCountByPlotId(Integer plotId);
 
     Integer selectPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo);

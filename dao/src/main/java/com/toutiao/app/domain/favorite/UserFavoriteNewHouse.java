@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.util.Date;
 @Data
-public class userFavoriteNewHouse {
+public class UserFavoriteNewHouse {
     /**
      * 新房收藏id
      */

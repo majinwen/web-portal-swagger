@@ -94,13 +94,32 @@
     SELECT  count(1) FROM user_favorite_village
     where user_id=#{userId} and is_del=0
   </select>
-  <select id="selectPlotFavoriteCountByPlotId" resultType="java.lang.Integer">
-    SELECT COUNT(1) FROM user_favorite_village
-    WHERE village_id = #{plotId}
-  </select>
+  <update id="cancelVillageByVillageIdAndUserId" parameterType="com.toutiao.app.domain.favorite.UserFavoriteVillage">
+      update user_favorite_village
+      <set >
+          <if test="userId != null" >
+              user_id = #{userId,jdbcType=INTEGER},
+          </if>
+          <if test="villageId != null" >
+              village_id = #{villageId,jdbcType=INTEGER},
+          </if>
+          <if test="createTime != null" >
+              create_time = #{createTime,jdbcType=TIMESTAMP},
+          </if>
+          <if test="isDel != null" >
+              is_del = #{isDel,jdbcType=SMALLINT},
+          </if>
+      </set>
+      where user_id=#{userId} and village_id=#{villageId}
+  </update>
 
-  <select id="selectPlotIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.PlotIsFavoriteDo">
-    SELECT COUNT(1) FROM user_favorite_village
-    WHERE village_id = #{plotId} AND user_id = #{userId} AND is_del = 0
-  </select>
+    <select id="selectPlotFavoriteCountByPlotId" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM user_favorite_village
+        WHERE village_id = #{plotId}
+    </select>
+
+    <select id="selectPlotIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.PlotIsFavoriteDo">
+        SELECT COUNT(1) FROM user_favorite_village
+        WHERE village_id = #{plotId} AND user_id = #{userId} AND is_del = 0
+    </select>
 </mapper>
