@@ -13,15 +13,15 @@ public class RentDetailResponse {
     /**
      * 小区Id
      */
-    private Integer zufangId;
+    private Integer zuFangId;
     /**
      * 小区名称
      */
-    private String zufangName;
+    private String zuFangName;
     /**
      * 小区分数
      */
-    private Integer zufangScore;
+    private Integer zuFangScore;
     /**
      * 城市编号
      */
@@ -233,11 +233,11 @@ public class RentDetailResponse {
     /**
      * 整租户型
      */
-    private Integer erentLayout;
+    private Integer eRentLayout;
     /**
      * 合租户型
      */
-    private Integer jrentLayout;
+    private Integer jRentLayout;
 
 
 
