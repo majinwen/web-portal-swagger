@@ -63,4 +63,14 @@ public class RecommendRentResponse {
      */
     private String uid;
 
+    /**
+     * 录入/导入房源标题
+     */
+    private String houseTitle;
+
+    /**
+     * 房源标题图
+     */
+    private String houseTitleImg;
+
 }

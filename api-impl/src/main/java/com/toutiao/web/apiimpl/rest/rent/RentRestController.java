@@ -12,6 +12,7 @@ import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,13 +102,13 @@ public class RentRestController {
      */
     @RequestMapping(value = "/getRentList",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getRentList(@Validated RentHouseRequest rentHouseRequest){
+    public InvokeResult getRentList(@Validated RentHouseRequest rentHouseRequest){
         NearHouseDo nearHouseDo = new NearHouseDo();
         BeanUtils.copyProperties(rentHouseRequest,nearHouseDo);
         RentDetailsDoList rentDetailsDoList = appRentRestService.getRentList(nearHouseDo);
         JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsDoList);
-        RentDetailResponseList rentDetailResponseList = JSONObject.parseObject(String.valueOf(jsonObject),RentDetailResponseList.class);
-        return NashResult.build(rentDetailResponseList);
+        RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject),RentListResponse.class);
+        return InvokeResult.build(rentListResponse);
     }
 
 
@@ -118,14 +119,14 @@ public class RentRestController {
      */
     @RequestMapping(value = "/getRecommendRent",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult getRecommendRent(@Validated(First.class) @RequestBody  RentHouseRequest rentHouseRequest){
+    public InvokeResult getRecommendRent(@Validated(First.class) @RequestBody  RentHouseRequest rentHouseRequest){
 
         RentHouseDo rentHouseDo = new RentHouseDo();
         BeanUtils.copyProperties(rentHouseRequest,rentHouseDo);
         RentDetailsFewDo rentDetailsFewDo = appRentRestService.queryRecommendRent(rentHouseDo);
         RecommendRentResponse recommendRentResponse = new RecommendRentResponse();
         BeanUtils.copyProperties(rentDetailsFewDo,recommendRentResponse);
-        return NashResult.build(recommendRentResponse);
+        return InvokeResult.build(recommendRentResponse);
     }
 
 
