@@ -11,6 +11,6 @@ public interface HomePageRestService {
      * 获取首页二手房5条
      */
 
-    List<HomePageEsfDo> getHomePageEsf(Integer cityId);
+    List<HomePageEsfDo> getHomePageEsf();
 
 }

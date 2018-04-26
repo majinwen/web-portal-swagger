@@ -16,9 +16,9 @@ public class HomePageRestController {
 
     @RequestMapping(value = "getHomePageEsf",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getHomePageEsf(@RequestParam("cityId") Integer cityId)
+    public NashResult getHomePageEsf()
     {
-        homePageRestService
+        homePageRestService.getHomePageEsf();
         return  NashResult.build(0);
     }
 }
