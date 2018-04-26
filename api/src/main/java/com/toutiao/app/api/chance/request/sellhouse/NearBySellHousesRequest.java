@@ -50,6 +50,12 @@ public class NearBySellHousesRequest {
      */
     private  Integer [] houseLabelId;
 
+
+    /**
+     * 朝向
+     */
+    private  Integer []  forward;
+
     /**
      * 页码
      */

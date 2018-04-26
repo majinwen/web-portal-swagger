@@ -14,15 +14,15 @@ public class RentDetailsDo {
     /**
      * 小区Id
      */
-    private Integer zuFangId;
+    private Integer zufangId;
     /**
      * 小区名称
      */
-    private String zuFangName;
+    private String zufangName;
     /**
      * 小区分数
      */
-    private Integer zuFangScore;
+    private Integer zufangScore;
     /**
      * 城市编号
      */
@@ -234,11 +234,11 @@ public class RentDetailsDo {
     /**
      * 整租户型
      */
-    private Integer erentLayout;
+    private Integer eRentLayout;
     /**
      * 合租户型
      */
-    private Integer jrentLayout;
+    private Integer jRentLayout;
 
     /**
      * 类型
@@ -246,9 +246,9 @@ public class RentDetailsDo {
     private  Integer rentHouseType;
 
     /**
-     * 录入/导入房源标题
+     * 房源标题
      */
-    private String houseTitle;
+    private  String houseTitle;
 
 
     /**

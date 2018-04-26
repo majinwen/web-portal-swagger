@@ -8,6 +8,7 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -113,19 +114,23 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
         //户型(室)
         if (StringTool.isNotEmpty(nearBySellHousesDo.getLayout())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("room", nearBySellHousesDo.getLayout()));
+            Integer[] longs = nearBySellHousesDo.getLayout();
+//            booleanQueryBuilder.must();
+            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room",longs)));
         }
 
 
         //朝向
         if (StringTool.isNotEmpty(nearBySellHousesDo.getForward())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("forward", nearBySellHousesDo.getForward()));
+            Integer[] longs =nearBySellHousesDo.getForward();
+            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("forward",longs)));
         }
 
 
         //标签(满二，满三，满五)
         if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLabelId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("tags", nearBySellHousesDo.getHouseLabelId()));
+            Integer[] longs = nearBySellHousesDo.getHouseLabelId();
+            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("tags",longs)));
         }
 
 

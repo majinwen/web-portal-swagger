@@ -233,11 +233,11 @@ public class RentDetailResponse {
     /**
      * 整租户型
      */
-    private Integer erentLayout;
+    private Integer eRentLayout;
     /**
      * 合租户型
      */
-    private Integer jrentLayout;
+    private Integer jRentLayout;
 
     /**
      * 类型
