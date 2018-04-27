@@ -2,6 +2,7 @@ package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageNewHouseDo;
 
 import java.util.List;
 
@@ -12,5 +13,11 @@ public interface HomePageRestService {
      */
 
     List<HomePageEsfDo> getHomePageEsf();
+
+
+    /**
+     * 获取新房五条
+     */
+    List<HomePageNewHouseDo> getHomePageNewHouse();
 
 }

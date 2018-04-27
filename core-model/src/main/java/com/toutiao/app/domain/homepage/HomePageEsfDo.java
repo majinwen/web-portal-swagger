@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.homepage;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 @Data
@@ -71,6 +72,7 @@ public class HomePageEsfDo {
     /**
      * 朝向
      */
+    @JSONField(name="forward")
     private  String forwardName;
 
 

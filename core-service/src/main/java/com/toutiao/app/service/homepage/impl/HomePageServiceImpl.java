@@ -3,6 +3,7 @@ package com.toutiao.app.service.homepage.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageNewHouseDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
@@ -23,6 +24,11 @@ public class HomePageServiceImpl implements HomePageRestService {
     private HomePageEsDao homePageEsDao;
 
 
+    /**
+     *
+     * @return
+     * 获取二手房5条
+     */
     @Override
     public List<HomePageEsfDo> getHomePageEsf() {
         Random random = new Random();
@@ -53,8 +59,18 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     }
 
+    /**
+     * 获取新房5条
+     * @return
+     */
 
-     private List hashPush(List<HomePageEsfDo> result ,  HomePageEsfDo homePageEsfDos ){
+    @Override
+    public List<HomePageNewHouseDo> getHomePageNewHouse() {
+
+    }
+
+
+    private List hashPush(List<HomePageEsfDo> result ,  HomePageEsfDo homePageEsfDos ){
         Boolean flag = false;
         if(result.size()>0){
             for (int i = 0; i <result.size() ; i++) {

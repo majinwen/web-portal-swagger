@@ -21,7 +21,9 @@ public class HomePageRestController {
     @Autowired
     private HomePageRestService homePageRestService;
 
-
+    /**
+     * 首页获取二手房推荐5条
+     */
     @RequestMapping(value = "getHomePageEsf",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getHomePageEsf()
@@ -31,4 +33,18 @@ public class HomePageRestController {
         List<HomePageEsfResponse> homePageEsfResponseList= JSONObject.parseArray(json.toJSONString(),HomePageEsfResponse.class);
         return  NashResult.build(homePageEsfResponseList);
     }
+
+
+    /**
+     * 首页获取新房5条
+     */
+
+    @RequestMapping(value = "getHomePageNewHouse",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult getHomePageNewHouse()
+    {
+        homePageRestService.
+        return  NashResult.build(0);
+    }
+
 }
