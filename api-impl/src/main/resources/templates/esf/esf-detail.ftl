@@ -163,8 +163,8 @@
                     <li>
                         <span>面积</span>
                         <em>
-                        <#if houseDetail.buildArea?exists &&(houseDetail.buildArea!=0)>
-                        ${houseDetail.buildArea}㎡
+                        <#if houseDetail.buildArea?number?exists &&(houseDetail.buildArea?number!=0)>
+                        ${houseDetail.buildArea?string("0.########")}㎡
                         <#else>
                             暂无数据
                         </#if>
@@ -176,7 +176,7 @@
                 <p>单价：
                 <#if houseDetail.houseTotalPrices?exists&&houseDetail.buildArea?exists
                 &&houseDetail.houseTotalPrices?number gt 0&&houseDetail.buildArea?number gt 0>
-                ${((houseDetail.houseTotalPrices?number / houseDetail.buildArea?number)) * 10000}元/㎡
+                ${(((houseDetail.houseTotalPrices / houseDetail.buildArea)) * 10000)?floor}元/㎡
                 <#else>
                     暂无数据
                 </#if>

@@ -1255,7 +1255,8 @@ function pullUpAction() {
                                         var unitCost = parseInt((dataCon[i].houseTotalPrices / _buildArea) * 10000);
                                         dataCon[i].unitCost = unitCost;
 
-                                        dataCon[i]['buildArea'] = _buildArea.toFixed(0);
+                                        // dataCon[i]['buildArea'] = _buildArea.toFixed(0);
+                                       // dataCon[i]['buildArea'] = Math.floor(_buildArea * 100) / 100;
                                     }
 
                                     //组织地铁描述信息
@@ -1449,7 +1450,7 @@ function pullDownAction() {
                                             var unitCost = parseInt((dataCon[i].houseTotalPrices / _buildArea) * 10000);
                                             dataCon[i].unitCost = unitCost;
 
-                                            dataCon[i]['buildArea'] = _buildArea.toFixed(0);
+                                            // dataCon[i]['buildArea'] = _buildArea.toFixed(0);
                                         }
 
                                         //组织地铁描述信息
