@@ -1,29 +1,18 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
-import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
 import com.toutiao.app.service.sellhouse.SellHouseService;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.alibaba.fastjson.JSONArray.*;
 
 
 @RestController
@@ -64,20 +53,47 @@ public class SellHouseRestController {
     }
 
 
-//    /**
-//     *  二手房房源列表
-//     * @param sellHouseRequest
-//     * @return
-//     */
-//    @RequestMapping("/getSellHouseByChoose")
-//    @ResponseBody
-//    public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
-//        ChooseSellHouseResponse chooseSellHouseResponse = new ChooseSellHouseResponse();
-//        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
-//        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
-//        ChooseSellHouseDomain chooseSellHouseDomain= sellHouseService.getSellHouseByChoose(chooseSellHouseDo);
-//        BeanUtils.copyProperties(chooseSellHouseDomain, chooseSellHouseResponse);
-//        return NashResult.build(chooseSellHouseResponse);
-//    }
+    /**
+     *  二手房房源列表
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping("/getSellHouseByChoose")
+    @ResponseBody
+    public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
+        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(chooseSellHouseDo);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
+    }
+
+    /**
+     * 二手房推荐
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping("/getRecommendSellHouse")
+    @ResponseBody
+    public NashResult getRecommendSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
+        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(chooseSellHouseDo);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
+    }
+
+
+
+
+
+
+
+
+
 
 }

@@ -117,4 +117,11 @@ public class ChooseSellHouseDo {
      * 均价
      */
     private  Double houseUnitCost;
+
+    /**
+     * 推荐房源查询标志
+     */
+    private String uid;
+
+    private Integer pageSize;
 }

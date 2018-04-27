@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ChooseSellHouseDomain {
+public class SellHouseDomain {
 
     private List<SellHouseDo> sellHouseList;
 
-    private long total;
+    private Integer total;
 }

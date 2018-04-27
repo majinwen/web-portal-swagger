@@ -167,8 +167,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                         .should(QueryBuilders.matchQuery("plotName", chooseSellHouseDo.getKeyword()).analyzer("ik_smart").boost(2)));
             } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(chooseSellHouseDo.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", chooseSellHouseDo.getKeyword()))
                         .should(QueryBuilders.matchQuery("area", chooseSellHouseDo.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("plotName_accurate", chooseSellHouseDo.getKeyword()))
                         .should(QueryBuilders.matchQuery("houseBusinessName", chooseSellHouseDo.getKeyword()).analyzer("ik_smart"))
                         .should(QueryBuilders.matchQuery("plotName", chooseSellHouseDo.getKeyword()).analyzer("ik_smart")));
             } else {

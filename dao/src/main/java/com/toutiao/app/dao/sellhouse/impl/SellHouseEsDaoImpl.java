@@ -66,52 +66,6 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         return searchresponse;
     }
 
-    @Override
-    public SearchResponse getSellHouseByHouseIdAndLocation(BoolQueryBuilder boolQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, Integer from, Integer size) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchResponse =new SearchResponse();
-        searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).setPostFilter(location).addSort(sort).setFetchSource(
-                    new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId","parkRadio"} ,null
-            ).execute().actionGet();
-        return searchResponse;
-    }
-
-    @Override
-    public SearchResponse getSellHouseByChoose(BoolQueryBuilder booleanQueryBuilder, GeoDistanceQueryBuilder location, GeoDistanceSortBuilder sort, String keyWord, Integer order,int pageSize,int pageNum) {
-
-        TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = null;
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        if(location!=null && sort!=null){
-            srb.setPostFilter(location).addSort(sort);
-        }
-        if (order != null && order == 1) {
-            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
-                    .setFrom((pageNum - 1) * pageSize)
-                    .setSize(pageSize)
-                    .execute().actionGet();
-        } else if (order != null && order == 2) {
-            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
-                    .setFrom((pageNum - 1) * pageSize)
-                    .setSize(pageSize)
-                    .execute().actionGet();
-        } else {
-            //如果含有关键字查询，优先显示关键字
-            if (StringTool.isNotBlank(keyWord)){
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("_score",SortOrder.DESC).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
-            } else {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
-            }
-        }
-        return searchresponse;
-    }
 
 
     /**
@@ -145,6 +99,38 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                 .setQuery(booleanQueryBuilder).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                 .execute().actionGet();
         return searchResponse;
+    }
+
+
+
+    @Override
+    public SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer pageNum, Integer pageSize) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchResponse searchresponse = srb.setQuery(query).addSort("sortingScore",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize).setFetchSource(
+                new String[] {"claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
+                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
+                        "plotName","year","parkRadio","subwayDistince","housePlotLocation"} ,null)
+                .execute().actionGet();
+        return searchresponse;
+    }
+
+
+    @Override
+    public SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+
+        if(!uid.equals("0")){
+            srb.searchAfter(new String[]{uid});
+        }
+        SearchResponse searchresponse = srb.setQuery(query).addSort("_uid",SortOrder.DESC).setSize(pageSize).setFetchSource(
+                new String[] {"claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
+                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
+                        "plotName","year","parkRadio","subwayDistince","housePlotLocation"} ,null)
+                .execute().actionGet();
+        return searchresponse;
     }
 
 }
