@@ -76,4 +76,8 @@ public class NewHouseListResponse {
     private Integer newHouseFavorite;
 
 
+    /**
+     *总价
+     */
+    private Double  totalPrice;
 }

@@ -3,9 +3,13 @@ package com.toutiao.app.service.homepage.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageNewHouseDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
+import com.toutiao.web.service.newhouse.NewHouseService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -22,7 +26,15 @@ public class HomePageServiceImpl implements HomePageRestService {
     @Autowired
     private HomePageEsDao homePageEsDao;
 
+    @Autowired
+    private NewHouseRestService newHouseRestService;
 
+
+    /**
+     *
+     * @return
+     * 获取二手房5条
+     */
     @Override
     public List<HomePageEsfDo> getHomePageEsf() {
         Random random = new Random();
@@ -53,8 +65,23 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     }
 
+    /**
+     * 获取新房5条
+     * @return
+     */
 
-     private List hashPush(List<HomePageEsfDo> result ,  HomePageEsfDo homePageEsfDos ){
+    @Override
+    public NewHouseListDomain getHomePageNewHouse() {
+        NewHouseListDo  newHouseListDo=new NewHouseListDo();
+        newHouseListDo.setPageSize(5);
+        NewHouseListDomain newHouseListDomain =newHouseRestService.getNewHouseList(newHouseListDo);
+
+        return  newHouseListDomain;
+
+    }
+
+
+    private List hashPush(List<HomePageEsfDo> result ,  HomePageEsfDo homePageEsfDos ){
         Boolean flag = false;
         if(result.size()>0){
             for (int i = 0; i <result.size() ; i++) {
