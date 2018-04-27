@@ -56,7 +56,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
         BoolQueryBuilder booleanQueryBuilder = getBoolQueryBuilder(boolQueryBuilder, nearHouseDo);
         booleanQueryBuilder.must(location);
 
-        //设置基础分(录入优先展示)(录入:1,导入1/3)字段不存在时取0
+        //设置基础分(录入优先展示)(录入:1,导入1/3)
         FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("rentHouseTypeId")
                 .modifier(FieldValueFactorFunction.Modifier.RECIPROCAL).missing(10);
 

@@ -3,7 +3,6 @@ package com.toutiao.web.apiimpl.rest.rent;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponseList;
-import com.toutiao.app.api.chance.response.rent.RentDetailResponseList;
 import com.toutiao.app.domain.rent.NearHouseDo;
 import com.toutiao.app.domain.rent.RentDetailsDoList;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
