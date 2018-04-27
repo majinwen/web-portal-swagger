@@ -11,12 +11,4 @@ public class PlotDetailsRequest {
      */
     @NotNull(message = "缺少小区Id")
     private Integer plotId;
-    /**
-     * 出租类型(整租:1/合租:2)
-     */
-    private Integer rentType;
-    /**
-     * 当前页
-     */
-    private Integer pageNum=1;
 }
