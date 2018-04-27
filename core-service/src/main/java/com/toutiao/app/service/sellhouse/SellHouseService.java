@@ -25,15 +25,15 @@ public interface SellHouseService {
 
     /**
      * 条件查询二手房房源
-     * @param chooseSellHouseDo
+     * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getSellHouseByChoose(ChooseSellHouseDo chooseSellHouseDo);
+    SellHouseDomain getSellHouseByChoose(SellHouseQueryDo sellHouseQueryDo);
 
     /**
      * 查询二手房推荐房源
-     * @param chooseSellHouseDo
+     * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getRecommendSellHouse(ChooseSellHouseDo chooseSellHouseDo);
+    SellHouseDomain getRecommendSellHouse(SellHouseQueryDo sellHouseQueryDo);
 }

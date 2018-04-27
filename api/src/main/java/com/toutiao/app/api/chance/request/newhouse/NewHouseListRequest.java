@@ -1,11 +1,11 @@
 package com.toutiao.app.api.chance.request.newhouse;
 
-import com.toutiao.app.api.chance.request.QueryRequest;
+import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import lombok.Data;
 
 
 @Data
-public class NewHouseListRequest extends QueryRequest{
+public class NewHouseListRequest extends BaseQueryRequest {
 
     /**
      * 销售状态

@@ -5,7 +5,6 @@ import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
-
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
@@ -62,9 +61,9 @@ public class SellHouseRestController {
     @ResponseBody
     public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
-        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
-        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
-        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(chooseSellHouseDo);
+        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseQueryDo);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);
@@ -79,9 +78,9 @@ public class SellHouseRestController {
     @ResponseBody
     public NashResult getRecommendSellHouse(@Validated SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
-        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
-        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
-        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(chooseSellHouseDo);
+        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseQueryDo);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);

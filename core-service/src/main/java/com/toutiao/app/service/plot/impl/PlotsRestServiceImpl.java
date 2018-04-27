@@ -25,6 +25,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -236,53 +237,51 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(plotListDo.getBeginPrice()).lte(plotListDo.getEndPrice()));
         }
         //楼龄
-        if (StringTool.isNotEmpty(plotListDo.getAge())){
-            String[] age = plotListDo.getAge().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
+        if (StringTool.isNotEmpty(plotListDo.getHouseYearId())){
+            String[] age = plotListDo.getHouseYearId().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
             boolQueryBuilder.must(QueryBuilders.rangeQuery("age")
                     .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[1]))))
                     .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[0])))));
         }
         //标签
         if (StringTool.isNotEmpty(plotListDo.getLabelId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",plotListDo.getLabelId().split(",")));
+            Integer[] labelId = plotListDo.getLabelId();
+            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
         }
-        //物业类型
-        if (StringTool.isNotEmpty(plotListDo.getPropertyTypeId())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("propertyType",plotListDo.getPropertyTypeId()));
-        }
-        //房源面积大小
-        if ((StringTool.isNotEmpty(plotListDo.getHouseAreaSize()))){
-            BoolQueryBuilder QueryBuilder = QueryBuilders.boolQuery();
-            String[] houseSize = plotListDo.getHouseAreaSize().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
-            for (int i = 0; i < houseSize.length; i = i + 2) {
-                if (i + 1 > houseSize.length) {
-                    break;
-                }
-                BoolQueryBuilder areaSize = QueryBuilder.should(JoinQueryBuilders
-                        .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(houseSize[i]).lte(houseSize[i + 1]), ScoreMode.None));
-                boolQueryBuilder.must(areaSize);
-            }
 
+
+//        if ((StringTool.isNotEmpty(nearbyPlotsDoQuery.getHouseAreaSize()))){
+//            String[] houseArea = nearbyPlotsDoQuery.getHouseAreaSize().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
+//            BoolQueryBuilder QueryBuilder = QueryBuilders.boolQuery();
+//            for (int i = 0; i < houseArea.length; i = i + 2) {
+//                if (i + 1 > houseArea.length) {
+//                    break;
+//                }
+//                BoolQueryBuilder areaSize = QueryBuilder.should(JoinQueryBuilders
+//                        .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(houseArea[i]).lte(houseArea[i + 1]), ScoreMode.None));
+//                boolQueryBuilder.must(areaSize);
+//            }
+//
+//        }
+
+        //房源面积大小
+        if(plotListDo.getBeginArea()!=0 && plotListDo.getEndArea()!=0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+                    .gte(plotListDo.getBeginArea()).lte(plotListDo.getEndArea()), ScoreMode.None));
+
+        }else if(plotListDo.getBeginArea()!=0 && plotListDo.getEndArea()==0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+                    .gte(plotListDo.getBeginArea()), ScoreMode.None));
+        }else if(plotListDo.getBeginArea()==0 && plotListDo.getEndArea()!=0){
+
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+                    .lte(plotListDo.getEndArea()), ScoreMode.None));
         }
-        //电梯
-        if (StringTool.isNotEmpty(plotListDo.getElevatorFlag())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("elevator",plotListDo.getElevatorFlag().split(",")));
-        }
-        //建筑类型
-        if (StringTool.isNotEmpty(plotListDo.getBuildingType())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("architectureTypeId",plotListDo.getBuildingType().split(",")));
-        }
-        //楼盘特色
-        if (StringTool.isNotEmpty(plotListDo.getBuildingFeature())){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("villageCharacteristics",plotListDo.getBuildingFeature().split(",")));
-        }
+
         Integer from = 0;
         //分页起始位置
-        if (StringTool.isNotEmpty(plotListDo.getPageNum())&&plotListDo.getPageNum()>1&&StringTool.isNotEmpty(plotListDo.getSize())&&plotListDo.getSize()>0){
-            from = (plotListDo.getPageNum()-1)*plotListDo.getSize();
-        }
-        if (StringTool.isEmpty(plotListDo.getSize())||plotListDo.getSize()<1){
-            plotListDo.setSize(10);
+        if (StringTool.isNotEmpty(plotListDo.getPageNum())&&plotListDo.getPageNum()>1&&StringTool.isNotEmpty(plotListDo.getPageSize())&&plotListDo.getPageSize()>0){
+            from = (plotListDo.getPageNum()-1)*plotListDo.getPageSize();
         }
 
         //是否上架
@@ -297,7 +296,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区分数排序
         FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
 
-        SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotScoreSort,plotListDo.getSize());
+        SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotScoreSort,plotListDo.getPageSize());
         if (searchResponse!=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit:hits){
@@ -344,7 +343,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     plotDetailsFewDoList.add(plotDetailsFewDo);
                 }
 
-                plotListDo.setSize(10-hits.length);
+                plotListDo.setPageSize(10-hits.length);
                 List<PlotDetailsFewDo> plotDetailsFewDos = plotsRestService.queryPlotListByRequirement(plotListDo);
                 plotDetailsFewDoList.addAll(plotDetailsFewDos);
             }else if (hits.length==0){

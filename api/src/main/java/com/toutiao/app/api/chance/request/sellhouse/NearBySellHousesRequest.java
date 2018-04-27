@@ -1,13 +1,13 @@
 package com.toutiao.app.api.chance.request.sellhouse;
 
 
-import com.toutiao.app.api.chance.request.QueryRequest;
+import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NearBySellHousesRequest extends QueryRequest {
+public class NearBySellHousesRequest extends BaseQueryRequest {
 
     /**
      * y坐标
