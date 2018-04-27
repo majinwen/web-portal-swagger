@@ -11,6 +11,7 @@ import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +32,20 @@ public class PlotsEsfRestController {
 
     @RequestMapping("/getPlotsEsfList")
     @ResponseBody
-    public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
+    public InvokeResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
 
         Integer plotsId = plotsEsfRequest.getPlotsId();
         PlotsEsfRoomCountResponse plotsEsfRoomCountResponse = new PlotsEsfRoomCountResponse();
         PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId);
         BeanUtils.copyProperties(plotsEsfRoomCountDomain, plotsEsfRoomCountResponse);
-        return NashResult.build(plotsEsfRoomCountResponse);
+        return InvokeResult.build(plotsEsfRoomCountResponse);
     }
 
 
 
     @ResponseBody
     @RequestMapping(value = "/getEsfByPlotsIdAndRoom")
-    public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
+    public InvokeResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
 
         Integer plotsId = plotsEsfRequest.getPlotsId();
         Integer room = plotsEsfRequest.getRoom();
@@ -55,7 +56,7 @@ public class PlotsEsfRestController {
 
         List<PlotsEsfListResponse> plotsEsfListResponses = JSONObject.parseArray(json.toJSONString(),PlotsEsfListResponse.class);
 
-        return NashResult.build(plotsEsfListResponses);
+        return InvokeResult.build(plotsEsfListResponses);
     }
 
 

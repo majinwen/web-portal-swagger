@@ -13,6 +13,7 @@ import com.toutiao.app.domain.sellhouse.*;
 
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,32 +41,13 @@ public class SellHouseRestController {
      * @return
      */
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
-    public NashResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
+    public InvokeResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
         SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
         SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(houseId);
         BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
-        return NashResult.build(sellAndClaimDetailsResponse);
+        return InvokeResult.build(sellAndClaimDetailsResponse);
     }
 
-    /**
-     * 二手房附近5km列表
-     * @param nearBySellHousesRequest
-     * @return
-     */
-    @DeleteMapping
-    @RequestMapping("/getNearBySellHouses")
-    @ResponseBody
-    public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
-        NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
-        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
-        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
-        NearBySellHouseDomain  nearBySellHouseDomain =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
-        List<NearBySellHousesResponse> nearBySellHousesResponses=JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
-        nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
-        nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());
-        return NashResult.build(nearBySellHouseDomainResponse);
-    }
 
     /**
      * 认领二手房房源经纪人
@@ -74,28 +56,28 @@ public class SellHouseRestController {
      */
     @RequestMapping("/getAgentBySellHouseId")
     @ResponseBody
-    public NashResult getAgentBySellHouseId(@Validated AgentSellHouseRequest agentSellHouseRequest) {
+    public InvokeResult getAgentBySellHouseId(@Validated AgentSellHouseRequest agentSellHouseRequest) {
         AgentsBySellHouseResponse agentsBySellHouseResponse = new AgentsBySellHouseResponse();
         AgentsBySellHouseDo agentsBySellHouseDo = sellHouseService.getAgentByHouseId(agentSellHouseRequest.getHouseId());
         BeanUtils.copyProperties(agentsBySellHouseDo, agentsBySellHouseResponse);
-        return NashResult.build(agentsBySellHouseResponse);
+        return InvokeResult.build(agentsBySellHouseResponse);
     }
 
 
-    /**
-     *  二手房房源列表
-     * @param sellHouseRequest
-     * @return
-     */
-    @RequestMapping("/getSellHouseByChoose")
-    @ResponseBody
-    public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
-        ChooseSellHouseResponse chooseSellHouseResponse = new ChooseSellHouseResponse();
-        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
-        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
-        ChooseSellHouseDomain chooseSellHouseDomain= sellHouseService.getSellHouseByChoose(chooseSellHouseDo);
-        BeanUtils.copyProperties(chooseSellHouseDomain, chooseSellHouseResponse);
-        return NashResult.build(chooseSellHouseResponse);
-    }
+//    /**
+//     *  二手房房源列表
+//     * @param sellHouseRequest
+//     * @return
+//     */
+//    @RequestMapping("/getSellHouseByChoose")
+//    @ResponseBody
+//    public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+//        ChooseSellHouseResponse chooseSellHouseResponse = new ChooseSellHouseResponse();
+//        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
+//        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
+//        ChooseSellHouseDomain chooseSellHouseDomain= sellHouseService.getSellHouseByChoose(chooseSellHouseDo);
+//        BeanUtils.copyProperties(chooseSellHouseDomain, chooseSellHouseResponse);
+//        return NashResult.build(chooseSellHouseResponse);
+//    }
 
 }

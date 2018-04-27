@@ -6,146 +6,115 @@ import lombok.Data;
 public class ChooseSellHouseDo {
 
     /**
+     * /**
      * 关键字
      */
-    private String keyWord;
-    /**
-     * 房源id
-     */
-    private Integer houseId;
-    /**
-     * 房源面积
-     */
-    private String houseAreaSize;
+    private String keyword;
 
-    /**
-     * 室 数字
-     */
-    private String layoutId;
-
-    /**
-     * 朝向(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
-     */
-    private String houseOrientationId;
-
-    /**
-     * 房源总价 起始价
-     */
-    private String beginPrice;
-
-    /**
-     * 房源总价 结束价
-     */
-    private String endPrice;
-
-    /**
-     * 房源标签(满二)（1，2，3，4）
-     */
-    private String houseLabelId;
-
-    /**
-     * 房源所在层（高层/低层/中层）
-     */
-    private String houseFloorId;
-
-    /**
-     * 房源楼龄
-     */
-    private String houseYearId;
-
-    /**
-     * 房屋类型：普通住宅、经济适用房、公寓、安置房、四合院等（物业类型）
-     * （ 1：普通住宅，2：公寓，3：酒店式公寓，4：花园洋房，5：商住楼
-     */
-    private String propertyTypeId;
-
-    /**
-     * 产权性质(1:已购公房,2:商品房,3:空置房,4:使用权房,5:央产,6:经济适用房)（权属）
-     */
-    private String ownership;
-
-
-    /**
-     * 建筑类别：1：板楼，2：塔楼，3：板塔结合，4：砖楼 5：其他
-     */
-    private String buildingTypeId;
-
-    /**
-     * 房源小区名称
-     */
-    private String housePlotName;
-
-    /**
-     * 小区id
-     */
-    private String newCode;
-
-    /**
-     * 商圈名称
-     */
-    private String houseBusinessName;
 
     /**
      * 商圈id
      */
-    private String areaId;
+    private Integer areaId;
+
 
     /**
-     * 区域id
+     * 区域
      */
-    private String districtId;
+    private Integer districtId;
+
+
 
     /**
-     * 区域名称
+     * 地铁线Id
      */
-    private String area;
+    private Integer subwayLineId;
 
     /**
-     * 地铁线id
+     * 地铁站Id
      */
-    private String subwayLineId;
+    private Integer subwayStationId;
+
 
     /**
-     * 地铁站id
+     *   起始价格
      */
-    private String subwayStationId;
+
+    private Integer beginPrice;
 
     /**
-     * 经度
+     * 结束价格
      */
-    private double lat;
-    /**
-     * 维度
-     */
-    private double lon;
-    /**
-     * 是否有电梯
-     */
-    private String elevatorFlag;
-    /**
-     * 供暖
-     */
-    private Integer houseHeating;
+
+    private  Integer endPrice;
+
 
     /**
-     * 二手房id
+     * 面积起始值
      */
-    private Integer id;
+
+    private  Integer beginArea;
+
+
     /**
-     * 附近1,3,5km
-     *
+     * 面积结束值
      */
-    private String near ;
+    private  Integer endArea;
+
+
     /**
-     * 页码
+     * 楼龄[0-5]
      */
-    private Integer pageNum = 1;
+    private String houseYearId;
+
+
     /**
-     * 每页数量
+     * 居室id
      */
-    private Integer pageSize;
+    private  Integer [] layout;
+
+
     /**
-     * 排序  0--默认（按房源级别（广告优先））--1总价升排序--2总价降排序
+     * 朝向
      */
-    private Integer sort;
+    private  Integer []  forward;
+
+    /**
+     * 房屋标签
+     */
+    private  Integer [] houseLabelId;
+
+    /**
+     * 认领标识
+     */
+    private  Integer isClaim;
+
+
+    /**
+     * 地铁最近
+     */
+    private  String traffic;
+
+    /**
+     * 楼盘名称
+     */
+    private  String plotNameAccurate;
+
+
+    /**
+     * 区域
+     */
+
+    private  String area;
+
+    /**
+     * 商圈
+     */
+    private  String houseBusinessName;
+
+
+    /**
+     * 均价
+     */
+    private  Double houseUnitCost;
 }

@@ -36,5 +36,5 @@ public interface SellHouseService {
      * @param chooseSellHouseDo
      * @return
      */
-    ChooseSellHouseDomain getSellHouseByChoose(ChooseSellHouseDo chooseSellHouseDo);
+//    ChooseSellHouseDomain getSellHouseByChoose(ChooseSellHouseDo chooseSellHouseDo);
 }

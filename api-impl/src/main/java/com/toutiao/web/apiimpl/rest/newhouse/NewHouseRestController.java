@@ -8,6 +8,7 @@ import com.toutiao.app.api.chance.request.newhouse.NewHouseTrafficRequest;
 import com.toutiao.app.api.chance.response.newhouse.*;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,12 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@RequestParam(value = "newcode",required =true) Integer newcode)
+    public InvokeResult getNewHouseDetailByNewCode(@RequestParam(value = "newcode",required =true) Integer newcode)
     {
         NewHouseDetailResponse newHouseDetailResponse= new NewHouseDetailResponse();
         NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBulidByNewcode(newcode);
         BeanUtils.copyProperties(newHouseDetailDo,newHouseDetailResponse);
-        return NashResult.build(newHouseDetailResponse);
+        return InvokeResult.build(newHouseDetailResponse);
     }
 
 
@@ -41,7 +42,7 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
+    public  InvokeResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseListDo newHouseListDo=new NewHouseListDo();
@@ -51,7 +52,7 @@ public class NewHouseRestController {
         List<NewHouseListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHouseListResponse.class);
         newHouseListDomainResponse.setNewHouseList(newHouseListResponses);
         newHouseListDomainResponse.setTotalCount(newHouseListVo.getTotalCount());
-        return  NashResult.build(newHouseListDomainResponse);
+        return  InvokeResult.build(newHouseListDomainResponse);
     }
 
 
@@ -60,14 +61,14 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseDynamic",method = RequestMethod.GET)
-    public  NashResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
+    public  InvokeResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
     {
         NewHouseDynamicDo newHouseDynamicDo =new NewHouseDynamicDo();
         BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDo);
         List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseDynamicDoList));
          List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
-        return  NashResult.build(newHouseDynamicResponses);
+        return  InvokeResult.build(newHouseDynamicResponses);
     }
 
 
@@ -76,12 +77,12 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
-    public  NashResult getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest)
+    public  InvokeResult getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest)
     {
         NewHouseTrafficResponse newHouseTrafficResponse =new   NewHouseTrafficResponse();
         NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode());
         BeanUtils.copyProperties(newHouseTrafficDo,newHouseTrafficResponse);
-        return  NashResult.build(newHouseTrafficResponse);
+        return  InvokeResult.build(newHouseTrafficResponse);
     }
 
 

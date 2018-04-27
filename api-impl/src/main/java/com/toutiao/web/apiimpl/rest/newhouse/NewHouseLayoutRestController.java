@@ -11,6 +11,7 @@ import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,12 @@ public class NewHouseLayoutRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getLayoutCountByNewHouseId")
-    public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
+    public InvokeResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewHouseId();
         NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId);
         BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
-        return NashResult.build(newHouseLayoutCountResponse);
+        return InvokeResult.build(newHouseLayoutCountResponse);
     }
 
     /**
@@ -54,13 +55,13 @@ public class NewHouseLayoutRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getLayoutByNewHouseId")
-    public NashResult getNewHouseLayoutByNewCode (@Validated(First.class) NewHouseLayoutRequest newHouseLayoutRequest) {
+    public InvokeResult getNewHouseLayoutByNewCode (@Validated(First.class) NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewHouseId();
         Integer room = newHouseLayoutRequest.getRoom();
         List<NewHouseLayoutDo> newHouseLayoutDoList = newHouseLayoutService.getNewHouseLayoutList(newHouseId,room);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDoList));
         List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
-        return NashResult.build(newHouseLayoutResponses);
+        return InvokeResult.build(newHouseLayoutResponses);
     }
 
 }

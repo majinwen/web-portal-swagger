@@ -10,6 +10,7 @@ import com.toutiao.app.api.chance.response.sellhouse.NearBySellHousesResponse;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +35,17 @@ public class NearSellHouseRestController {
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
-    public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
+    public InvokeResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
 
         NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
         NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
         BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
         NearBySellHouseDomain nearBySellHouseDomain =  nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
-
-
-
         List<NearBySellHousesResponse> nearBySellHousesResponses= JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
         nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
         nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());
-        return NashResult.build(nearBySellHouseDomainResponse);
+        return InvokeResult.build(nearBySellHouseDomainResponse);
     }
 
 }
