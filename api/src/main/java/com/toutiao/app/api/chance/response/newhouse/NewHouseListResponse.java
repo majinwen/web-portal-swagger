@@ -80,4 +80,10 @@ public class NewHouseListResponse {
      *总价
      */
     private Double  totalPrice;
+
+
+    /**
+     * 类别
+     */
+    private  String propertyType;
 }
