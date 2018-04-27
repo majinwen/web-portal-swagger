@@ -678,5 +678,9 @@ public class BaseDetailResponse {
      * 公交线路
      */
     private String[] busLines;
+    /**
+     * 列表页总数
+     */
+    private Integer totalCount;
 
 }
