@@ -131,7 +131,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 //                .addAggregation(AggregationBuilders.terms("roomCount").field("room"));
 
         SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType).setQuery(booleanQueryBuilder)
-                .addAggregation(AggregationBuilders.terms("roomCount").field("layout"))
+                .addAggregation(AggregationBuilders.terms("roomCount").field("room"))
                 .execute().actionGet();
         return searchResponse;
     }

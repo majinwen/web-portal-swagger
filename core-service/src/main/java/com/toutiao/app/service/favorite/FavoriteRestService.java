@@ -1,6 +1,7 @@
 package com.toutiao.app.service.favorite;
 
 import com.toutiao.app.domain.favorite.*;
+import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.web.common.restmodel.NashResult;
 
 public interface FavoriteRestService {
@@ -69,5 +70,13 @@ public interface FavoriteRestService {
      * @return
      */
     Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo);
+
+
+    /**
+     * 获取小区收藏列表
+     * @param userId
+     * @return
+     */
+    PlotDetailsFewDomain getPlotFavoriteByUserId(Integer userId,Integer pageNum,Integer size);
 
 }

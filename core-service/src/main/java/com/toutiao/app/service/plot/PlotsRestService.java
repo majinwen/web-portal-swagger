@@ -2,10 +2,7 @@ package com.toutiao.app.service.plot;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.domain.plot.PlotDetailsDo;
-import com.toutiao.app.domain.plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.plot.PlotListDo;
-import com.toutiao.app.domain.plot.PlotTrafficDo;
+import com.toutiao.app.domain.plot.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -47,6 +44,15 @@ public interface PlotsRestService {
      * 获取交通配套
      */
     PlotTrafficDo queryPlotDataInfo(Integer plotId) throws InvocationTargetException, IllegalAccessException;
+
+    /**
+     * 小区收藏列表
+     * @param list
+     * @return
+     */
+    PlotDetailsFewDomain queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
+
+
 
 
 }

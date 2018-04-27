@@ -1,9 +1,10 @@
 package com.toutiao.app.service.favorite.impl;
 
 import com.toutiao.app.domain.favorite.*;
+import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.service.favorite.FavoriteRestService;
-import com.toutiao.app.service.newhouse.impl.NewHouseRestServiceImpl;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
@@ -13,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FavoriteRestServiceImpl implements FavoriteRestService {
@@ -31,7 +34,8 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Autowired
     private UserFavoriteVillageMapper userFavoriteVillageMapper;
 
-
+    @Autowired
+    private PlotsRestService plotsRestService;
 
     /**
      *
@@ -171,6 +175,13 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
             isFavorite = true;
         }
         return isFavorite;
+    }
+
+    @Override
+    public PlotDetailsFewDomain getPlotFavoriteByUserId(Integer userId,Integer pageNum,Integer size) {
+        List plotId = userFavoriteVillageMapper.getPlotFavoriteByUserId(userId);
+        PlotDetailsFewDomain plotDetailsFewDomain = plotsRestService.queryPlotListByPlotIdList(plotId, pageNum, size);
+        return plotDetailsFewDomain;
     }
 
     /**
