@@ -25,11 +25,11 @@ public class HomePageRestController {
 
     @RequestMapping(value = "getHomePageEsf",method = RequestMethod.GET)
     @ResponseBody
-    public InvokeResult getHomePageEsf()
+    public NashResult getHomePageEsf()
     {
        List<HomePageEsfDo> homePageEsfDos= homePageRestService.getHomePageEsf();
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageEsfDos));
         List<HomePageEsfResponse> homePageEsfResponseList= JSONObject.parseArray(json.toJSONString(),HomePageEsfResponse.class);
-        return  InvokeResult.build(homePageEsfResponseList);
+        return  NashResult.build(homePageEsfResponseList);
     }
 }

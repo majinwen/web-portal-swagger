@@ -40,12 +40,12 @@ public class NewHouseLayoutRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getLayoutCountByNewHouseId")
-    public InvokeResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
+    public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewHouseId();
         NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId);
         BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
-        return InvokeResult.build(newHouseLayoutCountResponse);
+        return NashResult.build(newHouseLayoutCountResponse);
     }
 
     /**
@@ -55,13 +55,13 @@ public class NewHouseLayoutRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getLayoutByNewHouseId")
-    public InvokeResult getNewHouseLayoutByNewCode (@Validated(First.class) NewHouseLayoutRequest newHouseLayoutRequest) {
+    public NashResult getNewHouseLayoutByNewCode (@Validated(First.class) NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewHouseId();
         Integer room = newHouseLayoutRequest.getRoom();
         List<NewHouseLayoutDo> newHouseLayoutDoList = newHouseLayoutService.getNewHouseLayoutList(newHouseId,room);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDoList));
         List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
-        return InvokeResult.build(newHouseLayoutResponses);
+        return NashResult.build(newHouseLayoutResponses);
     }
 
 }

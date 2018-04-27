@@ -34,13 +34,13 @@ public class NearbyPlotsRestController {
      */
     @RequestMapping("/getNearbyPlotsList")
     @ResponseBody
-    public InvokeResult getNearbyPlotsList(@Validated(First.class) NearbyPlotsListRequest nearbyPlotsListRequest) {
+    public NashResult getNearbyPlotsList(@Validated(First.class) NearbyPlotsListRequest nearbyPlotsListRequest) {
         NearbyPlotsListDo nearbyPlotsListDo = new NearbyPlotsListDo();
         BeanUtils.copyProperties(nearbyPlotsListRequest,nearbyPlotsListDo);
         PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsListDo);
         NearbyPlotsListResponse newHouseLayoutCountResponse = new NearbyPlotsListResponse();
         BeanUtils.copyProperties(plotDetailsFewDomain, newHouseLayoutCountResponse);
-        return InvokeResult.build(newHouseLayoutCountResponse);
+        return NashResult.build(newHouseLayoutCountResponse);
     }
 
 }

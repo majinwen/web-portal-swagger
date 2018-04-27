@@ -42,11 +42,11 @@ public class PlotsRestController {
      */
     @RequestMapping("/getPlotDetailByPlotId")
     @ResponseBody
-    public InvokeResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
+    public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
         PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
-        return InvokeResult.build(plotDetailsResponse);
+        return NashResult.build(plotDetailsResponse);
     }
 
     /**
@@ -56,11 +56,11 @@ public class PlotsRestController {
      */
     @RequestMapping("/getAroundPlotByLocation")
     @ResponseBody
-    public InvokeResult getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
+    public NashResult getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
         List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(), plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
-        return InvokeResult.build(plotDetailsFewResponseList);
+        return NashResult.build(plotDetailsFewResponseList);
     }
 
     /**
@@ -70,13 +70,13 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
-    public InvokeResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
+    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDo plotListDo = new PlotListDo();
         BeanUtils.copyProperties(plotListRequest,plotListDo);
         List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirement(plotListDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
-        return InvokeResult.build(plotDetailsFewResponseList);
+        return NashResult.build(plotDetailsFewResponseList);
     }
 
     /**
@@ -90,11 +90,11 @@ public class PlotsRestController {
 
     @RequestMapping(value = "/getAroundInfoByPlotId",method = RequestMethod.GET)
     @ResponseBody
-    public InvokeResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
+    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
         PlotTrafficResponse plotTrafficResponse=new PlotTrafficResponse();
         PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
         BeanUtils.copyProperties(plotTrafficDo,plotTrafficResponse);
-        return InvokeResult.build(plotTrafficResponse);
+        return NashResult.build(plotTrafficResponse);
     }
 
 

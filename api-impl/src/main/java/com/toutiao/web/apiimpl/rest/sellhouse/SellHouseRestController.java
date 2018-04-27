@@ -41,11 +41,11 @@ public class SellHouseRestController {
      * @return
      */
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
-    public InvokeResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
+    public NashResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
         SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
         SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(houseId);
         BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
-        return InvokeResult.build(sellAndClaimDetailsResponse);
+        return NashResult.build(sellAndClaimDetailsResponse);
     }
 
 
@@ -56,11 +56,11 @@ public class SellHouseRestController {
      */
     @RequestMapping("/getAgentBySellHouseId")
     @ResponseBody
-    public InvokeResult getAgentBySellHouseId(@Validated AgentSellHouseRequest agentSellHouseRequest) {
+    public NashResult getAgentBySellHouseId(@Validated AgentSellHouseRequest agentSellHouseRequest) {
         AgentsBySellHouseResponse agentsBySellHouseResponse = new AgentsBySellHouseResponse();
         AgentsBySellHouseDo agentsBySellHouseDo = sellHouseService.getAgentByHouseId(agentSellHouseRequest.getHouseId());
         BeanUtils.copyProperties(agentsBySellHouseDo, agentsBySellHouseResponse);
-        return InvokeResult.build(agentsBySellHouseResponse);
+        return NashResult.build(agentsBySellHouseResponse);
     }
 
 

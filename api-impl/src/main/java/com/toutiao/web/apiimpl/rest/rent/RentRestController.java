@@ -102,13 +102,13 @@ public class RentRestController {
      */
     @RequestMapping(value = "/getRentList",method = RequestMethod.GET)
     @ResponseBody
-    public InvokeResult getRentList(@Validated RentHouseRequest rentHouseRequest){
+    public NashResult getRentList(@Validated RentHouseRequest rentHouseRequest){
         NearHouseDo nearHouseDo = new NearHouseDo();
         BeanUtils.copyProperties(rentHouseRequest,nearHouseDo);
         RentDetailsDoList rentDetailsDoList = appRentRestService.getRentList(nearHouseDo);
         JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsDoList);
         RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject),RentListResponse.class);
-        return InvokeResult.build(rentListResponse);
+        return NashResult.build(rentListResponse);
     }
 
 
@@ -119,14 +119,14 @@ public class RentRestController {
      */
     @RequestMapping(value = "/getRecommendRent",method = RequestMethod.POST)
     @ResponseBody
-    public InvokeResult getRecommendRent(@Validated(First.class) @RequestBody  RentHouseRequest rentHouseRequest){
+    public NashResult getRecommendRent(@Validated(First.class) @RequestBody  RentHouseRequest rentHouseRequest){
 
         RentHouseDo rentHouseDo = new RentHouseDo();
         BeanUtils.copyProperties(rentHouseRequest,rentHouseDo);
         RentDetailsFewDo rentDetailsFewDo = appRentRestService.queryRecommendRent(rentHouseDo);
         RecommendRentResponse recommendRentResponse = new RecommendRentResponse();
         BeanUtils.copyProperties(rentDetailsFewDo,recommendRentResponse);
-        return InvokeResult.build(recommendRentResponse);
+        return NashResult.build(recommendRentResponse);
     }
 
 

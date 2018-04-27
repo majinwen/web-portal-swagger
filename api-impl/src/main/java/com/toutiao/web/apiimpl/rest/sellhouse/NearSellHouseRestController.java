@@ -35,7 +35,7 @@ public class NearSellHouseRestController {
      */
     @RequestMapping("/getNearBySellHouses")
     @ResponseBody
-    public InvokeResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
+    public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
 
         NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
         NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
@@ -45,7 +45,7 @@ public class NearSellHouseRestController {
         List<NearBySellHousesResponse> nearBySellHousesResponses= JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
         nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
         nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());
-        return InvokeResult.build(nearBySellHouseDomainResponse);
+        return NashResult.build(nearBySellHouseDomainResponse);
     }
 
 }

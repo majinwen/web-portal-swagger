@@ -32,20 +32,20 @@ public class PlotsEsfRestController {
 
     @RequestMapping("/getPlotsEsfList")
     @ResponseBody
-    public InvokeResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
+    public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
 
         Integer plotsId = plotsEsfRequest.getPlotsId();
         PlotsEsfRoomCountResponse plotsEsfRoomCountResponse = new PlotsEsfRoomCountResponse();
         PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId);
         BeanUtils.copyProperties(plotsEsfRoomCountDomain, plotsEsfRoomCountResponse);
-        return InvokeResult.build(plotsEsfRoomCountResponse);
+        return NashResult.build(plotsEsfRoomCountResponse);
     }
 
 
 
     @ResponseBody
     @RequestMapping(value = "/getEsfByPlotsIdAndRoom")
-    public InvokeResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
+    public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
 
         Integer plotsId = plotsEsfRequest.getPlotsId();
         Integer room = plotsEsfRequest.getRoom();
@@ -56,7 +56,7 @@ public class PlotsEsfRestController {
 
         List<PlotsEsfListResponse> plotsEsfListResponses = JSONObject.parseArray(json.toJSONString(),PlotsEsfListResponse.class);
 
-        return InvokeResult.build(plotsEsfListResponses);
+        return NashResult.build(plotsEsfListResponses);
     }
 
 
