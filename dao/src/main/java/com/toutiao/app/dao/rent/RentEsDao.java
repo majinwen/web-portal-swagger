@@ -60,4 +60,12 @@ public interface RentEsDao {
      */
     SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder,String uid);
 
+    /**
+     * 获取附近的出租房源
+     * @param query
+     * @param from
+     * @return
+     */
+    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from);
+
 }
