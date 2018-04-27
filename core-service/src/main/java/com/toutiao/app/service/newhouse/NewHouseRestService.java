@@ -1,5 +1,7 @@
 package com.toutiao.app.service.newhouse;
 
+
+
 import com.toutiao.app.domain.newhouse.*;
 
 import java.util.List;
@@ -7,31 +9,29 @@ import java.util.List;
 public interface NewHouseRestService {
 
     /**
-     * 根据newcode获取新房数据
-     * @param newcode
+     * 根据newCode获取新房数据
+     * @param newCode
      * @return
      */
-    NewHouseDetailDo getNewHouseBulidByNewcode(Integer newcode);
-
+    NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode);
 
 
     /**
      * 新房列表
-     * @param newHouseListDo
+     * @param newHouseQueryDo
      * @return
      */
-    NewHouseListDomain getNewHouseList(NewHouseListDo newHouseListDo);
+    NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseQueryDo);
 
     /**
      *  新房动态
      */
-    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDo newHouseDynamicDo);
+    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery);
 
 
     /**
      * 新房交通配套
      */
-
-      NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode);
+    NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode);
 
 }

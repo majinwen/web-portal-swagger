@@ -4,7 +4,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class QueryRequest {
+public class BaseQueryRequest {
 
     /**
      * 起始价格
@@ -79,7 +79,7 @@ public class QueryRequest {
     /**
      * 页码
      */
-    @NotNull(message = "缺少页码")
+//    @NotNull(message = "缺少页码")
     private Integer pageNum = 1;
 
     /**
@@ -91,7 +91,7 @@ public class QueryRequest {
     /**
      *
      */
-    @NotNull(message = "缺少城市id")
+//    @NotNull(message = "缺少城市id")
     private  Integer cityId;
 
 

@@ -15,6 +15,7 @@ import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.plot.PlotListDo;
 import com.toutiao.app.domain.plot.PlotTrafficDo;
 import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

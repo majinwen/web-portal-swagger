@@ -27,10 +27,10 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@RequestParam(value = "newcode",required =true) Integer newcode)
+    public NashResult getNewHouseDetailByNewCode(@RequestParam(value = "newCode",required =true) Integer newCode)
     {
         NewHouseDetailResponse newHouseDetailResponse= new NewHouseDetailResponse();
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBulidByNewcode(newcode);
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newCode);
         BeanUtils.copyProperties(newHouseDetailDo,newHouseDetailResponse);
         return NashResult.build(newHouseDetailResponse);
     }
@@ -44,9 +44,9 @@ public class NewHouseRestController {
     public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-        NewHouseListDo newHouseListDo=new NewHouseListDo();
-        BeanUtils.copyProperties(newHouseListRequest,newHouseListDo);
-        NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseListDo);
+        NewHouseDoQuery newHouseDoQuery=new NewHouseDoQuery();
+        BeanUtils.copyProperties(newHouseListRequest,newHouseDoQuery);
+        NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseDoQuery);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
         List<NewHouseListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHouseListResponse.class);
         newHouseListDomainResponse.setNewHouseList(newHouseListResponses);
@@ -62,11 +62,11 @@ public class NewHouseRestController {
     @RequestMapping(value = "/getNewHouseDynamic",method = RequestMethod.GET)
     public  NashResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
     {
-        NewHouseDynamicDo newHouseDynamicDo =new NewHouseDynamicDo();
-        BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDo);
-        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDo);
+        NewHouseDynamicDoQuery newHouseDynamicDoQuery =new NewHouseDynamicDoQuery();
+        BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDoQuery);
+        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseDynamicDoList));
-         List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
+        List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
         return  NashResult.build(newHouseDynamicResponses);
     }
 

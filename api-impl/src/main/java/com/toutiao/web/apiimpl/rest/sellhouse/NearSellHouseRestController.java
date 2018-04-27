@@ -10,6 +10,7 @@ import com.toutiao.app.api.chance.response.sellhouse.NearBySellHousesResponse;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

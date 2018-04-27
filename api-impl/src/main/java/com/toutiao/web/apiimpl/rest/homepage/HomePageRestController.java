@@ -10,6 +10,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
+import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
