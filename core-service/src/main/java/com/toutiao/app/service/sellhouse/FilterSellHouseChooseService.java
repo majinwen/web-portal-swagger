@@ -1,5 +1,6 @@
 package com.toutiao.app.service.sellhouse;
 
+import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.domain.sellhouse.SellHouseQueryDo;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -14,7 +15,7 @@ public interface FilterSellHouseChooseService {
      * @param nearBySellHousesDo
      * @return
      */
-    BoolQueryBuilder filterChoose(NearBySellHousesDo nearBySellHousesDo);
+    BoolQueryBuilder filterChoose(NearBySellHouseQueryDo nearBySellHouseQueryDo);
 
     /**
      * 关键字分词
