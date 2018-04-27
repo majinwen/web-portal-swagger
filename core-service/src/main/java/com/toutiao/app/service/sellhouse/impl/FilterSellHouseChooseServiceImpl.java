@@ -89,9 +89,34 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                     .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHousesDo.getBeginPrice()).lte(nearBySellHousesDo.getEndPrice())));
 
         }
+        //总价
+        if(StringTool.isNotEmpty(nearBySellHousesDo.getBeginPrice()) && StringTool.isNotEmpty(nearBySellHousesDo.getEndPrice()))
+        {
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHousesDo.getBeginPrice()).lte(nearBySellHousesDo.getEndPrice()));
+            booleanQueryBuilder.must(booleanQueryBuilder);
+        }else if (nearBySellHousesDo.getBeginPrice()==null && nearBySellHousesDo.getEndPrice()!=0)
+        {
+            nearBySellHousesDo.setBeginPrice(0.0);
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHousesDo.getBeginPrice()).lte(nearBySellHousesDo.getEndPrice()));
+            booleanQueryBuilder.must(booleanQueryBuilder);
+        }else if(nearBySellHousesDo.getEndPrice()==null && nearBySellHousesDo.getBeginPrice()!=0)
+        {
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHousesDo.getBeginPrice()));
+        }
+
         //面积
         if (StringTool.isNotEmpty(nearBySellHousesDo.getBeginArea()) && StringTool.isNotEmpty(nearBySellHousesDo.getEndArea())) {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHousesDo.getBeginArea()).lte(nearBySellHousesDo.getEndArea()));
+            booleanQueryBuilder.must(booleanQueryBuilder);
+        }else if(nearBySellHousesDo.getBeginArea()==null && nearBySellHousesDo.getEndArea()!=0)
+        {
+            nearBySellHousesDo.setBeginArea(0.0);
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHousesDo.getBeginArea()).lte(nearBySellHousesDo.getEndArea()));
+            booleanQueryBuilder.must(booleanQueryBuilder);
+        }
+        else if(nearBySellHousesDo.getEndArea()==null && nearBySellHousesDo.getBeginArea()!=0)
+        {
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHousesDo.getBeginArea()));
             booleanQueryBuilder.must(booleanQueryBuilder);
         }
         //楼龄

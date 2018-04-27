@@ -146,8 +146,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseListDo.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseListDo.getBeginPrice()!=null && newHouseListDo.getEndPrice()!=0){
+        if(newHouseListDo.getBeginPrice()!=null && newHouseListDo.getEndPrice()!=null){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getBeginPrice()).lte(newHouseListDo.getEndPrice())));
+        }else if (newHouseListDo.getBeginPrice()==null && newHouseListDo.getEndPrice()!=0)
+        {        newHouseListDo.setBeginPrice(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getBeginPrice()).lte(newHouseListDo.getEndPrice())));
+        }else if (newHouseListDo.getEndPrice()==null &&  newHouseListDo.getBeginPrice()!=0)
+        {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getBeginPrice())));
         }
 
         //标签
@@ -167,12 +173,20 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //面积
-        if(newHouseListDo.getBeginArea()!=null &&  newHouseListDo.getEndArea()!=0)
+        if(newHouseListDo.getBeginArea()!=null &&  newHouseListDo.getEndArea()!=null)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getBeginArea())));
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getEndArea())));
-        }
+        }else if(newHouseListDo.getBeginArea()==null && newHouseListDo.getEndArea()!=0)
+        {
+            newHouseListDo.setBeginArea(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getEndArea())));
 
+        }else if (newHouseListDo.getEndArea()==null && newHouseListDo.getBeginArea()!=0)
+        {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getBeginArea())));
+        }
 
         //销售状态
         if(StringTool.isNotEmpty(newHouseListDo.getSaleStatusId())){

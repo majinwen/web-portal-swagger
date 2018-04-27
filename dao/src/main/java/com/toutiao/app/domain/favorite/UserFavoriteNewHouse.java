@@ -18,7 +18,7 @@ public class UserFavoriteNewHouse {
     /**
      * 新房id
      */
-    private Integer newHouseId;
+    private Integer newCode;
 
     /**
      * 创建时间
