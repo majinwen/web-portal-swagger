@@ -3,6 +3,7 @@ package com.toutiao.app.dao.rent;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,5 +42,13 @@ public interface RentEsDao {
      * @return
      */
     SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder);
+
+    /**
+     * 查询5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
+     * @param query
+     * @param from
+     * @return
+     */
+    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from);
 
 }

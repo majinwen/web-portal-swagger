@@ -186,7 +186,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         if (hits.length>0&&hits.length<10){
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-            nearHouseDo.setRentHouseType(3);
+//            nearHouseDo.setRentHouseType(3);
             long From = ((nearHouseDo.getPageNum() - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse response = rentEsDao.queryNearHouseByLocation(getBoolQueryBuilder(booleanQueryBuilder,nearHouseDo), location, sort, (int) From,size-hits.length);
             SearchHit[] hits1 = response.getHits().getHits();
@@ -200,7 +200,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
         }else if (hits.length==0){
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-            nearHouseDo.setRentHouseType(3);
+//            nearHouseDo.setRentHouseType(3);
             long From = ((nearHouseDo.getPageNum() - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse response = rentEsDao.queryNearHouseByLocation(getBoolQueryBuilder(booleanQueryBuilder,nearHouseDo), location, sort, (int) From,size);
             SearchHit[] hits1 = response.getHits().getHits();
@@ -312,7 +312,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             String[] split = nearHouseDo.getTags().split(",");
             boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", split));
         }
-        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",nearHouseDo.getRentHouseType()));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",nearHouseDo.getRentHouseType()));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
         return boolQueryBuilder;

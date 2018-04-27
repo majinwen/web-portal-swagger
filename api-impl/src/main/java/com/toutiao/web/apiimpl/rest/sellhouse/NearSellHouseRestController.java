@@ -41,9 +41,6 @@ public class NearSellHouseRestController {
         BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
         NearBySellHouseDomain nearBySellHouseDomain =  nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
-
-
-
         List<NearBySellHousesResponse> nearBySellHousesResponses= JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
         nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
         nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());

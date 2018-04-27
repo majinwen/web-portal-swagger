@@ -8,6 +8,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,14 @@ public class RentEsDaoImpl implements RentEsDao {
                 .addAggregation(AggregationBuilders.filter("ZHENGZU", QueryBuilders.termQuery("rent_type", ZHENGZU)))
                 .addAggregation(AggregationBuilders.filter("HEZU", QueryBuilders.termQuery("rent_type", HEZU)))
                 .execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(query).setFrom(from).execute().actionGet();
         return searchResponse;
     }
 }
