@@ -5,8 +5,11 @@ import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
 import com.toutiao.app.domain.homepage.HomePageNewHouseDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.domain.query.ProjHouseInfoResponse;
+import com.toutiao.web.service.newhouse.NewHouseService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -22,6 +25,9 @@ import java.util.Random;
 public class HomePageServiceImpl implements HomePageRestService {
     @Autowired
     private HomePageEsDao homePageEsDao;
+
+    @Autowired
+    private NewHouseRestService newHouseRestService;
 
 
     /**
@@ -65,7 +71,12 @@ public class HomePageServiceImpl implements HomePageRestService {
      */
 
     @Override
-    public List<HomePageNewHouseDo> getHomePageNewHouse() {
+    public NewHouseListDomain getHomePageNewHouse() {
+        NewHouseListDo  newHouseListDo=new NewHouseListDo();
+        newHouseListDo.setPageSize(5);
+        NewHouseListDomain newHouseListDomain =newHouseRestService.getNewHouseList(newHouseListDo);
+
+        return  newHouseListDomain;
 
     }
 

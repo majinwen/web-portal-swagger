@@ -150,7 +150,7 @@ public class NewHouseListDo {
     /**
      * 均价
      */
-    private  String average_price;
+    private  String averagePrice;
 
 
     /**
@@ -163,6 +163,18 @@ public class NewHouseListDo {
      * 新房收藏数量
      */
     private Integer newHouseFavorite;
+
+
+    /**
+     * 总价
+     */
+    private Double  totalPrice;
+
+
+    /**
+     * 标签
+     */
+    private  String []  buildingTags;
 
 
 }
