@@ -14,7 +14,7 @@ public class HomePageEsfResponse {
     /**
      *房源标题
      */
-    private  String houseTitle;
+    private  String claimHouseTitle;
 
     /**
      * 区域
@@ -49,8 +49,8 @@ public class HomePageEsfResponse {
     /**
      * 标签
      */
-    private  String [] tagsName;
 
+    private  String [] claimTagsName;
 
     /**
      * 面积
@@ -61,7 +61,7 @@ public class HomePageEsfResponse {
     /**
      * 房源id
      */
-    private  String houseId;
+    private  String claimHouseId;
 
 
     /**
@@ -79,4 +79,9 @@ public class HomePageEsfResponse {
      * 单价
      */
     private  Double houseUnitCost;
+
+    /**
+     * 标题图
+     */
+    private  String claimHousePhotoTitle;
 }

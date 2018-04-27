@@ -31,6 +31,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
         boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("is_claim","1"));
         SearchResponse searchResponse= homePageEsDao.getHomePageEsf(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
         for(SearchHit hit : hits)
@@ -45,26 +46,26 @@ public class HomePageServiceImpl implements HomePageRestService {
         {
             while (result.size()<5)
             {
-                result=hashPush(result,homePageEsfDos.get(random.nextInt(20));
+                result=hashPush(result,homePageEsfDos.get(random.nextInt(20)));
             }
         }
-
+        return  result;
 
     }
 
 
-     private List hashPush(List<HomePageEsfDo> result ,  List<HomePageEsfDo> homePageEsfDos ){
+     private List hashPush(List<HomePageEsfDo> result ,  HomePageEsfDo homePageEsfDos ){
         Boolean flag = false;
-        if(homePageEsfDos.size()>0){
-            for (int i = 0; i <homePageEsfDos.size() ; i++) {
-                if (result.get(i).getHouseId().equals(homePageEsfDos.get(i).getHouseId())){
+        if(result.size()>0){
+            for (int i = 0; i <result.size() ; i++) {
+                if (result.get(i).getClaimHouseId().equals(homePageEsfDos.getClaimHouseId())){
                     flag = true;
                 }
             }
         }
         if(!flag){
-            result.add();
+            result.add(homePageEsfDos);
         }
-        return list;
+        return result;
     }
 }

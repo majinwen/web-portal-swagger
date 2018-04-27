@@ -13,7 +13,7 @@ public class HomePageEsfDo {
     /**
      *房源标题
      */
-    private  String houseTitle;
+    private  String claimHouseTitle;
 
     /**
      * 区域
@@ -48,7 +48,7 @@ public class HomePageEsfDo {
     /**
      * 标签
      */
-    private  String [] tagsName;
+    private  String [] claimTagsName;
 
 
     /**
@@ -60,7 +60,7 @@ public class HomePageEsfDo {
     /**
      * 房源id
      */
-    private  String houseId;
+    private  String claimHouseId;
 
 
     /**
@@ -83,4 +83,10 @@ public class HomePageEsfDo {
      * 城市id
      */
     private Integer cityId;
+
+
+    /**
+     *标题图
+     */
+    private  String claimHousePhotoTitle;
 }

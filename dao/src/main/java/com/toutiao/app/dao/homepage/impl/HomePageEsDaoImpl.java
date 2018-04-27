@@ -27,7 +27,7 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
         try{
             TransportClient client = esClientTools.init();
             SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            srb.addSort("sortingScore", SortOrder.DESC);
+             srb.addSort("sortingScore", SortOrder.DESC);
              searchResponse = srb.setQuery(boolQueryBuilder).setSize(20).execute().actionGet();
             return searchResponse;
         }catch (Exception e) {
