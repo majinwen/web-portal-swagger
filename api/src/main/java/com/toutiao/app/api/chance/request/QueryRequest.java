@@ -1,18 +1,20 @@
 package com.toutiao.app.api.chance.request;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class QueryRequest {
 
     /**
      * 起始价格
      */
-    private  double beginPrice;
+    private  Double beginPrice;
 
     /**
      * 结束价格
      */
-    private double endPrice;
+    private Double endPrice;
 
 
     /**
@@ -77,7 +79,7 @@ public class QueryRequest {
     /**
      * 页码
      */
-
+    @NotNull(message = "缺少页码")
     private Integer pageNum = 1;
 
     /**
@@ -85,6 +87,12 @@ public class QueryRequest {
      */
     private Integer pageSize=10;
 
+
+    /**
+     *
+     */
+    @NotNull(message = "缺少城市id")
+    private  Integer cityId;
 
 
 }

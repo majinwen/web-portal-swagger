@@ -113,23 +113,23 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }
         }
         //户型(室)
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getLayout())) {
-            Integer[] longs = nearBySellHousesDo.getLayout();
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getLayoutId())) {
+            Integer[] longs = nearBySellHousesDo.getLayoutId();
 //            booleanQueryBuilder.must();
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room",longs)));
         }
 
 
         //朝向
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getForward())) {
-            Integer[] longs =nearBySellHousesDo.getForward();
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getForwardId())) {
+            Integer[] longs =nearBySellHousesDo.getForwardId();
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("forward",longs)));
         }
 
 
         //标签(满二，满三，满五)
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLabelId())) {
-            Integer[] longs = nearBySellHousesDo.getHouseLabelId();
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getLabelId())) {
+            Integer[] longs = nearBySellHousesDo.getLabelId();
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("tags",longs)));
         }
 

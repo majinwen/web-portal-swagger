@@ -6,12 +6,12 @@ public class QueryDo {
     /**
      * 起始价格
      */
-    private  double beginPrice;
+    private  Double beginPrice;
 
     /**
      * 结束价格
      */
-    private double endPrice;
+    private Double endPrice;
 
 
     /**
@@ -84,4 +84,9 @@ public class QueryDo {
      */
     private Integer pageSize=10;
 
+    /**
+     * 城市id
+     */
+
+    private  Integer cityId;
 }
