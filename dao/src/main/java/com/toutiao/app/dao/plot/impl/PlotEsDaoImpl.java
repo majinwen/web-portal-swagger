@@ -5,6 +5,7 @@ import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -60,6 +61,14 @@ public class PlotEsDaoImpl implements PlotEsDao {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryPlotListByPlotIdList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType).setSearchType(SearchType.QUERY_THEN_FETCH);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 

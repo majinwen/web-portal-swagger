@@ -122,4 +122,8 @@
         SELECT COUNT(1) FROM user_favorite_village
         WHERE village_id = #{plotId} AND user_id = #{userId} AND is_del = 0
     </select>
+  <select id="getPlotFavoriteByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    SELECT DISTINCT village_id FROM user_favorite_village
+    WHERE user_id = #{userId} AND is_del = 0
+  </select>
 </mapper>

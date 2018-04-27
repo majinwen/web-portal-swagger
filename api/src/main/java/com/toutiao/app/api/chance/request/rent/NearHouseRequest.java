@@ -81,8 +81,5 @@ public class NearHouseRequest {
      * 城市id
      */
     private Integer cityId = 12;
-    /**
-     * 导入:3/录入:1
-     */
-    private Integer rentHouseType = 1;
+
 }

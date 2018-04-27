@@ -46,6 +46,13 @@ public interface PlotEsDao {
     SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,FieldSortBuilder scoreSort,FieldSortBuilder plotScoreSort,Integer size);
 
 
-
+    /**
+     * 获取小区收藏列表
+     * @param boolQueryBuilder
+     * @param from
+     * @param size
+     * @return
+     */
+    SearchResponse queryPlotListByPlotIdList(BoolQueryBuilder boolQueryBuilder,Integer from,Integer size);
 
 }

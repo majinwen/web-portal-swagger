@@ -8,6 +8,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -87,6 +88,14 @@ public class RentEsDaoImpl implements RentEsDao {
                 .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
                         "district_name","area_name","zufang_name","rent_house_tags_name","house_title_img"},null).execute().actionGet();
 
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(query).setFrom(from).execute().actionGet();
         return searchResponse;
     }
 }

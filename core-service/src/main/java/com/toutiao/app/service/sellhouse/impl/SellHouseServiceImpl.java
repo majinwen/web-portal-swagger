@@ -63,6 +63,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      * 附近房源列表列表
      * @return
      */
+    @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
@@ -77,7 +78,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation").point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon()).distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS);
         //按照距离排序由近到远并获取小区之间的距离
         GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon());
-        sort.unit(DistanceUnit.METERS);
+        sort.unit(DistanceUnit.KILOMETERS);
         sort.order(SortOrder.ASC);
         Integer size = 10;
         Integer pageNum=nearBySellHousesDo.getPageNum();

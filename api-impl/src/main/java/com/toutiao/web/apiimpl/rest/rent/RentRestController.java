@@ -42,32 +42,6 @@ public class RentRestController {
     }
 
     /**
-     * 查询小区下出租房
-     * @param plotDetailsRequest
-     * @return
-     */
-    @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
-    public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId(),plotDetailsRequest.getRentType(),plotDetailsRequest.getPageNum());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
-        List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
-        return NashResult.build(rentDetailFewResponses);
-    }
-
-    /**
-     * 查询小区下出租房的个数
-     * @param plotId
-     * @return
-     */
-    @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
-    public NashResult getRentNumByPlotId(@RequestParam(value = "plotId",required =true) Integer plotId){
-        RentNumListResponse rentNumResponses = new RentNumListResponse();
-        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId);
-        BeanUtils.copyProperties(rentNumListDo,rentNumResponses);
-        return NashResult.build(rentNumResponses);
-    }
-
-    /**
      * 根据id获取该出租房源对应的经纪人
      * @param rentDetailsRequest
      * @return

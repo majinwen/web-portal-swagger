@@ -1,7 +1,9 @@
 package com.toutiao.app.domain.favorite;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class UserFavoriteVillage {
     /**
      * 收藏小区id
@@ -28,43 +30,5 @@ public class UserFavoriteVillage {
      */
     private Short isDel;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getVillageId() {
-        return villageId;
-    }
-
-    public void setVillageId(Integer villageId) {
-        this.villageId = villageId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Short getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Short isDel) {
-        this.isDel = isDel;
-    }
 }

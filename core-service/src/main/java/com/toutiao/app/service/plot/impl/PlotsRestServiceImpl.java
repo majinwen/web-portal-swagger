@@ -3,10 +3,7 @@ package com.toutiao.app.service.plot.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
-import com.toutiao.app.domain.plot.PlotDetailsDo;
-import com.toutiao.app.domain.plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.plot.PlotListDo;
-import com.toutiao.app.domain.plot.PlotTrafficDo;
+import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
 
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
@@ -136,6 +133,31 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotTrafficDo.setRingRoadDistance(Double.valueOf(plotDetailsDo.getRingRoadDistance().toString()));
             }
             return plotTrafficDo;
+    }
+
+    /**
+     * 小区收藏列表
+     * @param list
+     * @return
+     */
+    @Override
+    public PlotDetailsFewDomain queryPlotListByPlotIdList(List list, Integer pageNum , Integer size) {
+        PlotDetailsFewDomain plotDetailsFewDomain = new PlotDetailsFewDomain();
+        List<PlotDetailsFewDo> list1 = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termsQuery("id",list));
+        SearchResponse searchResponse = plotEsDao.queryPlotListByPlotIdList(boolQueryBuilder, (pageNum-1)*size, size);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
+                list1.add(plotDetailsFewDo);
+            }
+            plotDetailsFewDomain.setNearbyPlots(list1);
+            plotDetailsFewDomain.setTotals(searchResponse.getHits().getTotalHits());
+        }
+        return plotDetailsFewDomain;
     }
 
     /**

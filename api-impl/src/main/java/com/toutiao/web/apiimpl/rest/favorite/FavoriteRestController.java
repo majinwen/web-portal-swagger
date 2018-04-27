@@ -3,7 +3,9 @@ package com.toutiao.web.apiimpl.rest.favorite;
 
 import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
+import com.toutiao.app.api.chance.response.plot.NearbyPlotsListResponse;
 import com.toutiao.app.domain.favorite.*;
+import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
@@ -155,6 +157,19 @@ public class FavoriteRestController {
         BeanUtils.copyProperties(newHouseIsFavoriteResquest,newHouseIsFavoriteDo);
         Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDo);
         return NashResult.build(newHouseIsFavorite);
+    }
+
+    /**
+     * 小区收藏列表
+     * @param plotsFavoriteListRequest
+     * @return
+     */
+    @RequestMapping(value = "/getPlotFavoriteByUserId",method = RequestMethod.GET)
+    public NashResult getPlotFavoriteByUserId(PlotsFavoriteListRequest plotsFavoriteListRequest){
+        NearbyPlotsListResponse nearbyPlotsListResponse = new NearbyPlotsListResponse();
+        PlotDetailsFewDomain plotFavoriteByUser = favoriteRestService.getPlotFavoriteByUserId(plotsFavoriteListRequest.getUserId(),plotsFavoriteListRequest.getPageNum(),plotsFavoriteListRequest.getSize());
+        BeanUtils.copyProperties(plotFavoriteByUser,nearbyPlotsListResponse);
+        return NashResult.build(nearbyPlotsListResponse);
     }
 
 }
