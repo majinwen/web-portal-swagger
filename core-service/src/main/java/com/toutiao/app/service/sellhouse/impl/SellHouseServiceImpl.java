@@ -422,20 +422,20 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
 
         //户型(室)
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getLayout())) {
-            Integer[] layoutId =nearBySellHousesDo.getLayout();
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getLayoutId())) {
+            Integer[] layoutId =nearBySellHousesDo.getLayoutId();
             booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
         }
 
         //朝向
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getForward())) {
-            Integer [] forward =nearBySellHousesDo.getForward();
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getForwardId())) {
+            Integer [] forward =nearBySellHousesDo.getForwardId();
             booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", forward));
         }
 
         //标签(满二，满三，满五)
-        if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLabelId())) {
-            Integer[] houseLabelId = nearBySellHousesDo.getHouseLabelId();
+        if (StringTool.isNotEmpty(nearBySellHousesDo.getLabelId())) {
+            Integer[] houseLabelId = nearBySellHousesDo.getLabelId();
             booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", houseLabelId));
         }
 

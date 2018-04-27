@@ -1,20 +1,10 @@
 package com.toutiao.app.domain.newhouse;
 
+import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
-public class NewHouseListDo {
-
-
-    /**
-     * 最小面积
-     */
-    private Double houseMinArea;
-
-    /**
-     * 最大面积
-     */
-    private  Double houseMaxArea;
+public class NewHouseListDo extends QueryDo {
 
     /**
      * 楼盘名称
@@ -60,78 +50,6 @@ public class NewHouseListDo {
      */
      private String parkRadio;
 
-    /**
-     * 最小价格
-     */
-
-    private  Double minPrice;
-
-    /**
-     *最大价格
-     */
-    private  Double maxPrice;
-
-    /**
-     * 页码
-     */
-    private Integer pageNum = 1;
-
-
-    /**
-     *
-     * 居室
-     */
-    private  Integer[] layout;
-
-
-    /**
-     * 标签
-     */
-    private  Integer [] labelId;
-
-
-    /**
-     *
-     * 区域
-     */
-    private Integer districtId;
-
-
-    /**
-     * 商圈id
-     */
-    private Integer areaId;
-
-
-    /**
-     * /**
-     * 关键字
-     */
-    private String keyword;
-
-    /**
-     *
-     * 城市id
-     */
-    private Integer cityId;
-
-
-    /**
-     * 地铁线Id
-     */
-    private Integer  subwayLineId;
-
-
-    /**
-     * 地铁站Id
-     */
-    private Integer subwayStationId;
-
-
-    /**
-     * 每页数量
-     */
-    private Integer pageSize=10;
 
     /**
      * y坐标
@@ -150,7 +68,7 @@ public class NewHouseListDo {
     /**
      * 均价
      */
-    private  String average_price;
+    private  String averagePrice;
 
 
     /**
@@ -163,6 +81,30 @@ public class NewHouseListDo {
      * 新房收藏数量
      */
     private Integer newHouseFavorite;
+
+
+    /**
+     * 总价
+     */
+    private Double  totalPrice;
+
+
+    /**
+     * 标签
+     */
+    private  String []  buildingTags;
+
+
+    /**
+     * 销售状态
+     */
+    private  Integer saleStatusId;
+
+
+    /**
+     * 类别
+     */
+    private  String propertyType;
 
 
 }

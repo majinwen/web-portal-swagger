@@ -44,11 +44,20 @@ public interface RentEsDao {
     SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder);
 
     /**
-     * 查询5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
-     * @param query
+     * 获取租房推荐列表
+     * @param boolQueryBuilder
      * @param from
+     * @param size
      * @return
      */
-    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from);
+    SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder,Integer from, Integer size);
+
+    /**
+     * 获取推优房源
+     * @param boolQueryBuilder
+     * @param uid
+     * @return
+     */
+    SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder,String uid);
 
 }

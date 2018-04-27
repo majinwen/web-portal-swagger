@@ -11,6 +11,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,6 +60,34 @@ public class RentEsDaoImpl implements RentEsDao {
                 .addAggregation(AggregationBuilders.filter("ZHENGZU", QueryBuilders.termQuery("rent_type", ZHENGZU)))
                 .addAggregation(AggregationBuilders.filter("HEZU", QueryBuilders.termQuery("rent_type", HEZU)))
                 .execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).setSize(size)
+                .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
+                        "district_name","area_name","zufang_name","rent_house_tags_name","house_title_img"},null).execute().actionGet();
+
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder, String uid) {
+
+        TransportClient client = esClientTools.init();
+
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        if(!uid.equals("0")){
+            searchRequestBuilder.searchAfter(new String[]{uid});
+        }
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("_uid", SortOrder.DESC).setSize(1)
+                .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
+                        "district_name","area_name","zufang_name","rent_house_tags_name","house_title_img"},null).execute().actionGet();
+
         return searchResponse;
     }
 
