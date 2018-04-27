@@ -10,6 +10,7 @@ import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -174,8 +175,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
 
         //销售状态
-        if(StringUtil.isNotNullString(newHouseListDo.getSaleStatusName())){
-            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseListDo.getSaleStatusName()));
+        if(StringTool.isNotEmpty(newHouseListDo.getSaleStatusId())){
+            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseListDo.getSaleStatusId()));
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }

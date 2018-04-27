@@ -95,4 +95,10 @@ public class NewHouseListDo extends QueryDo {
     private  String []  buildingTags;
 
 
+    /**
+     * 销售状态
+     */
+    private  Integer saleStatusId;
+
+
 }
