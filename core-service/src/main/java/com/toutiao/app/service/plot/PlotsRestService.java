@@ -27,17 +27,17 @@ public interface PlotsRestService {
 
     /**
      * 获取小区列表
-     * @param plotListDo
+     * @param plotListQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirement(PlotListDo plotListDo);
+    PlotListDo queryPlotListByRequirement(PlotListQuery plotListQuery);
 
     /**
      * 获取小区列表含坐标
-     * @param plotListDo
+     * @param plotListQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDo plotListDo);
+    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListQuery plotListQuery);
 
 
     /**

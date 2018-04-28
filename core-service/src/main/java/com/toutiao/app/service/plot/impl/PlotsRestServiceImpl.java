@@ -203,71 +203,71 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
     /**
      * 小区列表条件筛选
-     * @param plotListDo
+     * @param plotListQuery
      * @return
      */
     @Override
-    public List<PlotDetailsFewDo> queryPlotListByRequirement(PlotListDo plotListDo) {
+    public PlotListDo queryPlotListByRequirement(PlotListQuery plotListQuery) {
         String key = "";
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         //关键字
-        if (StringTool.isNotEmpty(plotListDo.getKeyword())){
+        if (StringTool.isNotEmpty(plotListQuery.getKeyword())){
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-            if(StringUtil.isNotNullString(DistrictMap.getDistricts(plotListDo.getKeyword()))){
+            if(StringUtil.isNotNullString(DistrictMap.getDistricts(plotListQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("rc", plotListDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("area", plotListDo.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("tradingArea",plotListDo.getKeyword()).analyzer("ik_smart"));
-            }else if(StringUtil.isNotNullString(AreaMap.getAreas(plotListDo.getKeyword()))){
+                        .should(QueryBuilders.matchQuery("rc_accurate", plotListQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("rc", plotListQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("area", plotListQuery.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("tradingArea",plotListQuery.getKeyword()).analyzer("ik_smart"));
+            }else if(StringUtil.isNotNullString(AreaMap.getAreas(plotListQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("rc", plotListDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("area", plotListDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("tradingArea",plotListDo.getKeyword()).analyzer("ik_max_word").boost(2));
+                        .should(QueryBuilders.matchQuery("rc_accurate", plotListQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("rc", plotListQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("area", plotListQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("tradingArea",plotListQuery.getKeyword()).analyzer("ik_max_word").boost(2));
             }else {
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDo.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("rc", plotListDo.getKeyword()).analyzer("ik_max_word"))
-                        .should(QueryBuilders.matchQuery("area", plotListDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("tradingArea",plotListDo.getKeyword()));
+                        .should(QueryBuilders.matchQuery("rc_accurate", plotListQuery.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("rc", plotListQuery.getKeyword()).analyzer("ik_max_word"))
+                        .should(QueryBuilders.matchQuery("area", plotListQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("tradingArea",plotListQuery.getKeyword()));
             }
             boolQueryBuilder.must(queryBuilder);
         }
         //区域id
-        if (StringTool.isNotEmpty(plotListDo.getDistrictId())){
-            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotListDo.getDistrictId()));
+        if (StringTool.isNotEmpty(plotListQuery.getDistrictId())){
+            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotListQuery.getDistrictId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(plotListDo.getAreaId())){
-            boolQueryBuilder.must(QueryBuilders.termQuery("tradingAreaId",plotListDo.getAreaId()));
+        if (StringTool.isNotEmpty(plotListQuery.getAreaId())){
+            boolQueryBuilder.must(QueryBuilders.termQuery("tradingAreaId",plotListQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(plotListDo.getSubwayLineId())){
-            boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId",plotListDo.getSubwayLineId()));
-            key = String.valueOf(plotListDo.getSubwayLineId());
+        if (StringTool.isNotEmpty(plotListQuery.getSubwayLineId())){
+            boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId",plotListQuery.getSubwayLineId()));
+            key = String.valueOf(plotListQuery.getSubwayLineId());
         }
         //地铁站id
-        if (StringTool.isNotEmpty(plotListDo.getSubwayStationId())){
-            boolQueryBuilder.must(QueryBuilders.termQuery("metroStationId",plotListDo.getSubwayStationId()));
-            key = key+"$"+plotListDo.getSubwayStationId();
+        if (StringTool.isNotEmpty(plotListQuery.getSubwayStationId())){
+            boolQueryBuilder.must(QueryBuilders.termQuery("metroStationId",plotListQuery.getSubwayStationId()));
+            key = key+"$"+plotListQuery.getSubwayStationId();
         }
         //均价
-        if (StringTool.isNotEmpty(plotListDo.getBeginPrice())&&StringTool.isNotEmpty(plotListDo.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(plotListDo.getBeginPrice()).lte(plotListDo.getEndPrice()));
+        if (StringTool.isNotEmpty(plotListQuery.getBeginPrice())&&StringTool.isNotEmpty(plotListQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(plotListQuery.getBeginPrice()).lte(plotListQuery.getEndPrice()));
         }
         //楼龄
-        if (StringTool.isNotEmpty(plotListDo.getHouseYearId())){
-            String[] age = plotListDo.getHouseYearId().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
+        if (StringTool.isNotEmpty(plotListQuery.getHouseYearId())){
+            String[] age = plotListQuery.getHouseYearId().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
             boolQueryBuilder.must(QueryBuilders.rangeQuery("age")
                     .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[1]))))
                     .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[0])))));
         }
         //标签
-        if (StringTool.isNotEmpty(plotListDo.getLabelId())){
-            Integer[] labelId = plotListDo.getLabelId();
+        if (StringTool.isNotEmpty(plotListQuery.getLabelId())){
+            Integer[] labelId = plotListQuery.getLabelId();
             boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
         }
 
@@ -287,23 +287,23 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(plotListDo.getBeginArea()!=0 && plotListDo.getEndArea()!=0){
+        if(plotListQuery.getBeginArea()!=0 && plotListQuery.getEndArea()!=0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
-                    .gte(plotListDo.getBeginArea()).lte(plotListDo.getEndArea()), ScoreMode.None));
+                    .gte(plotListQuery.getBeginArea()).lte(plotListQuery.getEndArea()), ScoreMode.None));
 
-        }else if(plotListDo.getBeginArea()!=0 && plotListDo.getEndArea()==0){
+        }else if(plotListQuery.getBeginArea()!=0 && plotListQuery.getEndArea()==0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
-                    .gte(plotListDo.getBeginArea()), ScoreMode.None));
-        }else if(plotListDo.getBeginArea()==0 && plotListDo.getEndArea()!=0){
+                    .gte(plotListQuery.getBeginArea()), ScoreMode.None));
+        }else if(plotListQuery.getBeginArea()==0 && plotListQuery.getEndArea()!=0){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
-                    .lte(plotListDo.getEndArea()), ScoreMode.None));
+                    .lte(plotListQuery.getEndArea()), ScoreMode.None));
         }
 
         Integer from = 0;
         //分页起始位置
-        if (StringTool.isNotEmpty(plotListDo.getPageNum())&&plotListDo.getPageNum()>1&&StringTool.isNotEmpty(plotListDo.getPageSize())&&plotListDo.getPageSize()>0){
-            from = (plotListDo.getPageNum()-1)*plotListDo.getPageSize();
+        if (StringTool.isNotEmpty(plotListQuery.getPageNum())&&plotListQuery.getPageNum()>1&&StringTool.isNotEmpty(plotListQuery.getPageSize())&&plotListQuery.getPageSize()>0){
+            from = (plotListQuery.getPageNum()-1)*plotListQuery.getPageSize();
         }
 
         //是否上架
@@ -318,32 +318,34 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区分数排序
         FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
 
-        SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotScoreSort,plotListDo.getPageSize());
+        PlotListDo plotListDo = new PlotListDo();
+        SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotScoreSort,plotListQuery.getPageSize());
         if (searchResponse!=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
-                plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
                 plotDetailsFewDo.setKey(key);
                 plotDetailsFewDoList.add(plotDetailsFewDo);
             }
         }
-        return plotDetailsFewDoList;
+        plotListDo.setPlotList(plotDetailsFewDoList);
+        plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+        return plotListDo;
     }
 
     /**
      * 小区列表含坐标
-     * @param plotListDo
+     * @param plotListQuery
      * @return
      */
     @Override
-    public List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDo plotListDo) {
+    public List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListQuery plotListQuery) {
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        if (plotListDo.getLat()!=0&&plotListDo.getLon()!=0){
-            GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(plotListDo.getLat(), plotListDo.getLon()).distance(1600, DistanceUnit.METERS);
-            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", plotListDo.getLat(), plotListDo.getLon());
+        if (plotListQuery.getLat()!=0&&plotListQuery.getLon()!=0){
+            GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(plotListQuery.getLat(), plotListQuery.getLon()).distance(1600, DistanceUnit.METERS);
+            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", plotListQuery.getLat(), plotListQuery.getLon());
             sort.unit(DistanceUnit.METERS);
             sort.order(SortOrder.ASC);
             boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
@@ -365,14 +367,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     plotDetailsFewDoList.add(plotDetailsFewDo);
                 }
 
-                plotListDo.setPageSize(10-hits.length);
-                List<PlotDetailsFewDo> plotDetailsFewDos = plotsRestService.queryPlotListByRequirement(plotListDo);
-                plotDetailsFewDoList.addAll(plotDetailsFewDos);
+                plotListQuery.setPageSize(10-hits.length);
+                PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListQuery);
+                plotDetailsFewDoList.addAll(plotListDo.getPlotList());
             }else if (hits.length==0){
-                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDo);
+                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListQuery).getPlotList();
             }
         }else {
-            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDo);
+            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListQuery).getPlotList();
         }
         return plotDetailsFewDoList;
     }
