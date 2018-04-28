@@ -5,6 +5,7 @@ import com.toutiao.app.api.chance.request.sys.LoginVerifyCodeRequest;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.web.apiimpl.authentication.IgnoreLogin;
 import com.toutiao.web.common.restmodel.InvokeResult;
+import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,11 @@ public class ShortMessageRestController {
 
     @RequestMapping(value = "/sendLoginVerifyCode", method = RequestMethod.POST)
     @ResponseBody
-    public InvokeResult sendLoginVerifyCode(@Validated @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
+    public NashResult sendLoginVerifyCode(@Validated @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
 
         String phone = loginVerifyCodeRequest.getPhone();
-        InvokeResult invokeResult =shortMessageService.sendVerifyCode(phone);
-        return invokeResult;
+        NashResult nashResult =shortMessageService.sendVerifyCode(phone);
+        return nashResult;
     }
 
 

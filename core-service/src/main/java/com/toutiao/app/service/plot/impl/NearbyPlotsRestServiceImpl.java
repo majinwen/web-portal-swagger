@@ -2,7 +2,7 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.NearbyPlotsEsDao;
-import com.toutiao.app.domain.plot.NearbyPlotsListDo;
+import com.toutiao.app.domain.plot.NearbyPlotsDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.service.plot.NearbyPlotsRestService;
@@ -36,7 +36,6 @@ import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 /**
  * 附近小区接口服务实现类
@@ -54,31 +53,31 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
 
     /**
      * 根据用户坐标获取用户附近小区列表
-     * @param nearbyPlotsListDo
+     * @param nearbyPlotsDoQuery
      * @return
      */
     @Override
-    public PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsListDo nearbyPlotsListDo) {
+    public PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsDoQuery nearbyPlotsDoQuery) {
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         PlotDetailsFewDomain plotDetailsFewDomain = new PlotDetailsFewDomain();
         //小区筛选条件
-        BoolQueryBuilder boolQueryBuilder = getNearbyPlotsFilterCondition(nearbyPlotsListDo);
+        BoolQueryBuilder boolQueryBuilder = getNearbyPlotsFilterCondition(nearbyPlotsDoQuery);
         //附近5km
         GeoDistanceQueryBuilder geoDistanceQueryBuilder = QueryBuilders.geoDistanceQuery("location")
-                .point(nearbyPlotsListDo.getLat(), nearbyPlotsListDo.getLon()).distance(nearbyPlotsListDo.getDistance(), DistanceUnit.KILOMETERS);
+                .point(nearbyPlotsDoQuery.getLat(), nearbyPlotsDoQuery.getLon()).distance(nearbyPlotsDoQuery.getDistance(), DistanceUnit.KILOMETERS);
 //        srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(villageRequest.getSize());
         // 获取距离多少公里 这个才是获取点与点之间的距离的
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearbyPlotsListDo.getLat(), nearbyPlotsListDo.getLon());
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearbyPlotsDoQuery.getLat(), nearbyPlotsDoQuery.getLon());
         sort.unit(DistanceUnit.KILOMETERS);
         sort.order(SortOrder.ASC);
-        sort.point(nearbyPlotsListDo.getLat(), nearbyPlotsListDo.getLon());
+        sort.point(nearbyPlotsDoQuery.getLat(), nearbyPlotsDoQuery.getLon());
 
         int pageNum = 1;
-        if(nearbyPlotsListDo.getPageNum()!=null && nearbyPlotsListDo.getPageNum()>1){
-            pageNum = nearbyPlotsListDo.getPageNum();
+        if(nearbyPlotsDoQuery.getPageNum()!=null && nearbyPlotsDoQuery.getPageNum()>1){
+            pageNum = nearbyPlotsDoQuery.getPageNum();
         }
         SearchResponse searchResponse = nearbyPlotsEsDao.queryNearbyPlotsListByUserCoordinate(geoDistanceQueryBuilder,sort,boolQueryBuilder,
-                nearbyPlotsListDo.getKeyword(), pageNum,nearbyPlotsListDo.getSize());
+                nearbyPlotsDoQuery.getKeyword(), pageNum,nearbyPlotsDoQuery.getPageSize());
 
         long nearbyPlotsTotal = searchResponse.getHits().totalHits;
 
@@ -99,81 +98,80 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
 
     /**
      * 根据入参过滤附近小区筛选条件
-     * @param nearbyPlotsListDo
+     * @param nearbyPlotsDoQuery
      * @return
      */
-    public BoolQueryBuilder getNearbyPlotsFilterCondition(NearbyPlotsListDo nearbyPlotsListDo){
+    public BoolQueryBuilder getNearbyPlotsFilterCondition(NearbyPlotsDoQuery nearbyPlotsDoQuery){
 
         BoolQueryBuilder boolQueryBuilder = boolQuery();
 
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getKeyword())){
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getKeyword())){
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-            if(StringUtil.isNotNullString(DistrictMap.getDistricts(nearbyPlotsListDo.getKeyword()))){
+            if(StringUtil.isNotNullString(DistrictMap.getDistricts(nearbyPlotsDoQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc", nearbyPlotsListDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("rc_accurate", nearbyPlotsListDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("area", nearbyPlotsListDo.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("tradingArea",nearbyPlotsListDo.getKeyword()).analyzer("ik_smart"));
-            }else if(StringUtil.isNotNullString(AreaMap.getAreas(nearbyPlotsListDo.getKeyword()))){
+                        .should(QueryBuilders.matchQuery("rc", nearbyPlotsDoQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("rc_accurate", nearbyPlotsDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area", nearbyPlotsDoQuery.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("tradingArea",nearbyPlotsDoQuery.getKeyword()).analyzer("ik_smart"));
+            }else if(StringUtil.isNotNullString(AreaMap.getAreas(nearbyPlotsDoQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc", nearbyPlotsListDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("rc_accurate", nearbyPlotsListDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("area", nearbyPlotsListDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("tradingArea",nearbyPlotsListDo.getKeyword()).analyzer("ik_max_word").boost(2));
+                        .should(QueryBuilders.matchQuery("rc", nearbyPlotsDoQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("rc_accurate", nearbyPlotsDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("area", nearbyPlotsDoQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("tradingArea",nearbyPlotsDoQuery.getKeyword()).analyzer("ik_max_word").boost(2));
             }else {
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc", nearbyPlotsListDo.getKeyword()).analyzer("ik_max_word"))
-                        .should(QueryBuilders.matchQuery("rc_accurate", nearbyPlotsListDo.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("area", nearbyPlotsListDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("tradingArea",nearbyPlotsListDo.getKeyword()));
+                        .should(QueryBuilders.matchQuery("rc", nearbyPlotsDoQuery.getKeyword()).analyzer("ik_max_word"))
+                        .should(QueryBuilders.matchQuery("rc_accurate", nearbyPlotsDoQuery.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("area", nearbyPlotsDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("tradingArea",nearbyPlotsDoQuery.getKeyword()));
             }
             boolQueryBuilder.must(queryBuilder);
         }
 
         //区域id
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getDistrictId())){
-            boolQueryBuilder.must(termQuery("areaId",nearbyPlotsListDo.getDistrictId()));
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getDistrictId())){
+            boolQueryBuilder.must(termQuery("areaId",nearbyPlotsDoQuery.getDistrictId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getAreaId())){
-            boolQueryBuilder.must(termQuery("tradingAreaId",nearbyPlotsListDo.getAreaId()));
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getAreaId())){
+            boolQueryBuilder.must(termQuery("tradingAreaId",nearbyPlotsDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getSubwayLineId())){
-            boolQueryBuilder.must(termQuery("subwayLineId",nearbyPlotsListDo.getSubwayLineId()));
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getSubwayLineId())){
+            boolQueryBuilder.must(termQuery("subwayLineId",nearbyPlotsDoQuery.getSubwayLineId()));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getSubwayStationId())){
-            boolQueryBuilder.must(termQuery("metroStationId",nearbyPlotsListDo.getSubwayStationId()));
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getSubwayStationId())){
+            boolQueryBuilder.must(termQuery("metroStationId",nearbyPlotsDoQuery.getSubwayStationId()));
         }
         //均价
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getBeginPrice())&&StringTool.isNotEmpty(nearbyPlotsListDo.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(nearbyPlotsListDo.getBeginPrice()).lte(nearbyPlotsListDo.getEndPrice()));
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getBeginPrice())&&StringTool.isNotEmpty(nearbyPlotsDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(nearbyPlotsDoQuery.getBeginPrice()).lte(nearbyPlotsDoQuery.getEndPrice()));
         }
         //楼龄
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getAge())){
-            String[] age = nearbyPlotsListDo.getAge().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getHouseYearId())){
+            String[] age = nearbyPlotsDoQuery.getHouseYearId().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
             boolQueryBuilder.must(QueryBuilders.rangeQuery("age")
                     .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[1]))))
                     .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())), Integer.valueOf(age[0])))));
         }
         //标签
-        if (StringTool.isNotEmpty(nearbyPlotsListDo.getLabelId())){
-            boolQueryBuilder.must(termsQuery("labelId",nearbyPlotsListDo.getLabelId().split(",")));
+        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getLabelId())){
+            Integer[] labelId = nearbyPlotsDoQuery.getLabelId();
+            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
         }
         //房源面积大小
-        if ((StringTool.isNotEmpty(nearbyPlotsListDo.getHouseAreaSize()))){
-            String[] houseArea = nearbyPlotsListDo.getHouseAreaSize().replaceAll("\\[", "").replaceAll("]", "").replaceAll("-", ",").split(",");
-            BoolQueryBuilder QueryBuilder = QueryBuilders.boolQuery();
-            for (int i = 0; i < houseArea.length; i = i + 2) {
-                if (i + 1 > houseArea.length) {
-                    break;
-                }
-                BoolQueryBuilder areaSize = QueryBuilder.should(JoinQueryBuilders
-                        .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(houseArea[i]).lte(houseArea[i + 1]), ScoreMode.None));
-                boolQueryBuilder.must(areaSize);
-            }
+        if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()!=0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+                    .gte(nearbyPlotsDoQuery.getBeginArea()).lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
 
+        }else if(nearbyPlotsDoQuery.getBeginArea()==0 && nearbyPlotsDoQuery.getEndArea()!=0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+                    .lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
+        }else if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()==0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+                    .gte(nearbyPlotsDoQuery.getBeginArea()), ScoreMode.None));
         }
 
         //是否上架

@@ -11,7 +11,7 @@ public class NewHouseLayoutRequest {
 
 
     @NotNull(message = "缺少新房Id")
-    private Integer newHouseId;
+    private Integer newCode;
 
     @NotNull(groups = {First.class},message = "缺少户型")
     private Integer room;

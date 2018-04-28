@@ -1,13 +1,14 @@
-package com.toutiao.app.api.chance.request.sellhouse;
+package com.toutiao.app.domain.sellhouse;
 
-
-import com.toutiao.app.api.chance.request.BaseQueryRequest;
+import com.fasterxml.jackson.databind.ser.Serializers;
+import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NearBySellHousesRequest extends BaseQueryRequest {
+public class NearBySellHouseQueryDo extends QueryDo{
+
 
     /**
      * y坐标

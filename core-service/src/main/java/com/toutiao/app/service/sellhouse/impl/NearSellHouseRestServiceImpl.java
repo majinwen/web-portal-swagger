@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.domain.sellhouse.ClaimSellHouseDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
+import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
@@ -41,16 +42,17 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
     private NearbySellHouseEsDao nearbySellHouseEsDao;
 
     @Override
-    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo) {
+    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo) {
 
         NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
+        NearBySellHousesDo  nearBySellHousesDo=new NearBySellHousesDo();
         //过滤附近5km
         GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
-                .point(nearBySellHousesDo.getLat(), nearBySellHousesDo.getLon())
-                .distance(nearBySellHousesDo.getDistance(), DistanceUnit.KILOMETERS);
+                .point(nearBySellHouseQueryDo.getLat(), nearBySellHouseQueryDo.getLon())
+                .distance(nearBySellHouseQueryDo.getDistance(), DistanceUnit.KILOMETERS);
 
         //其他筛选条件
-        BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterChoose(nearBySellHousesDo);
+        BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterChoose(nearBySellHouseQueryDo);
 
 
         //过滤为删除
@@ -63,24 +65,24 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 .modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11).missing(0);
 
         Map<String,Double> map = new HashMap<>();
-        map.put("lat",nearBySellHousesDo.getLat());
-        map.put("lon",nearBySellHousesDo.getLon());
+        map.put("lat",nearBySellHouseQueryDo.getLat());
+        map.put("lon",nearBySellHouseQueryDo.getLon());
         JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
         //设置高斯函数
         GaussDecayFunctionBuilder functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",json,"1km","1km" );
         //获取5km内所有的二手房
         FunctionScoreQueryBuilder query5kmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
-        if (StringUtil.isNotNullString(nearBySellHousesDo.getKeyword())) {
-            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(nearBySellHousesDo.getKeyword());
+        if (StringUtil.isNotNullString(nearBySellHouseQueryDo.getKeyword())) {
+            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(nearBySellHouseQueryDo.getKeyword());
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
-            if (StringUtil.isNotNullString(AreaMap.getAreas(nearBySellHousesDo.getKeyword()))) {
+            if (StringUtil.isNotNullString(AreaMap.getAreas(nearBySellHouseQueryDo.getKeyword()))) {
                 for(int i=0 ;i<searchKeyword.size();i++){
                     int searchAreasSize = searchKeyword.size();
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i);
                     QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                 }
-            }else if (StringUtil.isNotNullString(DistrictMap.getDistricts(nearBySellHousesDo.getKeyword()))) {
+            }else if (StringUtil.isNotNullString(DistrictMap.getDistricts(nearBySellHouseQueryDo.getKeyword()))) {
                 for (int i = 0; i < searchKeyword.size(); i++) {
                     int searchDistrictsSize = searchKeyword.size();
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize - i);

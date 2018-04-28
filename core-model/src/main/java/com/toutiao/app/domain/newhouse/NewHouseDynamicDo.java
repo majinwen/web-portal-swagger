@@ -36,16 +36,6 @@ public class NewHouseDynamicDo {
     private  Integer newCode;
 
     /**
-     * 页码
-     */
-    private Integer pageNum = 1;
-
-    /**
-     * 每页数量
-     */
-    private Integer pageSize=10;
-
-    /**
      * 创建时间
      */
     private  String createTime;

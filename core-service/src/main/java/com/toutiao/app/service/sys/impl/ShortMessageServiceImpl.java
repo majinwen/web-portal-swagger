@@ -31,7 +31,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
      * @return
      */
     @Override
-    public InvokeResult sendVerifyCode(String phone) {
+    public NashResult sendVerifyCode(String phone) {
         //生成随机4位短信验证码
         String code = StringUtil.randomFourDigits();
         try {
@@ -42,18 +42,18 @@ public class ShortMessageServiceImpl implements ShortMessageService {
                 redis.set2(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER+"_"+phone, code, RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
                 redis.incr(phone + RedisNameUtil.separativeSignCount);
                 String phoneCount = redis.getValue(phone + RedisNameUtil.separativeSignCount);
-                InvokeResult invokeResult = InvokeResult.build(phoneCount);
-                return invokeResult;
+                NashResult nashResult = NashResult.build(phoneCount);
+                return nashResult;
             }else if ("isv.BUSINESS_LIMIT_CONTROL".equals(sendResult)) {//超出短信发送限制
 
-                return InvokeResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_LIMIT);
+                return NashResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_LIMIT.toString());
             }else {//其它返回码
 
-                return InvokeResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_SEND_ERROR,sendResult);
+                return NashResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_SEND_ERROR.toString(),sendResult);
             }
         } catch (ClientException e) {
             logger.error("短信发送失败，请检查短信平台相关配置");
-            return InvokeResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_PLATFORM_EXCEPTION.getValue(),e.getMessage());
+            return NashResult.Fail(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_PLATFORM_EXCEPTION.toString(),e.getMessage());
         }
     }
 }
