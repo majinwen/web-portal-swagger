@@ -1,7 +1,6 @@
 package com.toutiao.app.service.plot;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.plot.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,17 +26,17 @@ public interface PlotsRestService {
 
     /**
      * 获取小区列表
-     * @param plotListQuery
+     * @param plotListDoQuery
      * @return
      */
-    PlotListDo queryPlotListByRequirement(PlotListQuery plotListQuery);
+    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery);
 
     /**
      * 获取小区列表含坐标
-     * @param plotListQuery
+     * @param plotListDoQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListQuery plotListQuery);
+    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
 
 
     /**
@@ -50,7 +49,7 @@ public interface PlotsRestService {
      * @param list
      * @return
      */
-    PlotDetailsFewDomain queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
+    PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
 
 
 

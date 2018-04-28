@@ -3,7 +3,6 @@ package com.toutiao.app.service.rent.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
-import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.rent.RentAgentDo;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
@@ -16,16 +15,12 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -33,11 +28,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
@@ -226,7 +219,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDoList getRentList(NearHouseDo nearHouseDo) {
+    public RentDetailsListDo getRentList(NearHouseDo nearHouseDo) {
 
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -246,20 +239,20 @@ public class RentRestRestServiceImpl implements RentRestService {
         SearchResponse searchResponse = rentEsDao.queryRentList(boolQueryBuilder, from, size);
         SearchHit[] hits = searchResponse.getHits().getHits();
 
-        RentDetailsDoList rentDetailsDoList = new RentDetailsDoList();
+        RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         if (hits.length>0){
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 list.add(rentDetailsFewDo);
             }
-            rentDetailsDoList.setRentDetailsDoList(list);
-            rentDetailsDoList.setTotalNum(hits.length);
+            rentDetailsListDo.setRentDetailsDoList(list);
+            rentDetailsListDo.setTotalNum(hits.length);
         }else{
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND,"租房推荐列表为空");
         }
 
-        return rentDetailsDoList;
+        return rentDetailsListDo;
     }
 
     /**

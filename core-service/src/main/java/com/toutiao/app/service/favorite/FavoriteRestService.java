@@ -2,6 +2,7 @@ package com.toutiao.app.service.favorite;
 
 import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
+import com.toutiao.app.domain.plot.PlotFavoriteListDo;
 import com.toutiao.web.common.restmodel.NashResult;
 
 public interface FavoriteRestService {
@@ -52,24 +53,24 @@ public interface FavoriteRestService {
 
     /**
      * 租房取消收藏
-     * @param deleteRentFavoriteDo
+     * @param deleteRentFavoriteDoQuery
      * @return
      */
-    Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo);
+    Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery);
 
     /**
      * 小区是否收藏
-     * @param plotIsFavoriteDo
+     * @param plotIsFavoriteDoQuery
      * @return
      */
-    Boolean getPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo);
+    Boolean getPlotIsFavorite(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery);
 
     /**
      * 新房是否收藏
-     * @param newHouseIsFavoriteDo
+     * @param newHouseIsFavoriteDoQuery
      * @return
      */
-    Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo);
+    Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery);
 
 
     /**
@@ -77,6 +78,6 @@ public interface FavoriteRestService {
      * @param userId
      * @return
      */
-    PlotDetailsFewDomain getPlotFavoriteByUserId(Integer userId,Integer pageNum,Integer size);
+    PlotFavoriteListDo getPlotFavoriteByUserId(Integer userId, Integer pageNum, Integer size);
 
 }

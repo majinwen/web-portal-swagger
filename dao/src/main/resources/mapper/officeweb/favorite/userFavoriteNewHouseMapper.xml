@@ -120,7 +120,7 @@
     </set>
     where new_house_id=#{newCode,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
   </update>
-    <select id="getNewHouseIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDo">
+    <select id="getNewHouseIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery">
         SELECT COUNT(1) FROM user_favorite_newhouse
         WHERE user_id=#{userId} and is_del=0 AND new_house_id = #{newHouseId}
     </select>

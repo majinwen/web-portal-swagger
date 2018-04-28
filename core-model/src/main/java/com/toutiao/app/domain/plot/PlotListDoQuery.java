@@ -4,7 +4,7 @@ import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
-public class PlotListQuery extends QueryDo {
+public class PlotListDoQuery extends QueryDo {
     /**
      * 维度 附近找房
      */

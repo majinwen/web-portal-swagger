@@ -13,7 +13,6 @@ import com.toutiao.app.api.chance.response.plot.PlotListResponse;
 import com.toutiao.app.api.chance.response.plot.PlotTrafficResponse;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,10 +68,10 @@ public class PlotsRestController {
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
-        PlotListQuery plotListQuery = new PlotListQuery();
+        PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         PlotListResponse plotListResponse = new PlotListResponse();
-        BeanUtils.copyProperties(plotListRequest,plotListQuery);
-        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListQuery);
+        BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery);
         BeanUtils.copyProperties(plotListDo,plotListResponse);
         return NashResult.build(plotListResponse);
     }

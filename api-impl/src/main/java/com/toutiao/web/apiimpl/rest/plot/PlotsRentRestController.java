@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
+import com.toutiao.app.api.chance.request.plot.PlotsRentRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
 import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
@@ -31,12 +32,12 @@ public class PlotsRentRestController {
 
     /**
      * 查询小区下出租房
-     * @param plotDetailsRequest
+     * @param plotsRentRequest
      * @return
      */
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
-    public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId(),plotDetailsRequest.getRentType(),plotDetailsRequest.getPageNum());
+    public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(),plotsRentRequest.getRentType(),plotsRentRequest.getPageNum());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
         return NashResult.build(rentDetailFewResponses);
@@ -44,13 +45,13 @@ public class PlotsRentRestController {
 
     /**
      * 查询小区下出租房的个数
-     * @param plotId
+     * @param plotsRentRequest
      * @return
      */
     @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
-    public NashResult getRentNumByPlotId(@RequestParam(value = "plotId",required =true) Integer plotId){
+    public NashResult getRentNumByPlotId(@Validated PlotsRentRequest plotsRentRequest){
         RentNumListResponse rentNumResponses = new RentNumListResponse();
-        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId);
+        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotsRentRequest.getPlotId());
         BeanUtils.copyProperties(rentNumListDo,rentNumResponses);
         return NashResult.build(rentNumResponses);
     }

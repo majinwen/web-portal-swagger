@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.api.chance.request.newhouse.NewHouseDetailsRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseTrafficRequest;
@@ -27,10 +28,10 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@RequestParam(value = "newCode",required =true) Integer newCode)
+    public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
     {
         NewHouseDetailResponse newHouseDetailResponse= new NewHouseDetailResponse();
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newCode);
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode());
         BeanUtils.copyProperties(newHouseDetailDo,newHouseDetailResponse);
         return NashResult.build(newHouseDetailResponse);
     }
