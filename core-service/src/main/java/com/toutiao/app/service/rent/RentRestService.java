@@ -17,7 +17,7 @@ public interface RentRestService {
      * @param plotId
      * @return
      */
-    List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum);
+    RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum);
 
     /**
      * 根据小区id查询该小区下的出租房源个数

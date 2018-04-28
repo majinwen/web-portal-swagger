@@ -8,9 +8,11 @@ import com.toutiao.app.api.chance.request.plot.PlotsRentRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
 import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
+import com.toutiao.app.api.chance.response.rent.RentDetailsListResponse;
 import com.toutiao.app.api.chance.response.rent.RentNumListResponse;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -37,10 +39,9 @@ public class PlotsRentRestController {
      */
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
     public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
-        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(),plotsRentRequest.getRentType(),plotsRentRequest.getPageNum());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
-        List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
-        return NashResult.build(rentDetailFewResponses);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(), plotsRentRequest.getRentType(), plotsRentRequest.getPageNum());
+        RentDetailsListResponse rentDetailsListResponse = JSON.parseObject(JSON.toJSONString(rentDetailsListDo), RentDetailsListResponse.class);
+        return NashResult.build(rentDetailsListResponse);
     }
 
     /**

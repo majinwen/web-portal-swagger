@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RentDetailFewResponseList {
+public class RentDetailsListResponse {
     /**
-     * 出租房源集合
+     * 出租房源详情集合
      */
     private List<RentDetailFewResponse> RentDetailsList;
     /**

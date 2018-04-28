@@ -79,7 +79,8 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+    public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+        RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
@@ -93,11 +94,12 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
                 list.add(rentDetailsFewDo);
             }
+            rentDetailsListDo.setRentDetailsList(list);
+            rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         }
-        return list;
+        return rentDetailsListDo;
     }
 
     /**
@@ -124,8 +126,8 @@ public class RentRestRestServiceImpl implements RentRestService {
         rentNumDo2.setRentSign(2);
         rentNumDo2.setRentSignName("合租");
         list.add(rentNumDo2);
-        rentNumListDo.setRentNumResponses(list);
-        rentNumListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        rentNumListDo.setRentNum(list);
+        rentNumListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         return rentNumListDo;
     }
 
@@ -246,8 +248,8 @@ public class RentRestRestServiceImpl implements RentRestService {
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 list.add(rentDetailsFewDo);
             }
-            rentDetailsListDo.setRentDetailsDoList(list);
-            rentDetailsListDo.setTotalNum(hits.length);
+            rentDetailsListDo.setRentDetailsList(list);
+            rentDetailsListDo.setTotalCount(hits.length);
         }else{
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND,"租房推荐列表为空");
         }

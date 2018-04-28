@@ -118,8 +118,8 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
                 rentDetailsFewDos.add(rentDetailsFewDo);
             }
         }
-        rentDetailsListDo.setRentDetailsDoList(rentDetailsFewDos);
-        rentDetailsListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
+        rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         return rentDetailsListDo;
     }
 
