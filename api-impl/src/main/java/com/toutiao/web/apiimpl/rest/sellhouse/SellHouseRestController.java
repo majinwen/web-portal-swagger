@@ -61,9 +61,9 @@ public class SellHouseRestController {
     @ResponseBody
     public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
-        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
-        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
-        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseQueryDo);
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);
@@ -78,9 +78,9 @@ public class SellHouseRestController {
     @ResponseBody
     public NashResult getRecommendSellHouse(@Validated SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
-        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
-        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
-        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseQueryDo);
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseDoQuery);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);

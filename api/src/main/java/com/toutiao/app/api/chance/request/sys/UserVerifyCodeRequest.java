@@ -1,6 +1,5 @@
 package com.toutiao.app.api.chance.request.sys;
 
-import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.PhoneNumber;
 import lombok.Data;
 

@@ -260,6 +260,9 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //                BoolQueryBuilder areaSize = QueryBuilder.should(JoinQueryBuilders
 //                        .hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea").gt(houseArea[i]).lte(houseArea[i + 1]), ScoreMode.None));
 //                boolQueryBuilder.must(areaSize);
+
+
+
 //            }
 //
 //        }

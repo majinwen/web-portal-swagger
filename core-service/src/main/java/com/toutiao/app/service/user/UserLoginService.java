@@ -2,6 +2,7 @@ package com.toutiao.app.service.user;
 
 
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.domain.user.UserBasicDoQuery;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,5 +15,5 @@ public interface UserLoginService {
      * @param userBasicDo
      * @return
      */
-    UserBasicDo checkUserVerifyCodeLogin(UserBasicDo userBasicDo, HttpServletRequest request, HttpServletResponse response);
+    UserBasicDo checkUserVerifyCodeLogin(UserBasicDoQuery userBasicDo, HttpServletRequest request, HttpServletResponse response);
 }

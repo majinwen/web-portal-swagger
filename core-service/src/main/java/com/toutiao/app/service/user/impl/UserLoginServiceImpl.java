@@ -1,6 +1,7 @@
 package com.toutiao.app.service.user.impl;
 
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.domain.user.UserBasicDoQuery;
 import com.toutiao.app.service.sys.IMService;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
@@ -35,7 +36,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
 
     @Override
-    public UserBasicDo checkUserVerifyCodeLogin(UserBasicDo userBasicDo,HttpServletRequest request, HttpServletResponse response) {
+    public UserBasicDo checkUserVerifyCodeLogin(UserBasicDoQuery userBasicDo, HttpServletRequest request, HttpServletResponse response) {
 
         //获取redis缓存中的手机号验证码码判断是否有效
         String tempVerifyCode = redis.getValue(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER +"_"+ userBasicDo.getUserName());

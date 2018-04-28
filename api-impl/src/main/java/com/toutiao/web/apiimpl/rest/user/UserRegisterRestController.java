@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.rest.user;
 import com.toutiao.app.api.chance.request.sys.UserVerifyCodeRequest;
 import com.toutiao.app.api.chance.response.user.UserLoginResponse;
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.domain.user.UserBasicDoQuery;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -32,10 +33,10 @@ public class UserRegisterRestController {
     public NashResult userVerifyCodeLogin(@Validated @RequestBody UserVerifyCodeRequest loginRequest,
                                           HttpServletRequest request, HttpServletResponse response) {
 
-        UserBasicDo userBasicDo = new UserBasicDo();
+        UserBasicDoQuery userBasicDoQuery = new UserBasicDoQuery();
         UserLoginResponse userLoginResponse = new UserLoginResponse();
-        BeanUtils.copyProperties(loginRequest,userBasicDo);
-        userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDo,request,response);
+        BeanUtils.copyProperties(loginRequest,userBasicDoQuery);
+        UserBasicDo userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery,request,response);
         if(StringTool.isNotBlank(userBasicDo)){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
             try {

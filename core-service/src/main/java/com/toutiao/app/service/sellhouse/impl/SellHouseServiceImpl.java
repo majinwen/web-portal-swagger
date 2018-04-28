@@ -100,7 +100,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @return
      */
     @Override
-    public SellHouseDomain getSellHouseByChoose(SellHouseQueryDo sellHouseQueryDo) {
+    public SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo) {
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -139,20 +139,20 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     /**
      * 查询二手房推荐房源
-     * @param sellHouseQueryDo
+     * @param sellHouseDoQuery
      * @return
      */
     @Override
-    public SellHouseDomain getRecommendSellHouse(SellHouseQueryDo sellHouseQueryDo) {
+    public SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseDoQuery) {
 
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseQueryDo);
+        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
-        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder);
-        SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query,sellHouseQueryDo.getUid(),sellHouseQueryDo.getPageSize());
+        FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery,boolQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query,sellHouseDoQuery.getUid(),sellHouseDoQuery.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
@@ -169,20 +169,20 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
 
-    public FunctionScoreQueryBuilder getQuery(SellHouseQueryDo sellHouseQueryDo,BoolQueryBuilder boolQueryBuilder){
+    public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder){
         FunctionScoreQueryBuilder query = null;
-        List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseQueryDo.getKeyword());
-        if (StringTool.isNotBlank(sellHouseQueryDo.getKeyword())){
+        List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword());
+        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())){
             if(searchKeyword!=null && searchKeyword.size() > 0){
                 int searchTermSize = searchKeyword.size();
                 FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchTermSize];
-                if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseQueryDo.getKeyword()))) {
+                if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                     for(int i=0 ;i<searchKeyword.size();i++){
                         QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
                         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
                         filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                     }
-                }else if(StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseQueryDo.getKeyword()))){
+                }else if(StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))){
                     for(int i=0 ;i<searchKeyword.size();i++){
                         QueryBuilder filter = QueryBuilders.termsQuery("area",searchKeyword.get(i));
                         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
