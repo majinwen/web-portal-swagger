@@ -6,6 +6,7 @@ import com.toutiao.app.api.chance.response.user.UserLoginResponse;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.web.common.restmodel.InvokeResult;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class UserRegisterRestController {
 
     @RequestMapping(value = "/userVerifyCodeLogin", method = RequestMethod.POST)
     @ResponseBody
-    public InvokeResult userVerifyCodeLogin(@Validated @RequestBody UserVerifyCodeRequest loginRequest,
-                                             HttpServletRequest request, HttpServletResponse response) {
+    public NashResult userVerifyCodeLogin(@Validated @RequestBody UserVerifyCodeRequest loginRequest,
+                                          HttpServletRequest request, HttpServletResponse response) {
 
         UserBasicDo userBasicDo = new UserBasicDo();
         UserLoginResponse userLoginResponse = new UserLoginResponse();
@@ -40,10 +41,10 @@ public class UserRegisterRestController {
             try {
                 setCookieAndCache(loginRequest.getUserName(),request,response);
             } catch (Exception e) {
-                InvokeResult.Fail(30099,"用户cookie数据存储失败！");
+                NashResult.Fail("30099","用户cookie数据存储失败！");
             }
         }
-        return InvokeResult.build(userLoginResponse);
+        return NashResult.build(userLoginResponse);
 
     }
 

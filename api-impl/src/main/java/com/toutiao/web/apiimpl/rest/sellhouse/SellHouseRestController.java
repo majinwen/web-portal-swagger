@@ -1,17 +1,10 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
-import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
-
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseDetailsRequest;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
@@ -19,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.alibaba.fastjson.JSONArray.*;
 
 
 @RestController
@@ -47,25 +36,6 @@ public class SellHouseRestController {
         return NashResult.build(sellAndClaimDetailsResponse);
     }
 
-    /**
-     * 二手房附近5km列表
-     * @param nearBySellHousesRequest
-     * @return
-     */
-    @DeleteMapping
-    @RequestMapping("/getNearBySellHouses")
-    @ResponseBody
-    public NashResult getSellHouseByHouseIdAndLocation(NearBySellHousesRequest nearBySellHousesRequest) {
-        NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
-        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
-        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
-        NearBySellHouseDomain  nearBySellHouseDomain =  sellHouseService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
-        List<NearBySellHousesResponse> nearBySellHousesResponses=JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
-        nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);
-        nearBySellHouseDomainResponse.setTotalCount(nearBySellHouseDomain.getTotalCount());
-        return NashResult.build(nearBySellHouseDomainResponse);
-    }
 
     /**
      * 认领二手房房源经纪人
@@ -90,12 +60,39 @@ public class SellHouseRestController {
     @RequestMapping("/getSellHouseByChoose")
     @ResponseBody
     public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
-        ChooseSellHouseResponse chooseSellHouseResponse = new ChooseSellHouseResponse();
-        ChooseSellHouseDo chooseSellHouseDo = new ChooseSellHouseDo();
-        BeanUtils.copyProperties(sellHouseRequest, chooseSellHouseDo);
-        ChooseSellHouseDomain chooseSellHouseDomain= sellHouseService.getSellHouseByChoose(chooseSellHouseDo);
-        BeanUtils.copyProperties(chooseSellHouseDomain, chooseSellHouseResponse);
-        return NashResult.build(chooseSellHouseResponse);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseQueryDo);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
     }
+
+    /**
+     * 二手房推荐
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping("/getRecommendSellHouse")
+    @ResponseBody
+    public NashResult getRecommendSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseQueryDo);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+
+        return NashResult.build(sellHouseResponse);
+    }
+
+
+
+
+
+
+
+
+
 
 }

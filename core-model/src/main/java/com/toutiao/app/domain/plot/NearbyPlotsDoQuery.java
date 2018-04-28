@@ -4,16 +4,19 @@ import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
-public class PlotListDo extends QueryDo{
+public class NearbyPlotsDoQuery extends QueryDo{
 
     /**
      * 维度 附近找房
      */
-    private double lat;
-
+    private Double lat;
     /**
      * 经度 附近找房
      */
-    private double lon;
+    private Double lon;
+    /**
+     * 附近列表默认距离
+     */
+    private String distance;
 
 }

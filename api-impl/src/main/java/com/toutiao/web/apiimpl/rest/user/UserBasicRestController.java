@@ -7,6 +7,7 @@ import com.toutiao.app.api.chance.response.user.UserBasicResponse;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.restmodel.InvokeResult;
+import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,23 +27,23 @@ public class UserBasicRestController {
      */
     @RequestMapping(value = "/updateUserAvatar", method = RequestMethod.POST, consumes = "multipart/form-data")
     @ResponseBody
-    public InvokeResult updateUserAvatar(@Validated UploadUserAvatarRequest uploadUserAvatarRequest) {
+    public NashResult updateUserAvatar(@Validated UploadUserAvatarRequest uploadUserAvatarRequest) {
 
         UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(uploadUserAvatarRequest.getUserId(),uploadUserAvatarRequest.getFile());
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
-        return InvokeResult.build(userBasicResponse);
+        return NashResult.build(userBasicResponse);
     }
 
 
     @RequestMapping(value = "/queryUserBasic", method = RequestMethod.GET)
     @ResponseBody
-    public InvokeResult queryUserBasic(@Validated QueryUserBasicRequest queryUserBasicRequest) {
+    public NashResult queryUserBasic(@Validated QueryUserBasicRequest queryUserBasicRequest) {
 
         UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(queryUserBasicRequest.getUserId());
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
-        return InvokeResult.build(userBasicResponse);
+        return NashResult.build(userBasicResponse);
     }
 
 }
