@@ -39,7 +39,6 @@ public class NearSellHouseRestController {
     public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
 
         NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
-        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
         NearBySellHouseQueryDo nearBySellHouseQueryDo=new NearBySellHouseQueryDo();
         BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHouseQueryDo);
         NearBySellHouseDomain nearBySellHouseDomain =  nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHouseQueryDo);
