@@ -107,4 +107,14 @@ public class NewHouseListDo extends QueryDo {
     private  String propertyType;
 
 
+    /**
+     * 最大面积
+     */
+
+    private  Double houseMinArea;
+
+    /**
+     * 最小面积
+     */
+     private Double houseMaxArea;
 }
