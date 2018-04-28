@@ -142,14 +142,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseListDo.getBeginPrice()!=null && newHouseListDo.getEndPrice()!=null){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getBeginPrice()).lte(newHouseListDo.getEndPrice())));
-        }else if (newHouseListDo.getBeginPrice()==null && newHouseListDo.getEndPrice()!=0)
-        {        newHouseListDo.setBeginPrice(0.0);
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getBeginPrice()).lte(newHouseListDo.getEndPrice())));
-        }else if (newHouseListDo.getEndPrice()==null &&  newHouseListDo.getBeginPrice()!=0)
+        if(newHouseDoQuery.getBeginPrice()!=null && newHouseDoQuery.getEndPrice()!=null){
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
+        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=0)
+        {        newHouseDoQuery.setBeginPrice(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
+        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=0)
         {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseListDo.getBeginPrice())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
         }
 
         //标签
@@ -169,19 +169,19 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //面积
-        if(newHouseListDo.getBeginArea()!=null &&  newHouseListDo.getEndArea()!=null)
+        if(newHouseDoQuery.getBeginArea()!=null &&  newHouseDoQuery.getEndArea()!=null)
         {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getBeginArea())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getEndArea())));
-        }else if(newHouseListDo.getBeginArea()==null && newHouseListDo.getEndArea()!=0)
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
+        }else if(newHouseDoQuery.getBeginArea()==null && newHouseDoQuery.getEndArea()!=0)
         {
-            newHouseListDo.setBeginArea(0.0);
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getBeginArea())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseListDo.getEndArea())));
+            newHouseDoQuery.setBeginArea(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
 
-        }else if (newHouseListDo.getEndArea()==null && newHouseListDo.getBeginArea()!=0)
+        }else if (newHouseDoQuery.getEndArea()==null && newHouseDoQuery.getBeginArea()!=0)
         {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseListDo.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
         }
 
         //销售状态
