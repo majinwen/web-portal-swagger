@@ -12,6 +12,7 @@ public class CookieUtils {
 
     /** 平台用户登录CookieName */
     public final static String COOKIE_NAME_User_LOGIN = "user_phone";
+    public final static String COOKIE_NAME_USER = "user";
     /**
      * 获取cookie中的数据
      * @param request
@@ -58,7 +59,7 @@ public class CookieUtils {
      * 功能描述：解析cookie获取用户信息
      * @author zhw
      * @date 2017/12/26 13:59
-     * @param [request, cookieName]
+     * @param request, cookieName
      * @return java.lang.String
      */
     public static String validCookieValue1(HttpServletRequest request, String cookieName) {
