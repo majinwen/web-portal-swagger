@@ -1268,6 +1268,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 //小区坐标
                 instance.setLon(Double.valueOf(instance.getHousePlotLocation().split(",")[0]));
                 instance.setLat(Double.valueOf(instance.getHousePlotLocation().split(",")[1]));
+                String houseDesc = StringUtils.strip(buildings.get("houseDesc").toString());
+                instance.setHouseDesc(houseDesc.replaceAll("(\\n|\\r\\n|\\r(\\n)+|\\r(\\n)+(\\s)*\\r(\\n)+)+", "<br>"));
 
                 if(null!=instance.getUserId() && !"".equals(instance.getUserId())){
                     GetResponse agentBaseResponse = client.prepareGet(agentBaseIndex,agentBaseType,instance.getUserId().toString()).execute().actionGet();

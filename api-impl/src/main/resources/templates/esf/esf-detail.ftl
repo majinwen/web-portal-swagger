@@ -579,7 +579,7 @@
         </#if>
     </#if>
 <#--</#if>-->
-
+<#if houseDetail.houseProxyPhone?exists>
 <div class="reservation-pop none">
     <div class="mask"></div>
     <div class="reservation-content">
@@ -601,7 +601,7 @@
         <a class="dialing" href="tel:${houseDetail.houseProxyPhone}">等不及？马上拨打经纪人电话</a>
     </div>
 </div>
-
+</#if>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
