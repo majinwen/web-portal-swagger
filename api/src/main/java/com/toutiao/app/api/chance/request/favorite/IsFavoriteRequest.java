@@ -20,6 +20,6 @@ public class IsFavoriteRequest {
 
 
     @NotNull(groups = {Second.class},message = "缺少二手房id")
-    private String houseId;
+    private String sellHouseId;
 
 }

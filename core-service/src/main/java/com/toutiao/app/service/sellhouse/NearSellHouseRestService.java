@@ -1,6 +1,7 @@
 package com.toutiao.app.service.sellhouse;
 
 import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
+import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 
 public interface NearSellHouseRestService {
@@ -10,5 +11,5 @@ public interface NearSellHouseRestService {
      * @param nearBySellHousesDo
      * @return
      */
-    NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHousesDo nearBySellHousesDo);
+    NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo);
 }

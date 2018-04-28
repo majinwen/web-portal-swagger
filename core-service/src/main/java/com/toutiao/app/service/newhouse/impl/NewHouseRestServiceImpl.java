@@ -144,6 +144,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //总价
         if(newHouseDoQuery.getBeginPrice()!=null && newHouseDoQuery.getEndPrice()!=0){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
+        if(newHouseDoQuery.getBeginPrice()!=null && newHouseDoQuery.getEndPrice()!=null){
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
+        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=0)
+        {        newHouseDoQuery.setBeginPrice(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
+        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=0)
+        {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
         }
 
         //标签
@@ -164,11 +172,23 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //面积
         if(newHouseDoQuery.getBeginArea()!=null &&  newHouseDoQuery.getEndArea()!=0)
+        if(newHouseDoQuery.getBeginArea()!=null &&  newHouseDoQuery.getEndArea()!=null)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
         }
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
+        }else if(null==newHouseDoQuery.getBeginArea() && null!=newHouseDoQuery.getEndArea())
+        {
+            newHouseDoQuery.setBeginArea(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
 
+        }else if (null==newHouseDoQuery.getEndArea() && null!=newHouseDoQuery.getBeginArea())
+        {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
+        }
 
         //销售状态
         if(StringTool.isNotEmpty(newHouseDoQuery.getSaleStatusId())){

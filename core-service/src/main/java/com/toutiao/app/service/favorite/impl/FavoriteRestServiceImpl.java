@@ -189,7 +189,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
           }
         }catch (Exception e)
         {
-            logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getNewHouseId()+"={}",e.getStackTrace());
+            logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getNewCode()+"={}",e.getStackTrace());
         }
 
         return  NashResult.Fail("收藏取消失败");

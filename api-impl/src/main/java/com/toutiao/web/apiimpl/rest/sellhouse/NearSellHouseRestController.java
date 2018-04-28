@@ -8,6 +8,7 @@ import com.toutiao.app.api.chance.request.sellhouse.NearBySellHousesRequest;
 import com.toutiao.app.api.chance.response.sellhouse.NearBySellHouseDomainResponse;
 import com.toutiao.app.api.chance.response.sellhouse.NearBySellHousesResponse;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
+import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.web.common.restmodel.InvokeResult;
@@ -38,9 +39,9 @@ public class NearSellHouseRestController {
     public NashResult getSellHouseByHouseIdAndLocation(@Validated NearBySellHousesRequest nearBySellHousesRequest) {
 
         NearBySellHouseDomainResponse nearBySellHouseDomainResponse=new NearBySellHouseDomainResponse();
-        NearBySellHousesDo nearBySellHousesDo=new NearBySellHousesDo();
-        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHousesDo);
-        NearBySellHouseDomain nearBySellHouseDomain =  nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHousesDo);
+        NearBySellHouseQueryDo nearBySellHouseQueryDo=new NearBySellHouseQueryDo();
+        BeanUtils.copyProperties(nearBySellHousesRequest,nearBySellHouseQueryDo);
+        NearBySellHouseDomain nearBySellHouseDomain =  nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHouseQueryDo);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(nearBySellHouseDomain.getNearBySellHousesDos()));
         List<NearBySellHousesResponse> nearBySellHousesResponses= JSONObject.parseArray(json.toJSONString(),NearBySellHousesResponse.class);
         nearBySellHouseDomainResponse.setNearBySellHousesResponses(nearBySellHousesResponses);

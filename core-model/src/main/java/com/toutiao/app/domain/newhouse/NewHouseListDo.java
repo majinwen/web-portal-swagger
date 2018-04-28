@@ -101,4 +101,10 @@ public class NewHouseListDo extends QueryDo {
     private  Integer saleStatusId;
 
 
+    /**
+     * 类别
+     */
+    private  String propertyType;
+
+
 }

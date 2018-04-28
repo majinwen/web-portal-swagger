@@ -57,4 +57,9 @@ public class HomePageNewHouseResponse {
      */
     private  String averagePrice;
 
+    /**
+     * 类别
+     */
+    private  String propertyType;
+
 }
