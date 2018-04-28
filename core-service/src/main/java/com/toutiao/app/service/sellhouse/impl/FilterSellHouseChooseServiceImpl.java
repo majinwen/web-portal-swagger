@@ -90,12 +90,12 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()).lte(nearBySellHouseQueryDo.getEndPrice()));
             booleanQueryBuilder.must(booleanQueryBuilder);
-        }else if (nearBySellHouseQueryDo.getBeginPrice()==null && nearBySellHouseQueryDo.getEndPrice()!=0)
+        }else if (nearBySellHouseQueryDo.getBeginPrice()==null && null!=nearBySellHouseQueryDo.getEndPrice())
         {
             nearBySellHouseQueryDo.setBeginPrice(0.0);
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()).lte(nearBySellHouseQueryDo.getEndPrice()));
             booleanQueryBuilder.must(booleanQueryBuilder);
-        }else if(nearBySellHouseQueryDo.getEndPrice()==null && nearBySellHouseQueryDo.getBeginPrice()!=0)
+        }else if(nearBySellHouseQueryDo.getEndPrice()==null && null!=nearBySellHouseQueryDo.getBeginPrice())
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
         }
@@ -104,13 +104,13 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getBeginArea()) && StringTool.isNotEmpty(nearBySellHouseQueryDo.getEndArea())) {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
             booleanQueryBuilder.must(booleanQueryBuilder);
-        }else if(nearBySellHouseQueryDo.getBeginArea()==null && nearBySellHouseQueryDo.getEndArea()!=0)
+        }else if(null==nearBySellHouseQueryDo.getBeginArea() && null!= nearBySellHouseQueryDo.getEndArea())
         {
             nearBySellHouseQueryDo.setBeginArea(0.0);
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
             booleanQueryBuilder.must(booleanQueryBuilder);
         }
-        else if(nearBySellHouseQueryDo.getEndArea()==null && nearBySellHouseQueryDo.getBeginArea()!=0)
+        else if(null==nearBySellHouseQueryDo.getEndArea() && null!= nearBySellHouseQueryDo.getBeginArea())
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()));
             booleanQueryBuilder.must(booleanQueryBuilder);
