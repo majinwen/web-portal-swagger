@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
+import com.toutiao.app.api.chance.request.sellhouse.SellHouseDerailsRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
@@ -25,13 +26,13 @@ public class SellHouseRestController {
 
     /**
      *  二手房房源详情
-     * @param houseId
+     * @param sellHouseDerailsRequest
      * @return
      */
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
-    public NashResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
+    public NashResult getSellHouseByHouseId(@Validated SellHouseDerailsRequest sellHouseDerailsRequest) {
         SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
-        SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(houseId);
+        SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId());
         BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
         return NashResult.build(sellAndClaimDetailsResponse);
     }

@@ -9,13 +9,10 @@ import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.plot.PlotListRequest;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsFewResponse;
 import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
+import com.toutiao.app.api.chance.response.plot.PlotListResponse;
 import com.toutiao.app.api.chance.response.plot.PlotTrafficResponse;
-import com.toutiao.app.domain.plot.PlotDetailsDo;
-import com.toutiao.app.domain.plot.PlotDetailsFewDo;
-import com.toutiao.app.domain.plot.PlotListDo;
-import com.toutiao.app.domain.plot.PlotTrafficDo;
+import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,12 +68,12 @@ public class PlotsRestController {
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
-        PlotListDo plotListDo = new PlotListDo();
-        BeanUtils.copyProperties(plotListRequest,plotListDo);
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryPlotListByRequirement(plotListDo);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
-        List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
-        return NashResult.build(plotDetailsFewResponseList);
+        PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
+        PlotListResponse plotListResponse = new PlotListResponse();
+        BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery);
+        BeanUtils.copyProperties(plotListDo,plotListResponse);
+        return NashResult.build(plotListResponse);
     }
 
     /**

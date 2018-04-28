@@ -3,7 +3,9 @@ package com.toutiao.web.apiimpl.rest.favorite;
 
 import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
+import com.toutiao.app.api.chance.response.plot.PlotFavoriteListResponse;
 import com.toutiao.app.domain.favorite.*;
+import com.toutiao.app.domain.plot.PlotFavoriteListDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
@@ -125,9 +127,9 @@ public class FavoriteRestController {
      */
     @RequestMapping(value = "/deleteRentFavoriteByRentIdAndUserId",method = RequestMethod.GET)
     public NashResult deleteRentFavoriteByRentIdAndUserId(@Validated DeleteRentFavoriteRequest deleteRentFavoriteRequest){
-        DeleteRentFavoriteDo deleteRentFavoriteDo = new DeleteRentFavoriteDo();
-        BeanUtils.copyProperties(deleteRentFavoriteRequest,deleteRentFavoriteDo);
-        Boolean aBoolean = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDo);
+        DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
+        BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
+        Boolean aBoolean = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
         return NashResult.build(aBoolean);
     }
 
@@ -138,9 +140,9 @@ public class FavoriteRestController {
      */
     @RequestMapping(value = "/getPlotIsFavoriteByPlotIdAndUserId",method = RequestMethod.GET)
     public NashResult getPlotIsFavorite(PlotIsFavoriteResquest plotIsFavoriteResquest){
-        PlotIsFavoriteDo plotIsFavoriteDo = new PlotIsFavoriteDo();
-        BeanUtils.copyProperties(plotIsFavoriteResquest,plotIsFavoriteDo);
-        Boolean plotIsFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDo);
+        PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
+        BeanUtils.copyProperties(plotIsFavoriteResquest, plotIsFavoriteDoQuery);
+        Boolean plotIsFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
         return NashResult.build(plotIsFavorite);
     }
 
@@ -151,10 +153,23 @@ public class FavoriteRestController {
      */
     @RequestMapping(value = "/getNewHouseIsFavorite",method = RequestMethod.GET)
     public NashResult getNewHouseIsFavorite(@Validated NewHouseIsFavoriteResquest newHouseIsFavoriteResquest){
-        NewHouseIsFavoriteDo newHouseIsFavoriteDo = new NewHouseIsFavoriteDo();
-        BeanUtils.copyProperties(newHouseIsFavoriteResquest,newHouseIsFavoriteDo);
-        Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDo);
+        NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+        BeanUtils.copyProperties(newHouseIsFavoriteResquest, newHouseIsFavoriteDoQuery);
+        Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
         return NashResult.build(newHouseIsFavorite);
+    }
+
+    /**
+     * 小区收藏列表
+     * @param plotsFavoriteListRequest
+     * @return
+     */
+    @RequestMapping(value = "/getPlotFavoriteByUserId",method = RequestMethod.GET)
+    public NashResult getPlotFavoriteByUserId(PlotsFavoriteListRequest plotsFavoriteListRequest){
+        PlotFavoriteListResponse plotFavoriteListResponse = new PlotFavoriteListResponse();
+        PlotFavoriteListDo plotFavoriteListDo = favoriteRestService.getPlotFavoriteByUserId(plotsFavoriteListRequest.getUserId(), plotsFavoriteListRequest.getPageNum(), plotsFavoriteListRequest.getSize());
+        BeanUtils.copyProperties(plotFavoriteListDo, plotFavoriteListResponse);
+        return NashResult.build(plotFavoriteListResponse);
     }
 
 }

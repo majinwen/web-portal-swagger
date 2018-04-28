@@ -3,7 +3,6 @@ package com.toutiao.app.service.rent.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
-import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.rent.RentAgentDo;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
@@ -16,15 +15,12 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -32,11 +28,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
@@ -62,26 +56,21 @@ public class RentRestRestServiceImpl implements RentRestService {
      */
     @Override
     public RentDetailsDo queryRentDetailByHouseId(String rentId) {
-        try {
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
-            boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-            SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            String details = "";
-            RentDetailsDo rentDetailsDo = new RentDetailsDo();
-            for (SearchHit searchHit : hits) {
-                details = searchHit.getSourceAsString();
-            }
-            if (org.apache.commons.lang.StringUtils.isNotEmpty(details)) {
-                rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
-            }
-            return rentDetailsDo;
-        }catch (Exception e){
-            e.printStackTrace();
+        RentDetailsDo rentDetailsDo = new RentDetailsDo();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
+        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        String details = "";
+        for (SearchHit searchHit : hits) {
+            details = searchHit.getSourceAsString();
         }
-        return null;
+        if (!"".equals(details)) {
+            rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
+        }
+        return rentDetailsDo;
     }
 
     /**
@@ -90,7 +79,8 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+    public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+        RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
@@ -104,11 +94,12 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
                 list.add(rentDetailsFewDo);
             }
+            rentDetailsListDo.setRentDetailsList(list);
+            rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         }
-        return list;
+        return rentDetailsListDo;
     }
 
     /**
@@ -135,8 +126,8 @@ public class RentRestRestServiceImpl implements RentRestService {
         rentNumDo2.setRentSign(2);
         rentNumDo2.setRentSignName("合租");
         list.add(rentNumDo2);
-        rentNumListDo.setRentNumResponses(list);
-        rentNumListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        rentNumListDo.setRentNum(list);
+        rentNumListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         return rentNumListDo;
     }
 
@@ -194,7 +185,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         if (hits.length>0&&hits.length<10){
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-            nearHouseDo.setRentHouseType(3);
+//            nearHouseDo.setRentHouseType(3);
             long From = ((nearHouseDo.getPageNum() - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse response = rentEsDao.queryNearHouseByLocation(getBoolQueryBuilder(booleanQueryBuilder,nearHouseDo), location, sort, (int) From,size-hits.length);
             SearchHit[] hits1 = response.getHits().getHits();
@@ -208,7 +199,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
         }else if (hits.length==0){
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-            nearHouseDo.setRentHouseType(3);
+//            nearHouseDo.setRentHouseType(3);
             long From = ((nearHouseDo.getPageNum() - ((searchResponse.getHits().getTotalHits()/10)+1))*size);
             SearchResponse response = rentEsDao.queryNearHouseByLocation(getBoolQueryBuilder(booleanQueryBuilder,nearHouseDo), location, sort, (int) From,size);
             SearchHit[] hits1 = response.getHits().getHits();
@@ -230,7 +221,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDoList getRentList(NearHouseDo nearHouseDo) {
+    public RentDetailsListDo getRentList(NearHouseDo nearHouseDo) {
 
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -250,20 +241,20 @@ public class RentRestRestServiceImpl implements RentRestService {
         SearchResponse searchResponse = rentEsDao.queryRentList(boolQueryBuilder, from, size);
         SearchHit[] hits = searchResponse.getHits().getHits();
 
-        RentDetailsDoList rentDetailsDoList = new RentDetailsDoList();
+        RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         if (hits.length>0){
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 list.add(rentDetailsFewDo);
             }
-            rentDetailsDoList.setRentDetailsDoList(list);
-            rentDetailsDoList.setTotalNum(hits.length);
+            rentDetailsListDo.setRentDetailsList(list);
+            rentDetailsListDo.setTotalCount(hits.length);
         }else{
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND,"租房推荐列表为空");
         }
 
-        return rentDetailsDoList;
+        return rentDetailsListDo;
     }
 
     /**
@@ -497,7 +488,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             String[] split = nearHouseDo.getTags().split(",");
             boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", split));
         }
-        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",nearHouseDo.getRentHouseType()));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",nearHouseDo.getRentHouseType()));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
         return boolQueryBuilder;

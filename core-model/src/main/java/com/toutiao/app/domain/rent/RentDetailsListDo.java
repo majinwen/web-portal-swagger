@@ -5,14 +5,14 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RentDetailsDoList {
+public class RentDetailsListDo {
     /**
      * 出租房源集合
      */
-    private List<RentDetailsFewDo> rentDetailsDoList;
+    private List<RentDetailsFewDo> RentDetailsList;
 
     /**
      * 总数
      */
-    private Integer totalNum;
+    private Integer totalCount;
 }

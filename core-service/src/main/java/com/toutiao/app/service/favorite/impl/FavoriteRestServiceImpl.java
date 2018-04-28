@@ -1,9 +1,10 @@
 package com.toutiao.app.service.favorite.impl;
 
 import com.toutiao.app.domain.favorite.*;
+import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
+import com.toutiao.app.domain.plot.PlotFavoriteListDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
-import com.toutiao.app.service.newhouse.impl.NewHouseRestServiceImpl;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
@@ -13,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FavoriteRestServiceImpl implements FavoriteRestService {
@@ -31,7 +34,8 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Autowired
     private UserFavoriteVillageMapper userFavoriteVillageMapper;
 
-
+    @Autowired
+    private PlotsRestService plotsRestService;
 
     /**
      *
@@ -142,9 +146,9 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo) {
+    public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery) {
         boolean flag = false;
-        Integer integer = userFavoriteRentMapper.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDo);
+        Integer integer = userFavoriteRentMapper.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
         if (integer>0){
             flag = true;
         }
@@ -152,10 +156,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public Boolean getPlotIsFavorite(PlotIsFavoriteDo plotIsFavoriteDo) {
+    public Boolean getPlotIsFavorite(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery) {
         boolean isFavorite=false;
         //判断小区是否被收藏
-        Integer integer = userFavoriteVillageMapper.selectPlotIsFavorite(plotIsFavoriteDo);
+        Integer integer = userFavoriteVillageMapper.selectPlotIsFavorite(plotIsFavoriteDoQuery);
         if (integer>0){
             isFavorite = true;
         }
@@ -163,14 +167,21 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo) {
+    public Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery) {
         boolean isFavorite=false;
         //判断新房是否被收藏
-        Integer newHouseIsFavorite = userFavoriteNewHouseMapper.getNewHouseIsFavorite(newHouseIsFavoriteDo);
+        Integer newHouseIsFavorite = userFavoriteNewHouseMapper.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
         if (newHouseIsFavorite>0){
             isFavorite = true;
         }
         return isFavorite;
+    }
+
+    @Override
+    public PlotFavoriteListDo getPlotFavoriteByUserId(Integer userId,Integer pageNum,Integer size) {
+        List plotId = userFavoriteVillageMapper.getPlotFavoriteByUserId(userId);
+        PlotFavoriteListDo plotFavoriteListDo = plotsRestService.queryPlotListByPlotIdList(plotId, pageNum, size);
+        return plotFavoriteListDo;
     }
 
     /**

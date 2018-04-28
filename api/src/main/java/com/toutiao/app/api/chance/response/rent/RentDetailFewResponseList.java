@@ -5,11 +5,11 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class RentNumListResponse {
+public class RentDetailFewResponseList {
     /**
-     * 房源信息
+     * 出租房源集合
      */
-    private List<RentNumResponse> rentNum;
+    private List<RentDetailFewResponse> RentDetailsList;
     /**
      * 总数
      */

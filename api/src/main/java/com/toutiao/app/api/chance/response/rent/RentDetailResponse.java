@@ -239,8 +239,6 @@ public class RentDetailResponse {
      */
     private Integer jRentLayout;
 
-
-
     /**
      * 类型
      */
