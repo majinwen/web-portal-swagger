@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.response.homepage;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 @Data
@@ -9,21 +10,25 @@ public class HomePageEsfResponse {
     /**
      *楼盘名称
      */
+
     private  String plotNameAccurate;
 
     /**
      *房源标题
      */
+
     private  String claimHouseTitle;
 
     /**
      * 区域
      */
+
     private  String  area;
 
     /**
      * 商圈
      */
+
     private  String houseBusinessName;
 
     /**
@@ -61,6 +66,7 @@ public class HomePageEsfResponse {
     /**
      * 房源id
      */
+
     private  String claimHouseId;
 
 
@@ -83,5 +89,6 @@ public class HomePageEsfResponse {
     /**
      * 标题图
      */
+
     private  String claimHousePhotoTitle;
 }

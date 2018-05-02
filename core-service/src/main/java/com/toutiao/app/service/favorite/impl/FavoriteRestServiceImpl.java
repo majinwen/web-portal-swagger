@@ -10,10 +10,13 @@ import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteRentMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteVillageMapper;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 import java.util.List;
 
@@ -220,5 +223,67 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
           logger.error("取消小区收藏接口异常"+userFavoriteVillage.getVillageId()+"={}",e.getStackTrace());
       }
       return NashResult.Fail("收藏取消失败");
+    }
+
+
+    /**
+     * 添加二手房收藏
+     */
+    @Override
+    public NashResult addEsfFavorite(UserFavoriteEsHouse userFavoriteEsHouse) {
+
+        //判断重复收藏
+       Integer result =0;
+       Integer re=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouse.getHouseId(),userFavoriteEsHouse.getUserId());
+       if (null!=re && re>0)
+       {
+           return NashResult.Fail("重复收藏");
+       }
+       try {
+           userFavoriteEsHouse.setCreateTime(new Date());
+           result= userFavoriteEsHouseMapper.insertSelective(userFavoriteEsHouse);
+       }catch(Exception e)
+       {
+           logger.error("二手房收藏接口异常："+userFavoriteEsHouse.getHouseId()+"={}",e.getStackTrace());
+       }
+       if (result>0)
+       {
+           return NashResult.build("收藏收功");
+       }
+       return  NashResult.Fail("收藏失败");
+
+
+    }
+
+    /**
+     *
+     * @param userFavoriteRent
+     * @return
+     * 添加出租收藏
+     */
+    @Override
+    public NashResult addRentFavorite(UserFavoriteRent userFavoriteRent) {
+
+       //判断重复收藏
+        Integer result =0;
+        Integer  re= userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRent.getHouseId(),userFavoriteRent.getUserId());
+        if (null!=re && re>0)
+         {
+             return NashResult.Fail("重复收藏");
+         }
+         try {
+             userFavoriteRent.setCreateTime(new Date());
+             result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
+
+         }catch (Exception e)
+         {
+             logger.error("添加出租收藏异常:"+userFavoriteRent.getHouseId()+"={}",e.getStackTrace());
+         }
+         if (result>0)
+         {
+             return NashResult.build("收藏收功");
+         }
+
+        return  NashResult.Fail("收藏失败");
     }
 }

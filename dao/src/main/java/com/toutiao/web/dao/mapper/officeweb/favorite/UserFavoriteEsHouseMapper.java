@@ -23,4 +23,6 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
     Integer isEsfFavoriteByHouseIdAndUserId(@Param("houseId") String houseId,@Param("userId") Integer userId);
 
     Integer updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo);
+
+
 }

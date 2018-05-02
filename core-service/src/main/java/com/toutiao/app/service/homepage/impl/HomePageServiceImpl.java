@@ -9,6 +9,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         {
             while (result.size()<5)
             {
-                result=hashPush(result,homePageEsfDos.get(random.nextInt(20)));
+                result=hashPush(result,homePageEsfDos.get(random.nextInt(10)));
             }
         }
         return  result;
@@ -82,7 +83,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         Boolean flag = false;
         if(result.size()>0){
             for (int i = 0; i <result.size() ; i++) {
-                if (result.get(i).getClaimHouseId().equals(homePageEsfDos.getClaimHouseId())){
+                if (null !=result.get(i).getClaimHouseId()&& null!=homePageEsfDos.getClaimHouseId() && result.get(i).getClaimHouseId().equals(homePageEsfDos.getClaimHouseId())){
                     flag = true;
                 }
             }
