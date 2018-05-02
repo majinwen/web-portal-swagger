@@ -142,7 +142,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     @Override
     public PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum , Integer size) {
         PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
-        List<PlotDetailsFewDo> list1 = new ArrayList<>();
+        List<UserFavoritePlotDo> list1 = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termsQuery("id",list));
         SearchResponse searchResponse = plotEsDao.queryPlotListByPlotIdList(boolQueryBuilder, (pageNum-1)*size, size);
@@ -150,11 +150,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if (hits.length>0){
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
-                PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
-                list1.add(plotDetailsFewDo);
+                UserFavoritePlotDo userFavoritePlotDo = JSON.parseObject(sourceAsString, UserFavoritePlotDo.class);
+                list1.add(userFavoritePlotDo);
             }
-            plotFavoriteListDo.setPlotFavoriteList(list1);
-            plotFavoriteListDo.setTotalCount(searchResponse.getHits().getTotalHits());
+            plotFavoriteListDo.setData(list1);
+            plotFavoriteListDo.setTotalNum(searchResponse.getHits().getTotalHits());
         }
         return plotFavoriteListDo;
     }

@@ -171,21 +171,31 @@
     SELECT COUNT(1) FROM user_favorite_village
     WHERE village_id = #{plotId} AND user_id = #{userId} AND is_del = 0
   </select>
-  <select id="getPlotFavoriteByUserId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    SELECT DISTINCT village_id FROM user_favorite_village
-    WHERE user_id = #{userId} AND is_del = 0
+  <select id="getPlotFavoriteByUserId" parameterType="com.toutiao.app.domain.plot.PlotFavoriteListDoQuery" resultMap="BaseResultMap">
+    SELECT  * FROM user_favorite_village
+    WHERE user_id = #{userId} AND is_del = 0 limit #{size} OFFSET #{from}
   </select>
   <insert id="addPlotsFavorite" parameterType="com.toutiao.app.domain.favorite.PlotsAddFavoriteDoQuery">
     insert into user_favorite_village
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <!--<if test="id != null" >-->
-      <!--id,-->
-      <!--</if>-->
+
       <if test="userId != null" >
         user_id,
       </if>
       <if test="plotId != null" >
         village_id,
+      </if>
+      <if test="avgPrice != null" >
+        avg_price,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="titleImage != null" >
+        title_image,
+      </if>
+      <if test="status != null" >
+        status,
       </if>
       <if test="true" >
         create_time,
@@ -195,14 +205,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <!--<if test="id != null" >-->
-      <!--#{id,jdbcType=INTEGER},-->
-      <!--</if>-->
       <if test="userId != null" >
         #{userId},
       </if>
       <if test="plotId != null" >
         #{plotId},
+      </if>
+      <if test="avgPrice != null" >
+        #{avgPrice},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="titleImage != null" >
+        #{titleImage},
+      </if>
+      <if test="status != null" >
+        #{status},
       </if>
       <if test="true" >
         CURRENT_TIMESTAMP(0),

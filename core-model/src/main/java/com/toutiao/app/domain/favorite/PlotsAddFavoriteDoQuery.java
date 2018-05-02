@@ -2,8 +2,6 @@ package com.toutiao.app.domain.favorite;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class PlotsAddFavoriteDoQuery {
     /**
@@ -14,12 +12,22 @@ public class PlotsAddFavoriteDoQuery {
      * 用户id
      */
     private Integer userId;
-
     /**
-     * 创建时间
+     * 均价
      */
-    private String createTime;
-
+    private Double avgPrice;
+    /**
+     * 小区名称
+     */
+    private String name;
+    /**
+     * 标题图
+     */
+    private String titleImage;
+    /**
+     * 是否下架(0-未下架, 1-下架)
+     */
+    private Short status;
     /**
      * 是否删除(0-未删除，1-已删除)
      */

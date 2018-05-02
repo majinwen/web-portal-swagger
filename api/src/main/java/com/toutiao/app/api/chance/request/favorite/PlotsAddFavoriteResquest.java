@@ -3,8 +3,6 @@ package com.toutiao.app.api.chance.request.favorite;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Data
 public class PlotsAddFavoriteResquest {
@@ -18,12 +16,25 @@ public class PlotsAddFavoriteResquest {
      */
     @NotNull(message = "用户id不能为空")
     private Integer userId;
-
     /**
-     * 创建时间
+     * 均价
      */
-    private String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
+    @NotNull(message = "均价不能为空")
+    private Double avgPrice;
+    /**
+     * 小区名称
+     */
+    @NotNull(message = "小区名称不能为空")
+    private String name;
+    /**
+     * 标题图
+     */
+    @NotNull(message = "标题图不能为空")
+    private String titleImage;
+    /**
+     * 是否下架(0-未下架, 1-下架)
+     */
+    private Short status = 0;
     /**
      * 是否删除(0-未删除，1-已删除)
      */

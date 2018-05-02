@@ -7,7 +7,8 @@ import java.util.List;
 @Data
 public class PlotFavoriteListDo {
 
-    private List<PlotDetailsFewDo> plotFavoriteList;
+    private List<UserFavoritePlotDo> data;
 
-    private Long totalCount;
+    private Long totalNum;
+
 }
