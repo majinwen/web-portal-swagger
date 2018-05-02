@@ -40,7 +40,6 @@ public class HomePageServiceImpl implements HomePageRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
         boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        boolQueryBuilder.must(QueryBuilders.termsQuery("is_claim","1"));
         SearchResponse searchResponse= homePageEsDao.getHomePageEsf(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
         for(SearchHit hit : hits)
@@ -82,7 +81,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         Boolean flag = false;
         if(result.size()>0){
             for (int i = 0; i <result.size() ; i++) {
-                if (result.get(i).getClaimHouseId().equals(homePageEsfDos.getClaimHouseId())){
+                if (null !=result.get(i).getClaimHouseId()&& null!=homePageEsfDos.getClaimHouseId() && result.get(i).getClaimHouseId().equals(homePageEsfDos.getClaimHouseId())){
                     flag = true;
                 }
             }

@@ -10,25 +10,25 @@ public class HomePageEsfResponse {
     /**
      *楼盘名称
      */
-    @JSONField(name="buildingName")
+
     private  String plotNameAccurate;
 
     /**
      *房源标题
      */
-    @JSONField(name="houseTitle")
+
     private  String claimHouseTitle;
 
     /**
      * 区域
      */
-    @JSONField(name="districtName")
+
     private  String  area;
 
     /**
      * 商圈
      */
-    @JSONField(name="areaName")
+
     private  String houseBusinessName;
 
     /**
@@ -54,7 +54,7 @@ public class HomePageEsfResponse {
     /**
      * 标签
      */
-   @JSONField(name="tags")
+
     private  String [] claimTagsName;
 
     /**
@@ -66,7 +66,7 @@ public class HomePageEsfResponse {
     /**
      * 房源id
      */
-    @JSONField(name="houseId")
+
     private  String claimHouseId;
 
 
@@ -89,6 +89,6 @@ public class HomePageEsfResponse {
     /**
      * 标题图
      */
-    @JSONField(name="housePhotoTitle")
+
     private  String claimHousePhotoTitle;
 }
