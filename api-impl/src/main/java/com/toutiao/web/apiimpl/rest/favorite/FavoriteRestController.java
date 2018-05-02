@@ -201,7 +201,7 @@ public class FavoriteRestController {
         return NashResult.build(aBoolean);
     }
 
-}
+
 
 
     /**
