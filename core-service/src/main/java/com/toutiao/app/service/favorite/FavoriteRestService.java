@@ -70,4 +70,15 @@ public interface FavoriteRestService {
      */
     Boolean getNewHouseIsFavorite(NewHouseIsFavoriteDo newHouseIsFavoriteDo);
 
+
+    /**
+     * 添加二手房收藏
+     */
+    NashResult addEsfFavorite(UserFavoriteEsHouse userFavoriteEsHouse);
+
+    /**
+     * 添加出租收藏
+     */
+    NashResult addRentFavorite(UserFavoriteRent userFavoriteRent);
+
 }

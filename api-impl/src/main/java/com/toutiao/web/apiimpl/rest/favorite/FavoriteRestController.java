@@ -157,4 +157,38 @@ public class FavoriteRestController {
         return NashResult.build(newHouseIsFavorite);
     }
 
+
+    /**
+     * 二手房添加收藏
+     */
+    @RequestMapping(value = "addEsfFavorite",method = RequestMethod.POST)
+    @ResponseBody
+    public NashResult addEsfFavorite(@Validated(First.class) AddFavorite addFavorite)
+    {
+        UserFavoriteEsHouse userFavoriteEsHouse= new UserFavoriteEsHouse();
+        BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
+        return favoriteRestService.addEsfFavorite(userFavoriteEsHouse)  ;
+    }
+
+
+    /**
+     * 租房添加收藏
+     */
+    @RequestMapping(value = "addRentFavorite" ,method = RequestMethod.POST)
+    @ResponseBody
+
+    public  NashResult addRentFavorite(@Validated(Second.class) AddFavorite addFavorite)
+    {
+        UserFavoriteRent userFavoriteRent =new UserFavoriteRent();
+        BeanUtils.copyProperties(addFavorite,userFavoriteRent);
+        return favoriteRestService.addRentFavorite(userFavoriteRent);
+    }
+
+
+
+
+
+
+
 }
+

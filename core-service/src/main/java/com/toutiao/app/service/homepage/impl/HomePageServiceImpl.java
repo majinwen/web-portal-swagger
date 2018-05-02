@@ -9,6 +9,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
         boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("is_claim","1"));
         SearchResponse searchResponse= homePageEsDao.getHomePageEsf(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
         for(SearchHit hit : hits)
@@ -54,7 +56,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         {
             while (result.size()<5)
             {
-                result=hashPush(result,homePageEsfDos.get(random.nextInt(20)));
+                result=hashPush(result,homePageEsfDos.get(random.nextInt(10)));
             }
         }
         return  result;

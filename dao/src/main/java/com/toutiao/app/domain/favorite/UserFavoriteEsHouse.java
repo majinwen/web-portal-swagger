@@ -1,7 +1,9 @@
 package com.toutiao.app.domain.favorite;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class UserFavoriteEsHouse {
     /**
      * 二手房收藏id
@@ -16,7 +18,7 @@ public class UserFavoriteEsHouse {
     /**
      * 二手房房源id
      */
-    private String eshouseId;
+    private String houseId;
 
     /**
      * 创建时间
@@ -28,43 +30,22 @@ public class UserFavoriteEsHouse {
      */
     private Short isDel;
 
-    public Integer getId() {
-        return id;
-    }
+    /**
+     * 是否下架
+     */
+    private  Integer status;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private  Integer  room;
 
-    public Integer getUserId() {
-        return userId;
-    }
+    private  String buildingName;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    private  Double totalPrice;
 
-    public String getEshouseId() {
-        return eshouseId;
-    }
+    private  String  housePhotoTitle;
 
-    public void setEshouseId(String eshouseId) {
-        this.eshouseId = eshouseId == null ? null : eshouseId.trim();
-    }
+    private  String  houseTitle;
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+    private  Double  houseArea;
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Short getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Short isDel) {
-        this.isDel = isDel;
-    }
+    private  String forward;
 }
