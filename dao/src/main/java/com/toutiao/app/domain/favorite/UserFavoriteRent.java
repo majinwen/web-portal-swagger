@@ -1,7 +1,9 @@
 package com.toutiao.app.domain.favorite;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class UserFavoriteRent {
     /**
      * 租房收藏id
@@ -16,7 +18,7 @@ public class UserFavoriteRent {
     /**
      * 租房id
      */
-    private String rentId;
+    private String houseId;
 
     /**
      * 创建时间
@@ -28,43 +30,48 @@ public class UserFavoriteRent {
      */
     private Short isDel;
 
-    public Integer getId() {
-        return id;
-    }
+    /**
+     * 租金
+     */
+    private  Double rentPrice;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    /**
+     * 上下架状态
+     */
+    private  Integer status;
 
-    public Integer getUserId() {
-        return userId;
-    }
+    /**
+     * 出租类型
+     */
+    private  String rentType;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+    /**
+     * 房屋面积
+     */
+    private  Double houseArea;
 
-    public String getRentId() {
-        return rentId;
-    }
+    /**
+     * 室
+     */
+    private  Integer room;
 
-    public void setRentId(String rentId) {
-        this.rentId = rentId == null ? null : rentId.trim();
-    }
+    /**
+     * 朝向
+     */
+    private  String forward;
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+    /**
+     * 大楼名称
+     */
+    private  String buildingName;
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+    /**
+     * 房屋标题图
+     */
+    private  String housePhotoTitle;
 
-    public Short getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Short isDel) {
-        this.isDel = isDel;
-    }
+    /**
+     * 房屋标题
+     */
+    private  String houseTitle;
 }

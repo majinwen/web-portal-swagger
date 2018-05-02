@@ -4,12 +4,21 @@
   <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="eshouse_id" property="eshouseId" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="is_del" property="isDel" jdbcType="SMALLINT" />
+    <result column="house_title" property="houseTitle" jdbcType="VARCHAR" />
+    <result column="house_photo_title" property="housePhotoTitle" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="house_area" property="houseArea" jdbcType="DOUBLE" />
+    <result column="room" property="room" jdbcType="INTEGER" />
+    <result column="forward" property="forward" jdbcType="VARCHAR" />
+    <result column="total_price" property="totalPrice" jdbcType="DOUBLE" />
+
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, eshouse_id, create_time, is_del
+    id, user_id, house_id, create_time, is_del,status,building_name,house_area,room,forward,total_price,house_photo_title,house_title
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,10 +31,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
-    insert into user_favorite_eshouse (id, user_id, eshouse_id, 
-      create_time, is_del)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{eshouseId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT})
+    insert into user_favorite_eshouse (id, user_id, house_id, 
+      create_time, is_del,status,building_name,house_area,room,forward,total_price,house_photo_title,house_title)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT},#{status,jdbcType=INTEGER},#{buildingName,jdbcType=VARCHAR},#{houseArea,jdbcType=DOUBLE},#{room,jdbcType=INTEGER},#{forward,jdbcType=VARCHAR},#{totalPrice,jdbcType=DOUBLE},#{housePhotoTitle,jdbcType=VARCHAR},#{houseTitle,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     insert into user_favorite_eshouse
@@ -36,14 +45,38 @@
       <if test="userId != null" >
         user_id,
       </if>
-      <if test="eshouseId != null" >
-        eshouse_id,
+      <if test="houseId != null" >
+        house_id,
       </if>
       <if test="createTime != null" >
         create_time,
       </if>
       <if test="isDel != null" >
         is_del,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="houseArea != null" >
+        house_area,
+      </if>
+      <if test="room != null" >
+        room,
+      </if>
+      <if test="forward != null" >
+        forward,
+      </if>
+      <if test="totalPrice != null" >
+        total_price,
+      </if>
+      <if test="housePhotoTitle != null" >
+        house_photo_title,
+      </if>
+      <if test="houseTitle != null" >
+        house_title,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -53,14 +86,38 @@
       <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="eshouseId != null" >
-        #{eshouseId,jdbcType=VARCHAR},
+      <if test="houseId != null" >
+        #{houseId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isDel != null" >
         #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="houseArea != null" >
+        #{houseArea,jdbcType=DOUBLE},
+      </if>
+      <if test="room != null" >
+        #{room,jdbcType=INTEGER},
+      </if>
+      <if test="forward != null" >
+        #{forward,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null" >
+        #{totalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="housePhotoTitle != null" >
+        #{housePhotoTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="houseTitle != null" >
+        #{houseTitle,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -70,8 +127,8 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="eshouseId != null" >
-        eshouse_id = #{eshouseId,jdbcType=VARCHAR},
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -85,7 +142,7 @@
   <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     update user_favorite_eshouse
     set user_id = #{userId,jdbcType=INTEGER},
-      eshouse_id = #{eshouseId,jdbcType=VARCHAR},
+      house_id = #{houseId,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       is_del = #{isDel,jdbcType=SMALLINT}
     where id = #{id,jdbcType=INTEGER}
@@ -98,12 +155,12 @@
 
     <select id="isEsfFavoriteByHouseIdAndUserId" resultType="Integer">
         SELECT  count(1) from user_favorite_eshouse
-        where eshouse_id=#{houseId} and user_id=#{userId} and is_del=0
+        where house_id=#{houseId} and user_id=#{userId} and is_del=0
     </select>
 
     <update id="updateEsfFavoriteByEsfIdAndUserId" parameterType="com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo">
     UPDATE user_favorite_eshouse
     SET is_del = 1
-    WHERE eshouse_id = #{esfId,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=INTEGER} AND is_del = 0
+    WHERE house_id = #{esfId,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=INTEGER} AND is_del = 0
   </update>
 </mapper>

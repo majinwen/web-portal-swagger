@@ -22,5 +22,12 @@ public interface UserFavoriteRentMapper extends BaseDao {
 
     Integer isRentFavoriteByRentIdAndUserId(@Param("houseId") String houseId, @Param("userId") Integer userId);
 
+    /**
+     *
+     * @param deleteRentFavoriteDo
+     * @return
+     * 取消收藏
+     */
     Integer updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo);
+
 }

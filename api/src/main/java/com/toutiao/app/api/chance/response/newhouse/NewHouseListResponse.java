@@ -1,9 +1,10 @@
 package com.toutiao.app.api.chance.response.newhouse;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 @Data
-public class NewHouseListResponse {
+public class NewHouseListResponse  {
+
 
     /**
      * 最小面积
@@ -18,16 +19,19 @@ public class NewHouseListResponse {
     /**
      * 楼盘名称
      */
+   @JSONField(name="buildingName")
     private String buildingName;
 
     /**
      * 楼盘id
      */
-     private  Integer buildingNameId;
+
+    private  Integer buildingNameId;
 
     /**
      * 区域名字
      */
+    @JSONField(name="districtName")
     private  String  districtName;
 
     /**
@@ -43,18 +47,19 @@ public class NewHouseListResponse {
     /**
      * 最近交房
      */
-
     private  String deliverTime;
 
 
     /**
      * 车位配比
      */
+    @JSONField(name="parkRatio")
     private String parkRadio;
 
     /**
      * 均价
      */
+    @JSONField(name="averagePrice")
     private  String averagePrice;
 
     /**
@@ -79,6 +84,7 @@ public class NewHouseListResponse {
     /**
      *总价
      */
+    @JSONField(name="totalPrice")
     private Double  totalPrice;
 
 
