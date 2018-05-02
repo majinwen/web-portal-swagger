@@ -63,12 +63,12 @@ public class PlotDetailsFewDo {
     /**
      * 地铁站
      */
-    @ChangeName("stationName")
+    @ChangeName("subwayStationName")
     private String[] metroStation;
     /**
      * 地铁站与小区的距离
      */
-    @ChangeName("stationWithPlotsDistance")
+    @ChangeName("nearbyStationsDistance")
     private Map metroWithPlotsDistance;
     /**
      * 地铁线路编号

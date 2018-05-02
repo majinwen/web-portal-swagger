@@ -331,7 +331,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
         }
         plotListDo.setPlotList(plotDetailsFewDoList);
-        plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+        plotListDo.setTotalCount((int) searchResponse.getHits().getHits().length);
         return plotListDo;
     }
 

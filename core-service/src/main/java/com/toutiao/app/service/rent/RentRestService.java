@@ -42,15 +42,15 @@ public interface RentRestService {
 
     /**
      * 出租推荐房源（7天内录入）
-     * @param nearHouseDo
+     * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsListDo getRentList(NearHouseDo nearHouseDo);
+    RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery);
 
     /**
      * 推优房源
-     * @param rentHouseDo
+     * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsFewDo queryRecommendRent(RentHouseDo rentHouseDo);
+    RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery);
 }

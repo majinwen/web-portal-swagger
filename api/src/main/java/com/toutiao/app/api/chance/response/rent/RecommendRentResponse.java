@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.rent;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 
@@ -49,13 +50,21 @@ public class RecommendRentResponse {
     private String areaName;
 
     /**
+     * 小区ID
+     */
+    @ChangeName("buildingId")
+    private Integer zufangId;
+
+    /**
      * 小区名称
      */
+    @ChangeName("buildingName")
     private String zufangName;
 
     /**
      * 出租房源标签名称
      */
+    @ChangeName("tags")
     private String[] rentHouseTagsName;
 
     /**
@@ -71,6 +80,7 @@ public class RecommendRentResponse {
     /**
      * 房源标题图
      */
+    @ChangeName("housePhotoTitle")
     private String houseTitleImg;
 
 }
