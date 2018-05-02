@@ -30,9 +30,8 @@ public class NewHouseRestController {
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
     public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
     {
-        NewHouseDetailResponse newHouseDetailResponse= new NewHouseDetailResponse();
         NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode());
-        BeanUtils.copyProperties(newHouseDetailDo,newHouseDetailResponse);
+        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
         return NashResult.build(newHouseDetailResponse);
     }
 

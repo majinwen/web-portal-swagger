@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.plot;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import java.util.Map;
 
@@ -9,113 +10,131 @@ public class PlotDetailsResponse {
     /**
      * 小区编号
      */
+//    @JSONField(name = "buildingId")
     private Integer id;
     /**
      * 小区名称/楼盘名称
      */
+//    @JSONField(name = "buildingName")
     private String rc;
     /**
      * 别名
      */
+//    @JSONField(name = "buildingNickName")
     private String alias;
     /**
      * 小区照片
      */
+//    @JSONField(name = "buildingImages")
     private String[] photo;
     /**
      * 区域编号
      */
+//    @JSONField(name = "districtId")
     private String areaId;
     /**
      * 区域
      */
+//    @JSONField(name = "districtName")
     private String area;
     /**
      * 商圈编号
      */
+//    @JSONField(name = "areaId")
     private String tradingAreaId;
     /**
      * 商圈
      */
+//    @JSONField(name = "areaName")
     private String tradingArea;
     /**
      * 地址
      */
+//    @JSONField(name = "houseAddress")
     private String address;
-    /**
-     * 坐标
-     */
-    private String location;
-    /**
-     * 地铁站编号
-     */
-    private String[] metroStationId;
-    /**
-     * 地铁站
-     */
-    private String[] metroStation;
-    /**
-     * 地铁站与小区的距离
-     */
-    private Map metroWithPlotsDistance;
-    /**
-     * 地铁线路编号
-     */
-    private String[] subwayLineId;
-    /**
-     * 地铁线路
-     */
-    private String[] subwayLine;
+//    /**
+//     * 坐标
+//     */
+//    private String location;
+//    /**
+//     * 地铁站编号
+//     */
+//    private String[] metroStationId;
+//    /**
+//     * 地铁站
+//     */
+//    private String[] metroStation;
+//    /**
+//     * 地铁站与小区的距离
+//     */
+//    private Map metroWithPlotsDistance;
+//    /**
+//     * 地铁线路编号
+//     */
+//    private String[] subwayLineId;
+//    /**
+//     * 地铁线路
+//     */
+//    private String[] subwayLine;
     /**
      * 交通信息
      */
+//    @JSONField(name = "nearBySubwayDesc")
     private String TrafficInformation;
-    /**
-     * 标签编号
-     */
-    private String[] labelId;
+//    /**
+//     * 标签编号
+//     */
+//    private String[] labelId;
     /**
      * 标签
      */
+//    @JSONField(name = "tags")
     private String[] label;
-    /**
-     * 待售房源
-     */
-    private String[] saleHouse;
+//    /**
+//     * 待售房源
+//     */
+//    private String[] saleHouse;
     /**
      * 均价
      */
+//    @JSONField(name = "averagePrice")
     private Integer avgPrice;
     /**
      * 总价
      */
+//    @JSONField(name = "totalPrice")
     private Integer sumPrice;
     /**
      * 建成年代
      */
+//    @JSONField(name = "buildYears")
     private String abbreviatedAge;
-    /**
-     * 楼龄
-     */
-    private Integer age;
+//    /**
+//     * 楼龄
+//     */
+//    private Integer age;
     /**
      * 占地面积
      */
+//    @JSONField(name = "coversArea")
     private String areaSize;
     /**
      * 建筑面积
      */
+//    @JSONField(name = "buildingArea")
     private String buildingAreaSize;
     /**
      * 总栋数
      */
+//    @JSONField(name = "totalBuilding")
     private String sumBuilding;
     /**
      * 总户数
      */
+//    @JSONField(name = "totalHousehold")
     private String sumHousehold;
     /**
-     * 户均绿化率
+     * 绿化率
      */
     private Double avgGreening;
     /**
@@ -129,10 +148,12 @@ public class PlotDetailsResponse {
     /**
      * 电梯配备
      */
+//    @JSONField(name = "hasElevator")
     private String elevator;
     /**
      * 车位配比
      */
+//    @JSONField(name = "parkRatio")
     private String carPositionRatio;
     /**
      * 停车费
@@ -141,10 +162,12 @@ public class PlotDetailsResponse {
     /**
      * 小区详情介绍
      */
+//    @JSONField(name = "houseDesc")
     private String desc;
     /**
      * 小区特色
      */
+//    @JSONField(name = "feature")
     private String characteristic;
     /**
      * 开发商
@@ -153,6 +176,7 @@ public class PlotDetailsResponse {
     /**
      * 物业公司
      */
+//    @JSONField(name = "propertyCompany")
     private String property;
     /**
      * 物业费
@@ -162,10 +186,6 @@ public class PlotDetailsResponse {
      * 物业类型
      */
     private String propertyType;
-    /**
-     * 物业类型名称
-     */
-    private String propertyTypeName;
     /**
      * 产权年限
      */

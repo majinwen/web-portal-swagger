@@ -1,11 +1,13 @@
 package com.toutiao.app.domain.plot;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
 @Data
-public class PlotDetailsFewDo {
+public class PlotDetailsFewDo implements Serializable{
     /**
      * 小区编号
      */

@@ -1,46 +1,57 @@
 package com.toutiao.app.api.chance.response.plot;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
 @Data
-public class PlotDetailsFewResponse {
+public class PlotDetailsFewResponse implements Serializable{
     /**
      * 小区编号
      */
+//    @JSONField(name = "buildingId")
     private Integer id;
     /**
      * 小区名称/楼盘名称
      */
+//    @JSONField(name = "buildingName")
     private String rc;
     /**
      * 别名
      */
+//    @JSONField(name = "houseAlias")
     private String alias;
     /**
      * 小区照片
      */
+//    @JSONField(name = "housePhoto")
     private String[] photo;
     /**
      * 区域编号
      */
+//    @JSONField(name = "districtId")
     private String areaId;
     /**
      * 区域
      */
+//    @JSONField(name = "districtName")
     private String area;
     /**
      * 商圈编号
      */
+//    @JSONField(name = "areaId")
     private String tradingAreaId;
     /**
      * 商圈
      */
+//    @JSONField(name = "areaName")
     private String tradingArea;
     /**
      * 地址
      */
+//    @JSONField(name = "houseAddress")
     private String address;
     /**
      * 坐标
@@ -49,14 +60,17 @@ public class PlotDetailsFewResponse {
     /**
      * 地铁站编号
      */
+//    @JSONField(name = "subwayStationId")
     private String[] metroStationId;
     /**
      * 地铁站
      */
+//    @JSONField(name = "subwayStation")
     private String[] metroStation;
     /**
      * 地铁站与小区的距离
      */
+//    @JSONField(name = "subwayWithHouseDistance")
     private Map metroWithPlotsDistance;
     /**
      * 地铁线路编号
@@ -69,14 +83,17 @@ public class PlotDetailsFewResponse {
     /**
      * 交通信息
      */
+//    @JSONField(name = "trafficInformation")
     private String TrafficInformation;
     /**
      * 标签编号
      */
+//    @JSONField(name = "tagsId")
     private String[] labelId;
     /**
      * 标签
      */
+//    @JSONField(name = "tags")
     private String[] label;
     /**
      * 待售房源

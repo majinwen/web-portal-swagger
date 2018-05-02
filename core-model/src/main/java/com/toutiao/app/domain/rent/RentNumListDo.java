@@ -9,9 +9,9 @@ public class RentNumListDo {
     /**
      * 房源信息
      */
-    private List<RentNumDo> rentNum;
+    private List<RentNumDo> data;
     /**
      * 总数
      */
-    private Integer totalCount;
+    private Integer totalNum;
 }

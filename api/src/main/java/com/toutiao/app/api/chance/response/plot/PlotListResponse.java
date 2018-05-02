@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class PlotListResponse {
 
-    private List<PlotDetailsFewResponse> plotList;
+    private List<PlotDetailsFewResponse> data;
 
-    private Integer totalCount;
+    private Integer totalNum;
 }
