@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.rent;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -13,34 +14,25 @@ public class RentDetailResponse {
     /**
      * 小区Id
      */
+    @JSONField(name="buildingId")
     private Integer zufangId;
     /**
      * 小区名称
      */
+    @JSONField(name="buildingName")
     private String zufangName;
-    /**
-     * 小区分数
-     */
-    private Integer zufangScore;
-    /**
-     * 城市编号
-     */
-    private Integer cityId;
-    /**
-     * 区域编号
-     */
-    private Integer districtId;
+
+
     /**
      * 区域名称
      */
+    @JSONField(name="districtName")
     private String districtName;
-    /**
-     * 商圈编号
-     */
-    private Integer areaId;
+
     /**
      * 商圈名称
      */
+    @JSONField(name="areaName")
     private String areaName;
     /**
      * 出租房源Id
@@ -65,6 +57,7 @@ public class RentDetailResponse {
     /**
      * 楼盘ID(楼盘/小区)
      */
+    @JSONField(name="buildingId")
     private Integer villageId;
     /**
      * 需求
@@ -83,10 +76,6 @@ public class RentDetailResponse {
      */
     private String forward;
     /**
-     * 朝向（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
-     */
-    private Integer forwardType;
-    /**
      * 几室
      */
     private String room;
@@ -94,10 +83,6 @@ public class RentDetailResponse {
      * 几厅
      */
     private Integer hall;
-    /**
-     * 供热方式
-     */
-    private Integer heatingType;
     /**
      * 几卫
      */
@@ -119,28 +104,14 @@ public class RentDetailResponse {
      */
     private Integer totalFloor;
     /**
-     * 楼盘3km地铁线ID
-     */
-    private Integer[] subwayLineId;
-    /**
-     * 楼盘3km地铁站ID
-     */
-    private Integer[] subwayStationId;
-    /**
-     * 附近地铁站
-     */
-    private HashMap nearbySubway;
-    /**
      * 最近的地铁
      */
     private String nearestSubway;
-    /**
-     * 出租房源标签(1-采光好，2-地铁近，3-首次出租，4-独立阳台，5-独立卫生间，6-集中供暖，7-可注册办公)
-     */
-    private Integer[] rentHouseTagsId;
+
     /**
      * 出租房源标签名称
      */
+    @JSONField(name="tags")
     private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
@@ -153,11 +124,9 @@ public class RentDetailResponse {
     /**
      * 房源图片
      */
+    @JSONField(name="buildingImages")
     private List rentHouseImg;
-    /**
-     * 付款方式(1-面议，2-押一付一，3-押一付二，4-押一付三，5-押二付一，6-押二付二，7-押二付三，8-半年付，9-年付)
-     */
-    private Integer payMode;
+
     /**
      * 付款方式名称
      */
@@ -198,48 +167,16 @@ public class RentDetailResponse {
      * 发版时间
      */
     private String publishTime;
-    /**
-     * 发布状态
-     */
-    private Integer releaseStatus;
-    /**
-     * 是否上架
-     */
-    private Integer isDel;
+
     /**
      * 是否是推荐
      */
     private Integer isRecommend;
-    /**
-     * 是否是置顶
-     */
-    private Integer isTop;
-    /**
-     * 版本
-     */
-    private Integer version;
-    /**
-     * 置顶关键词
-     */
-    private String topKeyword;
-    /**
-     * 置顶时间
-     */
-    private String topTime;
-    /**
+
+     /*
      * 经纪人
      */
     private String estateAgent;
-    /**
-     * 整租户型
-     */
-    private Integer eRentLayout;
-    /**
-     * 合租户型
-     */
-    private Integer jRentLayout;
-
-
 
     /**
      * 类型

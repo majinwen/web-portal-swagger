@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.newhouse;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
