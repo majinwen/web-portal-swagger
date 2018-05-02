@@ -46,13 +46,16 @@ public class SellHouseServiceImpl implements SellHouseService{
     private FilterSellHouseChooseService filterSellHouseChooseService;
 
     @Override
-    public SellAndClaimHouseDetailsDo getSellHouseByHouseId(String houseId) {
+    public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
 
         //二手房房源详情
         SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();
+        SellHouseDetailsDo sellHouseDetailsDo = new SellHouseDetailsDo();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        Boolean flag = false;
         if ("FS".equals(houseId.substring(0,2))){
             booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
+            flag = true;
         }else {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         }
@@ -64,9 +67,18 @@ public class SellHouseServiceImpl implements SellHouseService{
             for (SearchHit searchHit : searchHists) {
                 details = searchHit.getSourceAsString();
             }
+
             sellAndClaimHouseDetailsDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
+            BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
+            if (flag){
+                sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
+                sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
+                sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
+                sellHouseDetailsDo.setTags(sellAndClaimHouseDetailsDo.getTags());
+                sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
+            }
         }
-        return sellAndClaimHouseDetailsDo;
+        return sellHouseDetailsDo;
     }
 
 
