@@ -40,7 +40,7 @@ public class UserFavoritePlotDo {
     /**
      * 小区名称
      */
-    private String name;
+    private String buildingName;
 
     /**
      * 标题图
