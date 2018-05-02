@@ -8,7 +8,7 @@ public interface NearSellHouseRestService {
 
     /**
      * 二手房附近好房列表
-     * @param nearBySellHousesDo
+     * @param nearBySellHouseQueryDo
      * @return
      */
     NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo);

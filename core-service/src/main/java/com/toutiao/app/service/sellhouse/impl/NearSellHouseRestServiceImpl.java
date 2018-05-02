@@ -106,7 +106,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         }
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHousesDo.getPageNum(),nearBySellHousesDo.getPageSize());
+        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit searchHit : searchHists) {
@@ -123,7 +123,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
             nearBySellHouses.add(nearBySellHousesDo);
         }
         nearBySellHouseDomain.setNearBySellHousesDos(nearBySellHouses);
-        nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getTotalHits());
+        nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getHits().length);
 
         return nearBySellHouseDomain;
     }

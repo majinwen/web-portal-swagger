@@ -9,7 +9,7 @@ public class NearBySellHouseDomain {
 
     private List<NearBySellHousesDo> nearBySellHousesDos;
 
-    private long TotalCount;
+    private long totalCount;
 
 
 }
