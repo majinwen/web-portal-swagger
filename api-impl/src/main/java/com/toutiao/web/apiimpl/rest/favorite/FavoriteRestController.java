@@ -172,7 +172,7 @@ public class FavoriteRestController {
         return NashResult.build(plotFavoriteListResponse);
     }
 
-}
+
 
     /**
      * 二手房添加收藏
