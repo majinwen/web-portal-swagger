@@ -12,7 +12,7 @@ public class SellHouseDo {
      * 二手房房源id
      */
     @ChangeName("houseId")
-    private Integer claimHouseId;
+    private String claimHouseId;
     /**
      * 房源标题
      */
@@ -99,7 +99,7 @@ public class SellHouseDo {
     /**
      * 地铁线/站 距离
      */
-    @ChangeName("stationWithPlotsDistance")
+    @ChangeName("nearbyStationsDistance")
     private Map<String, String> subwayDistince;
     /**
      * 建成年代
@@ -117,6 +117,8 @@ public class SellHouseDo {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
+
+    private String uid;
 
 
 

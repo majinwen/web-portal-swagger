@@ -228,9 +228,13 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                             .gte(sellHouseDoQuery.getBeginPrice()).lte(sellHouseDoQuery.getEndPrice())));
         }
         //面积
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getBeginArea()) && StringTool.isNotEmpty(sellHouseDoQuery.getEndArea())) {
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
+        if (sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()!=0) {
+
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
+        }else if(sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()==0){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()));
+        }else if(sellHouseDoQuery.getBeginArea()==0 && sellHouseDoQuery.getEndArea()!=0){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(sellHouseDoQuery.getEndArea()));
         }
         //楼龄
         if (StringUtil.isNotNullString(sellHouseDoQuery.getHouseYearId())) {

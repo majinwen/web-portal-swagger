@@ -113,6 +113,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         //获取认领房源中30天内有价格变动的房源
         BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isRecommend",0));
         boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
         queryBuilderOfMonth.should(QueryBuilders.rangeQuery("create_time").gt(pastDateOfMonth).lte(nowDate));
         queryBuilderOfMonth.should(QueryBuilders.rangeQuery("price_increase_decline").gt(0));
@@ -159,6 +160,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
             sellHouseDos.add(sellHouseDo);
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
@@ -171,7 +173,11 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder){
         FunctionScoreQueryBuilder query = null;
-        List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword());
+        List<String> searchKeyword = new ArrayList<>();
+        if(StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())){
+            searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword());
+        }
+
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())){
             if(searchKeyword!=null && searchKeyword.size() > 0){
                 int searchTermSize = searchKeyword.size();

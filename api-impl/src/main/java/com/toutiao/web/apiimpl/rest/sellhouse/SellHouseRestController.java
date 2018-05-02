@@ -7,6 +7,7 @@ import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,9 +76,9 @@ public class SellHouseRestController {
      * @param sellHouseRequest
      * @return
      */
-    @RequestMapping("/getRecommendSellHouse")
+    @RequestMapping(value ="/getRecommendSellHouse", method = RequestMethod.POST)
     @ResponseBody
-    public NashResult getRecommendSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+    public NashResult getRecommendSellHouse(@Validated(First.class) @RequestBody SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);

@@ -12,7 +12,7 @@ public interface FilterSellHouseChooseService {
 
     /**
      * 过滤附近二手房查询条件
-     * @param nearBySellHousesDo
+     * @param nearBySellHouseQueryDo
      * @return
      */
     BoolQueryBuilder filterChoose(NearBySellHouseQueryDo nearBySellHouseQueryDo);
