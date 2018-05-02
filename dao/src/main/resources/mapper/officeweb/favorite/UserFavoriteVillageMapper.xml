@@ -8,12 +8,13 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="is_del" property="isDel" jdbcType="SMALLINT" />
     <result column="avg_price" property="avgPrice" jdbcType="NUMERIC" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="title_image" property="titleImage" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="SMALLINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, village_id, create_time, is_del, avg_price, name, title_image, status
+    id, user_id, village_id, create_time, is_del, avg_price, building_name, title_image, 
+    status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,11 +29,11 @@
   <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteVillage" >
     insert into user_favorite_village (id, user_id, village_id, 
       create_time, is_del, avg_price, 
-      name, title_image, status
+      building_name, title_image, status
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{villageId,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT}, #{avgPrice,jdbcType=NUMERIC}, 
-      #{name,jdbcType=VARCHAR}, #{titleImage,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}
+      #{buildingName,jdbcType=VARCHAR}, #{titleImage,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteVillage" >
@@ -56,8 +57,8 @@
       <if test="avgPrice != null" >
         avg_price,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="buildingName != null" >
+        building_name,
       </if>
       <if test="titleImage != null" >
         title_image,
@@ -85,8 +86,8 @@
       <if test="avgPrice != null" >
         #{avgPrice,jdbcType=NUMERIC},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="titleImage != null" >
         #{titleImage,jdbcType=VARCHAR},
@@ -114,8 +115,8 @@
       <if test="avgPrice != null" >
         avg_price = #{avgPrice,jdbcType=NUMERIC},
       </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="buildingName != null" >
+        building_name = #{buildingName,jdbcType=VARCHAR},
       </if>
       <if test="titleImage != null" >
         title_image = #{titleImage,jdbcType=VARCHAR},
@@ -133,7 +134,7 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       is_del = #{isDel,jdbcType=SMALLINT},
       avg_price = #{avgPrice,jdbcType=NUMERIC},
-      name = #{name,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
       title_image = #{titleImage,jdbcType=VARCHAR},
       status = #{status,jdbcType=SMALLINT}
     where id = #{id,jdbcType=INTEGER}
@@ -188,8 +189,8 @@
       <if test="avgPrice != null" >
         avg_price,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="buildingName != null" >
+        building_name,
       </if>
       <if test="titleImage != null" >
         title_image,
@@ -214,8 +215,8 @@
       <if test="avgPrice != null" >
         #{avgPrice},
       </if>
-      <if test="name != null" >
-        #{name},
+      <if test="buildingName != null" >
+        #{buildingName},
       </if>
       <if test="titleImage != null" >
         #{titleImage},

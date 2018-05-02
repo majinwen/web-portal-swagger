@@ -25,7 +25,7 @@ public class PlotsAddFavoriteResquest {
      * 小区名称
      */
     @NotNull(message = "小区名称不能为空")
-    private String name;
+    private String buildingName;
     /**
      * 标题图
      */
