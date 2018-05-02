@@ -1,88 +1,248 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper" >
-  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="new_house_id" property="newHouseId" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="is_del" property="isDel" jdbcType="SMALLINT" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper">
+  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="new_house_id" jdbcType="INTEGER" property="newHouseId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_del" jdbcType="SMALLINT" property="isDel" />
+    <result column="avg_price" jdbcType="NUMERIC" property="avgPrice" />
+    <result column="begin_area" jdbcType="VARCHAR" property="beginArea" />
+    <result column="end_area" jdbcType="VARCHAR" property="endArea" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="title_image" jdbcType="VARCHAR" property="titleImage" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, user_id, new_house_id, create_time, is_del
+  <sql id="Base_Column_List">
+    id, user_id, new_house_id, create_time, is_del, avg_price, begin_area, end_area, 
+    name, title_image, status
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
+  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    insert into user_favorite_newhouse (id, user_id, new_house_id, 
+      create_time, is_del, avg_price, 
+      begin_area, end_area, name, 
+      title_image, status)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{newHouseId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT}, #{avgPrice,jdbcType=NUMERIC}, 
+      #{beginArea,jdbcType=VARCHAR}, #{endArea,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{titleImage,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    insert into user_favorite_newhouse
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="newHouseId != null">
+        new_house_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="avgPrice != null">
+        avg_price,
+      </if>
+      <if test="beginArea != null">
+        begin_area,
+      </if>
+      <if test="endArea != null">
+        end_area,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="titleImage != null">
+        title_image,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="newHouseId != null">
+        #{newHouseId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="avgPrice != null">
+        #{avgPrice,jdbcType=NUMERIC},
+      </if>
+      <if test="beginArea != null">
+        #{beginArea,jdbcType=VARCHAR},
+      </if>
+      <if test="endArea != null">
+        #{endArea,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="titleImage != null">
+        #{titleImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    update user_favorite_newhouse
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="newHouseId != null">
+        new_house_id = #{newHouseId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="avgPrice != null">
+        avg_price = #{avgPrice,jdbcType=NUMERIC},
+      </if>
+      <if test="beginArea != null">
+        begin_area = #{beginArea,jdbcType=VARCHAR},
+      </if>
+      <if test="endArea != null">
+        end_area = #{endArea,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="titleImage != null">
+        title_image = #{titleImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    update user_favorite_newhouse
+    set user_id = #{userId,jdbcType=INTEGER},
+      new_house_id = #{newHouseId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=SMALLINT},
+      avg_price = #{avgPrice,jdbcType=NUMERIC},
+      begin_area = #{beginArea,jdbcType=VARCHAR},
+      end_area = #{endArea,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      title_image = #{titleImage,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="new_house_id" jdbcType="INTEGER" property="newHouseId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="is_del" jdbcType="SMALLINT" property="isDel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, new_house_id, create_time, is_del
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_favorite_newhouse
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_favorite_newhouse
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
     insert into user_favorite_newhouse (id, user_id, new_house_id, 
       create_time, is_del)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{newHouseId,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
+  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
     insert into user_favorite_newhouse
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="userId != null" >
+      <if test="userId != null">
         user_id,
       </if>
-      <if test="newHouseId != null" >
+      <if test="newHouseId != null">
         new_house_id,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time,
       </if>
-      <if test="isDel != null" >
+      <if test="isDel != null">
         is_del,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="userId != null" >
+      <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="newHouseId != null" >
+      <if test="newHouseId != null">
         #{newHouseId,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDel != null" >
+      <if test="isDel != null">
         #{isDel,jdbcType=SMALLINT},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
     update user_favorite_newhouse
-    <set >
-      <if test="userId != null" >
+    <set>
+      <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="newHouseId != null" >
+      <if test="newHouseId != null">
         new_house_id = #{newHouseId,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDel != null" >
+      <if test="isDel != null">
         is_del = #{isDel,jdbcType=SMALLINT},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
     update user_favorite_newhouse
     set user_id = #{userId,jdbcType=INTEGER},
       new_house_id = #{newHouseId,jdbcType=INTEGER},
@@ -104,24 +264,25 @@
 
   <update id="cancelNewHouseFavoriteByUserIdAndHouseId" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
     update user_favorite_newhouse
-    <set >
-      <if test="userId != null" >
+    <set>
+      <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="newCode != null" >
+      <if test="newCode != null">
         new_house_id = #{newCode,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="isDel != null" >
+      <if test="isDel != null">
         is_del = #{isDel,jdbcType=SMALLINT},
       </if>
     </set>
     where new_house_id=#{newCode,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
   </update>
-    <select id="getNewHouseIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery">
+    <select id="getNewHouseIsFavorite" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery" resultType="java.lang.Integer">
         SELECT COUNT(1) FROM user_favorite_newhouse
         WHERE user_id=#{userId} and is_del=0 AND new_house_id = #{newHouseId}
     </select>
+
 </mapper>

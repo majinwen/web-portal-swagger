@@ -2,7 +2,9 @@ package com.toutiao.app.domain.favorite;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
+
 @Data
 public class UserFavoriteVillage {
     /**
@@ -29,6 +31,26 @@ public class UserFavoriteVillage {
      * 是否删除(0-未删除，1-已删除)
      */
     private Short isDel;
+
+    /**
+     * 均价
+     */
+    private BigDecimal avgPrice;
+
+    /**
+     * 小区名称
+     */
+    private String name;
+
+    /**
+     * 标题图
+     */
+    private String titleImage;
+
+    /**
+     * 上下架(0-上架, 1-下架)
+     */
+    private Short status;
 
 
 }
