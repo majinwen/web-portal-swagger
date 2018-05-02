@@ -172,4 +172,17 @@ public class FavoriteRestController {
         return NashResult.build(plotFavoriteListResponse);
     }
 
+    /**
+     * 小区收藏
+     * @param plotsAddFavoriteResquest
+     * @return
+     */
+    @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.GET)
+    public NashResult addPlotsFavorite(PlotsAddFavoriteResquest plotsAddFavoriteResquest){
+        PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
+        BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
+        Boolean aBoolean = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
+        return NashResult.build(aBoolean);
+    }
+
 }

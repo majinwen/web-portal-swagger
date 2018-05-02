@@ -184,6 +184,19 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         return plotFavoriteListDo;
     }
 
+    @Override
+    public Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
+        try {
+        Integer integer = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
+            if (integer>0){
+                return true;
+            }
+        }catch (Exception e){
+            logger.error("小区接口异常,plotId:"+plotsAddFavoriteDoQuery.getPlotId()+", userId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+        }
+        return false;
+    }
+
     /**
      *新房取消收藏接口
      * @param userFavoriteNewHouse

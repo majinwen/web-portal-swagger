@@ -126,4 +126,41 @@
     SELECT DISTINCT village_id FROM user_favorite_village
     WHERE user_id = #{userId} AND is_del = 0
   </select>
+  <insert id="addPlotsFavorite" parameterType="com.toutiao.app.domain.favorite.PlotsAddFavoriteDoQuery">
+    insert into user_favorite_village
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <!--<if test="id != null" >-->
+        <!--id,-->
+      <!--</if>-->
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="plotId != null" >
+        village_id,
+      </if>
+      <if test="true" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <!--<if test="id != null" >-->
+        <!--#{id,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <if test="userId != null" >
+        #{userId},
+      </if>
+      <if test="plotId != null" >
+        #{plotId},
+      </if>
+      <if test="true" >
+        CURRENT_TIMESTAMP(0),
+      </if>
+      <if test="isDel != null" >
+        #{isDel}
+      </if>
+    </trim>
+  </insert>
 </mapper>

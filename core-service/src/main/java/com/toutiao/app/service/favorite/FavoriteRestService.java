@@ -80,4 +80,13 @@ public interface FavoriteRestService {
      */
     PlotFavoriteListDo getPlotFavoriteByUserId(Integer userId, Integer pageNum, Integer size);
 
+    /**
+     * 添加小区收藏
+     * @param plotsAddFavoriteDoQuery
+     * @return
+     */
+    Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
+
+
+
 }
