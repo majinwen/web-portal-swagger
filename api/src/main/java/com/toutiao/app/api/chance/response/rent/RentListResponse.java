@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.response.rent;
 
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
@@ -10,9 +11,11 @@ public class RentListResponse {
     /**
      * 出租房源详情集合
      */
-    private List<RentDetailsFewDo> rentDetailsDoList;
+    @ChangeName("data")
+    private List<RentDetailsFewDo> rentDetailsList;
     /**
      * 总数
      */
-    private Integer totalNum;
+    @ChangeName("totalNum")
+    private Integer totalCount;
 }

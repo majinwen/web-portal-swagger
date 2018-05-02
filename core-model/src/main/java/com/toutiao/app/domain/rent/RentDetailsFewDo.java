@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.rent;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 @Data
@@ -11,10 +12,12 @@ public class RentDetailsFewDo {
     /**
      * 小区Id
      */
+    @ChangeName("buildingId")
     private Integer zufangId;
     /**
      * 小区名称
      */
+    @ChangeName("buildingName")
     private String zufangName;
     /**
      * 房源面积
@@ -47,6 +50,7 @@ public class RentDetailsFewDo {
     /**
      * 出租房源标签名称
      */
+    @ChangeName("tags")
     private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
@@ -59,6 +63,7 @@ public class RentDetailsFewDo {
     /**
      * 房源标题图
      */
+    @ChangeName("housePhotoTitle")
     private String houseTitleImg;
     /**
      * 录入/导入房源标题

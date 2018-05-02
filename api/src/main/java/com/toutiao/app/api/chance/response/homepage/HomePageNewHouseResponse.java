@@ -62,4 +62,10 @@ public class HomePageNewHouseResponse {
      */
     private  String propertyType;
 
+
+    /**
+     * 大楼id
+     */
+    private  Integer buildingNameId;
+
 }

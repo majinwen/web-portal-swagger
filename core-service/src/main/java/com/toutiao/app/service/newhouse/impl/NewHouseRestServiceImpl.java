@@ -144,10 +144,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //总价
         if(newHouseDoQuery.getBeginPrice()!=null && newHouseDoQuery.getEndPrice()!=null){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=0)
+        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=null)
         {        newHouseDoQuery.setBeginPrice(0.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=0)
+        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=null)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
         }
@@ -216,7 +216,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
                 newHouseListDoList.add(newHouseListDos);
             }
-            newHouseListVo.setListDoList(newHouseListDoList);
+            newHouseListVo.setData(newHouseListDoList);
             newHouseListVo.setTotalCount(hits.getTotalHits());
         }catch (Exception e)
         {
