@@ -3,18 +3,9 @@ package com.toutiao.app.domain.favorite;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
-public class UserFavoriteNewHouse {
-    /**
-     * NewCode
-     */
-    private Integer newCode;
-    /**
-     * 新房收藏id
-     */
-    private Integer id;
+public class NewHouseAddFavoriteDoQuery {
 
     /**
      * 用户id
@@ -25,16 +16,6 @@ public class UserFavoriteNewHouse {
      * 新房id
      */
     private Integer newHouseId;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 是否删除(0-未删除，1-已删除)
-     */
-    private Short isDel;
 
     /**
      * 均价
@@ -62,8 +43,12 @@ public class UserFavoriteNewHouse {
     private String titleImage;
 
     /**
-     * 上下架(0-上架,1-下架)  
+     * 上下架(0-上架,1-下架)
      */
     private Short status;
 
+    /**
+     * 是否删除(0-未删除，1-已删除)
+     */
+    private Short isDel;
 }

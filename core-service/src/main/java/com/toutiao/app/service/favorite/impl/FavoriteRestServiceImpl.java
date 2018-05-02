@@ -1,8 +1,12 @@
 package com.toutiao.app.service.favorite.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.domain.plot.PlotFavoriteListDo;
+import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
+import com.toutiao.app.domain.plot.UserFavoritePlotDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -16,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
@@ -181,10 +186,39 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public PlotFavoriteListDo getPlotFavoriteByUserId(Integer userId,Integer pageNum,Integer size) {
-        List plotId = userFavoriteVillageMapper.getPlotFavoriteByUserId(userId);
-        PlotFavoriteListDo plotFavoriteListDo = plotsRestService.queryPlotListByPlotIdList(plotId, pageNum, size);
+    public PlotFavoriteListDo getPlotFavoriteByUserId(PlotFavoriteListDoQuery plotFavoriteListDoQuery) {
+        PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
+        plotFavoriteListDoQuery.setFrom((plotFavoriteListDoQuery.getPageNum()-1)*plotFavoriteListDoQuery.getSize());
+        List<UserFavoriteVillage> plotFavoriteByUserId = userFavoriteVillageMapper.getPlotFavoriteByUserId(plotFavoriteListDoQuery);
+        List<UserFavoritePlotDo> list = JSONArray.parseArray(JSONObject.toJSONString(plotFavoriteByUserId), UserFavoritePlotDo.class);
+        plotFavoriteListDo.setData(list);
         return plotFavoriteListDo;
+    }
+
+    @Override
+    public Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
+        try {
+        Integer result = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
+            if (result>0){
+                return true;
+            }
+        }catch (Exception e){
+            logger.error("小区添加收藏接口异常,plotId:"+plotsAddFavoriteDoQuery.getPlotId()+", userId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
+        try {
+            Integer result = userFavoriteNewHouseMapper.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
+            if (result>0){
+                return true;
+            }
+        }catch (Exception e){
+            logger.error("新房添加收藏接口异常,newHouseId:"+newHouseAddFavoriteDoQuery.getNewHouseId()+", userId:"+newHouseAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+        }
+        return false;
     }
 
     /**

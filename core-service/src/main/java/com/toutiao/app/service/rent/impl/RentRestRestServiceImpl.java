@@ -126,8 +126,8 @@ public class RentRestRestServiceImpl implements RentRestService {
         rentNumDo2.setRentSign(2);
         rentNumDo2.setRentSignName("合租");
         list.add(rentNumDo2);
-        rentNumListDo.setRentNum(list);
-        rentNumListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+        rentNumListDo.setData(list);
+        rentNumListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
         return rentNumListDo;
     }
 

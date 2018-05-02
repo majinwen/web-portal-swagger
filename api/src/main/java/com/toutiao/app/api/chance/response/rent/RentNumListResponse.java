@@ -9,9 +9,9 @@ public class RentNumListResponse {
     /**
      * 房源信息
      */
-    private List<RentNumResponse> rentNum;
+    private List<RentNumResponse> data;
     /**
      * 总数
      */
-    private Integer totalCount;
+    private Integer totalNum;
 }

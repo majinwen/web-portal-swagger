@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.rent;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 
@@ -8,18 +9,22 @@ public class RentDetailFewResponse {
     /**
      * 出租房源Id
      */
+    @ChangeName("houseId")
     private String houseId;
     /**
      * 小区Id
      */
+    @ChangeName("buildingId")
     private Integer zufangId;
     /**
      * 小区名称
      */
+    @ChangeName("buildingName")
     private String zufangName;
     /**
      * 房源面积
      */
+    @ChangeName("houseArea")
     private Double houseArea;
     /**
      * 几室
@@ -48,10 +53,12 @@ public class RentDetailFewResponse {
     /**
      * 出租房源标签名称
      */
+    @ChangeName("tags")
     private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
      */
+    @ChangeName("rentPrice")
     private Double rentHousePrice;
     /**
      * 总数
@@ -61,12 +68,5 @@ public class RentDetailFewResponse {
      * 房源标题图
      */
     private String houseTitleImg;
-    /**
-     * 录入/导入房源标题
-     */
-    private String houseTitle;
-    /**
-     * 房源来源类型(录入/导入)
-     */
-    private Integer rentHouseType;
+
 }

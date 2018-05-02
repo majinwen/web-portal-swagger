@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.favorite;
+package com.toutiao.app.domain.plot;
 
 import lombok.Data;
 
@@ -6,13 +6,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class UserFavoriteNewHouse {
+public class UserFavoritePlotDo {
     /**
-     * NewCode
-     */
-    private Integer newCode;
-    /**
-     * 新房收藏id
+     * 收藏小区id
      */
     private Integer id;
 
@@ -22,9 +18,9 @@ public class UserFavoriteNewHouse {
     private Integer userId;
 
     /**
-     * 新房id
+     * 小区id
      */
-    private Integer newHouseId;
+    private Integer villageId;
 
     /**
      * 创建时间
@@ -42,17 +38,7 @@ public class UserFavoriteNewHouse {
     private BigDecimal avgPrice;
 
     /**
-     * 起始面积
-     */
-    private String beginArea;
-
-    /**
-     * 结束面积
-     */
-    private String endArea;
-
-    /**
-     * 楼盘名称
+     * 小区名称
      */
     private String buildingName;
 
@@ -62,8 +48,7 @@ public class UserFavoriteNewHouse {
     private String titleImage;
 
     /**
-     * 上下架(0-上架,1-下架)  
+     * 上下架(0-上架, 1-下架)
      */
     private Short status;
-
 }

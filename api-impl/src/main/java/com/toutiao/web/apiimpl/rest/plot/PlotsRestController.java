@@ -69,10 +69,9 @@ public class PlotsRestController {
     @ResponseBody
     public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
-        PlotListResponse plotListResponse = new PlotListResponse();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
         PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery);
-        BeanUtils.copyProperties(plotListDo,plotListResponse);
+        PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
         return NashResult.build(plotListResponse);
     }
 

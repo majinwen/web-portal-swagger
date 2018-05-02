@@ -3,6 +3,7 @@ package com.toutiao.app.service.favorite;
 import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.domain.plot.PlotFavoriteListDo;
+import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.web.common.restmodel.NashResult;
 
 public interface FavoriteRestService {
@@ -75,10 +76,27 @@ public interface FavoriteRestService {
 
     /**
      * 获取小区收藏列表
-     * @param userId
+     * @param plotFavoriteListDoQuery
      * @return
      */
-    PlotFavoriteListDo getPlotFavoriteByUserId(Integer userId, Integer pageNum, Integer size);
+    PlotFavoriteListDo getPlotFavoriteByUserId(PlotFavoriteListDoQuery plotFavoriteListDoQuery);
+
+    /**
+     * 添加小区收藏
+     * @param plotsAddFavoriteDoQuery
+     * @return
+     */
+    Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
+
+    /**
+     * 添加新房收藏
+     * @param newHouseAddFavoriteDoQuery
+     * @return
+     */
+    Boolean addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
+
+
+
 
 
     /**

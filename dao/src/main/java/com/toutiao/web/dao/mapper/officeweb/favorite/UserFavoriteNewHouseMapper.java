@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
+import com.toutiao.app.domain.favorite.NewHouseAddFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
 import com.toutiao.web.dao.BaseDao;
@@ -24,4 +25,6 @@ public interface UserFavoriteNewHouseMapper extends BaseDao {
     int  cancelNewHouseFavoriteByUserIdAndHouseId(UserFavoriteNewHouse userFavoriteNewHouse);
 
     Integer getNewHouseIsFavorite(NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery);
+
+    Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
 }
