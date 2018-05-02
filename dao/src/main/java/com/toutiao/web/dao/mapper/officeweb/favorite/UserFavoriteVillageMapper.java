@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
+import com.toutiao.app.domain.favorite.NewHouseAddFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.PlotsAddFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.UserFavoriteVillage;
@@ -32,4 +33,6 @@ public interface UserFavoriteVillageMapper extends BaseDao {
     List<UserFavoriteVillage> getPlotFavoriteByUserId(PlotFavoriteListDoQuery plotFavoriteListDoQuery);
 
     Integer addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
+
+
 }

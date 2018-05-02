@@ -88,6 +88,14 @@ public interface FavoriteRestService {
      */
     Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
 
+    /**
+     * 添加新房收藏
+     * @param newHouseAddFavoriteDoQuery
+     * @return
+     */
+    Boolean addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
+
+
 
 
 }

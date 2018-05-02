@@ -195,12 +195,25 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Override
     public Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
         try {
-        Integer integer = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
-            if (integer>0){
+        Integer result = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
+            if (result>0){
                 return true;
             }
         }catch (Exception e){
-            logger.error("小区接口异常,plotId:"+plotsAddFavoriteDoQuery.getPlotId()+", userId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+            logger.error("小区添加收藏接口异常,plotId:"+plotsAddFavoriteDoQuery.getPlotId()+", userId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
+        try {
+            Integer result = userFavoriteNewHouseMapper.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
+            if (result>0){
+                return true;
+            }
+        }catch (Exception e){
+            logger.error("新房添加收藏接口异常,newHouseId:"+newHouseAddFavoriteDoQuery.getNewHouseId()+", userId:"+newHouseAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
         }
         return false;
     }

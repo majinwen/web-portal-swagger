@@ -126,5 +126,6 @@ public class PlotDetailsFewDo {
     /**
      * 获取地铁站与小区的距离
      */
+    @ChangeName("distanceKey")
     private String key;
 }

@@ -176,7 +176,7 @@ public class FavoriteRestController {
     }
 
     /**
-     * 小区收藏
+     * 添加小区收藏
      * @param plotsAddFavoriteResquest
      * @return
      */
@@ -185,6 +185,19 @@ public class FavoriteRestController {
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
         Boolean aBoolean = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
+        return NashResult.build(aBoolean);
+    }
+
+    /**
+     * 添加新房收藏
+     * @param newHouseAddFavoriteRequest
+     * @return
+     */
+    @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.GET)
+    public NashResult addNewHouseFavorite(NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
+        NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
+        BeanUtils.copyProperties(newHouseAddFavoriteRequest,newHouseAddFavoriteDoQuery);
+        Boolean aBoolean = favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
         return NashResult.build(aBoolean);
     }
 

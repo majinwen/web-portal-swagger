@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.response.plot;
 
-import com.alibaba.fastjson.annotation.JSONField;
+
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,47 +12,47 @@ public class PlotDetailsFewResponse implements Serializable{
     /**
      * 小区编号
      */
-//    @JSONField(name = "buildingId")
+    @ChangeName("buildingId")
     private Integer id;
     /**
      * 小区名称/楼盘名称
      */
-//    @JSONField(name = "buildingName")
+    @ChangeName("buildingName")
     private String rc;
     /**
      * 别名
      */
-//    @JSONField(name = "houseAlias")
+    @ChangeName("houseAlias")
     private String alias;
     /**
      * 小区照片
      */
-//    @JSONField(name = "housePhoto")
+    @ChangeName("housePhoto")
     private String[] photo;
     /**
      * 区域编号
      */
-//    @JSONField(name = "districtId")
+    @ChangeName("districtId")
     private String areaId;
     /**
      * 区域
      */
-//    @JSONField(name = "districtName")
+    @ChangeName("districtName")
     private String area;
     /**
      * 商圈编号
      */
-//    @JSONField(name = "areaId")
+    @ChangeName("areaId")
     private String tradingAreaId;
     /**
      * 商圈
      */
-//    @JSONField(name = "areaName")
+    @ChangeName("areaName")
     private String tradingArea;
     /**
      * 地址
      */
-//    @JSONField(name = "houseAddress")
+    @ChangeName("houseAddress")
     private String address;
     /**
      * 坐标
@@ -60,17 +61,17 @@ public class PlotDetailsFewResponse implements Serializable{
     /**
      * 地铁站编号
      */
-//    @JSONField(name = "subwayStationId")
+    @ChangeName("subwayStationId")
     private String[] metroStationId;
     /**
      * 地铁站
      */
-//    @JSONField(name = "subwayStation")
+    @ChangeName("subwayStation")
     private String[] metroStation;
     /**
      * 地铁站与小区的距离
      */
-//    @JSONField(name = "subwayWithHouseDistance")
+    @ChangeName("subwayWithHouseDistance")
     private Map metroWithPlotsDistance;
     /**
      * 地铁线路编号
@@ -83,44 +84,41 @@ public class PlotDetailsFewResponse implements Serializable{
     /**
      * 交通信息
      */
-//    @JSONField(name = "trafficInformation")
+    @ChangeName("trafficInformation")
     private String TrafficInformation;
     /**
      * 标签编号
      */
-//    @JSONField(name = "tagsId")
+    @ChangeName("tagsId")
     private String[] labelId;
     /**
      * 标签
      */
-//    @JSONField(name = "tags")
+    @ChangeName("tags")
     private String[] label;
-    /**
-     * 待售房源
-     */
-    private String[] saleHouse;
     /**
      * 均价
      */
+    @ChangeName("averagePrice")
     private Integer avgPrice;
     /**
      * 总价
      */
+    @ChangeName("totalPrice")
     private Integer sumPrice;
     /**
      * 建成年代
      */
+    @ChangeName("buildYears")
     private String abbreviatedAge;
     /**
      * 车位配比
      */
+    @ChangeName("parkRatio")
     private String carPositionRatio;
-    /**
-     * 小区总个数
-     */
-    private Integer totalNum;
     /**
      * 获取地铁站与小区的距离
      */
+    @ChangeName("distanceKey")
     private String key;
 }
