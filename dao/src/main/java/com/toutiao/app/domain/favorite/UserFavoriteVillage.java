@@ -52,5 +52,4 @@ public class UserFavoriteVillage {
      */
     private Short status;
 
-
 }
