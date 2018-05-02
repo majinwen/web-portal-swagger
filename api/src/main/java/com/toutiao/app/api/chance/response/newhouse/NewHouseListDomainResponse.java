@@ -1,5 +1,7 @@
 package com.toutiao.app.api.chance.response.newhouse;
 
+import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
@@ -7,7 +9,8 @@ import java.util.List;
 public class NewHouseListDomainResponse {
 
 
-    private  List<NewHouseListResponse> newHouseList;
+    private  List<NewHouseListDo> data;
+    @ChangeName("totalNum")
     private long totalCount;
 
 }

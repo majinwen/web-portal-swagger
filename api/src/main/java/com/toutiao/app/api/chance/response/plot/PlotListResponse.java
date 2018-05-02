@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.plot;
 
+import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import lombok.Data;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 @Data
 public class PlotListResponse {
 
-    private List<PlotDetailsFewResponse> plotList;
+    private List<PlotDetailsFewDo> plotList;
 
-    private Integer totalCount;
+    private Integer totalNum;
 }

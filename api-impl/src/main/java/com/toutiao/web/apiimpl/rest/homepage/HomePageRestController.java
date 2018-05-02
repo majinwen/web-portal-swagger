@@ -47,7 +47,7 @@ public class HomePageRestController {
     public  NashResult getHomePageNewHouse()
     {
         NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse();
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDomain.getListDoList()));
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDomain.getData()));
         List<HomePageNewHouseResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomePageNewHouseResponse.class);
         return  NashResult.build(newHouseListResponses);
     }

@@ -9,7 +9,7 @@ import java.util.List;
 public class NewHouseListDomain {
 
 
-    private List<NewHouseListDo> listDoList;
+    private List<NewHouseListDo> data;
 
     private  long totalCount;
 

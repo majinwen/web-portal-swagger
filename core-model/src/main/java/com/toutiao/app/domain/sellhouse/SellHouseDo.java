@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.Map;
@@ -10,15 +11,23 @@ public class SellHouseDo {
     /**
      * 二手房房源id
      */
+    @ChangeName("houseId")
     private Integer claimHouseId;
     /**
      * 房源标题
      */
+    @ChangeName("houseTitle")
     private String claimHouseTitle;
+    /**
+     * 房源图片
+     */
+    @ChangeName("housePhoto")
+    private String[] housePhoto;
 
     /**
      * 标题图
      */
+    @ChangeName("housePhotoTitle")
     private String claimHousePhotoTitle;
 
     /**
@@ -39,11 +48,13 @@ public class SellHouseDo {
     /**
      * 建筑面积
      */
+    @ChangeName("houseArea")
     private Double buildArea;
 
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
+    @ChangeName("tags")
     private String[] claimTagsName;
 
     /**
@@ -58,39 +69,53 @@ public class SellHouseDo {
     /**
      * 朝向
      */
+    @ChangeName("forward")
     private String forwardName;
 
     /**
      * 区域名称
      */
+    @ChangeName("districtName")
     private String area;
 
     /**
      * 商圈名称
      */
+    @ChangeName("areaName")
     private String houseBusinessName;
 
     /**
      * 小区名称
      */
+    @ChangeName("buildingName")
     private String plotName;
+
+    /**
+     * 小区id
+     */
+    @ChangeName("buildingId")
+    private Integer newcode;
 
     /**
      * 地铁线/站 距离
      */
+    @ChangeName("stationWithPlotsDistance")
     private Map<String, String> subwayDistince;
     /**
      * 建成年代
      */
+    @ChangeName("buildYears")
     private String year;
     /**
      * 房源小区地理坐标
      */
+    @ChangeName("location")
     private String housePlotLocation;
 
     /**
      * 车位配比
      */
+    @ChangeName("parkRatio")
     private String parkRadio;
 
 
