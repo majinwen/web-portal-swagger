@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest.plot;
 
 
 import com.toutiao.app.api.chance.request.plot.NearbyPlotsListRequest;
+import com.toutiao.app.api.chance.response.plot.NearbyPlotsListResponse;
 import com.toutiao.app.api.chance.response.plot.PlotFavoriteListResponse;
 import com.toutiao.app.domain.plot.NearbyPlotsDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
@@ -37,9 +38,11 @@ public class NearbyPlotsRestController {
         NearbyPlotsDoQuery nearbyPlotsDoQuery = new NearbyPlotsDoQuery();
         BeanUtils.copyProperties(nearbyPlotsListRequest,nearbyPlotsDoQuery);
         PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery);
-        PlotFavoriteListResponse newHouseLayoutCountResponse = new PlotFavoriteListResponse();
+        NearbyPlotsListResponse newHouseLayoutCountResponse = new NearbyPlotsListResponse();
         BeanUtils.copyProperties(plotDetailsFewDomain, newHouseLayoutCountResponse);
         return NashResult.build(newHouseLayoutCountResponse);
+
+
     }
 
 }
