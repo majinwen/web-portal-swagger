@@ -34,7 +34,7 @@ public class PlotsEsfRestController {
     @ResponseBody
     public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
 
-        Integer plotsId = plotsEsfRequest.getPlotsId();
+        Integer plotsId = plotsEsfRequest.getPlotId();
         PlotsEsfRoomCountResponse plotsEsfRoomCountResponse = new PlotsEsfRoomCountResponse();
         PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId);
         BeanUtils.copyProperties(plotsEsfRoomCountDomain, plotsEsfRoomCountResponse);
@@ -47,7 +47,7 @@ public class PlotsEsfRestController {
     @RequestMapping(value = "/getEsfByPlotsIdAndRoom")
     public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
 
-        Integer plotsId = plotsEsfRequest.getPlotsId();
+        Integer plotsId = plotsEsfRequest.getPlotId();
         Integer room = plotsEsfRequest.getRoom();
         Integer pageNum = plotsEsfRequest.getPageNum();
         Integer pageSize = plotsEsfRequest.getPageSize();

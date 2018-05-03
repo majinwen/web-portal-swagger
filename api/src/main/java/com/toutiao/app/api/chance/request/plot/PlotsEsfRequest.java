@@ -13,7 +13,7 @@ public class PlotsEsfRequest {
      * 小区id
      */
     @NotNull(message = "缺少小区Id")
-    private Integer plotsId;
+    private Integer plotId;
 
     /**
      * 户型
