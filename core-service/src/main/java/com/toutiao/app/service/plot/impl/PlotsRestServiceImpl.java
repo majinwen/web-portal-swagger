@@ -330,8 +330,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotDetailsFewDoList.add(plotDetailsFewDo);
             }
         }
-        plotListDo.setData(plotDetailsFewDoList);
-        plotListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        plotListDo.setPlotList(plotDetailsFewDoList);
+        plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         return plotListDo;
     }
 
@@ -370,12 +370,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 plotListDoQuery.setPageSize(10-hits.length);
                 PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListDoQuery);
-                plotDetailsFewDoList.addAll(plotListDo.getData());
+                plotDetailsFewDoList.addAll(plotListDo.getPlotList());
             }else if (hits.length==0){
-                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getData();
+                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
             }
         }else {
-            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getData();
+            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
         }
         return plotDetailsFewDoList;
     }

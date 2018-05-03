@@ -7,8 +7,8 @@ import java.util.List;
 @Data
 public class PlotListDo{
 
-    private List<PlotDetailsFewDo> data;
+    private List<PlotDetailsFewDo> plotList;
 
-    private Integer totalNum;
+    private Integer totalCount;
 
 }
