@@ -288,14 +288,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
+        if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()!=null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
+        }else if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()==null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
-        }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
+        }else if(plotListDoQuery.getBeginArea()==null && plotListDoQuery.getEndArea()!=null){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
