@@ -11,7 +11,8 @@ import com.toutiao.web.common.constant.base.IntBaseType;
 public enum SellHouseInterfaceErrorCodeEnum implements IntBaseType {
 
 
-    ESF_NOT_FOUND("房源标题或房源描述含有敏感词，请检查！", 60101);
+    ESF_NOT_FOUND("房源标题或房源描述含有敏感词，请检查！", 60101),
+    ESF_FAVORITE_NOT_FOUND("二手房收藏列表为空",60601);
 
 
     private String desc;

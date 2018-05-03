@@ -3,8 +3,14 @@ package com.toutiao.web.dao.mapper.officeweb.favorite;
 import com.toutiao.app.domain.favorite.NewHouseAddFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
+import com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteDo;
+import com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteListDoQuery;
 import com.toutiao.web.dao.BaseDao;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface UserFavoriteNewHouseMapper extends BaseDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -27,4 +33,12 @@ public interface UserFavoriteNewHouseMapper extends BaseDao {
     Integer getNewHouseIsFavorite(NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery);
 
     Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
+
+
+    /**
+     * 获取用户新房收藏列表
+     * @param newHouseFavoriteListDoQuery
+     * @return
+     */
+    List<NewHouseFavoriteDo> selectNewHouseFavoriteByUserId(NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery);
 }
