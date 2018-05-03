@@ -101,7 +101,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
 
         //面积
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getBeginArea()) && StringTool.isNotEmpty(nearBySellHouseQueryDo.getEndArea())) {
+        if (null!=nearBySellHouseQueryDo.getBeginArea() &&  null!=nearBySellHouseQueryDo.getEndArea()) {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
             booleanQueryBuilder.must(booleanQueryBuilder);
         }else if(null==nearBySellHouseQueryDo.getBeginArea() && null!= nearBySellHouseQueryDo.getEndArea())
