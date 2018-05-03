@@ -228,20 +228,7 @@ public class FavoriteRestController {
         BeanUtils.copyProperties(addFavorite,userFavoriteRent);
         return favoriteRestService.addRentFavorite(userFavoriteRent);
     }
-    /**
-     * 小区收藏列表
-     * @param plotsFavoriteListRequest
-     * @return
-     */
-    @RequestMapping(value = "/getPlotFavoriteByUserId",method = RequestMethod.GET)
-    public NashResult getPlotFavoriteByUserId(PlotsFavoriteListRequest plotsFavoriteListRequest){
-        NearbyPlotsListResponse nearbyPlotsListResponse = new NearbyPlotsListResponse();
-        PlotDetailsFewDomain plotFavoriteByUser = favoriteRestService.getPlotFavoriteByUserId(plotsFavoriteListRequest.getUserId(),plotsFavoriteListRequest.getPageNum(),plotsFavoriteListRequest.getSize());
-        BeanUtils.copyProperties(plotFavoriteByUser,nearbyPlotsListResponse);
-        return NashResult.build(nearbyPlotsListResponse);
-    }
 
-}
 
 
 
