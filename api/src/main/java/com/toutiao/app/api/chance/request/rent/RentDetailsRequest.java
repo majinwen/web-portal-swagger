@@ -10,4 +10,8 @@ public class RentDetailsRequest {
      */
     @NotNull(message = "缺少房源Id")
     private String rentId;
+    /**
+     * 经纪人id
+     */
+    private String userId;
 }

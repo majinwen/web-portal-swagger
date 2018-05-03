@@ -75,20 +75,21 @@ public class SellHouseServiceImpl implements SellHouseService{
 
             sellAndClaimHouseDetailsDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
             BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
-            if (flag){
+            if (flag&&StringTool.isNotEmpty(userId)){
                 sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
                 sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
                 sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
                 sellHouseDetailsDo.setTags(sellAndClaimHouseDetailsDo.getTags());
                 sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
+                //经纪人信息
+                AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(userId);
+                if (StringTool.isNotEmpty(agentBaseDo)){
+                    sellHouseDetailsDo.setHouseProxyName(agentBaseDo.getAgentName());
+                    sellHouseDetailsDo.setHouseProxyPhone(agentBaseDo.getDisplayPhone());
+                    sellHouseDetailsDo.setHouseProxyPhoto(agentBaseDo.getHeadPhoto());
+                    sellHouseDetailsDo.setOfCompany(agentBaseDo.getAgentCompany());
+                }
             }
-        }
-        AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(userId);
-        if (StringTool.isNotEmpty(agentBaseDo)){
-            sellHouseDetailsDo.setHouseProxyName(agentBaseDo.getAgentName());
-            sellHouseDetailsDo.setHouseProxyPhone(agentBaseDo.getDisplayPhone());
-            sellHouseDetailsDo.setHouseProxyPhoto(agentBaseDo.getHeadPhoto());
-            sellHouseDetailsDo.setOfCompany(agentBaseDo.getAgentCompany());
         }
         return sellHouseDetailsDo;
     }

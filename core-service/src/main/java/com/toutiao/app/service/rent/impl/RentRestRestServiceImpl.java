@@ -8,6 +8,7 @@ import com.toutiao.app.domain.rent.RentAgentDo;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -46,6 +47,8 @@ public class RentRestRestServiceImpl implements RentRestService {
     private static final String LAYOUT = "3";
 
     @Autowired
+    private AgentService agentService;
+    @Autowired
     private RentEsDao rentEsDao;
     @Autowired
     private AgentHouseEsDao agentHouseEsDao;
@@ -56,7 +59,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDo queryRentDetailByHouseId(String rentId) {
+    public RentDetailsDo queryRentDetailByHouseId(String rentId,String userId) {
         RentDetailsDo rentDetailsDo = new RentDetailsDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
@@ -70,6 +73,16 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         if (!"".equals(details)) {
             rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
+        }
+        if (rentDetailsDo.getRentHouseType()==1&&StringTool.isNotEmpty(userId)){
+            //经纪人信息
+            AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(userId);
+            if (StringTool.isNotEmpty(agentBaseDo)){
+                rentDetailsDo.setPhone(agentBaseDo.getDisplayPhone());
+                rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
+                rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
+                rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
+            }
         }
         return rentDetailsDo;
     }

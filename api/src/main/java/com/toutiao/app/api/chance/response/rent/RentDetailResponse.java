@@ -1,10 +1,7 @@
 package com.toutiao.app.api.chance.response.rent;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +10,7 @@ public class RentDetailResponse {
     /**
      * 经纪人头像路径
      */
+    @ChangeName("headPhoto")
     private String agentHeadPhoto;
     /**
      * 小区Id
@@ -132,10 +130,12 @@ public class RentDetailResponse {
     /**
      * 经纪机构
      */
+    @ChangeName("agentCompany")
     private String brokerageAgency;
     /**
      * 电话
      */
+    @ChangeName("displayPhone")
     private String phone;
     /**
      * 房源描述
@@ -166,9 +166,10 @@ public class RentDetailResponse {
      * 是否是推荐
      */
     private Integer isRecommend;
-     /*
-     * 经纪人
+    /**
+     * 经纪人姓名
      */
+    @ChangeName("agentName")
     private String estateAgent;
 
     /**
