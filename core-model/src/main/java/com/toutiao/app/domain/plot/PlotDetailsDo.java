@@ -269,6 +269,10 @@ public class PlotDetailsDo {
      * 页数
      */
     private Integer pageNum;
+
+    /**
+     *
+     */
 //
 //    /**
 //     * 小区内二手房

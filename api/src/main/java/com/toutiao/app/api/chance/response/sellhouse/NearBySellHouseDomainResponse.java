@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.response.sellhouse;
 
-import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
+import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
@@ -8,7 +9,8 @@ import java.util.List;
 @Data
 public class NearBySellHouseDomainResponse {
 
-    List<NearBySellHousesResponse> nearBySellHousesResponses;
-
-    private long TotalCount;
+    @ChangeName("data")
+    List<NearBySellHousesDo> nearBySellHousesDos;
+    @ChangeName("totalNum")
+    private long totalCount;
 }

@@ -12,7 +12,8 @@ public enum UserInterfaceErrorCodeEnum implements IntBaseType {
     USER_LOGIN_EXCEPTION("用户登录异常", 30001),
     SAVE_COOKIE_ERROR("存储用户信息失败",30002),
     UPDATE_USER_AVATAR_ERROR("更新用户头像失败",30003),
-    QUERY_USER_BASIC_ERROR("用户不存在",30004);
+    QUERY_USER_BASIC_ERROR("用户不存在",30004),
+    USER_NO_LOGIN("用户未登陆",30005);
 
 
     private String desc;

@@ -1,12 +1,14 @@
 package com.toutiao.app.domain.sellhouse;
 
 import com.toutiao.app.domain.QueryDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
-public class NearBySellHousesDo extends QueryDo {
+public class NearBySellHousesDo {
 
     /**
      * 二手房房源id
@@ -39,6 +41,7 @@ public class NearBySellHousesDo extends QueryDo {
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
+    @ChangeName("tags")
     private String[] tagsName;
 
     /**
@@ -54,14 +57,8 @@ public class NearBySellHousesDo extends QueryDo {
     /**
      * 朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
+    @ChangeName("forward")
     private String forwardName;
-
-
-     /**
-        * 附近地铁信息
-     */
-    private  String roundStation;
-
 
     /**
      *
@@ -72,51 +69,51 @@ public class NearBySellHousesDo extends QueryDo {
     /**
      * 建成年代
      */
+    @ChangeName("buildYears")
     private String year;
-
-    /**
-     * y坐标
-     */
-    private Double lat;
-
-    /**
-     * x坐标
-     */
-    private Double lon;
-
-
-    /**
-     * 附近距离
-     */
-    private Integer distance;
-
 
     /**
      * 认领标识
      */
     private  Integer isClaim;
 
-
     /**
      * 地铁最近
      */
+    @ChangeName("nearBySubwayDesc")
     private  String traffic;
 
     /**
      * 楼盘名称
      */
+    @ChangeName("buildingName")
     private  String plotNameAccurate;
 
+    /**
+     * 地铁站编号
+     */
+    private String[] subwayStationId;
+    /**
+     * 地铁线编号
+     */
+    private String[] subwayLineId;
+
+    /**
+     * 地铁到房源的距离
+     */
+    @ChangeName("subwayDistance")
+    private Map subwayDistince;
 
     /**
      * 区域
      */
-
+    @ChangeName("districtName")
     private  String area;
 
     /**
      * 商圈
      */
+    @ChangeName("areaName")
     private  String houseBusinessName;
 
 
@@ -124,4 +121,10 @@ public class NearBySellHousesDo extends QueryDo {
      * 均价
      */
      private  Double houseUnitCost;
+
+    /**
+     * 小区id
+     */
+    @ChangeName("buildingId")
+    private Integer newcode;
 }

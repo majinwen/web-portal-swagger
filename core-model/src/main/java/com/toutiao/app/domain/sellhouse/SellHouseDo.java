@@ -118,7 +118,26 @@ public class SellHouseDo {
     @ChangeName("parkRatio")
     private String parkRadio;
 
+    /**
+     * 推荐广告查询uid
+     */
     private String uid;
+
+    /**
+     * 是否认领
+     */
+    private Integer isClaim;
+    /**
+     * 经纪人id
+     */
+    private Integer userId;
+
+    /**
+     * 经纪人电话
+     */
+    private String displayPhone;
+
+
 
 
 

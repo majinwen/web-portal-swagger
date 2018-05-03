@@ -9,6 +9,7 @@ import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.domain.user.UserBasicDoQuery;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.app.service.user.UserLoginService;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
@@ -88,8 +89,14 @@ public class UserRegisterRestController {
 
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
-        UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-        BeanUtils.copyProperties(userBasic,userLoginResponse);
-        return NashResult.build(userLoginResponse);
+        if(null != userLoginResponse){
+            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            BeanUtils.copyProperties(userBasic,userLoginResponse);
+            return NashResult.build(userLoginResponse);
+        }else {
+            Integer ss = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            return NashResult.Fail(ss.toString(),"用户未登陆");
+        }
+
     }
 }
