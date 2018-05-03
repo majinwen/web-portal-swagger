@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class RentDetailsDo {
@@ -154,7 +155,7 @@ public class RentDetailsDo {
     /**
      * 房源图片
      */
-    private List rentHouseImg;
+    private List<Map<String,String>> rentHouseImg;
     /**
      * 付款方式(1-面议，2-押一付一，3-押一付二，4-押一付三，5-押二付一，6-押二付二，7-押二付三，8-半年付，9-年付)
      */
@@ -203,42 +204,11 @@ public class RentDetailsDo {
      * 发布状态
      */
     private Integer releaseStatus;
-    /**
-     * 是否上架
-     */
-    private Integer isDel;
-    /**
-     * 是否是推荐
-     */
-    private Integer isRecommend;
-    /**
-     * 是否是置顶
-     */
-    private Integer isTop;
-    /**
-     * 版本
-     */
-    private Integer version;
-    /**
-     * 置顶关键词
-     */
-    private String topKeyword;
-    /**
-     * 置顶时间
-     */
-    private String topTime;
+
     /**
      * 经纪人
      */
     private String estateAgent;
-    /**
-     * 整租户型
-     */
-    private Integer erentLayout;
-    /**
-     * 合租户型
-     */
-    private Integer jrentLayout;
 
     /**
      * 类型

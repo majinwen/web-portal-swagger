@@ -1,10 +1,13 @@
 package com.toutiao.app.api.chance.response.rent;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Data
 public class RentDetailResponse {
     /**
@@ -14,25 +17,25 @@ public class RentDetailResponse {
     /**
      * 小区Id
      */
-    @JSONField(name="buildingId")
+   @ChangeName("buildingId")
     private Integer zufangId;
     /**
      * 小区名称
      */
-    @JSONField(name="buildingName")
+    @ChangeName("buildingName")
     private String zufangName;
 
 
     /**
      * 区域名称
      */
-    @JSONField(name="districtName")
+    @ChangeName("districtName")
     private String districtName;
 
     /**
      * 商圈名称
      */
-    @JSONField(name="areaName")
+    @ChangeName("areaName")
     private String areaName;
     /**
      * 出租房源Id
@@ -54,11 +57,6 @@ public class RentDetailResponse {
      * 出租房源标志名称(出租/公寓)
      */
     private String rentSignName;
-    /**
-     * 楼盘ID(楼盘/小区)
-     */
-    @JSONField(name="buildingId")
-    private Integer villageId;
     /**
      * 需求
      */
@@ -111,7 +109,7 @@ public class RentDetailResponse {
     /**
      * 出租房源标签名称
      */
-    @JSONField(name="tags")
+    @ChangeName("tags")
     private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
@@ -124,17 +122,13 @@ public class RentDetailResponse {
     /**
      * 房源图片
      */
-    @JSONField(name="buildingImages")
-    private List rentHouseImg;
+    @ChangeName("buildingImages")
+    private List<Map<String,String>> rentHouseImg;
 
     /**
      * 付款方式名称
      */
     private String payModeName;
-    /**
-     * 配套设施(字符串数组)
-     */
-    private String[] supportingFacilities;
     /**
      * 经纪机构
      */
@@ -172,7 +166,6 @@ public class RentDetailResponse {
      * 是否是推荐
      */
     private Integer isRecommend;
-
      /*
      * 经纪人
      */
@@ -197,6 +190,13 @@ public class RentDetailResponse {
      * 楼层级别
      */
     private  String  floorLevel;
+
+   /**
+    * 配套设施(字符串数组)
+    */
+   private String[] supportingFacilities;
+
+
 
 
 
