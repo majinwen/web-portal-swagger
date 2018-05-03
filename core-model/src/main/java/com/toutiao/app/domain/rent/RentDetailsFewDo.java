@@ -55,6 +55,7 @@ public class RentDetailsFewDo {
     /**
      * 租金(元/月)
      */
+    @ChangeName("rentPrice")
     private Double rentHousePrice;
     /**
      * 总数

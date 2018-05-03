@@ -11,7 +11,7 @@ public class RentDetailFewResponseList {
      * 出租房源集合
      */
     @ChangeName("data")
-    private List<RentDetailFewResponse> RentDetailsList;
+    private List<RentDetailFewResponse> rentDetailsList;
     /**
      * 总数
      */
