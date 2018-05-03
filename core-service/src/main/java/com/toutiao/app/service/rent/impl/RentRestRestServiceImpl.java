@@ -9,6 +9,7 @@ import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
@@ -85,7 +86,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
-        if (StringTool.isNotEmpty(rentType)){
+        if (rentType!=0){
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
         Integer from = (pageNum-1)*10;
@@ -99,6 +100,8 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
             rentDetailsListDo.setRentDetailsList(list);
             rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+        }else{
+            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND,"小区没有出租房源信息");
         }
         return rentDetailsListDo;
     }

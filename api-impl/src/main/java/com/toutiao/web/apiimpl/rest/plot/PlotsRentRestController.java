@@ -40,7 +40,9 @@ public class PlotsRentRestController {
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
     public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
         RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(), plotsRentRequest.getRentType(), plotsRentRequest.getPageNum());
-        RentDetailsListResponse rentDetailsListResponse = JSON.parseObject(JSON.toJSONString(rentDetailsListDo), RentDetailsListResponse.class);
+        RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
+
+        BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
         return NashResult.build(rentDetailsListResponse);
     }
 
