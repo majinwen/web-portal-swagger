@@ -191,6 +191,13 @@ public class RentDetailResponse {
      */
     private  String  floorLevel;
 
+   /**
+    * 配套设施(字符串数组)
+    */
+   private String[] supportingFacilities;
+
+
+
 
 
 }
