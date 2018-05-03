@@ -1,9 +1,7 @@
 package com.toutiao.app.domain.user;
 
-import com.toutiao.web.common.assertUtils.First;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data

@@ -1,5 +1,6 @@
 package com.toutiao.web.apiimpl.conf;
 
+import com.alibaba.fastjson.serializer.NameFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
@@ -32,6 +33,9 @@ public class ConverterConf {
         fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.PrettyFormat);
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
         fastJsonConfig.getSerializeConfig().put(Date.class,new DateSerializer());
+        //5:自定义返回key
+        NameRespFilter nameRespFilter = new NameRespFilter();
+        fastJsonConfig.setSerializeFilters(nameRespFilter);
         //3处理中文乱码问题
         List<MediaType> fastMediaTypes = new ArrayList<>();
         fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);

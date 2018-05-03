@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.api.chance.request.newhouse.NewHouseDetailsRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseTrafficRequest;
@@ -27,11 +28,10 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@RequestParam(value = "newCode",required =true) Integer newCode)
+    public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
     {
-        NewHouseDetailResponse newHouseDetailResponse= new NewHouseDetailResponse();
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newCode);
-        BeanUtils.copyProperties(newHouseDetailDo,newHouseDetailResponse);
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode());
+        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
         return NashResult.build(newHouseDetailResponse);
     }
 
@@ -46,11 +46,8 @@ public class NewHouseRestController {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery=new NewHouseDoQuery();
         BeanUtils.copyProperties(newHouseListRequest,newHouseDoQuery);
-        NewHouseListDomain newHouseListVo=newHouseService.getNewHouseList(newHouseDoQuery);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListVo.getListDoList()));
-        List<NewHouseListResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),NewHouseListResponse.class);
-        newHouseListDomainResponse.setNewHouseListResponse(newHouseListResponses);
-        newHouseListDomainResponse.setTotalCount(newHouseListVo.getTotalCount());
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery);
+        BeanUtils.copyProperties(newHouseListVo,newHouseListDomainResponse);
         return  NashResult.build(newHouseListDomainResponse);
     }
 

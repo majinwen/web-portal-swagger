@@ -2,7 +2,9 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.*;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.DateUtil;
@@ -44,15 +46,20 @@ public class SellHouseServiceImpl implements SellHouseService{
     private AgentHouseEsDao agentHouseEsDao;
     @Autowired
     private FilterSellHouseChooseService filterSellHouseChooseService;
+    @Autowired
+    private AgentService agentService;
 
     @Override
-    public SellAndClaimHouseDetailsDo getSellHouseByHouseId(String houseId) {
+    public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
 
         //二手房房源详情
         SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();
+        SellHouseDetailsDo sellHouseDetailsDo = new SellHouseDetailsDo();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        Boolean flag = false;
         if ("FS".equals(houseId.substring(0,2))){
             booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
+            flag = true;
         }else {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         }
@@ -65,8 +72,27 @@ public class SellHouseServiceImpl implements SellHouseService{
                 details = searchHit.getSourceAsString();
             }
             sellAndClaimHouseDetailsDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
+            BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(sellHouseDetailsDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDetailsDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentName(sellHouseDetailsDo.getHouseProxyName());
+                agentBaseDo.setAgentCompany(sellHouseDetailsDo.getOfCompany());
+                agentBaseDo.setHeadPhoto(sellHouseDetailsDo.getHouseProxyPhoto());
+                agentBaseDo.setDisplayPhone(sellHouseDetailsDo.getHouseProxyPhone());
+            }
+            sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
+            if (flag){
+                sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
+                sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
+                sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
+                sellHouseDetailsDo.setTags(sellAndClaimHouseDetailsDo.getTags());
+                sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
+            }
         }
-        return sellAndClaimHouseDetailsDo;
+        return sellHouseDetailsDo;
     }
 
 
@@ -100,7 +126,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @return
      */
     @Override
-    public SellHouseDomain getSellHouseByChoose(SellHouseQueryDo sellHouseQueryDo) {
+    public SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo) {
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -113,8 +139,9 @@ public class SellHouseServiceImpl implements SellHouseService{
         //获取认领房源中30天内有价格变动的房源
         BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isRecommend",0));
         boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        queryBuilderOfMonth.should(QueryBuilders.rangeQuery("create_time").gt(pastDateOfMonth).lte(nowDate));
+        queryBuilderOfMonth.should(QueryBuilders.rangeQuery("claim_time").gt(pastDateOfMonth).lte(nowDate));
         queryBuilderOfMonth.should(QueryBuilders.rangeQuery("price_increase_decline").gt(0));
         boolQueryBuilder.must(queryBuilderOfMonth);
         //获取7天内导入的，并被认领的
@@ -122,13 +149,25 @@ public class SellHouseServiceImpl implements SellHouseService{
         queryBuilderOfWeek.should(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate));
         boolQueryBuilder.must(queryBuilderOfWeek);
         FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder);
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,1,10);
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,sellHouseQueryDo.getPageNum(),sellHouseQueryDo.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
+        //"houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto"
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+            }
+            sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDos.add(sellHouseDo);
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
@@ -139,26 +178,38 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     /**
      * 查询二手房推荐房源
-     * @param sellHouseQueryDo
+     * @param sellHouseDoQuery
      * @return
      */
     @Override
-    public SellHouseDomain getRecommendSellHouse(SellHouseQueryDo sellHouseQueryDo) {
+    public SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseDoQuery) {
 
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseQueryDo);
+        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
-        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder);
-        SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query,sellHouseQueryDo.getUid(),sellHouseQueryDo.getPageSize());
+        FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery,boolQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query,sellHouseDoQuery.getUid(),sellHouseDoQuery.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+            }
+            sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDos.add(sellHouseDo);
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
@@ -169,20 +220,24 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
 
-    public FunctionScoreQueryBuilder getQuery(SellHouseQueryDo sellHouseQueryDo,BoolQueryBuilder boolQueryBuilder){
+    public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder){
         FunctionScoreQueryBuilder query = null;
-        List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseQueryDo.getKeyword());
-        if (StringTool.isNotBlank(sellHouseQueryDo.getKeyword())){
+        List<String> searchKeyword = new ArrayList<>();
+        if(StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())){
+            searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword());
+        }
+
+        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())){
             if(searchKeyword!=null && searchKeyword.size() > 0){
                 int searchTermSize = searchKeyword.size();
                 FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchTermSize];
-                if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseQueryDo.getKeyword()))) {
+                if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                     for(int i=0 ;i<searchKeyword.size();i++){
                         QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
                         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
                         filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                     }
-                }else if(StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseQueryDo.getKeyword()))){
+                }else if(StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))){
                     for(int i=0 ;i<searchKeyword.size();i++){
                         QueryBuilder filter = QueryBuilders.termsQuery("area",searchKeyword.get(i));
                         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);

@@ -1,19 +1,14 @@
 package com.toutiao.app.domain.plot;
 
-import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class PlotListDo extends QueryDo{
+public class PlotListDo{
 
-    /**
-     * 维度 附近找房
-     */
-    private double lat;
+    private List<PlotDetailsFewDo> data;
 
-    /**
-     * 经度 附近找房
-     */
-    private double lon;
+    private Integer totalNum;
 
 }

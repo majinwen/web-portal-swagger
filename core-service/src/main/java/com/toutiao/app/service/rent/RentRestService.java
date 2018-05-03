@@ -1,5 +1,6 @@
 package com.toutiao.app.service.rent;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface RentRestService {
      * @param plotId
      * @return
      */
-    List<RentDetailsFewDo> queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum);
+    RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum);
 
     /**
      * 根据小区id查询该小区下的出租房源个数
@@ -42,15 +43,17 @@ public interface RentRestService {
 
     /**
      * 出租推荐房源（7天内录入）
-     * @param nearHouseDo
+     * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsDoList getRentList(NearHouseDo nearHouseDo);
+    RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery);
 
     /**
      * 推优房源
-     * @param rentHouseDo
+     * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsFewDo queryRecommendRent(RentHouseDo rentHouseDo);
+    RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery);
+
+
 }

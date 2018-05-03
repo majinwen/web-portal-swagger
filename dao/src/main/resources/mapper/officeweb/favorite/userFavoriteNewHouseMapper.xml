@@ -7,9 +7,16 @@
     <result column="new_house_id" property="newHouseId" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="is_del" property="isDel" jdbcType="SMALLINT" />
+    <result column="avg_price" property="avgPrice" jdbcType="NUMERIC" />
+    <result column="begin_area" property="beginArea" jdbcType="VARCHAR" />
+    <result column="end_area" property="endArea" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="title_image" property="titleImage" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, new_house_id, create_time, is_del
+    id, user_id, new_house_id, create_time, is_del, avg_price, begin_area, end_area, 
+    building_name, title_image, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -23,9 +30,13 @@
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     insert into user_favorite_newhouse (id, user_id, new_house_id, 
-      create_time, is_del)
+      create_time, is_del, avg_price, 
+      begin_area, end_area, building_name, 
+      title_image, status)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{newHouseId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT})
+      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT}, #{avgPrice,jdbcType=NUMERIC}, 
+      #{beginArea,jdbcType=VARCHAR}, #{endArea,jdbcType=VARCHAR}, #{buildingName,jdbcType=VARCHAR}, 
+      #{titleImage,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse" >
     insert into user_favorite_newhouse
@@ -45,6 +56,24 @@
       <if test="isDel != null" >
         is_del,
       </if>
+      <if test="avgPrice != null" >
+        avg_price,
+      </if>
+      <if test="beginArea != null" >
+        begin_area,
+      </if>
+      <if test="endArea != null" >
+        end_area,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="titleImage != null" >
+        title_image,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -61,6 +90,24 @@
       </if>
       <if test="isDel != null" >
         #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="avgPrice != null" >
+        #{avgPrice,jdbcType=NUMERIC},
+      </if>
+      <if test="beginArea != null" >
+        #{beginArea,jdbcType=VARCHAR},
+      </if>
+      <if test="endArea != null" >
+        #{endArea,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="titleImage != null" >
+        #{titleImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
       </if>
     </trim>
   </insert>
@@ -79,6 +126,24 @@
       <if test="isDel != null" >
         is_del = #{isDel,jdbcType=SMALLINT},
       </if>
+      <if test="avgPrice != null" >
+        avg_price = #{avgPrice,jdbcType=NUMERIC},
+      </if>
+      <if test="beginArea != null" >
+        begin_area = #{beginArea,jdbcType=VARCHAR},
+      </if>
+      <if test="endArea != null" >
+        end_area = #{endArea,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName != null" >
+        building_name = #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="titleImage != null" >
+        title_image = #{titleImage,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -87,7 +152,13 @@
     set user_id = #{userId,jdbcType=INTEGER},
       new_house_id = #{newHouseId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      is_del = #{isDel,jdbcType=SMALLINT}
+      is_del = #{isDel,jdbcType=SMALLINT},
+      avg_price = #{avgPrice,jdbcType=NUMERIC},
+      begin_area = #{beginArea,jdbcType=VARCHAR},
+      end_area = #{endArea,jdbcType=VARCHAR},
+      building_name = #{buildingName,jdbcType=VARCHAR},
+      title_image = #{titleImage,jdbcType=VARCHAR},
+      status = #{status,jdbcType=SMALLINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -100,7 +171,6 @@
     select count(1) from  user_favorite_newhouse
     where user_id=#{userId} and is_del=0
   </select>
-
 
   <update id="cancelNewHouseFavoriteByUserIdAndHouseId" parameterType="com.toutiao.app.domain.favorite.UserFavoriteNewHouse">
     update user_favorite_newhouse
@@ -120,8 +190,78 @@
     </set>
     where new_house_id=#{newCode,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
   </update>
-    <select id="getNewHouseIsFavorite" resultType="java.lang.Integer" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDo">
-        SELECT COUNT(1) FROM user_favorite_newhouse
-        WHERE user_id=#{userId} and is_del=0 AND new_house_id = #{newHouseId}
-    </select>
+
+  <select id="getNewHouseIsFavorite" parameterType="com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM user_favorite_newhouse
+    WHERE user_id=#{userId} and is_del=0 AND new_house_id = #{newHouseId}
+  </select>
+
+  <insert id="addNewHouseFavorite" parameterType="com.toutiao.app.domain.favorite.NewHouseAddFavoriteDoQuery">
+    insert into user_favorite_newhouse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="newHouseId != null" >
+        new_house_id,
+      </if>
+      <if test="avgPrice != null" >
+        avg_price,
+      </if>
+      <if test="beginArea != null" >
+        begin_area,
+      </if>
+      <if test="endArea != null" >
+        end_area,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="titleImage != null" >
+        title_image,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="true" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId},
+      </if>
+      <if test="newHouseId != null" >
+        #{newHouseId},
+      </if>
+      <if test="avgPrice != null" >
+        #{avgPrice},
+      </if>
+      <if test="beginArea != null" >
+        #{beginArea},
+      </if>
+      <if test="endArea != null" >
+        #{endArea},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName},
+      </if>
+      <if test="titleImage != null" >
+        #{titleImage},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="true" >
+        CURRENT_TIMESTAMP(0),
+      </if>
+      <if test="isDel != null" >
+        #{isDel}
+      </if>
+    </trim>
+  </insert>
 </mapper>

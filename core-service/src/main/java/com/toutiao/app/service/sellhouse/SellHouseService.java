@@ -14,7 +14,7 @@ public interface SellHouseService {
      * @param houseId
      * @return
      */
-    SellAndClaimHouseDetailsDo getSellHouseByHouseId(String houseId);
+    SellHouseDetailsDo getSellHouseByHouseId(String houseId);
 
     /**
      * 认领二手房房源经纪人
@@ -28,12 +28,12 @@ public interface SellHouseService {
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getSellHouseByChoose(SellHouseQueryDo sellHouseQueryDo);
+    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo);
 
     /**
      * 查询二手房推荐房源
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getRecommendSellHouse(SellHouseQueryDo sellHouseQueryDo);
+    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo);
 }

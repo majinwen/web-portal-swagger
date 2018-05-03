@@ -2,7 +2,7 @@ package com.toutiao.app.service.sellhouse;
 
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
-import com.toutiao.app.domain.sellhouse.SellHouseQueryDo;
+import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public interface FilterSellHouseChooseService {
 
     /**
      * 过滤附近二手房查询条件
-     * @param nearBySellHousesDo
+     * @param nearBySellHouseQueryDo
      * @return
      */
     BoolQueryBuilder filterChoose(NearBySellHouseQueryDo nearBySellHouseQueryDo);
@@ -29,6 +29,6 @@ public interface FilterSellHouseChooseService {
      * @param sellHouseQueryDo
      * @return
      */
-    BoolQueryBuilder filterSellHouseChoose(SellHouseQueryDo sellHouseQueryDo);
+    BoolQueryBuilder filterSellHouseChoose(SellHouseDoQuery sellHouseQueryDo);
 
 }

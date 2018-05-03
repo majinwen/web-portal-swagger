@@ -31,9 +31,9 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteRent" >
-    insert into user_favorite_rent (id, user_id, house_id, 
+    insert into user_favorite_rent (id, user_id, house_id,
       create_time, is_del)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteRent" >
@@ -163,7 +163,7 @@
     SELECT  count(1) FROM user_favorite_rent
     where house_id=#{houseId} and user_id=#{userId} and is_del=0
   </select>
-  <update id="updateRentFavoriteByhouseIdAndUserId" parameterType="com.toutiao.app.domain.favorite.DeleteRentFavoriteDo">
+  <update id="updateRentFavoriteByhouseIdAndUserId" parameterType="com.toutiao.app.domain.favorite.DeleteRentFavoriteDoQuery">
     UPDATE user_favorite_rent
     SET is_del = 1
     WHERE user_id = #{userId,jdbcType=INTEGER} AND house_id = #{houseId,jdbcType=VARCHAR} AND is_del = 0

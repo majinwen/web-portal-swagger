@@ -2,10 +2,12 @@ package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
+import com.toutiao.app.api.chance.request.sellhouse.SellHouseDerailsRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,15 @@ public class SellHouseRestController {
 
     /**
      *  二手房房源详情
-     * @param houseId
+     * @param sellHouseDerailsRequest
      * @return
      */
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
-    public NashResult getSellHouseByHouseId(@RequestParam(value = "houseId") String houseId) {
-        SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
-        SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(houseId);
-        BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
-        return NashResult.build(sellAndClaimDetailsResponse);
+    public NashResult getSellHouseByHouseId(@Validated SellHouseDerailsRequest sellHouseDerailsRequest) {
+        SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
+        SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId());
+        BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
+        return NashResult.build(sellHouseDetailsResponse);
     }
 
 
@@ -61,9 +63,9 @@ public class SellHouseRestController {
     @ResponseBody
     public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
-        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
-        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
-        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseQueryDo);
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);
@@ -74,13 +76,13 @@ public class SellHouseRestController {
      * @param sellHouseRequest
      * @return
      */
-    @RequestMapping("/getRecommendSellHouse")
+    @RequestMapping(value ="/getRecommendSellHouse", method = RequestMethod.POST)
     @ResponseBody
-    public NashResult getRecommendSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+    public NashResult getRecommendSellHouse(@Validated(First.class) @RequestBody SellHouseRequest sellHouseRequest) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
-        SellHouseQueryDo sellHouseQueryDo = new SellHouseQueryDo();
-        BeanUtils.copyProperties(sellHouseRequest, sellHouseQueryDo);
-        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseQueryDo);
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseDoQuery);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);

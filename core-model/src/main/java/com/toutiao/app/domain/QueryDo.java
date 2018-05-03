@@ -13,7 +13,6 @@ public class QueryDo {
      */
     private Double endPrice;
 
-
     /**
      *起始面积
      */

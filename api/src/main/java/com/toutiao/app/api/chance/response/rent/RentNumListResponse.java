@@ -9,7 +9,7 @@ public class RentNumListResponse {
     /**
      * 房源信息
      */
-    private List<RentNumResponse> rentNumResponses;
+    private List<RentNumResponse> data;
     /**
      * 总数
      */

@@ -238,6 +238,10 @@ public class SellAndClaimHouseDetailsDo {
      */
     private Integer totalNum;
     /**
+     * 是否认领
+     */
+    private Integer isClaim;
+    /**
      * 认领房源标签
      */
     private String[] claimTags;

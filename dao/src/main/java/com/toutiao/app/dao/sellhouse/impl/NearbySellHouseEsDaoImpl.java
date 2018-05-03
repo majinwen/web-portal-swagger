@@ -25,9 +25,12 @@ public class NearbySellHouseEsDaoImpl implements NearbySellHouseEsDao{
 
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-//        SearchResponse searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+
         SearchResponse searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).setFetchSource(
-                new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName","houseId","housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet","year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId","parkRadio","area","houseBusinessName","houseUnitCost"} ,null
+                new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName",
+                        "housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet",
+                        "year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId",
+                        "parkRadio","houseUnitCost","newcode","subwayLineId","subwayDistince","subwayStationId"} ,null
         ).execute().actionGet();
 
 

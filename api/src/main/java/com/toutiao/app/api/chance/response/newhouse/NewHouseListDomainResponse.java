@@ -1,14 +1,16 @@
 package com.toutiao.app.api.chance.response.newhouse;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.app.domain.newhouse.NewHouseListDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
 @Data
 public class NewHouseListDomainResponse {
 
-    @JSONField(name="data")
-    private  List<NewHouseListResponse> newHouseListResponse;
+
+    private  List<NewHouseListDo> data;
+    @ChangeName("totalNum")
     private long totalCount;
 
 }

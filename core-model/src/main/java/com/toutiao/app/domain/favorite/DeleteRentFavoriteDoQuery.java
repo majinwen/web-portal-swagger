@@ -3,11 +3,11 @@ package com.toutiao.app.domain.favorite;
 import lombok.Data;
 
 @Data
-public class NewHouseIsFavoriteDo {
+public class DeleteRentFavoriteDoQuery {
     /**
-     * 新房id
+     * 租房id
      */
-    private Integer newHouseId;
+    private String rentId;
     /**
      * 用户id
      */

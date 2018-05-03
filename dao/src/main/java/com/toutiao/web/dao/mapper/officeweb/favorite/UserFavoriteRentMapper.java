@@ -1,6 +1,6 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
-import com.toutiao.app.domain.favorite.DeleteRentFavoriteDo;
+import com.toutiao.app.domain.favorite.DeleteRentFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.UserFavoriteRent;
 import com.toutiao.web.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
@@ -22,12 +22,5 @@ public interface UserFavoriteRentMapper extends BaseDao {
 
     Integer isRentFavoriteByRentIdAndUserId(@Param("houseId") String houseId, @Param("userId") Integer userId);
 
-    /**
-     *
-     * @param deleteRentFavoriteDo
-     * @return
-     * 取消收藏
-     */
-    Integer updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDo deleteRentFavoriteDo);
-
+    Integer updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery);
 }

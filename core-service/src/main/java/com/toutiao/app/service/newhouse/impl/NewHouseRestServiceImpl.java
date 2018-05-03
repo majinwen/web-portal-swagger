@@ -142,14 +142,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseDoQuery.getBeginPrice()!=null && newHouseDoQuery.getEndPrice()!=0){
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         if(newHouseDoQuery.getBeginPrice()!=null && newHouseDoQuery.getEndPrice()!=null){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=0)
+        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=null)
         {        newHouseDoQuery.setBeginPrice(0.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=0)
+        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=null)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
         }
@@ -171,21 +169,17 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //面积
-        if(newHouseDoQuery.getBeginArea()!=null &&  newHouseDoQuery.getEndArea()!=0)
         if(newHouseDoQuery.getBeginArea()!=null &&  newHouseDoQuery.getEndArea()!=null)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
-        }
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
-        }else if(null==newHouseDoQuery.getBeginArea() && null!=newHouseDoQuery.getEndArea())
+        }else if(newHouseDoQuery.getBeginArea()==null && null!=newHouseDoQuery.getEndArea())
         {
             newHouseDoQuery.setBeginArea(0.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
 
-        }else if (null==newHouseDoQuery.getEndArea() && null!=newHouseDoQuery.getBeginArea())
+        }else if (newHouseDoQuery.getEndArea()==null && null!=newHouseDoQuery.getBeginArea())
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
         }
@@ -222,7 +216,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
                 newHouseListDoList.add(newHouseListDos);
             }
-            newHouseListVo.setListDoList(newHouseListDoList);
+            newHouseListVo.setData(newHouseListDoList);
             newHouseListVo.setTotalCount(hits.getTotalHits());
         }catch (Exception e)
         {

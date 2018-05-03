@@ -1,10 +1,9 @@
 package com.toutiao.web.apiimpl.rest.rent;
 
-import com.alibaba.fastjson.JSON;
-import com.toutiao.app.api.chance.request.rent.NearHouseRequest;
+import com.toutiao.app.api.chance.request.rent.NearHouseListRequest;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponseList;
-import com.toutiao.app.domain.rent.NearHouseDo;
-import com.toutiao.app.domain.rent.RentDetailsDoList;
+import com.toutiao.app.domain.rent.NearHouseListDoQuery;
+import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
@@ -25,11 +24,12 @@ public class NearRentHouseRestController {
     private NearRentHouseRestService nearRentHouseRestService;
 
     @RequestMapping(value = "/getNearRentHouseByLocation",method = RequestMethod.GET)
-    private NashResult getNearHouseByLocation(@Validated NearHouseRequest nearHouseRequest){
-        NearHouseDo nearHouseDo = new NearHouseDo();
-        BeanUtils.copyProperties(nearHouseRequest,nearHouseDo);
-        RentDetailsDoList rentDetailsDoList = nearRentHouseRestService.queryNearHouseByLocation(nearHouseDo);
-        RentDetailFewResponseList rentDetailFewResponseList = JSON.parseObject(JSON.toJSONString(rentDetailsDoList), RentDetailFewResponseList.class);
+    private NashResult getNearRentHouseByLocation(@Validated NearHouseListRequest nearHouseListRequest){
+        NearHouseListDoQuery nearHouseListDoQuery = new NearHouseListDoQuery();
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(nearHouseListRequest,nearHouseListDoQuery);
+        RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery);
+        BeanUtils.copyProperties(rentDetailsListDo,rentDetailFewResponseList);
         return NashResult.build(rentDetailFewResponseList);
     }
 }

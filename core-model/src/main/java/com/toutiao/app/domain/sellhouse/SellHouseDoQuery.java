@@ -5,7 +5,7 @@ import lombok.Data;
 
 
 @Data
-public class SellHouseQueryDo extends QueryDo {
+public class SellHouseDoQuery extends QueryDo {
 
     /**
      * 推荐房源查询标志

@@ -3,7 +3,7 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.toutiao.app.dao.sellhouse.SellHouseKeywordEsDao;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
-import com.toutiao.app.domain.sellhouse.SellHouseQueryDo;
+import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -86,34 +86,34 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         }
         //总价
-        if(StringTool.isNotEmpty(nearBySellHouseQueryDo.getBeginPrice()) && StringTool.isNotEmpty(nearBySellHouseQueryDo.getEndPrice()))
+        if(nearBySellHouseQueryDo.getBeginPrice()!=null && nearBySellHouseQueryDo.getEndPrice()!=null)
         {
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()).lte(nearBySellHouseQueryDo.getEndPrice()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
-        }else if (nearBySellHouseQueryDo.getBeginPrice()==null && null!=nearBySellHouseQueryDo.getEndPrice())
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()).lte(nearBySellHouseQueryDo.getEndPrice()));
+
+        }else if (nearBySellHouseQueryDo.getBeginPrice()==null && nearBySellHouseQueryDo.getEndPrice()!=null)
         {
-            nearBySellHouseQueryDo.setBeginPrice(0.0);
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()).lte(nearBySellHouseQueryDo.getEndPrice()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
-        }else if(nearBySellHouseQueryDo.getEndPrice()==null && null!=nearBySellHouseQueryDo.getBeginPrice())
+
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(nearBySellHouseQueryDo.getEndPrice()));
+
+        }else if(nearBySellHouseQueryDo.getEndPrice()==null && nearBySellHouseQueryDo.getBeginPrice()!=null)
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
         }
 
         //面积
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getBeginArea()) && StringTool.isNotEmpty(nearBySellHouseQueryDo.getEndArea())) {
+        if (nearBySellHouseQueryDo.getBeginArea()!=0 && nearBySellHouseQueryDo.getEndArea()!=0) {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
-        }else if(null==nearBySellHouseQueryDo.getBeginArea() && null!= nearBySellHouseQueryDo.getEndArea())
+
+        }else if(nearBySellHouseQueryDo.getBeginArea()==0 && nearBySellHouseQueryDo.getEndArea()!=0)
         {
-            nearBySellHouseQueryDo.setBeginArea(0.0);
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
+
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").lte(nearBySellHouseQueryDo.getEndArea()));
+
         }
-        else if(null==nearBySellHouseQueryDo.getEndArea() && null!= nearBySellHouseQueryDo.getBeginArea())
+        else if(nearBySellHouseQueryDo.getEndArea()==0 && nearBySellHouseQueryDo.getBeginArea()!=0)
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
+
         }
         //楼龄
         if (StringUtil.isNotNullString(nearBySellHouseQueryDo.getHouseYearId())) {
@@ -173,68 +173,72 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
     }
 
     @Override
-    public BoolQueryBuilder filterSellHouseChoose(SellHouseQueryDo sellHouseQueryDo) {
+    public BoolQueryBuilder filterSellHouseChoose(SellHouseDoQuery sellHouseDoQuery) {
 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        if (StringTool.isNotBlank(sellHouseQueryDo.getKeyword())) {
-            if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseQueryDo.getKeyword()))) {
+        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
+            if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseQueryDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseQueryDo.getKeyword()).analyzer("ik_max_word").boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseQueryDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseQueryDo.getKeyword()).analyzer("ik_smart").boost(2)));
-            } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseQueryDo.getKeyword()))) {
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).analyzer("ik_max_word").boost(2))
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2)));
+            } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", sellHouseQueryDo.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseQueryDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseQueryDo.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseQueryDo.getKeyword()).analyzer("ik_smart")));
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart")));
             } else {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseQueryDo.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseQueryDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseQueryDo.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseQueryDo.getKeyword())));
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword())));
             }
         }
         //商圈名称
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", sellHouseQueryDo.getAreaId()));
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", sellHouseDoQuery.getAreaId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", sellHouseQueryDo.getAreaId()));
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
 
         }
         //区域id
-        if (StringTool.isNotEmpty((sellHouseQueryDo.getDistrictId()))) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", sellHouseQueryDo.getDistrictId()));
+        if (StringTool.isNotEmpty((sellHouseDoQuery.getDistrictId()))) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", sellHouseDoQuery.getDistrictId()));
 
         }
 
         //地铁线id
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getSubwayLineId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", sellHouseQueryDo.getSubwayLineId()));
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId())) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", sellHouseDoQuery.getSubwayLineId()));
 
         }
         //地铁站id
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getSubwayStationId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayStationId", sellHouseQueryDo.getSubwayStationId()));
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId())) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
         }
 
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getBeginPrice()) && StringTool.isNotEmpty(sellHouseQueryDo.getEndPrice())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getBeginPrice()) && StringTool.isNotEmpty(sellHouseDoQuery.getEndPrice())) {
             booleanQueryBuilder
                     .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices")
-                            .gte(sellHouseQueryDo.getBeginPrice()).lte(sellHouseQueryDo.getEndPrice())));
+                            .gte(sellHouseDoQuery.getBeginPrice()).lte(sellHouseDoQuery.getEndPrice())));
         }
         //面积
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getBeginArea()) && StringTool.isNotEmpty(sellHouseQueryDo.getEndArea())) {
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(sellHouseQueryDo.getBeginArea()).lte(sellHouseQueryDo.getEndArea()));
-            booleanQueryBuilder.must(booleanQueryBuilder);
+        if (sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()!=0) {
+
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
+        }else if(sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()==0){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()));
+        }else if(sellHouseDoQuery.getBeginArea()==0 && sellHouseDoQuery.getEndArea()!=0){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(sellHouseDoQuery.getEndArea()));
         }
         //楼龄
-        if (StringUtil.isNotNullString(sellHouseQueryDo.getHouseYearId())) {
-            String houseYear = sellHouseQueryDo.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
+        if (StringUtil.isNotNullString(sellHouseDoQuery.getHouseYearId())) {
+            String houseYear = sellHouseDoQuery.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
             String[] layoutId = houseYear.split(",");
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             for (int i = 0; i < layoutId.length; i = i + 2) {
@@ -250,23 +254,23 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }
         }
         //户型(室)
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getLayoutId())) {
-            Integer[] layoutId = sellHouseQueryDo.getLayoutId();
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getLayoutId())) {
+            Integer[] layoutId = sellHouseDoQuery.getLayoutId();
 //            booleanQueryBuilder.must();
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room",layoutId)));
         }
 
 
         //朝向
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getForwardId())) {
-            Integer[] forwardId =sellHouseQueryDo.getForwardId();
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getForwardId())) {
+            Integer[] forwardId =sellHouseDoQuery.getForwardId();
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("forward",forwardId)));
         }
 
 
         //标签(满二，满三，满五)
-        if (StringTool.isNotEmpty(sellHouseQueryDo.getLabelId())) {
-            Integer[] labelId = sellHouseQueryDo.getLabelId();
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getLabelId())) {
+            Integer[] labelId = sellHouseDoQuery.getLabelId();
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("tags",labelId)));
         }
 

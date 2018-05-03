@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
+import com.toutiao.app.api.chance.request.plot.PlotsRentRequest;
 import com.toutiao.app.api.chance.request.rent.RentDetailsRequest;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
 import com.toutiao.app.api.chance.response.rent.RentDetailResponse;
+import com.toutiao.app.api.chance.response.rent.RentDetailsListResponse;
 import com.toutiao.app.api.chance.response.rent.RentNumListResponse;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -31,27 +34,25 @@ public class PlotsRentRestController {
 
     /**
      * 查询小区下出租房
-     * @param plotDetailsRequest
+     * @param plotsRentRequest
      * @return
      */
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
-    public NashResult getRentListByPlotId(@Validated PlotDetailsRequest plotDetailsRequest){
-        List<RentDetailsFewDo> rentDetailsFewDoList = appRentRestService.queryRentListByPlotId(plotDetailsRequest.getPlotId(),plotDetailsRequest.getRentType(),plotDetailsRequest.getPageNum());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(rentDetailsFewDoList));
-        List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(json.toJSONString(), RentDetailFewResponse.class);
-        return NashResult.build(rentDetailFewResponses);
+    public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+        RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(), plotsRentRequest.getRentType(), plotsRentRequest.getPageNum());
+        RentDetailsListResponse rentDetailsListResponse = JSON.parseObject(JSON.toJSONString(rentDetailsListDo), RentDetailsListResponse.class);
+        return NashResult.build(rentDetailsListResponse);
     }
 
     /**
      * 查询小区下出租房的个数
-     * @param plotId
+     * @param plotsRentRequest
      * @return
      */
     @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
-    public NashResult getRentNumByPlotId(@RequestParam(value = "plotId",required =true) Integer plotId){
-        RentNumListResponse rentNumResponses = new RentNumListResponse();
-        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId);
-        BeanUtils.copyProperties(rentNumListDo,rentNumResponses);
-        return NashResult.build(rentNumResponses);
+    public NashResult getRentNumByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotsRentRequest.getPlotId());
+        RentNumListResponse rentNumListResponse = JSON.parseObject(JSON.toJSONString(rentNumListDo), RentNumListResponse.class);
+        return NashResult.build(rentNumListResponse);
     }
 }

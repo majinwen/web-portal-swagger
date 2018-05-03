@@ -14,4 +14,13 @@ public interface AgentHouseEsDao {
 
     SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder);
 
+    /**
+     * 获取经纪人信息根据userid
+     * @param booleanQueryBuilder
+     * @return
+     */
+    SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder);
+
+
+
 }
