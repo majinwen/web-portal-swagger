@@ -24,6 +24,10 @@
     from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectNewHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteListDoQuery" resultMap="BaseResultMap">
+    SELECT  * FROM user_favorite_newhouse
+    WHERE user_id = #{userId} AND is_del = 0 limit #{size} OFFSET #{from}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
