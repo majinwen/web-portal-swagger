@@ -1,15 +1,9 @@
-package com.toutiao.app.domain.agent;
+package com.toutiao.app.api.chance.response.agent;
 
 import lombok.Data;
 
-/**
- * 经纪人返回实体类
- */
-
 @Data
-public class AgentBaseDo {
-
-
+public class AgentResponse {
     /**
      * 经纪人id
      */
@@ -30,5 +24,4 @@ public class AgentBaseDo {
      * 经纪人虚拟电话
      */
     private String displayPhone;
-
 }
