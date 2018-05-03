@@ -187,6 +187,7 @@ public class SellHouseDetailsResponse {
     /**
      * 发布公司
      */
+    @ChangeName("agentCompany")
     private String ofCompany;
     /**
      * 房源分级，0-默认，1-最好，2-次之，3-再次
@@ -256,5 +257,19 @@ public class SellHouseDetailsResponse {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
-
+    /**
+     * 经纪人姓名
+     */
+    @ChangeName("agentName")
+    private String houseProxyName;
+    /**
+     * 经纪人电话
+     */
+    @ChangeName("displayPhone")
+    private String houseProxyPhone;
+    /**
+     * 经纪人头像
+     */
+    @ChangeName("headPhoto")
+    private String houseProxyPhoto;
 }

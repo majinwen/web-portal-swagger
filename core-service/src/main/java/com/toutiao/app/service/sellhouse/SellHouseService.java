@@ -14,7 +14,7 @@ public interface SellHouseService {
      * @param houseId
      * @return
      */
-    SellHouseDetailsDo getSellHouseByHouseId(String houseId);
+    SellHouseDetailsDo getSellHouseByHouseId(String houseId, String userId);
 
     /**
      * 认领二手房房源经纪人

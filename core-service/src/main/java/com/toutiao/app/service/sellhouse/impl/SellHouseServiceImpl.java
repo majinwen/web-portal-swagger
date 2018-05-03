@@ -2,7 +2,9 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.*;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.DateUtil;
@@ -39,6 +41,8 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 public class SellHouseServiceImpl implements SellHouseService{
 
     @Autowired
+    private AgentService agentService;
+    @Autowired
     private SellHouseEsDao sellHouseEsDao;
     @Autowired
     private AgentHouseEsDao agentHouseEsDao;
@@ -46,7 +50,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     private FilterSellHouseChooseService filterSellHouseChooseService;
 
     @Override
-    public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
+    public SellHouseDetailsDo getSellHouseByHouseId(String houseId, String userId) {
 
         //二手房房源详情
         SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();
@@ -59,6 +63,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }else {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         }
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -77,6 +82,13 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHouseDetailsDo.setTags(sellAndClaimHouseDetailsDo.getTags());
                 sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
             }
+        }
+        AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(userId);
+        if (StringTool.isNotEmpty(agentBaseDo)){
+            sellHouseDetailsDo.setHouseProxyName(agentBaseDo.getAgentName());
+            sellHouseDetailsDo.setHouseProxyPhone(agentBaseDo.getDisplayPhone());
+            sellHouseDetailsDo.setHouseProxyPhoto(agentBaseDo.getHeadPhoto());
+            sellHouseDetailsDo.setOfCompany(agentBaseDo.getAgentCompany());
         }
         return sellHouseDetailsDo;
     }
