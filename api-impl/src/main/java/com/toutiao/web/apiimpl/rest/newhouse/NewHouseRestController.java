@@ -57,7 +57,7 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseDynamic",method = RequestMethod.GET)
-    public  NashResult getNewHouseDynamicByNewcode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
+    public  NashResult getNewHouseDynamicByNewCode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
     {
         NewHouseDynamicDoQuery newHouseDynamicDoQuery =new NewHouseDynamicDoQuery();
         BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDoQuery);

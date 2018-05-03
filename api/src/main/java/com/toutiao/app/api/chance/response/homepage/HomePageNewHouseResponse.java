@@ -41,10 +41,10 @@ public class HomePageNewHouseResponse {
     private  String  saleStatusName;
 
 
-    /**
-     * 标签
-     */
-    private  String []  buildingTags;
+//    /**
+//     * 标签
+//     */
+//    private  String []  buildingTags;
 
 
     /**
