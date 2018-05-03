@@ -19,10 +19,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/favorite/rent")
@@ -43,7 +40,7 @@ public class RentFavoriteRestController {
      */
     @RequestMapping(value = "/getRentFavoriteByUserId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getRentFavoriteByUserId(RentFavoriteListRequest rentFavoriteListRequest){
+    public NashResult getRentFavoriteByUserId(@Validated RentFavoriteListRequest rentFavoriteListRequest){
 
         RentFavoriteListDoQuery rentFavoriteListDoQuery = new RentFavoriteListDoQuery();
         BeanUtils.copyProperties(rentFavoriteListRequest,rentFavoriteListDoQuery);
@@ -57,10 +54,10 @@ public class RentFavoriteRestController {
     /**
      * 租房添加收藏
      */
-    @RequestMapping(value = "addRentFavorite" ,method = RequestMethod.POST)
+    @RequestMapping(value = "/addRentFavorite" ,method = RequestMethod.POST)
     @ResponseBody
 
-    public NashResult addRentFavorite(@Validated(Second.class) AddFavorite addFavorite)
+    public NashResult addRentFavorite(@Validated(Second.class) @RequestBody AddFavorite addFavorite)
     {
         UserFavoriteRent userFavoriteRent =new UserFavoriteRent();
         BeanUtils.copyProperties(addFavorite,userFavoriteRent);

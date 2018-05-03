@@ -14,10 +14,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/favorite/plots")
@@ -34,7 +31,7 @@ public class PlotsFavoriteRestController {
      */
     @RequestMapping(value = "/getPlotFavoriteByUserId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotFavoriteByUserId(PlotsFavoriteListRequest plotsFavoriteListRequest){
+    public NashResult getPlotFavoriteByUserId(@Validated PlotsFavoriteListRequest plotsFavoriteListRequest){
         PlotFavoriteListDoQuery plotFavoriteListDoQuery = new PlotFavoriteListDoQuery();
         BeanUtils.copyProperties(plotsFavoriteListRequest,plotFavoriteListDoQuery);
         PlotFavoriteListResponse plotFavoriteListResponse = new PlotFavoriteListResponse();
@@ -63,9 +60,9 @@ public class PlotsFavoriteRestController {
      * @param plotsAddFavoriteResquest
      * @return
      */
-    @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.GET)
+    @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addPlotsFavorite(PlotsAddFavoriteResquest plotsAddFavoriteResquest){
+    public NashResult addPlotsFavorite(@Validated @RequestBody PlotsAddFavoriteResquest plotsAddFavoriteResquest){
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
         Boolean aBoolean = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);

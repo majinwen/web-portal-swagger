@@ -18,10 +18,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/favorite/newhouse")
@@ -41,7 +38,7 @@ public class NewHouseFavoriteRestController {
      */
     @RequestMapping(value = "/getNewHouseFavoriteByUserId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotFavoriteByUserId(NewHouseFavoriteListRequest newHouseFavoriteListRequest){
+    public NashResult getPlotFavoriteByUserId(@Validated NewHouseFavoriteListRequest newHouseFavoriteListRequest){
         NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery = new NewHouseFavoriteListDoQuery();
         NewHouseFavoriteListResponse newHouseFavoriteListResponse = new NewHouseFavoriteListResponse();
         BeanUtils.copyProperties(newHouseFavoriteListRequest,newHouseFavoriteListDoQuery);
@@ -69,9 +66,9 @@ public class NewHouseFavoriteRestController {
      * @param newHouseAddFavoriteRequest
      * @return
      */
-    @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.GET)
+    @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addNewHouseFavorite(NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
+    public NashResult addNewHouseFavorite(@Validated @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
         NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
         BeanUtils.copyProperties(newHouseAddFavoriteRequest,newHouseAddFavoriteDoQuery);
         Boolean aBoolean = favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);

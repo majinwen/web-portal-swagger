@@ -4,6 +4,9 @@ import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +30,12 @@ public class SellHouseFavoriteRestServiceImpl implements SellHouseFavoriteRestSe
         SellHouseFavoriteDomain sellHouseFavoriteDomain = new SellHouseFavoriteDomain();
         sellHouseFavoriteListDoQuery.setFrom((sellHouseFavoriteListDoQuery.getPageNum()-1)*sellHouseFavoriteListDoQuery.getSize());
         List<SellHouseFavoriteDo> sellHouseFavoriteDos = userFavoriteEsHouseMapper.selectSellHouseFavoriteByUserId(sellHouseFavoriteListDoQuery);
-        sellHouseFavoriteDomain.setData(sellHouseFavoriteDos);
 
+        if(null!=sellHouseFavoriteDos && sellHouseFavoriteDos.size()>0){
+            sellHouseFavoriteDomain.setData(sellHouseFavoriteDos);
+        }else{
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_NOT_FOUND,"二手房收藏列表为空");
+        }
         return sellHouseFavoriteDomain;
     }
 }

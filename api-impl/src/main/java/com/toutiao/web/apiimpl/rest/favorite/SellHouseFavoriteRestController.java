@@ -16,10 +16,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rest/favorite/esf")
@@ -39,7 +36,7 @@ public class SellHouseFavoriteRestController {
      */
     @RequestMapping(value = "/getEsfFavoriteByUserId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getEsfFavoriteByUserId(SellHouseFavoriteListRequest sellHouseFavoriteListRequest){
+    public NashResult getEsfFavoriteByUserId(@Validated SellHouseFavoriteListRequest sellHouseFavoriteListRequest){
 
         SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
         BeanUtils.copyProperties(sellHouseFavoriteListRequest,sellHouseFavoriteListDoQuery);
@@ -55,9 +52,9 @@ public class SellHouseFavoriteRestController {
     /**
      * 二手房添加收藏
      */
-    @RequestMapping(value = "addEsfFavorite",method = RequestMethod.POST)
+    @RequestMapping(value = "/addEsfFavorite",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addEsfFavorite(@Validated(First.class) AddFavorite addFavorite)
+    public NashResult addEsfFavorite(@Validated(First.class) @RequestBody AddFavorite addFavorite)
     {
         UserFavoriteEsHouse userFavoriteEsHouse= new UserFavoriteEsHouse();
         BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
