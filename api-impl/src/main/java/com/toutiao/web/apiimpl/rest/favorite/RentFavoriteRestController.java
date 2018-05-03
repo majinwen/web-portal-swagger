@@ -3,14 +3,11 @@ package com.toutiao.web.apiimpl.rest.favorite;
 
 import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.RentFavoriteListResponse;
-import com.toutiao.app.api.chance.response.favorite.SellHouseFavoriteListResponse;
 import com.toutiao.app.domain.favorite.DeleteRentFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.UserFavoriteRent;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDomain;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery;
-import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
-import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.favorite.RentFavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
