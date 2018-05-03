@@ -110,7 +110,8 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchResponse searchresponse = srb.setQuery(query).addSort("sortingScore",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize).setFetchSource(
                 new String[] {"claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
                         "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
-                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","is_claim","userId"} ,null)
+                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","is_claim","userId",
+                        "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto"} ,null)
                 .execute().actionGet();
         return searchresponse;
     }
@@ -128,7 +129,8 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchResponse searchresponse = srb.setQuery(query).addSort("_uid",SortOrder.DESC).setSize(1).setFetchSource(
                 new String[] {"claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
                         "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
-                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId"} ,null)
+                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId",
+                        "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto"} ,null)
                 .execute().actionGet();
         return searchresponse;
     }

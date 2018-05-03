@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -132,10 +133,9 @@ public class SellHouseDo {
      */
     private Integer userId;
 
-    /**
-     * 经纪人电话
-     */
-    private String displayPhone;
+
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
 
 
 

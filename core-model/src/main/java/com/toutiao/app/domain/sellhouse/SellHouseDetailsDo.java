@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -256,5 +257,14 @@ public class SellHouseDetailsDo {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
+
+    private AgentBaseDo agentBaseDo;
+
+    private Integer userId;
+
+    private String houseProxyName;
+    private String houseProxyPhone;
+    private String houseProxyPhoto;
+
 
 }

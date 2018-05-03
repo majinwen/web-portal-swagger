@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.response.sellhouse;
 
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 import java.util.Map;
@@ -256,5 +257,8 @@ public class SellHouseDetailsResponse {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
+
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
 
 }
