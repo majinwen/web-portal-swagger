@@ -1,9 +1,8 @@
 package com.toutiao.app.api.chance.response.sellhouse;
 
-import com.toutiao.app.domain.sellhouse.AgentsBySellHouseDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -40,30 +39,37 @@ public class SellAndClaimDetailsResponse {
     /**
      * 区域名称
      */
+    @ChangeName("districtName")
     private String area;
     /**
      * 区域id
      */
+    @ChangeName("districtId")
     private Integer areaId;
     /**
      * 商圈id
      */
+    @ChangeName("areaId")
     private Integer houseBusinessNameId;
     /**
      * 商圈名称
      */
+    @ChangeName("areaName")
     private String houseBusinessName;
     /**
      * 楼盘ID(楼盘/小区)
      */
+    @ChangeName("buildingId")
     private Integer newcode;
     /**
      * 小区名称
      */
+    @ChangeName("buildingName")
     private String plotName;
     /**
      * 小区图片
      */
+    @ChangeName("buildingImages")
     private String plotPhoto;
     /**
      * 地铁站id
@@ -84,10 +90,12 @@ public class SellAndClaimDetailsResponse {
     /**
      * 建成年代
      */
+    @ChangeName("buildYears")
     private String year;
     /**
      * 房源信息来源（0-未知来源，1-编辑录入，2-我爱我家导入，3-中原地产导入）
      */
+    @ChangeName("houseSourceId")
     private Integer source;
     /**
      * 产权性质(1:已购公房,2:商品房,3:空置房,4:使用权房,5:央产,6:经济适用房)（权属）
@@ -105,18 +113,17 @@ public class SellAndClaimDetailsResponse {
     /**
      * 电梯(有 无)
      */
+    @ChangeName("hasElevator")
     private Integer elevator;
-    /**
-     * 电梯
-     */
-    private String elevatorName;
     /**
      *供暖
      */
+    @ChangeName("heatingMode")
     private Integer houseHeating;
     /**
      * 交通状况（最近地铁信息）
      */
+    @ChangeName("nearBySubwayDesc")
     private String traffic;
     /**
      * 建筑类别：1：板楼，2：塔楼，3：板塔结合，4：砖楼5：其他
@@ -133,18 +140,22 @@ public class SellAndClaimDetailsResponse {
     /**
      * 房源小区地理坐标
      */
+    @ChangeName("location")
     private String housePlotLocation;
     /**
      * 二手房房源标题图
      */
+    @ChangeName("houseTitleImg")
     private String housePhotoTitle;
     /**
      * 标签(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
+    @ChangeName("tagsId")
     private Integer[] tags;
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
+    @ChangeName("tags")
     private String[] tagsName;
     /**
      * 总的楼层数
@@ -153,6 +164,7 @@ public class SellAndClaimDetailsResponse {
     /**
      * 房源所在层数(地下室填负数)
      */
+    @ChangeName("floor")
     private Integer floorNo;
     /**
      * 房源照片
@@ -165,6 +177,7 @@ public class SellAndClaimDetailsResponse {
     /**
      * 状态(0-未发布/1-已发布)
      */
+    @ChangeName("releaseStatus")
     private Short status;
     /**
      * 房源描述
@@ -181,14 +194,17 @@ public class SellAndClaimDetailsResponse {
     /**
      * 房源所在层（高层/低层/中层）
      */
+    @ChangeName("floorName")
     private String floor;
     /**
      * 朝向(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
+    @ChangeName("forwardId")
     private Integer forward;
     /**
      * 朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
+    @ChangeName("forward")
     private String forwardName;
     /**
      * 房屋类型：普通住宅、经济适用房、公寓、安置房、四合院等（物业类型）
@@ -203,6 +219,7 @@ public class SellAndClaimDetailsResponse {
     /**
      * 房源总价
      */
+    @ChangeName("totalPrice")
     private Double houseTotalPrices;
     /**
      * 更新时间
@@ -211,6 +228,7 @@ public class SellAndClaimDetailsResponse {
     /**
      * 建筑面积
      */
+    @ChangeName("buildingArea")
     private Double buildArea;
     /**
      * 使用面积
@@ -224,19 +242,14 @@ public class SellAndClaimDetailsResponse {
      * 是否删除(0-未删除/1-已删除)
      */
     private Integer isDel;
-
-//    /**
-//     * 二手房附件好房
-//     */
-//    private List<NearBySellHousesDo> NearBySellHousesDo;
-//    /**
-//     * 二手房房源认领经纪人
-//     */
-//    private AgentsBySellHouseDo agentsBySellHouseDo;
     /**
      * 房源总数
      */
     private Integer totalNum;
+    /**
+     * 是否认领
+     */
+    private Integer isClaim;
     /**
      * 认领房源标签
      */
@@ -260,5 +273,7 @@ public class SellAndClaimDetailsResponse {
     /**
      * 车位配比
      */
+    @ChangeName("parkRatio")
     private String parkRadio;
+
 }

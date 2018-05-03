@@ -1,5 +1,6 @@
 package com.toutiao.app.service.rent;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.*;
 
 import java.util.List;
@@ -53,4 +54,6 @@ public interface RentRestService {
      * @return
      */
     RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery);
+
+
 }

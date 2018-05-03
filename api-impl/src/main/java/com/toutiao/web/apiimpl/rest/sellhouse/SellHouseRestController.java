@@ -32,10 +32,10 @@ public class SellHouseRestController {
      */
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
     public NashResult getSellHouseByHouseId(@Validated SellHouseDerailsRequest sellHouseDerailsRequest) {
-        SellAndClaimDetailsResponse sellAndClaimDetailsResponse = new SellAndClaimDetailsResponse();
-        SellAndClaimHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId());
-        BeanUtils.copyProperties(sellHouseByHouse, sellAndClaimDetailsResponse);
-        return NashResult.build(sellAndClaimDetailsResponse);
+        SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
+        SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId());
+        BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
+        return NashResult.build(sellHouseDetailsResponse);
     }
 
 

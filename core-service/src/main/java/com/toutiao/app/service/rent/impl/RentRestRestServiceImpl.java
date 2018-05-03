@@ -3,6 +3,7 @@ package com.toutiao.app.service.rent.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.RentAgentDo;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
@@ -287,6 +288,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         return rentDetailsFewDo;
     }
+
 
 
 
