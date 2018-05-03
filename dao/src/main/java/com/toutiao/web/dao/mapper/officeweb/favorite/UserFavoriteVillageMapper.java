@@ -32,6 +32,8 @@ public interface UserFavoriteVillageMapper extends BaseDao {
 
     List<UserFavoriteVillage> getPlotFavoriteByUserId(PlotFavoriteListDoQuery plotFavoriteListDoQuery);
 
+    Integer getPlotFavoriteCountByUserId(PlotFavoriteListDoQuery plotFavoriteListDoQuery);
+
     Integer addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
 
 

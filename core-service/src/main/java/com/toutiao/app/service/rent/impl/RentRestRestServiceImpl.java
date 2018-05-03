@@ -10,6 +10,7 @@ import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
@@ -142,6 +143,9 @@ public class RentRestRestServiceImpl implements RentRestService {
         list.add(rentNumDo2);
         rentNumListDo.setData(list);
         rentNumListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        if(searchResponse.getHits().getTotalHits() == 0){
+            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND,"小区没有出租房源信息");
+        }
         return rentNumListDo;
     }
 

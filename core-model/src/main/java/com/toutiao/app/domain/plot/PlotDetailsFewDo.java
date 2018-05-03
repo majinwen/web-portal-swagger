@@ -128,4 +128,12 @@ public class PlotDetailsFewDo {
      */
     @ChangeName("distanceKey")
     private String key;
+    /**
+     * 小区下二手房总数
+     */
+    private Integer sellHouseTotalNum;
+    /**
+     * 小区下租房总数
+     */
+    private Integer rentTotalNum;
 }

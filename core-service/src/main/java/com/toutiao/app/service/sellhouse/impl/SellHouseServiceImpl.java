@@ -63,7 +63,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }else {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         }
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();

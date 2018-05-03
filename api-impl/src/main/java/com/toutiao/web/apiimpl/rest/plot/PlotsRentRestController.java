@@ -19,10 +19,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,6 +35,7 @@ public class PlotsRentRestController {
      * @return
      */
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
+    @ResponseBody
     public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
         RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(), plotsRentRequest.getRentType(), plotsRentRequest.getPageNum());
         RentDetailsListResponse rentDetailsListResponse = JSON.parseObject(JSON.toJSONString(rentDetailsListDo), RentDetailsListResponse.class);

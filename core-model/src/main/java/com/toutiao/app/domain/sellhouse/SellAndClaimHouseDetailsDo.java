@@ -11,7 +11,7 @@ public class SellAndClaimHouseDetailsDo {
     /**
      * 二手房房源id
      */
-    private Integer houseId;
+    private String houseId;
     /**
      * 房源标题
      */

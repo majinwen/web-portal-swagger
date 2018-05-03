@@ -180,7 +180,7 @@ public class FavoriteRestController {
      * @param plotsAddFavoriteResquest
      * @return
      */
-    @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.GET)
+    @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.POST)
     public NashResult addPlotsFavorite(PlotsAddFavoriteResquest plotsAddFavoriteResquest){
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
@@ -193,7 +193,7 @@ public class FavoriteRestController {
      * @param newHouseAddFavoriteRequest
      * @return
      */
-    @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.GET)
+    @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.POST)
     public NashResult addNewHouseFavorite(NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
         NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
         BeanUtils.copyProperties(newHouseAddFavoriteRequest,newHouseAddFavoriteDoQuery);

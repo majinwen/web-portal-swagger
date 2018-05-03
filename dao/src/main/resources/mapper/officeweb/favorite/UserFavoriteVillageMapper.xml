@@ -176,6 +176,10 @@
     SELECT  * FROM user_favorite_village
     WHERE user_id = #{userId} AND is_del = 0 limit #{size} OFFSET #{from}
   </select>
+  <select id="getPlotFavoriteCountByUserId" parameterType="com.toutiao.app.domain.plot.PlotFavoriteListDoQuery" resultType="java.lang.Integer">
+    SELECT COUNT (1) FROM user_favorite_village
+    WHERE user_id = #{userId} AND is_del = 0
+  </select>
   <insert id="addPlotsFavorite" parameterType="com.toutiao.app.domain.favorite.PlotsAddFavoriteDoQuery">
     insert into user_favorite_village
     <trim prefix="(" suffix=")" suffixOverrides="," >

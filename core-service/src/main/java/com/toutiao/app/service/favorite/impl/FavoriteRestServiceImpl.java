@@ -190,8 +190,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
         plotFavoriteListDoQuery.setFrom((plotFavoriteListDoQuery.getPageNum()-1)*plotFavoriteListDoQuery.getSize());
         List<UserFavoriteVillage> plotFavoriteByUserId = userFavoriteVillageMapper.getPlotFavoriteByUserId(plotFavoriteListDoQuery);
+        Long count = (long)userFavoriteVillageMapper.getPlotFavoriteCountByUserId(plotFavoriteListDoQuery);
         List<UserFavoritePlotDo> list = JSONArray.parseArray(JSONObject.toJSONString(plotFavoriteByUserId), UserFavoritePlotDo.class);
         plotFavoriteListDo.setData(list);
+        plotFavoriteListDo.setTotalNum(count);
         return plotFavoriteListDo;
     }
 
