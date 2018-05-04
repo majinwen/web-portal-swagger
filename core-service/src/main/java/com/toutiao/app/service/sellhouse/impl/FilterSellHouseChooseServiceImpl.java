@@ -101,16 +101,16 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
 
         //面积
-        if (nearBySellHouseQueryDo.getBeginArea()!=0 && nearBySellHouseQueryDo.getEndArea()!=0) {
+        if (null!=nearBySellHouseQueryDo.getBeginArea() && null!=nearBySellHouseQueryDo.getEndArea()) {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
 
-        }else if(nearBySellHouseQueryDo.getBeginArea()==0 && nearBySellHouseQueryDo.getEndArea()!=0)
+        }else if(nearBySellHouseQueryDo.getBeginArea()==null && nearBySellHouseQueryDo.getEndArea()!=null)
         {
 
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").lte(nearBySellHouseQueryDo.getEndArea()));
 
         }
-        else if(nearBySellHouseQueryDo.getEndArea()==0 && nearBySellHouseQueryDo.getBeginArea()!=0)
+        else if(nearBySellHouseQueryDo.getEndArea()==null && nearBySellHouseQueryDo.getBeginArea()!=null)
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()));
 
@@ -228,12 +228,12 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                             .gte(sellHouseDoQuery.getBeginPrice()).lte(sellHouseDoQuery.getEndPrice())));
         }
         //面积
-        if (sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()!=0) {
+        if (sellHouseDoQuery.getBeginArea()!=null && sellHouseDoQuery.getEndArea()!=null) {
 
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
-        }else if(sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()==0){
+        }else if(sellHouseDoQuery.getBeginArea()!=null && sellHouseDoQuery.getEndArea()==null){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()));
-        }else if(sellHouseDoQuery.getBeginArea()==0 && sellHouseDoQuery.getEndArea()!=0){
+        }else if(sellHouseDoQuery.getBeginArea()==null && sellHouseDoQuery.getEndArea()!=null){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(sellHouseDoQuery.getEndArea()));
         }
         //楼龄

@@ -23,10 +23,8 @@ public class FavoriteRestController {
      @Autowired
      private FavoriteRestService favoriteRestService;
 
-     //租房标识
-    private  final  Integer FAVORITE_RENT=1;
-    //二手房标识
-    private  final  Integer FAVORITE_ESF=2;
+
+
 
 
     /**
@@ -45,189 +43,34 @@ public class FavoriteRestController {
         return  NashResult.build(userCenterFavoriteCountResponse);
     }
 
-    /**
-     *
-     *
-     * @return
-     * 判断租房是否被收藏
-     */
-    @RequestMapping(value = "/getIsFavoriteByRent",method = RequestMethod.GET)
-    @ResponseBody
-    public  NashResult getIsFavoriteByRent(@Validated(First.class) IsFavoriteRequest isFavoriteRequest)
-    {
-          IsFavoriteDo isFavoriteDo=new IsFavoriteDo();
-          BeanUtils.copyProperties(isFavoriteRequest,isFavoriteDo);
-          boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_RENT,isFavoriteDo);
-          return  NashResult.build(isFavorite);
-    }
-
-    /**
-     * 判断二手房是否被收藏
-     */
-    @RequestMapping(value = "getIsFavoriteByEsf",method = RequestMethod.GET)
-    @ResponseBody
-    public  NashResult getIsFavoriteByEsf(@Validated(Second.class) IsFavoriteRequest isFavoriteRequest)
-    {
-        IsFavoriteDo isFavoriteDo=new IsFavoriteDo();
-        BeanUtils.copyProperties(isFavoriteRequest,isFavoriteDo);
-        boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF,isFavoriteDo);
-        return  NashResult.build(isFavorite);
-    }
-    /**
-     * 列表页小区收藏数量
-     * @param plotsFavoriteNumRequest
-     * @return
-     */
-    @RequestMapping(value = "/getPlotFavoriteCountByPlotId",method = RequestMethod.GET)
-    public NashResult getPlotFavoriteCountByPlotId(@Validated  PlotsFavoriteNumRequest plotsFavoriteNumRequest){
-        Integer plotFavoriteCountByPlotId = favoriteRestService.getPlotFavoriteCountByPlotId(plotsFavoriteNumRequest.getPlotId());
-        return NashResult.build(plotFavoriteCountByPlotId);
-    }
-    /**
-     * 新房取消收藏
-     */
-    @RequestMapping(value = "cancelFavoriteByNewHouse",method = RequestMethod.POST)
-    @ResponseBody
-    public NashResult cancelFavoriteNewHouse(@Validated(First.class) CancelFavoriteRequest cancelFavoriteRequest)
-    {
-           UserFavoriteNewHouse userFavoriteNewHouse=new UserFavoriteNewHouse();
-           BeanUtils.copyProperties(cancelFavoriteRequest,userFavoriteNewHouse);
-           return  favoriteRestService.cancelNewHouseByNewCode(userFavoriteNewHouse);
-    }
-
-    /**
-     * 小区取消收藏
-     */
-
-    @RequestMapping(value = "cancelFavoriteByVillage",method = RequestMethod.POST)
-    @ResponseBody
-    public NashResult cancelFavoriteByVillage(@Validated(Second.class) CancelFavoriteRequest cancelFavoriteRequest)
-    {
-        UserFavoriteVillage userFavoriteVillage=new UserFavoriteVillage();
-        BeanUtils.copyProperties(cancelFavoriteRequest,userFavoriteVillage);
-        return favoriteRestService.cancelVillageByVillageId(userFavoriteVillage);
-
-    }
-    /**
-     * 二手房取消收藏
-     * @param deleteEsfFavoriteResquest
-     * @return
-     */
-    @RequestMapping(value = "/deleteEsfFavoriteByEsfIdAndUserId",method = RequestMethod.GET)
-    public NashResult deleteEsfFavoriteByEsfIdAndUserId(@Validated DeleteEsfFavoriteResquest deleteEsfFavoriteResquest){
-        DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
-        BeanUtils.copyProperties(deleteEsfFavoriteResquest,deleteEsfFavoriteDo);
-        Boolean aBoolean = favoriteRestService.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
-        return NashResult.build(aBoolean);
-    }
-
-    /**
-     * 租房取消收藏
-     * @param deleteRentFavoriteRequest
-     * @return
-     */
-    @RequestMapping(value = "/deleteRentFavoriteByRentIdAndUserId",method = RequestMethod.GET)
-    public NashResult deleteRentFavoriteByRentIdAndUserId(@Validated DeleteRentFavoriteRequest deleteRentFavoriteRequest){
-        DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
-        BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
-        Boolean aBoolean = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
-        return NashResult.build(aBoolean);
-    }
-
-    /**
-     * 判断小区是否被收藏
-     * @param plotIsFavoriteResquest
-     * @return
-     */
-    @RequestMapping(value = "/getPlotIsFavoriteByPlotIdAndUserId",method = RequestMethod.GET)
-    public NashResult getPlotIsFavorite(PlotIsFavoriteResquest plotIsFavoriteResquest){
-        PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
-        BeanUtils.copyProperties(plotIsFavoriteResquest, plotIsFavoriteDoQuery);
-        Boolean plotIsFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
-        return NashResult.build(plotIsFavorite);
-    }
-
-    /**
-     * 判断新房是否被收藏
-     * @param newHouseIsFavoriteResquest
-     * @return
-     */
-    @RequestMapping(value = "/getNewHouseIsFavorite",method = RequestMethod.GET)
-    public NashResult getNewHouseIsFavorite(@Validated NewHouseIsFavoriteResquest newHouseIsFavoriteResquest){
-        NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
-        BeanUtils.copyProperties(newHouseIsFavoriteResquest, newHouseIsFavoriteDoQuery);
-        Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
-        return NashResult.build(newHouseIsFavorite);
-    }
-
-    /**
-     * 小区收藏列表
-     * @param plotsFavoriteListRequest
-     * @return
-     */
-    @RequestMapping(value = "/getPlotFavoriteByUserId",method = RequestMethod.GET)
-    public NashResult getPlotFavoriteByUserId(PlotsFavoriteListRequest plotsFavoriteListRequest){
-        PlotFavoriteListDoQuery plotFavoriteListDoQuery = new PlotFavoriteListDoQuery();
-        BeanUtils.copyProperties(plotsFavoriteListRequest,plotFavoriteListDoQuery);
-        PlotFavoriteListResponse plotFavoriteListResponse = new PlotFavoriteListResponse();
-        PlotFavoriteListDo plotFavoriteListDo = favoriteRestService.getPlotFavoriteByUserId(plotFavoriteListDoQuery);
-        BeanUtils.copyProperties(plotFavoriteListDo, plotFavoriteListResponse);
-        return NashResult.build(plotFavoriteListResponse);
-    }
-
-    /**
-     * 添加小区收藏
-     * @param plotsAddFavoriteResquest
-     * @return
-     */
-    @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.POST)
-    public NashResult addPlotsFavorite(PlotsAddFavoriteResquest plotsAddFavoriteResquest){
-        PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
-        BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
-        Boolean aBoolean = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
-        return NashResult.build(aBoolean);
-    }
-
-    /**
-     * 添加新房收藏
-     * @param newHouseAddFavoriteRequest
-     * @return
-     */
-    @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.POST)
-    public NashResult addNewHouseFavorite(NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
-        NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
-        BeanUtils.copyProperties(newHouseAddFavoriteRequest,newHouseAddFavoriteDoQuery);
-        Boolean aBoolean = favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
-        return NashResult.build(aBoolean);
-    }
 
 
 
-    /**
-     * 二手房添加收藏
-     */
-    @RequestMapping(value = "addEsfFavorite",method = RequestMethod.POST)
-    @ResponseBody
-    public NashResult addEsfFavorite(@Validated(First.class) AddFavorite addFavorite)
-    {
-        UserFavoriteEsHouse userFavoriteEsHouse= new UserFavoriteEsHouse();
-        BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
-        return favoriteRestService.addEsfFavorite(userFavoriteEsHouse)  ;
-    }
 
 
-    /**
-     * 租房添加收藏
-     */
-    @RequestMapping(value = "addRentFavorite" ,method = RequestMethod.POST)
-    @ResponseBody
 
-    public  NashResult addRentFavorite(@Validated(Second.class) AddFavorite addFavorite)
-    {
-        UserFavoriteRent userFavoriteRent =new UserFavoriteRent();
-        BeanUtils.copyProperties(addFavorite,userFavoriteRent);
-        return favoriteRestService.addRentFavorite(userFavoriteRent);
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

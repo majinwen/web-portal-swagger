@@ -92,4 +92,13 @@ public class NewHouseListDo  {
      * 类别
      */
     private  String propertyType;
+
+
+    /**
+     *  桥
+     */
+    private  String  ringRoadName;
+
+
+
 }

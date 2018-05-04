@@ -66,12 +66,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
     @Override
     public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId) {
+        String details = "";
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
             SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
-            String details = "";
             PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
             for (SearchHit searchHit : hits) {
                 details = searchHit.getSourceAsString();
@@ -98,11 +98,23 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if ("2".equals(plotDetailsDo.getHeatingMode())){
                     plotDetailsDo.setHeatingMode("自供暖");
                 }
+                if (null!=plotDetailsDo.getElevator() &&"1".equals(plotDetailsDo.getElevator()))
+                {
+                    plotDetailsDo.setHasElevator("有");
+                }
+                if(null!=plotDetailsDo.getElevator() && "2".equals(plotDetailsDo.getElevator()))
+                {
+                    plotDetailsDo.setHasElevator("无");
+                }
+                return plotDetailsDo;
             }
 
-            return plotDetailsDo;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (details.isEmpty())
+        {
+            throw  new  BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_DETAILS_NOT_FOUND);
         }
         return null;
     }
@@ -299,14 +311,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
+        if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()!=null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
+        }else if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()==null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
-        }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
+        }else if(plotListDoQuery.getBeginArea()==null && plotListDoQuery.getEndArea()!=null){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));

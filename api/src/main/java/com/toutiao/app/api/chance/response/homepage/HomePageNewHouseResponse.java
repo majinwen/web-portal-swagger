@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.homepage;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 @Data
@@ -40,10 +41,10 @@ public class HomePageNewHouseResponse {
     private  String  saleStatusName;
 
 
-    /**
-     * 标签
-     */
-    private  String []  buildingTags;
+//    /**
+//     * 标签
+//     */
+//    private  String []  buildingTags;
 
 
     /**
@@ -67,5 +68,16 @@ public class HomePageNewHouseResponse {
      * 大楼id
      */
     private  Integer buildingNameId;
+
+    /**
+     *  最近交房
+     */
+    private  String deliverTime;
+
+    /**
+     * 环路
+     */
+    @ChangeName("ringRoad")
+    private  String ringRoadName;
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class PlotListResponse {
     @ChangeName("data")
-    private List<PlotDetailsFewDo> plotList;
-    @ChangeName("totalNum")
-    private Integer totalCount;
+    private List<PlotDetailsFewDo> data;
+
+    private Integer totalNum;
 }

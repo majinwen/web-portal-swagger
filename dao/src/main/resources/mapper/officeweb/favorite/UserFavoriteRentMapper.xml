@@ -26,6 +26,13 @@
     from user_favorite_rent
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <!--收藏列表-->
+  <select id="selectRentFavoritesByUserId" parameterType="com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery" resultMap="BaseResultMap">
+    SELECT  * FROM user_favorite_rent
+    WHERE user_id = #{userId} AND is_del = 0 limit #{size} OFFSET #{from}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user_favorite_rent
     where id = #{id,jdbcType=INTEGER}

@@ -13,7 +13,12 @@ public enum RentInterfaceErrorCodeEnum implements IntBaseType {
 
     RENT_NOT_FOUND("租房推荐列表为空", 70101),
 
-    RECOMMEND_RENT_NOT_FOUND("未查询到租房推优房源", 70102);
+    RECOMMEND_RENT_NOT_FOUND("未查询到租房推优房源", 70102),
+
+    RENT_FAVORITE_NOT_FOUND("租房收藏列表为空",70603),
+    RENT_FAVORITE_ADD_REPEAT("添加租房收藏重复",70604),
+    RENT_FAVORITE_ADD_ERROR("添加租房收藏重复",70605),
+    RENT_DETAILS_NOT_FOUND("租房详情未找到",70201);
 
     /**
      * 支付模块，模块代码05

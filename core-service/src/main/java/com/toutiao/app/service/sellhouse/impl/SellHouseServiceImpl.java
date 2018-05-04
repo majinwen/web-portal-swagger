@@ -150,7 +150,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
         boolQueryBuilder.must(QueryBuilders.termQuery("isRecommend",0));
         boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        queryBuilderOfMonth.should(QueryBuilders.rangeQuery("create_time").gt(pastDateOfMonth).lte(nowDate));
+        queryBuilderOfMonth.should(QueryBuilders.rangeQuery("claim_time").gt(pastDateOfMonth).lte(nowDate));
         queryBuilderOfMonth.should(QueryBuilders.rangeQuery("price_increase_decline").gt(0));
         boolQueryBuilder.must(queryBuilderOfMonth);
         //获取7天内导入的，并被认领的
@@ -162,9 +162,21 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
+        //"houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto"
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+            }
+            sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDos.add(sellHouseDo);
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
@@ -196,6 +208,17 @@ public class SellHouseServiceImpl implements SellHouseService{
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
             sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+            }
+            sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDos.add(sellHouseDo);
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);

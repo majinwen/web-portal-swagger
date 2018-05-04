@@ -2,9 +2,15 @@ package com.toutiao.web.dao.mapper.officeweb.favorite;
 
 import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
 import com.toutiao.app.domain.favorite.UserFavoriteEsHouse;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.web.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
 public interface UserFavoriteEsHouseMapper extends BaseDao {
     int deleteByPrimaryKey(Integer id);
 
@@ -23,6 +29,13 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
     Integer isEsfFavoriteByHouseIdAndUserId(@Param("houseId") String houseId,@Param("userId") Integer userId);
 
     Integer updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo);
+
+    /**
+     * 二手房收藏列表
+     * @param sellHouseFavoriteListDoQuery
+     * @return
+     */
+    List<SellHouseFavoriteDo> selectSellHouseFavoriteByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
 
 
 }
