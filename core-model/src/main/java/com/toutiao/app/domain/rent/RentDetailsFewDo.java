@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.rent;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -77,4 +78,9 @@ public class RentDetailsFewDo {
      * 租房推优查询uid
      */
     private String uid;
+
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
+
+    private Integer userId;
 }

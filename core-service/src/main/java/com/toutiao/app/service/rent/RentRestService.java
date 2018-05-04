@@ -55,5 +55,12 @@ public interface RentRestService {
      */
     RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery);
 
+    /**
+     * 租房搜索结果
+     * @param rentHouseDoQuery
+     * @return
+     */
+    RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery);
+
 
 }
