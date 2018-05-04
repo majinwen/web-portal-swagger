@@ -55,12 +55,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
     @Override
     public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId) {
+        String details = "";
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
             SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
-            String details = "";
             PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
             for (SearchHit searchHit : hits) {
                 details = searchHit.getSourceAsString();
@@ -95,11 +95,15 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 {
                     plotDetailsDo.setHasElevator("无");
                 }
+                return plotDetailsDo;
             }
 
-            return plotDetailsDo;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (details.isEmpty())
+        {
+            throw  new  BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_DETAILS_NOT_FOUND);
         }
         return null;
     }

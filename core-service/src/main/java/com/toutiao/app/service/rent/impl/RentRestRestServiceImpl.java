@@ -72,6 +72,10 @@ public class RentRestRestServiceImpl implements RentRestService {
         if (!"".equals(details)) {
             rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
         }
+        else
+        {
+            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_DETAILS_NOT_FOUND);
+        }
         return rentDetailsDo;
     }
 
