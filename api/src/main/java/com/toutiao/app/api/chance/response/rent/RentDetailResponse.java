@@ -102,6 +102,7 @@ public class RentDetailResponse {
     /**
      * 最近的地铁
      */
+    @ChangeName("nearBySubway")
     private String nearestSubway;
 
     /**
