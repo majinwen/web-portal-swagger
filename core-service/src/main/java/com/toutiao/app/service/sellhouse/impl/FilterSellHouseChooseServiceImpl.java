@@ -9,7 +9,9 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -197,6 +199,14 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                         .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword())));
             }
         }
+        //附近
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+            GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
+                    .point(sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon())
+                    .distance(sellHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+            booleanQueryBuilder.must(location);
+        }
+
         //商圈名称
         if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", sellHouseDoQuery.getAreaId()));

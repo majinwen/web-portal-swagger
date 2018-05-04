@@ -36,4 +36,12 @@ public interface SellHouseService {
      * @return
      */
     SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo);
+
+
+    /**
+     * 二手房搜索结果列表页
+     * @param sellHouseDoQuery
+     * @return
+     */
+    SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery);
 }

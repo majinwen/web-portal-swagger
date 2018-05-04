@@ -21,7 +21,7 @@ public class AgentServiceImpl implements AgentService {
     public AgentBaseDo queryAgentInfoByUserId(String userId) {
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("userId", userId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("user_id", userId));
         SearchResponse searchResponse = agentHouseEsDao.getRentInfoByUserId(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
