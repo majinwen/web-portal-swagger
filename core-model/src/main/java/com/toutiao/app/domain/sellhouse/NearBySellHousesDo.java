@@ -81,7 +81,7 @@ public class NearBySellHousesDo {
     /**
      * 地铁最近
      */
-    @ChangeName("nearBySubwayDesc")
+    @ChangeName("nearBySubway")
     private  String traffic;
 
     /**

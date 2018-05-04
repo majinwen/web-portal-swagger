@@ -78,4 +78,13 @@ public class RentDetailsFewDo {
      * 租房推优查询uid
      */
     private String uid;
+    /**
+     * 最近的地铁
+     */
+    @ChangeName("nearBySubway")
+    private String nearestSubway;
+    /**
+     * 车位配比
+     */
+    private String parkRatio;
 }
