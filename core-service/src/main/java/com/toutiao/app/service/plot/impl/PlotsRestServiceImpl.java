@@ -87,6 +87,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if ("2".equals(plotDetailsDo.getHeatingMode())){
                     plotDetailsDo.setHeatingMode("自供暖");
                 }
+                if (null!=plotDetailsDo.getElevator() &&"1".equals(plotDetailsDo.getElevator()))
+                {
+                    plotDetailsDo.setHasElevator("有");
+                }
+                if(null!=plotDetailsDo.getElevator() && "2".equals(plotDetailsDo.getElevator()))
+                {
+                    plotDetailsDo.setHasElevator("无");
+                }
             }
 
             return plotDetailsDo;

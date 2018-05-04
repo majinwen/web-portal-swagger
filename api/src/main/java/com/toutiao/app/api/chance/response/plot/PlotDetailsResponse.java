@@ -83,9 +83,8 @@ public class PlotDetailsResponse {
     private Double avgGreening;
 
     /**
-     * 电梯配备
+     * 电梯配备类型
      */
-    @ChangeName("hasElevator")
     private String elevator;
     /**
      * 车位配比
@@ -147,5 +146,12 @@ public class PlotDetailsResponse {
      * 位置
      */
     private  String location;
+
+
+    /**
+     * 电梯配备中文
+     */
+    @ChangeName("hasElevator")
+    private String hasElevator;
 
 }
