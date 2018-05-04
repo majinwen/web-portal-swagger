@@ -269,7 +269,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
         boolQueryBuilder.must(QueryBuilders.rangeQuery("update_time").gt(pastDate).lte(nowDate));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_recommend","0"));
-        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType",rentHouseDoQuery.getRentHouseType()));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
         Integer size = 10;
         Integer from = (rentHouseDoQuery.getPageNum()-1)*size;
 
@@ -281,6 +281,19 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+
+                }else{
+                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("agent_headphoto")==null?"":searchHit.getSourceAsMap().get("agent_headphoto").toString());
+
+                }
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 list.add(rentDetailsFewDo);
             }
             rentDetailsListDo.setRentDetailsList(list);
@@ -313,6 +326,18 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+
+                }else{
+                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("agent_headphoto")==null?"":searchHit.getSourceAsMap().get("agent_headphoto").toString());
+
+                }
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDo.setUid(searchHit.getSortValues()[0].toString());
             }
 

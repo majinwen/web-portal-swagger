@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.rent;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -82,5 +83,8 @@ public class RecommendRentResponse {
      */
     @ChangeName("housePhotoTitle")
     private String houseTitleImg;
+
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
 
 }
