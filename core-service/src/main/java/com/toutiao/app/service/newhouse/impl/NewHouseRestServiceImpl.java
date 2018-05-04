@@ -88,6 +88,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         {
             newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         }
+        if ("0".equals(newHouseDetailDo.getHeatingType())){
+            newHouseDetailDo.setHeatingType("未知");
+        }
+        if ("1".equals(newHouseDetailDo.getHeatingType())){
+            newHouseDetailDo.setHeatingType("集中供暖");
+        }
+        if ("2".equals(newHouseDetailDo.getHeatingType())){
+            newHouseDetailDo.setHeatingType("自供暖");
+        }
+
         return  newHouseDetailDo;
 
     }

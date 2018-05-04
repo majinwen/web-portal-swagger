@@ -238,7 +238,7 @@ public class NewHouseDetailDo {
     /**
      * 供暖方式(0-未知，1-集中供暖，2-自供暖）
      */
-    private  Integer heatingType;
+    private  String heatingType;
 
     /**
      * 物业管理费

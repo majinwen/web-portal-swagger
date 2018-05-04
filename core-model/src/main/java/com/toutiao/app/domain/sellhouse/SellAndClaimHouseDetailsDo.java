@@ -114,6 +114,7 @@ public class SellAndClaimHouseDetailsDo {
      *供暖
      */
     private Integer houseHeating;
+
     /**
      * 交通状况（最近地铁信息）
      */
@@ -265,5 +266,8 @@ public class SellAndClaimHouseDetailsDo {
      * 车位配比
      */
     private String parkRadio;
-
+    /**
+     * 均价
+     */
+    private Double houseUnitCost;
 }

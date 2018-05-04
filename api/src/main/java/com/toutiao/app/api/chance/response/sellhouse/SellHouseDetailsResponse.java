@@ -114,13 +114,23 @@ public class SellHouseDetailsResponse {
     /**
      * 电梯(有 无)
      */
-    @ChangeName("hasElevator")
+    @ChangeName("hasElevatorId")
     private Integer elevator;
+    /**
+     * 电梯
+     */
+    @ChangeName("hasElevator")
+    private String elevatorName;
+    /**
+     *供暖
+     */
+    @ChangeName("heatingModeId")
+    private Integer houseHeating;
     /**
      *供暖
      */
     @ChangeName("heatingMode")
-    private Integer houseHeating;
+    private String houseHeatingName;
     /**
      * 交通状况（最近地铁信息）
      */
@@ -272,4 +282,9 @@ public class SellHouseDetailsResponse {
      */
     @ChangeName("headPhoto")
     private String houseProxyPhoto;
+    /**
+     * 均价
+     */
+    @ChangeName("avgPrice")
+    private Double houseUnitCost;
 }

@@ -91,6 +91,16 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
             }
         }
+        if (sellHouseDetailsDo.getHouseHeating()==0){
+            sellHouseDetailsDo.setHouseHeatingName("未知");
+        }
+         if (sellHouseDetailsDo.getHouseHeating()==1){
+            sellHouseDetailsDo.setHouseHeatingName("集中供暖");
+        }
+         if (sellHouseDetailsDo.getHouseHeating()==2){
+            sellHouseDetailsDo.setHouseHeatingName("自供暖");
+        }
+
         return sellHouseDetailsDo;
     }
 

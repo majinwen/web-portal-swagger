@@ -216,7 +216,7 @@ public class NewHouseDetailResponse {
      * 供暖方式(0-未知，1-集中供暖，2-自供暖）
      */
     @ChangeName("heatingMode")
-    private  Integer heatingType;
+    private  String heatingType;
 
     /**
      * 物业管理费
