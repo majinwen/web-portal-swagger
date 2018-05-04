@@ -98,4 +98,21 @@ public class RentEsDaoImpl implements RentEsDao {
         SearchResponse searchResponse = searchRequestBuilder.setQuery(query).setFrom(from).execute().actionGet();
         return searchResponse;
     }
+
+    @Override
+    public SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize) {
+
+        TransportClient client = esClientTools.init();
+        SearchResponse searchResponse = null;
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        if((null!=keyword && !"".equals(keyword)) || null!=distance){
+            searchResponse = searchRequestBuilder.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                    .execute().actionGet();
+        }else{
+            searchResponse = searchRequestBuilder.setQuery(query).addSort("sortingScore", SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                    .execute().actionGet();
+        }
+        return searchResponse;
+
+    }
 }
