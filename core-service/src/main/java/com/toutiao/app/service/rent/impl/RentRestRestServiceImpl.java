@@ -520,19 +520,19 @@ public class RentRestRestServiceImpl implements RentRestService {
 //                boolQueryBuilder.must(booleanQueryBuilder);
 //            }
 //        }
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getBeginArea()) && StringTool.isNotEmpty(rentHouseDoQuery.getEndArea())) {
-            boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()).lte(rentHouseDoQuery.getEndArea()));
-            boolQueryBuilder.must(boolQueryBuilder);
-        }else if(null==rentHouseDoQuery.getBeginArea() && null!= rentHouseDoQuery.getEndArea())
+        if (rentHouseDoQuery.getBeginArea()!=0 && rentHouseDoQuery.getEndArea()!=0) {
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()).lte(rentHouseDoQuery.getEndArea()));
+
+        }else if(0==rentHouseDoQuery.getBeginArea() && 0!= rentHouseDoQuery.getEndArea())
         {
-            rentHouseDoQuery.setBeginArea(0.0);
-            boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()).lte(rentHouseDoQuery.getEndArea()));
-            boolQueryBuilder.must(boolQueryBuilder);
+
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").lte(rentHouseDoQuery.getEndArea()));
+
         }
-        else if(null==rentHouseDoQuery.getEndArea() && null!= rentHouseDoQuery.getBeginArea())
+        else if(0==rentHouseDoQuery.getEndArea() && 0!= rentHouseDoQuery.getBeginArea())
         {
-            boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()));
-            boolQueryBuilder.must(boolQueryBuilder);
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()));
+
         }
         //整租/合租
         if (StringTool.isNotEmpty(rentHouseDoQuery.getRentType())){
