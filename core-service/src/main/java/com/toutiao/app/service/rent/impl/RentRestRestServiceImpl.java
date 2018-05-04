@@ -83,10 +83,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                         rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
                     }
                 }else {
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent")==null?"":searchHit.getSource().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency")==null?"":searchHit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("agent_headphoto")==null?"":searchHit.getSource().get("agent_headphoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone")==null?"":searchHit.getSource().get("phone").toString());
+                    agentBaseDo.setUserId(searchHit.getSource().get("userId")==null?"":searchHit.getSource().get("userId").toString());
                 }
                 rentDetailsDo.setAgentBaseDo(agentBaseDo);
             }

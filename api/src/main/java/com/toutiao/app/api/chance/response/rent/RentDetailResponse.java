@@ -8,10 +8,7 @@ import java.util.Map;
 
 @Data
 public class RentDetailResponse {
-    /**
-     * 经纪人头像路径
-     */
-    private String agentHeadPhoto;
+
     /**
      * 小区Id
      */
@@ -129,10 +126,6 @@ public class RentDetailResponse {
      */
     private String payModeName;
     /**
-     * 经纪机构
-     */
-    private String brokerageAgency;
-    /**
      * 电话
      */
     private String phone;
@@ -155,6 +148,7 @@ public class RentDetailResponse {
     /**
      * 更新时间
      */
+    @ChangeName("updateTime")
     private String upStringTime;
     /**
      * 发版时间
@@ -165,10 +159,6 @@ public class RentDetailResponse {
      * 是否是推荐
      */
     private Integer isRecommend;
-    /**
-     * 经纪人姓名
-     */
-    private String estateAgent;
 
     /**
      * 类型
