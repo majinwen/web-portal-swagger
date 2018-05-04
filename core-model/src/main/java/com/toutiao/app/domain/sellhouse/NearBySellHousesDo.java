@@ -64,6 +64,7 @@ public class NearBySellHousesDo {
      *
      * 车位配比
      */
+    @ChangeName("parkRatio")
     private String parkRadio;
 
     /**
