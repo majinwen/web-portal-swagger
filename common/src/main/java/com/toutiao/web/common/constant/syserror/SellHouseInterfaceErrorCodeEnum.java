@@ -12,7 +12,9 @@ public enum SellHouseInterfaceErrorCodeEnum implements IntBaseType {
 
 
     ESF_NOT_FOUND("房源标题或房源描述含有敏感词，请检查！", 60101),
-    ESF_FAVORITE_NOT_FOUND("二手房收藏列表为空",60601);
+    ESF_FAVORITE_NOT_FOUND("二手房收藏列表为空",60601),
+    ESF_FAVORITE_ADD_REPEAT("二手房收藏重复",60602),
+    ESF_FAVORITE_ADD_ERROR("二手房收藏重复",60603);
 
 
     private String desc;
