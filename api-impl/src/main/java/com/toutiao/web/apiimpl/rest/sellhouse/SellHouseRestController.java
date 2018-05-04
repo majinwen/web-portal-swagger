@@ -55,7 +55,7 @@ public class SellHouseRestController {
 
 
     /**
-     *  二手房房源列表
+     *  二手房房源默认列表
      * @param sellHouseRequest
      * @return
      */
@@ -72,7 +72,7 @@ public class SellHouseRestController {
     }
 
     /**
-     * 二手房推荐
+     * 二手房默认列表推荐（广告）
      * @param sellHouseRequest
      * @return
      */
@@ -88,13 +88,22 @@ public class SellHouseRestController {
         return NashResult.build(sellHouseResponse);
     }
 
+    /**
+     * 二手房搜索结果列表
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping("/getSellHouseList")
+    @ResponseBody
+    public NashResult getSellHouseList(@Validated SellHouseRequest sellHouseRequest) {
 
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
 
-
-
-
-
-
-
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery);
+        BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
+        return NashResult.build(sellHouseSearchDomainResponse);
+    }
 
 }

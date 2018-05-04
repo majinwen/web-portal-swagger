@@ -3,6 +3,8 @@ package com.toutiao.app.domain.sellhouse;
 import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 
 @Data
 public class SellHouseDoQuery extends QueryDo {
@@ -15,5 +17,16 @@ public class SellHouseDoQuery extends QueryDo {
      * 附近1,3,5km
      *
      */
-    private String near ;
+    private Integer distance ;
+
+    /**
+     * y坐标
+     */
+    private Double lat;
+    /**
+     * x坐标
+     */
+    private Double lon;
+
+
 }

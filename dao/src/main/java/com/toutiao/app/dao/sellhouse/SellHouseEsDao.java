@@ -33,7 +33,7 @@ public interface SellHouseEsDao {
      * @param pageSize
      * @return
      */
-    SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer pageNum, Integer pageSize);
+    SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize);
 
     /**
      * 获取推荐二手房

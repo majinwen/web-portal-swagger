@@ -104,15 +104,18 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer pageNum, Integer pageSize) {
+    public SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchresponse = srb.setQuery(query).addSort("sortingScore",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize).setFetchSource(
-                new String[] {"claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
-                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
-                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","is_claim","userId",
-                        "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto"} ,null)
-                .execute().actionGet();
+        SearchResponse searchresponse = null;
+        if((null!=keyword && !"".equals(keyword)) || null!=distance){
+            searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                    .execute().actionGet();
+        }else{
+            searchresponse = srb.setQuery(query).addSort("sortingScore",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                    .execute().actionGet();
+        }
+
         return searchresponse;
     }
 

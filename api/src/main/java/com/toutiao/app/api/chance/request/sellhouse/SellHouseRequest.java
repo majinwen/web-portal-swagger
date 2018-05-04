@@ -5,6 +5,8 @@ import com.toutiao.web.common.assertUtils.First;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class SellHouseRequest extends BaseQueryRequest {
 
@@ -17,6 +19,15 @@ public class SellHouseRequest extends BaseQueryRequest {
      * 附近1,3,5km
      *
      */
-    private String near ;
+    private Integer distance ;
+
+    /**
+     * y坐标
+     */
+    private Double lat;
+    /**
+     * x坐标
+     */
+    private Double lon;
 
 }
