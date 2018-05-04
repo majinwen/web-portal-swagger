@@ -123,7 +123,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
             nearBySellHouses.add(nearBySellHousesDo);
         }
         nearBySellHouseDomain.setNearBySellHousesDos(nearBySellHouses);
-        nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getHits().length);
+        nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getTotalHits());
 
         return nearBySellHouseDomain;
     }
