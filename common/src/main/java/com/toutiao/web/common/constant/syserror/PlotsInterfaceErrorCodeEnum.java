@@ -19,7 +19,8 @@ public enum PlotsInterfaceErrorCodeEnum implements IntBaseType {
     PLOTS_TRAFFIC_NOT_FOUND("小区交通配套为空!",50501),
     NEARBY_PLOTS_NOT_FOUND("附近小区楼盘列表为空！",50701),
     PLOTS_ESF_NOT_FOUND("小区没有出售房源信息！",50301),
-    PLOTS_RENT_NOT_FOUND("小区没有出租房源信息！",50401);
+    PLOTS_RENT_NOT_FOUND("小区没有出租房源信息！",50401),
+    PLOTS_DETAILS_NOT_FOUND("小区详情为空！",50201);
 
 
 

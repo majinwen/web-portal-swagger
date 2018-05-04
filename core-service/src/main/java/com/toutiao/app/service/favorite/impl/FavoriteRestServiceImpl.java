@@ -9,6 +9,8 @@ import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.UserFavoritePlotDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
@@ -190,8 +192,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
         plotFavoriteListDoQuery.setFrom((plotFavoriteListDoQuery.getPageNum()-1)*plotFavoriteListDoQuery.getSize());
         List<UserFavoriteVillage> plotFavoriteByUserId = userFavoriteVillageMapper.getPlotFavoriteByUserId(plotFavoriteListDoQuery);
+        Long count = (long)userFavoriteVillageMapper.getPlotFavoriteCountByUserId(plotFavoriteListDoQuery);
         List<UserFavoritePlotDo> list = JSONArray.parseArray(JSONObject.toJSONString(plotFavoriteByUserId), UserFavoritePlotDo.class);
         plotFavoriteListDo.setData(list);
+        plotFavoriteListDo.setTotalNum(count);
         return plotFavoriteListDo;
     }
 
@@ -268,10 +272,13 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
         //判断重复收藏
        Integer result =0;
+       Integer ss1=SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_ERROR.getValue();
        Integer re=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouse.getHouseId(),userFavoriteEsHouse.getUserId());
        if (null!=re && re>0)
        {
-           return NashResult.Fail("重复收藏");
+           Integer ss= SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT.getValue();
+
+           return NashResult.Fail(ss.toString(),"二手房收藏添加重复");
        }
        try {
            userFavoriteEsHouse.setCreateTime(new Date());
@@ -284,7 +291,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
        {
            return NashResult.build("收藏收功");
        }
-       return  NashResult.Fail("收藏失败");
+       return  NashResult.Fail(ss1.toString(),"二手房添加收藏失败");
 
 
     }
@@ -300,10 +307,12 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
        //判断重复收藏
         Integer result =0;
+        Integer ss1=RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR.getValue();
         Integer  re= userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRent.getHouseId(),userFavoriteRent.getUserId());
         if (null!=re && re>0)
          {
-             return NashResult.Fail("重复收藏");
+             Integer ss= RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT.getValue();
+             return NashResult.Fail(ss.toString(),"租房添加收藏重复");
          }
          try {
              userFavoriteRent.setCreateTime(new Date());
@@ -318,6 +327,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
              return NashResult.build("收藏收功");
          }
 
-        return  NashResult.Fail("收藏失败");
+        return  NashResult.Fail(ss1.toString(),"租房添加收藏失败");
     }
 }

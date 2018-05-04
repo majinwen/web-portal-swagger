@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.plot;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class UserFavoritePlotDo {
     /**
      * 小区id
      */
+    @ChangeName("buildingId")
     private Integer villageId;
 
     /**
@@ -45,6 +47,7 @@ public class UserFavoritePlotDo {
     /**
      * 标题图
      */
+    @ChangeName("houseTitleImg")
     private String titleImage;
 
     /**

@@ -11,7 +11,7 @@ public class SellAndClaimHouseDetailsDo {
     /**
      * 二手房房源id
      */
-    private Integer houseId;
+    private String houseId;
     /**
      * 房源标题
      */
@@ -114,6 +114,7 @@ public class SellAndClaimHouseDetailsDo {
      *供暖
      */
     private Integer houseHeating;
+
     /**
      * 交通状况（最近地铁信息）
      */
@@ -265,5 +266,12 @@ public class SellAndClaimHouseDetailsDo {
      * 车位配比
      */
     private String parkRadio;
-
+    /**
+     * 均价
+     */
+    private Double houseUnitCost;
+    /**
+     * 经纪人id
+     */
+    private Integer userId;
 }

@@ -21,12 +21,12 @@ public class BaseQueryRequest {
      *起始面积
      */
 
-    private  Double beginArea;
+    private  Double beginArea = 0.0;
 
     /**
      * 结束面积
      */
-    private  Double endArea;
+    private  Double endArea =0.0;
 
     /**
      * 居室

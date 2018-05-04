@@ -10,4 +10,5 @@ public class RentDetailsRequest {
      */
     @NotNull(message = "缺少房源Id")
     private String rentId;
+
 }

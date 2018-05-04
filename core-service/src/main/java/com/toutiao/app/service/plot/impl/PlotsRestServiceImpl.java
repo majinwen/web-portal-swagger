@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.plot.*;
+import com.toutiao.app.domain.rent.RentNumListDo;
+import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 
+import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
@@ -27,6 +30,8 @@ import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.*;
 import org.postgresql.util.PGobject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,6 +41,8 @@ import java.util.*;
 
 @Service
 public class PlotsRestServiceImpl implements PlotsRestService {
+    private static final Logger logger = LoggerFactory.getLogger(PlotsRestServiceImpl.class);
+
     @Value("${distance}")
     private Double distance;
     @Value("${plot.child.type}")
@@ -46,6 +53,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private PlotsRestService plotsRestService;
     @Autowired
     private MapService mapService;
+    @Autowired
+    private PlotsEsfRestService plotsEsfRestService;
+    @Autowired
+    private RentRestService rentRestService;
 
 
     /**
@@ -55,12 +66,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
     @Override
     public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId) {
+        String details = "";
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
             SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
-            String details = "";
             PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
             for (SearchHit searchHit : hits) {
                 details = searchHit.getSourceAsString();
@@ -87,11 +98,23 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if ("2".equals(plotDetailsDo.getHeatingMode())){
                     plotDetailsDo.setHeatingMode("自供暖");
                 }
+                if (null!=plotDetailsDo.getElevator() &&"1".equals(plotDetailsDo.getElevator()))
+                {
+                    plotDetailsDo.setHasElevator("有");
+                }
+                if(null!=plotDetailsDo.getElevator() && "2".equals(plotDetailsDo.getElevator()))
+                {
+                    plotDetailsDo.setHasElevator("无");
+                }
+                return plotDetailsDo;
             }
 
-            return plotDetailsDo;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (details.isEmpty())
+        {
+            throw  new  BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_DETAILS_NOT_FOUND);
         }
         return null;
     }
@@ -327,11 +350,32 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 String sourceAsString = hit.getSourceAsString();
                 PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
                 plotDetailsFewDo.setKey(key);
+
+                //二手房总数
+                try {
+                    PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
+                    plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
+                }catch (BaseException e){
+                    logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                    if (e.getCode()==50301){
+                        plotDetailsFewDo.setSellHouseTotalNum(0);
+                    }
+                }
+                //租房总数
+                try {
+                    RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
+                    plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
+                }catch (BaseException e){
+                    logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                    if (e.getCode()==50401){
+                        plotDetailsFewDo.setRentTotalNum(0);
+                    }
+                }
                 plotDetailsFewDoList.add(plotDetailsFewDo);
             }
         }
-        plotListDo.setData(plotDetailsFewDoList);
-        plotListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        plotListDo.setPlotList(plotDetailsFewDoList);
+        plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         return plotListDo;
     }
 
@@ -370,12 +414,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 plotListDoQuery.setPageSize(10-hits.length);
                 PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListDoQuery);
-                plotDetailsFewDoList.addAll(plotListDo.getData());
+                plotDetailsFewDoList.addAll(plotListDo.getPlotList());
             }else if (hits.length==0){
-                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getData();
+                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
             }
         }else {
-            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getData();
+            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
         }
         return plotDetailsFewDoList;
     }

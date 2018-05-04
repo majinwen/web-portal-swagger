@@ -9,7 +9,6 @@ public class RentDetailFewResponse {
     /**
      * 出租房源Id
      */
-    @ChangeName("houseId")
     private String houseId;
     /**
      * 小区Id
@@ -24,7 +23,6 @@ public class RentDetailFewResponse {
     /**
      * 房源面积
      */
-    @ChangeName("houseArea")
     private Double houseArea;
     /**
      * 几室

@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest.rent;
 
 import com.toutiao.app.api.chance.request.rent.NearHouseListRequest;
 import com.toutiao.app.api.chance.response.rent.RentDetailFewResponseList;
+import com.toutiao.app.api.chance.response.rent.RentDetailsListResponse;
 import com.toutiao.app.domain.rent.NearHouseListDoQuery;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
@@ -26,10 +27,10 @@ public class NearRentHouseRestController {
     @RequestMapping(value = "/getNearRentHouseByLocation",method = RequestMethod.GET)
     private NashResult getNearRentHouseByLocation(@Validated NearHouseListRequest nearHouseListRequest){
         NearHouseListDoQuery nearHouseListDoQuery = new NearHouseListDoQuery();
-        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
         BeanUtils.copyProperties(nearHouseListRequest,nearHouseListDoQuery);
         RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery);
-        BeanUtils.copyProperties(rentDetailsListDo,rentDetailFewResponseList);
-        return NashResult.build(rentDetailFewResponseList);
+        BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
+        return NashResult.build(rentDetailsListResponse);
     }
 }

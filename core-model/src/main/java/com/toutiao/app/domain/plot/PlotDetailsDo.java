@@ -271,27 +271,7 @@ public class PlotDetailsDo {
     private Integer pageNum;
 
     /**
-     *
+     * 电梯配备中文
      */
-//
-//    /**
-//     * 小区内二手房
-//     */
-//    private List<SellHouseDetailsDo> sellHouseDetailsDo;
-//
-//    /**
-//     * 小区内出租房源
-//     */
-//    private List<RentDetailsDo> rentDetailsDo;
-//
-//    /**
-//     * 小区周边配套
-//     */
-//    private MapInfo mapInfo;
-//
-//    /**
-//     * 附近小区
-//     */
-//    private List<PlotDetailsDo> plotDetailsDoList;
-
+   private String hasElevator;
 }

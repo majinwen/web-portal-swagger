@@ -1,5 +1,7 @@
 package com.toutiao.app.domain.rent;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -209,7 +211,10 @@ public class RentDetailsDo {
      * 经纪人
      */
     private String estateAgent;
-
+    /**
+     * 经纪人id
+     */
+    private Integer userId;
     /**
      * 类型
      */
@@ -231,4 +236,8 @@ public class RentDetailsDo {
      */
     private  String  floorLevel;
 
+    /**
+     * 经纪人信息
+     */
+    private AgentBaseDo agentBaseDo;
 }

@@ -115,13 +115,23 @@ public class SellHouseDetailsResponse {
     /**
      * 电梯(有 无)
      */
-    @ChangeName("hasElevator")
+    @ChangeName("hasElevatorId")
     private Integer elevator;
+    /**
+     * 电梯
+     */
+    @ChangeName("hasElevator")
+    private String elevatorName;
+    /**
+     *供暖
+     */
+    @ChangeName("heatingModeId")
+    private Integer houseHeating;
     /**
      *供暖
      */
     @ChangeName("heatingMode")
-    private Integer houseHeating;
+    private String houseHeatingName;
     /**
      * 交通状况（最近地铁信息）
      */
@@ -188,6 +198,7 @@ public class SellHouseDetailsResponse {
     /**
      * 发布公司
      */
+    @ChangeName("agentCompany")
     private String ofCompany;
     /**
      * 房源分级，0-默认，1-最好，2-次之，3-再次
@@ -257,6 +268,26 @@ public class SellHouseDetailsResponse {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
+    /**
+     * 经纪人姓名
+     */
+    @ChangeName("agentName")
+    private String houseProxyName;
+    /**
+     * 经纪人电话
+     */
+    @ChangeName("displayPhone")
+    private String houseProxyPhone;
+    /**
+     * 经纪人头像
+     */
+    @ChangeName("headPhoto")
+    private String houseProxyPhoto;
+    /**
+     * 均价
+     */
+    @ChangeName("avgPrice")
+    private Double houseUnitCost;
 
     @ChangeName("agent")
     private AgentBaseDo agentBaseDo;

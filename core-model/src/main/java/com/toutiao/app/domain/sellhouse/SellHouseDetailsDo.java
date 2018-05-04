@@ -4,7 +4,6 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -118,10 +117,18 @@ public class SellHouseDetailsDo {
     @ChangeName("hasElevator")
     private Integer elevator;
     /**
+     * 电梯
+     */
+    private String elevatorName;
+    /**
      *供暖
      */
     @ChangeName("heatingMode")
     private Integer houseHeating;
+    /**
+     *供暖
+     */
+    private String houseHeatingName;
     /**
      * 交通状况（最近地铁信息）
      */
@@ -257,14 +264,33 @@ public class SellHouseDetailsDo {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
+    /**
+     * 均价
+     */
+    private Double houseUnitCost;
+    /**
+     * 经纪人姓名
+     */
+    private String houseProxyName;
+    /**
+     * 经纪人电话
+     */
+    private String houseProxyPhone;
+    /**
+     * 经纪人头像
+     */
+    private String houseProxyPhoto;
 
+    /**
+     * 经纪人信息
+     */
     private AgentBaseDo agentBaseDo;
 
+    /**
+     * 经纪人id
+     */
     private Integer userId;
 
-    private String houseProxyName;
-    private String houseProxyPhone;
-    private String houseProxyPhoto;
 
 
 }

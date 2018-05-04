@@ -1,19 +1,14 @@
 package com.toutiao.app.api.chance.response.rent;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Data
 public class RentDetailResponse {
-    /**
-     * 经纪人头像路径
-     */
-    private String agentHeadPhoto;
+
     /**
      * 小区Id
      */
@@ -104,6 +99,7 @@ public class RentDetailResponse {
     /**
      * 最近的地铁
      */
+    @ChangeName("nearBySubway")
     private String nearestSubway;
 
     /**
@@ -130,10 +126,6 @@ public class RentDetailResponse {
      */
     private String payModeName;
     /**
-     * 经纪机构
-     */
-    private String brokerageAgency;
-    /**
      * 电话
      */
     private String phone;
@@ -156,6 +148,7 @@ public class RentDetailResponse {
     /**
      * 更新时间
      */
+    @ChangeName("updateTime")
     private String upStringTime;
     /**
      * 发版时间
@@ -166,10 +159,6 @@ public class RentDetailResponse {
      * 是否是推荐
      */
     private Integer isRecommend;
-     /*
-     * 经纪人
-     */
-    private String estateAgent;
 
     /**
      * 类型
@@ -195,8 +184,11 @@ public class RentDetailResponse {
     * 配套设施(字符串数组)
     */
    private String[] supportingFacilities;
-
-
+   /**
+    * 经纪人信息
+    */
+   @ChangeName("agent")
+   private AgentBaseDo agentBaseDo;
 
 
 
