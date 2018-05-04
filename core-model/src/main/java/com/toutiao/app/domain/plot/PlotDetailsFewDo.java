@@ -136,4 +136,14 @@ public class PlotDetailsFewDo {
      * 小区下租房总数
      */
     private Integer rentTotalNum;
+    /**
+     * 物业类型
+     */
+    @ChangeName("propertyTypeId")
+    private String propertyType;
+    /**
+     * 物业类型名称
+     */
+    @ChangeName("propertyType")
+    private String propertyTypeName;
 }
