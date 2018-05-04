@@ -49,7 +49,7 @@ public class SellHouseDo {
     /**
      * 建筑面积
      */
-    @ChangeName("houseArea")
+//    @ChangeName("houseArea")
     private Double buildArea;
 
     /**
@@ -136,6 +136,9 @@ public class SellHouseDo {
 
     @ChangeName("agent")
     private AgentBaseDo agentBaseDo;
+
+    @ChangeName("nearBySubwayDesc")
+    private  String traffic;
 
 
 
