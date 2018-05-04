@@ -284,7 +284,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 list.add(rentDetailsFewDo);
             }
             rentDetailsListDo.setRentDetailsList(list);
-            rentDetailsListDo.setTotalCount(hits.length);
+            rentDetailsListDo.setTotalCount((int)searchResponse.getHits().getTotalHits());
         }else{
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND,"租房推荐列表为空");
         }

@@ -311,14 +311,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()!=null){
+        if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()==null){
+        }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
-        }else if(plotListDoQuery.getBeginArea()==null && plotListDoQuery.getEndArea()!=null){
+        }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
@@ -356,7 +356,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
                     plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
                 }catch (BaseException e){
-                    logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                   // logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
                     if (e.getCode()==50301){
                         plotDetailsFewDo.setSellHouseTotalNum(0);
                     }
@@ -366,7 +366,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
                     plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
                 }catch (BaseException e){
-                    logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                   // logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
                     if (e.getCode()==50401){
                         plotDetailsFewDo.setRentTotalNum(0);
                     }
