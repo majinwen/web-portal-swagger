@@ -33,7 +33,7 @@ public class SellHouseRestController {
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
     public NashResult getSellHouseByHouseId(@Validated SellHouseDerailsRequest sellHouseDerailsRequest) {
         SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
-        SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId(),sellHouseDerailsRequest.getUserId());
+        SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId());
         BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
         return NashResult.build(sellHouseDetailsResponse);
     }

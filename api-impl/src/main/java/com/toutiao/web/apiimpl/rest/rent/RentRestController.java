@@ -31,7 +31,7 @@ public class RentRestController {
      */
     @RequestMapping(value = "/getRentDetailByRentId",method = RequestMethod.GET)
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
-        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), rentDetailsRequest.getUserId());
+        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo,rentDetailResponse);
         return NashResult.build(rentDetailResponse);

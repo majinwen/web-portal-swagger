@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.rent;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 import java.util.List;
@@ -10,7 +11,6 @@ public class RentDetailResponse {
     /**
      * 经纪人头像路径
      */
-    @ChangeName("headPhoto")
     private String agentHeadPhoto;
     /**
      * 小区Id
@@ -131,12 +131,10 @@ public class RentDetailResponse {
     /**
      * 经纪机构
      */
-    @ChangeName("agentCompany")
     private String brokerageAgency;
     /**
      * 电话
      */
-    @ChangeName("displayPhone")
     private String phone;
     /**
      * 房源描述
@@ -170,7 +168,6 @@ public class RentDetailResponse {
     /**
      * 经纪人姓名
      */
-    @ChangeName("agentName")
     private String estateAgent;
 
     /**
@@ -197,8 +194,11 @@ public class RentDetailResponse {
     * 配套设施(字符串数组)
     */
    private String[] supportingFacilities;
-
-
+   /**
+    * 经纪人信息
+    */
+   @ChangeName("agent")
+   private AgentBaseDo agentBaseDo;
 
 
 

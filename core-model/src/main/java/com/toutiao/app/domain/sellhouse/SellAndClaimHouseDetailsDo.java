@@ -270,4 +270,8 @@ public class SellAndClaimHouseDetailsDo {
      * 均价
      */
     private Double houseUnitCost;
+    /**
+     * 经纪人id
+     */
+    private Integer userId;
 }

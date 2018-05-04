@@ -264,7 +264,10 @@ public class SellHouseDetailsDo {
      */
     @ChangeName("parkRatio")
     private String parkRadio;
-
+    /**
+     * 均价
+     */
+    private Double houseUnitCost;
     /**
      * 经纪人姓名
      */
@@ -277,12 +280,15 @@ public class SellHouseDetailsDo {
      * 经纪人头像
      */
     private String houseProxyPhoto;
+
     /**
-     * 均价
+     * 经纪人信息
      */
-    private Double houseUnitCost;
     private AgentBaseDo agentBaseDo;
 
+    /**
+     * 经纪人id
+     */
     private Integer userId;
 
 

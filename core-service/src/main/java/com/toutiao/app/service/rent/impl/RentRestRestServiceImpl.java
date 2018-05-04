@@ -60,7 +60,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDo queryRentDetailByHouseId(String rentId,String userId) {
+    public RentDetailsDo queryRentDetailByHouseId(String rentId) {
         RentDetailsDo rentDetailsDo = new RentDetailsDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
@@ -68,21 +68,27 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
         SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
-        String details = "";
-        for (SearchHit searchHit : hits) {
-            details = searchHit.getSourceAsString();
-        }
-        if (!"".equals(details)) {
-            rentDetailsDo = JSON.parseObject(details, RentDetailsDo.class);
-        }
-        if (rentDetailsDo.getRentHouseType()==1&&StringTool.isNotEmpty(userId)){
-            //经纪人信息
-            AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(userId);
-            if (StringTool.isNotEmpty(agentBaseDo)){
-                rentDetailsDo.setPhone(agentBaseDo.getDisplayPhone());
-                rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
-                rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
-                rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
+        AgentBaseDo agentBaseDo = new AgentBaseDo();
+        if (hits.length>0){
+            for (SearchHit searchHit : hits) {
+                String sourceAsString = searchHit.getSourceAsString();
+                rentDetailsDo = JSON.parseObject(sourceAsString, RentDetailsDo.class);
+                if (rentDetailsDo.getRentHouseType()==1&&StringTool.isNotEmpty(rentDetailsDo.getUserId())){
+                    //经纪人信息
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsDo.getUserId().toString());
+                    if (StringTool.isNotEmpty(agentBaseDo)){
+                        rentDetailsDo.setPhone(agentBaseDo.getDisplayPhone());
+                        rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
+                        rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
+                        rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
+                    }
+                }else {
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                rentDetailsDo.setAgentBaseDo(agentBaseDo);
             }
         }
         return rentDetailsDo;
