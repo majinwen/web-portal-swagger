@@ -547,16 +547,16 @@ public class RentRestRestServiceImpl implements RentRestService {
 //                boolQueryBuilder.must(booleanQueryBuilder);
 //            }
 //        }
-        if (rentHouseDoQuery.getBeginArea()!=0 && rentHouseDoQuery.getEndArea()!=0) {
+        if (rentHouseDoQuery.getBeginArea()!=null && rentHouseDoQuery.getEndArea()!=null) {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()).lte(rentHouseDoQuery.getEndArea()));
 
-        }else if(0==rentHouseDoQuery.getBeginArea() && 0!= rentHouseDoQuery.getEndArea())
+        }else if(null==rentHouseDoQuery.getBeginArea() && null!= rentHouseDoQuery.getEndArea())
         {
 
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").lte(rentHouseDoQuery.getEndArea()));
 
         }
-        else if(0==rentHouseDoQuery.getEndArea() && 0!= rentHouseDoQuery.getBeginArea())
+        else if(null==rentHouseDoQuery.getEndArea() && null!= rentHouseDoQuery.getBeginArea())
         {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()));
 

@@ -191,14 +191,14 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
         }
         //房源面积大小
-        if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()!=0){
+        if(nearbyPlotsDoQuery.getBeginArea()!=null && nearbyPlotsDoQuery.getEndArea()!=null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()).lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(nearbyPlotsDoQuery.getBeginArea()==0 && nearbyPlotsDoQuery.getEndArea()!=0){
+        }else if(nearbyPlotsDoQuery.getBeginArea()==null && nearbyPlotsDoQuery.getEndArea()!=null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
-        }else if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()==0){
+        }else if(nearbyPlotsDoQuery.getBeginArea()!=null && nearbyPlotsDoQuery.getEndArea()==null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()), ScoreMode.None));
         }
