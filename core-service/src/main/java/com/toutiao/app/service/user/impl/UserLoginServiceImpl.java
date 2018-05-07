@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,8 @@ public class UserLoginServiceImpl implements UserLoginService {
     private UserBasicMapper userBasicMapper;
     @Autowired
     private IMService imService;
+    @Value("${qiniu.headpic_directory}")
+    public String headPicPath;
 
 
     @Override
@@ -69,14 +72,12 @@ public class UserLoginServiceImpl implements UserLoginService {
                         UserBasic user = new UserBasic();
                         user.setUserId(userBasic.getUserId());
                         user.setLoginTime(new Date());
-
-
                        if(userBasic.getRongCloudToken()==null || "".equals(userBasic.getRongCloudToken())){
                            userBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
                            if(userBasic.getAvatar()==null || "".equals(userBasic.getAvatar())){
                                String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                                int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
-                               userBasic.setAvatar(userAvatar[avatarNum]);
+                               userBasic.setAvatar(headPicPath+"/"+userAvatar[avatarNum]);
                            }
                            String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserName(), userBasic.getAvatar());
                            userBasic.setRongCloudToken(rcToken);
@@ -92,7 +93,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                         String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                         int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
-                        insertUserBasic.setAvatar(userAvatar[avatarNum]);
+                        insertUserBasic.setAvatar(headPicPath+"/"+userAvatar[avatarNum]);
                         insertUserBasic.setCreateTime(date);
                         insertUserBasic.setLoginTime(date);
                         insertUserBasic.setPhone(userBasicDo.getUserName());
