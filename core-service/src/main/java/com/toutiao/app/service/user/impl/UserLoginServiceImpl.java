@@ -35,6 +35,8 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Autowired
     private IMService imService;
     @Value("${qiniu.headpic_directory}")
+    public String headPicDirectory;
+    @Value("${qiniu.img_wapapp_domain}")
     public String headPicPath;
 
 
@@ -77,9 +79,10 @@ public class UserLoginServiceImpl implements UserLoginService {
                            if(userBasic.getAvatar()==null || "".equals(userBasic.getAvatar())){
                                String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                                int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
-                               userBasic.setAvatar(headPicPath+"/"+userAvatar[avatarNum]);
+                               userBasic.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
                            }
-                           String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserName(), userBasic.getAvatar());
+                           String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserName(),
+                                   headPicPath+"/"+headPicDirectory+"/"+userBasic.getAvatar());
                            userBasic.setRongCloudToken(rcToken);
                           userBasicMapper.updateByPrimaryKeySelective(userBasic);
                        }
@@ -93,7 +96,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                         String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                         int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
-                        insertUserBasic.setAvatar(headPicPath+"/"+userAvatar[avatarNum]);
+                        insertUserBasic.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
                         insertUserBasic.setCreateTime(date);
                         insertUserBasic.setLoginTime(date);
                         insertUserBasic.setPhone(userBasicDo.getUserName());
@@ -105,7 +108,8 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                         insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
                         //用户注册融云信息
-                        String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserName(), insertUserBasic.getAvatar());
+                        String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserName(),
+                                headPicPath+"/"+headPicDirectory+"/"+insertUserBasic.getAvatar());
                         insertUserBasic.setRongCloudToken(rcToken);
 
                         int userId = userBasicMapper.insertSelective(insertUserBasic);
