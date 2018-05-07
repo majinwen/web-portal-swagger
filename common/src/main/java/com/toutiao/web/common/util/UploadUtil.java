@@ -62,6 +62,13 @@ public class UploadUtil {
         qiniu_houseimg_path = a;
     }
 
+
+    private static String qiniu_headpic_path;
+    @Value("${qiniu.headpic_directory}")
+    public void setQiniu_headpic_path(String a) {
+        qiniu_headpic_path = a;
+    }
+
     @Value("${qiniu.img_domain}")
     public String qiniuImgDomain;
 
@@ -253,7 +260,7 @@ public class UploadUtil {
     }
 
     /**
-     * 图片上传
+     * 用户头像图片上传（app）
      * @param file
      * @return
      */
@@ -274,7 +281,7 @@ public class UploadUtil {
         //获得文件类型（可以判断如果不是图片，禁止上传）
         String contentType = file.getContentType();
         //获得文件后缀名称
-        String key = uuid + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String key = StringUtils.strip(qiniu_headpic_path,"/")+"/"+ uuid + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
 
         InvokeResult result;
         try {
@@ -291,4 +298,5 @@ public class UploadUtil {
 
         return result;
     }
+
 }

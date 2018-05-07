@@ -1,6 +1,7 @@
 package com.toutiao.app.service.plot;
 
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
 
 import java.util.List;
@@ -24,5 +25,5 @@ public interface PlotsEsfRestService {
      * @param room
      * @return
      */
-    List<SellHouseDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize);
+    List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize);
 }
