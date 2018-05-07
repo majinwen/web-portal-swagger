@@ -47,7 +47,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             if(tempVerifyCode!="" && userBasicDo.getVerifyCode().equals(tempVerifyCode)) {
                 try {
                     //从cookie中获取图片验证码与页面传递过来的验证码进行对比
-                    if (StringTool.getInteger(redis.getValue(userBasicDo.getUserName() + RedisNameUtil.separativeSignCount)) > Constant.LOGIN_ERROR_TIMES) {
+                    if (StringTool.getInteger(redis.getValue(userBasicDo.getUserName() + RedisNameUtil.separativeSignCount)) >= Constant.LOGIN_ERROR_TIMES) {
 
                         if (StringTool.isNotBlank(userBasicDo.getImageCode()) && StringTool.isNotBlank(CookieUtils.getCookie(request, response,
                                 "imageCode")) && !CookieUtils.getCookie(request, response,

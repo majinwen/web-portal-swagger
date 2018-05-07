@@ -63,7 +63,7 @@ public class HomePageRestController {
     /**
      * 首页搜索接口
      */
-    @RequestMapping(value = "/HomePageEsfSearch",method = RequestMethod.GET)
+    @RequestMapping(value = "/homePageEsfSearch",method = RequestMethod.GET)
     public  NashResult homePageEsfSearch(BaseQueryRequest baseQueryRequest)
     {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
