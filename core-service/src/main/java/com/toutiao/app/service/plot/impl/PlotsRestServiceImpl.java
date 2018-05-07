@@ -311,14 +311,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
+        if(StringTool.isNotEmpty(plotListDoQuery.getBeginArea()) && StringTool.isNotEmpty(plotListDoQuery.getEndArea())){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
+        }else if(StringTool.isNotEmpty(plotListDoQuery.getBeginArea()) && StringTool.isEmpty(plotListDoQuery.getEndArea())){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
-        }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
+        }else if(StringTool.isEmpty(plotListDoQuery.getBeginArea()) && StringTool.isNotEmpty(plotListDoQuery.getEndArea())){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
@@ -340,10 +340,16 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         FieldSortBuilder levelSort = SortBuilders.fieldSort("level").order(SortOrder.ASC);
 
         //小区分数排序
-        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
+//        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
 
         PlotListDo plotListDo = new PlotListDo();
-        SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotScoreSort, plotListDoQuery.getPageSize());
+        SearchResponse searchResponse = null;
+        if(StringTool.isEmpty(plotListDoQuery.getKeyword())){
+            searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotListDoQuery.getPageSize());
+        }else {
+            searchResponse = plotEsDao.queryPlotListByRequirementAndKeyword(from, boolQueryBuilder, plotListDoQuery.getPageSize());
+        }
+
         if (searchResponse!=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit:hits){
