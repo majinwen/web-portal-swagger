@@ -47,7 +47,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             if(tempVerifyCode!="" && userBasicDo.getVerifyCode().equals(tempVerifyCode)) {
                 try {
                     //从cookie中获取图片验证码与页面传递过来的验证码进行对比
-                    if (StringTool.getInteger(redis.getValue(userBasicDo.getUserName() + RedisNameUtil.separativeSignCount)) > Constant.LOGIN_ERROR_TIMES) {
+                    if (StringTool.getInteger(redis.getValue(userBasicDo.getUserName() + RedisNameUtil.separativeSignCount)) >= Constant.LOGIN_ERROR_TIMES) {
 
                         if (StringTool.isNotBlank(userBasicDo.getImageCode()) && StringTool.isNotBlank(CookieUtils.getCookie(request, response,
                                 "imageCode")) && !CookieUtils.getCookie(request, response,
@@ -56,8 +56,6 @@ public class UserLoginServiceImpl implements UserLoginService {
                         }
 
                     }
-
-
                     //验证成功,判断用户是否存在，如果存在则，则更新用户登录时间
 
                     userBasic.setUserName(userBasicDo.getUserName());
@@ -71,8 +69,21 @@ public class UserLoginServiceImpl implements UserLoginService {
                         UserBasic user = new UserBasic();
                         user.setUserId(userBasic.getUserId());
                         user.setLoginTime(new Date());
-                        redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + userBasicDo.getUserName());
+
+
+                       if(userBasic.getRongCloudToken()==null || "".equals(userBasic.getRongCloudToken())){
+                           userBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+                           if(userBasic.getAvatar()==null || "".equals(userBasic.getAvatar())){
+                               String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
+                               int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
+                               userBasic.setAvatar(userAvatar[avatarNum]);
+                           }
+                           String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserName(), userBasic.getAvatar());
+                           userBasic.setRongCloudToken(rcToken);
+                          userBasicMapper.updateByPrimaryKeySelective(userBasic);
+                       }
                         BeanUtils.copyProperties(userBasic, ubd);
+                        redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + userBasicDo.getUserName());
                     } else {
                         //注册新用户
                         UserBasic insertUserBasic = new UserBasic();

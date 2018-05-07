@@ -70,7 +70,7 @@ public class RentEsDaoImpl implements RentEsDao {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).setSize(size)
                 .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
-                        "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img"},null).execute().actionGet();
+                        "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId"},null).execute().actionGet();
 
         return searchResponse;
     }
@@ -86,7 +86,7 @@ public class RentEsDaoImpl implements RentEsDao {
         }
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("_uid", SortOrder.DESC).setSize(1)
                 .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
-                        "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img"},null).execute().actionGet();
+                        "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId"},null).execute().actionGet();
 
         return searchResponse;
     }
@@ -97,5 +97,22 @@ public class RentEsDaoImpl implements RentEsDao {
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
         SearchResponse searchResponse = searchRequestBuilder.setQuery(query).setFrom(from).execute().actionGet();
         return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize) {
+
+        TransportClient client = esClientTools.init();
+        SearchResponse searchResponse = null;
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        if((null!=keyword && !"".equals(keyword)) || null!=distance){
+            searchResponse = searchRequestBuilder.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                    .execute().actionGet();
+        }else{
+            searchResponse = searchRequestBuilder.setQuery(query).addSort("sortingScore", SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                    .execute().actionGet();
+        }
+        return searchResponse;
+
     }
 }

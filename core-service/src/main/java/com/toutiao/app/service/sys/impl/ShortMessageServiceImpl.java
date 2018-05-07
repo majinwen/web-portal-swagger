@@ -35,10 +35,10 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
         String count = redis.getValue(phone + RedisNameUtil.separativeSignCount);
         Integer exceptionCode = 0;
-        if(null!=count && count.equals("3")){
-            exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_QUERY_OVERRUN.getValue();
-            return NashResult.Fail(exceptionCode.toString(),"短信验证码发送超出APP平台限制");
-        }else {
+//        if(null!=count && count.equals("3")){
+//            exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_QUERY_OVERRUN.getValue();
+//            return NashResult.Fail(exceptionCode.toString(),"短信验证码发送超出APP平台限制");
+//        }else {
             //生成随机4位短信验证码
             String code = StringUtil.randomFourDigits();
             try {
@@ -63,6 +63,6 @@ public class ShortMessageServiceImpl implements ShortMessageService {
                 exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_PLATFORM_EXCEPTION.getValue();
                 return NashResult.Fail(exceptionCode.toString(), e.getMessage());
             }
-        }
+
     }
 }

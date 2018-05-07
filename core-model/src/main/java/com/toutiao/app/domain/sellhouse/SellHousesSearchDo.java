@@ -64,6 +64,7 @@ public class SellHousesSearchDo {
      *
      * 车位配比
      */
+    @ChangeName("parkRatio")
     private String parkRadio;
 
     /**
@@ -101,7 +102,7 @@ public class SellHousesSearchDo {
     /**
      * 地铁到房源的距离
      */
-    @ChangeName("subwayDistance")
+    @ChangeName("nearbyStationsDistance")
     private Map subwayDistince;
 
     /**

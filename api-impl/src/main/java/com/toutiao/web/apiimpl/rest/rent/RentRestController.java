@@ -100,4 +100,16 @@ public class RentRestController {
     }
 
 
+    @RequestMapping(value = "/getRentHouseSearchList",method = RequestMethod.GET)
+    @ResponseBody
+    private NashResult getRentHouseSearchList(@Validated RentHouseRequest rentHouseRequest){
+
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest,rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery);
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo,rentDetailFewResponseList);
+        return NashResult.build(rentDetailFewResponseList);
+    }
+
 }
