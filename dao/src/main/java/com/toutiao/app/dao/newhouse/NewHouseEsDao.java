@@ -2,6 +2,7 @@ package com.toutiao.app.dao.newhouse;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 
 public interface NewHouseEsDao {
 
@@ -20,7 +21,7 @@ public interface NewHouseEsDao {
      * @param pageSize
      * @return
      */
-    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort );
 
 
 
