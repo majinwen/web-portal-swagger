@@ -8,6 +8,7 @@ import com.toutiao.app.api.chance.request.plot.PlotsEsfRequest;
 import com.toutiao.app.api.chance.response.plot.PlotsEsfListResponse;
 import com.toutiao.app.api.chance.response.plot.PlotsEsfRoomCountResponse;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.assertUtils.First;
@@ -51,7 +52,7 @@ public class PlotsEsfRestController {
         Integer room = plotsEsfRequest.getRoom();
         Integer pageNum = plotsEsfRequest.getPageNum();
         Integer pageSize = plotsEsfRequest.getPageSize();
-        List<SellHouseDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize);
+        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseDoList));
 
         List<PlotsEsfListResponse> plotsEsfListResponses = JSONObject.parseArray(json.toJSONString(),PlotsEsfListResponse.class);

@@ -20,6 +20,7 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.service.map.MapService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.jdbc.Null;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -311,14 +312,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(StringTool.isNotEmpty(plotListDoQuery.getBeginArea()) && StringTool.isNotEmpty(plotListDoQuery.getEndArea())){
+        if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()!=null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(StringTool.isNotEmpty(plotListDoQuery.getBeginArea()) && StringTool.isEmpty(plotListDoQuery.getEndArea())){
+        }else if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()==null){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
-        }else if(StringTool.isEmpty(plotListDoQuery.getBeginArea()) && StringTool.isNotEmpty(plotListDoQuery.getEndArea())){
+        }else if(plotListDoQuery.getBeginArea()==null && plotListDoQuery.getEndArea()!=null){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));

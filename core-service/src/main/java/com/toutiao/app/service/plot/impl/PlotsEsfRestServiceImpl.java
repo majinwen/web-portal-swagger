@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
@@ -82,10 +83,10 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
      * @return
      */
     @Override
-    public List<SellHouseDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize) {
+    public List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize) {
 
         BoolQueryBuilder detailsBuilder = boolQuery();
-        List<SellHouseDo> sellHouseDoList = new ArrayList<>();
+        List<SellAndClaimHouseDetailsDo> sellHouseDoList = new ArrayList<>();
         detailsBuilder.must(termQuery("newcode",plotsId));
         if(room != 0){
             detailsBuilder.must(termQuery("room",room));
@@ -101,7 +102,12 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         String details = "";
         for (SearchHit hit : searchHists) {
             details = hit.getSourceAsString();
-            SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            SellAndClaimHouseDetailsDo sellHouseDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
+            if(hit.getSource().get("is_claim").equals("1")){
+                sellHouseDo.setHousePhotoTitle(hit.getSource().get("claimHousePhotoTitle").toString());
+                sellHouseDo.setHouseId(hit.getSource().get("claimHouseId").toString());
+            }
+
             sellHouseDoList.add(sellHouseDo);
         }
         return sellHouseDoList;

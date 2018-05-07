@@ -208,11 +208,11 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 //        }
 
         //房源面积大小
-        if(nearHouseListDoQuery.getBeginArea()!=0 && nearHouseListDoQuery.getEndArea()!=0){
+        if(nearHouseListDoQuery.getBeginArea()!=null && nearHouseListDoQuery.getEndArea()!=null){
             boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gt(nearHouseListDoQuery.getBeginArea()).lte(nearHouseListDoQuery.getBeginArea()));
-        }else if(nearHouseListDoQuery.getBeginArea()!=0 && nearHouseListDoQuery.getEndArea()==0){
+        }else if(nearHouseListDoQuery.getBeginArea()!=null && nearHouseListDoQuery.getEndArea()==null){
             boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gt(nearHouseListDoQuery.getBeginArea()));
-        }else if(nearHouseListDoQuery.getBeginArea()==0 && nearHouseListDoQuery.getEndArea()!=0){
+        }else if(nearHouseListDoQuery.getBeginArea()==null && nearHouseListDoQuery.getEndArea()!=null){
             boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").lte(nearHouseListDoQuery.getBeginArea()));
         }
 
