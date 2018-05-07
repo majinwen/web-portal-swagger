@@ -101,12 +101,8 @@ public class RentRestController {
 
 
     @RequestMapping(value = "/getRentHouseSearchList",method = RequestMethod.GET)
+    @ResponseBody
     private NashResult getRentHouseSearchList(@Validated RentHouseRequest rentHouseRequest){
-//        NearHouseListDoQuery nearHouseListDoQuery = new NearHouseListDoQuery();
-//        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
-//        BeanUtils.copyProperties(nearHouseListRequest,nearHouseListDoQuery);
-//        RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery);
-//        BeanUtils.copyProperties(rentDetailsListDo,rentDetailFewResponseList);
 
         RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
         BeanUtils.copyProperties(rentHouseRequest,rentHouseDoQuery);

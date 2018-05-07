@@ -41,4 +41,11 @@ public class RentHouseDoQuery extends QueryDo{
      * 过滤标志
      */
     private String uid;
+
+    /**
+     * 户型
+     */
+    private String elo;//整租户型
+
+    private String jlo;//合租户型
 }

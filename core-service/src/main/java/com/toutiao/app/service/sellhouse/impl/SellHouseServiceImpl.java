@@ -175,7 +175,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             sellHouseDos.add(sellHouseDo);
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
-        sellHouseDomain.setTotal(searchHists.length);
+        sellHouseDomain.setTotal((int)hits.getTotalHits());
         return sellHouseDomain;
     }
 

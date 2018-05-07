@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.plot;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.Map;
@@ -33,6 +34,7 @@ public class PlotsEsfListResponse {
     /**
      * 朝向
      */
+    @ChangeName("forward")
     private String forwardName;
     /**
      * 标题图

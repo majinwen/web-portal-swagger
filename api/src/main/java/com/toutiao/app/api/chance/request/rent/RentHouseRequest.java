@@ -39,4 +39,11 @@ public class RentHouseRequest extends BaseQueryRequest {
     @NotEmpty(groups = {First.class},message = "缺少查询uid")
     private String uid;
 
+    /**
+     * 户型
+     */
+    private String elo;//整租户型
+
+    private String jlo;//合租户型
+
 }

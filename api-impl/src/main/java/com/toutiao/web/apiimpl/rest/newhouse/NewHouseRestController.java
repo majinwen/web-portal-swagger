@@ -73,7 +73,7 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
-    public  NashResult getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest)
+    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest)
     {
         NewHouseTrafficResponse newHouseTrafficResponse =new   NewHouseTrafficResponse();
         NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode());
