@@ -27,7 +27,9 @@ public class PlotDetailsResponse {
     @ChangeName("buildingImages")
     private List<String> photo;
 
-
+    /**
+     * 区域名称
+     */
     @ChangeName("districtName")
     private String area;
 
