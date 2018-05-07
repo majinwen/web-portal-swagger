@@ -17,12 +17,12 @@ public class QueryDo {
      *起始面积
      */
 
-    private  Double beginArea=0.0;
+    private  Double beginArea;
 
     /**
      * 结束面积
      */
-    private  Double endArea=0.0;
+    private  Double endArea;
 
     /**
      * 居室
