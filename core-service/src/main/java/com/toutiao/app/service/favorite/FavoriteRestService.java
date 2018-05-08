@@ -107,6 +107,6 @@ public interface FavoriteRestService {
     /**
      * 添加出租收藏
      */
-    NashResult addRentFavorite(UserFavoriteRent userFavoriteRent);
+    NashResult addRentFavorite(UserFavoriteRentDoQuery userFavoriteRent);
 
 }

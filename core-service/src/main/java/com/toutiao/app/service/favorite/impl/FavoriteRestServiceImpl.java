@@ -309,29 +309,32 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
     /**
      *
-     * @param userFavoriteRent
+     * @param userFavoriteRentDoQuery
      * @return
      * 添加出租收藏
      */
     @Override
-    public NashResult addRentFavorite(UserFavoriteRent userFavoriteRent) {
+    public NashResult addRentFavorite(UserFavoriteRentDoQuery userFavoriteRentDoQuery) {
 
        //判断重复收藏
         Integer result =0;
         Integer ss1=RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR.getValue();
-        Integer  re= userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRent.getHouseId(),userFavoriteRent.getUserId());
+        Integer  re= userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRentDoQuery.getHouseId(),userFavoriteRentDoQuery.getUserId());
         if (null!=re && re>0)
          {
              Integer ss= RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT.getValue();
              return NashResult.Fail(ss.toString(),"租房添加收藏重复");
          }
          try {
+             UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
+             BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
              userFavoriteRent.setCreateTime(new Date());
+             userFavoriteRent.setHouseArea(userFavoriteRentDoQuery.getBuildArea());
              result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
 
          }catch (Exception e)
          {
-             logger.error("添加出租收藏异常:"+userFavoriteRent.getHouseId()+"={}",e.getStackTrace());
+             logger.error("添加出租收藏异常:"+userFavoriteRentDoQuery.getHouseId()+"={}",e.getStackTrace());
          }
          if (result>0)
          {
