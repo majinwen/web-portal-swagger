@@ -56,7 +56,7 @@ public class HomePageNewHouseResponse {
     /**
      * 均价
      */
-    private  String averagePrice;
+    private  Double averagePrice;
 
     /**
      * 类别
