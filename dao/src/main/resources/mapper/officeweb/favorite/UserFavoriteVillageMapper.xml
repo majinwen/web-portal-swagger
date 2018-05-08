@@ -174,7 +174,7 @@
   </select>
   <select id="getPlotFavoriteByUserId" parameterType="com.toutiao.app.domain.plot.PlotFavoriteListDoQuery" resultMap="BaseResultMap">
     SELECT  * FROM user_favorite_village
-    WHERE user_id = #{userId} AND is_del = 0 limit #{size} OFFSET #{from}
+    WHERE user_id = #{userId,jdbcType=INTEGER} AND is_del = 0
   </select>
   <select id="getPlotFavoriteCountByUserId" parameterType="com.toutiao.app.domain.plot.PlotFavoriteListDoQuery" resultType="java.lang.Integer">
     SELECT COUNT (1) FROM user_favorite_village

@@ -9,8 +9,10 @@ import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.UserFavoritePlotDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
@@ -192,10 +194,14 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
         plotFavoriteListDoQuery.setFrom((plotFavoriteListDoQuery.getPageNum()-1)*plotFavoriteListDoQuery.getSize());
         List<UserFavoriteVillage> plotFavoriteByUserId = userFavoriteVillageMapper.getPlotFavoriteByUserId(plotFavoriteListDoQuery);
-        Long count = (long)userFavoriteVillageMapper.getPlotFavoriteCountByUserId(plotFavoriteListDoQuery);
-        List<UserFavoritePlotDo> list = JSONArray.parseArray(JSONObject.toJSONString(plotFavoriteByUserId), UserFavoritePlotDo.class);
-        plotFavoriteListDo.setData(list);
-        plotFavoriteListDo.setTotalNum(count);
+        if (null!=plotFavoriteByUserId&&plotFavoriteByUserId.size()>0){
+            Long count = (long)userFavoriteVillageMapper.getPlotFavoriteCountByUserId(plotFavoriteListDoQuery);
+            List<UserFavoritePlotDo> list = JSONArray.parseArray(JSONObject.toJSONString(plotFavoriteByUserId), UserFavoritePlotDo.class);
+            plotFavoriteListDo.setData(list);
+            plotFavoriteListDo.setTotalNum(count);
+        }else {
+            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_NOT_FOUND,"小区收藏列表为空");
+        }
         return plotFavoriteListDo;
     }
 
