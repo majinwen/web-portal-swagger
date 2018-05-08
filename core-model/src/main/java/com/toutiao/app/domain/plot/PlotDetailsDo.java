@@ -277,5 +277,5 @@ public class PlotDetailsDo {
     /**
      * 是否收藏
      */
-    private Boolean isFavorite;
+    private Boolean isFavorite = false;
 }
