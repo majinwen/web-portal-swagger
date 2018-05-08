@@ -27,6 +27,7 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -85,7 +86,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 //                .addAggregation(AggregationBuilders.terms("roomCount").field("room"));
 
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder)
-                .addAggregation(AggregationBuilders.terms("roomCount").field("layout"))
+                .addAggregation(AggregationBuilders.terms("roomCount").field("layout").order(Terms.Order.term(true)))
                 .execute().actionGet();
         return searchResponse;
     }

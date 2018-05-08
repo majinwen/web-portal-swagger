@@ -6,6 +6,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
     public SearchResponse getLayoutCountByNewHouseId(BoolQueryBuilder booleanQueryBuilder) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = client.prepareSearch(newHouseIndex).setTypes(layoutType).setQuery(booleanQueryBuilder)
-                .addAggregation(AggregationBuilders.terms("roomCount").field("room"))
+                .addAggregation(AggregationBuilders.terms("roomCount").field("room").order(Terms.Order.term(true)))
                 .execute().actionGet();
         return searchresponse;
     }
