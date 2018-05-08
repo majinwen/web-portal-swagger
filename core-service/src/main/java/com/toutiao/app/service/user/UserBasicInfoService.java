@@ -4,6 +4,8 @@ import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public interface UserBasicInfoService {
@@ -15,7 +17,7 @@ public interface UserBasicInfoService {
      * @param multipartFile
      * @return
      */
-    UserBasicDo updateUserAvatar(String userId, MultipartFile multipartFile);
+    UserBasicDo updateUserAvatar(String userId, MultipartFile multipartFile, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 查询用于基本信息
