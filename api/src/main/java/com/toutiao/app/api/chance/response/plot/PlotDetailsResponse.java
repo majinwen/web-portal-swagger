@@ -94,7 +94,7 @@ public class PlotDetailsResponse {
     /**
      * 停车费
      */
-    private Double parkingRate;
+    private String parkingRate;
 
     /**
      * 物业公司
