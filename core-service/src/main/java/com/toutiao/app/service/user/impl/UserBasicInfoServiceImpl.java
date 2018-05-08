@@ -1,15 +1,16 @@
 package com.toutiao.app.service.user.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.domain.user.UserLoginDomain;
 import com.toutiao.app.service.sys.IMService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.constant.syserror.RestfulInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.InvokeResult;
-import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.common.util.UploadUtil;
+import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import io.rong.models.Result;
@@ -19,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Service
 public class UserBasicInfoServiceImpl implements UserBasicInfoService{
 
@@ -26,6 +30,9 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     private UserBasicMapper userBasicMapper;
     @Autowired
     private IMService imService;
+    @Autowired
+    private RedisSessionUtils redis;
+    private CookieUtils cookieUtils;
 
     /**
      * 更新用户头像
@@ -34,7 +41,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
      * @return
      */
     @Override
-    public UserBasicDo updateUserAvatar(String userId, MultipartFile file) {
+    public UserBasicDo updateUserAvatar(String userId, MultipartFile file,HttpServletRequest request, HttpServletResponse response) {
 
         InvokeResult invokeResult = UploadUtil.uploadImages(file);
         UserBasic userBasic = new UserBasic();
@@ -50,6 +57,14 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
                 Result rcToken = imService.refreshRongCloudByUser(userBasic.getUserOnlySign(),userBasic.getUserName(),userBasic.getAvatar());
                 if(rcToken==null && rcToken.getCode()!=200){
                     throw new BaseException(RestfulInterfaceErrorCodeEnum.UPDATE_USER_AVATAR_RONGCLOUD_ERROR,"RongCloud更新用户头像异常");
+                }
+                //更新cookie中的user信息
+                UserLoginDomain userLoginDomain = new UserLoginDomain();
+                BeanUtils.copyProperties(userBasicDo,userLoginDomain);
+                try {
+                    setCookieAndCache(userBasic.getPhone(),userLoginDomain,request,response);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }else{
@@ -123,5 +138,20 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
             userBasicDo = null;
         }
         return userBasicDo;
+    }
+
+
+    private void setCookieAndCache(String phone, UserLoginDomain userLoginDomain,
+                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // 设置登录会员的cookie信息
+        StringBuilder sb = new StringBuilder();
+        String userJson = JSON.toJSONString(userLoginDomain);
+        sb.append(userJson).append(RedisNameUtil.separativeSign);
+        //用户信息加密
+        String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
+        cookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_USER, str);
+        // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
+        redis.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
+                + phone, userJson, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
     }
 }
