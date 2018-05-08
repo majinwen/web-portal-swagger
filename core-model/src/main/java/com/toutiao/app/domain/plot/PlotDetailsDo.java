@@ -232,7 +232,7 @@ public class PlotDetailsDo {
     /**
      * 电费
      */
-    private String electricFee;
+    private Double electricFee;
     /**
      * 供水
      */
@@ -240,7 +240,7 @@ public class PlotDetailsDo {
     /**
      * 水费
      */
-    private String waterFee;
+    private Double waterFee;
     /**
      * 装修标准
      */
