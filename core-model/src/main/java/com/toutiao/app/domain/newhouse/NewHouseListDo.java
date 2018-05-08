@@ -59,7 +59,7 @@ public class NewHouseListDo  {
     /**
      * 均价
      */
-    private  String averagePrice;
+    private Double averagePrice;
 
     /**
      * 销售状态
