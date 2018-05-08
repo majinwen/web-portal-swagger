@@ -8,10 +8,12 @@ import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.SysUserEntity;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import com.toutiao.web.service.rediscache.RedisAndCookieService;
 import com.toutiao.web.service.repository.admin.SysUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +48,12 @@ public class Login {
     private UserBasicInfoService userBasicInfoService;
     @Autowired
     private IMService imService;
+    @Value("${qiniu.headpic_directory}")
+    public String headPicDirectory;
+    @Value("${qiniu.img_wapapp_domain}")
+    public String headPicPath;
+    @Autowired
+    private UserBasicMapper userBasicMapper;
 
     /**
      * 功能描述：去登陆页面
@@ -156,6 +164,24 @@ public class Login {
                 insertUserBasic.setRongCloudToken(rcToken);
 
                 userBasicInfoService.addUserBasic(insertUserBasic);
+            }else {
+                UserBasic user = new UserBasic();
+                user.setUserId(userBasicDo.getUserId());
+                user.setLoginTime(new Date());
+                if(userBasicDo.getRongCloudToken()==null || "".equals(userBasicDo.getRongCloudToken())){
+                    Date date = new Date();
+                    user.setUserOnlySign(date.getTime()+userBasicDo.getPhone());
+                    if(user.getAvatar()==null || "".equals(userBasicDo.getAvatar())){
+                        int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
+                        String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
+                        user.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
+                    }
+                    String rcToken = imService.queryRongCloudTokenByUser(user.getUserOnlySign(), userBasicDo.getUserName(),
+                            headPicPath+"/"+headPicDirectory+"/"+userBasicDo.getAvatar());
+                    user.setRongCloudToken(rcToken);
+                    userBasicMapper.updateByPrimaryKeySelective(user);
+                }
+
             }
             //将用户登录信息放置到cookie中判断用户登录状态
             setCookieAndCache(phone, request, response);

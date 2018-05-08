@@ -28,6 +28,9 @@ public class RentFavoriteRestServiceImpl implements RentFavoriteRestService {
         List<RentFavoriteDo> rentFavoriteDos = userFavoriteRentMapper.selectRentFavoritesByUserId(rentFavoriteListDoQuery);
         if(null!=rentFavoriteDos && rentFavoriteDos.size()>0){
             rentFavoriteDomain.setData(rentFavoriteDos);
+            int rentFavourite = userFavoriteRentMapper.selectRentFavoriteByUserId(rentFavoriteListDoQuery.getUserId());
+            rentFavoriteDomain.setTotalNum(Long.valueOf(rentFavourite));
+
         }else{
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_NOT_FOUND,"租房收藏列表为空");
         }

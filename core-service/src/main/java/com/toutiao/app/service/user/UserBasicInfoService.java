@@ -37,4 +37,11 @@ public interface UserBasicInfoService {
      * @return
      */
     int addUserBasic(UserBasic userBasic);
+
+    /**
+     * 根据rcId获取用户信息
+     * @param rcId
+     * @return
+     */
+    UserBasicDo queryUserBasicByRcId(String rcId);
 }

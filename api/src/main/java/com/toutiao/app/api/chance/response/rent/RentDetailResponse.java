@@ -190,6 +190,11 @@ public class RentDetailResponse {
    @ChangeName("agent")
    private AgentBaseDo agentBaseDo;
 
+  /**
+   * 是否收藏
+   */
+  private Boolean isFavorite;
+
 
 
 }

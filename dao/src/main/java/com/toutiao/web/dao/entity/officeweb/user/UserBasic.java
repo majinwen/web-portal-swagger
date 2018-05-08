@@ -1,7 +1,15 @@
 package com.toutiao.web.dao.entity.officeweb.user;
 
+import com.alibaba.fastjson.JSON;
+import com.toutiao.web.common.util.CookieUtils;
+import com.unboundid.util.json.JSONObject;
+import io.rong.models.User;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Data
@@ -75,5 +83,20 @@ public class UserBasic {
      * 用户唯一标志
      */
     private String userOnlySign;
+
+
+    public static UserBasic getCurrent() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        String userJson = (String) request.getAttribute(CookieUtils.COOKIE_NAME_USER);
+        UserBasic user = new UserBasic();
+        if(userJson.equals("请登录")){
+            user = null;
+        }else{
+            user = JSON.parseObject(userJson, UserBasic.class);
+        }
+
+        return user;
+    }
 
 }
