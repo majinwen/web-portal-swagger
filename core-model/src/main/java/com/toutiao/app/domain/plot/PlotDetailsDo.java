@@ -274,4 +274,8 @@ public class PlotDetailsDo {
      * 电梯配备中文
      */
    private String hasElevator;
+    /**
+     * 是否收藏
+     */
+    private Boolean isFavorite;
 }

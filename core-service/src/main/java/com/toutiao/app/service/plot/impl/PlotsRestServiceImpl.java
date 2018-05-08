@@ -3,8 +3,11 @@ package com.toutiao.app.service.plot.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
+import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
+import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
+import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 
@@ -14,6 +17,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 
@@ -58,6 +62,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private PlotsEsfRestService plotsEsfRestService;
     @Autowired
     private RentRestService rentRestService;
+    @Autowired
+    private FavoriteRestService favoriteRestService;
 
 
     /**
@@ -79,7 +85,18 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
             if (StringUtils.isNotEmpty(details))
             {
+                UserBasic userBasic = new UserBasic();
+
                 plotDetailsDo = JSON.parseObject(details,PlotDetailsDo.class);
+
+                if(StringTool.isNotEmpty(userBasic)){
+                    PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
+                    plotIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                    plotIsFavoriteDoQuery.setPlotId(plotDetailsDo.getId());
+                    Boolean isFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
+                    plotDetailsDo.setIsFavorite(isFavorite);
+                }
+
                 if ("商电".equals(plotDetailsDo.getElectricSupply())){
                     plotDetailsDo.setElectricFee("1.33");
                 }else {

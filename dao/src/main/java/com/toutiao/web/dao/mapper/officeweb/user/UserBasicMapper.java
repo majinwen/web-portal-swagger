@@ -2,7 +2,9 @@ package com.toutiao.web.dao.mapper.officeweb.user;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserBasicMapper extends BaseDao {
     int deleteByPrimaryKey(String userId);
 

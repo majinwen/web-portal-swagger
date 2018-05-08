@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.rent.RentAgentDo;
 import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
@@ -18,6 +20,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
@@ -36,6 +39,7 @@ import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +57,8 @@ public class RentRestRestServiceImpl implements RentRestService {
     private static final Integer FOCUS_APARTMENT = 2;//公寓:2
     private static final Integer DISPERSED_APARTMENTS = 1;//公寓:2
     private static final String LAYOUT = "3";
+    //租房标识
+    private  final  Integer FAVORITE_RENT=1;
 
     @Autowired
     private RentEsDao rentEsDao;
@@ -62,6 +68,8 @@ public class RentRestRestServiceImpl implements RentRestService {
     private NearRentHouseRestService nearRentHouseRestService;
     @Autowired
     private AgentService agentService;
+    @Autowired
+    private FavoriteRestService favoriteRestService;
 
     /**
      * 租房详情信息
@@ -79,6 +87,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         SearchHit[] hits = searchResponse.getHits().getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (hits.length>0){
+            UserBasic userBasic = UserBasic.getCurrent();
             for (SearchHit searchHit : hits) {
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsDo = JSON.parseObject(sourceAsString, RentDetailsDo.class);
@@ -99,6 +108,13 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setUserId(searchHit.getSource().get("userId")==null?"":searchHit.getSource().get("userId").toString());
                 }
                 rentDetailsDo.setAgentBaseDo(agentBaseDo);
+            }
+            if(StringTool.isNotEmpty(userBasic)){
+                IsFavoriteDo isFavoriteDo=new IsFavoriteDo();
+                isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
+                isFavoriteDo.setRentId(rentDetailsDo.getHouseId());
+                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_RENT,isFavoriteDo);
+                rentDetailsDo.setIsFavorite(isFavorite);
             }
         }
         return rentDetailsDo;

@@ -3,6 +3,7 @@ package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
+import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
@@ -12,6 +13,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.service.map.MapService;
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +91,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         if (StringUtils.isNotEmpty(details))
         {
+            UserBasic userBasic = new UserBasic();
+            if(StringTool.isNotEmpty(userBasic)){
+                NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                newHouseIsFavoriteDoQuery.setNewHouseId(newHouseDetailDo.getBuildingNameId());
+                Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
+                newHouseDetailDo.setIsFavorite(isFavorite);
+            }
             newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         }
         if ("0".equals(newHouseDetailDo.getHeatingType())){

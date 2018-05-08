@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import lombok.Data;
 
 import java.util.List;
@@ -274,4 +275,8 @@ public class SellAndClaimHouseDetailsDo {
      * 经纪人id
      */
     private Integer userId;
+    /**
+     * 经纪人信息
+     */
+    private AgentBaseDo agentBaseDo;
 }

@@ -309,5 +309,9 @@ public class NewHouseDetailDo {
      * 绿化率
      */
     private Double virescencerate;
+    /**
+     * 是否收藏
+     */
+    private Boolean isFavorite;
 
 }

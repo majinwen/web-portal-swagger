@@ -90,8 +90,10 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         userBasic = userBasicMapper.selectUserByPhone(userBasic);
         if(null!=userBasic){
             BeanUtils.copyProperties(userBasic,userBasicDo);
+        }else{
+            userBasicDo = null;
         }
-        userBasicDo = null;
+
         return userBasicDo;
     }
 
