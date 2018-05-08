@@ -5,13 +5,17 @@ import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +55,9 @@ public class SellHouseServiceImpl implements SellHouseService{
     private AgentHouseEsDao agentHouseEsDao;
     @Autowired
     private FilterSellHouseChooseService filterSellHouseChooseService;
+    @Autowired
+    private FavoriteRestService favoriteRestService;
+    private  final  Integer FAVORITE_ESF=2;
 
     @Override
     public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
@@ -70,30 +77,46 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (searchHists.length>0){
+            UserBasic userBasic = UserBasic.getCurrent();
             for (SearchHit searchHit : searchHists) {
                 String sourceAsString = searchHit.getSourceAsString();
-                sellHouseDetailsDo = JSON.parseObject(sourceAsString,SellHouseDetailsDo.class);
+                sellAndClaimHouseDetailsDo = JSON.parseObject(sourceAsString,SellAndClaimHouseDetailsDo.class);
+                BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
+                if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
+                    //经纪人信息
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
 
-            if (StringTool.isNotEmpty(sellHouseDetailsDo.getUserId())&&sellHouseDetailsDo.getIsClaim()==1){
-                //经纪人信息
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
-            }else {
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
-            }
+                    sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
+                    sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
+                    sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
+                    sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
+
+
+                }else {
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                }
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
-        }
-        if (sellHouseDetailsDo.getHouseHeating()==0){
-            sellHouseDetailsDo.setHouseHeatingName("未知");
-        }
-         if (sellHouseDetailsDo.getHouseHeating()==1){
-            sellHouseDetailsDo.setHouseHeatingName("集中供暖");
-        }
-         if (sellHouseDetailsDo.getHouseHeating()==2){
-            sellHouseDetailsDo.setHouseHeatingName("自供暖");
-        }
+            }
+
+            if(StringTool.isNotEmpty(userBasic)){
+                IsFavoriteDo isFavoriteDo=new IsFavoriteDo();
+                isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
+                isFavoriteDo.setHouseId(sellHouseDetailsDo.getHouseId());
+                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF,isFavoriteDo);
+                sellHouseDetailsDo.setIsFavorite(isFavorite);
+            }
+            if (sellHouseDetailsDo.getHouseHeating()==0){
+                sellHouseDetailsDo.setHouseHeatingName("未知");
+            }
+             if (sellHouseDetailsDo.getHouseHeating()==1){
+                sellHouseDetailsDo.setHouseHeatingName("集中供暖");
+            }
+             if (sellHouseDetailsDo.getHouseHeating()==2){
+                sellHouseDetailsDo.setHouseHeatingName("自供暖");
+            }
         }
 
         return sellHouseDetailsDo;

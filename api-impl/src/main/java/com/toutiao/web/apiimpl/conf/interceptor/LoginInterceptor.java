@@ -65,6 +65,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }else{
             request.setAttribute("userphone", "请登录");
         }
+
+        String validCookieValue = validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        if (validCookieValue!=null){
+            request.setAttribute("user", validCookieValue);
+        }else{
+            request.setAttribute("user", "请登录");
+        }
         /*if (serializableData == null) {
             response.setContentType("application/json;charset=utf-8");
             Cookie clearcookie = new Cookie(config.getCookiename(), null);

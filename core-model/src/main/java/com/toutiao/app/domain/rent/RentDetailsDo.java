@@ -240,4 +240,9 @@ public class RentDetailsDo {
      * 经纪人信息
      */
     private AgentBaseDo agentBaseDo;
+
+    /**
+     * 是否收藏
+     */
+    private Boolean isFavorite;
 }

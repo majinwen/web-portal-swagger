@@ -291,6 +291,11 @@ public class SellHouseDetailsDo {
      */
     private Integer userId;
 
+    /**
+     * 是否收藏
+     */
+    private Boolean isFavorite;
+
 
 
 }

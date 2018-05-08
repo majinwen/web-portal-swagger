@@ -30,5 +30,9 @@ public class AgentBaseDo {
      * 经纪人虚拟电话
      */
     private String displayPhone;
+    /**
+     * 经纪人融云信息
+     */
+    private String rcToken;
 
 }

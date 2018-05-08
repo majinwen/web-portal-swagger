@@ -3,6 +3,7 @@ package com.toutiao.app.service.newhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
+import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
@@ -12,6 +13,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.service.map.MapService;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +91,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         if (StringUtils.isNotEmpty(details))
         {
+            UserBasic userBasic = UserBasic.getCurrent();
+            if(StringTool.isNotEmpty(userBasic)){
+                NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                newHouseIsFavoriteDoQuery.setNewHouseId(newHouseDetailDo.getBuildingNameId());
+                Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
+                newHouseDetailDo.setIsFavorite(isFavorite);
+            }
             newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
         }
         if ("0".equals(newHouseDetailDo.getHeatingType())){
@@ -109,6 +122,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
+        FieldSortBuilder levelSort=null;
+        FieldSortBuilder buildingSort=null;
         if(StringUtil.isNotNullString(newHouseDoQuery.getKeyword())){
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseDoQuery.getKeyword()))){
                 queryBuilder = QueryBuilders.disMaxQuery()
@@ -124,7 +139,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             }
 
             booleanQueryBuilder.must(queryBuilder);
-            //    booleanQueryBuilder.must(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()))).boost(2);
+        }
+        else
+        {
+            levelSort=SortBuilders.fieldSort("build_level").order(SortOrder.ASC);
+            buildingSort=SortBuilders.fieldSort("building_sort").order(SortOrder.ASC);
         }
 
         //城市
@@ -203,7 +222,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
         try{
-            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize());
+            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort);
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit searchHit : searchHists) {
