@@ -100,4 +100,26 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
 
         return  userBasicMapper.insertSelective(userBasic);
     }
+
+
+    /**
+     * 根据rcId获取用户信息
+     * @param rcId
+     * @return
+     */
+    @Override
+    public UserBasicDo queryUserBasicByRcId(String rcId) {
+
+
+        UserBasic userBasic = new UserBasic();
+        UserBasicDo userBasicDo = new UserBasicDo();
+        userBasic.setUserOnlySign(rcId);
+        userBasic = userBasicMapper.selectUserBasicByRcId(userBasic);
+        if(null!=userBasic){
+            BeanUtils.copyProperties(userBasic,userBasicDo);
+        }else{
+            userBasicDo = null;
+        }
+        return userBasicDo;
+    }
 }

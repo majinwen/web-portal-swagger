@@ -19,4 +19,8 @@ public interface UserBasicMapper extends BaseDao {
     UserBasic selectUserByExample(UserBasic record);
 
     UserBasic selectUserByPhone(UserBasic record);
+
+    UserBasic selectUserBasicByRcId(UserBasic record);
+
+
 }
