@@ -6,6 +6,7 @@ import com.toutiao.app.api.chance.response.favorite.SellHouseFavoriteListRespons
 import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.UserFavoriteEsHouse;
+import com.toutiao.app.domain.favorite.UserFavoriteEsHouseDoQuery;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.FavoriteRestService;
@@ -56,7 +57,7 @@ public class SellHouseFavoriteRestController {
     @ResponseBody
     public NashResult addEsfFavorite(@Validated(First.class) @RequestBody AddFavorite addFavorite)
     {
-        UserFavoriteEsHouse userFavoriteEsHouse= new UserFavoriteEsHouse();
+        UserFavoriteEsHouseDoQuery userFavoriteEsHouse= new UserFavoriteEsHouseDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
         return favoriteRestService.addEsfFavorite(userFavoriteEsHouse)  ;
     }

@@ -21,6 +21,7 @@ import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteVillageMapper;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -274,12 +275,12 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * 添加二手房收藏
      */
     @Override
-    public NashResult addEsfFavorite(UserFavoriteEsHouse userFavoriteEsHouse) {
+    public NashResult addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery) {
 
         //判断重复收藏
        Integer result =0;
        Integer ss1=SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_ERROR.getValue();
-       Integer re=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouse.getHouseId(),userFavoriteEsHouse.getUserId());
+       Integer re=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouseDoQuery.getHouseId(),userFavoriteEsHouseDoQuery.getUserId());
        if (null!=re && re>0)
        {
            Integer ss= SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT.getValue();
@@ -287,11 +288,15 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
            return NashResult.Fail(ss.toString(),"二手房收藏添加重复");
        }
        try {
+           UserFavoriteEsHouse userFavoriteEsHouse = new UserFavoriteEsHouse();
+           BeanUtils.copyProperties(userFavoriteEsHouseDoQuery,userFavoriteEsHouse);
            userFavoriteEsHouse.setCreateTime(new Date());
+           userFavoriteEsHouse.setHouseArea(userFavoriteEsHouseDoQuery.getBuildArea());
+           userFavoriteEsHouse.setTotalPrice(userFavoriteEsHouseDoQuery.getHouseTotalPrice());
            result= userFavoriteEsHouseMapper.insertSelective(userFavoriteEsHouse);
        }catch(Exception e)
        {
-           logger.error("二手房收藏接口异常："+userFavoriteEsHouse.getHouseId()+"={}",e.getStackTrace());
+           logger.error("二手房收藏接口异常："+userFavoriteEsHouseDoQuery.getHouseId()+"={}",e.getStackTrace());
        }
        if (result>0)
        {

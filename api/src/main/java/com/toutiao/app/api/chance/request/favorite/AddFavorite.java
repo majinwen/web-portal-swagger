@@ -20,7 +20,7 @@ public class AddFavorite {
      */
 
     @NotNull(groups ={First.class,Second.class},message = "面积不为空")
-    private  Double  houseArea;
+    private  Double  buildArea;
 
 
     /**
@@ -33,7 +33,7 @@ public class AddFavorite {
      * 总价
      */
     @NotNull(groups ={First.class},message = "总价不能为空")
-    private  Double totalPrice;
+    private  Double houseTotalPrice;
 
     /**
      * 用户id

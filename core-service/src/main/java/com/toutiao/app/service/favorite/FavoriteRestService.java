@@ -102,7 +102,7 @@ public interface FavoriteRestService {
     /**
      * 添加二手房收藏
      */
-    NashResult addEsfFavorite(UserFavoriteEsHouse userFavoriteEsHouse);
+    NashResult addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery);
 
     /**
      * 添加出租收藏
