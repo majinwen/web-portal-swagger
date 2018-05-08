@@ -103,12 +103,12 @@ public class PlotDetailsFewDo {
      * 均价
      */
     @ChangeName("averagePrice")
-    private Integer avgPrice;
+    private Double avgPrice;
     /**
      * 总价
      */
     @ChangeName("totalPrice")
-    private Integer sumPrice;
+    private Double sumPrice;
     /**
      * 建成年代
      */
