@@ -44,7 +44,6 @@ public class IMServiceImpl implements IMService {
             logger.error("调用融云服务接口异常");
             e.printStackTrace();
         }
-        System.out.println(result.getToken());
         return result.getToken();
     }
 

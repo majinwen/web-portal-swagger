@@ -75,7 +75,11 @@ public class UserLoginServiceImpl implements UserLoginService {
                         user.setUserId(userBasic.getUserId());
                         user.setLoginTime(new Date());
                        if(userBasic.getRongCloudToken()==null || "".equals(userBasic.getRongCloudToken())){
-                           userBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+//                           userBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+                           Date date = new Date();
+
+                           userBasic.setUserOnlySign(date.getTime()+userBasic.getPhone());
+
                            if(userBasic.getAvatar()==null || "".equals(userBasic.getAvatar())){
                                String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                                int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
@@ -105,8 +109,9 @@ public class UserLoginServiceImpl implements UserLoginService {
                         insertUserBasic.setRegisterSource(ServiceStateConstant.USER_REGISTER_SOURCE_APP);
                         insertUserBasic.setIdentityType(userBasicDo.getIdentityType());
                         insertUserBasic.setIdentifier(userBasicDo.getUserName());
-
-                        insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+                        Date d = new Date();
+//                        insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+                        insertUserBasic.setUserOnlySign(d.getTime()+insertUserBasic.getPhone());
                         //用户注册融云信息
                         String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserName(),
                                 headPicPath+"/"+headPicDirectory+"/"+insertUserBasic.getAvatar());

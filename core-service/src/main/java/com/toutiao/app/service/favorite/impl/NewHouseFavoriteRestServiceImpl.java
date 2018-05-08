@@ -20,6 +20,7 @@ public class NewHouseFavoriteRestServiceImpl implements NewHouseFavoriteRestServ
     @Autowired
     private UserFavoriteNewHouseMapper userFavoriteNewHouseMapper;
 
+
     /**
      * 新房收藏列表
      * @param newHouseFavoriteListDoQuery
@@ -36,6 +37,10 @@ public class NewHouseFavoriteRestServiceImpl implements NewHouseFavoriteRestServ
 
         if(null!=newHouseFavoriteDos && newHouseFavoriteDos.size()>0){
             newHouseFavoriteDomain.setData(newHouseFavoriteDos);
+
+            int newHouseFavourite = userFavoriteNewHouseMapper.selectFavoriteNewHouseByUserId(newHouseFavoriteListDoQuery.getUserId());
+            newHouseFavoriteDomain.setTotalNum(Long.valueOf(newHouseFavourite));
+
         }else{
             throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_NOT_FOUND,"新房收藏列表为空");
         }

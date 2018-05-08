@@ -33,6 +33,8 @@ public class SellHouseFavoriteRestServiceImpl implements SellHouseFavoriteRestSe
 
         if(null!=sellHouseFavoriteDos && sellHouseFavoriteDos.size()>0){
             sellHouseFavoriteDomain.setData(sellHouseFavoriteDos);
+            int esfFavourite = userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserId(sellHouseFavoriteListDoQuery.getUserId());
+            sellHouseFavoriteDomain.setTotalNum(Long.valueOf(esfFavourite));
         }else{
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_NOT_FOUND,"二手房收藏列表为空");
         }
