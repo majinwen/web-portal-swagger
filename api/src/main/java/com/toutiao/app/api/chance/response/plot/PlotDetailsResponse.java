@@ -49,7 +49,7 @@ public class PlotDetailsResponse {
      * 均价
      */
     @ChangeName("averagePrice")
-    private Integer avgPrice;
+    private Double avgPrice;
 
     /**
      * 建成年代
@@ -61,12 +61,12 @@ public class PlotDetailsResponse {
      * 占地面积
      */
     @ChangeName("coversArea")
-    private String areaSize;
+    private Double areaSize;
     /**
      * 建筑面积
      */
     @ChangeName("buildingArea")
-    private String buildingAreaSize;
+    private Double buildingAreaSize;
     /**
      * 总栋数
      */
@@ -94,7 +94,7 @@ public class PlotDetailsResponse {
     /**
      * 停车费
      */
-    private String parkingRate;
+    private Double parkingRate;
 
     /**
      * 物业公司
@@ -104,7 +104,7 @@ public class PlotDetailsResponse {
     /**
      * 物业费
      */
-    private String propertyFee;
+    private Double propertyFee;
 
 
     /**
@@ -127,7 +127,7 @@ public class PlotDetailsResponse {
     /**
      * 电费
      */
-    private String electricFee;
+    private Double electricFee;
     /**
      * 供水
      */
@@ -135,7 +135,7 @@ public class PlotDetailsResponse {
     /**
      * 水费
      */
-    private String waterFee;
+    private Double waterFee;
 
     /**
      * 详情环线
