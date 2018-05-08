@@ -358,10 +358,16 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         FieldSortBuilder levelSort = SortBuilders.fieldSort("level").order(SortOrder.ASC);
 
         //小区分数排序
-        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
+//        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
 
         PlotListDo plotListDo = new PlotListDo();
-        SearchResponse searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotScoreSort, plotListDoQuery.getPageSize());
+        SearchResponse searchResponse = null;
+        if(StringTool.isEmpty(plotListDoQuery.getKeyword())){
+            searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotListDoQuery.getPageSize());
+        }else {
+            searchResponse = plotEsDao.queryPlotListByRequirementAndKeyword(from, boolQueryBuilder, plotListDoQuery.getPageSize());
+        }
+
         if (searchResponse!=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit:hits){

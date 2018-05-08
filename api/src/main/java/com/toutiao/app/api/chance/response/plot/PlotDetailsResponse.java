@@ -27,7 +27,9 @@ public class PlotDetailsResponse {
     @ChangeName("buildingImages")
     private List<String> photo;
 
-
+    /**
+     * 区域名称
+     */
     @ChangeName("districtName")
     private String area;
 
@@ -105,7 +107,16 @@ public class PlotDetailsResponse {
      * 物业费
      */
     private Double propertyFee;
-
+    /**
+     * 物业类型
+     */
+    @ChangeName("propertyTypeId")
+    private String propertyType;
+    /**
+     * 物业类型名称
+     */
+    @ChangeName("propertyType")
+    private String propertyTypeName;
 
     /**
      * 供暖方式

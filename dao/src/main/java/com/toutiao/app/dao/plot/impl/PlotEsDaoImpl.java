@@ -57,10 +57,18 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,  FieldSortBuilder levelSort, FieldSortBuilder plotScoreSort,Integer size) {
+    public SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,  FieldSortBuilder levelSort,Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort(levelSort).addSort(plotScoreSort).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort(levelSort).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryPlotListByRequirementAndKeyword(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 

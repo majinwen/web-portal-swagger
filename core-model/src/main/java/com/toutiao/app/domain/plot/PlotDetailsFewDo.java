@@ -103,12 +103,12 @@ public class PlotDetailsFewDo {
      * 均价
      */
     @ChangeName("averagePrice")
-    private Integer avgPrice;
+    private Double avgPrice;
     /**
      * 总价
      */
     @ChangeName("totalPrice")
-    private Integer sumPrice;
+    private Double sumPrice;
     /**
      * 建成年代
      */
@@ -136,4 +136,14 @@ public class PlotDetailsFewDo {
      * 小区下租房总数
      */
     private Integer rentTotalNum;
+    /**
+     * 物业类型
+     */
+    @ChangeName("propertyTypeId")
+    private String propertyType;
+    /**
+     * 物业类型名称
+     */
+    @ChangeName("propertyType")
+    private String propertyTypeName;
 }

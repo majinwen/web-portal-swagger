@@ -69,7 +69,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
         //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
         GaussDecayFunctionBuilder functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",json,"4km","1km" ,0.4);
 
-        //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行乘法运算)
+        //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行加法运算)
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
 
         FunctionScoreQueryBuilder query = null;

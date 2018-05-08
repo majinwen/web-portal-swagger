@@ -40,10 +40,17 @@ public interface PlotEsDao {
      * @param from
      * @param boolQueryBuilder
      * @param scoreSort
-     * @param plotScoreSort
      * @return
      */
-    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,FieldSortBuilder scoreSort,FieldSortBuilder plotScoreSort,Integer size);
+    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,FieldSortBuilder scoreSort,Integer size);
+
+    /**
+     * 查询小区列表
+     * @param from
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse queryPlotListByRequirementAndKeyword(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size);
 
 
     /**
