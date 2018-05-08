@@ -98,14 +98,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 }
 
                 if ("商电".equals(plotDetailsDo.getElectricSupply())){
-                    plotDetailsDo.setElectricFee("1.33");
+                    plotDetailsDo.setElectricFee(1.33);
                 }else {
-                    plotDetailsDo.setElectricFee("0.48");
+                    plotDetailsDo.setElectricFee(0.48);
                 }
                 if ("商水".equals(plotDetailsDo.getWaterSupply())){
-                    plotDetailsDo.setWaterFee("6");
+                    plotDetailsDo.setWaterFee(6.00);
                 }else {
-                    plotDetailsDo.setWaterFee("5");
+                    plotDetailsDo.setWaterFee(5.00);
                 }
                 if ("0".equals(plotDetailsDo.getHeatingMode())){
                     plotDetailsDo.setHeatingMode("未知");

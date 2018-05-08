@@ -88,11 +88,11 @@ public class PlotDetailsDo {
     /**
      * 均价
      */
-    private Integer avgPrice;
+    private Double avgPrice;
     /**
      * 总价
      */
-    private Integer sumPrice;
+    private Double sumPrice;
     /**
      * 建成年代
      */
@@ -104,11 +104,11 @@ public class PlotDetailsDo {
     /**
      * 占地面积
      */
-    private String areaSize;
+    private Double areaSize;
     /**
      * 建筑面积
      */
-    private String buildingAreaSize;
+    private Double buildingAreaSize;
     /**
      * 总栋数
      */
@@ -232,7 +232,7 @@ public class PlotDetailsDo {
     /**
      * 电费
      */
-    private String electricFee;
+    private Double electricFee;
     /**
      * 供水
      */
@@ -240,7 +240,7 @@ public class PlotDetailsDo {
     /**
      * 水费
      */
-    private String waterFee;
+    private Double waterFee;
     /**
      * 装修标准
      */
