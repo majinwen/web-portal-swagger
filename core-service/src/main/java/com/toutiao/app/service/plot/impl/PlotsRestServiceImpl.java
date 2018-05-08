@@ -85,7 +85,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
             if (StringUtils.isNotEmpty(details))
             {
-                UserBasic userBasic = new UserBasic();
+                UserBasic userBasic = UserBasic.getCurrent();
 
                 plotDetailsDo = JSON.parseObject(details,PlotDetailsDo.class);
 

@@ -91,7 +91,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         if (StringUtils.isNotEmpty(details))
         {
-            UserBasic userBasic = new UserBasic();
+            UserBasic userBasic = UserBasic.getCurrent();
             if(StringTool.isNotEmpty(userBasic)){
                 NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
                 newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
