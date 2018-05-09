@@ -143,13 +143,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         else
         {
             levelSort=SortBuilders.fieldSort("build_level").order(SortOrder.ASC);
-            buildingSort=SortBuilders.fieldSort("building_sort").order(SortOrder.ASC);
+            buildingSort=SortBuilders.fieldSort("building_sort").order(SortOrder.DESC);
         }
 
         //城市
         if(newHouseDoQuery.getCityId()!=null && newHouseDoQuery.getCityId()!=0){
             booleanQueryBuilder.must(termQuery("city_id",newHouseDoQuery.getCityId()));
-            booleanQueryBuilder.must(termQuery("city_id", newHouseDoQuery.getCityId()));
         }
         //区域
         if(newHouseDoQuery.getDistrictId()!=null && newHouseDoQuery.getDistrictId() !=0){
@@ -185,7 +184,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(null!=newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length!=0){
 
             Integer[] longs = newHouseDoQuery.getLabelId();
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+            booleanQueryBuilder.must(termsQuery("building_tags_id",longs));
 
         }
 

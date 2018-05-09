@@ -11,7 +11,7 @@ public class CancelFavoriteRequest {
     @NotNull(groups = {First.class},message = "缺少新房id")
     private Integer newCode;
 
-    @NotNull(message = "缺少用户id")
+    @NotNull(groups = {First.class,Second.class},message = "缺少用户id")
     private  Integer userId;
 
     @NotNull(groups = {Second.class},message ="缺少小区id")
