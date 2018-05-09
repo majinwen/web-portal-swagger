@@ -93,4 +93,10 @@ public class RentDetailsFewDo {
      * 车位配比
      */
     private String parkRatio;
+
+    /**
+     * 出租类型
+     */
+    private  Integer rentType;
+
 }
