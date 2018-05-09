@@ -530,12 +530,12 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{rentHouseDoQuery.getSubwayStationId()}));
         }
         //租金
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getBeginPrice())&&StringTool.isNotEmpty(rentHouseDoQuery.getEndPrice())){
+        if (rentHouseDoQuery.getBeginPrice()!=0 &&rentHouseDoQuery.getEndPrice()!=0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
                     .gte(rentHouseDoQuery.getBeginPrice()).lte(rentHouseDoQuery.getEndPrice()));
-        }else if(StringTool.isNotEmpty(rentHouseDoQuery.getBeginPrice())&& StringTool.isEmpty(rentHouseDoQuery.getEndPrice())){
+        }else if(rentHouseDoQuery.getBeginPrice()!=0 && rentHouseDoQuery.getEndPrice()==0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseDoQuery.getBeginPrice()));
-        }else if(StringTool.isEmpty(rentHouseDoQuery.getBeginPrice())&& StringTool.isNotEmpty(rentHouseDoQuery.getEndPrice())){
+        }else if(rentHouseDoQuery.getBeginPrice()!=0&& rentHouseDoQuery.getEndPrice()!=0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").lte(rentHouseDoQuery.getEndPrice()));
         }
 
@@ -563,16 +563,16 @@ public class RentRestRestServiceImpl implements RentRestService {
 //                boolQueryBuilder.must(booleanQueryBuilder);
 //            }
 //        }
-        if (rentHouseDoQuery.getBeginArea()!=null && rentHouseDoQuery.getEndArea()!=null) {
+        if (rentHouseDoQuery.getBeginArea()!=0 && rentHouseDoQuery.getEndArea()!=0) {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()).lte(rentHouseDoQuery.getEndArea()));
 
-        }else if(null==rentHouseDoQuery.getBeginArea() && null!= rentHouseDoQuery.getEndArea())
+        }else if(0==rentHouseDoQuery.getBeginArea() && 0!= rentHouseDoQuery.getEndArea())
         {
 
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").lte(rentHouseDoQuery.getEndArea()));
 
         }
-        else if(null==rentHouseDoQuery.getEndArea() && null!= rentHouseDoQuery.getBeginArea())
+        else if(0==rentHouseDoQuery.getEndArea() && 0!= rentHouseDoQuery.getBeginArea())
         {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()));
 

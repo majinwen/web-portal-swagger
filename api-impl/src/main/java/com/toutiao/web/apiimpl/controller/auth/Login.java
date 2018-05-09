@@ -107,14 +107,12 @@ public class Login {
                 return "login";
             }
             //获取缓存中的手机号码判断是否有效
-            boolean flag = redisSession.exists(phone);
+            boolean flag = redisSession.exists(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone);
             if (!flag) {
                 modelMap.addAttribute("message", "短信验证码失效！");
                 return "login";
             }
-            if (!redisSession.getValue(phone).equalsIgnoreCase(
-                    MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix() + RedisNameUtil.separativeSign
-                            + code)))) {
+            if (!redisSession.getValue(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone).equalsIgnoreCase(code)) {
                 modelMap.addAttribute("message", "短信验证码输入有误！");
                 return "login";
             }

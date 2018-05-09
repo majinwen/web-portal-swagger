@@ -88,31 +88,31 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         }
         //总价
-        if(nearBySellHouseQueryDo.getBeginPrice()!=null && nearBySellHouseQueryDo.getEndPrice()!=null)
+        if(nearBySellHouseQueryDo.getBeginPrice()!=0 && nearBySellHouseQueryDo.getEndPrice()!=0)
         {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()).lte(nearBySellHouseQueryDo.getEndPrice()));
 
-        }else if (nearBySellHouseQueryDo.getBeginPrice()==null && nearBySellHouseQueryDo.getEndPrice()!=null)
+        }else if (nearBySellHouseQueryDo.getBeginPrice()==0 && nearBySellHouseQueryDo.getEndPrice()!=0)
         {
 
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(nearBySellHouseQueryDo.getEndPrice()));
 
-        }else if(nearBySellHouseQueryDo.getEndPrice()==null && nearBySellHouseQueryDo.getBeginPrice()!=null)
+        }else if(nearBySellHouseQueryDo.getEndPrice()==0 && nearBySellHouseQueryDo.getBeginPrice()!=0)
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
         }
 
         //面积
-        if (null!=nearBySellHouseQueryDo.getBeginArea() && null!=nearBySellHouseQueryDo.getEndArea()) {
+        if (0!=nearBySellHouseQueryDo.getBeginArea() && 0!=nearBySellHouseQueryDo.getEndArea()) {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()).lte(nearBySellHouseQueryDo.getEndArea()));
 
-        }else if(nearBySellHouseQueryDo.getBeginArea()==null && nearBySellHouseQueryDo.getEndArea()!=null)
+        }else if(nearBySellHouseQueryDo.getBeginArea()==0 && nearBySellHouseQueryDo.getEndArea()!=0)
         {
 
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").lte(nearBySellHouseQueryDo.getEndArea()));
 
         }
-        else if(nearBySellHouseQueryDo.getEndArea()==null && nearBySellHouseQueryDo.getBeginArea()!=null)
+        else if(nearBySellHouseQueryDo.getEndArea()==0 && nearBySellHouseQueryDo.getBeginArea()!=0)
         {
             booleanQueryBuilder.should(QueryBuilders.rangeQuery("buildArea").gte(nearBySellHouseQueryDo.getBeginArea()));
 
@@ -232,18 +232,26 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
         }
 
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getBeginPrice()) && StringTool.isNotEmpty(sellHouseDoQuery.getEndPrice())) {
+        if (sellHouseDoQuery.getBeginPrice()!=0 && sellHouseDoQuery.getEndPrice()!=0) {
             booleanQueryBuilder
-                    .must(QueryBuilders.boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices")
-                            .gte(sellHouseDoQuery.getBeginPrice()).lte(sellHouseDoQuery.getEndPrice())));
-        }
-        //面积
-        if (sellHouseDoQuery.getBeginArea()!=null && sellHouseDoQuery.getEndArea()!=null) {
+                    .must(QueryBuilders.rangeQuery("houseTotalPrices")
+                            .gte(sellHouseDoQuery.getBeginPrice()).lte(sellHouseDoQuery.getEndPrice()));
+        }else if(sellHouseDoQuery.getBeginPrice()!=0 && sellHouseDoQuery.getEndPrice()==0){
+            booleanQueryBuilder
+                    .must(QueryBuilders.rangeQuery("houseTotalPrices")
+                            .gte(sellHouseDoQuery.getBeginPrice()));
+        }else if(sellHouseDoQuery.getBeginPrice()==0 && sellHouseDoQuery.getEndPrice()!=0){
+            booleanQueryBuilder
+                    .must(QueryBuilders.rangeQuery("houseTotalPrices")
+                            .lte(sellHouseDoQuery.getEndPrice()));
+
+        }        //面积
+        if (sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()!=0) {
 
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
-        }else if(sellHouseDoQuery.getBeginArea()!=null && sellHouseDoQuery.getEndArea()==null){
+        }else if(sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()==0){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()));
-        }else if(sellHouseDoQuery.getBeginArea()==null && sellHouseDoQuery.getEndArea()!=null){
+        }else if(sellHouseDoQuery.getBeginArea()==0 && sellHouseDoQuery.getEndArea()!=0){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(sellHouseDoQuery.getEndArea()));
         }
         //楼龄

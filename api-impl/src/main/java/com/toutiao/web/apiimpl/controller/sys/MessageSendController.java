@@ -52,9 +52,7 @@ public class MessageSendController {
               sendSmsMessage = smsUtils.sendSms(phone, code);
             if (StringTool.isNotEmpty(sendSmsMessage)) {
                 // 请求成功,将用户的手机号码与短信验证码存入redis缓存中
-                redisSession.set2(phone, MD5Util.computeUTF(MD5Util.computeUTF(RedisObjectType.USER_PHONE_VALIDATECODE.getPrefix() + RedisNameUtil.separativeSign
-                                + code)),
-                        RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
+                redisSession.set2(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone, code, RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
                 //记录每次发送一次验证码，缓存中相应的手机号码个数自增长
                 redisSession.incr(phone + RedisNameUtil.separativeSignCount);
                 //处理业务后续改一下

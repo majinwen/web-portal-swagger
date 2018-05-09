@@ -188,9 +188,13 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
             boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{nearHouseListDoQuery.getSubwayStationId()}));
         }
         //租金
-        if (StringTool.isNotEmpty(nearHouseListDoQuery.getBeginPrice())&&StringTool.isNotEmpty(nearHouseListDoQuery.getEndPrice())){
+        if (nearHouseListDoQuery.getBeginPrice()!=0 &&nearHouseListDoQuery.getEndPrice()!=0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
                     .gte(nearHouseListDoQuery.getBeginPrice()).lte(nearHouseListDoQuery.getEndPrice()));
+        }else if(nearHouseListDoQuery.getBeginPrice()!=0 && nearHouseListDoQuery.getEndPrice()==0){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(nearHouseListDoQuery.getBeginPrice()));
+        }else if(nearHouseListDoQuery.getBeginPrice()!=0&& nearHouseListDoQuery.getEndPrice()!=0){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").lte(nearHouseListDoQuery.getEndPrice()));
         }
         //面积
 //        if (StringTool.isNotEmpty(nearHouseListDoQuery.getRentHouseArea())){
@@ -208,11 +212,11 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 //        }
 
         //房源面积大小
-        if(nearHouseListDoQuery.getBeginArea()!=null && nearHouseListDoQuery.getEndArea()!=null){
+        if(nearHouseListDoQuery.getBeginArea()!=0 && nearHouseListDoQuery.getEndArea()!=0){
             boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gt(nearHouseListDoQuery.getBeginArea()).lte(nearHouseListDoQuery.getBeginArea()));
-        }else if(nearHouseListDoQuery.getBeginArea()!=null && nearHouseListDoQuery.getEndArea()==null){
+        }else if(nearHouseListDoQuery.getBeginArea()!=0 && nearHouseListDoQuery.getEndArea()==0){
             boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").gt(nearHouseListDoQuery.getBeginArea()));
-        }else if(nearHouseListDoQuery.getBeginArea()==null && nearHouseListDoQuery.getEndArea()!=null){
+        }else if(nearHouseListDoQuery.getBeginArea()==0 && nearHouseListDoQuery.getEndArea()!=0){
             boolQueryBuilder.should(QueryBuilders.rangeQuery("house_area").lte(nearHouseListDoQuery.getBeginArea()));
         }
 

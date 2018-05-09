@@ -175,8 +175,12 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             boolQueryBuilder.must(termQuery("metroStationId",nearbyPlotsDoQuery.getSubwayStationId()));
         }
         //均价
-        if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getBeginPrice())&&StringTool.isNotEmpty(nearbyPlotsDoQuery.getEndPrice())){
+        if (nearbyPlotsDoQuery.getBeginPrice()!=0&&nearbyPlotsDoQuery.getEndPrice()!=0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(nearbyPlotsDoQuery.getBeginPrice()).lte(nearbyPlotsDoQuery.getEndPrice()));
+        }else if(nearbyPlotsDoQuery.getBeginPrice()!=0&&nearbyPlotsDoQuery.getEndPrice()==0){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(nearbyPlotsDoQuery.getBeginPrice()));
+        }else if(nearbyPlotsDoQuery.getBeginPrice()==0&&nearbyPlotsDoQuery.getEndPrice()!=0){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").lte(nearbyPlotsDoQuery.getEndPrice()));
         }
         //楼龄
         if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getHouseYearId())){
@@ -191,14 +195,14 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
         }
         //房源面积大小
-        if(nearbyPlotsDoQuery.getBeginArea()!=null && nearbyPlotsDoQuery.getEndArea()!=null){
+        if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()!=0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()).lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(nearbyPlotsDoQuery.getBeginArea()==null && nearbyPlotsDoQuery.getEndArea()!=null){
+        }else if(nearbyPlotsDoQuery.getBeginArea()==0 && nearbyPlotsDoQuery.getEndArea()!=0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
-        }else if(nearbyPlotsDoQuery.getBeginArea()!=null && nearbyPlotsDoQuery.getEndArea()==null){
+        }else if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()==0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()), ScoreMode.None));
         }

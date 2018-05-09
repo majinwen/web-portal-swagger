@@ -294,8 +294,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             key = key+"$"+ plotListDoQuery.getSubwayStationId();
         }
         //均价
-        if (StringTool.isNotEmpty(plotListDoQuery.getBeginPrice())&&StringTool.isNotEmpty(plotListDoQuery.getEndPrice())){
+        if (plotListDoQuery.getBeginPrice()!=0&&plotListDoQuery.getEndPrice()!=0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(plotListDoQuery.getBeginPrice()).lte(plotListDoQuery.getEndPrice()));
+        }else if(plotListDoQuery.getBeginPrice()!=0&&plotListDoQuery.getEndPrice()==0){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(plotListDoQuery.getBeginPrice()));
+        }else if(plotListDoQuery.getBeginPrice()==0&&plotListDoQuery.getEndPrice()!=0){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").lte(plotListDoQuery.getEndPrice()));
         }
         //楼龄
         if (StringTool.isNotEmpty(plotListDoQuery.getHouseYearId())){
@@ -329,14 +333,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //        }
 
         //房源面积大小
-        if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()!=null){
+        if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
-        }else if(plotListDoQuery.getBeginArea()!=null && plotListDoQuery.getEndArea()==null){
+        }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
-        }else if(plotListDoQuery.getBeginArea()==null && plotListDoQuery.getEndArea()!=null){
+        }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
 
             boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
