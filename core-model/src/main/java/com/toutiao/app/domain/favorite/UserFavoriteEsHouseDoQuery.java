@@ -52,4 +52,6 @@ public class UserFavoriteEsHouseDoQuery {
 
     private  String rentType;
 
+    private  String forward;
+
 }

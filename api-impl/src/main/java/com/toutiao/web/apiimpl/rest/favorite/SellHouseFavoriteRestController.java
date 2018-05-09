@@ -55,7 +55,7 @@ public class SellHouseFavoriteRestController {
      */
     @RequestMapping(value = "/addEsfFavorite",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addEsfFavorite(@Validated(First.class)  AddFavorite addFavorite)
+    public NashResult addEsfFavorite(@Validated(First.class)  @RequestBody AddFavorite addFavorite)
     {
         UserFavoriteEsHouseDoQuery userFavoriteEsHouse= new UserFavoriteEsHouseDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
