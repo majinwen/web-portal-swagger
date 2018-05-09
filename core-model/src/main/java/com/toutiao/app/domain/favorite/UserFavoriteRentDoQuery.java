@@ -14,7 +14,7 @@ public class UserFavoriteRentDoQuery {
     /**
      * 面积
      */
-    private  Double  buildArea;
+    private  Double  houseArea;
 
 
     /**
@@ -54,6 +54,5 @@ public class UserFavoriteRentDoQuery {
 
     private  String forward;
 
-    private  Double houseArea;
 
 }

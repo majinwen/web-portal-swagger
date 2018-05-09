@@ -8,7 +8,7 @@ public class DeleteEsfFavoriteDo {
     /**
      * 二手房id
      */
-    private String esfId;
+    private String houseId;
     /**
      * 用户id
      */

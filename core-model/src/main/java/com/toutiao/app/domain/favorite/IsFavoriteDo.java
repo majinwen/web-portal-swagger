@@ -5,10 +5,6 @@ import lombok.Data;
 @Data
 public class IsFavoriteDo {
 
-    /**
-     * 租房id
-     */
-    private String rentId;
 
     /**
      * 用户id
@@ -16,7 +12,7 @@ public class IsFavoriteDo {
     private Integer userId;
 
     /**
-     * 二手房id
+     * 二手房id和租房id
      */
     private String houseId;
 
