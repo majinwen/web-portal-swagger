@@ -20,7 +20,7 @@ public class AddFavorite {
      */
 
     @NotNull(groups ={First.class,Second.class},message = "面积不为空")
-    private  Double  buildArea;
+    private  Double  houseArea;
 
 
     /**
