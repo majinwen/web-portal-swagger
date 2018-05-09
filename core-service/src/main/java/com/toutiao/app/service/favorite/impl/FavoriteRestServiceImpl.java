@@ -3,12 +3,12 @@ package com.toutiao.app.service.favorite.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.favorite.*;
-import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.domain.plot.PlotFavoriteListDo;
 import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.UserFavoritePlotDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
@@ -18,14 +18,12 @@ import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteNewHouseMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteRentMapper;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteVillageMapper;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
@@ -207,29 +205,42 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public Boolean addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
+    public NashResult addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
+
+        Integer integer = userFavoriteVillageMapper.queryCountByUserIdAndHouseId(plotsAddFavoriteDoQuery);
+        if (null!=integer&&integer>0){
+            Integer code = PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT.getValue();
+            String desc = PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT.getDesc();
+            return NashResult.Fail(code.toString(),desc);
+        }
         try {
         Integer result = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
             if (result>0){
-                return true;
+                return NashResult.build("收藏成功");
             }
         }catch (Exception e){
-            logger.error("小区添加收藏接口异常,plotId:"+plotsAddFavoriteDoQuery.getPlotId()+", userId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+            logger.error("小区添加收藏接口异常,plotId:"+plotsAddFavoriteDoQuery.getBuildingId()+", BuildingId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
         }
-        return false;
+        return NashResult.Fail("收藏失败");
     }
 
     @Override
-    public Boolean addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
+    public NashResult addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
+        Integer integer = userFavoriteNewHouseMapper.queryCountByUserIdAndHouseId(newHouseAddFavoriteDoQuery);
+        if (null!=integer&&integer>0){
+            Integer code = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getValue();
+            String desc = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getDesc();
+            return NashResult.Fail(code.toString(),desc);
+        }
         try {
             Integer result = userFavoriteNewHouseMapper.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
             if (result>0){
-                return true;
+                return NashResult.build("收藏成功");
             }
         }catch (Exception e){
             logger.error("新房添加收藏接口异常,newHouseId:"+newHouseAddFavoriteDoQuery.getNewHouseId()+", userId:"+newHouseAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
         }
-        return false;
+        return NashResult.Fail("收藏失败");
     }
 
     /**
@@ -255,17 +266,16 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public NashResult cancelVillageByVillageId(UserFavoriteVillage userFavoriteVillage) {
+    public NashResult cancelVillageByVillageId(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery) {
       try {
-          userFavoriteVillage.setIsDel((short) 1);
-         int result= userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(userFavoriteVillage);
+         int result= userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
          if (result>0)
          {
              return  NashResult.build(true);
          }
       }catch (Exception e)
       {
-          logger.error("取消小区收藏接口异常"+userFavoriteVillage.getVillageId()+"={}",e.getStackTrace());
+          logger.error("取消小区收藏接口异常"+plotIsFavoriteDoQuery.getBuildingId()+"={}",e.getStackTrace());
       }
       return NashResult.Fail("收藏取消失败");
     }

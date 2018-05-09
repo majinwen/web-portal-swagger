@@ -34,6 +34,8 @@ public interface UserFavoriteNewHouseMapper extends BaseDao {
 
     Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
 
+    Integer queryCountByUserIdAndHouseId(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
+
 
     /**
      * 获取用户新房收藏列表

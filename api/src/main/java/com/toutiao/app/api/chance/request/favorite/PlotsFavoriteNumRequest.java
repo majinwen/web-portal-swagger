@@ -10,5 +10,5 @@ public class PlotsFavoriteNumRequest {
      * 小区di
      */
     @NotNull(message = "小区id不能为空")
-    private Integer plotId;
+    private Integer buildingId;
 }

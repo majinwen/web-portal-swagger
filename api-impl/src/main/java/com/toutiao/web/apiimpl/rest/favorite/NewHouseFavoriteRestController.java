@@ -68,11 +68,10 @@ public class NewHouseFavoriteRestController {
      */
     @RequestMapping(value = "/addNewHouseFavorite",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addNewHouseFavorite(@Validated @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
+    public NashResult addNewHouseFavorite(@Validated NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
         NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
         BeanUtils.copyProperties(newHouseAddFavoriteRequest,newHouseAddFavoriteDoQuery);
-        Boolean aBoolean = favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
-        return NashResult.build(aBoolean);
+        return favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
     }
 
 
