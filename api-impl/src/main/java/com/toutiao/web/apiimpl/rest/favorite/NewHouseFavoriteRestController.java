@@ -79,7 +79,7 @@ public class NewHouseFavoriteRestController {
     /**
      * 新房取消收藏
      */
-    @RequestMapping(value = "cancelFavoriteByNewHouse",method = RequestMethod.POST)
+    @RequestMapping(value = "/cancelFavoriteByNewHouse",method = RequestMethod.POST)
     @ResponseBody
     public NashResult cancelFavoriteNewHouse(@Validated(First.class) CancelFavoriteRequest cancelFavoriteRequest)
     {
