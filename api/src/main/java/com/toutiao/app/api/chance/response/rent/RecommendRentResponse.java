@@ -87,4 +87,9 @@ public class RecommendRentResponse {
     @ChangeName("agent")
     private AgentBaseDo agentBaseDo;
 
+    /**
+     * 出租类型
+     */
+    private  Integer rentType;
+
 }
