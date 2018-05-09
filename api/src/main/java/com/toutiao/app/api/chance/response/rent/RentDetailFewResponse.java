@@ -67,4 +67,9 @@ public class RentDetailFewResponse {
      */
     private String houseTitleImg;
 
+    /**
+     * 出租类型
+     */
+    private  Integer rentType;
+
 }
