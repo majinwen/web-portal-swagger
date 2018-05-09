@@ -7,7 +7,7 @@ public class DeleteRentFavoriteDoQuery {
     /**
      * 租房id
      */
-    private String rentId;
+    private String houseId;
     /**
      * 用户id
      */

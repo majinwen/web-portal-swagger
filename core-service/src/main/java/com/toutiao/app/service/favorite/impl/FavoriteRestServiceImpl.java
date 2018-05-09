@@ -161,7 +161,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Override
     public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery) {
         boolean flag = false;
-        Integer integer = userFavoriteRentMapper.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
+        Integer integer = userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
         if (integer>0){
             flag = true;
         }
