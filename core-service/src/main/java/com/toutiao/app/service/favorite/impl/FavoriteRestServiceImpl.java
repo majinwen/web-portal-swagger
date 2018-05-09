@@ -338,7 +338,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
          }
          if (result>0)
          {
-             return NashResult.build("收藏收功");
+             return NashResult.build("收藏成功");
          }
 
         return  NashResult.Fail(ss1.toString(),"租房添加收藏失败");
