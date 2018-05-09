@@ -110,6 +110,7 @@ public class RentDetailResponse {
     /**
      * 租金(元/月)
      */
+    @ChangeName("rentPrice")
     private Double rentHousePrice;
     /**
      * 房源标题图片
