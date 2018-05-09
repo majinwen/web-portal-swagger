@@ -18,25 +18,31 @@ public class NewHouseAddFavoriteRequest {
      * 新房id
      */
     @NotNull(message = "新房id不能为空")
-    private Integer newHouseId;
+    private Integer buildingId;
 
     /**
      * 均价
      */
     @NotNull(message = "均价不能为空")
-    private BigDecimal avgPrice;
+    private BigDecimal averagePrice;
+
+    /**
+     * 总价
+     */
+    @NotNull(message = "总价不能为空")
+    private BigDecimal totalPrice;
 
     /**
      * 起始面积
      */
     @NotNull(message = "起始面积不能为空")
-    private String beginArea;
+    private String houseMinArea;
 
     /**
      * 结束面积
      */
     @NotNull(message = "结束面积不能为空")
-    private String endArea;
+    private String houseMaxArea;
 
     /**
      * 楼盘名称
@@ -48,7 +54,7 @@ public class NewHouseAddFavoriteRequest {
      * 标题图
      */
     @NotNull(message = "标题图不能为空")
-    private String titleImage;
+    private String buildingTitleImg;
 
     /**
      * 上下架(0-上架,1-下架)

@@ -47,8 +47,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Autowired
     private UserFavoriteVillageMapper userFavoriteVillageMapper;
 
-    @Autowired
-    private PlotsRestService plotsRestService;
 
     /**
      *
@@ -227,7 +225,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                 return true;
             }
         }catch (Exception e){
-            logger.error("新房添加收藏接口异常,newHouseId:"+newHouseAddFavoriteDoQuery.getNewHouseId()+", userId:"+newHouseAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
+            logger.error("新房添加收藏接口异常,newHouseId:"+newHouseAddFavoriteDoQuery.getBuildingId()+", userId:"+newHouseAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
         }
         return false;
     }
@@ -248,7 +246,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
           }
         }catch (Exception e)
         {
-            logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getNewHouseId()+"={}",e.getStackTrace());
+            logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getBuildingId()+"={}",e.getStackTrace());
         }
 
         return  NashResult.Fail("收藏取消失败");

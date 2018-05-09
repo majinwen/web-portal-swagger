@@ -21,7 +21,7 @@ public class NewHouseFavoriteDo {
     /**
      * 新房id
      */
-    private Integer newHouseId;
+    private Integer buildingId;
 
     /**
      * 创建时间
@@ -36,17 +36,22 @@ public class NewHouseFavoriteDo {
     /**
      * 均价
      */
-    private BigDecimal avgPrice;
+    private BigDecimal averagePrice;
+
+    /**
+     * 总价
+     */
+    private BigDecimal totalPrice;
 
     /**
      * 起始面积
      */
-    private String beginArea;
+    private String houseMinArea;
 
     /**
      * 结束面积
      */
-    private String endArea;
+    private String houseMaxArea;
 
     /**
      * 楼盘名称
@@ -56,7 +61,7 @@ public class NewHouseFavoriteDo {
     /**
      * 标题图
      */
-    private String titleImage;
+    private String buildingTitleImg;
 
     /**
      * 上下架(0-上架,1-下架)

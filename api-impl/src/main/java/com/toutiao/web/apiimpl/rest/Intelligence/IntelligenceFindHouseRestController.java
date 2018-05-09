@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
-@RequestMapping("/{citypath}/findhouse/app")
+@RequestMapping("/{citypath}/findhouse/dongfangdi")
 public class IntelligenceFindHouseRestController {
 
     @Autowired
