@@ -185,7 +185,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(null!=newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length!=0){
 
             Integer[] longs = newHouseDoQuery.getLabelId();
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+            booleanQueryBuilder.must(termsQuery("building_tags_id",longs));
 
         }
 
