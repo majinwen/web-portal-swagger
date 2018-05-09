@@ -54,4 +54,6 @@ public class UserFavoriteRentDoQuery {
 
     private  String forward;
 
+    private  Double houseArea;
+
 }

@@ -329,7 +329,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
              UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
              BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
              userFavoriteRent.setCreateTime(new Date());
-             userFavoriteRent.setHouseArea(userFavoriteRentDoQuery.getBuildArea());
+//             userFavoriteRent.setHouseArea(userFavoriteRentDoQuery.getBuildArea());
              result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
 
          }catch (Exception e)
