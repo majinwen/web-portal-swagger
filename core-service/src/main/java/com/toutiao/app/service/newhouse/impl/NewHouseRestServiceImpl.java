@@ -170,12 +170,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseDoQuery.getBeginPrice()!=null  && newHouseDoQuery.getEndPrice()!=null){
+        if(newHouseDoQuery.getBeginPrice()!=0  && newHouseDoQuery.getEndPrice()!=0){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getBeginPrice()==null && newHouseDoQuery.getEndPrice()!=null)
+        }else if (newHouseDoQuery.getBeginPrice()==0 && newHouseDoQuery.getEndPrice()!=0)
         {        newHouseDoQuery.setBeginPrice(0.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getEndPrice()==null &&  newHouseDoQuery.getBeginPrice()!=null)
+        }else if (newHouseDoQuery.getEndPrice()==0 &&  newHouseDoQuery.getBeginPrice()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
         }
