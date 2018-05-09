@@ -74,4 +74,6 @@ public class AddFavorite {
     @NotNull(groups = {Second.class},message = "缺少出租类型")
     private  String rentType;
 
+    @NotNull(groups = {First.class,Second.class},message = "缺少朝向")
+    private String forward;
 }
