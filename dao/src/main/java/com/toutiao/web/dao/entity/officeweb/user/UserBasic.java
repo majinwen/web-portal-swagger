@@ -88,7 +88,7 @@ public class UserBasic {
     public static UserBasic getCurrent() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-        String userJson = (String) request.getAttribute(CookieUtils.COOKIE_NAME_USER);
+        String userJson = (String) request.getAttribute("userLogin");
         UserBasic user = new UserBasic();
         if(userJson.equals("请登录")){
             user = null;
