@@ -116,7 +116,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         //判断租房是否被收藏
         if (null!=type && type==1)
         {
-          int rentCount =userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(isFavoriteDo.getRentId(),isFavoriteDo.getUserId());
+          int rentCount =userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(isFavoriteDo.getHouseId(),isFavoriteDo.getUserId());
           if(rentCount>0)
           {
               isFavorite=true;
@@ -291,8 +291,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
            UserFavoriteEsHouse userFavoriteEsHouse = new UserFavoriteEsHouse();
            BeanUtils.copyProperties(userFavoriteEsHouseDoQuery,userFavoriteEsHouse);
            userFavoriteEsHouse.setCreateTime(new Date());
-           userFavoriteEsHouse.setHouseArea(userFavoriteEsHouseDoQuery.getBuildArea());
-           userFavoriteEsHouse.setTotalPrice(userFavoriteEsHouseDoQuery.getHouseTotalPrices());
            result= userFavoriteEsHouseMapper.insertSelective(userFavoriteEsHouse);
        }catch(Exception e)
        {
@@ -329,7 +327,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
              UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
              BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
              userFavoriteRent.setCreateTime(new Date());
-//             userFavoriteRent.setHouseArea(userFavoriteRentDoQuery.getBuildArea());
              result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
 
          }catch (Exception e)

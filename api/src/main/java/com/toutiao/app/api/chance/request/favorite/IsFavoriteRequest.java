@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class IsFavoriteRequest {
 
-    @NotNull(groups = {First.class}, message = "缺少租房id")
-    private String rentId;
+    @NotNull(groups = {First.class,Second.class}, message = "缺少租房id")
+    private String houseId;
 
     /**
      * 用户id
@@ -19,7 +19,6 @@ public class IsFavoriteRequest {
     private Integer userId;
 
 
-    @NotNull(groups = {Second.class},message = "缺少二手房id")
-    private String sellHouseId;
+
 
 }
