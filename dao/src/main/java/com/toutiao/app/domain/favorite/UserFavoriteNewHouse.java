@@ -7,10 +7,7 @@ import java.util.Date;
 
 @Data
 public class UserFavoriteNewHouse {
-    /**
-     * NewCode
-     */
-    private Integer newCode;
+
     /**
      * 新房收藏id
      */
