@@ -26,4 +26,9 @@ public class UserBasicDoQuery {
      */
     private String imageCode;
 
+
+    private String backUrl;
+
+    private String title;
+
 }

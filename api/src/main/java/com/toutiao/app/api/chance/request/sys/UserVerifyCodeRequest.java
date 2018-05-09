@@ -34,4 +34,8 @@ public class UserVerifyCodeRequest {
      * 图形验证码
      */
     private String imageCode;
+
+    private String backUrl;
+
+    private String title;
 }

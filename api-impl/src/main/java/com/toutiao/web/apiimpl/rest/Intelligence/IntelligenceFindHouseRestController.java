@@ -90,7 +90,7 @@ public class IntelligenceFindHouseRestController {
                     model.addAttribute("reportId", reportId);
                     model.addAttribute("intelligenceFhRes", intelligenceFhRes);
                     model.addAttribute("backUrl", request.getRequestURI());
-                    return "intelligent-report";
+                    return "app/intelligent-report";
                 }
             }
         } catch (NumberFormatException e) {
@@ -195,13 +195,13 @@ public class IntelligenceFindHouseRestController {
             if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
             }else{
-                return "emptyReport";
+                return "app/emptyReport";
             }
         } else {
            return "/user/login";
         }
         //跳转到报告页
-        return "myReport";
+        return "app/myReport";
     }
 
 

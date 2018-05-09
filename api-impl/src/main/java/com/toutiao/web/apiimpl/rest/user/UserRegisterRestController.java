@@ -44,6 +44,7 @@ public class UserRegisterRestController {
         UserLoginResponse userLoginResponse = new UserLoginResponse();
         BeanUtils.copyProperties(loginRequest,userBasicDoQuery);
         UserBasicDo userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery,request,response);
+
         if(StringTool.isNotBlank(userBasicDo)){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
             try {

@@ -33,7 +33,7 @@ public class AddFavorite {
      * 总价
      */
     @NotNull(groups ={First.class},message = "总价不能为空")
-    private  Double houseTotalPrice;
+    private  Double houseTotalPrices;
 
     /**
      * 用户id

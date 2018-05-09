@@ -222,7 +222,7 @@
                             <#if intelligenceFhRes?exists>
                                 <#assign fhResults =intelligenceFhRes['fhResult']>
                                 <#list fhResults?eval as fhResult>
-                                    <li class="bgtype-${fhResult_index+1}" data-href="'${appstaticurl}/#/shake/community/details?plotId=' + ${fhResults.newcode}">
+                                    <li class="bgtype-${fhResult_index+1}" data-href='${appstaticurl}/#/shake/community/details?plotId=${fhResult['newcode']}'>
                                         <div>
                                             <h4>${fhResult['projname']}</h4>
                                             <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
@@ -692,7 +692,9 @@
                     <#if intelligenceFhRes?exists><ul class="reviwe–item-box clear">
                         <#assign fhResults = intelligenceFhRes['fhResult']>
                         <#list fhResults?eval as fhResult>
-                            <li><a href="'${appstaticurl}/#/shake/community/details?plotId=' + ${fhResults.newcode}">
+                            <li>
+                                <#--<a>-->
+                                <a href='${appstaticurl}/#/shake/community/details?plotId=${fhResult['newcode']}'>
                                 <div class="review-img-box">
                                     <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
                                         <img width="100%" src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${fhResult['projname']}">
@@ -759,7 +761,7 @@
                         success: function (data) {
                             if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
+                                window.location.href = "${appstaticurl}/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
                             if (data.code == "cancel") {

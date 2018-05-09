@@ -25,7 +25,7 @@ public class UserFavoriteEsHouseDoQuery {
     /**
      * 总价
      */
-    private  Double houseTotalPrice;
+    private  Double houseTotalPrices;
 
     /**
      * 用户id
