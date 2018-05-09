@@ -170,11 +170,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = keys+"$"+newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseDoQuery.getBeginPrice()!=0 && newHouseDoQuery.getEndPrice()!=0){
+        if(newHouseDoQuery.getBeginPrice()!=0  && newHouseDoQuery.getEndPrice()!=0){
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         }else if (newHouseDoQuery.getBeginPrice()==0 && newHouseDoQuery.getEndPrice()!=0)
-        {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").lte(newHouseDoQuery.getEndPrice())));
+        {        newHouseDoQuery.setBeginPrice(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         }else if (newHouseDoQuery.getEndPrice()==0 &&  newHouseDoQuery.getBeginPrice()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
@@ -197,16 +197,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //面积
-        if(StringTool.isNotEmpty(newHouseDoQuery.getBeginArea()) &&  StringTool.isNotEmpty(newHouseDoQuery.getEndArea()))
+        if(newHouseDoQuery.getBeginArea()!=0 &&  newHouseDoQuery.getEndArea()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
-        }else if(StringTool.isEmpty(newHouseDoQuery.getBeginArea()) && StringTool.isNotEmpty(newHouseDoQuery.getEndArea()))
+        }else if(newHouseDoQuery.getBeginArea()==0 && newHouseDoQuery.getEndArea()!=0)
         {
 
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
 
-        }else if (StringTool.isEmpty(newHouseDoQuery.getEndArea()) && StringTool.isEmpty(newHouseDoQuery.getBeginArea()))
+        }else if (newHouseDoQuery.getEndArea()==0 && newHouseDoQuery.getBeginArea()!=0)
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
         }

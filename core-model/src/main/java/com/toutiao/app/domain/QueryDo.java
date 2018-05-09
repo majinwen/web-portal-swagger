@@ -6,23 +6,23 @@ public class QueryDo {
     /**
      * 起始价格
      */
-    private  double beginPrice;
+    private  double  beginPrice;
 
     /**
      * 结束价格
      */
-    private double endPrice;
+    private double  endPrice;
 
     /**
      *起始面积
      */
 
-    private double beginArea;
+    private  double  beginArea;
 
     /**
      * 结束面积
      */
-    private  double endArea;
+    private  double  endArea;
 
     /**
      * 居室
