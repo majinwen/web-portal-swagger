@@ -1,12 +1,13 @@
 package com.toutiao.web.apiimpl.controller.auth;
 
 
+import com.alibaba.fastjson.JSON;
+import com.toutiao.app.api.chance.response.user.UserLoginResponse;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.sys.IMService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.apiimpl.authentication.RedisSession;
 import com.toutiao.web.common.util.*;
-import com.toutiao.web.dao.entity.admin.SysUserEntity;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import com.toutiao.web.service.rediscache.RedisAndCookieService;
@@ -14,11 +15,9 @@ import com.toutiao.web.service.repository.admin.SysUserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -184,7 +183,13 @@ public class Login {
 
             }
             //将用户登录信息放置到cookie中判断用户登录状态
-            setCookieAndCache(phone, request, response);
+
+            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+            if(StringTool.isEmpty(user)){
+                UserLoginResponse userLoginResponse = new UserLoginResponse();
+                BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+                setCookieAndCache(userBasicDo.getPhone(),userLoginResponse, request, response);
+            }
             if(StringTool.isNotBlank(backUrl)&&StringTool.isNotBlank(title)){
                 return "redirect:"+backUrl+"?title="+title;
             }
@@ -221,24 +226,42 @@ public class Login {
      * @param response
      * @throws Exception
      */
-    private void setCookieAndCache(String phone,
+//    private void setCookieAndCache(String phone,
+//                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+//        //清空redis中该手机号的失败次数
+//        redisSession.delKey(phone + RedisNameUtil.separativeSignCount);
+//        //删除保存的短信验证码
+//        redisSession.delKey(phone);
+//        // 设置登录会员的cookie信息
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(phone)
+//                .append(RedisNameUtil.separativeSign);
+//        //用户信息加密
+//        String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
+//        cookieUtils.setCookie(request, response,
+//                CookieUtils.COOKIE_NAME_User_LOGIN, str);
+//        // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
+//        redisSession.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
+//                        + phone,
+//                phone, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
+//    }
+
+    private void setCookieAndCache(String phone,UserLoginResponse userLoginResponse,
                                    HttpServletRequest request, HttpServletResponse response) throws Exception {
         //清空redis中该手机号的失败次数
         redisSession.delKey(phone + RedisNameUtil.separativeSignCount);
         //删除保存的短信验证码
-        redisSession.delKey(phone);
+        redisSession.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER+"_"+phone);
         // 设置登录会员的cookie信息
         StringBuilder sb = new StringBuilder();
-        sb.append(phone)
-                .append(RedisNameUtil.separativeSign);
+        String userJson = JSON.toJSONString(userLoginResponse);
+        sb.append(userJson).append(RedisNameUtil.separativeSign);
         //用户信息加密
         String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
-        cookieUtils.setCookie(request, response,
-                CookieUtils.COOKIE_NAME_User_LOGIN, str);
+        cookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_USER, str);
         // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
         redisSession.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
-                        + phone,
-                phone, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
+                + phone, userJson, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
     }
 
     /**

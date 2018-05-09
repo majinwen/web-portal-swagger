@@ -27,7 +27,7 @@
             <p>头条房产大数据，为您匹配专属理想家。</p>
         </div>
     </div>
-    <a class="link-intelligent" href="${router_city('/app/findhouse/')}">获取报告</a>
+    <a class="link-intelligent" href="${router_city('/findhouse/app')}">获取报告</a>
 </div>
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>

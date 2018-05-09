@@ -50,7 +50,7 @@
                             <#assign json="${myReport.fhResult}"?eval />
                             <#list json as item>
                                 <ul>
-                                    <li><a class="list-item" href="'${appstaticurl}/#/shake/community/details?plotId=' + ${item.newcode}">
+                                    <li><a class="list-item" href='${appstaticurl}/#/shake/community/details?plotId=${item.newcode}'>
                                         <div class="clear">
                                             <div class="list-item-img-box">
                                                 <#if item.plotImage?exists>

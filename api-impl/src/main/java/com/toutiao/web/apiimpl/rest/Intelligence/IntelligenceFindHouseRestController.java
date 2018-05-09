@@ -71,10 +71,16 @@ public class IntelligenceFindHouseRestController {
      */
     @RequestMapping("/showMyReport/{reportId}")
     public String showUserPortrayal(@PathVariable("reportId") String reportId,
+                                    @RequestParam(value = "title",required = false) String title,
                                     Model model,HttpServletRequest request,HttpServletResponse response) {
         try {
             if (StringTool.isNotBlank(reportId)) {
-
+                if(StringTool.isNotBlank(title)){
+                    String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+                    UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+                    UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+                    intelligenceFhResService.updateMyReportCollectStatus(reportId, userBasic.getPhone());
+                }
                 //查询用户是否有报告数据
                 IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
                 if (StringTool.isNotBlank(intelligenceFhRes)) {
@@ -186,20 +192,18 @@ public class IntelligenceFindHouseRestController {
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
         UserBasicDo userBasic = null;
+        List<IntelligenceFhRes> userReport = new ArrayList<>();
         if(null != userLoginResponse){
             userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-        }
-        if (StringTool.isNotBlank(userBasic)) {
             //查询用户是否有报告数据
-            List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(userBasic.getPhone());
-            if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
-                model.addAttribute("userReport", userReport);
-            }else{
-                return "app/emptyReport";
-            }
-        } else {
-           return "/user/login";
+            userReport = intelligenceFhResService.queryUserReport(userBasic.getPhone());
         }
+        if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
+            model.addAttribute("userReport", userReport);
+        }else{
+            return "app/emptyReport";
+        }
+
         //跳转到报告页
         return "app/myReport";
     }

@@ -77,7 +77,7 @@ public class SMSUtils {
 //            //发送成功
 //            return null;
 //        }
-        return sendSmsResponse.getMessage();
+        return sendSmsResponse.getCode();
     }
 
     public static void main(String[] args) throws ClientException,
