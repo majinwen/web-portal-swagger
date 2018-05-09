@@ -1,5 +1,7 @@
 package com.toutiao.app.api.chance.request.favorite;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -10,7 +12,7 @@ public class PlotsAddFavoriteResquest {
      * 小区id
      */
     @NotNull(message = "小区id不能为空")
-    private Integer plotId;
+    private Integer buildingId;
     /**
      * 用户id
      */
@@ -20,7 +22,7 @@ public class PlotsAddFavoriteResquest {
      * 均价
      */
     @NotNull(message = "均价不能为空")
-    private Double avgPrice;
+    private Double averagePrice;
     /**
      * 小区名称
      */
@@ -30,7 +32,7 @@ public class PlotsAddFavoriteResquest {
      * 标题图
      */
     @NotNull(message = "标题图不能为空")
-    private String titleImage;
+    private String buildingImages;
     /**
      * 是否下架(0-未下架, 1-下架)
      */

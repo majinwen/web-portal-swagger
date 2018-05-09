@@ -5,11 +5,9 @@ import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.plot.PlotFavoriteListResponse;
 import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.PlotsAddFavoriteDoQuery;
-import com.toutiao.app.domain.favorite.UserFavoriteVillage;
 import com.toutiao.app.domain.plot.PlotFavoriteListDo;
 import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.FavoriteRestService;
-import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,25 +60,23 @@ public class PlotsFavoriteRestController {
      */
     @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addPlotsFavorite(@Validated @RequestBody PlotsAddFavoriteResquest plotsAddFavoriteResquest){
+    public NashResult addPlotsFavorite(@Validated PlotsAddFavoriteResquest plotsAddFavoriteResquest){
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
-        Boolean aBoolean = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
-        return NashResult.build(aBoolean);
+        return favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
     }
 
 
     /**
      * 小区取消收藏
      */
-
     @RequestMapping(value = "cancelFavoriteByVillage",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult cancelFavoriteByVillage(@Validated(Second.class) CancelFavoriteRequest cancelFavoriteRequest)
+    public NashResult cancelFavoriteByVillage(@Validated PlotIsFavoriteResquest plotIsFavoriteResquest)
     {
-        UserFavoriteVillage userFavoriteVillage=new UserFavoriteVillage();
-        BeanUtils.copyProperties(cancelFavoriteRequest,userFavoriteVillage);
-        return favoriteRestService.cancelVillageByVillageId(userFavoriteVillage);
+        PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
+        BeanUtils.copyProperties(plotIsFavoriteResquest, plotIsFavoriteDoQuery);
+        return favoriteRestService.cancelVillageByVillageId(plotIsFavoriteDoQuery);
 
     }
 
@@ -91,7 +87,7 @@ public class PlotsFavoriteRestController {
      */
     @RequestMapping(value = "/getPlotFavoriteCountByPlotId",method = RequestMethod.GET)
     public NashResult getPlotFavoriteCountByPlotId(@Validated PlotsFavoriteNumRequest plotsFavoriteNumRequest){
-        Integer plotFavoriteCountByPlotId = favoriteRestService.getPlotFavoriteCountByPlotId(plotsFavoriteNumRequest.getPlotId());
+        Integer plotFavoriteCountByPlotId = favoriteRestService.getPlotFavoriteCountByPlotId(plotsFavoriteNumRequest.getBuildingId());
         return NashResult.build(plotFavoriteCountByPlotId);
     }
 

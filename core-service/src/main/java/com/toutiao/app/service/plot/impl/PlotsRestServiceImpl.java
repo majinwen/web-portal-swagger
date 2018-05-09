@@ -92,7 +92,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if(StringTool.isNotEmpty(userBasic)){
                     PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
                     plotIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
-                    plotIsFavoriteDoQuery.setPlotId(plotDetailsDo.getId());
+                    plotIsFavoriteDoQuery.setBuildingId(plotDetailsDo.getId());
                     Boolean isFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
                     plotDetailsDo.setIsFavorite(isFavorite);
                 }

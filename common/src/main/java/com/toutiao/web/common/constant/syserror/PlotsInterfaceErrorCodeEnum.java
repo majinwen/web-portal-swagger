@@ -21,6 +21,7 @@ public enum PlotsInterfaceErrorCodeEnum implements IntBaseType {
     PLOTS_ESF_NOT_FOUND("小区没有出售房源信息！",50301),
     PLOTS_RENT_NOT_FOUND("小区没有出租房源信息！",50401),
     PLOTS_DETAILS_NOT_FOUND("小区详情为空！",50201),
+    PLOTS_FAVORITE_ADD_REPEAT("添加小区收藏重复",50603),
     PLOTS_FAVORITE_NOT_FOUND("小区收藏列表为空",50601);
 
 

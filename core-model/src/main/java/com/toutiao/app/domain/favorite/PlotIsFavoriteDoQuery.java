@@ -7,7 +7,7 @@ public class PlotIsFavoriteDoQuery {
     /**
      * 小区id
      */
-    private Integer plotId;
+    private Integer buildingId;
     /**
      * 用户id
      */

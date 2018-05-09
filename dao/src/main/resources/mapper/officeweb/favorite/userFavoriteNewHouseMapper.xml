@@ -209,6 +209,10 @@
     SELECT COUNT(1) FROM user_favorite_newhouse
     WHERE user_id=#{userId} and is_del=0 AND building_id = #{buildingId}
   </select>
+  <select id="queryCountByUserIdAndHouseId" parameterType="com.toutiao.app.domain.favorite.NewHouseAddFavoriteDoQuery" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM user_favorite_newhouse
+    WHERE user_id=#{userId} and is_del=0 AND new_house_id = #{newHouseId}
+  </select>
 
   <insert id="addNewHouseFavorite" parameterType="com.toutiao.app.domain.favorite.NewHouseAddFavoriteDoQuery">
     insert into user_favorite_newhouse

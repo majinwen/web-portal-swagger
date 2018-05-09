@@ -23,7 +23,8 @@ public enum NewHouseInterfaceErrorCodeEnum implements IntBaseType {
     //新房动态为空
     NEWHOUSE_DYNAMIC_EXPTION("新房动态为空",40401),
     NEWHOUSE_TRAFFIC_NOT_FOUND("新房交通配套为空",40501),
-
+    NEWHOUSE_FAVORITE_ADD_REPEAT("添加新房收藏重复",40603),
+    NEWHOUSE_FAVORITE_ADD_ERROR("添加新房收藏错误",40602),
     NEWHOUSE_FAVORITE_NOT_FOUND("新房收藏列表为空",40601);
 
 

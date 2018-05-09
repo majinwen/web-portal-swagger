@@ -11,7 +11,7 @@ public class DeleteEsfFavoriteResquest {
      * 二手房id
      */
     @NotEmpty(message = " 二手房id无信息")
-    private String esfId;
+    private String houseId;
     /**
      * 用户id
      */

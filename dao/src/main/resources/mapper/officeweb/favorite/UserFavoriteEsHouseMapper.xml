@@ -11,14 +11,14 @@
     <result column="house_photo_title" property="housePhotoTitle" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
-    <result column="house_area" property="houseArea" jdbcType="DOUBLE" />
+    <result column="build_area" property="buildArea" jdbcType="DOUBLE" />
     <result column="room" property="room" jdbcType="INTEGER" />
     <result column="forward" property="forward" jdbcType="VARCHAR" />
-    <result column="total_price" property="totalPrice" jdbcType="DOUBLE" />
+    <result column="total_prices" property="totalPrices" jdbcType="DOUBLE" />
 
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, house_id, create_time, is_del,status,building_name,house_area,room,forward,total_price,house_photo_title,house_title
+    id, user_id, house_id, create_time, is_del,status,building_name,build_area,room,forward,total_prices,house_photo_title,house_title
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -38,9 +38,9 @@
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     insert into user_favorite_eshouse (id, user_id, house_id, 
-      create_time, is_del,status,building_name,house_area,room,forward,total_price,house_photo_title,house_title)
+      create_time, is_del,status,building_name,build_area,room,forward,total_prices,house_photo_title,house_title)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT},#{status,jdbcType=INTEGER},#{buildingName,jdbcType=VARCHAR},#{houseArea,jdbcType=DOUBLE},#{room,jdbcType=INTEGER},#{forward,jdbcType=VARCHAR},#{totalPrice,jdbcType=DOUBLE},#{housePhotoTitle,jdbcType=VARCHAR},#{houseTitle,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT},#{status,jdbcType=INTEGER},#{buildingName,jdbcType=VARCHAR},#{buildArea,jdbcType=DOUBLE},#{room,jdbcType=INTEGER},#{forward,jdbcType=VARCHAR},#{totalPrices,jdbcType=DOUBLE},#{housePhotoTitle,jdbcType=VARCHAR},#{houseTitle,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     insert into user_favorite_eshouse
@@ -66,8 +66,8 @@
       <if test="buildingName != null" >
         building_name,
       </if>
-      <if test="houseArea != null" >
-        house_area,
+      <if test="buildArea != null" >
+        build_area,
       </if>
       <if test="room != null" >
         room,
@@ -75,8 +75,8 @@
       <if test="forward != null" >
         forward,
       </if>
-      <if test="totalPrice != null" >
-        total_price,
+      <if test="totalPrices != null" >
+        total_prices,
       </if>
       <if test="housePhotoTitle != null" >
         house_photo_title,
@@ -107,8 +107,8 @@
       <if test="buildingName != null" >
         #{buildingName,jdbcType=VARCHAR},
       </if>
-      <if test="houseArea != null" >
-        #{houseArea,jdbcType=DOUBLE},
+      <if test="buildArea != null" >
+        #{buildArea,jdbcType=DOUBLE},
       </if>
       <if test="room != null" >
         #{room,jdbcType=INTEGER},
@@ -116,8 +116,8 @@
       <if test="forward != null" >
         #{forward,jdbcType=VARCHAR},
       </if>
-      <if test="totalPrice != null" >
-        #{totalPrice,jdbcType=DOUBLE},
+      <if test="totalPrices != null" >
+        #{totalPrices,jdbcType=DOUBLE},
       </if>
       <if test="housePhotoTitle != null" >
         #{housePhotoTitle,jdbcType=VARCHAR},
@@ -167,6 +167,6 @@
     <update id="updateEsfFavoriteByEsfIdAndUserId" parameterType="com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo">
     UPDATE user_favorite_eshouse
     SET is_del = 1
-    WHERE house_id = #{esfId,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=INTEGER} AND is_del = 0
+    WHERE house_id = #{houseId,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=INTEGER} AND is_del = 0
   </update>
 </mapper>

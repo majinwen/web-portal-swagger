@@ -112,7 +112,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             if(StringTool.isNotEmpty(userBasic)){
                 IsFavoriteDo isFavoriteDo=new IsFavoriteDo();
                 isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
-                isFavoriteDo.setRentId(rentDetailsDo.getHouseId());
+                isFavoriteDo.setHouseId(rentDetailsDo.getHouseId());
                 boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_RENT,isFavoriteDo);
                 rentDetailsDo.setIsFavorite(isFavorite);
             }

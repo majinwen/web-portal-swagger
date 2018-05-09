@@ -7,7 +7,7 @@ public class PlotsAddFavoriteDoQuery {
     /**
      * 小区id
      */
-    private Integer plotId;
+    private Integer buildingId;
     /**
      * 用户id
      */
@@ -15,7 +15,7 @@ public class PlotsAddFavoriteDoQuery {
     /**
      * 均价
      */
-    private Double avgPrice;
+    private Double averagePrice;
     /**
      * 小区名称
      */
@@ -23,7 +23,7 @@ public class PlotsAddFavoriteDoQuery {
     /**
      * 标题图
      */
-    private String titleImage;
+    private String buildingImages;
     /**
      * 是否下架(0-未下架, 1-下架)
      */

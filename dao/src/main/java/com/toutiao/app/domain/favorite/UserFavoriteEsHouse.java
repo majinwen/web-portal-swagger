@@ -39,13 +39,13 @@ public class UserFavoriteEsHouse {
 
     private  String buildingName;
 
-    private  Double totalPrice;
+    private  Double totalPrices;
 
     private  String  housePhotoTitle;
 
     private  String  houseTitle;
 
-    private  Double  houseArea;
+    private  Double  buildArea;
 
     private  String forward;
 }
