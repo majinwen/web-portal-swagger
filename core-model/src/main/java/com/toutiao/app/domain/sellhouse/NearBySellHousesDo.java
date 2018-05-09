@@ -128,4 +128,6 @@ public class NearBySellHousesDo {
      */
     @ChangeName("buildingId")
     private Integer newcode;
+
+    private  String housePhotoTitle;
 }

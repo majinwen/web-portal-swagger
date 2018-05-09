@@ -18,8 +18,16 @@ public class AddFavorite {
     /**
      * 面积
      */
+    /**
+     * 租房面积
+     */
+    @NotNull(groups ={Second.class},message = "面积不为空")
+    private  Double  houseArea;
 
-    @NotNull(groups ={First.class,Second.class},message = "面积不为空")
+    /**
+     * 二手房面积
+     */
+    @NotNull(groups = {First.class},message = "面积不能为空")
     private  Double  buildArea;
 
 
@@ -33,7 +41,7 @@ public class AddFavorite {
      * 总价
      */
     @NotNull(groups ={First.class},message = "总价不能为空")
-    private  Double houseTotalPrices;
+    private  Double houseTotalPrice;
 
     /**
      * 用户id
@@ -66,4 +74,6 @@ public class AddFavorite {
     @NotNull(groups = {Second.class},message = "缺少出租类型")
     private  String rentType;
 
+    @NotNull(groups = {First.class,Second.class},message = "缺少朝向")
+    private String forward;
 }

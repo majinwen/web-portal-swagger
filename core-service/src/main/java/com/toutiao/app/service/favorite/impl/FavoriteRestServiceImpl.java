@@ -161,7 +161,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     @Override
     public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery) {
         boolean flag = false;
-        Integer integer = userFavoriteRentMapper.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
+        Integer integer = userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
         if (integer>0){
             flag = true;
         }
@@ -329,7 +329,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
              UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
              BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
              userFavoriteRent.setCreateTime(new Date());
-             userFavoriteRent.setHouseArea(userFavoriteRentDoQuery.getBuildArea());
+//             userFavoriteRent.setHouseArea(userFavoriteRentDoQuery.getBuildArea());
              result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
 
          }catch (Exception e)
@@ -338,7 +338,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
          }
          if (result>0)
          {
-             return NashResult.build("收藏收功");
+             return NashResult.build("收藏成功");
          }
 
         return  NashResult.Fail(ss1.toString(),"租房添加收藏失败");

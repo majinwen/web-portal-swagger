@@ -157,7 +157,6 @@ public class SellHouseDetailsResponse {
     /**
      * 二手房房源标题图
      */
-    @ChangeName("houseTitleImg")
     private String housePhotoTitle;
     /**
      * 标签(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
@@ -232,7 +231,6 @@ public class SellHouseDetailsResponse {
     /**
      * 房源总价
      */
-    @ChangeName("totalPrice")
     private Double houseTotalPrices;
     /**
      * 更新时间
@@ -241,7 +239,6 @@ public class SellHouseDetailsResponse {
     /**
      * 建筑面积
      */
-    @ChangeName("buildingArea")
     private Double buildArea;
     /**
      * 使用面积

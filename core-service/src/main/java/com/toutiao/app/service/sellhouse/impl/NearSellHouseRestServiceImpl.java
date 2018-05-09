@@ -119,6 +119,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 nearBySellHousesDo.setHouseId(claimSellHouseDo.getClaimHouseId());
                 nearBySellHousesDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
                 nearBySellHousesDo.setTagsName(claimSellHouseDo.getClaimTagsName());
+                nearBySellHousesDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
             }
             nearBySellHouses.add(nearBySellHousesDo);
         }

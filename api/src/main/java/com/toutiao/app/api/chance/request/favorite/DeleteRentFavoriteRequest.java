@@ -11,7 +11,7 @@ public class DeleteRentFavoriteRequest {
      * 租房id
      */
     @NotEmpty(message = "租房id不能为空")
-    private String rentId;
+    private String houseId;
     /**
      * 用户id
      */
