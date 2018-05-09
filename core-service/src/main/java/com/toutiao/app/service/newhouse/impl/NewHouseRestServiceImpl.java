@@ -143,7 +143,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         else
         {
             levelSort=SortBuilders.fieldSort("build_level").order(SortOrder.ASC);
-            buildingSort=SortBuilders.fieldSort("building_sort").order(SortOrder.ASC);
+            buildingSort=SortBuilders.fieldSort("building_sort").order(SortOrder.DESC);
         }
 
         //城市
