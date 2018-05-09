@@ -238,10 +238,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 {
                     newHouseListDos.setRoomTotalCount(0);
                 }
-                //获取新房的收藏数量
-                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
-                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
-                newHouseListDoList.add(newHouseListDos);
+//                //获取新房的收藏数量
+//                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
+//                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
+//                newHouseListDoList.add(newHouseListDos);
             }
             newHouseListVo.setData(newHouseListDoList);
             newHouseListVo.setTotalCount(hits.getTotalHits());

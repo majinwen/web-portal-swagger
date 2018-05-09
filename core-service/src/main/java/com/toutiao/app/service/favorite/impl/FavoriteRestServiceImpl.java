@@ -57,19 +57,19 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * 获取新房列表页收藏数量
      */
 
-    @Override
-    public Integer newHouseFavoriteByNewCode(Integer newCode)
-    {
-        int favoriteCount=0;
-        try {
-           favoriteCount= userFavoriteNewHouseMapper.newHouseFavoriteByNewCode(newCode);
-            return favoriteCount;
-        }catch (Exception e)
-        {
-            logger.error("获取新房收藏异常"+newCode.toString()+"={}",e.getStackTrace());
-        }
-       return  favoriteCount;
-    }
+//    @Override
+//    public Integer newHouseFavoriteByNewCode(Integer newCode)
+//    {
+//        int favoriteCount=0;
+//        try {
+//           favoriteCount= userFavoriteNewHouseMapper.newHouseFavoriteByNewCode(newCode);
+//            return favoriteCount;
+//        }catch (Exception e)
+//        {
+//            logger.error("获取新房收藏异常"+newCode.toString()+"={}",e.getStackTrace());
+//        }
+//       return  favoriteCount;
+//    }
 
     /**
      *

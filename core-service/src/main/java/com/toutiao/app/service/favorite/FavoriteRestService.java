@@ -12,7 +12,7 @@ public interface FavoriteRestService {
      * 获取列表新房收藏数量
      */
 
-    Integer newHouseFavoriteByNewCode(Integer newCode);
+//    Integer newHouseFavoriteByNewCode(Integer newCode);
 
     /**
      * 获取个人中心收藏数量
