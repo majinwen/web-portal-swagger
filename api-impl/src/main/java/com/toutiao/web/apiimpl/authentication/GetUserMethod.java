@@ -1,13 +1,9 @@
 package com.toutiao.web.apiimpl.authentication;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.response.user.UserLoginResponse;
-import com.toutiao.app.domain.user.UserBasicDo;
-import com.toutiao.app.service.user.UserBasicInfoService;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -16,8 +12,6 @@ import java.util.List;
 
 public class GetUserMethod implements TemplateMethodModelEx {
 
-    @Autowired
-    private UserBasicInfoService userBasicInfoService;
 
     @Override
     public Object exec(List list) throws TemplateModelException {
