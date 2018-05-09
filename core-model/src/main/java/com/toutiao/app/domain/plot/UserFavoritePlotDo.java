@@ -21,8 +21,7 @@ public class UserFavoritePlotDo {
     /**
      * 小区id
      */
-    @ChangeName("buildingId")
-    private Integer villageId;
+    private Integer buildingId;
 
     /**
      * 创建时间
@@ -37,7 +36,7 @@ public class UserFavoritePlotDo {
     /**
      * 均价
      */
-    private BigDecimal avgPrice;
+    private BigDecimal averagePrice;
 
     /**
      * 小区名称
@@ -47,8 +46,7 @@ public class UserFavoritePlotDo {
     /**
      * 标题图
      */
-    @ChangeName("houseTitleImg")
-    private String titleImage;
+    private String buildingImages;
 
     /**
      * 上下架(0-上架, 1-下架)

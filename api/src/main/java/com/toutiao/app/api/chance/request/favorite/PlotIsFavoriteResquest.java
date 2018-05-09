@@ -10,7 +10,7 @@ public class PlotIsFavoriteResquest {
      * 小区id
      */
     @NotNull(message = "小区id不能为空")
-    private Integer plotId;
+    private Integer buildingId;
     /**
      * 用户id
      */

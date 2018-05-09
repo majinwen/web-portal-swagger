@@ -22,7 +22,7 @@ public class PlotDetailsResponse {
     private String rc;
 
     /**
-     * 小区照片
+     * 小区照片d
      */
     @ChangeName("buildingImages")
     private List<String> photo;
