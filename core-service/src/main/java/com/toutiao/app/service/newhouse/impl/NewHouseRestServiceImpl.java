@@ -206,7 +206,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
 
-        }else if (StringTool.isEmpty(newHouseDoQuery.getEndArea()) && StringTool.isEmpty(newHouseDoQuery.getBeginArea()))
+        }else if (StringTool.isEmpty(newHouseDoQuery.getEndArea()) && StringTool.isNotEmpty(newHouseDoQuery.getBeginArea()))
         {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
         }
