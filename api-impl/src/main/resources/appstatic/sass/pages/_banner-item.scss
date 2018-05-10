@@ -1,0 +1,133 @@
+.banner-nav {
+    display: -webkit-flex;
+    display: flex;
+    margin: rem(40) rem(-15) 0;
+    justify-content: space-between;
+
+    .banner-nav-item {
+        -webkit-flex: 1;
+        flex: 1;
+        text-align: center;
+
+        a {
+            display: block;
+        }
+
+        i {
+            display: inline-block;
+            width: rem(100);
+            height: rem(100);
+            -webkit-background-size: contain;
+            background-size: contain;
+
+            &.all-buildings {
+                @include bg-image('/static/images/newindex/newindex-nav-icon-2018030501');
+            }
+            &.featured-properties {
+                @include bg-image('/static/images/newindex/newindex-nav-icon-2018030502');
+            }
+            &.houses-open {
+                @include bg-image('/static/images/newindex/newindex-nav-icon-2018030503');
+            }
+            &.index-new-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032801');
+            }
+            &.index-esf-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032803');
+            }
+            &.index-rent-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032804');
+            }
+            &.index-plot-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032802');
+            }
+            &.index-intelligent-icon {
+                @include bg-image('/static/images/index/index-nav-icon-2018032805');
+            }
+
+        }
+
+        p {
+            margin-top: rem(17);
+            @include font-dpr(26);
+            color: #444;
+            white-space: nowrap;
+        }
+
+        &.index-nav-item {
+            i {
+                width: rem(80);
+                height: rem(80);
+            }
+        }
+    }
+}
+
+.bulletin-board {
+    position: relative;
+    padding: rem(23) rem(30);
+    height: rem(34);
+    line-height: rem(34);
+
+    .img {
+        position: absolute;
+        top: 50%;
+        left: rem(30);
+        display: block;
+        height: rem(30);
+        margin-top: rem(-15);
+
+        img {
+            height: 100%;
+            vertical-align: top;
+        }
+
+        &.index-img {
+            height: rem(54);
+            margin-top: rem(-27);
+        }
+    }
+
+    .text-scroll {
+        position: relative;
+        height: rem(34);
+        margin-left: rem(150);
+        border-left: 1px solid $baseBorderColor;
+        overflow: hidden;
+
+        ul {
+            transform: translateY(0);
+
+            li {
+                margin-left: rem(20);
+                height: rem(34);
+                line-height: rem(34);
+                @include font-dpr(24);
+                @include text-ellipses;
+
+                a {
+                    color: #666;
+                }
+
+                .scroll-text-tag {
+                    padding: 0 rem(6);
+                    margin-right: rem(20);
+                    @include font-dpr(18);
+                    color: $baseRed;
+                    vertical-align: top;
+                    border: rem(1) solid $baseRed;
+                    -webkit-border-radius: rem(4);
+                            border-radius: rem(4);
+                }
+            }
+        }
+
+        .animate {
+            -webkit-transition: all .3s ease-out;
+        }
+
+        &.index-text {
+            margin-left: rem(92);
+        }
+    }
+}

@@ -2,17 +2,17 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
-    <link rel="stylesheet" href="${staticurl}/css/intelligent.css?v=${staticversion}">
+    <link rel="stylesheet" href="${appstaticurl}/css/jquery.fullPage.css?v=${staticversion}">
+    <link rel="stylesheet" href="${appstaticurl}/css/intelligent.css?v=${staticversion}">
     <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
-    <script src="${staticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
+    <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${appstaticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
+<img src="${appstaticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${appstaticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
 <div id="superContainer">
     <div class="section page1 active">
         <div class="bgbox bg1"></div>
@@ -344,9 +344,9 @@
         </div>
     </div>
 </div>
-<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/app/intelligent-choose.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/intelligent-choose.js?v=${staticversion}"></script>
 <script>
     $(function () {
         if(/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
