@@ -154,7 +154,7 @@
                     <li>
                         <span>户型</span>
                         <em><#if houseDetail.room?exists&&houseDetail.hall?exists>
-                        ${houseDetail.room}室${houseDetail.hall}厅<#if houseDetail.forwardName?exists>/${houseDetail.forwardName} </#if>
+                        ${houseDetail.room}室${houseDetail.hall}厅<#if houseDetail.toilet?exists>${houseDetail.toilet}卫</#if><#if houseDetail.forwardName?exists>/${houseDetail.forwardName} </#if>
                         <#else>
                             暂无数据
                         </#if>
