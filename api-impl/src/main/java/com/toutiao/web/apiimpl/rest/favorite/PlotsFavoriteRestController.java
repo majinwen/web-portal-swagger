@@ -60,7 +60,7 @@ public class PlotsFavoriteRestController {
      */
     @RequestMapping(value = "/addPlotsFavorite" ,method = RequestMethod.POST)
     @ResponseBody
-    public NashResult addPlotsFavorite(@Validated PlotsAddFavoriteResquest plotsAddFavoriteResquest){
+    public NashResult addPlotsFavorite(@Validated @RequestBody PlotsAddFavoriteResquest plotsAddFavoriteResquest){
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteResquest,plotsAddFavoriteDoQuery);
         return favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
