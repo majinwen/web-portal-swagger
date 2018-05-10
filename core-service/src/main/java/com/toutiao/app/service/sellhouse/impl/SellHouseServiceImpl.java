@@ -196,6 +196,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
             sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDos.add(sellHouseDo);
+
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
         sellHouseDomain.setTotal((int)hits.getTotalHits());
@@ -238,6 +239,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
             sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDos.add(sellHouseDo);
+
         }
         sellHouseDomain.setSellHouseList(sellHouseDos);
         sellHouseDomain.setTotal((int)searchResponse.getHits().getTotalHits());
@@ -355,6 +357,21 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
             sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
             sellHousesSearchDos.add(sellHousesSearchDo);
+            //增加地铁与房子之间的距离
+            String keys="";
+            if(null!=sellHouseDoQuery.getSubwayLineId())
+            {
+                keys+=sellHouseDoQuery.getSubwayLineId().toString();
+            }
+            if (null!=sellHouseDoQuery.getSubwayStationId())
+            {
+                keys+= "$"+sellHouseDoQuery.getSubwayStationId();
+            }
+            if (!"".equals(keys) && null!=sellHousesSearchDo.getSubwayDistince())
+            {
+                sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
+            }
+
         }
         sellHouseSearchDomain.setData(sellHousesSearchDos);
         sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
