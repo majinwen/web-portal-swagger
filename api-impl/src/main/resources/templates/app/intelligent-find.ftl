@@ -511,7 +511,7 @@
                         rada_animit.stop_all();
                         clearInterval(process_timer);
                         $("#button_report").click(function () {
-                            window.location.replace(router_city('/findhouse/app/showMyReport/') + rada_animit.id)
+                            window.location.replace(router_city('/findhouse/dongfangdi/showMyReport/') + rada_animit.id)
                         });
                     }
                 }

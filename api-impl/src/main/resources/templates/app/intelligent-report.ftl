@@ -755,7 +755,7 @@
                     $.ajax({
                         type: "GET",
                         async: true,
-                        url: router_city('/findhouse/app/collectMyReport') + "?reportId=" + reportId,
+                        url: router_city('/findhouse/dongfangdi/collectMyReport') + "?reportId=" + reportId,
                         data: reportId,
                         dataType: "json",
                         success: function (data) {
@@ -775,7 +775,7 @@
                 $.ajax({
                     type: "GET",
                     async: true,
-                    url: router_city('/findhouse/app/cancleMyReport/') + reportId,
+                    url: router_city('/findhouse/dongfangdi/cancleMyReport/') + reportId,
                     data: reportId,
                     dataType: "json",
                     success: function (data) {
