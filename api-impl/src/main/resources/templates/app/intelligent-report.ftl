@@ -761,7 +761,7 @@
                         success: function (data) {
                             if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "http://localhost:8080/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
+                                window.location.href = "${appdomainname}/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
                             if (data.code == "cancel") {
