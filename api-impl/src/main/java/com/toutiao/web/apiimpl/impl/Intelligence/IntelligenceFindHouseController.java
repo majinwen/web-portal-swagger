@@ -208,13 +208,20 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showUserPortrayal")
     @ResponseBody
-    public NashResult showUserPortrayal(Model model, IntelligenceQuery intelligenceQuery) {
+    public NashResult showUserPortrayal(HttpServletRequest request,Model model, IntelligenceQuery intelligenceQuery) {
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+        String userPhone = null;
+        if(null != userLoginResponse){
+            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            userPhone = userBasic.getPhone();
+        }
         //调用生成报告页展示数据接口
         //通过相关数据获取报告生成都数据 保存到相应的数据表中
 
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
         intelligenceQuery.setCreateTime(date);
-        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery, userPhone);
 
         if (StringTool.isNotBlank(intelligenceFhRes)) {
             return NashResult.build(intelligenceFhRes);

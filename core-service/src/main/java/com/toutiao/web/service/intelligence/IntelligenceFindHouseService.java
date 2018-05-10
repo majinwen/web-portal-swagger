@@ -12,7 +12,7 @@ public interface IntelligenceFindHouseService {
 
 //    IntelligenceFh queryUserCheckPrice(IntelligenceQuery intelligenceQuery);
 
-    IntelligenceFhRes intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery);
+    IntelligenceFhRes intelligenceFindHouseServiceByType(IntelligenceQuery intelligenceQuery,String userPhone);
 
     IntelligenceFh queryPlotCountByDistrict(IntelligenceQuery intelligenceQuery);
 

@@ -721,7 +721,7 @@
                         <span>分享</span>
                     </div>
                 </div>
-                <img src="/static/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在头条房产">
+                <img src="/appstatic/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在头条房产">
             </div>
         </div>
     </div>
@@ -761,7 +761,7 @@
                         success: function (data) {
                             if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "${appdomainname}/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
+                                window.location.href = "http://localhost:8080/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
                             if (data.code == "cancel") {
