@@ -1,10 +1,11 @@
 package com.toutiao.app.api.chance.request.favorite;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.toutiao.web.common.assertUtils.ChangeName;
+
 import lombok.Data;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 public class PlotsAddFavoriteResquest {
@@ -22,16 +23,16 @@ public class PlotsAddFavoriteResquest {
      * 均价
      */
     @NotNull(message = "均价不能为空")
-    private Double averagePrice;
+    private BigDecimal averagePrice;
     /**
      * 小区名称
      */
-    @NotNull(message = "小区名称不能为空")
+    @NotEmpty(message = "小区名称不能为空")
     private String buildingName;
     /**
      * 标题图
      */
-    @NotNull(message = "标题图不能为空")
+    @NotEmpty(message = "标题图不能为空")
     private String buildingImages;
     /**
      * 是否下架(0-未下架, 1-下架)

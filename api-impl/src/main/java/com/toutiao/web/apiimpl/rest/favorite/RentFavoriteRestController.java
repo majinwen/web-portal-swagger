@@ -55,7 +55,7 @@ public class RentFavoriteRestController {
     @RequestMapping(value = "/addRentFavorite" ,method = RequestMethod.POST)
     @ResponseBody
 
-    public NashResult addRentFavorite(@Validated(Second.class)   AddFavorite addFavorite)
+    public NashResult addRentFavorite(@Validated(Second.class)  @RequestBody AddFavorite addFavorite)
     {
         UserFavoriteRentDoQuery userFavoriteRent =new UserFavoriteRentDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteRent);
