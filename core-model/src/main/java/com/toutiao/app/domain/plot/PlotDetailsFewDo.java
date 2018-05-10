@@ -25,7 +25,7 @@ public class PlotDetailsFewDo {
     /**
      * 小区照片
      */
-    @ChangeName("buildingPhoto")
+    @ChangeName("buildingImages")
     private String[] photo;
     /**
      * 区域编号
