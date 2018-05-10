@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 public class CancelFavoriteRequest {
 
     @NotNull(groups = {First.class},message = "缺少新房id")
-    private Integer newHouseId;
+    private Integer buildingId;
 
     @NotNull(groups = {First.class,Second.class},message = "缺少用户id")
     private  Integer userId;
