@@ -303,8 +303,26 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         //标签(满二，满三，满五)
         if (StringTool.isNotEmpty(sellHouseDoQuery.getLabelId())) {
-            Integer[] labelId = sellHouseDoQuery.getLabelId();
-            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("tags",labelId)));
+            Integer[] longs = sellHouseDoQuery.getLabelId();
+            BoolQueryBuilder bool= QueryBuilders.boolQuery();
+            boolean has_subway = Arrays.asList(longs).contains(1);
+            if(has_subway){
+                Integer[] tagOther = new Integer[longs.length-1];
+                int idx = 0;
+                for(int i=0;i<longs.length;i++){
+                    if(longs[i].equals(1)){
+                        bool.should(QueryBuilders.termQuery("has_subway", longs[i]));
+                    } else {
+                        tagOther[idx++] = longs[i];
+                    }
+                }
+                if(tagOther.length!=0){
+                    bool.should(QueryBuilders.termsQuery("tags", tagOther));
+                }
+                booleanQueryBuilder.must(bool);
+            }else{
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", longs));
+            }
         }
 
         return booleanQueryBuilder;
