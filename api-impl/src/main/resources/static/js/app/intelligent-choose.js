@@ -25,7 +25,7 @@ $(function () {
             $.ajax({
                 type: "GET",
                 async: true,
-                url: router_city('/findhouse/app/showUserPortrayal'),
+                url: router_city('/findhouse/dongfangdi/showUserPortrayal'),
                 data: options,
                 success: function (dataInfo) {
                     // console.log(dataInfo.data);
@@ -74,7 +74,7 @@ function chooseUserType() {
 
             $.ajax({
                 type: "GET",
-                url: router_city('/findhouse/app/xuanzeleixing'),
+                url: router_city('/findhouse/dongfangdi/xuanzeleixing'),
                 data: options,
                 success: function (data) {
                     // console.log(data);
@@ -108,7 +108,7 @@ function chooseUserFinds() {
             }
             this.isLoading=$.ajax({
                 type: 'GET',
-                url: router_city('/findhouse/app/queryUserChoice'),
+                url: router_city('/findhouse/dongfangdi/queryUserChoice'),
                 data: params,
                 success:function(data){
                     that.isLoading=null

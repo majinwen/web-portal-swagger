@@ -29,7 +29,7 @@
                             </div>
                             <ul class="more-menu">
                                 <li class="examine-report">
-                                    <a href="${router_city('/findhouse/app/showMyReport/'+myReport.id)}">
+                                    <a href="${router_city('/findhouse/dongfangdi/showMyReport/'+myReport.id)}">
                                         <span>查看报告</span>
                                         <i></i>
                                     </a>
@@ -129,7 +129,7 @@
         $.ajax({
             type: "GET",
             async: true,
-            url: router_city('/findhouse/app/cancleMyReport/')+id,
+            url: router_city('/findhouse/dongfangdi/cancleMyReport/')+id,
             dataType: "json",
             success: function (data) {
                 if (data.code == "success") {
