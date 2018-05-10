@@ -39,7 +39,7 @@ public class UserFavoriteEsHouse {
 
     private  String buildingName;
 
-    private  Double totalPrices;
+    private  Double houseTotalPrices;
 
     private  String  housePhotoTitle;
 

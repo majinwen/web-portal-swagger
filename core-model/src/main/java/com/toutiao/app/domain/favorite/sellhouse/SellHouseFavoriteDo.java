@@ -42,7 +42,7 @@ public class SellHouseFavoriteDo {
 
     private  String buildingName;
 
-    private  Double totalPrice;
+    private  Double houseTotalPrice;
 
     private  String  housePhotoTitle;
 

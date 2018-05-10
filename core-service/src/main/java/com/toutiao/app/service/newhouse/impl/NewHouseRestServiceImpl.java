@@ -241,7 +241,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
-//                newHouseListDoList.add(newHouseListDos);
+                newHouseListDoList.add(newHouseListDos);
             }
             newHouseListVo.setData(newHouseListDoList);
             newHouseListVo.setTotalCount(hits.getTotalHits());
