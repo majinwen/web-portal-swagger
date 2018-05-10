@@ -200,7 +200,7 @@ public class NewHouseDetailResponse {
     /**
      *新房标题图
      */
-    @ChangeName("houseTitleImg")
+//    @ChangeName("houseTitleImg")
     private  String buildingTitleImg;
     /**
      * 总价
