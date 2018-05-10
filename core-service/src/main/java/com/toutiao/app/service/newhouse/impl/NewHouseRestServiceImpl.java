@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -184,6 +185,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(null!=newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length!=0){
 
             Integer[] longs = newHouseDoQuery.getLabelId();
+            Arrays.asList(longs).contains(1);
+
             booleanQueryBuilder.must(termsQuery("building_tags_id",longs));
 
         }
