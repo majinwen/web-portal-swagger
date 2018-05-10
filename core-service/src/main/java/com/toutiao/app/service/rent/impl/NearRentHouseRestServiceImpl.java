@@ -115,6 +115,20 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                //增加地铁与房子之间的距离
+                String keys="";
+                if(null!=nearHouseListDoQuery.getSubwayLineId())
+                {
+                    keys+=nearHouseListDoQuery.getSubwayLineId().toString();
+                }
+                if (null!=nearHouseListDoQuery.getSubwayStationId())
+                {
+                    keys+= "$"+nearHouseListDoQuery.getSubwayStationId();
+                }
+                if (!"".equals(keys) && null!=rentDetailsFewDo.getNearbySubway())
+                {
+                    rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
+                }
                 rentDetailsFewDos.add(rentDetailsFewDo);
             }
         }

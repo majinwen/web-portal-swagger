@@ -143,4 +143,10 @@ public class SellHousesSearchDo {
     private String priceIncreaseDeclineAmount;
 
     private Integer userId;
+
+
+    /**
+     * 地铁与房子之间的距离
+     */
+    private  String  subwayDistanceInfo;
 }
