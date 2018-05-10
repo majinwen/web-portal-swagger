@@ -23,7 +23,7 @@
                 <p>将您的检索条件和305586位购房用户<br>的数据样本比较<br>生成您所处族群的用户画像 </p>
             </div>
             <div class="user-header-box">
-                <img src="/static/images/intelligent/user-header.png" alt="用户头像">
+                <img src="/appstatic/images/intelligent/user-header.png" alt="用户头像">
             </div>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 1>
             <div class="word-cont" data-user-type="1">

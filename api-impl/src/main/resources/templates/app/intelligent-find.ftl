@@ -260,7 +260,7 @@
             </div>
             <div class="start-btn none">
                 <div class="start-triangle"></div>
-                <p><img src="/static/images/intelligent/znzf_icon_zw.png" alt="开启">开启</p>
+                <p><img src="/appstatic/images/intelligent/znzf_icon_zw.png" alt="开启">开启</p>
             </div>
         </div>
     </div>
