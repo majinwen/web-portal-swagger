@@ -462,7 +462,21 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
                     agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
                 }
-
+                //增加房子与地铁的距离
+                String keys="";
+                if(null!=rentHouseDoQuery.getSubwayLineId())
+                {
+                    keys+=rentHouseDoQuery.getSubwayLineId().toString();
+                }
+                if (null!=rentHouseDoQuery.getSubwayStationId())
+                {
+                    keys+= "$"+rentHouseDoQuery.getSubwayStationId();
+                }
+                if (!"".equals(keys) && null!=rentDetailsFewDo.getNearbySubway())
+                {
+                    rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
+                }
+                rentDetailsFewDos.add(rentDetailsFewDo);
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
             }

@@ -4,6 +4,8 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class RentDetailsFewDo {
     /**
@@ -98,5 +100,17 @@ public class RentDetailsFewDo {
      * 出租类型
      */
     private  Integer rentType;
+
+    /**
+     * 地铁信息
+     */
+    @ChangeName("nearbyStationsDistance")
+     private Map<String,String> nearbySubway;
+
+
+    /**
+     * 地铁到房子间的距离
+     */
+    private  String subwayDistanceInfo;
 
 }

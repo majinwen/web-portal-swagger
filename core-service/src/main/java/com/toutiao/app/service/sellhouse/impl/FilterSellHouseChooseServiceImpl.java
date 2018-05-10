@@ -74,6 +74,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
 
         //地铁线id
+
         if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getSubwayLineId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", nearBySellHouseQueryDo.getSubwayLineId()));
 
