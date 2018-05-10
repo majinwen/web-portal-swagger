@@ -377,8 +377,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
-                plotDetailsFewDo.setKey(key);
-
+                if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
+                    plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
+                }
+                plotDetailsFewDo.setMetroWithPlotsDistance(null);
                 //二手房总数
                 try {
                     PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());

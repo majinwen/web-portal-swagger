@@ -59,6 +59,7 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
     @Autowired
     private RentRestService rentRestService;
 
+    String key = "";
     /**
      * 根据用户坐标获取用户附近小区列表
      * @param nearbyPlotsDoQuery
@@ -96,6 +97,10 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
         for(SearchHit hit : searchHits){
             String sourceAsString = hit.getSourceAsString();
             PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
+            if (""!=key&&null!=plotDetailsFewDo.getMetroWithPlotsDistance()){
+                plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
+            }
+            plotDetailsFewDo.setMetroWithPlotsDistance(null);
             //二手房总数
             try {
                 PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
@@ -169,10 +174,12 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
         //地铁线id
         if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getSubwayLineId())){
             boolQueryBuilder.must(termQuery("subwayLineId",nearbyPlotsDoQuery.getSubwayLineId()));
+            key = String.valueOf(nearbyPlotsDoQuery.getSubwayLineId());
         }
         //地铁站id
         if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getSubwayStationId())){
             boolQueryBuilder.must(termQuery("metroStationId",nearbyPlotsDoQuery.getSubwayStationId()));
+            key = key+"$"+ nearbyPlotsDoQuery.getSubwayStationId();
         }
         //均价
         if (nearbyPlotsDoQuery.getBeginPrice()!=0&&nearbyPlotsDoQuery.getEndPrice()!=0){

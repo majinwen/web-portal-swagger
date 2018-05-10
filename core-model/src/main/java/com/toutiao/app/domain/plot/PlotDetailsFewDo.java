@@ -124,11 +124,6 @@ public class PlotDetailsFewDo {
      */
     private Integer totalNum;
     /**
-     * 获取地铁站与小区的距离
-     */
-    @ChangeName("distanceKey")
-    private String key;
-    /**
      * 小区下二手房总数
      */
     private Integer sellHouseTotalNum;
@@ -146,4 +141,8 @@ public class PlotDetailsFewDo {
      */
     @ChangeName("propertyType")
     private String propertyTypeName;
+    /**
+     * 房源与地铁站的距离
+     */
+    private String subwayDistanceInfo;
 }

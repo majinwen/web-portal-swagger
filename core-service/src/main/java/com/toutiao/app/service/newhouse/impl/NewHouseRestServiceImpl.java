@@ -155,9 +155,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(termQuery("district_id",newHouseDoQuery.getDistrictId()));
         }
         //商圈
-        if(newHouseDoQuery.getAreaId()!=null && newHouseDoQuery.getAreaId()!=0){
-            booleanQueryBuilder.must(termQuery("area_id", newHouseDoQuery.getAreaId()));
-        }
+//        if(newHouseDoQuery.getAreaId()!=null && newHouseDoQuery.getAreaId()!=0){
+//            booleanQueryBuilder.must(termQuery("area_id", newHouseDoQuery.getAreaId()));
+//        }
         //地铁线id
         String keys = "";
         if(newHouseDoQuery.getSubwayLineId() !=null && newHouseDoQuery.getSubwayLineId()!=0){
@@ -228,6 +228,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details=searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
+                if (""!=keys&&null!=newHouseListDos.getNearbysubway()){
+                    newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
+                }
+                newHouseListDos.setNearbysubway(null);
                 //获取新房下户型的数量
                 NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
                 if (null!=newHouseLayoutCountDomain.getTotalCount())

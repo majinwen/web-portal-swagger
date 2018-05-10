@@ -3,6 +3,8 @@ package com.toutiao.app.domain.newhouse;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class NewHouseListDo  {
 
@@ -100,6 +102,13 @@ public class NewHouseListDo  {
      */
     private  String  ringRoadName;
 
-
+    /**
+     * 附近地铁信息
+     */
+    private Map nearbysubway;
+    /**
+     * 房源与地铁站的距离
+     */
+    private String subwayDistanceInfo;
 
 }
