@@ -257,7 +257,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
             boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", labelId));
             for (Integer i:labelId){
                 if (i==1){
-                    boolQueryBuilder.must(QueryBuilders.termsQuery("has_subway", 1));
+                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", 1));
                 }
             }
         }
