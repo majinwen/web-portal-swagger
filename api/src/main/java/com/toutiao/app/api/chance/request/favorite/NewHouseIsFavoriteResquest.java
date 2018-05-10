@@ -10,7 +10,7 @@ public class NewHouseIsFavoriteResquest {
      * 新房id
      */
     @NotNull(message = "新房id不能为空")
-    private Integer newHouseId;
+    private Integer buildingId;
     /**
      * 用户id
      */

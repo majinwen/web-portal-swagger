@@ -122,6 +122,20 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 nearBySellHousesDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
             }
             nearBySellHouses.add(nearBySellHousesDo);
+            //增加地铁站与房源的距离
+            String keys="";
+            if(null!=nearBySellHouseQueryDo.getSubwayLineId())
+            {
+                 keys+=nearBySellHouseQueryDo.getSubwayLineId().toString();
+            }
+            if (null!=nearBySellHouseQueryDo.getSubwayStationId())
+            {
+                keys+= "$"+nearBySellHouseQueryDo.getSubwayStationId();
+            }
+           if (!"".equals(keys) && null!=nearBySellHousesDo.getSubwayDistince())
+           {
+               nearBySellHousesDo.setSubwayDistanceInfo(nearBySellHousesDo.getSubwayDistince().get(keys).toString());
+           }
         }
         nearBySellHouseDomain.setNearBySellHousesDos(nearBySellHouses);
         nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getTotalHits());

@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -95,7 +96,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             if(StringTool.isNotEmpty(userBasic)){
                 NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
                 newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
-                newHouseIsFavoriteDoQuery.setNewHouseId(newHouseDetailDo.getBuildingNameId());
+                newHouseIsFavoriteDoQuery.setBuildingId(newHouseDetailDo.getBuildingNameId());
                 Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
                 newHouseDetailDo.setIsFavorite(isFavorite);
             }
@@ -183,8 +184,28 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //标签
         if(null!=newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length!=0){
 
+
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             Integer[] longs = newHouseDoQuery.getLabelId();
-            booleanQueryBuilder.must(termsQuery("building_tags_id",longs));
+            boolean has_subway = Arrays.asList(longs).contains(1);
+
+            if(has_subway){
+                Integer[] tagOther = new Integer[longs.length-1];
+                int idx = 0;
+                for(int i=0;i<longs.length;i++){
+                    if(longs[i].equals(1)){
+                        boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", longs[i]));
+                    } else {
+                        tagOther[idx++] = longs[i];
+                    }
+                }
+                if(tagOther.length!=0){
+                    boolQueryBuilder.should(QueryBuilders.termsQuery("building_tags_id", tagOther));
+                }
+                booleanQueryBuilder.must(boolQueryBuilder);
+            }else{
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("building_tags_id", longs));
+            }
 
         }
 

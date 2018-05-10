@@ -7,7 +7,7 @@ public class NewHouseIsFavoriteDoQuery {
     /**
      * 新房id
      */
-    private Integer newHouseId;
+    private Integer buildingId;
     /**
      * 用户id
      */

@@ -80,7 +80,7 @@ public class NewHouseFavoriteRestController {
      */
     @RequestMapping(value = "/cancelFavoriteByNewHouse",method = RequestMethod.POST)
     @ResponseBody
-    public NashResult cancelFavoriteNewHouse(@Validated(First.class) CancelFavoriteRequest cancelFavoriteRequest)
+    public NashResult cancelFavoriteNewHouse(@Validated(First.class) @RequestBody CancelFavoriteRequest cancelFavoriteRequest)
     {
         UserFavoriteNewHouse userFavoriteNewHouse=new UserFavoriteNewHouse();
         BeanUtils.copyProperties(cancelFavoriteRequest,userFavoriteNewHouse);

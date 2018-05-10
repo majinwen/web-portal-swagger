@@ -1,0 +1,73 @@
+@import "../libs/photoswipe-main";
+@import "../libs/default-skin/default-skin";
+
+.carousel-swiper {
+    position: relative;
+    height: rem(400);
+    
+    .banner-title {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: rem(50);
+        padding: 0 rem(30);
+        z-index: 99;
+        @include box-sizing;
+        color: $baseWhite;
+        
+        div {
+            display: inline-block;
+            height: rem(33);
+            line-height: rem(33);
+            @include font-dpr(20);
+            padding: 0 rem(16);
+            background-color: rgba(95,103,137,0.8);
+            
+            &.banner-house-number {
+                -webkit-border-radius: rem(6);
+                -moz-border-radius: rem(6);
+                border-radius: rem(6);
+            }
+
+            &.pictrue-index {
+                position: relative;
+                bottom: 0;
+                width: auto;
+                float: right;
+                -webkit-border-radius: rem(16);
+                -moz-border-radius: rem(16);
+                border-radius: rem(16);
+            }
+        }
+
+        &.rent {
+            height: rem(44);
+            bottom: rem(20);
+
+            div {
+                height: rem(44);
+                line-height: rem(44);
+
+                &.banner-house-number {
+                    padding: 0 rem(22);
+                    color: #333;
+                    background-color: rgba(255, 255, 255, 0.7);
+                    -webkit-border-radius: rem(5);
+                    border-radius: rem(5);
+                    @include font-dpr(22);
+                }
+
+                &.pictrue-index {
+                    background-color: rgba(0, 0, 0, 0.7);
+                    -webkit-border-radius: rem(5);
+                    border-radius: rem(5);
+                }
+            }
+        }
+        
+    }
+    
+    img {
+        width: 100%;
+    }
+}

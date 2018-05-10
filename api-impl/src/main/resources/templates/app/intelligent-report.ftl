@@ -2,19 +2,19 @@
 <html class="no-js">
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
-    <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css?v=${staticversion}">
+    <link rel="stylesheet" href="${appstaticurl}/css/jquery.fullPage.css?v=${staticversion}">
+    <link rel="stylesheet" href="${appstaticurl}/css/intelligent-report.css?v=${staticversion}">
     <title>懂房帝</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
-    <script src="${staticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
-    <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
+    <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${appstaticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
+    <script src="${appstaticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${staticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
+<img src="${appstaticurl}/images/intelligent/adm_323031383036343130343932.png" class="shareTopImg" height="0" width="0" data-src="${appstaticurl}/images/intelligent/adm_323031383036343130343932.png" alt="">
 <div id="superContainer">
     <div class="section page1 active none">
         <div class="bgbox bg1">
@@ -23,7 +23,7 @@
                 <p>将您的检索条件和305586位购房用户<br>的数据样本比较<br>生成您所处族群的用户画像 </p>
             </div>
             <div class="user-header-box">
-                <img src="/static/images/intelligent/user-header.png" alt="用户头像">
+                <img src="/appstatic/images/intelligent/user-header.png" alt="用户头像">
             </div>
         <#if intelligenceFhRes['userPortrait']?exists&&intelligenceFhRes['userPortrait']?number == 1>
             <div class="word-cont" data-user-type="1">
@@ -222,7 +222,7 @@
                             <#if intelligenceFhRes?exists>
                                 <#assign fhResults =intelligenceFhRes['fhResult']>
                                 <#list fhResults?eval as fhResult>
-                                    <li class="bgtype-${fhResult_index+1}" data-href='${appstaticurl}/#/shake/community/details?plotId=${fhResult['newcode']}'>
+                                    <li class="bgtype-${fhResult_index+1}" data-href='${appdomainname}/#/shake/community/details?plotId=${fhResult['newcode']}'>
                                         <div>
                                             <h4>${fhResult['projname']}</h4>
                                             <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
@@ -242,7 +242,7 @@
                                         <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
                                             <img src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${(.now?string("yyyy年MM月dd日")?substring(0,4))}纯新盘">
                                         <#else >
-                                            <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                            <img src="${appstaticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                         </#if>
                                     </li>
                                 </#list>
@@ -694,12 +694,12 @@
                         <#list fhResults?eval as fhResult>
                             <li>
                                 <#--<a>-->
-                                <a href='${appstaticurl}/#/shake/community/details?plotId=${fhResult['newcode']}'>
+                                <a href='${appdomainname}/#/shake/community/details?plotId=${fhResult['newcode']}'>
                                 <div class="review-img-box">
                                     <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
                                         <img width="100%" src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${fhResult['projname']}">
                                     <#else >
-                                        <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
+                                        <img src="${appstaticurl}/images/global/tpzw_image.png" alt="拍摄中">
                                     </#if>
                                 </div>
                                 <p>${fhResult['projname']}</p>
@@ -721,7 +721,7 @@
                         <span>分享</span>
                     </div>
                 </div>
-                <img src="/static/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在头条房产">
+                <img src="/appstatic/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在头条房产">
             </div>
         </div>
     </div>
@@ -730,12 +730,12 @@
     <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
     <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
-<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/draggabilly.pkgd.min.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/elastiStack.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/app/intelligent-report.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/default-touch.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/draggabilly.pkgd.min.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/elastiStack.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/intelligent-report.js?v=${staticversion}"></script>
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));
     $(function () {
@@ -755,13 +755,13 @@
                     $.ajax({
                         type: "GET",
                         async: true,
-                        url: router_city('/findhouse/app/collectMyReport') + "?reportId=" + reportId,
+                        url: router_city('/findhouse/dongfangdi/collectMyReport') + "?reportId=" + reportId,
                         data: reportId,
                         dataType: "json",
                         success: function (data) {
                             if (data.code == "no-login") {
                                 //重定向到登陆页面
-                                window.location.href = "${appstaticurl}/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
+                                window.location.href = "${appdomainname}/#/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
                             if (data.code == "cancel") {
@@ -775,7 +775,7 @@
                 $.ajax({
                     type: "GET",
                     async: true,
-                    url: router_city('/findhouse/app/cancleMyReport/') + reportId,
+                    url: router_city('/findhouse/dongfangdi/cancleMyReport/') + reportId,
                     data: reportId,
                     dataType: "json",
                     success: function (data) {
@@ -803,7 +803,7 @@
         return city + urlparam
     }
 </script>
-<script src="${staticurl}/js/raphael.min.js"></script>
+<script src="${appstaticurl}/js/raphael.min.js"></script>
 <script type="text/javascript">
     //水滴的效果
     function waterSharp(pool, laywidth, i) {

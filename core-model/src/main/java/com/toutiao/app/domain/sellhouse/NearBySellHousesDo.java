@@ -130,4 +130,9 @@ public class NearBySellHousesDo {
     private Integer newcode;
 
     private  String housePhotoTitle;
+
+    /**
+     * 地铁与房子的距离
+     */
+    private String subwayDistanceInfo;
 }

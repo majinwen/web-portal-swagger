@@ -2,11 +2,11 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <link rel="stylesheet" href="${staticurl}/css/my-report.css?v=${staticversion}">
+    <link rel="stylesheet" href="${appstaticurl}/css/my-report.css?v=${staticversion}">
     <title>我的报告页</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
-    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -29,7 +29,7 @@
                             </div>
                             <ul class="more-menu">
                                 <li class="examine-report">
-                                    <a href="${router_city('/findhouse/app/showMyReport/'+myReport.id)}">
+                                    <a href="${router_city('/findhouse/dongfangdi/showMyReport/'+myReport.id)}">
                                         <span>查看报告</span>
                                         <i></i>
                                     </a>
@@ -50,12 +50,12 @@
                             <#assign json="${myReport.fhResult}"?eval />
                             <#list json as item>
                                 <ul>
-                                    <li><a class="list-item" href='${appstaticurl}/#/shake/community/details?plotId=${item.newcode}'>
+                                    <li><a class="list-item" href='${appdomainname}/#/shake/community/details?plotId=${item.newcode}'>
                                         <div class="clear">
                                             <div class="list-item-img-box">
                                                 <#if item.plotImage?exists>
                                                     <img src="${qiniuimage}/${item.plotImage?split(',')[0]}-tt400x300" alt="<#if item.projname?exists>${item.projname}</#if>">
-                                                    <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">
+                                                    <#else><img src="${appstaticurl}/images/global/tpzw_image.png" alt="暂无数据">
                                                 </#if>
                                             </div>
                                             <div class="list-item-cont">
@@ -111,9 +111,9 @@
         </#if>
     <#if message?exists> <p style="color: red">${message}</p></#if>
 </div>
-<script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/fastclick.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/default-touch.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script>
     $('.slide-icon-button').on('click', function () {
         $(this).parents('.report-item-content').toggleClass('animate-left');
@@ -129,7 +129,7 @@
         $.ajax({
             type: "GET",
             async: true,
-            url: router_city('/findhouse/app/cancleMyReport/')+id,
+            url: router_city('/findhouse/dongfangdi/cancleMyReport/')+id,
             dataType: "json",
             success: function (data) {
                 if (data.code == "success") {

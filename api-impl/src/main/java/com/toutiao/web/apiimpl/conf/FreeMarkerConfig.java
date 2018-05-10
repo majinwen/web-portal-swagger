@@ -37,6 +37,8 @@ public class FreeMarkerConfig  {
     private String trackingProject;
     @Value("${tt.log.tracking.logstore}")
     private String trackingLogstore;
+    @Value("${app.domain.name}")
+    private String appDomainName;
     @Value("${app.static.url}")
     private String appStaticUrl;
 //    @Value("${qiniu.img_zufang_domain}")
@@ -55,6 +57,7 @@ public class FreeMarkerConfig  {
         try {
             configuration.setSharedVariable("staticurl", staticUrl);
             configuration.setSharedVariable("appstaticurl", appStaticUrl);
+            configuration.setSharedVariable("appdomainname", appDomainName);
             configuration.setSharedVariable("qiniuimage",qiniuImage);
             configuration.setSharedVariable("qiniuzufangimage",qiniuImage);
             configuration.setSharedVariable("staticversion", staticVersion);
