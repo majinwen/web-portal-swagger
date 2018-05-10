@@ -702,6 +702,11 @@ public class RentRestRestServiceImpl implements RentRestService {
         if (StringTool.isNotEmpty(rentHouseDoQuery.getLabelId())){
             Integer[] split = rentHouseDoQuery.getLabelId();
             boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", split));
+            for (Integer i:split){
+                if (i==0){
+                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", 1));
+                }
+            }
         }
 
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
