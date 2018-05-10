@@ -1,0 +1,129 @@
+.elastics-stack-box {
+    padding-left: rem(11);
+    padding-right: rem(11);
+
+    .elastics-stack-content {
+        padding-top: rem(36);
+        padding-bottom: rem(40);
+
+        $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
+        .elastics-stack {
+            position: relative;
+            width: rem(690);
+            height: rem(385);
+            margin: 0 auto;
+            -webkit-perspective: rem(690);
+            perspective: rem(690);
+            @include box-sizing;
+
+            li {
+                position: absolute;
+                z-index: 1;
+                width: rem(500);
+                height: rem(190);
+                cursor: pointer;
+                opacity: 0;
+                overflow: hidden;
+                -webkit-border-radius: rem(16);
+                border-radius: rem(16);
+                background-color: $baseWhite;
+                border: rem(6) solid $baseWhite;
+                -webkit-box-shadow: 0 rem(10) rem(30) 0 rgba(157, 173, 203, 0.17);
+                        box-shadow: 0 rem(10) rem(30) 0 rgba(157, 173, 203, 0.17);
+                -webkit-transform: translate3d(0, 0, rem(-180));
+                        transform: translate3d(0, 0, rem(-180));
+                -webkit-transform-style: preserve-3d;
+                        transform-style: preserve-3d;
+
+                &.animate {
+                    -webkit-transition: all 0.3s ease-out;
+                            transition: all 0.3s ease-out;
+                }
+
+                &.move-back {
+                    -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.470, 1);
+                    -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.470, 1.515);
+                    transition-timing-function: cubic-bezier(0.175, 0.885, 0.470, 1.515);
+                }
+
+                div {
+                    float: left;
+                    width: rem(263);
+                    height: rem(190);
+                    padding-left: rem(20);
+                    padding-top: rem(18);
+                    @include box-sizing;
+
+                    h4 {
+                        line-height: rem(42);
+                        margin-bottom: rem(29);
+                        @include text-ellipses;
+                        @include font-dpr(26);
+                    }
+
+                    p {
+                        margin-bottom: rem(28);
+                        line-height: 1;
+                        @include font-dpr(24);
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+
+                img {
+                    float: right;
+                    width: rem(231);
+                    height: rem(190);
+                }
+            }
+
+            &.report {
+                $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
+                li {
+                    color: $baseWhite;
+
+                    @for $i from 1 to 6 {
+                        &:nth-child(#{$i}) {
+                            div {
+                                background-color: nth($itemListColor, $i);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+.no-js {
+    .elastics-stack{
+        li {
+            position: relative;
+            display: inline-block;
+            opacity: 1!important;
+            margin: 10px;
+            cursor: default;
+            -webkit-transform: translate3d(0,0,0) !important;
+            transform: translate3d(0,0,0) !important;
+        }
+    }
+}
+
+[data-drp='3'].elastics-stack {
+    -webkit-perspective-origin: 180% 50%;
+    perspective-origin: 180% 50%;
+}
+
+@media screen and ( -webkit-min-device-pixel-ratio : 3 ) {
+    .elastics-stack-box {
+        .elastics-stack-content {
+            .elastics-stack {
+                -webkit-perspective-origin: 180% 50%;
+                perspective-origin: 180% 50%;
+            }
+        }
+    }
+}

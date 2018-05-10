@@ -1,0 +1,86 @@
+@import "../base/normalize";
+@import "../base/mixin";
+@import "../pages/search";
+@import "../base/categorys";
+@import "../pages/office-list";
+
+.tip-box {
+    text-align: center;
+    color: #999;
+    height: rem(78);
+    line-height: rem(78);
+    @include font-dpr(24);
+    background-color: #f2f2f2;
+}
+
+.dropload-down {
+    text-align: center;
+    color: #999;
+    height: rem(78);
+    line-height: rem(78);
+    @include font-dpr(24);
+    background-color: #f2f2f2;
+
+    .dropload-refresh {
+        height: rem(78);
+        line-height: rem(78);
+    }
+}
+
+.dropload-up {
+    text-align: center;
+    color: #999;
+    height: rem(78);
+    line-height: rem(78);
+    @include font-dpr(24);
+    background-color: #f2f2f2;
+}
+
+#valueList {
+    li {
+        line-height: 0;
+    }
+}
+
+/*.list-item {
+    .list-item-cont {
+        .cont-block-top {
+            height: auto;
+            line-height: inherit;
+            @include font-dpr(38);
+        }
+        .address {
+            margin-top: rem(22);
+            line-height: inherit;
+            @include font-dpr(36);
+
+            .icon {
+                top: rem(4);
+                width: rem(34);
+                height: rem(34);
+                -webkit-background-size: contain;
+                background-size: contain;
+            }
+
+            &.distance {
+                padding-left: rem(40);
+            }
+        }
+        .cont-block-bottom {
+            line-height: inherit;
+            @include font-dpr(38);
+
+            em {
+                @include font-dpr(30);
+            }
+        }
+    }
+}
+
+.category-box {
+    > ul {
+        li {
+            @include font-dpr(38);
+        }
+    }
+} */

@@ -1,0 +1,258 @@
+.tilelist {
+    width: 100%;
+    padding: rem(40) rem(30);
+    zoom: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    @include box-sizing;
+    -webkit-overflow-scrolling:touch;
+    
+    li {
+        display: inline-block;
+        width: rem(221);
+        margin-right: rem(25);
+        
+        .picture-box {
+            position: relative;
+            width: rem(220);
+            height: rem(165);
+            overflow: hidden;
+            text-align: center;
+            
+            img {
+                min-width: 100%;
+                height: 100%;
+            }
+
+            .sale-state {
+                display: inline-block;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: rem(32);
+                line-height: rem(32);
+                padding-left: rem(20);
+                padding-right: rem(17);
+                color: $baseWhite;
+                @include font-dpr(20);
+                background-color: $baseRed;
+                -webkit-border-radius: 0 rem(17) rem(17) 0;
+                border-radius: 0 rem(17) rem(17) 0;
+            }
+
+            .bottom-text {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: rem(34);
+                line-height: rem(34);
+                text-align: center;
+                color: $baseWhite;
+                @include font-dpr(24);
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+        }
+        .tilelist-content {
+            width: rem(220);
+            @include font-dpr(24);
+            color: $baseBlack;
+            
+            h4,p {
+                @include text-ellipses;
+            }
+            
+            .cont-first {
+                margin-top: rem(25);
+
+                span {
+
+                    &:nth-child(2) {
+                        float: right;
+                    }
+                }
+            }
+
+            .cont-center {
+                margin: rem(15) 0 rem(-5);
+                @include font-dpr(20);
+                color: #999;
+
+                span {
+                    margin-left: rem(10);
+
+                    &:first-child {
+                        margin-left: 0;
+                    }
+                }
+            }
+            
+            .cont-last {
+                margin-top: rem(20);
+            }
+            
+            em {
+                color: $baseRed;
+            }
+
+            .tilelist-tag {
+                margin-top: rem(20);
+                @include text-ellipses;
+            }
+        }
+    }
+    
+    &.row {
+        padding-top: rem(30);
+        
+        li {
+            width: 100%;
+            @include font-dpr(26);
+            zoom: 1;
+            
+            .picture-box {
+                float: left;
+            }
+            
+            .tilelist-content {
+                position: relative;
+                float: left;
+                width: rem(444);
+                height: rem(166);
+                margin-left: rem(25);
+                
+                
+                h4 {
+                    @include font-dpr(28);
+                }
+                
+                p {
+                    position: absolute;
+                    width: 100%;
+                    color: #666;
+                    @include text-ellipses;
+                    
+                    em {
+                        color: $baseRed;
+                    }
+                    
+                    &:nth-of-type(1) {
+                        top: 50%;
+                        margin-top: rem(-14);
+                    }
+                    
+                    &:last-child {
+                        bottom: 0;
+                    }
+                }
+            }
+            
+            &:after {
+                visibility: hidden;
+                display: block;
+                clear: both;
+                content: '';
+                height: 0;
+                font-size: 0;
+            }
+        }
+    }
+    
+    &:after {
+        visibility: hidden;
+        display: block;
+        clear: both;
+        content: '';
+        height: 0;
+        font-size: 0;
+    }
+}
+
+.tilelist-type {
+    width: 100%;
+    padding: rem(40) rem(30);
+    @include box-sizing;
+
+    li {
+        width: 100%;
+        margin-bottom: rem(30);
+        @include font-dpr(26);
+        zoom: 1;
+
+        .picture-box {
+            float: left;
+            position: relative;
+            width: rem(210);
+            height: rem(158);
+            overflow: hidden;
+            text-align: center;
+
+            img {
+                min-width: 100%;
+                height: 100%;
+            }
+
+            .bottom-text {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: rem(34);
+                line-height: rem(34);
+                text-align: left;
+                padding-left: rem(10);
+                color: $baseWhite;
+                @include font-dpr(24);
+                background-color: rgba(0, 0, 0, 0.5);
+                @include box-sizing;
+            }
+        }
+
+        .tilelist-content {
+            position: relative;
+            float: left;
+            width: rem(439);
+            height: rem(158);
+            margin-left: rem(30);
+
+
+            h4 {
+                margin-top: rem(8);
+                margin-bottom: rem(20);
+                color: $baseBlack;
+                @include font-dpr(28);
+                @include text-ellipses;
+            }
+
+            p {
+                position: absolute;
+                top: 40%;
+                width: 100%;
+                color: #666;
+                margin-bottom: rem(30);
+                @include text-ellipses;
+
+                em {
+                    color: $baseRed;
+                }
+            }
+            .house-labelling {
+                position: absolute;
+                bottom: 0;
+            }
+        }
+
+        &:after {
+            visibility: hidden;
+            display: block;
+            clear: both;
+            content: '';
+            height: 0;
+            font-size: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
