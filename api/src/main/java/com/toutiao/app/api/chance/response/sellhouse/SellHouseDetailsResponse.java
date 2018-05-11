@@ -293,5 +293,13 @@ public class SellHouseDetailsResponse {
      * 是否收藏
      */
     private Boolean isFavorite;
+    /**
+     * 价格涨降标志
+     */
+    private String priceIncreaseDecline;
+    /**
+     * 价格涨降金额
+     */
+    private Double priceIncreaseDeclineAmount;
 
 }

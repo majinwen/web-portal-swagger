@@ -32,7 +32,7 @@ public class SellHouseDo {
     private String claimHousePhotoTitle;
 
     /**
-     * 加个涨降标志
+     * 价格涨降标志
      */
     private String priceIncreaseDecline;
 

@@ -76,4 +76,9 @@ public class AddFavorite {
 
     @NotNull(groups = {First.class,Second.class},message = "缺少朝向")
     private String forward;
+
+    /**
+     * 二手房价格涨降标志
+     */
+    private String priceIncreaseDecline;
 }

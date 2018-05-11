@@ -48,4 +48,9 @@ public class UserFavoriteEsHouse {
     private  Double  buildArea;
 
     private  String forward;
+
+    /**
+     * 价格涨降标志
+     */
+    private Integer priceIncreaseDecline;
 }

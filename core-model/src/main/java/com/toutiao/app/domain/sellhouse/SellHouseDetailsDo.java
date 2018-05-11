@@ -296,6 +296,13 @@ public class SellHouseDetailsDo {
      */
     private Boolean isFavorite= false;
 
-
+    /**
+     * 价格涨降标志
+     */
+    private String priceIncreaseDecline;
+    /**
+     * 价格涨降金额
+     */
+    private Double priceIncreaseDeclineAmount;
 
 }

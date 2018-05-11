@@ -54,4 +54,9 @@ public class UserFavoriteEsHouseDoQuery {
 
     private  String forward;
 
+    /**
+     * 价格涨降标志
+     */
+    private String priceIncreaseDecline;
+
 }

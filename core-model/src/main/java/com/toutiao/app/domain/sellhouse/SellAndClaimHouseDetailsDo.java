@@ -279,4 +279,12 @@ public class SellAndClaimHouseDetailsDo {
      * 经纪人信息
      */
     private AgentBaseDo agentBaseDo;
+    /**
+     * 价格涨降标志
+     */
+    private String priceIncreaseDecline;
+    /**
+     * 价格涨降金额
+     */
+    private Double priceIncreaseDeclineAmount;
 }
