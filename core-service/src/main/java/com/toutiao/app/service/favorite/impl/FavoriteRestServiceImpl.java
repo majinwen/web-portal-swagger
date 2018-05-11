@@ -333,6 +333,14 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
          }
          try {
              UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
+             if("1".equals(userFavoriteRentDoQuery.getRentType()))
+             {
+                 userFavoriteRent.setRentTypeName("整租");
+             }
+             if ("2".equals(userFavoriteRentDoQuery.getRentType()))
+             {
+                 userFavoriteRent.setRentTypeName("合租");
+             }
              BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
              userFavoriteRent.setCreateTime(new Date());
              result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
