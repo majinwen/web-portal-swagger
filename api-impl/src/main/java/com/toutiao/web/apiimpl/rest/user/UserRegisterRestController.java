@@ -62,10 +62,10 @@ public class UserRegisterRestController {
 
     private void setCookieAndCache(String phone,UserLoginResponse userLoginResponse,
                                    HttpServletRequest request, HttpServletResponse response) throws Exception {
-        //清空redis中该手机号的失败次数
-        redis.delKey(phone + RedisNameUtil.separativeSignCount);
         //删除保存的短信验证码
         redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER+"_"+phone);
+        //清空redis中该手机号的失败次数
+        redis.delKey(phone + RedisNameUtil.separativeSignCount);
         // 设置登录会员的cookie信息
         StringBuilder sb = new StringBuilder();
         String userJson = JSON.toJSONString(userLoginResponse);

@@ -727,8 +727,8 @@
     </div>
 </div>
 <div class="share-pop none">
-    <img width="100%" src="/static/images/intelligent/bgy_share_fc.png" alt="分享给好友">
-    <img width="49%" id="off-share" src="/static/images/intelligent/bgy_share_btn.png" alt="我知道了">
+    <img width="100%" src="/appstatic/images/intelligent/bgy_share_fc.png" alt="分享给好友">
+    <img width="49%" id="off-share" src="/appstatic/images/intelligent/bgy_share_btn.png" alt="我知道了">
 </div>
 <script src="${appstaticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${appstaticurl}/js/default-touch.js?v=${staticversion}"></script>

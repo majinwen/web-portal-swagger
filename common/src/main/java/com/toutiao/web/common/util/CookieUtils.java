@@ -122,7 +122,15 @@ public class CookieUtils {
         return newCookie;
     }
 
-
+    public static Cookie setCookieExp(HttpServletRequest request,
+                                      HttpServletResponse response, String cookieName,
+                                      String cookieValue, Integer expTime) {
+        Cookie newCookie = new Cookie(cookieName, cookieValue);
+        newCookie.setMaxAge(expTime);
+        newCookie.setPath("/");
+        response.addCookie(newCookie);
+        return newCookie;
+    }
 
 
 }
