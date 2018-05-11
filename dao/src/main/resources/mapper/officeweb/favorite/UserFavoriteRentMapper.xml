@@ -16,6 +16,7 @@
     <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
     <result column="house_photo_title" property="housePhotoTitle" jdbcType="VARCHAR" />
     <result column="house_title" property="houseTitle" jdbcType="VARCHAR" />
+    <result column="rent_type_name" property="rentTypeName"  jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, user_id, house_id, create_time, is_del
@@ -88,6 +89,9 @@
       <if test="houseTitle != null" >
         house_title,
       </if>
+      <if test="rentTypeName!= null" >
+        rent_type_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -131,6 +135,9 @@
       </if>
       <if test="houseTitle  != null" >
         #{houseTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="rentTypeName != null" >
+        #{rentTypeName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

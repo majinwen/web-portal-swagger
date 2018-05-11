@@ -23,7 +23,7 @@ public class PlotsAddFavoriteResquest {
      * 均价
      */
     @NotNull(message = "均价不能为空")
-    private BigDecimal averagePrice;
+    private Double averagePrice;
     /**
      * 小区名称
      */
