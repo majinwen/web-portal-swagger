@@ -312,6 +312,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if (StringTool.isNotEmpty(plotListDoQuery.getLabelId())){
             Integer[] labelId = plotListDoQuery.getLabelId();
             boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
+            for (Integer i:labelId){
+                if (i==1){
+                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway",1));
+                }
+            }
         }
 
 

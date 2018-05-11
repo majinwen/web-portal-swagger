@@ -200,6 +200,11 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
         if (StringTool.isNotEmpty(nearbyPlotsDoQuery.getLabelId())){
             Integer[] labelId = nearbyPlotsDoQuery.getLabelId();
             boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
+            for (Integer i:labelId){
+                if (i==1){
+                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway",1));
+                }
+            }
         }
         //房源面积大小
         if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()!=0){
