@@ -58,5 +58,9 @@ public class UserFavoriteEsHouseDoQuery {
      * 价格涨降标志
      */
     private String priceIncreaseDecline;
+    /**
+     * 认领标志
+     */
+    private Integer isClaim;
 
 }

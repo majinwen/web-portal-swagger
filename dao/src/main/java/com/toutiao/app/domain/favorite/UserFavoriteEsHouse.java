@@ -53,4 +53,8 @@ public class UserFavoriteEsHouse {
      * 价格涨降标志
      */
     private Integer priceIncreaseDecline;
+    /**
+     * 认领标志
+     */
+    private Integer isClaim;
 }
