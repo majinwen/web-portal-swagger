@@ -252,7 +252,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 if (""!=keys&&null!=newHouseListDos.getNearbysubway()){
                     newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
                 }
-                newHouseListDos.setNearbysubway(null);
+//                newHouseListDos.setNearbysubway(null);
                 //获取新房下户型的数量
                 NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
                 if (null!=newHouseLayoutCountDomain.getTotalCount())
