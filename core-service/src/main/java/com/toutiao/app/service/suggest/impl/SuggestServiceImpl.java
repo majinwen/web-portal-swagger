@@ -72,8 +72,8 @@ public class SuggestServiceImpl implements SuggestService {
 
         if (property!=null){
             String searchType = getSearchType(property);
-            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             if (searchType == RENT_TYPE){
+                BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
                 boolQueryBuilder.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
             }else {
