@@ -46,6 +46,7 @@ public class UserBasicRestController {
                 uploadUserAvatarRequest.getFile(),request,response);
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
+        userBasicResponse.setUserNickName(userBasicResponse.getUserName().substring(0,3)+"****"+userBasicResponse.getUserName().substring(8,11));
         return NashResult.build(userBasicResponse);
     }
 
@@ -76,6 +77,7 @@ public class UserBasicRestController {
         UserBasicDo userBasicDo = userBasicInfoService.queryUserBasicByRcId(queryUserBasicRequest.getRcId());
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
+        userBasicResponse.setUserNickName(userBasicResponse.getUserName().substring(0,3)+"****"+userBasicResponse.getUserName().substring(8,11));
         return NashResult.build(userBasicResponse);
     }
 

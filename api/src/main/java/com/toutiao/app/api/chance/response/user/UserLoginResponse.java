@@ -36,5 +36,9 @@ public class UserLoginResponse {
      * 用户id
      */
     private String userId;
+    /**
+     * 用户昵称
+     */
+    private String userNickName;
 
 }
