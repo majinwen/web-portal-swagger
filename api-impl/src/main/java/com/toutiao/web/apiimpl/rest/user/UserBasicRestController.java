@@ -58,6 +58,10 @@ public class UserBasicRestController {
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
         return NashResult.build(userBasicResponse);
+
+
+
+
     }
 
     /**

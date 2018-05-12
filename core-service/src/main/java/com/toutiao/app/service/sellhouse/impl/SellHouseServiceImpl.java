@@ -193,6 +193,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 //        queryBuilderOfWeek.should(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate));
 //        boolQueryBuilder.must(queryBuilderOfWeek);
 //        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder);
+        sellHouseQueryDo.setPageSize(5);
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,sellHouseQueryDo.getDistance(),sellHouseQueryDo.getKeyword(),sellHouseQueryDo.getPageNum(),sellHouseQueryDo.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
