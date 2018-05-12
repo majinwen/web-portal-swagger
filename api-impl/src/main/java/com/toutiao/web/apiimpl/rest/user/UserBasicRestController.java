@@ -1,9 +1,11 @@
 package com.toutiao.web.apiimpl.rest.user;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.user.QueryUserBasicRequest;
 import com.toutiao.app.api.chance.request.user.UploadUserAvatarRequest;
 import com.toutiao.app.api.chance.response.user.UserBasicResponse;
+import com.toutiao.app.api.chance.response.user.UserLoginResponse;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.assertUtils.First;
@@ -81,13 +83,23 @@ public class UserBasicRestController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping("/logout")
+    @RequestMapping(value="/logout" ,method =RequestMethod.POST)
     @ResponseBody
-    public NashResult logout(HttpServletResponse response, HttpServletRequest request,
-                         @RequestParam(value = "phone", required = true) String phone) throws Exception {
+    public NashResult logout(HttpServletResponse response, HttpServletRequest request) throws Exception {
+        UserBasicDo userBasic = null;
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+        if(null != userLoginResponse){
+            userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+        }
+        if(userBasic!=null){
+            clearCookieAndCache(request, response, userBasic.getPhone());
+            return NashResult.build("退出登录成功");
+        }else{
+            return NashResult.Fail("退出登录失败");
+        }
 
-        clearCookieAndCache(request, response, phone);
-        return NashResult.build("");
+
     }
 
 
@@ -100,7 +112,7 @@ public class UserBasicRestController {
      */
     private void clearCookieAndCache(HttpServletRequest request, HttpServletResponse response, String phone) throws Exception {
         //从cookie中删除用户数据
-        CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_User_LOGIN);
+        CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_USER);
         //删除redis中的用户数据
         redis.delKey(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
                 + phone);
