@@ -112,8 +112,10 @@ public class SuggestServiceImpl implements SuggestService {
 
         if (scopeDoList.size()==10){
             suggestDo.setSearchScopeList(scopeDoList);
-        }else if (scopeDoList.size()<10){
+        }else if (scopeDoList.size()<10 && scopeDoList.size()>10){
             suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+        }else if(scopeDoList.size() == 0){
+            suggestDo.setSearchEnginesList(enginesDoList);
         }
 
         if(suggestDo.getPlotNum()==0){
