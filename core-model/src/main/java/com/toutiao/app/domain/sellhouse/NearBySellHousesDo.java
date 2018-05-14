@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.sellhouse;
 
 import com.toutiao.app.domain.QueryDo;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -135,4 +136,12 @@ public class NearBySellHousesDo {
      * 地铁与房子的距离
      */
     private String subwayDistanceInfo;
+
+    /**
+     * 经纪人信息
+     */
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
+
+    private Integer userId;
 }

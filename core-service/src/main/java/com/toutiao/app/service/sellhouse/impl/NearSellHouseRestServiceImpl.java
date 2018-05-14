@@ -3,12 +3,15 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.ClaimSellHouseDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -40,6 +43,9 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
 
     @Autowired
     private NearbySellHouseEsDao nearbySellHouseEsDao;
+
+    @Autowired
+    private AgentService agentService;
 
     @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo) {
@@ -109,6 +115,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
+        AgentBaseDo agentBaseDo = new AgentBaseDo();
         for (SearchHit searchHit : searchHists) {
             String details = "";
             details=searchHit.getSourceAsString();
@@ -121,6 +128,17 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 nearBySellHousesDo.setTagsName(claimSellHouseDo.getClaimTagsName());
                 nearBySellHousesDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
             }
+
+            if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(nearBySellHousesDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+            }
+            nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys="";

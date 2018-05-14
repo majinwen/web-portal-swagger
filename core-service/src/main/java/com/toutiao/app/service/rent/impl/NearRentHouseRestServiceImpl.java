@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseKeywordEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.NearHouseListDoQuery;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -43,6 +45,8 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
     private SellHouseKeywordEsDao sellHouseKeywordEsDao;
     @Autowired
     private RentEsDao rentEsDao;
+    @Autowired
+    private AgentService agentService;
 
     @Override
     public RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery) {
@@ -129,6 +133,19 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
                 {
                     rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
                 }
+
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+
+                }else{
+                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
+                    agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
+
+                }
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
             }
         }

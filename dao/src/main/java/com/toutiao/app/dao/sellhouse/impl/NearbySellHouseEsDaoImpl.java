@@ -30,7 +30,7 @@ public class NearbySellHouseEsDaoImpl implements NearbySellHouseEsDao{
                 new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName",
                         "housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet",
                         "year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId",
-                        "parkRadio","houseUnitCost","newcode","subwayLineId","subwayDistince","subwayStationId","housePhotoTitle"} ,null
+                        "parkRadio","houseUnitCost","newcode","subwayLineId","subwayDistince","subwayStationId","housePhotoTitle","userId"} ,null
         ).execute().actionGet();
 
 
