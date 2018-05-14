@@ -476,9 +476,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                 {
                     rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
                 }
-                rentDetailsFewDos.add(rentDetailsFewDo);
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
+
             }
         }
         rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
