@@ -1,6 +1,12 @@
 package com.toutiao.web.service.advertisement.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.sellhouse.ClaimSellHouseDo;
+import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
+import com.toutiao.app.domain.sellhouse.SellHousesSearchDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.officeweb.CpcSellHouse;
 import com.toutiao.web.dao.mapper.officeweb.CpcSellHouseMapper;
@@ -10,10 +16,16 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.lucene.search.function.CombineFunction;
+import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
+import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FieldValueFactorFunctionBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -57,6 +69,11 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private RedisSessionUtils redisSessionUtils;
     @Autowired
     private CpcSellHouseMapper cpcSellHouseMapper;
+    @Autowired
+    private SellHouseEsDao sellHouseEsDao;
+    @Autowired
+    private AgentService agentService;
+
 
     private static final String RECOMMEND_DEFAULT = "ad_recommend_sellHouse_queryBit";
     private static final String RECOMMEND_SUBWAY = "ad_recommend_sellHouse_queryBit_subway";
@@ -1221,6 +1238,72 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         sellHouseDomain.setSellHouseAggAdLandingDoList(sellHouseAggAdLandingDos);
 
         return sellHouseDomain;
+    }
+
+    @Override
+    public SellHouseSearchDomain getSellHouseByPrice(AggAdLandingDo aggAdLandingDo) {
+
+        SellHouseSearchDomain sellHouseSearchDomain = new SellHouseSearchDomain();
+        SellHousesSearchDo  sellHousesSearchDo= new SellHousesSearchDo();
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        Integer pageNum = 1;
+        Integer pageSize = aggAdLandingDo.getPs();
+        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isRecommend",0));
+        booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("price_increase_decline",aggAdLandingDo.getPriceID()));
+        if(StringTool.isNotEmpty(aggAdLandingDo.getDays())){
+            Date date = new Date();
+            String nowDate = DateUtil.format(date)+" 00:00:00";
+            String pastDate= DateUtil.getPastDate(aggAdLandingDo.getDays())+" 00:00:00";
+            booleanQueryBuilder.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("claim_time").gt(pastDate).lte(nowDate)));
+        }
+
+        //条件is_claim标志设置权重
+        FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim")
+                .modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11).missing(0);
+
+        FunctionScoreQueryBuilder queryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
+
+        FunctionScoreQueryBuilder query = QueryBuilders.functionScoreQuery(queryBuilder).boost(10).maxBoost(100)
+                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+
+        List<SellHousesSearchDo> sellHousesSearchDos =new ArrayList<>();
+        //ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,null,null,aggAdLandingDo.getPn(),aggAdLandingDo.getPs());
+
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit searchHit : searchHists) {
+            String details = "";
+            details=searchHit.getSourceAsString();
+            sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
+            ClaimSellHouseDo claimSellHouseDo=JSON.parseObject(details,ClaimSellHouseDo.class);
+            if (null!=claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim()==1)
+            {   //将认领信息替换
+                sellHousesSearchDo.setHouseId(claimSellHouseDo.getClaimHouseId());
+                sellHousesSearchDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
+                sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
+            }
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+
+            }else{
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+            }
+            sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+            sellHousesSearchDos.add(sellHousesSearchDo);
+
+        }
+        sellHouseSearchDomain.setData(sellHousesSearchDos);
+        sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
+
+
+        return sellHouseSearchDomain;
     }
 
 

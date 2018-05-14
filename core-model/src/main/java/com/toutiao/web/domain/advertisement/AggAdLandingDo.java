@@ -97,4 +97,12 @@ public class AggAdLandingDo {
      */
     private String qualityRent;
 
+    /**
+     * 天
+     */
+    private Integer days;
+
+
+    private Integer priceID;
+
 }

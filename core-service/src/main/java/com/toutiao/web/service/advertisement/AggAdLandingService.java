@@ -1,5 +1,6 @@
 package com.toutiao.web.service.advertisement;
 
+import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.web.domain.advertisement.AggAdLandingDo;
 import com.toutiao.web.domain.advertisement.RentHouseDomain;
 import com.toutiao.web.domain.advertisement.SellHouseAggAdLandingDo;
@@ -71,5 +72,7 @@ public interface AggAdLandingService {
     SellHouseDomain getSellHouseTop10();
 
 
+
+    SellHouseSearchDomain getSellHouseByPrice(AggAdLandingDo aggAdLandingDo);
 
 }
