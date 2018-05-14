@@ -286,7 +286,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         pastDate = pastDate+" 00:00:00";
 //
         boolQueryBuilder.must(QueryBuilders.rangeQuery("update_time").gt(pastDate).lte(nowDate));
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_recommend","0"));
+        boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gte(0));
         boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
         Integer size = 10;
         Integer from = (rentHouseDoQuery.getPageNum()-1)*size;
