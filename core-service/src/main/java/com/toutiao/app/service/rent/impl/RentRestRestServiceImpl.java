@@ -641,33 +641,33 @@ public class RentRestRestServiceImpl implements RentRestService {
             BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
             String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
             if(rentHouseDoQuery.getJlo().equals("0") && rentHouseDoQuery.getElo().equals("0")){
-                boolQueryBuilder.should(rangeQuery("erent_layout").gt(0));
-                boolQueryBuilder.should(rangeQuery("jrent_layout").gt(0));
+                boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
+                boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));
                 boolQueryBuilder.must(boolQueryBuilder1);
             }else if(rentHouseDoQuery.getElo().equals("0") && !rentHouseDoQuery.getJlo().equals("0")){
                 String[] jroom = rentHouseDoQuery.getJlo().split(",");
-                boolQueryBuilder.should(rangeQuery("erent_layout").gt(0));
+                boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
 
                 boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
                 if(jroomflag){
                     String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
-                    boolQueryBuilder.should(termsQuery("jrent_layout", jroomresult));
+                    boolQueryBuilder1.should(termsQuery("jrent_layout", jroomresult));
                 }else{
-                    boolQueryBuilder.should(termsQuery("jrent_layout", jroom));
+                    boolQueryBuilder1.should(termsQuery("jrent_layout", jroom));
                 }
-                boolQueryBuilder.must(boolQueryBuilder);
+                boolQueryBuilder.must(boolQueryBuilder1);
             }else if(!rentHouseDoQuery.getElo().equals("0") && rentHouseDoQuery.getJlo().equals("0")){
                 String[] eroom = rentHouseDoQuery.getElo().split(",");
-                boolQueryBuilder.should(rangeQuery("jrent_layout").gt(0));
+                boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));
 
                 boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
                 if(eroomflag){
                     String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
-                    boolQueryBuilder.should(termsQuery("erent_layout", eroomresult));
+                    boolQueryBuilder1.should(termsQuery("erent_layout", eroomresult));
                 }else{
-                    boolQueryBuilder.should(termsQuery("erent_layout", eroom));
+                    boolQueryBuilder1.should(termsQuery("erent_layout", eroom));
                 }
-                boolQueryBuilder.must(boolQueryBuilder);
+                boolQueryBuilder.must(boolQueryBuilder1);
             }else{
                 String[] eroom = rentHouseDoQuery.getElo().split(",");
                 String[] jroom = rentHouseDoQuery.getJlo().split(",");
@@ -677,17 +677,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                 boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
                 if(jroomflag){
                     String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
-                    boolQueryBuilder.should(termsQuery("jrent_layout", jroomresult));
+                    boolQueryBuilder1.should(termsQuery("jrent_layout", jroomresult));
                 }else{
-                    boolQueryBuilder.should(termsQuery("jrent_layout", jroom));
+                    boolQueryBuilder1.should(termsQuery("jrent_layout", jroom));
                 }
                 if(eroomflag){
                     String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
-                    boolQueryBuilder.should(termsQuery("erent_layout", eroomresult));
+                    boolQueryBuilder1.should(termsQuery("erent_layout", eroomresult));
                 }else{
-                    boolQueryBuilder.should(termsQuery("erent_layout", eroom));
+                    boolQueryBuilder1.should(termsQuery("erent_layout", eroom));
                 }
-                boolQueryBuilder.must(boolQueryBuilder);
+                boolQueryBuilder.must(boolQueryBuilder1);
             }
 
         }
