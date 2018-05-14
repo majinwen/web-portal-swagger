@@ -234,7 +234,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //销售状态
         if(StringTool.isNotEmpty(newHouseDoQuery.getSaleStatusId())){
-            booleanQueryBuilder.must(termQuery("sale_status_id", newHouseDoQuery.getSaleStatusId()));
+            booleanQueryBuilder.must(termsQuery("sale_status_id", newHouseDoQuery.getSaleStatusId()));
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
