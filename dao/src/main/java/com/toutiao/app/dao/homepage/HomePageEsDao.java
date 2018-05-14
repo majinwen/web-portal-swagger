@@ -6,5 +6,14 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 public interface HomePageEsDao {
 
 
-    SearchResponse  getHomePageEsf( BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getHomePageEsf(BoolQueryBuilder boolQueryBuilder);
+
+    /**
+     * 获取首页主题房
+     *
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse getHomeThemeHouse(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
+
 }
