@@ -10,6 +10,6 @@ public class NewHouseDoQuery extends QueryDo {
     /**
      * 销售状态
      */
-    private  Integer[] saleStatusId;
+    private  Integer [] saleStatusId;
 
 }
