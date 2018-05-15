@@ -549,7 +549,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     .gte(rentHouseDoQuery.getBeginPrice()).lte(rentHouseDoQuery.getEndPrice()));
         }else if(rentHouseDoQuery.getBeginPrice()!=0 && rentHouseDoQuery.getEndPrice()==0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(rentHouseDoQuery.getBeginPrice()));
-        }else if(rentHouseDoQuery.getBeginPrice()!=0&& rentHouseDoQuery.getEndPrice()!=0){
+        }else if(rentHouseDoQuery.getBeginPrice()==0&& rentHouseDoQuery.getEndPrice()!=0){
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").lte(rentHouseDoQuery.getEndPrice()));
         }
 
