@@ -149,4 +149,8 @@ public class SellHousesSearchDo {
      * 地铁与房子之间的距离
      */
     private  String  subwayDistanceInfo;
+
+    private String housePhotoTitle;
+
+
 }

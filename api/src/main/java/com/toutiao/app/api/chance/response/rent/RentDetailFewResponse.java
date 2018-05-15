@@ -65,6 +65,7 @@ public class RentDetailFewResponse {
     /**
      * 房源标题图
      */
+    @ChangeName("housePhotoTitle")
     private String houseTitleImg;
 
     /**
