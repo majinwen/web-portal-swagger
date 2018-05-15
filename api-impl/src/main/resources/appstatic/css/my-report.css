@@ -506,16 +506,16 @@ body {
   right: 0.4rem;
   width: 1.4933333333rem;
   height: 1.4933333333rem;
-  background-image: url("/static/images/global/base_sort_icon.png");
+  background-image: url("/appstatic/images/global/base_sort_icon.png");
   background-repeat: no-repeat;
   -webkit-background-size: contain;
   background-size: contain; }
   @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
     .sort-icon {
-      background-image: url("/static/images/global/base_sort_icon@2x.png"); } }
+      background-image: url("/appstatic/images/global/base_sort_icon@2x.png"); } }
   @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
     .sort-icon {
-      background-image: url("/static/images/global/base_sort_icon@3x.png"); } }
+      background-image: url("/appstatic/images/global/base_sort_icon@3x.png"); } }
 
 .sort-content-box {
   display: none;
@@ -588,16 +588,16 @@ body {
         top: 0;
         width: 0.3466666667rem;
         height: 0.4rem;
-        background-image: url("/static/images/myreport/wdbgl_icon_bg.png");
+        background-image: url("/appstatic/images/myreport/wdbgl_icon_bg.png");
         background-repeat: no-repeat;
         -webkit-background-size: contain;
         background-size: contain; }
         @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
           .my-report-item .report-item-content .report-link-block .item-report-icon {
-            background-image: url("/static/images/myreport/wdbgl_icon_bg@2x.png"); } }
+            background-image: url("/appstatic/images/myreport/wdbgl_icon_bg@2x.png"); } }
         @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
           .my-report-item .report-item-content .report-link-block .item-report-icon {
-            background-image: url("/static/images/myreport/wdbgl_icon_bg@3x.png"); } }
+            background-image: url("/appstatic/images/myreport/wdbgl_icon_bg@3x.png"); } }
       .my-report-item .report-item-content .report-link-block .item-report-title {
         padding-left: 0.5333333333rem; }
         .my-report-item .report-item-content .report-link-block .item-report-title h3 {
@@ -618,17 +618,17 @@ body {
       width: 0.5866666667rem;
       height: 0.5866666667rem;
       margin-top: -0.2933333333rem;
-      background-image: url("/static/images/myreport/wdbg_icon_more.png");
+      background-image: url("/appstatic/images/myreport/wdbg_icon_more.png");
       background-repeat: no-repeat;
       background-position: center;
       -webkit-background-size: contain;
       background-size: contain; }
       @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
         .my-report-item .report-item-content .slide-icon-button {
-          background-image: url("/static/images/myreport/wdbg_icon_more@2x.png"); } }
+          background-image: url("/appstatic/images/myreport/wdbg_icon_more@2x.png"); } }
       @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
         .my-report-item .report-item-content .slide-icon-button {
-          background-image: url("/static/images/myreport/wdbg_icon_more@3x.png"); } }
+          background-image: url("/appstatic/images/myreport/wdbg_icon_more@3x.png"); } }
   .my-report-item .more-menu {
     display: table-row;
     position: absolute;
@@ -667,44 +667,44 @@ body {
       .my-report-item .more-menu li.examine-report {
         background-color: #747788; }
         .my-report-item .more-menu li.examine-report i {
-          background-image: url("/static/images/myreport/wdbg_icon_ckbg.png");
+          background-image: url("/appstatic/images/myreport/wdbg_icon_ckbg.png");
           background-repeat: no-repeat;
           -webkit-background-size: contain;
           background-size: contain; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .my-report-item .more-menu li.examine-report i {
-              background-image: url("/static/images/myreport/wdbg_icon_ckbg@2x.png"); } }
+              background-image: url("/appstatic/images/myreport/wdbg_icon_ckbg@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .my-report-item .more-menu li.examine-report i {
-              background-image: url("/static/images/myreport/wdbg_icon_ckbg@3x.png"); } }
+              background-image: url("/appstatic/images/myreport/wdbg_icon_ckbg@3x.png"); } }
       .my-report-item .more-menu li.recommond-plot {
         background-color: #44495f; }
         .my-report-item .more-menu li.recommond-plot i {
-          background-image: url("/static/images/myreport/wdbg_icon_recommond.png");
+          background-image: url("/appstatic/images/myreport/wdbg_icon_recommond.png");
           background-repeat: no-repeat;
           background-position: left center;
           -webkit-background-size: auto 100%;
           background-size: auto 100%; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .my-report-item .more-menu li.recommond-plot i {
-              background-image: url("/static/images/myreport/wdbg_icon_recommond@2x.png"); } }
+              background-image: url("/appstatic/images/myreport/wdbg_icon_recommond@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .my-report-item .more-menu li.recommond-plot i {
-              background-image: url("/static/images/myreport/wdbg_icon_recommond@3x.png"); } }
+              background-image: url("/appstatic/images/myreport/wdbg_icon_recommond@3x.png"); } }
         .my-report-item .more-menu li.recommond-plot.current i {
           background-position: right center; }
       .my-report-item .more-menu li.cancel-collection {
         background-color: #ff4848; }
         .my-report-item .more-menu li.cancel-collection i {
-          background-image: url("/static/images/myreport/wdbg_icon_qxsc.png");
+          background-image: url("/appstatic/images/myreport/wdbg_icon_qxsc.png");
           background-repeat: no-repeat;
           -webkit-background-size: contain;
           background-size: contain; }
           @media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
             .my-report-item .more-menu li.cancel-collection i {
-              background-image: url("/static/images/myreport/wdbg_icon_qxsc@2x.png"); } }
+              background-image: url("/appstatic/images/myreport/wdbg_icon_qxsc@2x.png"); } }
           @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
             .my-report-item .more-menu li.cancel-collection i {
-              background-image: url("/static/images/myreport/wdbg_icon_qxsc@3x.png"); } }
+              background-image: url("/appstatic/images/myreport/wdbg_icon_qxsc@3x.png"); } }
 
 /*# sourceMappingURL=my-report.css.map */
