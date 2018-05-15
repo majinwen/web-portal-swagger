@@ -242,6 +242,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+        booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
         try{
             SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort);
             SearchHits hits = searchResponse.getHits();
