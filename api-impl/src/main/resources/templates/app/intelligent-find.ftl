@@ -275,7 +275,7 @@
                     <div class="animate-big-box" id="left_circle_div">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box">
-                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
+                            <img src="/appstatic/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box" style="display: none;">
                                 <p><em>7</em>年</p>
                                 <p><em>305586</em>位</p>
@@ -294,7 +294,7 @@
                     <div class="animate-big-box">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box" id="center_circle_div">
-                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
+                            <img src="/appstatic/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box"  style="display: none">
                                 <p><em>8123</em>个社区</p>
                                 <p><em>40397</em>套房产</p>
@@ -313,7 +313,7 @@
                     <div class="animate-big-box" id="right_circle_div">
                         <div class="animate-ring-box"></div>
                         <div class="animate-border-box">
-                            <img src="/static/images/intelligent/znzf_gdy_line.png" class="animate-line">
+                            <img src="/appstatic/images/intelligent/znzf_gdy_line.png" class="animate-line">
                             <div class="text-box" style="display: none">
                                 <p><em>1</em>秒</p>
                                 <p><em>962837</em>次运算</p>

@@ -285,7 +285,7 @@ body {
         background-image: url("/static/images/global/wdbg_kuang@2x.png"); } }
     @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
       .page-empty .tips-content-wrapper {
-        background-image: url("/static/images/global/wdbg_kuang@3x.png"); } }
+        background-image: url("/appstatic/images/global/wdbg_kuang@3x.png"); } }
     .page-empty .tips-content-wrapper.mt {
       margin-top: 0.4rem; }
     .page-empty .tips-content-wrapper span {
