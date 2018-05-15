@@ -222,10 +222,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(location);
         }
 
-        //商圈名称
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", sellHouseDoQuery.getAreaId()));
-        }
+
         //商圈id
         if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
