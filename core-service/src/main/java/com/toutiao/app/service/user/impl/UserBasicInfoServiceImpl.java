@@ -17,6 +17,7 @@ import io.rong.models.Result;
 import io.rong.models.response.TokenResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +34,10 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     @Autowired
     private RedisSessionUtils redis;
     private CookieUtils cookieUtils;
+    @Value("${qiniu.headpic_directory}")
+    public String headPicDirectory;
+    @Value("${qiniu.img_wapapp_domain}")
+    public String headPicPath;
 
     /**
      * 更新用户头像
@@ -54,13 +59,13 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
             if(res == 1){
                 userBasic = userBasicMapper.selectByPrimaryKey(userId);
                 //把更新的图片上传到融云
-                Result rcToken = imService.refreshRongCloudByUser(userBasic.getUserOnlySign(),userBasic.getUserName(),userBasic.getAvatar());
+                Result rcToken = imService.refreshRongCloudByUser(userBasic.getUserOnlySign(),userBasic.getUserName(),headPicPath+"/"+userBasic.getAvatar());
                 if(rcToken==null && rcToken.getCode()!=200){
                     throw new BaseException(RestfulInterfaceErrorCodeEnum.UPDATE_USER_AVATAR_RONGCLOUD_ERROR,"RongCloud更新用户头像异常");
                 }
                 //更新cookie中的user信息
                 UserLoginDomain userLoginDomain = new UserLoginDomain();
-                BeanUtils.copyProperties(userBasicDo,userLoginDomain);
+                BeanUtils.copyProperties(userBasic,userLoginDomain);
                 try {
                     setCookieAndCache(userBasic.getPhone(),userLoginDomain,request,response);
                 } catch (Exception e) {
