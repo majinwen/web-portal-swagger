@@ -77,7 +77,7 @@ body {
                 line-height: rem(48);
                 -webkit-border-radius: rem(16);
                 border-radius: rem(16);
-                background-color: #EA5956;
+                background-color: #414753;
             }
         }
 
@@ -88,7 +88,7 @@ body {
             width: rem(62);
             height: rem(38);
             margin: 0 rem(-31);
-            @include bg-image('/static/images/intelligent/intelligent-down-link');
+            @include bg-image('/appstatic/images/intelligent/intelligent-down-link');
             -webkit-background-size: contain;
             background-size: contain;
             -webkit-animation: upDown 0.5s infinite alternate;
@@ -130,7 +130,7 @@ body {
             padding: rem(54) rem(120);
             text-align: center;
             color: #fff;
-            @include bg-image('/static/images/intelligent/header-summary-box');
+            @include bg-image('/appstatic/images/intelligent/header-summary-box');
             -webkit-background-size: 100% 100%;
             background-size: 100% 100%;
             @include box-sizing;
@@ -165,32 +165,32 @@ body {
                 &.icon-title-price {
                     width: rem(44);
                     height: rem(44);
-                    @include bg-image('/static/images/intelligent/icon-title-price');
+                    @include bg-image('/appstatic/images/intelligent/icon-title-price');
                 }
                 &.icon-title-marker {
                     width: rem(46);
                     height: rem(47);
-                    @include bg-image('/static/images/intelligent/icon-title-marker');
+                    @include bg-image('/appstatic/images/intelligent/icon-title-marker');
                 }
                 &.icon-title-result {
                     width: rem(48);
                     height: rem(48);
-                    @include bg-image('/static/images/intelligent/icon-title-result');
+                    @include bg-image('/appstatic/images/intelligent/icon-title-result');
                 }
                 &.icon-title-contrast {
                     width: rem(46);
                     height: rem(46);
-                    @include bg-image('/static/images/intelligent/icon-title-contrast');
+                    @include bg-image('/appstatic/images/intelligent/icon-title-contrast');
                 }
                 &.icon-title-review {
                     width: rem(49);
                     height: rem(46);
-                    @include bg-image('/static/images/intelligent/icon-title-review');
+                    @include bg-image('/appstatic/images/intelligent/icon-title-review');
                 }
             }
             p {
                 line-height: rem(48);
-                color: #EA5956;
+                color: #333;
                 @include font-dpr(34);
             }
         }
@@ -198,7 +198,7 @@ body {
         .module-item {
             position: relative;
 
-            $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
+            $itemListColor: #7998DD #C7AC73 #62C6A3 #5EABCA #D87676;
             .piece-module {
                 margin-left: rem(20);
                 margin-right: rem(20);
@@ -238,7 +238,7 @@ body {
                             left: rem($pieceBorderWidth);
                             width: rem($pieceContentWidth);
                             height: rem($pieceTitleHeight);
-                            background-color: #DD5756;
+                            background-color: #7998DD;
                             border-radius: rem(12);
                         }
 
@@ -278,10 +278,10 @@ body {
                             height: rem(106);
                             line-height: 1;
                             padding: rem(15);
-                            color: #DD5756;
+                            color: #7998DD;
                             text-align: center;
                             background-color: $baseWhite;
-                            border: rem(10) solid #DD5756;
+                            border: rem(10) solid #7998DD;
                             -webkit-border-radius: 50%;
                             border-radius: 50%;
                             z-index: 1;
@@ -300,7 +300,7 @@ body {
                             line-height: rem(58);
                             color: $baseWhite;
                             text-align: center;
-                            background-color: #DD5756;
+                            background-color: #7998DD;
                             -webkit-border-radius: 0 rem(12) rem(12) 0;
                             border-radius: 0 rem(12) rem(12) 0;
                             @include box-sizing;
@@ -350,7 +350,7 @@ body {
                             width: rem(86);
                             height: rem(26);
                             margin-top: rem(-13);
-                            @include bg-image('/static/images/intelligent/echarts-legend-icon');
+                            @include bg-image('/appstatic/images/intelligent/echarts-legend-icon');
                             -webkit-background-size: auto 100%;
                             background-size: auto 100%;
                         }
@@ -478,7 +478,7 @@ body {
                         width: rem(576);
                         height: rem(532);
                         margin: 0 auto;
-                        @include bg-image('/static/images/intelligent/report-water-bg');
+                        @include bg-image('/appstatic/images/intelligent/report-water-bg');
                         -webkit-background-size: contain;
                         background-size: contain;
                         z-index: 1;
@@ -642,7 +642,7 @@ body {
 
                             &:nth-child(1) {
                                 width: rem(85);
-                                background-color: #444A52;
+                                background-color: #414753;
                                 color: #fff;
                                 padding: 0;
 
@@ -718,7 +718,7 @@ body {
                                             display: block;
                                             width: rem(50);
                                             height: rem(50);
-                                            @include bg-image('/static/images/intelligent/shopping-module-icon');
+                                            @include bg-image('/appstatic/images/intelligent/shopping-module-icon');
                                             -webkit-background-size: 100% auto;
                                             background-size: 100% auto;
                                         }
@@ -743,9 +743,8 @@ body {
                                     }
                                 }
                             }
-
-                            $titlePrevBgColor: #34B99B #8C45CE #F76284;
-                            $titleLaetBgColor: #EE8C49 #6B92F2 transparent;
+                            $titlePrevBgColor: #7998DD #C7AC73 #62C6A3;
+                            $titleLaetBgColor: #5EABCA #D87676 transparent;
                             @for $i from 1 to 4 {
                                 &.level-slider-item:nth-child(#{$i}) {
                                     left: rem(165 * ($i - 1));
@@ -833,7 +832,7 @@ body {
                                 margin-left: auto;
                                 margin-right: auto;
                                 margin-bottom: rem(12);
-                                @include bg-image('/static/images/intelligent/side-title-icon');
+                                @include bg-image('/appstatic/images/intelligent/side-title-icon');
                                 -webkit-background-size: 100% auto;
                                 background-size: 100% auto;
 
@@ -1097,7 +1096,7 @@ body {
                     height: 100%;
                     width: rem(107);
                     color: $baseWhite;
-                    background-color: #DD5756;
+                    background-color: #414753;
                     @include box-sizing;
 
                     i {
@@ -1105,7 +1104,7 @@ body {
                         width: rem(32);
                         height: rem(28);
                         margin: rem(20) auto rem(10);
-                        @include bg-image('/static/images/intelligent/xiaoqu-title-icon-fixed');
+                        @include bg-image('/appstatic/images/intelligent/xiaoqu-title-icon-fixed');
                         -webkit-background-size: contain;
                         background-size: contain;
                     }

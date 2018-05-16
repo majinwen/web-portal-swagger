@@ -37,6 +37,12 @@ public class SellHouseDo {
     private String priceIncreaseDecline;
 
     /**
+     * 7天新导入标志
+     *
+     */
+    private Integer newImport;
+
+    /**
      * 房源总价
      */
     private Double houseTotalPrices;
@@ -139,6 +145,8 @@ public class SellHouseDo {
 
     @ChangeName("nearBySubwayDesc")
     private  String traffic;
+
+    private Integer housePhotoTitleTags = -1;
 
 
 

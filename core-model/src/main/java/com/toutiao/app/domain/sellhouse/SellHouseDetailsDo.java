@@ -305,4 +305,6 @@ public class SellHouseDetailsDo {
      */
     private Double priceIncreaseDeclineAmount;
 
+    private Integer housePhotoTitleTags;
+
 }

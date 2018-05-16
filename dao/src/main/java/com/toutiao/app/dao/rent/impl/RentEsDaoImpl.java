@@ -86,7 +86,7 @@ public class RentEsDaoImpl implements RentEsDao {
         }
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("_uid", SortOrder.DESC).setSize(1)
                 .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
-                        "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId","rent_type","rentHouseType"},null).execute().actionGet();
+                        "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId","rent_type","rentHouseType","nearest_subway"},null).execute().actionGet();
 
         return searchResponse;
     }

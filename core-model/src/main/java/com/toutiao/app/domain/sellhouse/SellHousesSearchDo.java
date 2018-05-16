@@ -152,5 +152,9 @@ public class SellHousesSearchDo {
 
     private String housePhotoTitle;
 
+//    private Integer newImport;
+
+    private Integer housePhotoTitleTags = -1;
+
 
 }

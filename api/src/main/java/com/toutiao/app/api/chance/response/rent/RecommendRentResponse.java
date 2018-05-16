@@ -93,4 +93,8 @@ public class RecommendRentResponse {
      */
     private  Integer rentType;
 
+
+    @ChangeName("nearBySubway")
+    private String nearestSubway;
+
 }

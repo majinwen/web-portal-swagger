@@ -82,6 +82,30 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
                     sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
                     sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
+                    Date date = new Date();
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                            if(claimDays>=0 && claimDays<30){
+                                sellHouseDetailsDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDetailsDo.getPriceIncreaseDecline()));
+                            }
+                        }else {
+                            int importFlag = -1;
+                            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                                if(importDays>=0 && importDays<7){
+                                    importFlag = 3;
+                                    sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+                                }else{
+                                    sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+                                }
+                            }
+                        }
+                    }
+
+
+
+
 
 
                 }else {
@@ -202,6 +226,26 @@ public class SellHouseServiceImpl implements SellHouseService{
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                    int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                    if(claimDays>=0 && claimDays<30){
+                        sellHouseDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDo.getPriceIncreaseDecline()));
+                    }
+                }else {
+                    int importFlag = -1;
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                        if(importDays>=0 && importDays<7){
+                            importFlag = 3;
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }else{
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }
+                    }
+                }
+            }
+
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
                 agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
@@ -241,9 +285,31 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
+        Date date = new Date();
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+
+            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                    int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                    if(claimDays>=0 && claimDays<30){
+                        sellHouseDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDo.getPriceIncreaseDecline()));
+                    }
+                }else {
+                    int importFlag = -1;
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                        if(importDays>=0 && importDays<7){
+                            importFlag = 3;
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }else{
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }
+                    }
+                }
+            }
+
             sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
@@ -352,6 +418,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,sellHouseDoQuery.getDistance(),sellHouseDoQuery.getKeyword(),sellHouseDoQuery.getPageNum(),sellHouseDoQuery.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
+        Date date = new Date();
         for (SearchHit searchHit : searchHists) {
             String details = "";
             details=searchHit.getSourceAsString();
@@ -366,6 +433,28 @@ public class SellHouseServiceImpl implements SellHouseService{
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
                 agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+
+
+                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                        if(claimDays>=0 && claimDays<30){
+                            sellHousesSearchDo.setHousePhotoTitleTags(Integer.valueOf(sellHousesSearchDo.getPriceIncreaseDecline()));
+                        }
+                    }else {
+                        int importFlag = -1;
+                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                            if(importDays>=0 && importDays<7){
+                                importFlag = 3;
+                                sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                            }else{
+                                sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                            }
+                        }
+                    }
+                }
+
 
             }else{
                 agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
@@ -389,6 +478,8 @@ public class SellHouseServiceImpl implements SellHouseService{
             {
                 sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
             }
+
+
 
         }
         sellHouseSearchDomain.setData(sellHousesSearchDos);
