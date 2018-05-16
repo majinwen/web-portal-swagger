@@ -6,7 +6,7 @@
         padding-top: rem(36);
         padding-bottom: rem(40);
 
-        $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
+        $itemListColor: #7998DD #C7AC73 #62C6A3 #5EABCA #D87676;
         .elastics-stack {
             position: relative;
             width: rem(690);
@@ -80,7 +80,7 @@
             }
 
             &.report {
-                $itemListColor: #34B99B #8C45CE #F76284 #EE8C49 #6B92F2;
+                $itemListColor: #7998DD #C7AC73 #62C6A3 #5EABCA #D87676;
                 li {
                     color: $baseWhite;
 
