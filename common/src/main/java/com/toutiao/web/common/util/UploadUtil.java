@@ -3,6 +3,7 @@ package com.toutiao.web.common.util;
 import com.google.gson.Gson;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.toutiao.web.common.constant.syserror.RestfulInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.qiniu.common.Zone;
@@ -266,6 +267,11 @@ public class UploadUtil {
      */
     public static InvokeResult uploadImages(MultipartFile file) {
 
+        if (file.getSize() < 0 || file.getSize() > maxLength) {
+            Integer code = RestfulInterfaceErrorCodeEnum.IMAGE_SIZE_BEYOND_LIMIT.getValue();
+            return InvokeResult.Fail(code,RestfulInterfaceErrorCodeEnum.IMAGE_SIZE_BEYOND_LIMIT.getDesc());
+        }
+
         if(qiniu_auth==null){
             init_qiniu();
         }
@@ -293,7 +299,8 @@ public class UploadUtil {
             result = InvokeResult.build(putRet);
         } catch (IOException e) {
             logger.error("图片上传失败", e);
-            return InvokeResult.Fail(RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL);
+            Integer code = RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL.getValue();
+            return InvokeResult.Fail(code,RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL.getDesc());
         }
 
         return result;
