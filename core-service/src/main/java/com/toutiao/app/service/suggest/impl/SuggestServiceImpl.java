@@ -81,6 +81,7 @@ public class SuggestServiceImpl implements SuggestService {
             }
         }
 
+/*
         SearchResponse areaAndDistrictSuggest = suggestEsDao.getAreaAndDistrictSuggest(boolQueryBuilder);
 
         SearchHit[] hits = areaAndDistrictSuggest.getHits().getHits();
@@ -96,6 +97,7 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setNewHouseNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("newHouse")).getDocCount());
         suggestDo.setRentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("rent")).getDocCount());
         suggestDo.setApartmentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("apartment")).getDocCount());
+*/
 
 
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
@@ -110,29 +112,22 @@ public class SuggestServiceImpl implements SuggestService {
             }
         }
 
-        if (scopeDoList.size()==10){
-            suggestDo.setSearchScopeList(scopeDoList);
-        }else if (scopeDoList.size()<10 && scopeDoList.size()>10){
-            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
-        }else if(scopeDoList.size() == 0){
-            suggestDo.setSearchEnginesList(enginesDoList);
-        }
+//        suggestDo.setSearchScopeList(scopeDoList);
+//
+//        if (scopeDoList.size()<10 && scopeDoList.size()>0){
+//            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+//        }else if(scopeDoList.size() == 0){
+//            suggestDo.setSearchEnginesList(enginesDoList);
+//        }
 
-        if(suggestDo.getPlotNum()==0){
-            suggestDo.setPlotNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("plot")).getDocCount());
-        }
-        if(suggestDo.getEsfNum()==0){
-            suggestDo.setEsfNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("esf")).getDocCount());
-        }
-        if(suggestDo.getNewHouseNum()==0){
-            suggestDo.setNewHouseNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("newHouse")).getDocCount());
-        }
-        if(suggestDo.getRentNum()==0){
-            suggestDo.setRentNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("rent")).getDocCount());
-        }
-        if(suggestDo.getApartmentNum()==0){
-            suggestDo.setApartmentNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("apartment")).getDocCount());
-        }
+        suggestDo.setSearchEnginesList(enginesDoList);
+
+        suggestDo.setPlotNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("plot")).getDocCount());
+        suggestDo.setEsfNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("esf")).getDocCount());
+        suggestDo.setNewHouseNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("newHouse")).getDocCount());
+        suggestDo.setRentNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("rent")).getDocCount());
+        suggestDo.setApartmentNum((int) ((InternalFilter)keywordSuggest.getAggregations().get("apartment")).getDocCount());
+
         return suggestDo;
     }
 
