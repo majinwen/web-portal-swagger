@@ -9,7 +9,7 @@ public class SuggestDo {
     /**
      * 区域商圈
      */
-    private List<SearchScopeDo> searchScopeList;
+//    private List<SearchScopeDo> searchScopeList;
     /**
      * 关键词
      */

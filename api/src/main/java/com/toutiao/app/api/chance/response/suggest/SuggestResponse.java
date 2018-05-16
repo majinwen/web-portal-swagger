@@ -10,7 +10,7 @@ public class SuggestResponse {
     /**
      * 区域商圈
      */
-    private List<SearchScopeResponse> searchScopeList;
+//    private List<SearchScopeResponse> searchScopeList;
     /**
      * 关键词
      */
