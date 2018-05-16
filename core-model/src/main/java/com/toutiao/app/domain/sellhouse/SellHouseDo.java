@@ -146,7 +146,7 @@ public class SellHouseDo {
     @ChangeName("nearBySubwayDesc")
     private  String traffic;
 
-    private Integer housePhotoTitleTags;
+    private Integer housePhotoTitleTags = -1;
 
 
 
