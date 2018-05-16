@@ -302,4 +302,6 @@ public class SellHouseDetailsResponse {
      */
     private Double priceIncreaseDeclineAmount;
 
+    private Integer housePhotoTitleTags;
+
 }

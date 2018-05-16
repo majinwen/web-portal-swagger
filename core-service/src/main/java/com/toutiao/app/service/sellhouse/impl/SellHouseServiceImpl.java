@@ -91,6 +91,27 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
+
+                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                    Integer priceIDFlag = Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString());
+                    if(priceIDFlag > 0){
+                        sellHouseDetailsDo.setHousePhotoTitleTags(priceIDFlag);
+                    }else {
+                        int importFlag = -1;
+                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                            Date date = new Date();
+                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                            if(importDays>=0 && importDays<7){
+                                importFlag = 3;
+                                sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+                            }else{
+                                sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+                            }
+                        }else{
+                            sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+                        }
+                    }
+                }
             }
 
             if(StringTool.isNotEmpty(userBasic)){
@@ -202,6 +223,41 @@ public class SellHouseServiceImpl implements SellHouseService{
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+            //判断是否是7天内导入的房源
+//            int importFlag = -1;
+//            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+//                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+//                if(importDays>=0 && importDays<7){
+//                    importFlag = 1;
+//                    sellHouseDo.setNewImport(importFlag);
+//                }else{
+//                    sellHouseDo.setNewImport(importFlag);
+//                }
+//            }else{
+//                sellHouseDo.setNewImport(importFlag);
+//            }
+            //判断是否是7天内导入的房源
+            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                Integer priceIDFlag = Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString());
+                if(priceIDFlag > 0){
+                    sellHouseDo.setHousePhotoTitleTags(priceIDFlag);
+                }else {
+                    int importFlag = -1;
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+//                        Date date = new Date();
+                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                        if(importDays>=0 && importDays<7){
+                            importFlag = 3;
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }else{
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }
+                    }else{
+                        sellHouseDo.setHousePhotoTitleTags(importFlag);
+                    }
+                }
+            }
+
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
                 agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
@@ -244,6 +300,45 @@ public class SellHouseServiceImpl implements SellHouseService{
         for (SearchHit searchHit : searchHists) {
             String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+
+            //判断是否是7天内导入的房源
+            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                Integer priceIDFlag = Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString());
+                if(priceIDFlag > 0){
+                    sellHouseDo.setHousePhotoTitleTags(priceIDFlag);
+                }else {
+                    int importFlag = -1;
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                        Date date = new Date();
+                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                        if(importDays>=0 && importDays<7){
+                            importFlag = 3;
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }else{
+                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                        }
+                    }else{
+                        sellHouseDo.setHousePhotoTitleTags(importFlag);
+                    }
+                }
+            }
+
+
+
+//            int importFlag = -1;
+//            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+//                Date date = new Date();
+//                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+//                if(importDays>=0 && importDays<7){
+//                    importFlag = 1;
+//                    sellHouseDo.setNewImport(importFlag);
+//                }else{
+//                    sellHouseDo.setNewImport(importFlag);
+//                }
+//            }else{
+//                sellHouseDo.setNewImport(importFlag);
+//            }
+
             sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
@@ -389,6 +484,46 @@ public class SellHouseServiceImpl implements SellHouseService{
             {
                 sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
             }
+
+            //判断是否是7天内导入的房源
+
+            //判断是否是7天内导入的房源
+            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                Integer priceIDFlag = Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString());
+                if(priceIDFlag > 0){
+                    sellHousesSearchDo.setHousePhotoTitleTags(priceIDFlag);
+                }else {
+                    int importFlag = -1;
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                        Date date = new Date();
+                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                        if(importDays>=0 && importDays<7){
+                            importFlag = 3;
+                            sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                        }else{
+                            sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                        }
+                    }else{
+                        sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                    }
+                }
+            }
+
+
+//            int importFlag = -1;
+//
+//            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+//                Date date = new Date();
+//                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+//                if(importDays>=0 && importDays<7){
+//                    importFlag = 1;
+//                    sellHousesSearchDo.setNewImport(importFlag);
+//                }else{
+//                    sellHousesSearchDo.setNewImport(importFlag);
+//                }
+//            }else{
+//                sellHousesSearchDo.setNewImport(importFlag);
+//            }
 
         }
         sellHouseSearchDomain.setData(sellHousesSearchDos);

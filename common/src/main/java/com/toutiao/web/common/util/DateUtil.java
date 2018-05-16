@@ -1200,4 +1200,26 @@ public class DateUtil {
 	}
 
 
+	public static Date getStringToDate(String dateTime) {
+		SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = sDateFormat.parse(dateTime);
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+
+//	public static void main(String[] args) {
+//		String sss = "2018-05-16 09:17:34";
+//
+//		System.out.println(parseToSqlDate11(sss));
+//
+//		Date date = new Date();
+//		int ss = DateUtil.daysBetween(date,parseToSqlDate11(sss));
+//		System.out.println(ss);
+//	}
+
 }
