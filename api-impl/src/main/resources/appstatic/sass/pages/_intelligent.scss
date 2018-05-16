@@ -1,6 +1,6 @@
-$inteBlack: #0a0724;
+$inteBlack: #414753;
 $inteBorderRed: #fb3939;
-$inteBorderBlack: #000;
+$inteBorderBlack: #414753;
 $inteColorRed: #e42929;
 
 .bgbox {
@@ -27,7 +27,7 @@ $inteColorRed: #e42929;
 
 .page1 {
     .bg1 {
-        @include bg-image('/static/images/intelligent/znzf_image');
+        @include bg-image('/appstatic/images/intelligent/znzf_image');
         background-position: center bottom;
         -webkit-background-size: contain;
         background-size: contain;
@@ -64,7 +64,7 @@ $inteColorRed: #e42929;
 
 .page2 {
     .bg2 {
-        @include bg-image('/static/images/intelligent/znzf_gjcy_bg');
+        @include bg-image('/appstatic/images/intelligent/znzf_gjcy_bg');
         background-repeat: repeat-y;
         background-position: center;
         -webkit-background-size: cover;
@@ -258,7 +258,7 @@ $inteColorRed: #e42929;
 
 .page3 {
     .bg3 {
-        @include bg-image('/static/images/intelligent/znzf_bg');
+        @include bg-image('/appstatic/images/intelligent/znzf_bg');
         background-repeat: repeat-y;
         background-position: center bottom;
         -webkit-background-size: cover;
@@ -373,7 +373,7 @@ $inteColorRed: #e42929;
                         left: 50%;
                         width: rem(18);
                         height: rem(78);
-                        @include bg-image('/static/images/intelligent/znzf_line');
+                        @include bg-image('/appstatic/images/intelligent/znzf_line');
                         -webkit-background-size: contain;
                         background-size: contain;
                     }
@@ -382,7 +382,7 @@ $inteColorRed: #e42929;
                         position: relative;
                         width: rem(122);
                         height: rem(122);
-                        @include bg-image('/static/images/intelligent/list_item_big');
+                        @include bg-image('/appstatic/images/intelligent/list_item_big');
                         -webkit-background-size: contain;
                         background-size: contain;
 
@@ -395,7 +395,7 @@ $inteColorRed: #e42929;
                             left: 0;
                             width: 100%;
                             height: 100%;
-                            @include bg-image('/static/images/intelligent/item_big_roud');
+                            @include bg-image('/appstatic/images/intelligent/item_big_roud');
                             -webkit-background-size: contain;
                             background-size: contain;
                         }
@@ -405,7 +405,7 @@ $inteColorRed: #e42929;
                             width: rem(110);
                             height: rem(110);
                             margin: rem(-55) rem(-55);
-                            @include bg-image('/static/images/intelligent/list_item_small');
+                            @include bg-image('/appstatic/images/intelligent/list_item_small');
                             -webkit-background-size: contain;
                             background-size: contain;
                         }
@@ -442,13 +442,13 @@ $inteColorRed: #e42929;
                         }
                         &:before {
                             left: rem(-60);
-                            @include bg-image('/static/images/intelligent/znzf_icon_left');
+                            @include bg-image('/appstatic/images/intelligent/znzf_icon_left');
                             -webkit-animation: lineLeft 1.2s infinite;
                             animation: lineLeft 1.2s infinite;
                         }
                         &:after {
                             right: rem(-60);
-                            @include bg-image('/static/images/intelligent/znzf_icon_right');
+                            @include bg-image('/appstatic/images/intelligent/znzf_icon_right');
                             -webkit-animation: lineRight 1.2s infinite;
                             animation: lineRight 1.2s infinite;
                         }
@@ -476,7 +476,7 @@ $inteColorRed: #e42929;
                     height: rem(90);
                     margin-left: rem(-15);
                     vertical-align: top;
-                    @include bg-image('/static/images/intelligent/result-text-line-bg');
+                    @include bg-image('/appstatic/images/intelligent/result-text-line-bg');
                     -webkit-background-size: 100% auto;
                     background-size: 100% auto;
                     background-position: bottom left;
@@ -661,7 +661,7 @@ $inteColorRed: #e42929;
                             margin-bottom: rem(20);
                             color: $baseWhite;
                             text-align: center;
-                            @include bg-image('/static/images/intelligent/znzf_slide_text_bg');
+                            @include bg-image('/appstatic/images/intelligent/znzf_slide_text_bg');
                             -webkit-background-size: 100% 100%;
                             background-size: 100% 100%;
                             @include box-sizing;
@@ -706,7 +706,7 @@ $inteColorRed: #e42929;
                                 width: rem(50);
                                 height: rem(50);
                                 margin: rem(-20) rem(-25);
-                                @include bg-image('/static/images/intelligent/radio-line-mark');
+                                @include bg-image('/appstatic/images/intelligent/radio-line-mark');
                                 -webkit-background-size: contain;
                                 background-size: contain;
                             }
@@ -780,14 +780,14 @@ $inteColorRed: #e42929;
                                 height: rem(50);
                                 margin-left: rem(-25);
                                 background-color: transparent;
-                                @include bg-image('/static/images/intelligent/radio-line-mark');
+                                @include bg-image('/appstatic/images/intelligent/radio-line-mark');
                                 -webkit-background-size: contain;
                                 background-size: contain;
                             }
 
                             span {
                                 color: $baseWhite;
-                                @include bg-image('/static/images/intelligent/znzf_slide_text_bg');
+                                @include bg-image('/appstatic/images/intelligent/znzf_slide_text_bg');
                                 -webkit-background-size: 100% 100%;
                                 background-size: 100% 100%;
                             }
@@ -824,7 +824,7 @@ $inteColorRed: #e42929;
                             height: rem(56);
                             line-height: rem(56);
                             margin: rem(5) rem(10);
-                            @include bg-image('/static/images/intelligent/distict-box');
+                            @include bg-image('/appstatic/images/intelligent/distict-box');
                             -webkit-background-size: 100% 100%;
                             background-size: 100% 100%;
                         }
@@ -1009,7 +1009,7 @@ $inteColorRed: #e42929;
 
 .page4 {
     .bg4 {
-        @include bg-image('/static/images/intelligent/znzf_gd_bg');
+        @include bg-image('/appstatic/images/intelligent/znzf_gd_bg');
         background-repeat: repeat-y;
         background-position: center bottom;
         -webkit-background-size: contain;
@@ -1039,9 +1039,9 @@ $inteColorRed: #e42929;
                 line-height: rem(76);
                 padding: 0 rem(20);
                 text-align: center;
-                color: #fb3939;
+                color: #414753;
                 white-space: nowrap;
-                @include bg-image('/static/images/intelligent/city-title-block');
+                @include bg-image('/appstatic/images/intelligent/city-title-block');
                 -webkit-background-size: 100% 100%;
                 background-size: 100% 100%;
                 @include font-dpr(36);
@@ -1053,7 +1053,7 @@ $inteColorRed: #e42929;
                     width: rem(225);
                     height: rem(14);
                     margin-top: rem(-7);
-                    @include bg-image('/static/images/intelligent/city-title-bg');
+                    @include bg-image('/appstatic/images/intelligent/city-title-bg');
                     -webkit-background-size: contain;
                     background-size: contain;
                 }
@@ -1086,7 +1086,7 @@ $inteColorRed: #e42929;
 
                     .animate-ring-box {
                         position: absolute;
-                        @include bg-image('/static/images/intelligent/gdy_dq_2');
+                        @include bg-image('/appstatic/images/intelligent/gdy_dq_2');
                         -webkit-background-size: contain;
                         background-size: contain;
 
@@ -1152,7 +1152,7 @@ $inteColorRed: #e42929;
 
                     .animate-ring-box {
                         position: absolute;
-                        @include bg-image('/static/images/intelligent/gdy_xq_2');
+                        @include bg-image('/appstatic/images/intelligent/gdy_xq_2');
                         -webkit-background-size: contain;
                         background-size: contain;
                     }
@@ -1243,7 +1243,7 @@ $inteColorRed: #e42929;
                             width: rem(30);
                             height: rem(26);
                             margin: rem(-13) rem(-15);
-                            @include bg-image('/static/images/intelligent/gdy_icon_1');
+                            @include bg-image('/appstatic/images/intelligent/gdy_icon_1');
                         }
                     }
 
@@ -1310,7 +1310,7 @@ $inteColorRed: #e42929;
                             width: rem(34);
                             height: rem(34);
                             margin: rem(-17);
-                            @include bg-image('/static/images/intelligent/gdy_icon_2');
+                            @include bg-image('/appstatic/images/intelligent/gdy_icon_2');
                         }
                     }
 
@@ -1401,7 +1401,7 @@ $inteColorRed: #e42929;
                             width: rem(30);
                             height: rem(30);
                             margin: rem(-15);
-                            @include bg-image('/static/images/intelligent/gdy_icon_3');
+                            @include bg-image('/appstatic/images/intelligent/gdy_icon_3');
                         }
                     }
 
