@@ -12,6 +12,9 @@ import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -222,46 +225,51 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
-        //"houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto"
-        for (SearchHit searchHit : searchHists) {
-            String details = searchHit.getSourceAsString();
-            SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
-            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
-                if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
-                    int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
-                    if(claimDays>=0 && claimDays<30){
-                        sellHouseDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDo.getPriceIncreaseDecline()));
-                    }
-                }else {
-                    int importFlag = -1;
-                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
-                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
-                        if(importDays>=0 && importDays<7){
-                            importFlag = 3;
-                            sellHouseDo.setHousePhotoTitleTags(importFlag);
-                        }else{
-                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+        if(searchHists.length > 0){
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                        if(claimDays>=0 && claimDays<30){
+                            sellHouseDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDo.getPriceIncreaseDecline()));
+                        }
+                    }else {
+                        int importFlag = -1;
+                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                            if(importDays>=0 && importDays<7){
+                                importFlag = 3;
+                                sellHouseDo.setHousePhotoTitleTags(importFlag);
+                            }else{
+                                sellHouseDo.setHousePhotoTitleTags(importFlag);
+                            }
                         }
                     }
                 }
+
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+                }else{
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                sellHouseDo.setAgentBaseDo(agentBaseDo);
+                sellHouseDos.add(sellHouseDo);
+
             }
-
-            AgentBaseDo agentBaseDo = new AgentBaseDo();
-            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
-
-            }else{
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
-            }
-            sellHouseDo.setAgentBaseDo(agentBaseDo);
-            sellHouseDos.add(sellHouseDo);
-
+            sellHouseDomain.setSellHouseList(sellHouseDos);
+            sellHouseDomain.setTotal((int)hits.getTotalHits());
+        }else{
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
         }
-        sellHouseDomain.setSellHouseList(sellHouseDos);
-        sellHouseDomain.setTotal((int)hits.getTotalHits());
+
+
         return sellHouseDomain;
     }
 
@@ -285,48 +293,53 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
-        Date date = new Date();
-        for (SearchHit searchHit : searchHists) {
-            String details = searchHit.getSourceAsString();
-            SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+        if(searchHists.length > 0){
+            Date date = new Date();
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
 
-            if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
-                if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
-                    int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
-                    if(claimDays>=0 && claimDays<30){
-                        sellHouseDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDo.getPriceIncreaseDecline()));
-                    }
-                }else {
-                    int importFlag = -1;
-                    if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
-                        int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
-                        if(importDays>=0 && importDays<7){
-                            importFlag = 3;
-                            sellHouseDo.setHousePhotoTitleTags(importFlag);
-                        }else{
-                            sellHouseDo.setHousePhotoTitleTags(importFlag);
+                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                        if(claimDays>=0 && claimDays<30){
+                            sellHouseDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDo.getPriceIncreaseDecline()));
+                        }
+                    }else {
+                        int importFlag = -1;
+                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                            if(importDays>=0 && importDays<7){
+                                importFlag = 3;
+                                sellHouseDo.setHousePhotoTitleTags(importFlag);
+                            }else{
+                                sellHouseDo.setHousePhotoTitleTags(importFlag);
+                            }
                         }
                     }
                 }
+
+                sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+                }else{
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+                }
+                sellHouseDo.setAgentBaseDo(agentBaseDo);
+                sellHouseDos.add(sellHouseDo);
+
             }
-
-            sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
-            AgentBaseDo agentBaseDo = new AgentBaseDo();
-            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
-
-            }else{
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
-                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
-            }
-            sellHouseDo.setAgentBaseDo(agentBaseDo);
-            sellHouseDos.add(sellHouseDo);
-
+            sellHouseDomain.setSellHouseList(sellHouseDos);
+            sellHouseDomain.setTotal((int)searchResponse.getHits().getTotalHits());
+        }else{
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
         }
-        sellHouseDomain.setSellHouseList(sellHouseDos);
-        sellHouseDomain.setTotal((int)searchResponse.getHits().getTotalHits());
+
 
         return sellHouseDomain;
     }
@@ -418,72 +431,77 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,sellHouseDoQuery.getDistance(),sellHouseDoQuery.getKeyword(),sellHouseDoQuery.getPageNum(),sellHouseDoQuery.getPageSize());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        Date date = new Date();
-        for (SearchHit searchHit : searchHists) {
-            String details = "";
-            details=searchHit.getSourceAsString();
-            sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
-            claimSellHouseDo=JSON.parseObject(details,ClaimSellHouseDo.class);
-            if (null!=claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim()==1)
-            {   //将认领信息替换
-                sellHousesSearchDo.setHouseId(claimSellHouseDo.getClaimHouseId());
-                sellHousesSearchDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
-                sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
-            }
-            AgentBaseDo agentBaseDo = new AgentBaseDo();
-            if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+        if(searchHists.length > 0){
+            Date date = new Date();
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details=searchHit.getSourceAsString();
+                sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
+                claimSellHouseDo=JSON.parseObject(details,ClaimSellHouseDo.class);
+                if (null!=claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim()==1)
+                {   //将认领信息替换
+                    sellHousesSearchDo.setHouseId(claimSellHouseDo.getClaimHouseId());
+                    sellHousesSearchDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
+                    sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
+                }
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
 
 
-                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
-                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
-                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
-                        if(claimDays>=0 && claimDays<30){
-                            sellHousesSearchDo.setHousePhotoTitleTags(Integer.valueOf(sellHousesSearchDo.getPriceIncreaseDecline()));
-                        }
-                    }else {
-                        int importFlag = -1;
-                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
-                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
-                            if(importDays>=0 && importDays<7){
-                                importFlag = 3;
-                                sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
-                            }else{
-                                sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                            if(claimDays>=0 && claimDays<30){
+                                sellHousesSearchDo.setHousePhotoTitleTags(Integer.valueOf(sellHousesSearchDo.getPriceIncreaseDecline()));
+                            }
+                        }else {
+                            int importFlag = -1;
+                            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                                if(importDays>=0 && importDays<7){
+                                    importFlag = 3;
+                                    sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                                }else{
+                                    sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                                }
                             }
                         }
                     }
+
+
+                }else{
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+                sellHousesSearchDos.add(sellHousesSearchDo);
+                //增加地铁与房子之间的距离
+                String keys="";
+                if(null!=sellHouseDoQuery.getSubwayLineId())
+                {
+                    keys+=sellHouseDoQuery.getSubwayLineId().toString();
+                }
+                if (null!=sellHouseDoQuery.getSubwayStationId())
+                {
+                    keys+= "$"+sellHouseDoQuery.getSubwayStationId();
+                }
+                if (!"".equals(keys) && null!=sellHousesSearchDo.getSubwayDistince())
+                {
+                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
                 }
 
 
-            }else{
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-                agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
-            }
-            sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
-            sellHousesSearchDos.add(sellHousesSearchDo);
-            //增加地铁与房子之间的距离
-            String keys="";
-            if(null!=sellHouseDoQuery.getSubwayLineId())
-            {
-                keys+=sellHouseDoQuery.getSubwayLineId().toString();
-            }
-            if (null!=sellHouseDoQuery.getSubwayStationId())
-            {
-                keys+= "$"+sellHouseDoQuery.getSubwayStationId();
-            }
-            if (!"".equals(keys) && null!=sellHousesSearchDo.getSubwayDistince())
-            {
-                sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
-            }
 
-
-
+            }
+            sellHouseSearchDomain.setData(sellHousesSearchDos);
+            sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
+        }else{
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
         }
-        sellHouseSearchDomain.setData(sellHousesSearchDos);
-        sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
+
 
         return sellHouseSearchDomain;
 

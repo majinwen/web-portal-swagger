@@ -379,35 +379,41 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
         if (searchResponse!=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
-            for (SearchHit hit:hits){
-                String sourceAsString = hit.getSourceAsString();
-                PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
-                if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
-                    plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
-                }
-                plotDetailsFewDo.setMetroWithPlotsDistance(null);
-                //二手房总数
-                try {
-                    PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
-                    plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
-                }catch (BaseException e){
-                   // logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
-                    if (e.getCode()==50301){
-                        plotDetailsFewDo.setSellHouseTotalNum(0);
+
+            if(hits.length > 0){
+                for (SearchHit hit:hits){
+                    String sourceAsString = hit.getSourceAsString();
+                    PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
+                    if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
+                        plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
                     }
-                }
-                //租房总数
-                try {
-                    RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
-                    plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
-                }catch (BaseException e){
-                   // logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
-                    if (e.getCode()==50401){
-                        plotDetailsFewDo.setRentTotalNum(0);
+                    plotDetailsFewDo.setMetroWithPlotsDistance(null);
+                    //二手房总数
+                    try {
+                        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
+                        plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
+                    }catch (BaseException e){
+                        // logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                        if (e.getCode()==50301){
+                            plotDetailsFewDo.setSellHouseTotalNum(0);
+                        }
                     }
+                    //租房总数
+                    try {
+                        RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
+                        plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
+                    }catch (BaseException e){
+                        // logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                        if (e.getCode()==50401){
+                            plotDetailsFewDo.setRentTotalNum(0);
+                        }
+                    }
+                    plotDetailsFewDoList.add(plotDetailsFewDo);
                 }
-                plotDetailsFewDoList.add(plotDetailsFewDo);
+            }else{
+                throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND,"小区楼盘列表为空");
             }
+
         }
         plotListDo.setPlotList(plotDetailsFewDoList);
         plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());

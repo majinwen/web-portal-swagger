@@ -243,39 +243,47 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
-        try{
+
             SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort);
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
-            for (SearchHit searchHit : searchHists) {
-                String details = "";
-                details=searchHit.getSourceAsString();
-                NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
-                if (""!=keys&&null!=newHouseListDos.getNearbysubway()){
-                    newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
-                }
+            if(searchHists.length > 0){
+                for (SearchHit searchHit : searchHists) {
+                    String details = "";
+                    details=searchHit.getSourceAsString();
+                    NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
+                    if (""!=keys&&null!=newHouseListDos.getNearbysubway()){
+                        newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
+                    }
 //                newHouseListDos.setNearbysubway(null);
-                //获取新房下户型的数量
-                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
-                if (null!=newHouseLayoutCountDomain.getTotalCount())
-                {
-                    newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
-                }
-                else
-                {
-                    newHouseListDos.setRoomTotalCount(0);
-                }
+                    try{
+                        //获取新房下户型的数量
+                        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
+                        if (null!=newHouseLayoutCountDomain.getTotalCount())
+                        {
+                            newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
+                        }
+                        else
+                        {
+                            newHouseListDos.setRoomTotalCount(0);
+                        }
+                    }catch (Exception e){
+                        logger.error("获取新房户型信息异常信息={}",e.getStackTrace());
+                    }
+
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
-                newHouseListDoList.add(newHouseListDos);
+                    newHouseListDoList.add(newHouseListDos);
+                }
+                newHouseListVo.setData(newHouseListDoList);
+                newHouseListVo.setTotalCount(hits.getTotalHits());
+            }else{
+                throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND,"新房楼盘列表为空");
             }
-            newHouseListVo.setData(newHouseListDoList);
-            newHouseListVo.setTotalCount(hits.getTotalHits());
-        }catch (Exception e)
-        {
-            logger.error("获取新房列表信息异常信息={}",e.getStackTrace());
-        }
+
+
+
         return newHouseListVo ;
     }
 
