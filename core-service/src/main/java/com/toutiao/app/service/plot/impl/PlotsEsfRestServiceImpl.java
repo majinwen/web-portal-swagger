@@ -11,6 +11,7 @@ import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
@@ -88,6 +89,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<SellAndClaimHouseDetailsDo> sellHouseDoList = new ArrayList<>();
         detailsBuilder.must(termQuery("newcode",plotsId));
+        detailsBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
         if(room != 0){
             detailsBuilder.must(termQuery("room",room));
         }
@@ -103,7 +105,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         for (SearchHit hit : searchHists) {
             details = hit.getSourceAsString();
             SellAndClaimHouseDetailsDo sellHouseDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
-            if(hit.getSource().get("is_claim").equals("1")){
+            if(hit.getSource().get("is_claim").toString().equals("1")){
                 sellHouseDo.setHousePhotoTitle(hit.getSource().get("claimHousePhotoTitle").toString());
                 sellHouseDo.setHouseId(hit.getSource().get("claimHouseId").toString());
             }

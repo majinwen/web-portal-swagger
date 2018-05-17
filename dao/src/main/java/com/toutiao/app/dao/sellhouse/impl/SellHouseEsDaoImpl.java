@@ -97,7 +97,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+                .setQuery(booleanQueryBuilder).addSort("sortingScore",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                 .execute().actionGet();
         return searchResponse;
     }

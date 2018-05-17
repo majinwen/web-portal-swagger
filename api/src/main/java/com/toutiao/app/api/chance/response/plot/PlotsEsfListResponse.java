@@ -11,7 +11,7 @@ public class PlotsEsfListResponse {
     /**
      * 二手房房源id
      */
-    private Integer houseId;
+    private String houseId;
 
     /**
      * 室
