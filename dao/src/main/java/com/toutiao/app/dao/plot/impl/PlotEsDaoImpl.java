@@ -9,6 +9,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,  FieldSortBuilder levelSort,Integer size) {
+    public SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder levelSort, Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort(levelSort).execute().actionGet();
@@ -65,10 +66,10 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryPlotListByRequirementAndKeyword(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size) {
+    public SearchResponse queryPlotListByRequirementAndKeyword(Integer from, FunctionScoreQueryBuilder functionScoreQueryBuilder,Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(functionScoreQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 

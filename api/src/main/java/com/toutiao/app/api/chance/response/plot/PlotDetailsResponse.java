@@ -75,6 +75,10 @@ public class PlotDetailsResponse {
     @ChangeName("totalBuilding")
     private String sumBuilding;
     /**
+     * 建筑类型结构
+     */
+    private String buildingStructure;
+    /**
      * 总户数
      */
     @ChangeName("totalHousehold")

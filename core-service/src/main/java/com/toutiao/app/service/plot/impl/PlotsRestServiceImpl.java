@@ -27,10 +27,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.jdbc.Null;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.lucene.search.function.CombineFunction;
+import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.GaussDecayFunctionBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.*;
@@ -369,12 +374,24 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区分数排序
 //        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
 
+        //坐标
+        Map<String,Double> map = new HashMap<>();
+        map.put("lat",plotListDoQuery.getLat());
+        map.put("lon",plotListDoQuery.getLon());
+        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+
+        //设置高斯函数按照距离进行打分
+        GaussDecayFunctionBuilder functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",json,"2.5km","0.5km" ,0.5);
+
+        //多个内部分数用乘法,新老分数之间用乘法
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(boolQueryBuilder, functionBuilder).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+
         PlotListDo plotListDo = new PlotListDo();
         SearchResponse searchResponse = null;
-        if(StringTool.isEmpty(plotListDoQuery.getKeyword())){
-            searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotListDoQuery.getPageSize());
+        if (StringTool.isNotEmpty(plotListDoQuery.getKeyword())||(StringTool.isNotEmpty(plotListDoQuery.getLat())&&StringTool.isNotEmpty(plotListDoQuery.getLon()))){
+            searchResponse = plotEsDao.queryPlotListByRequirementAndKeyword(from, functionScoreQueryBuilder, plotListDoQuery.getPageSize());
         }else {
-            searchResponse = plotEsDao.queryPlotListByRequirementAndKeyword(from, boolQueryBuilder, plotListDoQuery.getPageSize());
+            searchResponse = plotEsDao.queryPlotListByRequirement(from, boolQueryBuilder, levelSort, plotListDoQuery.getPageSize());
         }
 
         if (searchResponse!=null){

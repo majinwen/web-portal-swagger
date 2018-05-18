@@ -3,6 +3,7 @@ package com.toutiao.app.dao.plot;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.context.annotation.Configuration;
@@ -42,15 +43,15 @@ public interface PlotEsDao {
      * @param scoreSort
      * @return
      */
-    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder,FieldSortBuilder scoreSort,Integer size);
+    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder scoreSort, Integer size);
 
     /**
      * 查询小区列表
      * @param from
-     * @param boolQueryBuilder
+     * @param functionScoreQueryBuilder
      * @return
      */
-    SearchResponse queryPlotListByRequirementAndKeyword(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size);
+    SearchResponse queryPlotListByRequirementAndKeyword(Integer from, FunctionScoreQueryBuilder functionScoreQueryBuilder,Integer size);
 
 
     /**
