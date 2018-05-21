@@ -63,4 +63,6 @@ public class UserFavoriteEsHouseDoQuery {
      */
     private Integer isClaim;
 
+    private Integer housePhotoTitleTags;
+
 }

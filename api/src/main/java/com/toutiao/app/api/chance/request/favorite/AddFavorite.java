@@ -85,4 +85,9 @@ public class AddFavorite {
      * 认领标志
      */
     private Integer isClaim;
+
+    private String housePhotoTitleTags;
+
+
+
 }
