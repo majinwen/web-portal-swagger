@@ -11,6 +11,7 @@ import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
@@ -30,10 +31,7 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
@@ -116,6 +114,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
+        Date date = new Date();
         for (SearchHit searchHit : searchHists) {
             String details = "";
             details=searchHit.getSourceAsString();
@@ -131,6 +130,28 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
 
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(nearBySellHousesDo.getUserId())){
                 agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString());
+
+                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                        if(claimDays>=0 && claimDays<30){
+                            nearBySellHousesDo.setHousePhotoTitleTags(Integer.valueOf(nearBySellHousesDo.getPriceIncreaseDecline()));
+                        }
+                    }else {
+                        int importFlag = -1;
+                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                            if(importDays>=0 && importDays<7){
+                                importFlag = 3;
+                                nearBySellHousesDo.setHousePhotoTitleTags(importFlag);
+                            }else{
+                                nearBySellHousesDo.setHousePhotoTitleTags(importFlag);
+                            }
+                        }
+                    }
+                }
+
+
 
             }else{
                 agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());

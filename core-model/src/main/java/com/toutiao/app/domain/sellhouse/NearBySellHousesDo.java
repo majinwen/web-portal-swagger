@@ -149,4 +149,6 @@ public class NearBySellHousesDo {
      * 价格涨降标志
      */
     private String priceIncreaseDecline;
+
+    private Integer housePhotoTitleTags = -1;
 }
