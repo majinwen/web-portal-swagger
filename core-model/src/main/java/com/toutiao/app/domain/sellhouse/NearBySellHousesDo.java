@@ -144,4 +144,9 @@ public class NearBySellHousesDo {
     private AgentBaseDo agentBaseDo;
 
     private Integer userId;
+
+    /**
+     * 价格涨降标志
+     */
+    private String priceIncreaseDecline;
 }
