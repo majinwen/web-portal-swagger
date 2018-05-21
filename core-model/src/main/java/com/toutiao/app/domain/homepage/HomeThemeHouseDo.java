@@ -48,4 +48,15 @@ public class HomeThemeHouseDo {
      */
     @ChangeName("nearBySubwayDesc")
     private String traffic;
+
+    /**
+     * 商圈名称
+     */
+    @ChangeName("areaName")
+    private String houseBusinessName;
+    /**
+     * 区域名称
+     */
+    @ChangeName("districtName")
+    private String area;
 }
