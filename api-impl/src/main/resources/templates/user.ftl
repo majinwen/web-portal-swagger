@@ -15,6 +15,8 @@
                 <#if getUser().userName?exists>
                     ${getUser().userName}
                 </#if>
+            <#else >
+                请登录
             </#if>
         </#if>
         </p>
