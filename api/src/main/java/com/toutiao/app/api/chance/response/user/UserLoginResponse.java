@@ -39,6 +39,6 @@ public class UserLoginResponse {
     /**
      * 用户昵称
      */
-    private String userNickName;
+//    private String userNickName;
 
 }

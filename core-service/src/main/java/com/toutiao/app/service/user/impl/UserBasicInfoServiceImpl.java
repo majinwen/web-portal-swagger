@@ -61,7 +61,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
                 if(res == 1){
                     userBasic = userBasicMapper.selectByPrimaryKey(userId);
                     //把更新的图片上传到融云
-                    Result rcToken = imService.refreshRongCloudByUser(userBasic.getUserOnlySign(),userBasic.getUserName(),headPicPath+"/"+userBasic.getAvatar());
+                    Result rcToken = imService.refreshRongCloudByUser(userBasic.getUserOnlySign(),userBasic.getPhone(),headPicPath+"/"+userBasic.getAvatar());
                     if(rcToken==null && rcToken.getCode()!=200){
                         throw new BaseException(RestfulInterfaceErrorCodeEnum.UPDATE_USER_AVATAR_RONGCLOUD_ERROR,"RongCloud更新用户头像异常");
                     }
