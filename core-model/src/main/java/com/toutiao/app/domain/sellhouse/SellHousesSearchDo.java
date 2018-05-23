@@ -140,7 +140,7 @@ public class SellHousesSearchDo {
     /**
      * 价格涨降金额
      */
-    private String priceIncreaseDeclineAmount;
+    private Double priceIncreaseDeclineAmount;
 
     private Integer userId;
 
