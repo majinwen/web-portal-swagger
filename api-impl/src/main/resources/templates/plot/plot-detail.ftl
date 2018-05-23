@@ -206,7 +206,7 @@
                                         <#if photoitem?index_of('http') gt -1>
                                             <img src="${photoitem}" alt="" onerror="this.src='${staticurl}/images/global/tpzw_image.png'">
                                         <#else >
-                                            <img src="${qiniuzufangimage}/${rentitem['house_title_img']}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="">
+                                            <img src="${qiniuzufangimage}/${reitem['housePhotoTitle']}-tt400x300" onerror="this.src='${staticurl}/images/global/tpzw_image.png'" alt="">
                                         </#if>
                                     <#else >
                                         <img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
