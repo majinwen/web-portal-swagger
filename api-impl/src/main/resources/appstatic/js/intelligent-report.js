@@ -17,7 +17,7 @@ $(function () {
             param: {
                 title: '懂房帝',
                 text: '懂房帝为您推荐了5个小区',
-                url: 'http://appdev.toutiaofangchan.com/bj/findhouse/dongfangdi/',
+                url: location.href.split('#')[0],
                 imgurl: 'http://m.toutiaofangchan.com/static/images/intelligent/adm_323031383036343130343932.png'
             }
         });
