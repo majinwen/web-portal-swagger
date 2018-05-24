@@ -1,11 +1,12 @@
 package com.toutiao.app.api.chance.request.newhouse;
 
+import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NewHouseDynamicRequest {
+public class NewHouseDynamicRequest extends BaseQueryRequest {
 
     /**
      * 大楼id

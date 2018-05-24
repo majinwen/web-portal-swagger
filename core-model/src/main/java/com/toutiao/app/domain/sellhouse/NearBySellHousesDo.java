@@ -144,4 +144,5 @@ public class NearBySellHousesDo {
     private AgentBaseDo agentBaseDo;
 
     private Integer userId;
+
 }
