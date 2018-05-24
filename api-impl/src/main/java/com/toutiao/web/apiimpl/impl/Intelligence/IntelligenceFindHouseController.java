@@ -2,41 +2,28 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
-import com.toutiao.web.apiimpl.authentication.GetUserMethod;
+import com.toutiao.app.api.chance.response.user.UserLoginResponse;
+import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.Com35Aes;
-import com.toutiao.web.common.util.Constant;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse;
-import com.toutiao.web.dao.entity.robot.QueryFindByRobot;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
-import freemarker.template.TemplateModelException;
-import org.apache.poi.ss.formula.functions.Na;
 import org.postgresql.util.PGobject;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -52,6 +39,8 @@ public class IntelligenceFindHouseController {
     private IntelligenceFindHouseService intelligenceFindHouseService;
     @Autowired
     private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
+    @Autowired
+    private UserBasicInfoService userBasicInfoService;
 
 
     /**
@@ -66,10 +55,13 @@ public class IntelligenceFindHouseController {
     public String getMyReport(HttpServletRequest request, Model model) {
         model.addAttribute("backUrl", request.getRequestURI());
         //从cookie中获取用户手机号码
-        String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-        if (StringTool.isNotBlank(usePhone)) {
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+
+        if (StringTool.isNotBlank(userLoginResponse)) {
             //查询用户是否有报告数据
-            List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(usePhone);
+            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            List<IntelligenceFhRes> userReport = intelligenceFhResService.queryUserReport(userBasic.getPhone());
             if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
                 model.addAttribute("userReport", userReport);
             }else{
@@ -95,13 +87,15 @@ public class IntelligenceFindHouseController {
                                       @RequestParam("reportId") String reportId) {
 
         if (StringTool.isNotBlank(reportId)) {
-            String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-            if (StringTool.isBlank(usePhone)) {
+            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+            if (StringTool.isBlank(user)) {
                 //前台判断状态 然后跳转到登陆页面
                  return NashResult.Fail("no-login","");
             }else {
                 //更改当前报告的状态
-                int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
+                UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+                int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, userBasic.getPhone());
                 if (result != 0) {
                     //收藏成功
                     return NashResult.build("ok");
@@ -125,7 +119,7 @@ public class IntelligenceFindHouseController {
     public NashResult cancleMyReport(HttpServletRequest request,@PathVariable("reportId") String reportId){
 
         try {
-            String phone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
+            String phone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
             int count = intelligenceFhResService.deleteMyReport(reportId, phone);
             if(count != 0){
                 return NashResult.build("ok");
@@ -214,19 +208,27 @@ public class IntelligenceFindHouseController {
      */
     @RequestMapping("/showUserPortrayal")
     @ResponseBody
-    public NashResult showUserPortrayal(Model model, IntelligenceQuery intelligenceQuery) {
+    public NashResult showUserPortrayal(HttpServletRequest request,Model model, IntelligenceQuery intelligenceQuery) {
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+        String userPhone = null;
+        if(null != userLoginResponse){
+            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            userPhone = userBasic.getPhone();
+        }
         //调用生成报告页展示数据接口
         //通过相关数据获取报告生成都数据 保存到相应的数据表中
 
         String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
         intelligenceQuery.setCreateTime(date);
-        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery);
+        IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery, userPhone);
 
         if (StringTool.isNotBlank(intelligenceFhRes)) {
             return NashResult.build(intelligenceFhRes);
         }
         return NashResult.build(0);
     }
+
 
     /**
      * 功能描述：打开报告页数据信息
@@ -242,8 +244,10 @@ public class IntelligenceFindHouseController {
         try {
             if (StringTool.isNotBlank(reportId)) {
                 if(StringTool.isNotBlank(title)){
-                    String usePhone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_User_LOGIN);
-                    intelligenceFhResService.updateMyReportCollectStatus(reportId, usePhone);
+                    String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+                    UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+                    UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+                    intelligenceFhResService.updateMyReportCollectStatus(reportId, userBasic.getPhone());
                 }
                 //查询用户是否有报告数据
                 IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));

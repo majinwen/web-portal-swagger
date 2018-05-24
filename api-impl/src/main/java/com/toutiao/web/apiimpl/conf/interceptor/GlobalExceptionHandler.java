@@ -11,12 +11,10 @@ import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -60,7 +58,12 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     }
 
 
-
+    private boolean isRestful(HttpServletRequest request){
+        if(request.getRequestURI().toLowerCase().lastIndexOf("/rest/")>-1){
+            return true;
+        }
+        return false;
+    }
 
 
     // 异常处理方法：
@@ -69,8 +72,13 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public Object handleValidationException(HttpServletRequest request,HttpServletResponse response,ConstraintViolationException ex) {
-        String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),ex);
+        if(isRestful(request)){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return NashResult.Fail(HttpStatus.BAD_REQUEST.toString(),"找不到接口地址",getExceptionDetail(ex));
+        }
+        String requestType = request.getHeader("x-requested-with");
+
         Set<ConstraintViolation<?>> errors = ex.getConstraintViolations();
         StringBuilder strBuilder = new StringBuilder();
         NashResult nashResult = new NashResult();
@@ -89,7 +97,7 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     }
 
 
-//    @ResponseStatus(value=HttpStatus.OK)
+    @ResponseStatus(value=HttpStatus.OK)
     @ExceptionHandler(value=MethodArgumentNotValidException.class) //400
     @ResponseBody
     public Object MethodArgumentNotValidHandler(HttpServletRequest request, HttpServletResponse response,
@@ -97,6 +105,10 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     {
         String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),exception);
+        if(isRestful(request)){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return NashResult.Fail(HttpStatus.BAD_REQUEST.toString(),"请求参数错误",getExceptionDetail(exception));
+        }
         HashMap<String,String> errortip=new HashMap<>();
         //解析原错误信息，封装后返回，此处返回非法的字段名称，原始值，错误信息
         for (FieldError error : exception.getBindingResult().getFieldErrors()) {
@@ -120,9 +132,11 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     @ResponseBody
     public Object NoHandlerFoundException(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         String requestType = request.getHeader("x-requested-with");
-        logger.error("异常:"+request.getRequestURI(),ex);
         logger.error("NoHandlerFound-error","找不到接口地址："+request.getRequestURI().toString());
-
+        if(isRestful(request)){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return NashResult.Fail(HttpStatus.NOT_FOUND.toString(),"找不到接口地址",getExceptionDetail(ex));
+        }
         NashResult nashResult = new NashResult();
         if(requestType==null){
             response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
@@ -134,6 +148,23 @@ public class GlobalExceptionHandler extends AbstractErrorController {
         }
     }
 
+
+    /**
+     * @author  wangzw
+     * @create  2018/3/2 16:36
+     * @desc 无法抛出的参数异常
+     **/
+    @ResponseStatus(value=HttpStatus.OK)
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    public NashResult BindException(HttpServletRequest request,HttpServletResponse response,BindException be){
+        logger.error("异常:"+request.getRequestURI(),be);
+        if(isRestful(request)){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            return NashResult.Fail("Argument-error","Argument-error|请求参数错误",getExceptionDetail(be));
+        }
+        return NashResult.Fail(	"Argument-error","Argument-error|请求参数错误");
+    }
     // 通用异常的处理，返回500
 
 //    @ResponseStatus(value=HttpStatus.OK)  // 500
@@ -142,6 +173,11 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     public Object handleException( HttpServletRequest request,HttpServletResponse response,Exception ex) {
         String requestType = request.getHeader("x-requested-with");
         logger.error("异常:"+request.getRequestURI(),ex);
+        if(isRestful(request)){
+            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
+            BaseException e=(BaseException)ex;
+            return NashResult.Fail(e.getCode().toString(),e.getMsg(),getExceptionDetail(ex));
+        }
         NashResult nashResult = new NashResult();
         if(ex instanceof BaseException){
             BaseException baseex=(BaseException)ex;

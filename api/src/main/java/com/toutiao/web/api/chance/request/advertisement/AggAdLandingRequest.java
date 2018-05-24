@@ -84,4 +84,13 @@ public class AggAdLandingRequest {
      * 品质公寓(1:true)
      */
     private String qualityRent;
+
+    /**
+     * 天
+     */
+    private Integer days;
+    /**
+     * 二手房涨价/降价标志
+     */
+    private Integer priceID;
 }

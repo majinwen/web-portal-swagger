@@ -75,4 +75,4 @@
         </div>
     </div>
 </div>
-<script src="${staticurl}/js/search-localStorageRent.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/search-localStorage.js?v=${staticversion}"></script>

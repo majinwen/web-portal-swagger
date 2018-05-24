@@ -1,6 +1,8 @@
 package com.toutiao.web.apiimpl.impl.advertisement;
 
 
+import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
+import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.web.api.chance.request.advertisement.AggAdLandingRequest;
 import com.toutiao.web.api.chance.response.advertisement.RentHouseResponse;
 import com.toutiao.web.api.chance.response.advertisement.SellHouseResponse;
@@ -173,5 +175,18 @@ public class AggAdLandingController {
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
         return NashResult.build(sellHouseResponse);
     }
+
+//    @RequestMapping(value = "/querySellHouseByPrice")
+//    @ResponseBody
+//    public NashResult querySellHouseByPrice(AggAdLandingRequest aggAdLandingRequest){
+//        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
+//        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+//        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+//
+//        SellHouseSearchDomain sellHouseSearchDomain = aggAdLandingService.getSellHouseByPrice(aggAdLandingDo);
+//        BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
+//
+//        return NashResult.build(sellHouseSearchDomainResponse);
+//    }
 
 }

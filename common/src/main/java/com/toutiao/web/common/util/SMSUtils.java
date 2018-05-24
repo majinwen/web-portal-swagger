@@ -5,6 +5,7 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,8 @@ public class SMSUtils {
 
         // 组装请求对象-具体描述见控制台-文档部分内容
         SendSmsRequest request = new SendSmsRequest();
+        //使用post提交
+        request.setMethod(MethodType.POST);
         // 必填:待发送手机号
         request.setPhoneNumbers(phone);
         // 必填:短信签名-可在短信控制台中找到
@@ -69,12 +72,12 @@ public class SMSUtils {
 
         // hint 此处可能会抛出异常，注意catch
         sendSmsResponse = acsClient.getAcsResponse(request);
-        if (sendSmsResponse.getCode() != null
-                && sendSmsResponse.getCode().equals("OK")) {
-            //发送成功
-            return null;
-        }
-        return sendSmsResponse.getMessage();
+//        if (sendSmsResponse.getCode() != null
+//                && sendSmsResponse.getCode().equals("OK")) {
+//            //发送成功
+//            return null;
+//        }
+        return sendSmsResponse.getCode();
     }
 
     public static void main(String[] args) throws ClientException,

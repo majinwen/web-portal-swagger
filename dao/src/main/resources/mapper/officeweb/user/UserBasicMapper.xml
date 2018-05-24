@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="user_status" property="userStatus" jdbcType="SMALLINT" />
+    <result column="register_source" property="registerSource" jdbcType="SMALLINT" />
+    <result column="identity_type" property="identityType" jdbcType="SMALLINT" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="rong_cloud_token" property="rongCloudToken" jdbcType="VARCHAR" />
+    <result column="user_only_sign" property="userOnlySign" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_name, user_pwd, phone, avatar, create_time, login_time, update_time, 
+    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_basic
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 根据用户手机号和状态，判断用户是否存在-->
+  <select id="selectUserByExample" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    select
+    <include refid="Base_Column_List" />
+    from user_basic
+    where phone = #{phone,jdbcType=VARCHAR}
+    and user_status = #{userStatus,jdbcType=SMALLINT}
+    and identity_type = #{identityType,jdbcType=SMALLINT}
+    and identifier = #{identifier,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUserByPhone" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    select
+    <include refid="Base_Column_List" />
+    from user_basic
+    where phone =  #{phone,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectUserBasicByRcId" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    select
+    <include refid="Base_Column_List" />
+    from user_basic
+    where user_only_sign =  #{userOnlySign,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from user_basic
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    insert into user_basic (user_id, user_name, user_pwd, 
+      phone, avatar, create_time, 
+      login_time, update_time, user_status, 
+      register_source, identity_type, identifier, 
+      rong_cloud_token, user_only_sign)
+    values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{loginTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=SMALLINT}, 
+      #{registerSource,jdbcType=SMALLINT}, #{identityType,jdbcType=SMALLINT}, #{identifier,jdbcType=VARCHAR}, 
+      #{rongCloudToken,jdbcType=VARCHAR}, #{userOnlySign,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
+    insert into user_basic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="userPwd != null" >
+        user_pwd,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="avatar != null" >
+        avatar,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="loginTime != null" >
+        login_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
+      <if test="registerSource != null" >
+        register_source,
+      </if>
+      <if test="identityType != null" >
+        identity_type,
+      </if>
+      <if test="identifier != null" >
+        identifier,
+      </if>
+      <if test="rongCloudToken != null" >
+        rong_cloud_token,
+      </if>
+      <if test="userOnlySign != null" >
+        user_only_sign,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null" >
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="registerSource != null" >
+        #{registerSource,jdbcType=SMALLINT},
+      </if>
+      <if test="identityType != null" >
+        #{identityType,jdbcType=SMALLINT},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="rongCloudToken != null" >
+        #{rongCloudToken,jdbcType=VARCHAR},
+      </if>
+      <if test="userOnlySign != null" >
+        #{userOnlySign,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    update user_basic
+    <set >
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null" >
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null" >
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null" >
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="registerSource != null" >
+        register_source = #{registerSource,jdbcType=SMALLINT},
+      </if>
+      <if test="identityType != null" >
+        identity_type = #{identityType,jdbcType=SMALLINT},
+      </if>
+      <if test="identifier != null" >
+        identifier = #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="rongCloudToken != null" >
+        rong_cloud_token = #{rongCloudToken,jdbcType=VARCHAR},
+      </if>
+      <if test="userOnlySign != null" >
+        user_only_sign = #{userOnlySign,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
+    update user_basic
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      user_status = #{userStatus,jdbcType=SMALLINT},
+      register_source = #{registerSource,jdbcType=SMALLINT},
+      identity_type = #{identityType,jdbcType=SMALLINT},
+      identifier = #{identifier,jdbcType=VARCHAR},
+      rong_cloud_token = #{rongCloudToken,jdbcType=VARCHAR},
+      user_only_sign = #{userOnlySign,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

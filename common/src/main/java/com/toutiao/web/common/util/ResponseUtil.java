@@ -35,7 +35,7 @@ public class ResponseUtil {
 //				l2.add(ConvertUtils.convert(n, target));
 				}
 			} catch (Exception e) {
-				throw new NashRequestException("0000", e.getMessage());
+				throw new NashRequestException(0000, e.getMessage());
 			}
 		}
 		return l2;

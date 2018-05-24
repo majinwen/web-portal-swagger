@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteRentMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteRent" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="SMALLINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="rent_price" property="rentPrice" jdbcType="DOUBLE" />
+    <result column="rent_type" property="rentType" jdbcType="VARCHAR" />
+    <result column="house_area" property="houseArea" jdbcType="DOUBLE" />
+    <result column="room" property="room" jdbcType="INTEGER" />
+    <result column="forward" property="forward" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="house_photo_title" property="housePhotoTitle" jdbcType="VARCHAR" />
+    <result column="house_title" property="houseTitle" jdbcType="VARCHAR" />
+    <result column="rent_type_name" property="rentTypeName"  jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, house_id, create_time, is_del
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_favorite_rent
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--收藏列表-->
+  <select id="selectRentFavoritesByUserId" parameterType="com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery" resultMap="BaseResultMap">
+    SELECT  * FROM user_favorite_rent
+    WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user_favorite_rent
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteRent" >
+    insert into user_favorite_rent (id, user_id, house_id,
+      create_time, is_del)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteRent" >
+    insert into user_favorite_rent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="rentPrice != null" >
+        rent_price,
+      </if>
+      <if test="rentType != null" >
+        rent_type,
+      </if>
+      <if test="houseArea != null" >
+        house_area,
+      </if>
+      <if test="room != null" >
+        room,
+      </if>
+      <if test="forward != null" >
+        forward,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="housePhotoTitle != null" >
+        house_photo_title,
+      </if>
+      <if test="houseTitle != null" >
+        house_title,
+      </if>
+      <if test="rentTypeName!= null" >
+        rent_type_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test=" rentPrice != null" >
+        #{rentPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="rentType  != null" >
+        #{rentType,jdbcType=VARCHAR},
+      </if>
+      <if test="houseArea  != null" >
+        #{houseArea,jdbcType=DOUBLE},
+      </if>
+      <if test="room != null" >
+        #{room,jdbcType=INTEGER},
+      </if>
+      <if test=" forward != null" >
+        #{forward,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingName  != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="housePhotoTitle  != null" >
+        #{housePhotoTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="houseTitle  != null" >
+        #{houseTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="rentTypeName != null" >
+        #{rentTypeName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteRent" >
+    update user_favorite_rent
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        is_del = #{isDel,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.favorite.UserFavoriteRent" >
+    update user_favorite_rent
+    set user_id = #{userId,jdbcType=INTEGER},
+      house_id = #{houseId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      is_del = #{isDel,jdbcType=SMALLINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectRentFavoriteByUserId" resultType="Integer">
+    SELECT  count(*) from  user_favorite_rent
+    where user_id=#{userId} and is_del=0
+
+  </select>
+
+  <select id="isRentFavoriteByRentIdAndUserId" resultType="Integer">
+    SELECT  count(1) FROM user_favorite_rent
+    where house_id=#{houseId} and user_id=#{userId} and is_del=0
+  </select>
+  <update id="updateRentFavoriteByHouseIdAndUserId" parameterType="com.toutiao.app.domain.favorite.DeleteRentFavoriteDoQuery">
+    UPDATE user_favorite_rent
+    SET is_del = 1
+    WHERE user_id = #{userId,jdbcType=INTEGER} AND house_id = #{houseId,jdbcType=VARCHAR} AND is_del = 0
+  </update>
+</mapper>

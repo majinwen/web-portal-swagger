@@ -119,8 +119,8 @@ public class PlotConterller {
                 areaId = Integer.parseInt(sareaId);
             }
 
-            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
-            model.addAttribute("tradeline", stringListMap);
+//            Map<String, Object> stringListMap = priceTrendService.priceTrendList(village.getId(),discId,areaId);
+//            model.addAttribute("tradeline", stringListMap);
 
             //推荐小区二手房
             ProjHouseInfoQuery projHouseInfoQuery = new ProjHouseInfoQuery();

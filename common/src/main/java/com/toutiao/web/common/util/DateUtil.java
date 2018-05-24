@@ -90,7 +90,7 @@ public class DateUtil {
 		try {
 			return new SimpleDateFormat(pattern).parse(date);
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 	}
 
@@ -124,7 +124,7 @@ public class DateUtil {
 			Date sdate = new SimpleDateFormat(datePattern).parse(date);
 			return new java.sql.Date(sdate.getTime());
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 	}
 
@@ -805,7 +805,7 @@ public class DateUtil {
 			String s = t.format(f.parse(date));
 			return s;
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 	}
 
@@ -823,7 +823,7 @@ public class DateUtil {
 				time = new Timestamp(f.parse(s).getTime());
 			}
 		} catch (ParseException e) {
-		    throw new NashRequestException("1001", "日期格式转换错误");
+		    throw new NashRequestException(1001, "日期格式转换错误");
 		}
 		return time;
 	}
@@ -1184,5 +1184,42 @@ public class DateUtil {
 		return  dateList;
 	}
 
+	/**
+	 * 获取过去第几天的日期
+	 *
+	 * @param past
+	 * @return
+	 */
+	public static String getPastDate(int past) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) - past);
+		Date today = calendar.getTime();
+		SimpleDateFormat format = new SimpleDateFormat(datePattern);
+		String result = format.format(today);
+		return result;
+	}
+
+
+	public static Date getStringToDate(String dateTime) {
+		SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = null;
+		try {
+			date = sDateFormat.parse(dateTime);
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
+
+//	public static void main(String[] args) {
+//		String sss = "2018-05-16 09:17:34";
+//
+//		System.out.println(parseToSqlDate11(sss));
+//
+//		Date date = new Date();
+//		int ss = DateUtil.daysBetween(date,parseToSqlDate11(sss));
+//		System.out.println(ss);
+//	}
 
 }
