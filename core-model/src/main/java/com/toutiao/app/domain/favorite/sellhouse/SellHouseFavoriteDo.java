@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.favorite.sellhouse;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -55,5 +56,6 @@ public class SellHouseFavoriteDo {
     /**
      * 价格涨降标志
      */
+    @ChangeName("housePhotoTitleTags")
     private String priceIncreaseDecline;
 }

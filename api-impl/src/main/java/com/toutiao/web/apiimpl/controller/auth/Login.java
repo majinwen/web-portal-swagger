@@ -137,15 +137,16 @@ public class Login {
 //            }
 
             UserBasicDo userBasicDo =userBasicInfoService.queryUserBasicByPhone(phone);
+            UserBasic insertUserBasic = new UserBasic();
             if(StringTool.isEmpty(userBasicDo)){
                 //注册新用户
-                UserBasic insertUserBasic = new UserBasic();
+
                 Date date = new Date();
-                insertUserBasic.setUserName(phone);
+                insertUserBasic.setUserName(phone.substring(0,2)+"*****"+phone.substring(9,11));
 
                 String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                 int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
-                insertUserBasic.setAvatar(userAvatar[avatarNum]);
+                insertUserBasic.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
                 insertUserBasic.setCreateTime(date);
                 insertUserBasic.setLoginTime(date);
                 insertUserBasic.setPhone(phone);
@@ -154,29 +155,30 @@ public class Login {
                 insertUserBasic.setRegisterSource(ServiceStateConstant.USER_REGISTER_SOURCE_WAP);
                 insertUserBasic.setIdentityType(ServiceStateConstant.USER_REGISTER_IDENTITY_PHONE);
                 insertUserBasic.setIdentifier(phone);
-
-                insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
+                Date d = new Date();
+                insertUserBasic.setUserOnlySign(d.getTime()+insertUserBasic.getPhone());
                 //用户注册融云信息
-                String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), insertUserBasic.getUserName(), insertUserBasic.getAvatar());
+                String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), insertUserBasic.getPhone(), headPicPath+"/"+headPicDirectory+"/"+insertUserBasic.getAvatar());
                 insertUserBasic.setRongCloudToken(rcToken);
 
                 userBasicInfoService.addUserBasic(insertUserBasic);
             }else {
-                UserBasic user = new UserBasic();
-                user.setUserId(userBasicDo.getUserId());
-                user.setLoginTime(new Date());
+//                UserBasic user = new UserBasic();
+                BeanUtils.copyProperties(userBasicDo,insertUserBasic);
+                insertUserBasic.setUserId(userBasicDo.getUserId());
+                insertUserBasic.setLoginTime(new Date());
                 if(userBasicDo.getRongCloudToken()==null || "".equals(userBasicDo.getRongCloudToken())){
                     Date date = new Date();
-                    user.setUserOnlySign(date.getTime()+userBasicDo.getPhone());
-                    if(user.getAvatar()==null || "".equals(userBasicDo.getAvatar())){
+                    insertUserBasic.setUserOnlySign(date.getTime()+userBasicDo.getPhone());
+                    if(userBasicDo.getAvatar()==null || "".equals(userBasicDo.getAvatar())){
                         int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
                         String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
-                        user.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
+                        insertUserBasic.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
                     }
-                    String rcToken = imService.queryRongCloudTokenByUser(user.getUserOnlySign(), userBasicDo.getUserName(),
+                    String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getPhone(),
                             headPicPath+"/"+headPicDirectory+"/"+userBasicDo.getAvatar());
-                    user.setRongCloudToken(rcToken);
-                    userBasicMapper.updateByPrimaryKeySelective(user);
+                    insertUserBasic.setRongCloudToken(rcToken);
+                    userBasicMapper.updateByPrimaryKeySelective(insertUserBasic);
                 }
 
             }
@@ -185,8 +187,8 @@ public class Login {
             String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
             if(StringTool.isEmpty(user)){
                 UserLoginResponse userLoginResponse = new UserLoginResponse();
-                BeanUtils.copyProperties(userBasicDo,userLoginResponse);
-                setCookieAndCache(userBasicDo.getPhone(),userLoginResponse, request, response);
+                BeanUtils.copyProperties(insertUserBasic,userLoginResponse);
+                setCookieAndCache(insertUserBasic.getPhone(),userLoginResponse, request, response);
             }
             if(StringTool.isNotBlank(backUrl)&&StringTool.isNotBlank(title)){
                 return "redirect:"+backUrl+"?title="+title;
@@ -211,9 +213,9 @@ public class Login {
      */
     @RequestMapping("/logout")
     public String logout(HttpServletResponse response, HttpServletRequest request,
-                         @RequestParam(value = "phone", required = true) String phone) throws Exception {
-
-        clearCookieAndCache(request, response, phone);
+                         @RequestParam(value = "uid", required = true) String uid) throws Exception {
+        UserBasic userBasic = userBasicMapper.selectByPrimaryKey(uid);
+        clearCookieAndCache(request, response, userBasic.getPhone());
         return "redirect:/";
     }
 
@@ -271,7 +273,7 @@ public class Login {
      */
     private void clearCookieAndCache(HttpServletRequest request, HttpServletResponse response, String phone) throws Exception {
         //从cookie中删除用户数据
-        CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_User_LOGIN);
+        CookieUtils.deleteCookie(request, response, CookieUtils.COOKIE_NAME_USER);
         //删除redis中的用户数据
         redisSession.delKey(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
                 + phone);

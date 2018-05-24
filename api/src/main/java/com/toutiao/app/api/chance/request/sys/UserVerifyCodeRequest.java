@@ -16,7 +16,7 @@ public class UserVerifyCodeRequest {
      * 用户手机号
      */
     @PhoneNumber( message = "手机号不正确")
-    private String userName;
+    private String userPhone;
 
     /**
      * 动态验证码

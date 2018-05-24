@@ -33,7 +33,7 @@
     select
     <include refid="Base_Column_List" />
     from user_basic
-    where user_name = #{userName,jdbcType=VARCHAR}
+    where phone = #{phone,jdbcType=VARCHAR}
     and user_status = #{userStatus,jdbcType=SMALLINT}
     and identity_type = #{identityType,jdbcType=SMALLINT}
     and identifier = #{identifier,jdbcType=VARCHAR}

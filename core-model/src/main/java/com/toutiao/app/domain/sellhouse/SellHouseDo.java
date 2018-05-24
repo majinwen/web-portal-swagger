@@ -37,6 +37,11 @@ public class SellHouseDo {
     private String priceIncreaseDecline;
 
     /**
+     * 价格涨降金额
+     */
+    private Double priceIncreaseDeclineAmount;
+
+    /**
      * 7天新导入标志
      *
      */

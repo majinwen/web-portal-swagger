@@ -44,7 +44,7 @@ public class UserLoginServiceImpl implements UserLoginService {
     public UserBasicDo checkUserVerifyCodeLogin(UserBasicDoQuery userBasicDo, HttpServletRequest request, HttpServletResponse response) {
 
         //获取redis缓存中的手机号验证码码判断是否有效
-        String tempVerifyCode = redis.getValue(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER +"_"+ userBasicDo.getUserName());
+        String tempVerifyCode = redis.getValue(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER +"_"+ userBasicDo.getUserPhone());
         UserBasicDo ubd = new UserBasicDo();
         UserBasic userBasic = new UserBasic();
 
@@ -52,7 +52,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             if(tempVerifyCode!="" && userBasicDo.getVerifyCode().equals(tempVerifyCode)) {
                 try {
                     //从cookie中获取图片验证码与页面传递过来的验证码进行对比
-                    if (StringTool.getInteger(redis.getValue(userBasicDo.getUserName() + RedisNameUtil.separativeSignCount)) >= Constant.LOGIN_ERROR_TIMES) {
+                    if (StringTool.getInteger(redis.getValue(userBasicDo.getUserPhone() + RedisNameUtil.separativeSignCount)) >= Constant.LOGIN_ERROR_TIMES) {
 
                         if (StringTool.isNotBlank(userBasicDo.getImageCode()) && StringTool.isNotBlank(CookieUtils.getCookie(request, response,
                                 "imageCode")) && !CookieUtils.getCookie(request, response,
@@ -63,9 +63,9 @@ public class UserLoginServiceImpl implements UserLoginService {
                     }
                     //验证成功,判断用户是否存在，如果存在则，则更新用户登录时间
 
-                    userBasic.setUserName(userBasicDo.getUserName());
+                    userBasic.setPhone(userBasicDo.getUserPhone());
                     userBasic.setIdentityType(userBasicDo.getIdentityType());
-                    userBasic.setIdentifier(userBasicDo.getUserName());
+                    userBasic.setIdentifier(userBasicDo.getUserPhone());
                     userBasic.setUserStatus(ServiceStateConstant.USER_BASIC_STATUS);
 
                     userBasic = userBasicMapper.selectUserByExample(userBasic);
@@ -85,35 +85,35 @@ public class UserLoginServiceImpl implements UserLoginService {
                                int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
                                userBasic.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
                            }
-                           String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserName(),
+                           String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
                                    headPicPath+"/"+headPicDirectory+"/"+userBasic.getAvatar());
                            userBasic.setRongCloudToken(rcToken);
                           userBasicMapper.updateByPrimaryKeySelective(userBasic);
                        }
                         BeanUtils.copyProperties(userBasic, ubd);
-                        redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + userBasicDo.getUserName());
+                        redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + userBasicDo.getUserPhone());
                     } else {
                         //注册新用户
                         UserBasic insertUserBasic = new UserBasic();
                         Date date = new Date();
-                        insertUserBasic.setUserName(userBasicDo.getUserName());
+                        insertUserBasic.setUserName(userBasicDo.getUserPhone().substring(0,2)+"*****"+userBasicDo.getUserPhone().substring(9,11));
 
                         String[] userAvatar = ServiceStateConstant.SYS_USER_AVATAR;
                         int avatarNum = new Random().nextInt(ServiceStateConstant.RANDOM_AVATAR);
                         insertUserBasic.setAvatar(headPicDirectory+"/"+userAvatar[avatarNum]);
                         insertUserBasic.setCreateTime(date);
                         insertUserBasic.setLoginTime(date);
-                        insertUserBasic.setPhone(userBasicDo.getUserName());
+                        insertUserBasic.setPhone(userBasicDo.getUserPhone());
                         insertUserBasic.setUpdateTime(date);
                         insertUserBasic.setUserStatus(ServiceStateConstant.USER_BASIC_STATUS);
                         insertUserBasic.setRegisterSource(ServiceStateConstant.USER_REGISTER_SOURCE_APP);
                         insertUserBasic.setIdentityType(userBasicDo.getIdentityType());
-                        insertUserBasic.setIdentifier(userBasicDo.getUserName());
+                        insertUserBasic.setIdentifier(userBasicDo.getUserPhone());
                         Date d = new Date();
 //                        insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
                         insertUserBasic.setUserOnlySign(d.getTime()+insertUserBasic.getPhone());
                         //用户注册融云信息
-                        String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserName(),
+                        String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
                                 headPicPath+"/"+headPicDirectory+"/"+insertUserBasic.getAvatar());
                         insertUserBasic.setRongCloudToken(rcToken);
 

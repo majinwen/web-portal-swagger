@@ -47,10 +47,10 @@ public class UserRegisterRestController {
 
         if(StringTool.isNotBlank(userBasicDo)){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
-            userLoginResponse.setUserNickName(userLoginResponse.getUserName().substring(0,3)+"****"+userLoginResponse.getUserName().substring(8,11));
+//            userLoginResponse.setUserNickName(userLoginResponse.getUserName().substring(0,3)+"****"+userLoginResponse.getUserName().substring(8,11));
             try {
                 //setCookieAndCache(loginRequest.getUserName(),request,response);
-                setCookieAndCache(loginRequest.getUserName(),userLoginResponse,request,response);
+                setCookieAndCache(loginRequest.getUserPhone(),userLoginResponse,request,response);
             } catch (Exception e) {
                 NashResult.Fail("30099","用户cookie数据存储失败！");
             }
@@ -94,7 +94,7 @@ public class UserRegisterRestController {
         if(null != userLoginResponse){
             UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
             BeanUtils.copyProperties(userBasic,userLoginResponse);
-            userLoginResponse.setUserNickName(userLoginResponse.getUserName().substring(0,3)+"****"+userLoginResponse.getUserName().substring(8,11));
+            //userLoginResponse.setUserNickName(userLoginResponse.getUserName().substring(0,3)+"****"+userLoginResponse.getUserName().substring(8,11));
             return NashResult.build(userLoginResponse);
         }else {
             Integer ss = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();

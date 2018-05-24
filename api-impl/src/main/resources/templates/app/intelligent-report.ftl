@@ -735,6 +735,7 @@
 <script src="${appstaticurl}/js/URI.min.js?v=${staticversion}"></script>
 <script src="${appstaticurl}/js/draggabilly.pkgd.min.js?v=${staticversion}"></script>
 <script src="${appstaticurl}/js/elastiStack.js?v=${staticversion}"></script>
+<script src="${appstaticurl}/js/Hybrid.js?v=${staticversion}"></script>
 <script src="${appstaticurl}/js/intelligent-report.js?v=${staticversion}"></script>
 <script>
     new ElastiStack(document.getElementById('elastics-stack'));

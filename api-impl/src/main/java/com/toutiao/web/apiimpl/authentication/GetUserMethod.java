@@ -13,16 +13,20 @@ import java.util.List;
 public class GetUserMethod implements TemplateMethodModelEx {
 
 
+
     @Override
     public Object exec(List list) throws TemplateModelException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
+        UserLoginResponse userLoginResponse = new UserLoginResponse();
         Object user = request.getAttribute("userLogin");
         if(!user.equals("请登录")){
-            UserLoginResponse userLoginResponse = JSON.parseObject(user.toString(),UserLoginResponse.class);
-
-            user = userLoginResponse.getUserName();
+            userLoginResponse = JSON.parseObject(user.toString(),UserLoginResponse.class);
+//            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+//            user = userBasic.getPhone();
+            return userLoginResponse;
+        }else{
+            return "请登录";
         }
-        return user;
+
     }
 }

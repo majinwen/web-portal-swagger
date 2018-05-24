@@ -9,7 +9,7 @@ public class UserBasicDoQuery {
     /**
      * 用户手机号
      */
-    private String userName;
+    private String userPhone;
 
     /**
      * 动态验证码

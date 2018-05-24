@@ -59,6 +59,7 @@ public class SellHouseFavoriteRestController {
     {
         UserFavoriteEsHouseDoQuery userFavoriteEsHouse= new UserFavoriteEsHouseDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
+        userFavoriteEsHouse.setPriceIncreaseDecline(addFavorite.getHousePhotoTitleTags());
         return favoriteRestService.addEsfFavorite(userFavoriteEsHouse);
     }
 

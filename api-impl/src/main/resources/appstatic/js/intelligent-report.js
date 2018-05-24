@@ -11,7 +11,16 @@ $(function () {
 
     $('.share-button').on('click', function () {
         zhuge.track('分享报告_懂房帝');
-        $('.share-pop').removeClass('none');
+        // $('.share-pop').removeClass('none');
+        window.requestHybrid({
+            tagname: "sharesdk",
+            param: {
+                title: '懂房帝',
+                text: '懂房帝为您推荐了5个小区',
+                url: location.href.split('#')[0],
+                imgurl: 'http://m.toutiaofangchan.com/static/images/intelligent/adm_323031383036343130343932.png'
+            }
+        });
     });
     $('#off-share').on('click', function () {
         $('.share-pop').addClass('none');

@@ -1274,6 +1274,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
+        Date date = new Date();
         for (SearchHit searchHit : searchHists) {
             String details = "";
             details=searchHit.getSourceAsString();
@@ -1288,6 +1289,27 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
                 agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+                        if(claimDays>=0 && claimDays<30){
+                            sellHousesSearchDo.setHousePhotoTitleTags(Integer.valueOf(sellHousesSearchDo.getPriceIncreaseDecline()));
+                        }
+                    }else {
+                        int importFlag = -1;
+                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+                            if(importDays>=0 && importDays<7){
+                                importFlag = 3;
+                                sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                            }else{
+                                sellHousesSearchDo.setHousePhotoTitleTags(importFlag);
+                            }
+                        }
+                    }
+                }
+
+
 
             }else{
                 agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());

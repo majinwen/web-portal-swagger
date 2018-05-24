@@ -176,17 +176,17 @@ public class AggAdLandingController {
         return NashResult.build(sellHouseResponse);
     }
 
-    @RequestMapping(value = "/querySellHouseByPrice")
-    @ResponseBody
-    public NashResult querySellHouseByPrice(AggAdLandingRequest aggAdLandingRequest){
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
-        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
-        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
-
-        SellHouseSearchDomain sellHouseSearchDomain = aggAdLandingService.getSellHouseByPrice(aggAdLandingDo);
-        BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
-
-        return NashResult.build(sellHouseSearchDomainResponse);
-    }
+//    @RequestMapping(value = "/querySellHouseByPrice")
+//    @ResponseBody
+//    public NashResult querySellHouseByPrice(AggAdLandingRequest aggAdLandingRequest){
+//        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
+//        AggAdLandingDo aggAdLandingDo = new AggAdLandingDo();
+//        BeanUtils.copyProperties(aggAdLandingRequest, aggAdLandingDo);
+//
+//        SellHouseSearchDomain sellHouseSearchDomain = aggAdLandingService.getSellHouseByPrice(aggAdLandingDo);
+//        BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
+//
+//        return NashResult.build(sellHouseSearchDomainResponse);
+//    }
 
 }
