@@ -38,7 +38,7 @@ public class SMSUtils {
         this.sendConfig = sendConfig;
     }
 
-    public String sendSms(String phone, String code) throws ClientException {
+    public String sendSms(String phone, String code, Integer sendSign) throws ClientException {
         SendSmsResponse sendSmsResponse = null;
         // 可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
@@ -58,7 +58,12 @@ public class SMSUtils {
         // 必填:待发送手机号
         request.setPhoneNumbers(phone);
         // 必填:短信签名-可在短信控制台中找到
-        request.setSignName("头条房产");
+        if(sendSign==ServiceStateConstant.SEND_MESSAGE_APP){
+            request.setSignName("比得屋");
+        }else if (sendSign==ServiceStateConstant.SEND_MESSAGE_WAP){
+            request.setSignName("头条房产");
+        }
+
         // 必填:短信模板-可在短信控制台中找到
         request.setTemplateCode(sendConfig.getTemplateCode());
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为

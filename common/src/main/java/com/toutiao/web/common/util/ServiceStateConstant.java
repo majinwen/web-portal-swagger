@@ -44,4 +44,16 @@ public class ServiceStateConstant {
      */
     public static final Integer RANDOM_AVATAR = 5;
 
+    /**
+     * APP端发送短信
+     */
+    public static final Integer SEND_MESSAGE_APP = 1;
+
+    /**
+     * WAP端发送短信
+     */
+    public static final Integer SEND_MESSAGE_WAP = 2;
+
+
+
 }
