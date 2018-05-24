@@ -33,7 +33,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     @Override
     public NashResult sendVerifyCode(String phone) {
 
-        String count = redis.getValue(phone + RedisNameUtil.separativeSignCount);
+       // String count = redis.getValue(phone + RedisNameUtil.separativeSignCount);
         Integer exceptionCode = 0;
 //        if(null!=count && count.equals("3")){
 //            exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_QUERY_OVERRUN.getValue();
@@ -42,7 +42,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
             //生成随机4位短信验证码
             String code = StringUtil.randomFourDigits();
             try {
-                String sendResult = smsUtils.sendSms(phone, code);
+                String sendResult = smsUtils.sendSms(phone, code,ServiceStateConstant.SEND_MESSAGE_APP);
 
                 if (null != sendResult && "OK".equals(sendResult)) {
                     //短信验证码发送成功，保存至redis以用于校验，有效期2分钟

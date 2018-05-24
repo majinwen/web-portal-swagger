@@ -50,7 +50,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
 
             if(tempVerifyCode!="" && userBasicDo.getVerifyCode().equals(tempVerifyCode)) {
-                try {
+
                     //从cookie中获取图片验证码与页面传递过来的验证码进行对比
                     if (StringTool.getInteger(redis.getValue(userBasicDo.getUserPhone() + RedisNameUtil.separativeSignCount)) >= Constant.LOGIN_ERROR_TIMES) {
 
@@ -62,7 +62,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                     }
                     //验证成功,判断用户是否存在，如果存在则，则更新用户登录时间
-
+                try {
                     userBasic.setPhone(userBasicDo.getUserPhone());
                     userBasic.setIdentityType(userBasicDo.getIdentityType());
                     userBasic.setIdentifier(userBasicDo.getUserPhone());
