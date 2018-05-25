@@ -35,7 +35,7 @@
             </li>
             <#if (getUser()!="请登录")>
                 <#if getUser().userName?exists>
-                <li><a id="out_login" href="#" style="display: block"><i class="icon-exit"></i><span>注销</span></a></li>
+                <li><a id="out_login" href="#" style="display: block"><#--<i class="icon-exit"></i>--><span>注销</span></a></li>
                 </#if>
             </#if>
         </ul>
