@@ -27,19 +27,19 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})">
+            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})"-->>
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-esf" href="${router_city('/esf/')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-renthouse" class="index-renthouse" href="${router_city('/zufang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'租房','页面来源URL':window.location.href})">
+            <div class="banner-nav-item index-nav-item"><a id="index-renthouse" class="index-renthouse" href="${router_city('/zufang/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'租房','页面来源URL':window.location.href})"-->>
                 <i class="index-rent-icon"></i><p>租房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})">
+            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})"-->>
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -555,11 +555,12 @@
 
     function dashouyelogo(dashouye) {
         var link = $(dashouye);
-        zhuge.track('大首页-进入大首页logo', {
-            "页面来源URL": window.location.href
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('大首页-进入大首页logo', {
+//            "页面来源URL": window.location.href
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false
     }
     $(function () {
@@ -589,41 +590,41 @@
             } else {
                 nameText = html.find('.scaleImg').attr('art')
             }
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': nameText})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': nameText})
+//            })
         }},
         {"pid": 20,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid": 21,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid": 24,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid": 25,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid":12,callback:function (html) {
             var parent=$('<li></li>');

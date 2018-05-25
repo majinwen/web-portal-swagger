@@ -29,13 +29,13 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item"><a href="${router_city('/loupan')}" onclick="zhuge.track('导航_新房',{'导航名称':'全部楼盘'})">
+            <div class="banner-nav-item"><a href="${router_city('/loupan')}" <#--onclick="zhuge.track('导航_新房',{'导航名称':'全部楼盘'})"-->>
                 <i class="all-buildings"></i><p>全部楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=1')}" onclick="zhuge.track('导航_新房',{'导航名称':'在售楼盘'})">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=1')}" <#--onclick="zhuge.track('导航_新房',{'导航名称':'在售楼盘'})"-->>
                 <i class="featured-properties"></i><p>在售楼盘</p>
             </a></div>
-            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}" onclick="zhuge.track('导航_新房',{'导航名称':'即将开盘'})">
+            <div class="banner-nav-item"><a href="${router_city('/loupan?saleType=5')}" <#--onclick="zhuge.track('导航_新房',{'导航名称':'即将开盘'})"-->>
                 <i class="houses-open"></i><p>即将开盘</p>
             </a></div>
             <#--<div class="banner-nav-item"><a href="#">
@@ -353,7 +353,7 @@
             parent.append(html);
             $("#house-pic-container").append(parent);
             html.click(function () {
-                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
             })
         }},
         {"pid": 22,callback: function (html) {
@@ -361,7 +361,7 @@
             parent.append(html);
             $("#house-pic-container").append(parent);
             html.click(function () {
-                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
             })
         }},
         {"pid": 23,callback: function (html) {
@@ -369,7 +369,7 @@
             parent.append(html);
             $("#house-pic-container").append(parent);
             html.click(function () {
-                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
             })
         }},
         {"pid": 26,callback: function (html) {
@@ -377,7 +377,7 @@
             parent.append(html);
             $("#house-pic-container").append(parent);
             html.click(function () {
-                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
             })
         }},
         {"pid": 27,callback: function (html) {
@@ -385,7 +385,7 @@
             parent.append(html);
             $("#house-pic-container").append(parent);
             html.click(function () {
-                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//                zhuge.track('banner_新房大首页', {'banner名称': html.find('.scaleImg').attr('art')})
             })
         }}
     ];

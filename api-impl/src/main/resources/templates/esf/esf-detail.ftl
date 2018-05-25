@@ -809,38 +809,42 @@
     })*/
     function plotDetailInfo_1(a) {
         var link = $(a);
-        zhuge.track('二手房-点击查看小区详情', {
-            "二手房-点击查看小区详情": link.attr('href')
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('二手房-点击查看小区详情', {
+//            "二手房-点击查看小区详情": link.attr('href')
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false;
     }
     function plotDetailInfo_2(a) {
         var link = $(a);
-        zhuge.track('二手房-点击查看小区详情', {
-            "二手房-点击查看小区详情": link.attr('href')
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('二手房-点击查看小区详情', {
+//            "二手房-点击查看小区详情": link.attr('href')
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false;
     }
     function esf_map_1(a) {
         var link = $(a);
-        zhuge.track('二手房-点击配套地图', {
-            "二手房配套地图来源": link.attr('href')
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('二手房-点击配套地图', {
+//            "二手房配套地图来源": link.attr('href')
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false;
     }
     function esf_map_2(a) {
         var link = $(a);
-        zhuge.track('二手房-点击配套地图', {
-            "二手房配套地图来源": link.attr('href')
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('二手房-点击配套地图', {
+//            "二手房配套地图来源": link.attr('href')
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false;
     }
     $("#traffic_info .primary-distance").on('click','a',function () {

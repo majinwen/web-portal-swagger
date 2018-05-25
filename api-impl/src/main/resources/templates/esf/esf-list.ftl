@@ -416,11 +416,12 @@
     });
     function esf_title(a) {
         var link = $(a);
-        zhuge.track('点击二手房头条logo', {
-            "页面来源URL": window.location.href
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('点击二手房头条logo', {
+//            "页面来源URL": window.location.href
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false
     }
 
@@ -472,8 +473,8 @@
             sortZhuge = '价格由低到高';
         }
         var link = $(this);
-        zhuge.track('二手房-排序',{'排序方式':sortZhuge},function () {
-        });
+//        zhuge.track('二手房-排序',{'排序方式':sortZhuge},function () {
+//        });
     });
     function esf_list(e) {
         setPageNum($(e).attr('data-id'))
