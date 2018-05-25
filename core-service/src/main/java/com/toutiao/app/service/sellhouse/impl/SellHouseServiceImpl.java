@@ -450,6 +450,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHousesSearchDo.setHouseId(claimSellHouseDo.getClaimHouseId());
                     sellHousesSearchDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
                     sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
+                    sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
