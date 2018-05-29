@@ -159,8 +159,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
             //获取小区交通
             JSONObject businfo= (JSONObject) datainfo.get("gongjiao");
-            plotTrafficDo.setBusStation(businfo.get("name").toString());
-            plotTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
+            if (businfo.size()>0)
+            {
+                plotTrafficDo.setBusStation(businfo.get("name").toString());
+                plotTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
+            }
             //获取地铁和环线位置
             PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
             if (!"".equals(plotDetailsDo.getTrafficInformation()))
