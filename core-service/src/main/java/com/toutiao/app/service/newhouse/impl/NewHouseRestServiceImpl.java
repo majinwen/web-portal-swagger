@@ -322,8 +322,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //获取新房交通配套
         JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
         JSONObject businfo= (JSONObject) datainfo.get("gongjiao");
-        newHouseTrafficDo.setBusStation(businfo.get("name").toString());
-        newHouseTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
+        if (businfo.size()>0)
+        {
+            newHouseTrafficDo.setBusStation(businfo.get("name").toString());
+            newHouseTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
+        }
+
         //获取地铁和环线位置
         NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBuildByNewCode(newCode);
         if (null!=newHouseDetailDo.getRoundstation() &&!"".equals(newHouseDetailDo.getRoundstation()))
