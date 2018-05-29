@@ -89,6 +89,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<SellAndClaimHouseDetailsDo> sellHouseDoList = new ArrayList<>();
         detailsBuilder.must(termQuery("newcode",plotsId));
+        detailsBuilder.must(termQuery("isDel",0));
         detailsBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
         if(room != 0){
             detailsBuilder.must(termQuery("room",room));
