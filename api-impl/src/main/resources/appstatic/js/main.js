@@ -35,11 +35,11 @@ $(function () {
 
 function moreInfoClick() {
     $('.module-header-message h3').click(function () {
-        if ($(this).text()=="配套地图"){
-            zhuge.track('新房-点击配套地图', {
-                '配套内容' : '配套地图'
-            });
-        }
+        // if ($(this).text()=="配套地图"){
+        //     zhuge.track('新房-点击配套地图', {
+        //         '配套内容' : '配套地图'
+        //     });
+        // }
         $(this).parent().find('a').click();
     });
 }
@@ -102,9 +102,9 @@ function carouselSwiper() {
 function initphoto(a, i, url) {
     if (typeof url != 'undefined') {
         if(url.indexOf("/xiaoqu") > 0){
-            zhuge.track("小区-点击图片");
+            // zhuge.track("小区-点击图片");
         }else{
-            zhuge.track('新房-点击图片');
+            // zhuge.track('新房-点击图片');
         }
     }
 
@@ -202,13 +202,13 @@ function moduleExpand() {
     $('.expand-btn').on('click', function () {
         var zginfo = ($(this).attr('data-zg'));
         if(zginfo=='医疗配套'){
-            zhuge.track('新房-点击医疗配套', {
-                '配套内容' : '医疗配套'
-            });
+            // zhuge.track('新房-点击医疗配套', {
+            //     '配套内容' : '医疗配套'
+            // });
         }else if (zginfo=='生活成本'){
-            zhuge.track('新房-点击生活成本', {
-                '配套内容' : '生活成本'
-            });
+            // zhuge.track('新房-点击生活成本', {
+            //     '配套内容' : '生活成本'
+            // });
         }
 
         $(this).toggleClass('expand');
@@ -290,7 +290,7 @@ function showfujian() {
         var timeout = setTimeout(function(){
             location.href = router_city('/xiaoqu');
         },2000);
-        zhuge.track('导航_大首页', {'导航名称': '小区', '页面来源URL': window.location.href});
+        // zhuge.track('导航_大首页', {'导航名称': '小区', '页面来源URL': window.location.href});
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             executed = true;

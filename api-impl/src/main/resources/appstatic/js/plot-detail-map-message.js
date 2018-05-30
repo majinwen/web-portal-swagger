@@ -38,23 +38,23 @@ $(function () {
         var url = window.location.href;
         if (parentText == '教育培训') {
             if(url.indexOf("/xiaoqu") > 0){
-                zhuge.track("小区-点击教育配套", {
-                    教育培训: text
-                });
+                // zhuge.track("小区-点击教育配套", {
+                //     教育培训: text
+                // });
             }else{
-                zhuge.track('新房-点击教育配套', {
-                    '配套内容': zhuge_maidian
-                });
+                // zhuge.track('新房-点击教育配套', {
+                //     '配套内容': zhuge_maidian
+                // });
             }
         } else {
             if(url.indexOf("/xiaoqu") > 0){
-                zhuge.track("小区-点击休闲配套", {
-                    休闲购物: text
-                });
+                // zhuge.track("小区-点击休闲配套", {
+                //     休闲购物: text
+                // });
             }else{
-                zhuge.track('新房-点击休闲配套', {
-                    '配套内容': zhuge_maidian
-                });
+                // zhuge.track('新房-点击休闲配套', {
+                //     '配套内容': zhuge_maidian
+                // });
             }
 
         }

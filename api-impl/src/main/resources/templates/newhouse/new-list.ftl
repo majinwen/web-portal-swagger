@@ -361,8 +361,8 @@
             sortZhuge = '价格由低到高';
         }
         var link = $(this);
-        zhuge.track('新房-排序',{'排序方式':sortZhuge},function () {
-        });
+//        zhuge.track('新房-排序',{'排序方式':sortZhuge},function () {
+//        });
         return false;
     });
 

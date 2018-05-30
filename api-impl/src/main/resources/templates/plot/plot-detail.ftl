@@ -101,7 +101,7 @@
             </#if>
             </div>
         </div>
-        <a onclick="zhuge.track('小区-点击地址')" href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
+        <a <#--onclick="zhuge.track('小区-点击地址')"--> href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="plot-primary-map-box"><img src="/static/images/plot/detail_static_map.png" alt="地图"></a>
     </section>
 </div>
 <div class="module-bottom-fill">
@@ -495,7 +495,7 @@
     <section>
         <div class="module-header-message">
             <h3>医疗配套<span class="subtitle">为您的健康保驾护航</span></h3>
-            <a onclick="zhuge.track('小区-点击医疗配套')" href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+            <a <#--onclick="zhuge.track('小区-点击医疗配套')"--> href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
         <#assign yiliao=datainfo['yiliao'] />
@@ -545,7 +545,7 @@
     <section>
         <div class="module-header-message">
             <h3>生活成本<span class="subtitle">您的居住费用清单</span></h3>
-            <a onclick="zhuge.track('小区-点击生活成本')" href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
+            <a <#--onclick="zhuge.track('小区-点击生活成本')"--> href="javascript:;" class="more-arrows expand-btn"><i class="arrows-expand"></i></a>
         </div>
         <div class="expand-content">
             <ul class="result-data-expand">
@@ -615,9 +615,9 @@
     <section>
         <div class="module-header-message">
             <h3>配套地图</h3>
-            <a onclick="zhuge.track('小区-点击配套地图')" href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
+            <a <#--onclick="zhuge.track('小区-点击配套地图')"--> href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="more-arrows"><i class="arrows-right"></i></a>
         </div>
-        <a onclick="zhuge.track('小区-点击配套地图')" href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
+        <a <#--onclick="zhuge.track('小区-点击配套地图')"--> href="${router_city('/xiaoqu/'+village['id']+'/map.html')}" class="detail-map">
             <i class="map-marker-icon"></i>
             <#if village['location']?exists>
                 <#assign locationIp = village['location'] ? split(",")>
@@ -844,28 +844,30 @@
     });
     $("#plot_new_desc").on('click', 'li', function () {
         var link = $(this);
-        zhuge.track('小区-点击推荐新房', {
-            "楼盘名称": link.find('.tilelist-content').find('h4.cont-first').text(),
-            "参考均价": link.find('.tilelist-content').find('p.cont-last').text(),
-            "位置信息": link.attr("data-type"),
-            "页面位置序号": link.index()+1,
-            "是否为广告位": "否"
-        }, function () {
-            location.href = link.find('a').attr('href');
-        });
+//        zhuge.track('小区-点击推荐新房', {
+//            "楼盘名称": link.find('.tilelist-content').find('h4.cont-first').text(),
+//            "参考均价": link.find('.tilelist-content').find('p.cont-last').text(),
+//            "位置信息": link.attr("data-type"),
+//            "页面位置序号": link.index()+1,
+//            "是否为广告位": "否"
+//        }, function () {
+//            location.href = link.find('a').attr('href');
+//        });
+        location.href = link.find('a').attr('href');
         return false;
     })
     $("#user_see_plot").on('click', 'li', function () {
         var link = $(this);
-        zhuge.track('小区-点击推荐小区', {
-            "小区名称": link.find('div.tilelist-content').find('p.cont-first').text(),
-            "参考均价": link.find('div.tilelist-content').find('h4.cont-last').text(),
-            "位置信息": link.find('div.tilelist-content').find('p.cont-center').text(),
-            "页面位置序号": link.index()+1,
-            "是否为广告位": "否"
-        }, function () {
-            location.href = link.find('a').attr('href');
-        });
+//        zhuge.track('小区-点击推荐小区', {
+//            "小区名称": link.find('div.tilelist-content').find('p.cont-first').text(),
+//            "参考均价": link.find('div.tilelist-content').find('h4.cont-last').text(),
+//            "位置信息": link.find('div.tilelist-content').find('p.cont-center').text(),
+//            "页面位置序号": link.index()+1,
+//            "是否为广告位": "否"
+//        }, function () {
+//            location.href = link.find('a').attr('href');
+//        });
+        location.href = link.find('a').attr('href');
         return false;
     })
     $("#plot_nearby_esf").on('click', 'li', function () {
@@ -892,12 +894,13 @@
     }*/
     function plot_basic_info(plot) {
         var link = $(plot);
-        console.log(link.val("href"))
-        zhuge.track('小区-查看详细信息', {
-            "页面来源URL": window.location.href
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        console.log(link.val("href"))
+//        zhuge.track('小区-查看详细信息', {
+//            "页面来源URL": window.location.href
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false
     }
 
