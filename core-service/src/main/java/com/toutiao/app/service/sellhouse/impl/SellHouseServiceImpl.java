@@ -180,9 +180,9 @@ public class SellHouseServiceImpl implements SellHouseService{
         //boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseQueryDo);
         //设置搜索规则
         Date date = new Date();
-        String pastDateOfMonth = DateUtil.getPastDate(30)+" 00:00:00";
-        String pastDateOfWeek = DateUtil.getPastDate(7)+" 00:00:00";
-        String nowDate = DateUtil.format(date)+" 00:00:00";
+        String pastDateOfMonth = DateUtil.getPastDate(29)+" 00:00:00";
+        String pastDateOfWeek = DateUtil.getPastDate(6)+" 00:00:00";
+        String nowDate = DateUtil.format(date)+" 23:59:59";
         BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
 
 
@@ -271,6 +271,13 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
         return sellHouseDomain;
+    }
+
+    public static void main(String[] args) {
+        Date date = new Date();
+        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate("2018-05-25 09:58:48"))-1;
+
+        System.out.println(claimDays);
     }
 
 
@@ -443,6 +450,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHousesSearchDo.setHouseId(claimSellHouseDo.getClaimHouseId());
                     sellHousesSearchDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
                     sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
+                    sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){

@@ -23,11 +23,11 @@
     </div>
     <div class="side-nav-item-wrapper">
         <ul class="side-nav-item item-link">
-            <li><a href="${router_city()}" onclick="zhuge.track('个人中心-点击首页')"><#--<i class="icon-index"></i>--><span>首页</span></a></li>
-            <li><a class="index-esf" href="${router_city('/esf/')}" onclick="zhuge.track('个人中心-点击找二手房')"><#--<i class="icon-esf"></i>--><span>找二手房</span></a></li>
-            <li><a href="${router_city('/zufang/')}" onclick="zhuge.track('个人中心-点击找租房')"><#--<i class="icon-rent"></i>--><span>找租房</span></a></li>
-            <li><a class="index-xiaoqu" onclick="zhuge.track('个人中心-点击找小区')"><#--<i class="icon-plot"></i>--><span>找小区</span></a></li>
-            <li><a href="${router_city('/xinfang')}" onclick="zhuge.track('个人中心-点击找新房')"><#--<i class="icon-new"></i>--><span>找新房</span></a></li>
+            <li><a href="${router_city()}" <#--onclick="zhuge.track('个人中心-点击首页')"-->><#--<i class="icon-index"></i>--><span>首页</span></a></li>
+            <li><a class="index-esf" href="${router_city('/esf/')}" <#--onclick="zhuge.track('个人中心-点击找二手房')"-->><#--<i class="icon-esf"></i>--><span>找二手房</span></a></li>
+            <li><a href="${router_city('/zufang/')}" <#--onclick="zhuge.track('个人中心-点击找租房')"-->><#--<i class="icon-rent"></i>--><span>找租房</span></a></li>
+            <li><a class="index-xiaoqu" <#--onclick="zhuge.track('个人中心-点击找小区')"-->><#--<i class="icon-plot"></i>--><span>找小区</span></a></li>
+            <li><a href="${router_city('/xinfang')}" <#--onclick="zhuge.track('个人中心-点击找新房')"-->><#--<i class="icon-new"></i>--><span>找新房</span></a></li>
         </ul>
         <ul class="side-nav-item item-my">
         <#--<li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>-->
@@ -35,7 +35,7 @@
             </li>
             <#if (getUser()!="请登录")>
                 <#if getUser().userName?exists>
-                <li><a id="out_login" href="#" style="display: block"><i class="icon-exit"></i><span>注销</span></a></li>
+                <li><a id="out_login" href="#" style="display: block"><#--<i class="icon-exit"></i>--><span>注销</span></a></li>
                 </#if>
             </#if>
         </ul>

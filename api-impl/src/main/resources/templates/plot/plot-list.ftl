@@ -307,11 +307,12 @@
     });
     function plot_title(a) {
         var link = $(a);
-        zhuge.track('点击小区列表页头条logo', {
-            "页面来源URL": window.location.href
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('点击小区列表页头条logo', {
+//            "页面来源URL": window.location.href
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false
     }
     $("#result-section").on('click','li',function () {
@@ -354,8 +355,8 @@
             sortZhuge = '价格由低到高';
         }
         var link = $(this);
-        zhuge.track('小区-排序',{'排序方式':sortZhuge},function () {
-        });
+//        zhuge.track('小区-排序',{'排序方式':sortZhuge},function () {
+//        });
 //        return false;
     });
     function plot_list(e) {

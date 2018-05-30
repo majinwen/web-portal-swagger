@@ -69,7 +69,7 @@ public class VillageResponse {
     /**
      * 交通信息
      */
-    private String TrafficInformation;
+    private String trafficInformation;
     /**
      * 标签编号
      */

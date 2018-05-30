@@ -27,19 +27,19 @@
             <div class="swiper-pagination pictrue-index"></div>
         </div>
         <div class="banner-nav">
-            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})">
+            <div class="banner-nav-item index-nav-item"><a id="index-xinfang" class="index-xinfang" href="${router_city('/xinfang/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'新房','页面来源URL':window.location.href})"-->>
                 <i class="index-new-icon"></i><p>新房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-esf" href="${router_city('/esf/')}">
                 <i class="index-esf-icon"></i><p>二手房</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-renthouse" class="index-renthouse" href="${router_city('/zufang/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'租房','页面来源URL':window.location.href})">
+            <div class="banner-nav-item index-nav-item"><a id="index-renthouse" class="index-renthouse" href="${router_city('/zufang/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'租房','页面来源URL':window.location.href})"-->>
                 <i class="index-rent-icon"></i><p>租房</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a class="index-xiaoqu">
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
-            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})">
+            <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})"-->>
                 <i class="index-intelligent-icon"></i><p>懂房帝</p>
             </a></div>
         </div>
@@ -128,6 +128,104 @@
         </div>
     </section>
 </div>
+<section>
+    <div class="index-module-header">
+        <h3>最近热销新房</h3>
+    </div>
+    <ul id="index-recommend-newhouse"><#if newbuilds?exists>
+        <#assign builds = newbuilds['data']>
+        <#list builds as map>
+        <#--<#if map_index==3>-->
+        <#--<li><a class="list-item new new-ad-item" href="#">-->
+        <#--<div class="list-item-cont-ad">-->
+        <#--<h3 class="cont-block-1">-->
+        <#--<span>中骏·西山天璟</span>-->
+        <#--<em>别墅</em>-->
+        <#--</h3>-->
+        <#--<p class="cont-block-3">东城/88㎡—526㎡</p>-->
+        <#--</div>-->
+        <#--<div class="clear">-->
+        <#--<div class="list-item-img-box">-->
+        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+        <#--</div>-->
+        <#--<div class="list-item-img-box">-->
+        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+        <#--</div>-->
+        <#--<div class="list-item-img-box">-->
+        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
+        <#--</div>-->
+        <#--</div>-->
+        <#--<div class="pr">-->
+        <#--<div class="cont-block-4 house-labelling gray middle">-->
+        <#--<span>复式</span>-->
+        <#--<span>五证齐全</span>-->
+        <#--<span>花园洋房</span>-->
+        <#--</div>-->
+        <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
+        <#--</div>-->
+
+        <#--<div class="new-active">-->
+        <#--<i class="icon"></i><em>活动：</em>-->
+        <#--<span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>-->
+        <#--</div>-->
+        <#--</a></li></#if>-->
+            <#if map_index==5>
+                <#break>
+            </#if>
+            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
+                <div class="clear">
+                    <div class="list-item-img-box">
+                        <#if map['building_title_img']?exists>
+                            <#assign item = map['building_title_img']?split(",")>
+                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}"></#if>
+                        </#if>
+                    </div>
+                    <div class="list-item-cont">
+                        <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
+                        <h3 class="cont-block-1">
+                            <span class="ellipsis">${map['building_name']}</span>
+                            <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
+                        </h3>
+                        <#if map['average_price']?exists && map['average_price'] gt 0>
+                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
+                        <#else>
+                            <#if map['total_price']?exists && map['total_price'] gt 0>
+                                <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
+                            <#else><p class="cont-block-2 high-light-red">售价待定</p>
+                            </#if>
+                        </#if>
+                    <p class="cont-block-3">
+                        <#if map['nearsubway']??>${map['nearsubway']}
+                        <#else>${map['district_name']}
+                        </#if>
+                        <#if (map['house_min_area']?exists && map['house_min_area'] gt 0)&&(map['house_max_area']?exists && map['house_max_area'] gt 0)>
+                            / ${map['house_min_area']}㎡-${map['house_max_area']}㎡</p>
+                        </#if>
+                        <div class="cont-block-4 house-labelling gray middle">
+                            <#if map['building_tags']?exists>
+                                <#assign item = map['building_tags']>
+                                <#list item as itemValue>
+                                    <span>${itemValue}</span>
+                                </#list>
+                            </#if>
+                        </div>
+                        <div class="cont-block-sale">
+                            <em>${map['sale_status_name']}</em>
+                        </div>
+                    </div>
+                </div>
+                <#if map['activity_desc']?exists>
+                    <div class="new-active">
+                        <i class="icon"></i><em>活动：</em>
+                        <span>${map['activity_desc']}</span>
+                    </div>
+                </#if>
+            </a></li>
+        </#list>
+    </#if>
+    </ul>
+</section>
 <section id="esf_desc">
     <div class="index-module-header">
         <h3>最新挂牌二手房</h3>
@@ -173,9 +271,19 @@
                     <a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.claimHouseId+'.html')}">
                     <div class="clear">
                         <div class="list-item-img-box">
+                            <#--<#assign item=map['claimHousePhotoTitle']>-->
+                            <#--<#if item?? && item!=''><img src="${item}" alt="${map.claimHouseTitle}">-->
+                            <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.claimHouseTitle}">-->
+                            <#--</#if>-->
                             <#assign item=map['claimHousePhotoTitle']>
-                            <#if item?? && item!=''><img src="${item}" alt="${map.claimHouseTitle}">
-                            <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.claimHouseTitle}">
+                            <#if item?? && item!=''>
+                                <#if item?string?index_of("http") gt -1>
+                                    <img src="${item}" alt="${map.claimHouseTitle}">
+                                <#else >
+                                    <img src="${qiniuimage}/${item}-tt400x300" alt="${map.claimHouseTitle}">
+                                </#if>
+                            <#else>
+                                <img src="${staticurl}/images/global/tpzw_image.png" alt="${map.claimHouseTitle}">
                             </#if>
                         </div>
                         <div class="list-item-cont">
@@ -245,9 +353,19 @@
                 <a id="${map_index+1}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html')}">
                 <div class="clear">
                     <div class="list-item-img-box">
+                        <#--<#assign item=map['housePhotoTitle']>-->
+                        <#--<#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">-->
+                        <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">-->
+                        <#--</#if>-->
                         <#assign item=map['housePhotoTitle']>
-                        <#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">
-                        <#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
+                        <#if item?? && item!=''>
+                            <#if item?string?index_of("http") gt -1>
+                                <img src="${item}" alt="${map.houseTitle}">
+                            <#else >
+                                <img src="${qiniuimage}/${item}-tt400x300" alt="${map.houseTitle}">
+                            </#if>
+                        <#else >
+                            <img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">
                         </#if>
                     </div>
                     <div class="list-item-cont">
@@ -315,104 +433,7 @@
         </#list>
     </#if></ul>
 </section>
-<section>
-    <div class="index-module-header">
-        <h3>最近热销新房</h3>
-    </div>
-    <ul id="index-recommend-newhouse"><#if newbuilds?exists>
-        <#assign builds = newbuilds['data']>
-        <#list builds as map>
-            <#--<#if map_index==3>-->
-            <#--<li><a class="list-item new new-ad-item" href="#">-->
-                <#--<div class="list-item-cont-ad">-->
-                    <#--<h3 class="cont-block-1">-->
-                        <#--<span>中骏·西山天璟</span>-->
-                        <#--<em>别墅</em>-->
-                    <#--</h3>-->
-                    <#--<p class="cont-block-3">东城/88㎡—526㎡</p>-->
-                <#--</div>-->
-                <#--<div class="clear">-->
-                    <#--<div class="list-item-img-box">-->
-                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
-                    <#--</div>-->
-                    <#--<div class="list-item-img-box">-->
-                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
-                    <#--</div>-->
-                    <#--<div class="list-item-img-box">-->
-                        <#--<img src="${staticurl}/images/global/tpzw_image.png" alt="中骏·西山天璟">-->
-                    <#--</div>-->
-                <#--</div>-->
-                <#--<div class="pr">-->
-                    <#--<div class="cont-block-4 house-labelling gray middle">-->
-                        <#--<span>复式</span>-->
-                        <#--<span>五证齐全</span>-->
-                        <#--<span>花园洋房</span>-->
-                    <#--</div>-->
-                    <#--<p class="cont-block-2 high-light-red">68000元/㎡</p>-->
-                <#--</div>-->
 
-                <#--<div class="new-active">-->
-                    <#--<i class="icon"></i><em>活动：</em>-->
-                    <#--<span>梦马温泉项目位于门头沟双屿岛...梦马温泉项目位于门...</span>-->
-                <#--</div>-->
-            <#--</a></li></#if>-->
-            <#if map_index==5>
-                <#break>
-            </#if>
-            <li><a class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
-                <div class="clear">
-                    <div class="list-item-img-box">
-                        <#if map['building_title_img']?exists>
-                            <#assign item = map['building_title_img']?split(",")>
-                            <#if item[0]?? && item[0] != ''><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${map['building_name']}">
-                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}"></#if>
-                        </#if>
-                    </div>
-                    <div class="list-item-cont">
-                        <span hidden="hidden">${map['building_name_id']!'暂无'}</span>
-                        <h3 class="cont-block-1">
-                            <span class="ellipsis">${map['building_name']}</span>
-                            <em><#if map['property_type']?exists>${map['property_type']}</#if></em>
-                        </h3>
-                        <#if map['average_price']?exists && map['average_price'] gt 0>
-                            <p class="cont-block-2 high-light-red">${map['average_price']}元/㎡</p>
-                        <#else>
-                            <#if map['total_price']?exists && map['total_price'] gt 0>
-                                <p class="cont-block-2 high-light-red">${map['total_price']}万元/套</p>
-                            <#else><p class="cont-block-2 high-light-red">售价待定</p>
-                            </#if>
-                        </#if>
-                        <p class="cont-block-3">
-                            <#if map['nearsubway']??>${map['nearsubway']}
-                                <#else>${map['district_name']}
-                            </#if>
-                            <#if (map['house_min_area']?exists && map['house_min_area'] gt 0)&&(map['house_max_area']?exists && map['house_max_area'] gt 0)>
-                                / ${map['house_min_area']}㎡-${map['house_max_area']}㎡</p>
-                            </#if>
-                        <div class="cont-block-4 house-labelling gray middle">
-                            <#if map['building_tags']?exists>
-                                <#assign item = map['building_tags']>
-                                <#list item as itemValue>
-                                    <span>${itemValue}</span>
-                                </#list>
-                            </#if>
-                        </div>
-                        <div class="cont-block-sale">
-                            <em>${map['sale_status_name']}</em>
-                        </div>
-                    </div>
-                </div>
-                <#if map['activity_desc']?exists>
-                <div class="new-active">
-                    <i class="icon"></i><em>活动：</em>
-                    <span>${map['activity_desc']}</span>
-                </div>
-                </#if>
-            </a></li>
-        </#list>
-    </#if>
-    </ul>
-</section>
 
 <#include "user.ftl">
 <#include "search.ftl">
@@ -492,6 +513,23 @@
                     location.href = link.find('a').attr('href');
                 });
                 return false;
+            }else
+            if($(this).children().hasClass('ad29')){
+                zhuge.track('大首页-点击新房推荐广告N0.2', {
+                    "房屋类型":link.find('div.list-item-cont').find('h3.cont-block-1').find('em').text().trim(),
+                    "参考均价":link.find('div.list-item-cont').find('p.cont-block-2.high-light-red').text().trim(),
+                    "区域":link.find('div.list-item-cont').find('p.cont-block-3').text().split("/")[0].trim(),
+                    "面积范围":link.find('div.list-item-cont').find('p.cont-block-3').text().split("/")[1]==undefined?'':link.find('div.list-item-cont').find('p.cont-block-3').text().split("/")[1].trim(),
+                    "标签":link.find('div.cont-block-4.house-labelling.gray.middle').find("span").text().trim(),
+                    "业态":"",
+                    "优惠活动":link.find('div.new-active').find("span").text().trim(),
+                    "楼盘名称":link.find('div.list-item-cont').find('span.ellipsis').text().trim(),
+                    "页面位置及序号":$(this).index()+1
+
+                }, function () {
+                    location.href = link.find('a').attr('href');
+                });
+                return false;
             }else{
 //                    var property = text.find(".newhouse_property").text();
                 zhuge.track('大首页-点击新房推荐房屋', {
@@ -517,11 +555,12 @@
 
     function dashouyelogo(dashouye) {
         var link = $(dashouye);
-        zhuge.track('大首页-进入大首页logo', {
-            "页面来源URL": window.location.href
-        }, function () {
-            location.href = link.attr('href');
-        });
+//        zhuge.track('大首页-进入大首页logo', {
+//            "页面来源URL": window.location.href
+//        }, function () {
+//            location.href = link.attr('href');
+//        });
+        location.href = link.attr('href');
         return false
     }
     $(function () {
@@ -551,41 +590,41 @@
             } else {
                 nameText = html.find('.scaleImg').attr('art')
             }
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': nameText})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': nameText})
+//            })
         }},
         {"pid": 20,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid": 21,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid": 24,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid": 25,callback: function (html) {
             var parent=$('<li class="swiper-slide index-slide-overflow"></li>');
             parent.append(html);
             $("#topbanner").append(parent);
-            html.click(function () {
-                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
-            })
+//            html.click(function () {
+//                zhuge.track('banner_大首页', {'banner名称': html.find('.scaleImg').attr('art')})
+//            })
         }},
         {"pid":12,callback:function (html) {
             var parent=$('<li></li>');
@@ -630,6 +669,15 @@
             html.click(function () {
                 zhuge.track('大首页热门推荐', {'名称': html.find('a').text()})
             })
+        }},
+        {"pid":29,callback:function (html) {
+            if(html != ''){
+                $('#index-recommend-newhouse').find('li').each(function(){
+                    if($(this).index()==1){
+                        $(this)[0].innerHTML = html[0].innerHTML
+                    }
+                })
+            }
         }}
     ]
     $com.toutiao.ad.json_chain(lunbo);

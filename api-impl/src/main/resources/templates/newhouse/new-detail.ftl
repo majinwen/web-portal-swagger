@@ -588,9 +588,9 @@
         })
     })
 
-    function zhugebaseinfo(){
-        zhuge.track('新房-点击基本信息', {
-            '新房基本信息' : '新房基本信息'
-        });
-    }
+//    function zhugebaseinfo(){
+//        zhuge.track('新房-点击基本信息', {
+//            '新房基本信息' : '新房基本信息'
+//        });
+//    }
 </script>
