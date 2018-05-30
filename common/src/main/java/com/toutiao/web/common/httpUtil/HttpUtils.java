@@ -51,10 +51,41 @@ public class HttpUtils {
     }
 
     public static String get(String url, Map<String, ?> paramsMap) {
-        return get(url,paramsMap,CHARSET_UTF8);
+        return get(url,null,paramsMap,CHARSET_UTF8);
     }
 
-    public static String get(String url, Map<String, ?> paramsMap,String encoding) {
+//    public static String get(String url, Map<String, ?> paramsMap,String encoding) {
+//        if (paramsMap != null) {
+//            Set<String> keySet = paramsMap.keySet();
+//            StringBuilder sb = new StringBuilder(keySet.size() * 8);
+//            sb.append("?");
+//            for (String key : keySet) {
+//                try {
+//                    String value = URLEncoder.encode(String.valueOf(paramsMap.get(key)), encoding);
+//                    sb.append(key).append("=").append(value).append("&");
+//                } catch (UnsupportedEncodingException e) {
+//                    logger.error(e.getMessage(), e);
+//                }
+//            }
+//            String params = sb.toString();
+//            url += params.substring(0, params.length() - 1);
+//        }
+//        HttpGet method = new HttpGet(url);
+//        return executeMethod(method,encoding);
+//    }
+
+    /**
+     * GET请求
+     * @param url
+     * @param paramsMap
+     * @return
+     */
+    public static String get(String url, Map<String, String> headers, Map<String, ?> paramsMap) {
+        return get(url, headers, paramsMap, CHARSET_UTF8);
+    }
+
+
+    public static String get(String url, Map<String, String> headers, Map<String, ?> paramsMap,String encoding) {
         if (paramsMap != null) {
             Set<String> keySet = paramsMap.keySet();
             StringBuilder sb = new StringBuilder(keySet.size() * 8);
@@ -71,8 +102,15 @@ public class HttpUtils {
             url += params.substring(0, params.length() - 1);
         }
         HttpGet method = new HttpGet(url);
+        if(null!=headers){
+            for (Map.Entry<String, String> e : headers.entrySet()) {
+                method.addHeader(e.getKey(), e.getValue());
+            }
+        }
         return executeMethod(method,encoding);
     }
+
+
 
     public static String post(String url, Map<String, ?> paramsMap) {
         return post(url,paramsMap,CHARSET_UTF8);
@@ -92,6 +130,37 @@ public class HttpUtils {
         }
         return executeMethod(method,encoding);
     }
+
+    /**
+     * POST 请求
+     * @param url
+     * @param headers
+     * @param paramsMap
+     * @return
+     */
+    public static String post(String url,  Map<String, String> headers, Map<String, ?> paramsMap) {
+        return post(url,headers,paramsMap,CHARSET_UTF8);
+    }
+
+    public static String post(String url, Map<String, String> headers, Map<String, ?> paramsMap,String encoding) {
+        HttpPost method = new HttpPost(url);
+        for (Map.Entry<String, String> e : headers.entrySet()) {
+            method.addHeader(e.getKey(), e.getValue());
+        }
+        List<NameValuePair> nvps = new ArrayList<>(paramsMap.size());
+        Set<String> keySet = paramsMap.keySet();
+        for (String key : keySet) {
+            nvps.add(new BasicNameValuePair(key, String.valueOf(paramsMap.get(key))));
+        }
+        try {
+            method.setEntity(new UrlEncodedFormEntity(nvps, encoding));
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return executeMethod(method,encoding);
+    }
+
+
 
     public static String postXml(String url, String body) {
         return postXml(url, body, CHARSET_UTF8);
