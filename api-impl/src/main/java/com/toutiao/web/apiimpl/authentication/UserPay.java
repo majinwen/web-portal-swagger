@@ -13,6 +13,7 @@ import java.util.Map;
 public class UserPay {
     private UserPay(){}
     private Integer userId;
+    private  String userName;
 
 
     public static UserPay getCurrent( ){
@@ -26,6 +27,8 @@ public class UserPay {
             map = gson.fromJson(cookies, map.getClass());
             user = new UserPay();
             user.setUserId(Integer.valueOf(map.get("userId").toString()));
+            String userName=map.get("userOnlySign").toString();
+            user.setUserName(userName.substring(userName.length()-11,userName.length()));
         }
         return user;
     }
