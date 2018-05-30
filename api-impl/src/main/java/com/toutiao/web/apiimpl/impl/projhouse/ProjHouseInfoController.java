@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.impl.projhouse;
 
 
+import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.RegexUtils;
@@ -60,6 +61,7 @@ public class ProjHouseInfoController {
         Map<String, Object> houseDetails = projHouseInfoService.queryByHouseId(houseId);
         if (StringTool.isNotBlank(houseDetails)) {
 //            model.addAttribute("pageNum",pageNum);
+           UserPay userPay= UserPay.getCurrent();
             model.addAttribute("houseId",houseId);
             model.addAttribute("houseDetail", houseDetails.get("data_house"));
             ProjHouseInfoResponse data_house = (ProjHouseInfoResponse) houseDetails.get("data_house");
