@@ -158,6 +158,13 @@ public class PaymentServiceImpl implements PaymentService {
 
             //发起请求
             result = HttpUtils.post(payDomain+ServiceStateConstant.SAVE_ORDER,header,paramsMap);
+            if(result == null){
+                logger.error("发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+"=productNo:"+commodityOrderQuery.getProductNo());
+                NashResult<Object> nashResult = NashResult.Fail("800001","发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+";productNo:"+commodityOrderQuery.getProductNo());
+                result = JSONObject.toJSONString(nashResult);
+                return result;
+            }
+
         }else{
             Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
             NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
@@ -166,7 +173,6 @@ public class PaymentServiceImpl implements PaymentService {
 
         return result;
     }
-
     /**
      * 获取用户余额信息
      * @param request
@@ -192,9 +198,13 @@ public class PaymentServiceImpl implements PaymentService {
 
                 //发起请求
                 result = HttpUtils.get(payDomain+ServiceStateConstant.GET_BALANCEINFO_USERID,header,paramsMap);
+                if(result == null){
+                    logger.error("获取用户余额信息请求失败,userId:"+ map.get("userId"));
+                    NashResult<Object> nashResult = NashResult.Fail("800002","获取用户余额信息请求失败,userId:"+map.get("userId"));
+                    result = JSONObject.toJSONString(nashResult);
+                    return result;
+                }
             }
-
-
         }else{
             Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
             NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
@@ -231,6 +241,12 @@ public class PaymentServiceImpl implements PaymentService {
 
                 //发起请求
                 result = HttpUtils.post(payDomain+ServiceStateConstant.PAYMENT_ORDER,header,paramsMap);
+                if(result == null){
+                    logger.error("发起生成商品购买订单请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
+                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
+                    result = JSONObject.toJSONString(nashResult);
+                    return result;
+                }
             }
         }else{
             Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
