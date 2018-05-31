@@ -52,9 +52,7 @@ public class PayOrderController {
     @RequestMapping(value = "order/getMyOrder",method = RequestMethod.GET)
     public  String getOrderByUser(Model model, PayOrderQuery payOrderQuery)
     {
-        PayUserDo payUserDo=new PayUserDo();
-        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,ORDER_TYPE);
+        List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery);
         model.addAttribute("payOrderDos",payOrderDos);
         return "";
     }
@@ -65,11 +63,24 @@ public class PayOrderController {
     @RequestMapping(value = "order/getMyCharge",method = RequestMethod.GET)
     public String getChargebyUser(Model model, PayOrderQuery payOrderQuery)
     {
-        PayUserDo payUserDo=new PayUserDo();
-        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,CHARGE_TYPE);
+
+        List<PayOrderDo> payOrderDos=getMyOrder(CHARGE_TYPE,payOrderQuery);
         model.addAttribute("payOrderDos",payOrderDos);
         return "";
+    }
+
+    /**
+     * 订单公共方法
+     * @param type
+     * @param payOrderQuery
+     * @return
+     */
+    private  List<PayOrderDo> getMyOrder(Integer type, PayOrderQuery payOrderQuery)
+    {
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
+        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,type);
+        return payOrderDos;
     }
 
 }
