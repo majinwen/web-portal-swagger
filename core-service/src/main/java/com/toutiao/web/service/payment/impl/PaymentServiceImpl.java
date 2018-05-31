@@ -91,7 +91,7 @@ public class PaymentServiceImpl implements PaymentService {
         String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
         header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
         Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("userName",payUserDo.getUserName());
+        paramsMap.put("userId",payUserDo.getUserId());
         paramsMap.put("type",type);
         paramsMap.put("pageNum",payOrderQuery.getPageNum());
         paramsMap.put("pageSize",payOrderQuery.getPageSize());
