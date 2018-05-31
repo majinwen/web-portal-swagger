@@ -2,13 +2,12 @@ package com.toutiao.web.domain.payment;
 
 import lombok.Data;
 
+/**
+ * 支付备注实体类
+ *
+ */
 @Data
-public class CommodityOrderQuery {
-
-    /**
-     * 商品编号
-     */
-    private String productNo;
+public class CommentDo {
 
     /**
      * 楼盘id

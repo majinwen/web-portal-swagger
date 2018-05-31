@@ -9,6 +9,7 @@ import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
+import com.toutiao.web.domain.payment.CommentDo;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
 import com.toutiao.web.domain.payment.PaymentOrderQuery;
 import com.toutiao.web.service.payment.PaymentService;
@@ -50,9 +51,10 @@ public class PaymentServiceImpl implements PaymentService {
 
             //组合参数
             Map<String, Object> paramsMap = new HashMap<>();
-            if(StringUtil.isNotNullString(commodityOrderQuery.getComment())){
-                paramsMap.put("comment",commodityOrderQuery.getComment());
-            }
+            CommentDo commentDo = new CommentDo();
+            commentDo.setBuildId(commodityOrderQuery.getBuildId());
+            commentDo.setBuildName(commodityOrderQuery.getBuildName());
+            paramsMap.put("comment",JSON.toJSONString(commentDo));
             paramsMap.put("productNo",commodityOrderQuery.getProductNo());
             paramsMap.put("userId",userBasic.getUserId());
             paramsMap.put("userName",userBasic.getUserName());
