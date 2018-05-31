@@ -13,6 +13,13 @@ public interface PaymentService {
      */
     String saveCommodityOrder(HttpServletRequest request, CommodityOrderQuery commodityOrderQuery);
 
+    /**
+     * 获取用户余额信息
+     * @param request
+     * @return
+     */
+    String getBalanceInfoByUserId(HttpServletRequest request);
+
 }
 
 

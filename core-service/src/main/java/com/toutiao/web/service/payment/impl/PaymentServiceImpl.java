@@ -4,12 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.CookieUtils;
-import com.toutiao.web.common.util.NashBeanUtils;
-import com.toutiao.web.common.util.ServiceStateConstant;
-import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.*;
 import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
 import com.toutiao.web.service.payment.PaymentService;
@@ -46,7 +44,7 @@ public class PaymentServiceImpl implements PaymentService {
 
             //组装请求header
             Map<String,String> header = new HashMap<>();
-            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,600000);
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
             header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
 
             //组合参数
@@ -63,9 +61,50 @@ public class PaymentServiceImpl implements PaymentService {
             //发起请求
             result = HttpUtils.post(payDomain+ServiceStateConstant.SAVE_ORDER,header,paramsMap);
         }else{
-            NashResult<Object> sss = NashResult.Fail("11","22");
-            result = JSONObject.toJSONString(sss);
+            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            result = JSONObject.toJSONString(nashResult);
         }
+
+        return result;
+    }
+
+    /**
+     * 获取用户余额信息
+     * @param request
+     * @return
+     */
+    @Override
+    public String getBalanceInfoByUserId(HttpServletRequest request) {
+
+        //获取用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        String result = "";
+        if(StringUtil.isNotNullString(user)){
+            Map map = JSON.parseObject(user);
+            if(StringTool.isNotEmpty(map.get("userId"))){
+
+                //组装请求header
+                Map<String,String> header = new HashMap<>();
+                String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
+                header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+                //组合参数
+                Map<String, Object> paramsMap = new HashMap<>();
+                paramsMap.put("userId",map.get("userId").toString());
+
+                //发起请求
+                result = HttpUtils.get(payDomain+ServiceStateConstant.GET_BALANCEINFO_USERID,header,paramsMap);
+            }
+
+
+        }else{
+            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            result = JSONObject.toJSONString(nashResult);
+        }
+
+
+
 
         return result;
     }
