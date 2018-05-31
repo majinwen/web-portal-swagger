@@ -18,6 +18,8 @@ import com.toutiao.web.domain.payment.CommentDo;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
 import com.toutiao.web.domain.payment.PaymentOrderQuery;
 import com.toutiao.web.service.payment.PaymentService;
+import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.client.transport.TransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,12 @@ public class PaymentServiceImpl implements PaymentService {
     private String payDomain;
     @Autowired
     private UserBasicInfoService userBasicInfoService;
+    @Autowired
+    private ESClientTools esClientTools;
+    @Value("${tt.newhouse.index}")
+    private String newHouseIndex;//索引名称
+    @Value("${tt.newhouse.type}")
+    private String newHouseType;//索引类型
 
     @Override
     public List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
@@ -122,6 +130,7 @@ public class PaymentServiceImpl implements PaymentService {
     public String saveCommodityOrder(HttpServletRequest request, CommodityOrderQuery commodityOrderQuery) {
 
         //获取用户信息
+        TransportClient client = esClientTools.init();
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         String result = "";
         if(StringUtil.isNotNullString(user)){
@@ -135,9 +144,11 @@ public class PaymentServiceImpl implements PaymentService {
 
             //组合参数
             Map<String, Object> paramsMap = new HashMap<>();
+            GetResponse agentBaseResponse = client.prepareGet(newHouseIndex,newHouseType,commodityOrderQuery.getBuildingId().toString()).execute().actionGet();
             CommentDo commentDo = new CommentDo();
-            commentDo.setBuildId(commodityOrderQuery.getBuildId());
-            commentDo.setBuildName(commodityOrderQuery.getBuildName());
+            commentDo.setBuildingId(commodityOrderQuery.getBuildingId());
+            commentDo.setBuildingName(agentBaseResponse.getSourceAsMap().get("building_name")==null?"":agentBaseResponse.getSourceAsMap().get("building_name").toString());
+            commentDo.setBuildingTitleImg(agentBaseResponse.getSourceAsMap().get("building_title_img")==null?"":agentBaseResponse.getSourceAsMap().get("building_title_img").toString());
             paramsMap.put("comment",JSON.toJSONString(commentDo));
             paramsMap.put("productNo",commodityOrderQuery.getProductNo());
             paramsMap.put("userId",userBasic.getUserId());
