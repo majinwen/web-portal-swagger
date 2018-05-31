@@ -12,11 +12,16 @@ public class CommentDo {
     /**
      * 楼盘id
      */
-    private Integer buildId;
+    private Integer buildingId;
 
     /**
      * 楼盘名称
      */
-    private String buildName;
+    private String buildingName;
+
+    /**
+     * 楼盘标题图
+     */
+    private String buildingTitleImg;
 
 }
