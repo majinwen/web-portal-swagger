@@ -2,11 +2,11 @@ package com.toutiao.web.service.payment.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.service.favorite.impl.FavoriteRestServiceImpl;
 import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
+import com.toutiao.web.domain.payment.PayBuyRecordDo;
 import com.toutiao.web.domain.payment.PayOrderDo;
-import com.toutiao.web.domain.payment.PayBuyRecordQuery;
+import com.toutiao.web.domain.payment.PayOrderQuery;
 import com.toutiao.web.domain.payment.PayUserDo;
 import com.toutiao.web.service.payment.PaymentService;
 import org.slf4j.Logger;
@@ -24,15 +24,17 @@ public class PaymentServiceImpl implements PaymentService {
     private  final String Url="http://47.95.10.4:8087/";
 
     @Override
-    public List<PayOrderDo> getBuyRecordByUserId(PayBuyRecordQuery payBuyRecordQuery, PayUserDo payUserDo) {
-        List<PayOrderDo>  payOrderDos= new ArrayList<>();
+    public List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
+        List<PayBuyRecordDo>  payOrderDos= new ArrayList<>();
         JSONObject jsonObject=new JSONObject();
         String json=JSON.toJSONString(payUserDo);
-        String jwttoken = JsonWebTokenUtil.createJWT("xxoo112",json,60000);
+        String jwtToken = JsonWebTokenUtil.createJWT("xxoo112",json,60000);
         Map<String,String> header = new HashMap<>();
-        header.put("toutiaopc",jwttoken);
+        header.put("toutiaopc",jwtToken);
         Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put("userIds",payUserDo.getUserId());
+        paramsMap.put("pageNum",payOrderQuery.getPageNum());
+        paramsMap.put("pageSize",payOrderQuery.getPageSize());
         try {
             jsonObject= JSONObject.parseObject(HttpUtils.get(Url+"purchaseHistory/getPurchaseHistoryByUserId",header,paramsMap));
             JSONObject object=(JSONObject) jsonObject.get("data");
@@ -41,12 +43,49 @@ public class PaymentServiceImpl implements PaymentService {
                 payOrderDos=null;
                 return payOrderDos;
             }
-            payOrderDos =JSON.parseArray(object.get("data").toString(),PayOrderDo.class);
+            payOrderDos =JSON.parseArray(object.get("data").toString(),PayBuyRecordDo.class);
 
         }catch (Exception e)
         {
             logger.error("获取用户购买记录失败,userId:"+payUserDo.getUserId()+"={}",e.getStackTrace());
         }
         return  payOrderDos;
+    }
+
+    /**
+     * 我的订单
+     * @param payOrderQuery
+     * @param payUserDo
+     * @return
+     */
+    @Override
+    public List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery, PayUserDo payUserDo, Integer type) {
+
+        List<PayOrderDo> payOrderDos=new ArrayList<>();
+        JSONObject jsonObject=new JSONObject();
+        String json=JSON.toJSONString(payUserDo);
+        String jwtToken = JsonWebTokenUtil.createJWT("xxoo112",json,60000);
+        Map<String,String> header = new HashMap<>();
+        header.put("toutiaopc",jwtToken);
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("userName",payUserDo.getUserName());
+        paramsMap.put("type",type);
+        paramsMap.put("pageNum",payOrderQuery.getPageNum());
+        paramsMap.put("pageSize",payOrderQuery.getPageSize());
+        try {
+            jsonObject= JSONObject.parseObject(HttpUtils.get(Url+"/order/getHistoricalOrders",header,paramsMap));
+            JSONObject object=(JSONObject) jsonObject.get("data");
+            if (object.size()==0)
+            {
+                payOrderDos=null;
+                return payOrderDos;
+            }
+            payOrderDos =JSON.parseArray(object.get("data").toString(),PayOrderDo.class);
+        }catch (Exception e)
+        {
+            logger.error("获取用户订失败,userId:"+payUserDo.getUserId()+"={}",e.getStackTrace());
+        }
+
+       return payOrderDos;
     }
 }
