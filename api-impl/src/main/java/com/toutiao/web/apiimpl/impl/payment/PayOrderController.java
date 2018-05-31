@@ -21,9 +21,9 @@ public class PayOrderController {
     @Autowired
     private PaymentService paymentService;
     //我的订单类型
-    private  final  Integer ORDER_TYPE=1;
+    private  final  Integer ORDER_TYPE=2;
     //我的充值类型
-    private  final  Integer CHATGE_TYPE=2;
+    private  final  Integer CHARGE_TYPE=1;
 
 
     /**
@@ -67,7 +67,7 @@ public class PayOrderController {
     {
         PayUserDo payUserDo=new PayUserDo();
         BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,CHATGE_TYPE);
+        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,CHARGE_TYPE);
         model.addAttribute("payOrderDos",payOrderDos);
         return "";
     }

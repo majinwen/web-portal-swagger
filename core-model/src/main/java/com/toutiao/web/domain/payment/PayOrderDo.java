@@ -20,8 +20,7 @@ public class PayOrderDo {
     /**
      *  备注
      */
-    private Map<String,String> comment;
-
+    private String comment;
 
     /**
      * 创建人编号
@@ -127,4 +126,5 @@ public class PayOrderDo {
      */
     private  String  userName;
 
+    private  CommentDo commentDo;
 }

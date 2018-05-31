@@ -90,6 +90,16 @@ public class ServiceStateConstant {
     public static final Long TTLMILLIS = 600000L;
 
 
+    /**
+     * 购买记录
+     */
+    public static final String  BUY_RECORDER = "/purchaseHistory/getPurchaseHistoryByUserId";
+
+    /**
+     * 订单
+     */
+    public static final String  PAY_ORDER = "/order/getHistoricalOrders";
+
 
 
 
