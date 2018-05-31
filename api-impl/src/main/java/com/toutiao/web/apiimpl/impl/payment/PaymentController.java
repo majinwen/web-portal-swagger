@@ -31,10 +31,29 @@ public class PaymentController {
     @RequestMapping(value = "/order/saveCommodityOrder", method = RequestMethod.POST)
     public String saveCommodityOrder(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
 
-        String result = paymentService.saveCommodityOrder(request,commodityOrderQuery);
-        System.out.println(result);
-        model.addAttribute("saveOrder",result);
-        return "";
+        String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+        String balanceResult = paymentService.getBalanceInfoByUserId(request);
+        System.out.println(orderResult);
+
+        System.out.println(balanceResult);
+        model.addAttribute("commodityOrder",orderResult);
+        model.addAttribute("balance",balanceResult);
+        return "order/test.ftl";
+    }
+
+
+    /**
+     * 小鹿测试页面
+     * @param request
+     * @param commodityOrderQuery
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/order/www", method = RequestMethod.POST)
+    public String www(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+
+
+        return "order/test";
     }
 
 
