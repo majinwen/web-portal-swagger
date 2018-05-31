@@ -1,6 +1,7 @@
 package com.toutiao.web.service.payment;
 
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
+import com.toutiao.web.domain.payment.PaymentOrderQuery;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +20,14 @@ public interface PaymentService {
      * @return
      */
     String getBalanceInfoByUserId(HttpServletRequest request);
+
+    /**
+     * 完成商品购买订单
+     * @param request
+     * @param paymentOrderQuery
+     * @return
+     */
+    String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 
 }
 

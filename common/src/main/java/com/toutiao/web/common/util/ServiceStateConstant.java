@@ -78,6 +78,12 @@ public class ServiceStateConstant {
      */
     public static final String GET_BALANCEINFO_USERID = "/balance/getBalanceInfoByUserId";
 
+
+    /**
+     * 完成商品购买订单
+     */
+    public static final String PAYMENT_ORDER = "/order/updateOrderToFinish";
+
     /**
      * 请求订单过期时间
      */
