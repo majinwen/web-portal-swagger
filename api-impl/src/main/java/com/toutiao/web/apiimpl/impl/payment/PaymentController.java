@@ -1,50 +1,78 @@
 package com.toutiao.web.apiimpl.impl.payment;
 
 
-import com.toutiao.web.domain.query.NewHouseQuery;
+import com.toutiao.web.domain.payment.CommodityOrderQuery;
+import com.toutiao.web.domain.payment.PaymentOrderQuery;
+import com.toutiao.web.service.payment.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+
 
 @Controller
-@RequestMapping("/{citypath}/payment")
+@RequestMapping("/{citypath}/order")
 public class PaymentController {
 
 
-//    String json = "{\"userId\":11,\"userName\":\"userName111\"}";
-//    //JSONObject jsons = JSON.parseObject(json);
-//    String jwttoken = JsonWebTokenUtil.createJWT("xxoo112",json,60000);
-//
-//    //http://47.95.10.4:8087/order/saveOrder  toutiaopc
-//
-//    String url = "http://47.95.10.4:8087/order/saveOrder";
-//    Map<String,String> header = new HashMap<>();
-//    header.put("toutiaopc",jwttoken);
-//
-//    Map<String, Object> paramsMap = new HashMap<>();
-//    paramsMap.put("userId","11");
-//    paramsMap.put("userName","userName111");
-//    paramsMap.put("phone","phone111");
-//    paramsMap.put("type","2");
-//    paramsMap.put("comment","comment111");
-//    paramsMap.put("productNo","2");
-//    String sss = HttpUtils.post(url,header,paramsMap);
-//
-//
-//    System.out.println(sss);
+    @Autowired
+    private PaymentService paymentService;
 
 
-    @RequestMapping(value = "/order/saveOrder", method = RequestMethod.POST)
-    public String index(NewHouseQuery newHouseQuery, Model model) {
-//        newHouseQuery.setSort(0);
-//        newHouseQuery.setPageNum(2);
-//        newHouseQuery.setPageSize(5);
-//        Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        model.addAttribute("saveOrder","");
+    /**
+     * 生成商品购买订单
+     * @param commodityOrderQuery
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.POST)
+    public String buildCommodityOrder(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+
+        String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+        String balanceResult = paymentService.getBalanceInfoByUserId(request);
+        System.out.println(orderResult);
+
+        System.out.println(balanceResult);
+        model.addAttribute("commodityOrder",orderResult);
+        model.addAttribute("balance",balanceResult);
         return "";
     }
+
+    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.POST)
+    public String paymentCommodityOrder(HttpServletRequest request, @RequestBody PaymentOrderQuery paymentOrderQuery, Model model){
+
+
+        String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
+
+        System.out.println(payOrder);
+        model.addAttribute("payOrder",payOrder);
+
+        return "";
+    }
+
+
+
+
+
+
+
+    /**
+     * 小鹿测试页面
+     * @param request
+     * @param commodityOrderQuery
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/order/www", method = RequestMethod.POST)
+    public String www(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+
+
+        return "order/test";
+    }
+
 
 }
