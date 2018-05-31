@@ -54,6 +54,24 @@ public class ServiceStateConstant {
      */
     public static final Integer SEND_MESSAGE_WAP = 2;
 
+    //==============支付===========
+    /**
+     * 充值
+     */
+    public static final Integer ORDER_TYPR_RECHARGE = 1;
+    /**
+     * 消费
+     */
+    public static final Integer ORDER_TYPR_CONSUNE = 2;
+    /**
+     * 支付请求header
+     */
+    public static final String PAYMENT_HEADER = "toutiaopc";
+
+
+    public static final String SAVE_ORDER = "/order/saveOrder";
+
+
 
 
 }
