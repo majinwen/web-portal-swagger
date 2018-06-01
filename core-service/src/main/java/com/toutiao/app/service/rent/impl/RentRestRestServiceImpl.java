@@ -56,7 +56,7 @@ public class RentRestRestServiceImpl implements RentRestService {
     private static final Integer RENT = 0;//出租:1
     private static final Integer FOCUS_APARTMENT = 2;//公寓:2
     private static final Integer DISPERSED_APARTMENTS = 1;//公寓:2
-    private static final String LAYOUT = "3";
+    private static final String LAYOUT = "4";
     //租房标识
     private  final  Integer FAVORITE_RENT=1;
 
@@ -612,7 +612,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             if(rentHouseDoQuery.getElo().equals("0")){
                 boolQueryBuilder.must(rangeQuery("erent_layout").gt(0));
             }else{
-                String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                String[] roommore = new String[]{"5","6","7","8","9","10","11","12","13","14"};
                 String[] room = rentHouseDoQuery.getElo().split(",");
                 boolean roomflag = Arrays.asList(room).contains(LAYOUT);
                 if(roomflag){
@@ -627,7 +627,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             if(rentHouseDoQuery.getJlo().equals("0")){
                 boolQueryBuilder.must(rangeQuery("jrent_layout").gt(0));
             }else{
-                String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                String[] roommore = new String[]{"5","6","7","8","9","10","11","12","13","14"};
                 String[] room = rentHouseDoQuery.getJlo().split(",");
 
                 boolean roomflag = Arrays.asList(room).contains(LAYOUT);
@@ -641,7 +641,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         }else if(StringTool.isNotBlank(rentHouseDoQuery.getElo()) && StringTool.isNotBlank(rentHouseDoQuery.getJlo())){
             BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
-            String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+            String[] roommore = new String[]{"5","6","7","8","9","10","11","12","13","14"};
             if(rentHouseDoQuery.getJlo().equals("0") && rentHouseDoQuery.getElo().equals("0")){
                 boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
                 boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));

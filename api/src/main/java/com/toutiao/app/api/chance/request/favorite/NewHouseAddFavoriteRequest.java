@@ -53,7 +53,7 @@ public class NewHouseAddFavoriteRequest {
     /**
      * 标题图
      */
-    @NotNull(message = "标题图不能为空")
+//    @NotNull(message = "标题图不能为空")
     private String buildingTitleImg;
 
     /**

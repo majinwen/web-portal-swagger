@@ -259,14 +259,25 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     try{
                         //获取新房下户型的数量
                         NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
-                        if (null!=newHouseLayoutCountDomain.getTotalCount())
-                        {
-                            newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
+//                        if (null!=newHouseLayoutCountDomain.getTotalCount())
+//                        {
+//                            newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
+//                        }
+//                        else
+//                        {
+//                            newHouseListDos.setRoomTotalCount(0);
+//                        }
+                        if(null!=newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0){
+                            List<String> roomsType = new ArrayList<>();
+                            for(int i=0; i< newHouseLayoutCountDomain.getRooms().size(); i++){
+                                roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
+                            }
+                            String rooms = String.join(",", roomsType);
+                            newHouseListDos.setRoomType(rooms);
+                        }else{
+                            newHouseListDos.setRoomType("");
                         }
-                        else
-                        {
-                            newHouseListDos.setRoomTotalCount(0);
-                        }
+
                     }catch (Exception e){
                         logger.error("获取新房户型信息异常信息={}",e.getStackTrace());
                     }

@@ -38,6 +38,14 @@ public interface PaymentService {
     String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 
     /**
+     * 支付成功，返回订单信息
+     * @param request
+     * @param paymentOrderQuery
+     * @return
+     */
+    String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
+
+    /**
      * 获取用户购买记录
      * @param payUserDo
      * @return

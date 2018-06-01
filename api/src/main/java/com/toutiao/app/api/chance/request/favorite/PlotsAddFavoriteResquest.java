@@ -32,7 +32,7 @@ public class PlotsAddFavoriteResquest {
     /**
      * 标题图
      */
-    @NotEmpty(message = "标题图不能为空")
+//    @NotEmpty(message = "标题图不能为空")
     private String buildingImages;
     /**
      * 是否下架(0-未下架, 1-下架)
