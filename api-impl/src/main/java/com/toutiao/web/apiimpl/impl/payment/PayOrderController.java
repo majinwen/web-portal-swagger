@@ -1,6 +1,8 @@
 package com.toutiao.web.apiimpl.impl.payment;
 
 import com.toutiao.web.apiimpl.authentication.UserPay;
+import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.domain.payment.PayBuyRecordDo;
 import com.toutiao.web.domain.payment.PayOrderDo;
 import com.toutiao.web.domain.payment.PayOrderQuery;
@@ -10,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -61,7 +64,7 @@ public class PayOrderController {
      * 我的充值记录
      */
     @RequestMapping(value = "order/getMyCharge",method = RequestMethod.GET)
-    public String getChargebyUser(Model model, PayOrderQuery payOrderQuery)
+    public String getChargeByUser(Model model, PayOrderQuery payOrderQuery)
     {
 
         List<PayOrderDo> payOrderDos=getMyOrder(CHARGE_TYPE,payOrderQuery);
@@ -81,6 +84,21 @@ public class PayOrderController {
         BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
         List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,type);
         return payOrderDos;
+    }
+
+
+
+    /**
+     * 订单详情
+     */
+    @RequestMapping(value = "order/getOrderDetails",method = RequestMethod.GET)
+    private  String getMyOrderDetails(Model model, @Validated(First.class) PayOrderQuery payOrderQuery )
+    {
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
+
+        PayOrderDo payOrderDo=paymentService.getMyOrderDetails(payOrderQuery,payUserDo);
+        return "";
     }
 
 }

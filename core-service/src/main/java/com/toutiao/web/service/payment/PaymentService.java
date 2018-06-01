@@ -46,7 +46,13 @@ public interface PaymentService {
 
 
     /**
-     * 我的订单
+     * 我的订单列表
      */
     List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type);
+
+
+    /**
+     * 我的详情
+     */
+    PayOrderDo getMyOrderDetails(PayOrderQuery payOrderQuery,PayUserDo payUserDo);
 }

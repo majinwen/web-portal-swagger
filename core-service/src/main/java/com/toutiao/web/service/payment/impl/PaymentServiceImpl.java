@@ -119,6 +119,16 @@ public class PaymentServiceImpl implements PaymentService {
        return payOrderDos;
     }
 
+    @Override
+    public PayOrderDo getMyOrderDetails(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
+
+        String json=JSON.toJSONString(payUserDo);
+        Map<String,String> header = new HashMap<>();
+        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
+        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+
+        return  null;
+    }
 
 
     /**
