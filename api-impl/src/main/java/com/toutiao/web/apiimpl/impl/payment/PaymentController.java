@@ -47,23 +47,26 @@ public class PaymentController {
         String balanceResult = paymentService.getBalanceInfoByUserId(request);
 
         JSONObject orderObject = JSON.parseObject(orderResult);
+        JSONObject balanceObject = JSON.parseObject(balanceResult);
         if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
             return "/user/login";
         }
         JSONObject orderJson = JSON.parseObject(orderObject.getString("data"));
+        JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
 
 
 
 
         System.out.println(orderJson);
 
+        System.out.println(balanceJson);
         System.out.println(balanceResult);
 
 
 
 
-        model.addAttribute("commodityOrder",orderResult);
-        model.addAttribute("balance",balanceResult);
+        model.addAttribute("commodityOrder",orderJson);
+        model.addAttribute("balance",balanceJson);
         return "order/purchase";
     }
 
