@@ -74,8 +74,15 @@ public class NewHouseListDo  {
      */
     private  String buildingTitleImg;
 
-
+    /**
+     * 户型总数
+     */
     private  long roomTotalCount;
+
+    /**
+     * 户型类型
+     */
+    private String roomType;
 
     /**
      * 新房收藏数量
