@@ -298,10 +298,17 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         if (hits.length>0){
+            List<String> imgs = new ArrayList<>();
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
 
+                List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSource().get("rent_house_img");
+                for(int i=0; i<rentHouseImg.size();i++){
+                    imgs.add(rentHouseImg.get(i).get("image_path"));
+
+                }
+                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
@@ -343,9 +350,16 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
+            List<String> imgs = new ArrayList<>();
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSource().get("rent_house_img");
+                for(int i=0; i<rentHouseImg.size();i++){
+                    imgs.add(rentHouseImg.get(i).get("image_path"));
+
+                }
+                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
@@ -450,10 +464,17 @@ public class RentRestRestServiceImpl implements RentRestService {
         SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize());
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
+            List<String> imgs = new ArrayList<>();
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
 
+                List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) hit.getSource().get("rent_house_img");
+                for(int i=0; i<rentHouseImg.size();i++){
+                    imgs.add(rentHouseImg.get(i).get("image_path"));
+
+                }
+                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
