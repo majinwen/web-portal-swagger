@@ -99,12 +99,19 @@ public class PayOrderController {
      * 订单详情
      */
     @RequestMapping(value = "order/getOrderDetails",method = RequestMethod.GET)
-    private  String getMyOrderDetails(Model model, @Validated(First.class) PayOrderQuery payOrderQuery )
+    private  String getMyOrderDetails(Model model, @Validated(First.class) PayOrderQuery payOrderQuery,HttpServletRequest request )
     {
         PayUserDo payUserDo=new PayUserDo();
-        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
+        UserPay userPay=UserPay.getCurrent();
+        if (null==userPay.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+        BeanUtils.copyProperties(userPay,payUserDo);
 
         PayOrderDo payOrderDo=paymentService.getMyOrderDetails(payOrderQuery,payUserDo);
+        model.addAttribute("payOrderDo",payOrderDo);
         return "";
     }
 

@@ -105,6 +105,10 @@ public class ServiceStateConstant {
      */
     public static final String  PAY_ORDER = "/order/getHistoricalOrders";
 
+    /**
+     * 订单详情
+     */
+    public static  final  String ORDER_DETAILS="/paycenter/getAliPayOrder";
 
 
 

@@ -119,15 +119,39 @@ public class PaymentServiceImpl implements PaymentService {
        return payOrderDos;
     }
 
+    /**
+     * 订单详情
+     * @param payOrderQuery
+     * @param payUserDo
+     * @return
+     */
     @Override
     public PayOrderDo getMyOrderDetails(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
 
+        PayOrderDo payOrderDo=new PayOrderDo();
+        JSONObject jsonObject=new JSONObject();
         String json=JSON.toJSONString(payUserDo);
         Map<String,String> header = new HashMap<>();
         String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
         header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("out_trade_no",payOrderQuery.getOutTradeNo());
+        try {
+            jsonObject= JSONObject.parseObject(HttpUtils.get(payDomain+ServiceStateConstant.ORDER_DETAILS,header,paramsMap));
+            JSONObject object=(JSONObject) jsonObject.get("data");
+            if (object.size()<1)
+            {
+                payOrderDo=null;
+                return payOrderDo;
+            }
+            payOrderDo =JSON.parseObject(object.get("data").toString(),PayOrderDo.class);
+        }catch (Exception e)
+        {
+            logger.error("获取用户订单详情失败,out_trade_no:"+payOrderQuery.getOutTradeNo()+"={}",e.getStackTrace());
+        }
 
-        return  null;
+
+        return  payOrderDo;
     }
 
 
