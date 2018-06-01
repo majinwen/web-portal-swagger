@@ -25,6 +25,7 @@ public class PlotDetailsDo {
      * 小区照片
      */
     private List<String> photo;
+    private String[] photos;
     /**
      * 区域编号
      */

@@ -36,7 +36,7 @@ public class SellHousesSearchDo {
     /**
      * 二手房房源图片
      */
-    private List<String> housePhoto;
+    private String[] housePhoto;
 
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)

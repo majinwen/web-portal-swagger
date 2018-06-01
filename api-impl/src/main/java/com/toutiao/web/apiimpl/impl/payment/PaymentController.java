@@ -35,26 +35,38 @@ public class PaymentController {
 
 
     /**
-     * 生成商品购买订单
+     * 生成商品购买订单1
      * @param commodityOrderQuery
      * @param model
      * @return
      */
-    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.POST)
-    public String buildCommodityOrder(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
+    public String buildCommodityOrder(HttpServletRequest request,CommodityOrderQuery commodityOrderQuery, Model model) {
 
         String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
         String balanceResult = paymentService.getBalanceInfoByUserId(request);
 
-        JSONObject jsonObject = JSON.parseObject(orderResult);
-        if(jsonObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "redirect:/login";
+        JSONObject orderObject = JSON.parseObject(orderResult);
+        JSONObject balanceObject = JSON.parseObject(balanceResult);
+        if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
+            return "/user/login";
         }
-        System.out.println(orderResult);
+        JSONObject orderJson = JSON.parseObject(orderObject.getString("data"));
+        JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
 
+
+
+
+        System.out.println(orderJson);
+
+        System.out.println(balanceJson);
         System.out.println(balanceResult);
-        model.addAttribute("commodityOrder",orderResult);
-        model.addAttribute("balance",balanceResult);
+
+
+
+
+        model.addAttribute("commodityOrder",orderJson);
+        model.addAttribute("balance",balanceJson);
         return "order/purchase";
     }
 
@@ -65,8 +77,8 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.POST)
-    public String paymentCommodityOrder(HttpServletRequest request, @RequestBody PaymentOrderQuery paymentOrderQuery, Model model){
+    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);

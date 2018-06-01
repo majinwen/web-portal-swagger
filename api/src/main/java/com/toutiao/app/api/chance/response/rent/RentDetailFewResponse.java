@@ -73,4 +73,6 @@ public class RentDetailFewResponse {
      */
     private  Integer rentType;
 
+    private String[] housePhoto;
+
 }
