@@ -11,8 +11,13 @@ public class CommodityOrderQuery {
     private String productNo;
 
     /**
-     * 备注
+     * 楼盘id
      */
-    private String comment;
+    private Integer buildingId;
+
+//    /**
+//     * 楼盘名称
+//     */
+//    private String buildName;
 
 }

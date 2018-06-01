@@ -68,8 +68,38 @@ public class ServiceStateConstant {
      */
     public static final String PAYMENT_HEADER = "toutiaopc";
 
-
+    /**
+     * 生成商品购买订单
+     */
     public static final String SAVE_ORDER = "/order/saveOrder";
+
+    /**
+     * 获取用户余额信息
+     */
+    public static final String GET_BALANCEINFO_USERID = "/balance/getBalanceInfoByUserId";
+
+
+    /**
+     * 完成商品购买订单
+     */
+    public static final String PAYMENT_ORDER = "/order/updateOrderToFinish";
+
+    /**
+     * 请求订单过期时间
+     */
+    public static final Long TTLMILLIS = 600000L;
+
+
+    /**
+     * 购买记录
+     */
+    public static final String  BUY_RECORDER = "/purchaseHistory/getPurchaseHistoryByUserId";
+
+    /**
+     * 订单
+     */
+    public static final String  PAY_ORDER = "/order/getHistoricalOrders";
+
 
 
 
