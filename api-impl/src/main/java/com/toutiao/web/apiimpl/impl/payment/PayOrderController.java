@@ -57,7 +57,7 @@ public class PayOrderController {
     {
         List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery);
         model.addAttribute("payOrderDos",payOrderDos);
-        return "";
+        return "order/order";
     }
 
     /**
