@@ -108,7 +108,7 @@ public class ServiceStateConstant {
     /**
      * 订单详情
      */
-    public static  final  String ORDER_DETAILS="/paycenter/getAliPayOrder";
+    public static  final  String ORDER_DETAILS="/order/getOrderByOrderNo";
 
 
 

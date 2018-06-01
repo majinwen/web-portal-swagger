@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 public class PayOrderQuery {
 
     @NotNull(groups ={First.class},message = "订单号不为空")
-    private String outTradeNo;
+    private String orderNo;
     private  Integer pageNum=1;
 
     private  Integer pageSize=500;

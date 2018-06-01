@@ -1,6 +1,7 @@
 package com.toutiao.web.service.payment.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
@@ -135,7 +136,7 @@ public class PaymentServiceImpl implements PaymentService {
         String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
         header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
         Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("out_trade_no",payOrderQuery.getOutTradeNo());
+        paramsMap.put("orderNo",payOrderQuery.getOrderNo());
         try {
             jsonObject= JSONObject.parseObject(HttpUtils.get(payDomain+ServiceStateConstant.ORDER_DETAILS,header,paramsMap));
             JSONObject object=(JSONObject) jsonObject.get("data");
@@ -144,10 +145,11 @@ public class PaymentServiceImpl implements PaymentService {
                 payOrderDo=null;
                 return payOrderDo;
             }
-            payOrderDo =JSON.parseObject(object.get("data").toString(),PayOrderDo.class);
+            JSONArray jsArr= (JSONArray) object.get("data");
+            payOrderDo =JSON.parseObject(jsArr.get(0).toString(),PayOrderDo.class);
         }catch (Exception e)
         {
-            logger.error("获取用户订单详情失败,out_trade_no:"+payOrderQuery.getOutTradeNo()+"={}",e.getStackTrace());
+            logger.error("获取用户订单详情失败,out_trade_no:"+payOrderQuery.getOrderNo()+"={}",e.getStackTrace());
         }
 
 
