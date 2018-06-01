@@ -3,19 +3,23 @@ package com.toutiao.web.apiimpl.impl.payment;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.web.api.chance.request.payment.PaymentRequest;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
+import com.toutiao.web.domain.payment.PaymentDoQuery;
 import com.toutiao.web.domain.payment.PaymentOrderQuery;
 import com.toutiao.web.service.payment.PaymentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 
 @Controller
@@ -95,6 +99,42 @@ public class PaymentController {
 
         return "";
     }
+
+    /**
+     * 支付
+     * @param request
+     * @param paymentRequest
+     * @return
+     */
+    @RequestMapping(value = "/chargeMoney", method = RequestMethod.GET)
+    @ResponseBody
+    public String chargeMoney(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest) {
+        PaymentDoQuery paymentDoQuery = new PaymentDoQuery();
+        BeanUtils.copyProperties(paymentRequest, paymentDoQuery);
+        String form = paymentService.chargeMoney(request, paymentDoQuery);
+        JSONObject jsonObject = JSON.parseObject(form);
+        String data = (String) jsonObject.get("data");
+        return data;
+    }
+
+    /**
+     * 支付成功
+     * @return
+     */
+    @RequestMapping("/success")
+    public String success(){
+        return "404";
+    }
+
+    /**
+     * 支付失败
+     * @return
+     */
+    @RequestMapping("/fails")
+    public String fails(){
+        return "404";
+    }
+
 
 
 

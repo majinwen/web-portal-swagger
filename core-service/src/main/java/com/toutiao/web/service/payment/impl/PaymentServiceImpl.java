@@ -2,21 +2,15 @@ package com.toutiao.web.service.payment.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.httpUtil.HttpUtils;
-import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
-import com.toutiao.web.domain.payment.PayBuyRecordDo;
-import com.toutiao.web.domain.payment.PayOrderDo;
-import com.toutiao.web.domain.payment.PayOrderQuery;
-import com.toutiao.web.domain.payment.PayUserDo;
-
+import com.google.common.collect.Maps;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
-import com.toutiao.web.domain.payment.CommentDo;
-import com.toutiao.web.domain.payment.CommodityOrderQuery;
-import com.toutiao.web.domain.payment.PaymentOrderQuery;
+import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
+import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -24,16 +18,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
+    private final String CHARGEMONEYURL = "http://47.95.10.4:8087/paycenter/savePayOrder";
     private Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
     @Value("${tt.payment.domain}")
     private String payDomain;
@@ -293,5 +290,54 @@ public class PaymentServiceImpl implements PaymentService {
         }
 
         return result;
+    }
+    /**
+     * 支付
+     * @return
+     */
+    @Override
+    public String chargeMoney(HttpServletRequest request, PaymentDoQuery paymentDoQuery) {
+        //获取用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        String result = "";
+        if(StringUtil.isNotNullString(user)){
+            Map map = JSON.parseObject(user);
+            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(map.get("userId").toString());
+
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,60000);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+
+            //组合参数
+            Map<String, Object> paramsMap = beanToMap(paymentDoQuery);
+            paramsMap.put("userId",userBasic.getUserId());
+            paramsMap.put("userName",userBasic.getUserName());
+            paramsMap.put("phone",userBasic.getPhone());
+
+            //发起请求
+            result = HttpUtils.get(CHARGEMONEYURL, header, paramsMap);
+        }else{
+            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            result = JSONObject.toJSONString(nashResult);
+        }
+        return result;
+    }
+
+    /**
+     * 将对象装换为map
+     * @param bean
+     * @return
+     */
+    public static <T> Map<String, Object> beanToMap(T bean) {
+        Map<String, Object> map = Maps.newHashMap();
+        if (bean != null) {
+            BeanMap beanMap = BeanMap.create(bean);
+            for (Object key : beanMap.keySet()) {
+                map.put(key+"", beanMap.get(key));
+            }
+        }
+        return map;
     }
 }
