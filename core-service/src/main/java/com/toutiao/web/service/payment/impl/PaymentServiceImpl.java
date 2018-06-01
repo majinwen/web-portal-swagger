@@ -317,6 +317,12 @@ public class PaymentServiceImpl implements PaymentService {
 
             //发起请求
             result = HttpUtils.get(CHARGEMONEYURL, header, paramsMap);
+            if(result == null){
+                logger.error("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
+                NashResult<Object> nashResult = NashResult.Fail("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
+                result = JSONObject.toJSONString(nashResult);
+                return result;
+            }
         }else{
             Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
             NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");

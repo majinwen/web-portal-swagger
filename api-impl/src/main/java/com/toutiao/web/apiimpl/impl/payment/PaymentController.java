@@ -106,9 +106,9 @@ public class PaymentController {
      * @param paymentRequest
      * @return
      */
-    @RequestMapping(value = "/chargeMoney", method = RequestMethod.GET)
+    @RequestMapping(value = "/chargeMoney", method = RequestMethod.POST)
     @ResponseBody
-    public String chargeMoney(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest) {
+    public String chargeMoney(HttpServletRequest request, @Validated @RequestBody PaymentRequest paymentRequest) {
         PaymentDoQuery paymentDoQuery = new PaymentDoQuery();
         BeanUtils.copyProperties(paymentRequest, paymentDoQuery);
         String form = paymentService.chargeMoney(request, paymentDoQuery);
