@@ -160,9 +160,9 @@ public class PaymentServiceImpl implements PaymentService {
             result = HttpUtils.post(payDomain+ServiceStateConstant.SAVE_ORDER,header,paramsMap);
             if(result == null){
                 logger.error("发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+"=productNo:"+commodityOrderQuery.getProductNo());
-                NashResult<Object> nashResult = NashResult.Fail("800001","发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+";productNo:"+commodityOrderQuery.getProductNo());
-                result = JSONObject.toJSONString(nashResult);
-                return result;
+//                NashResult<Object> nashResult = NashResult.Fail("800001","发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+";productNo:"+commodityOrderQuery.getProductNo());
+//                result = JSONObject.toJSONString(nashResult);
+//                return result;
             }
 
         }else{
