@@ -59,7 +59,7 @@ public class AddFavorite {
     /**
      * 二手房标题图
      */
-    @NotNull(groups ={First.class,Second.class},message = "缺少二手房标题图")
+//    @NotNull(groups ={First.class,Second.class},message = "缺少二手房标题图")
     private  String  housePhotoTitle;
 
     /**

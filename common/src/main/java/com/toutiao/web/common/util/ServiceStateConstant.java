@@ -85,6 +85,11 @@ public class ServiceStateConstant {
     public static final String PAYMENT_ORDER = "/order/updateOrderToFinish";
 
     /**
+     * 完成商品购买订单
+     */
+    public static final String PURCHASE_HISTORY_ORDERNO= "/purchaseHistory/getPurchaseHistoryByOrderNo";
+
+    /**
      * 请求订单过期时间
      */
     public static final Long TTLMILLIS = 600000L;

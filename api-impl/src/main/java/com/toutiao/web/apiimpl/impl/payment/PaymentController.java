@@ -42,6 +42,13 @@ public class PaymentController {
         return "";
     }
 
+    /**
+     * 完成商品购买订单
+     * @param request
+     * @param paymentOrderQuery
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.POST)
     public String paymentCommodityOrder(HttpServletRequest request, @RequestBody PaymentOrderQuery paymentOrderQuery, Model model){
 
@@ -54,8 +61,24 @@ public class PaymentController {
         return "";
     }
 
+    /**
+     *
+     * @param request
+     * @param paymentOrderQuery
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/paymentSuccess", method = RequestMethod.GET)
+    public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
 
+        String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
+
+        System.out.println(paySuccess);
+        model.addAttribute("payOrder",paySuccess);
+
+        return "";
+    }
 
 
 
