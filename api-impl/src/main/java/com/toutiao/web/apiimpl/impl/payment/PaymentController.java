@@ -84,18 +84,43 @@ public class PaymentController {
 
 
     /**
-     * 小鹿测试页面
-     * @param request
-     * @param commodityOrderQuery
+     * 小鹿测试页面(我的订单列表)
      * @param model
      * @return
      */
-    @RequestMapping(value = "/order/www", method = RequestMethod.POST)
-    public String www(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+    @RequestMapping("/order/order")
+    public String order(Model model) {
 
-
-        return "order/test";
+        return "order/order";
     }
+    /**
+     * 小鹿测试页面(充值页面)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/order/recharge")
+    public String recharge(Model model) {
 
+        return "order/recharge";
+    }
+    /**
+     * 小鹿测试页面(充值结果)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/order/result")
+    public String result(Model model) {
 
+        return "order/result";
+    }
+    /**
+     * 小鹿测试页面(购买页面)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/order/purchase")
+    public String purchase(Model model) {
+
+        return "order/purchase";
+    }
 }

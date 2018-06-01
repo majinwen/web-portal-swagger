@@ -1,0 +1,94 @@
+html {
+    background-color: #f4f4f4;
+}
+.remaining-sum {
+    margin-top: rem(20);
+    padding-left: rem(30);
+    padding-right: rem(30);
+    height: rem(90);
+    line-height: rem(90);
+    font-weight: 700;
+    @include font-dpr(30);
+
+    em {
+        color: #ff4848;
+    }
+}
+.input-sum {
+    padding: rem(80) rem(50) rem(60) rem(50);
+    background-color: #fff;
+
+    input {
+        width: 100%;
+        height: rem(50);
+        line-height: rem(50);
+        @include font-dpr(30);
+
+        &::-webkit-input-placeholder {
+            color: #999;
+        }
+        &:-moz-placeholder {
+            color: #999;
+        }
+        &:-ms-input-placeholder {
+            color: #999;
+        }
+    }
+}
+.payment-method {
+    margin-top: rem(20);
+    padding: rem(10) rem(50);
+    background-color: #fff;
+
+
+    li {
+        &:nth-child(n+2) {
+            border-top: 1px solid #e1e1e1;
+        }
+    }
+    .method-item {
+        position: relative;
+        display: block;
+        padding-top: rem(40);
+        padding-bottom: rem(40);
+
+        img {
+            width: rem(80);
+            height: rem(80);
+        }
+        div {
+            position: relative;
+            display: inline-block;
+            height: rem(80);
+            margin-left: rem(32);
+            vertical-align: bottom;
+
+            p, span {
+                position: absolute;
+                display: block;
+                white-space: nowrap;
+            }
+            p {
+                top: 0;
+                color: #3a3a3a;
+                @include font-dpr(36);
+            }
+            span {
+                bottom: 0;
+                @include font-dpr(22);
+            }
+        }
+        i {
+            display: inline-block;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: rem(16);
+            height: rem(30);
+            margin-top: rem(-15);
+            @include bg-image('/static/images/payment/arrow_right');
+            -webkit-background-size: contain;
+            background-size: contain;
+        }
+    }
+}

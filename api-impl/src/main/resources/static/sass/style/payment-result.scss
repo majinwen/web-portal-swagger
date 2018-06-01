@@ -1,0 +1,36 @@
+@import "../base/normalize";
+@import "../base/mixin";
+
+html {
+    background-color: #f4f4f4;
+}
+.result-wrapper {
+    padding: rem(130) rem(30) rem(105) rem(30);
+    text-align: center;
+    background-color: #fff;
+
+    img {
+        width: rem(128);
+        height: rem(128);
+    }
+    p {
+        margin-top: rem(38);
+        line-height: 1;
+        @include font-dpr(30);
+    }
+    button {
+        width: 100%;
+        height: rem(80);
+        line-height: rem(80);
+        margin-top: rem(78);
+        color: #fff;
+        background-color: #3a3a3a;
+        -webkit-border-radius: rem(5);
+        -moz-border-radius: rem(5);
+        border-radius: rem(5);
+        @include font-dpr(36);
+    }
+    .none {
+        display: none;
+    }
+}
