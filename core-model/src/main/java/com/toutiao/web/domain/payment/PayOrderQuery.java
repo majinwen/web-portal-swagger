@@ -10,5 +10,5 @@ public class PayOrderQuery {
     private String OutTradeNo;
     private  Integer pageNum=1;
 
-    private  Integer pageSize=100;
+    private  Integer pageSize=500;
 }
