@@ -35,7 +35,7 @@ public class PaymentController {
 
 
     /**
-     * 生成商品购买订单
+     * 生成商品购买订单1
      * @param commodityOrderQuery
      * @param model
      * @return
