@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -53,21 +54,26 @@ public class PayOrderController {
      */
 
     @RequestMapping(value = "order/getMyOrder",method = RequestMethod.GET)
-    public  String getOrderByUser(Model model, PayOrderQuery payOrderQuery)
+    public  String getOrderByUser(Model model, PayOrderQuery payOrderQuery,HttpServletRequest request)
     {
-        List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery);
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+        List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery,user);
         model.addAttribute("payOrderDos",payOrderDos);
         return "order/order";
     }
-
     /**
      * 我的充值记录
      */
     @RequestMapping(value = "order/getMyCharge",method = RequestMethod.GET)
     public String getChargeByUser(Model model, PayOrderQuery payOrderQuery)
     {
-
-        List<PayOrderDo> payOrderDos=getMyOrder(CHARGE_TYPE,payOrderQuery);
+        UserPay user=UserPay.getCurrent();
+        List<PayOrderDo> payOrderDos=getMyOrder(CHARGE_TYPE,payOrderQuery,user);
         model.addAttribute("payOrderDos",payOrderDos);
         return "";
     }
@@ -78,10 +84,11 @@ public class PayOrderController {
      * @param payOrderQuery
      * @return
      */
-    private  List<PayOrderDo> getMyOrder(Integer type, PayOrderQuery payOrderQuery)
+    private  List<PayOrderDo> getMyOrder(Integer type, PayOrderQuery payOrderQuery,UserPay user)
     {
+
         PayUserDo payUserDo=new PayUserDo();
-        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
+        BeanUtils.copyProperties(user,payUserDo);
         List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,type);
         return payOrderDos;
     }
