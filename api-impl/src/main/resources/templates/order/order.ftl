@@ -15,7 +15,11 @@
         <a href="#" class="order-item-wrapper">
         <div class="order-item">
             <div class="img-box">
-                <img src="${key.commentDo.buildingTitleImg}" alt="">
+                <#if key.commentDo.buildingTitleImg!='' >
+                <img src="${qiniuimage}/${key.commentDo.buildingTitleImg}-tt400x300" alt="">
+                <#else>
+                    <img src="${staticurl}/images/global/tpzw_image.png" alt="">
+                </#if>
             </div>
             <div class="order-content">
                 <div>
