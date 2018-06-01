@@ -101,6 +101,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 newHouseDetailDo.setIsFavorite(isFavorite);
             }
             newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
+
+            String [] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
+            newHouseDetailDo.setBuildingImg(img);
         }
         if ("0".equals(newHouseDetailDo.getHeatingType())){
             newHouseDetailDo.setHeatingType("未知");

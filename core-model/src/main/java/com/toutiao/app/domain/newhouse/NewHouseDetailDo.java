@@ -79,6 +79,7 @@ public class NewHouseDetailDo {
      */
     private List<String> buildingImgs;
 
+    private String[] buildingImg;
     /**
      * 建筑面积(平方米)
      */
