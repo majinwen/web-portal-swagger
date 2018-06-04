@@ -184,4 +184,14 @@ public class PaymentController {
 
         return "order/coupon";
     }
+    /**
+     * 小鹿测试页面(我的优惠卡)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/center")
+    public String center(Model model) {
+
+        return "order/center";
+    }
 }
