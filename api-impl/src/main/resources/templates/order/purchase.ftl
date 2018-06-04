@@ -40,7 +40,13 @@
         <strong>待支付</strong>
         <span>实付款：<em>¥${commodityOrder['payMoney']}</em></span>
     </div>
-    <button>确认</button>
+
+    <#if balance['balance'] gte commodityOrder['payMoney']>
+        <button onclick="window.location.href='${router_city('/order/paymentCommodityOrder?orderNo='+commodityOrder['orderNo'])}'">确认</button>
+    <#else >
+        <button>充值</button>
+    </#if>
+
     <p class="current-balance">当前余额：${balance['balance']}元</p>
 </section>
 </body>

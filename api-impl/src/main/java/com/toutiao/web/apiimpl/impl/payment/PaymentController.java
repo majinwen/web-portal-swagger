@@ -91,7 +91,7 @@ public class PaymentController {
     }
 
     /**
-     *
+     * 根据订单编号获取购买记录
      * @param request
      * @param paymentOrderQuery
      * @param model
