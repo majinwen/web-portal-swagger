@@ -1,0 +1,46 @@
+@import "../base/normalize";
+@import "../base/mixin";
+
+html {
+    background-color: #f4f4f4;
+}
+.list-wrapper {
+    margin-top: rem(20);
+
+    .list-item {
+        display: block;
+        padding: rem(30);
+        background-color: #fff;
+        border-top: 1px solid #e1e1e1;
+
+        div {
+            &:nth-child(2) {
+                margin-top: rem(10);
+            }
+        }
+        span {
+            display: inline-block;
+            line-height: 1;
+            color: #333;
+            @include font-dpr(26);
+
+            &.price-type {
+                @include font-dpr(30);
+            }
+            &.price-sum {
+                font-weight: 700;
+                @include font-dpr(30);
+            }
+            &.time {
+                color: #666;
+            }
+            &:first-child {
+                float: left;
+            }
+            &:last-child {
+                float: right;
+            }
+        }
+
+    }
+}
