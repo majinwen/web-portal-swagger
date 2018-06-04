@@ -57,4 +57,12 @@ public interface PaymentService {
      * 我的订单
      */
     List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type);
+
+    /**
+     * 根据订单编号获取订单详情
+     * @param request
+     * @param paymentOrderQuery
+     * @return
+     */
+    String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 }

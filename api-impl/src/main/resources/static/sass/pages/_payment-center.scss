@@ -1,0 +1,88 @@
+html {
+    background-color: #f4f4f4;
+}
+.balance-title {
+    padding: rem(50) rem(30);
+
+    p {
+        @include font-dpr(26);
+    }
+    strong {
+        display: block;
+        line-height: 1;
+        margin-top: rem(20);
+        @include font-dpr(72);
+    }
+}
+.list-box {
+    &:nth-child(n+2) {
+        margin-top: rem(20);
+    }
+
+    li {
+        &:nth-child(n+2) {
+            .list-item {
+                border-top: 1px solid #e1e1e1;
+            }
+        }
+        .list-item {
+            position: relative;
+            display: block;
+            padding: rem(40) rem(30);
+            background-color: #fff;
+
+            p {
+                color: #3a3a3a;
+
+                i, span {
+                    vertical-align: middle;
+                }
+                i {
+                    display: inline-block;
+                    width: rem(46);
+                    height: rem(44);
+                    margin-right: rem(20);
+                    @include bg-image('/static/images/payment/payment-center-icon');
+                    -webkit-background-size: auto 100%;
+                    background-size: auto 100%;
+
+                    &.chongzhi {
+                        background-position: 0 0;
+                    }
+                    &.mingxi {
+                        background-position: rem(-94) 0;
+                    }
+                    &.goumai {
+                        background-position: rem(-186) 0;
+                    }
+                }
+                span {
+                    display: inline-block;
+                    font-weight: 700;
+                    @include font-dpr(30);
+                }
+            }
+            .arrows {
+                position: absolute;
+                right: rem(30);
+                top: 50%;
+                display: block;
+                width: rem(16);
+                height: rem(29);
+                margin-top: rem(-15);
+                @include bg-image('/static/images/payment/arrow_right');
+                background-position: center;
+                -webkit-background-size: contain;
+                background-size: contain;
+            }
+        }
+    }
+}
+.tip-tel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: rem(100);
+    text-align: center;
+    color: #999;
+}
