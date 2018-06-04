@@ -158,9 +158,9 @@ public class PaymentServiceImpl implements PaymentService {
             result = HttpUtils.post(payDomain+ServiceStateConstant.SAVE_ORDER,header,paramsMap);
             if(result == null){
                 logger.error("发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+"=productNo:"+commodityOrderQuery.getProductNo());
-                NashResult<Object> nashResult = NashResult.Fail("800001","发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+";productNo:"+commodityOrderQuery.getProductNo());
-                result = JSONObject.toJSONString(nashResult);
-                return result;
+//                NashResult<Object> nashResult = NashResult.Fail("800001","发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+";productNo:"+commodityOrderQuery.getProductNo());
+//                result = JSONObject.toJSONString(nashResult);
+//                return result;
             }
 
         }else{
@@ -279,9 +279,9 @@ public class PaymentServiceImpl implements PaymentService {
             result = HttpUtils.get(payDomain+ServiceStateConstant.PURCHASE_HISTORY_ORDERNO,header,paramsMap);
             if(result == null){
                 logger.error("发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
-                NashResult<Object> nashResult = NashResult.Fail("800004","发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
-                result = JSONObject.toJSONString(nashResult);
-                return result;
+//                NashResult<Object> nashResult = NashResult.Fail("800004","发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
+//                result = JSONObject.toJSONString(nashResult);
+//                return result;
             }
 
         }else{

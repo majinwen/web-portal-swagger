@@ -212,9 +212,9 @@
 </dependencies>
     <repositories>
         <repository>
-            <id>nexus</id>
+            <id>releases</id>
             <name>nexus Repository</name>
-            <url>http://47.104.96.88:9004/nexus/content/repositories/releases/</url>
+            <url>http://39.105.31.58:9003/content/repositories/releases</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

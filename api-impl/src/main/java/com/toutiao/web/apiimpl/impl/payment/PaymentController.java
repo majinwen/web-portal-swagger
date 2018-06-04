@@ -41,26 +41,38 @@ public class PaymentController {
 
 
     /**
-     * 生成商品购买订单
+     * 生成商品购买订单1
      * @param commodityOrderQuery
      * @param model
      * @return
      */
-    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.POST)
-    public String buildCommodityOrder(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
+    public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
         String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
         String balanceResult = paymentService.getBalanceInfoByUserId(request);
 
-        JSONObject jsonObject = JSON.parseObject(orderResult);
-        if(jsonObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "redirect:/login";
+        JSONObject orderObject = JSON.parseObject(orderResult);
+        JSONObject balanceObject = JSON.parseObject(balanceResult);
+        if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
+            return "/user/login";
         }
-        System.out.println(orderResult);
+        JSONObject orderJson = JSON.parseObject(orderObject.getString("data"));
+        JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
 
+
+
+
+        System.out.println(orderJson);
+
+        System.out.println(balanceJson);
         System.out.println(balanceResult);
-        model.addAttribute("commodityOrder",orderResult);
-        model.addAttribute("balance",balanceResult);
+
+
+
+
+        model.addAttribute("commodityOrder",orderJson);
+        model.addAttribute("balance",balanceJson);
         return "order/purchase";
     }
 
@@ -71,8 +83,8 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.POST)
-    public String paymentCommodityOrder(HttpServletRequest request, @RequestBody PaymentOrderQuery paymentOrderQuery, Model model){
+    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
@@ -159,7 +171,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/order")
+    @RequestMapping("/order")
     public String order(Model model) {
 
         return "order/order";
@@ -169,7 +181,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/recharge")
+    @RequestMapping("/recharge")
     public String recharge(Model model) {
 
         return "order/recharge";
@@ -179,7 +191,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/result")
+    @RequestMapping("/result")
     public String result(Model model) {
 
         return "order/result";
@@ -189,9 +201,29 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/purchase")
+    @RequestMapping("/purchase")
     public String purchase(Model model) {
 
         return "order/purchase";
+    }
+    /**
+     * 小鹿测试页面(收支明细)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/detailed")
+    public String detailed(Model model) {
+
+        return "order/detailed";
+    }
+    /**
+     * 小鹿测试页面(我的优惠卡)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/coupon")
+    public String coupon(Model model) {
+
+        return "order/coupon";
     }
 }

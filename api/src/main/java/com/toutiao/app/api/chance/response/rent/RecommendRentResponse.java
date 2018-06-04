@@ -97,4 +97,6 @@ public class RecommendRentResponse {
     @ChangeName("nearBySubway")
     private String nearestSubway;
 
+    private String[] housePhoto;
+
 }
