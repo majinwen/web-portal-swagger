@@ -10,6 +10,7 @@ import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +42,7 @@ public class PaymentController {
      * @return
      */
     @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
-    public String buildCommodityOrder(HttpServletRequest request,CommodityOrderQuery commodityOrderQuery, Model model) {
+    public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
         String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
         String balanceResult = paymentService.getBalanceInfoByUserId(request);
