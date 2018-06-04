@@ -24,7 +24,6 @@
             <div class="order-content">
                 <div>
                     <p class="title">${key.commentDo.buildingName}</p>
-                    <p class="price">¥${key.payMoney}<span>元</span></p>
                 </div>
                 <div class="link-btn">查看</div>
             </div>
