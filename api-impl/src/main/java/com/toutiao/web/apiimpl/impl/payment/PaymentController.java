@@ -83,9 +83,19 @@ public class PaymentController {
 
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
+//        String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
+        JSONObject payOrderObject = JSON.parseObject(payOrder);
+//        JSONObject paySuccessObject = JSON.parseObject(paySuccess);
+        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
+//        JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 
-        System.out.println(payOrder);
-        model.addAttribute("payOrder",payOrder);
+
+
+
+        System.out.println(payOrderJson);
+//        System.out.println(paySuccessJson);
+        model.addAttribute("payOrder",payOrderJson);
+//        model.addAttribute("paySuccess",paySuccessJson);
 
         return "";
     }
@@ -100,13 +110,20 @@ public class PaymentController {
     @RequestMapping(value = "/paymentSuccess", method = RequestMethod.GET)
     public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
-
+        String order = paymentService.getOrderByOrderNo(request, paymentOrderQuery);
         String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
+        JSONObject paySuccessObject = JSON.parseObject(paySuccess);
+        JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 
-        System.out.println(paySuccess);
-        model.addAttribute("payOrder",paySuccess);
+        JSONObject orderObject = JSON.parseObject(order);
+        JSONObject orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
 
-        return "";
+        System.out.println(orderJson);
+        System.out.println(paySuccessJson);
+        model.addAttribute("paySuccess",paySuccessJson);
+        model.addAttribute("order",orderJson);
+
+        return "order/coupon";
     }
 
 
