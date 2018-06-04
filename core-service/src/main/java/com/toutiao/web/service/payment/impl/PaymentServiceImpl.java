@@ -30,7 +30,8 @@ import java.util.Map;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-    private final String CHARGEMONEYURL = "http://47.95.10.4:8087/paycenter/savePayOrder";
+    private final String PAYMENTURL = "http://47.95.10.4:8087/paycenter/savePayOrder";
+    private final String UNPAYMENTURL = "http://47.95.10.4:8087/paycenter/saveRePayOrder";
     private Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
     @Value("${tt.payment.domain}")
     private String payDomain;
@@ -296,7 +297,7 @@ public class PaymentServiceImpl implements PaymentService {
      * @return
      */
     @Override
-    public String chargeMoney(HttpServletRequest request, PaymentDoQuery paymentDoQuery) {
+    public String payment(HttpServletRequest request, PaymentDoQuery paymentDoQuery) {
         //获取用户信息
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         String result = "";
@@ -316,7 +317,12 @@ public class PaymentServiceImpl implements PaymentService {
             paramsMap.put("phone",userBasic.getPhone());
 
             //发起请求
-            result = HttpUtils.get(CHARGEMONEYURL, header, paramsMap);
+            result = HttpUtils.get(PAYMENTURL, header, paramsMap);
+
+            JSONObject jsonObject = JSON.parseObject(result);
+            if ("success".equals(jsonObject.get("code"))){
+                result = (String) jsonObject.get("data");
+            }
             if(result == null){
                 logger.error("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
                 NashResult<Object> nashResult = NashResult.Fail("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
@@ -324,6 +330,48 @@ public class PaymentServiceImpl implements PaymentService {
                 return result;
             }
         }else{
+            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            result = JSONObject.toJSONString(nashResult);
+        }
+        return result;
+    }
+
+    @Override
+    public String unPayment(HttpServletRequest request, UnpaymentDoQuery unpaymentDoQuery) {
+        //获取用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        user = "test";
+        String result = "";
+        if(StringUtil.isNotNullString(user)){
+//            Map map = JSON.parseObject(user);
+            Map map = new HashMap();
+            map.put("userId",12);
+            map.put("userName","莹莹");
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,60000);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+
+            //组合参数
+            Map<String, Object> paramsMap = beanToMap(unpaymentDoQuery);
+
+            //发起请求
+            result = HttpUtils.get(UNPAYMENTURL, header, paramsMap);
+
+            JSONObject jsonObject = JSON.parseObject(result);
+            if ("success".equals(jsonObject.get("code"))){
+                result = (String) jsonObject.get("data");
+            }
+
+            if(result == null){
+                logger.error("支付请求失败,orderNo:"+unpaymentDoQuery.getOrderNo());
+                NashResult<Object> nashResult = NashResult.Fail("支付请求失败,orderNo:"+unpaymentDoQuery.getOrderNo());
+                result = JSONObject.toJSONString(nashResult);
+                return result;
+            }
+        }else{
+//            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN,"用户未登陆");
             Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
             NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
             result = JSONObject.toJSONString(nashResult);

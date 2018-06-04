@@ -4,10 +4,12 @@ package com.toutiao.web.apiimpl.impl.payment;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.api.chance.request.payment.PaymentRequest;
+import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
 import com.toutiao.web.domain.payment.PaymentDoQuery;
 import com.toutiao.web.domain.payment.PaymentOrderQuery;
+import com.toutiao.web.domain.payment.UnpaymentDoQuery;
 import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,15 +108,28 @@ public class PaymentController {
      * @param paymentRequest
      * @return
      */
-    @RequestMapping(value = "/chargeMoney", method = RequestMethod.POST)
+    @RequestMapping(value = "/payment", method = RequestMethod.POST)
     @ResponseBody
-    public String chargeMoney(HttpServletRequest request, @Validated @RequestBody PaymentRequest paymentRequest) {
+    public String payment(HttpServletRequest request, @Validated @RequestBody PaymentRequest paymentRequest) {
         PaymentDoQuery paymentDoQuery = new PaymentDoQuery();
         BeanUtils.copyProperties(paymentRequest, paymentDoQuery);
-        String form = paymentService.chargeMoney(request, paymentDoQuery);
-        JSONObject jsonObject = JSON.parseObject(form);
-        String data = (String) jsonObject.get("data");
-        return data;
+        String form = paymentService.payment(request, paymentDoQuery);
+        return form;
+    }
+
+    /**
+     * 完成未支付的订单
+     * @param request
+     * @param unpaymentRequest
+     * @return
+     */
+    @RequestMapping(value = "/unPayment",method = RequestMethod.GET)
+    @ResponseBody
+    public String unPayment(HttpServletRequest request, @Validated UnpaymentRequest unpaymentRequest){
+        UnpaymentDoQuery unpaymentDoQuery = new UnpaymentDoQuery();
+        BeanUtils.copyProperties(unpaymentRequest, unpaymentDoQuery);
+        String form = paymentService.unPayment(request, unpaymentDoQuery);
+        return form;
     }
 
     /**

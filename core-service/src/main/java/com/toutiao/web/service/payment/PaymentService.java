@@ -54,5 +54,9 @@ public interface PaymentService {
      * 支付
      * @return
      */
-    String chargeMoney(HttpServletRequest request, PaymentDoQuery paymentDoQuery);
+    String payment(HttpServletRequest request, PaymentDoQuery paymentDoQuery);
+    /**
+     * 完成未支付
+     */
+    String unPayment(HttpServletRequest request, UnpaymentDoQuery unpaymentDoQuery);
 }
