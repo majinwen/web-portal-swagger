@@ -8,26 +8,27 @@
     <link rel="stylesheet" href="${staticurl}/css/payment-detailed.css?v=${staticversion}">
     <#include "../StatisticsHeader.ftl">
 </head>
-<body>
+<#if payOrderDos?exists>
     <ul class="list-wrapper">
+<#list payOrderDos as key >
+        <#if key.type==1>
         <li>
             <a href="#" class="list-item">
-                <div class="clear"><span class="price-type">线下退款</span><span class="time">2018-05-29 12:00</span></div>
-                <div class="clear"><span>余额：1000</span><span class="price-sum">-2000</span></div>
+                <div class="clear"><span class="price-type"> 充值到余额
+                </span><span class="time">${key.createTime?string("yyyy-MM-dd")}</span></div>
+                <div class="clear"><span></span><span class="price-sum">+${key.payMoney}</span></div>
             </a>
         </li>
+       <#else>
         <li>
             <a href="#" class="list-item">
-                <div class="clear"><span class="price-type">购买优惠卡</span><span class="time">2018-05-29 12:00</span></div>
-                <div class="clear"><span>余额：1000</span><span class="price-sum">-1000</span></div>
+                <div class="clear"><span class="price-type">购买优惠卡</span><span class="time">${key.createTime?string("yyyy-MM-dd")}</span></div>
+                <div class="clear"><span></span><span class="price-sum">-${key.payMoney}</span></div>
             </a>
         </li>
-        <li>
-            <a href="#" class="list-item">
-                <div class="clear"><span class="price-type">充值到余额</span><span class="time">2018-05-29 12:00</span></div>
-                <div class="clear"><span>余额：1000</span><span class="price-sum">+1000</span></div>
-            </a>
-        </li>
+       </#if>
+    </#list>
     </ul>
+</#if>
 </body>
 </html>

@@ -29,7 +29,7 @@
                 <#if key.status==1>
                 <div class="link-btn">查看</div>
                 <#else>
-                    <div class="link-btn ">查看</div>
+                    <div class="link-btn unfinished">支付</div>
                 </#if>
             </div>
         </div>

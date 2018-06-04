@@ -28,25 +28,8 @@ public class PayOrderController {
     private PaymentService paymentService;
     //我的订单类型
     private  final  Integer ORDER_TYPE=2;
-    //我的充值类型
-    private  final  Integer CHARGE_TYPE=1;
-
-
-    /**
-     * 购买记录
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "order/getBuyRecord",method = RequestMethod.GET)
-    public  String getPayOrder(Model model, PayOrderQuery payOrderQuery)
-    {
-         PayUserDo payUserDo=new PayUserDo();
-         BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-         List<PayBuyRecordDo> payOrderDos =paymentService.getBuyRecordByUserId(payOrderQuery,payUserDo);
-         model.addAttribute("payOrderDos",payOrderDos);
-         return "";
-    }
-
+    //訂單狀態
+    private  final  Integer ORDER_STATUS=2;
 
     /**
      *我的订单
@@ -56,7 +39,7 @@ public class PayOrderController {
      */
 
     @RequestMapping(value = "order/getMyOrder",method = RequestMethod.GET)
-    public  String getOrderByUser(Model model, PayOrderQuery payOrderQuery,HttpServletRequest request)
+    public  String getOrderByUser(Model model,PayOrderQuery payOrderQuery,HttpServletRequest request)
     {
         UserPay user=UserPay.getCurrent();
         if (null==user.getUserId())
@@ -64,21 +47,28 @@ public class PayOrderController {
             model.addAttribute("backUrl",request.getRequestURL());
             return "/user/login";
         }
-        List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery,user);
+        List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery,user,null);
         model.addAttribute("payOrderDos",payOrderDos);
         return "order/order";
     }
+
     /**
-     * 我的充值记录
+     * 我的明細
      */
     @RequestMapping(value = "order/getMyCharge",method = RequestMethod.GET)
-    public String getChargeByUser(Model model, PayOrderQuery payOrderQuery)
+    public String getChargeByUser(Model model, PayOrderQuery payOrderQuery,HttpServletRequest request)
     {
         UserPay user=UserPay.getCurrent();
-        List<PayOrderDo> payOrderDos=getMyOrder(CHARGE_TYPE,payOrderQuery,user);
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+
+        List<PayOrderDo> payOrderDos=getMyOrder(null,payOrderQuery,user,ORDER_STATUS);
         model.addAttribute("payOrderDos",payOrderDos);
 
-        return "";
+        return "order/detailed";
     }
 
     /**
@@ -87,34 +77,16 @@ public class PayOrderController {
      * @param payOrderQuery
      * @return
      */
-    private  List<PayOrderDo> getMyOrder(Integer type, PayOrderQuery payOrderQuery,UserPay user)
+    private  List<PayOrderDo> getMyOrder(Integer type, PayOrderQuery payOrderQuery,UserPay user,Integer status)
     {
 
         PayUserDo payUserDo=new PayUserDo();
         BeanUtils.copyProperties(user,payUserDo);
-        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,type);
+        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,type,status);
         return payOrderDos;
     }
 
 
 
-    /**
-     * 订单详情
-     */
-    @RequestMapping(value = "order/getOrderDetails",method = RequestMethod.GET)
-    public  String getMyOrderDetails(Model model, @Validated(First.class) PayOrderQuery payOrderQuery,HttpServletRequest request )
-    {
-        PayUserDo payUserDo=new PayUserDo();
-        UserPay userPay=UserPay.getCurrent();
-        if (null==userPay.getUserId())
-        {
-            model.addAttribute("backUrl",request.getRequestURL());
-            return "/user/login";
-        }
-        BeanUtils.copyProperties(userPay,payUserDo);
-        PayOrderDo payOrderDo=paymentService.getMyOrderDetails(payOrderQuery,payUserDo);
-        model.addAttribute("payOrderDo",payOrderDo);
-        return "";
-    }
 
 }

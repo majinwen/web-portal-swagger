@@ -47,34 +47,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${tt.newhouse.type}")
     private String newHouseType;//索引类型
 
-    @Override
-    public List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
-        List<PayBuyRecordDo>  payOrderDos= new ArrayList<>();
-        JSONObject jsonObject=new JSONObject();
-        String json=JSON.toJSONString(payUserDo);
-        Map<String,String> header = new HashMap<>();
-        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
-        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
-        Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("userIds",payUserDo.getUserId());
-        paramsMap.put("pageNum",payOrderQuery.getPageNum());
-        paramsMap.put("pageSize",payOrderQuery.getPageSize());
-        try {
-            jsonObject= JSONObject.parseObject(HttpUtils.get(payDomain+ServiceStateConstant.BUY_RECORDER,header,paramsMap));
-            JSONObject object=(JSONObject) jsonObject.get("data");
-            if (object.size()==0)
-            {
-                payOrderDos=null;
-                return payOrderDos;
-            }
-            payOrderDos =JSON.parseArray(object.get("data").toString(),PayBuyRecordDo.class);
 
-        }catch (Exception e)
-        {
-            logger.error("获取用户购买记录失败,userId:"+payUserDo.getUserId()+"={}",e.getStackTrace());
-        }
-        return  payOrderDos;
-    }
 
     /**
      * 我的订单
@@ -83,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
      * @return
      */
     @Override
-    public List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery, PayUserDo payUserDo, Integer type) {
+    public List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery, PayUserDo payUserDo, Integer type,Integer status) {
 
         List<PayOrderDo> payOrderDos=new ArrayList<>();
         JSONObject jsonObject=new JSONObject();
@@ -93,7 +66,14 @@ public class PaymentServiceImpl implements PaymentService {
         header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
         Map<String, Object> paramsMap = new HashMap<>();
         paramsMap.put("userId",payUserDo.getUserId());
-        paramsMap.put("type",type);
+        if (null!=type)
+        {
+            paramsMap.put("type",type);
+        }
+        if (null!=status)
+        {
+            paramsMap.put("status",status);
+        }
         paramsMap.put("pageNum",payOrderQuery.getPageNum());
         paramsMap.put("pageSize",payOrderQuery.getPageSize());
         try {
@@ -120,41 +100,7 @@ public class PaymentServiceImpl implements PaymentService {
        return payOrderDos;
     }
 
-    /**
-     * 订单详情
-     * @param payOrderQuery
-     * @param payUserDo
-     * @return
-     */
-    @Override
-    public PayOrderDo getMyOrderDetails(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
 
-        PayOrderDo payOrderDo=new PayOrderDo();
-        JSONObject jsonObject=new JSONObject();
-        String json=JSON.toJSONString(payUserDo);
-        Map<String,String> header = new HashMap<>();
-        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
-        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
-        Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("orderNo",payOrderQuery.getOrderNo());
-        try {
-            jsonObject= JSONObject.parseObject(HttpUtils.get(payDomain+ServiceStateConstant.ORDER_DETAILS,header,paramsMap));
-            JSONObject object=(JSONObject) jsonObject.get("data");
-            if (object.size()<1)
-            {
-                payOrderDo=null;
-                return payOrderDo;
-            }
-            JSONArray jsArr= (JSONArray) object.get("data");
-            payOrderDo =JSON.parseObject(jsArr.get(0).toString(),PayOrderDo.class);
-        }catch (Exception e)
-        {
-            logger.error("获取用户订单详情失败,out_trade_no:"+payOrderQuery.getOrderNo()+"={}",e.getStackTrace());
-        }
-
-
-        return  payOrderDo;
-    }
 
 
     /**
