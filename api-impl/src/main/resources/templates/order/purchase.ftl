@@ -2,7 +2,7 @@
 <html>
 <head>
     <#include "../staticHeader.ftl">
-    <title>充值</title>
+    <title>购买</title>
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-purchase.css?v=${staticversion}">
@@ -19,14 +19,13 @@
                     <img src="${qiniuimage}/${json.buildingTitleImg}-tt400x300" alt="${json.buildingName}">
                 </#if>
             </#if>
-
         </div>
         <div class="info-content">
 
         <#if commodityOrder?size gt 0>
             <#if commodityOrder['comment']?exists>
                 <#assign json=commodityOrder['comment']?eval />
-                    <p class="content-title">${json.buildingName}</p>
+                <p class="content-title">${json.buildingName}</p>
             </#if>
         </#if>
             <p class="content-price">¥${commodityOrder['payMoney']}<span>元</span></p>
@@ -40,7 +39,13 @@
         <strong>待支付</strong>
         <span>实付款：<em>¥${commodityOrder['payMoney']}</em></span>
     </div>
-    <button>确认</button>
+
+    <#if balance['balance'] gte commodityOrder['payMoney']>
+        <button onclick="window.location.href='${router_city('/order/paymentCommodityOrder?orderNo='+commodityOrder['orderNo'])}'">确认</button>
+    <#else >
+        <button>充值</button>
+    </#if>
+
     <p class="current-balance">当前余额：${balance['balance']}元</p>
 </section>
 </body>

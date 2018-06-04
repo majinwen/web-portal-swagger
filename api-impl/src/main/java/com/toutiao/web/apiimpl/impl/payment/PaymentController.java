@@ -10,6 +10,7 @@ import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,7 +42,7 @@ public class PaymentController {
      * @return
      */
     @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
-    public String buildCommodityOrder(HttpServletRequest request,CommodityOrderQuery commodityOrderQuery, Model model) {
+    public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
         String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
         String balanceResult = paymentService.getBalanceInfoByUserId(request);
@@ -116,7 +117,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/order")
+    @RequestMapping("/order")
     public String order(Model model) {
 
         return "order/order";
@@ -126,7 +127,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/recharge")
+    @RequestMapping("/recharge")
     public String recharge(Model model) {
 
         return "order/recharge";
@@ -136,7 +137,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/result")
+    @RequestMapping("/result")
     public String result(Model model) {
 
         return "order/result";
@@ -146,9 +147,29 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/purchase")
+    @RequestMapping("/purchase")
     public String purchase(Model model) {
 
         return "order/purchase";
+    }
+    /**
+     * 小鹿测试页面(收支明细)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/detailed")
+    public String detailed(Model model) {
+
+        return "order/detailed";
+    }
+    /**
+     * 小鹿测试页面(我的优惠卡)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/coupon")
+    public String coupon(Model model) {
+
+        return "order/coupon";
     }
 }
