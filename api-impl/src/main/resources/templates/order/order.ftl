@@ -26,7 +26,11 @@
                     <p class="title">${key.commentDo.buildingName}</p>
                     <p class="price">¥${key.payMoney}<span>元</span></p>
                 </div>
+                <#if key.status==1>
                 <div class="link-btn">查看</div>
+                <#else>
+                    <div class="link-btn ">查看</div>
+                </#if>
             </div>
         </div>
     </a>

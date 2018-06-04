@@ -1,5 +1,6 @@
 package com.toutiao.web.apiimpl.impl.payment;
 
+import com.alibaba.fastjson.JSON;
 import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/{citypath}/payOrder")
@@ -63,7 +65,6 @@ public class PayOrderController {
             return "/user/login";
         }
         List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery,user);
-
         model.addAttribute("payOrderDos",payOrderDos);
         return "order/order";
     }
@@ -76,6 +77,7 @@ public class PayOrderController {
         UserPay user=UserPay.getCurrent();
         List<PayOrderDo> payOrderDos=getMyOrder(CHARGE_TYPE,payOrderQuery,user);
         model.addAttribute("payOrderDos",payOrderDos);
+
         return "";
     }
 
