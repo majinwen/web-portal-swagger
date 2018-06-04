@@ -93,7 +93,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 UserBasic userBasic = UserBasic.getCurrent();
 
                 plotDetailsDo = JSON.parseObject(details,PlotDetailsDo.class);
-
+//                String[] photos = plotDetailsDo.getPhoto().get(0).split(",");
+                plotDetailsDo.setPhotos(plotDetailsDo.getPhoto().toArray(new String[0]));
                 if(StringTool.isNotEmpty(userBasic)){
                     PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
                     plotIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));

@@ -69,4 +69,20 @@
             <version>2.9.1</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>releases</id>
+            <name>nexus Repository</name>
+            <url>http://39.105.31.58:9003/content/repositories/releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!--snapshots默认是关闭的,需要开启  -->
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
 </project>

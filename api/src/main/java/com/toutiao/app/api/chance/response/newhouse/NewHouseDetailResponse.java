@@ -56,7 +56,7 @@ public class NewHouseDetailResponse {
      * 大楼图片
      */
     @ChangeName("buildingImages")
-    private List<String> buildingImgs;
+    private String[] buildingImg;
 
     /**
      * 建筑面积(平方米)
