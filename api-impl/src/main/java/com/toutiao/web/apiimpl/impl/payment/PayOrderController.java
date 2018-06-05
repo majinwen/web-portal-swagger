@@ -29,7 +29,7 @@ public class PayOrderController {
     //我的订单类型
     private  final  Integer ORDER_TYPE=2;
     //訂單狀態
-    private  final  Integer ORDER_STATUS=2;
+    private  final  Integer ORDER_STATUS=1;
 
     /**
      *我的订单

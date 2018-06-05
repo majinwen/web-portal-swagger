@@ -75,7 +75,7 @@
 </div>
 <div class="module-bottom-fill">
     <section class="primary-message">
-        <div class="primary-header">
+        <div class="primary-header border-none">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
             <#if build['building_nickname']??&&(build['building_nickname']!='')><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag house-labelling gray middle">
@@ -86,6 +86,9 @@
             </#if>
             </div>
         </div>
+        <a href="#" class="process-ad">
+            <img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">
+        </a>
         <ul class="primary-item">
             <li>
              <#if build['average_price']?exists && build['average_price'] gt 0>

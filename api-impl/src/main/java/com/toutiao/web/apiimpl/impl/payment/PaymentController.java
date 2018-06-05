@@ -284,4 +284,14 @@ public class PaymentController {
 
         return "order/center";
     }
+    /**
+     * 小鹿测试页面(广告页面流程、入口)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/process")
+    public String process(Model model) {
+
+        return "order/process";
+    }
 }
