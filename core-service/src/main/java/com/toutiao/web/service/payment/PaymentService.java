@@ -37,18 +37,11 @@ public interface PaymentService {
      */
     String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 
-    /**
-     * 获取用户购买记录
-     * @param payUserDo
-     * @return
-     */
-    List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo);
-
 
     /**
-     * 我的订单
+     * 我的订单列表
      */
-    List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type);
+    List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type,Integer status);
 
     /**
      * 根据订单编号获取订单详情

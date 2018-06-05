@@ -19,17 +19,20 @@ public class UserPay {
     public static UserPay getCurrent( ){
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-        UserPay user = (UserPay) request.getAttribute("_apollouser_");
-        if(user==null){
+
+             UserPay user=new UserPay();
             String cookies = (String) request.getAttribute("userLogin");
+            if ("请登录".equals(cookies))
+            {
+                 return user;
+            }
             Gson gson = new Gson();
             Map<String, Object> map = new HashMap<String, Object>();
             map = gson.fromJson(cookies, map.getClass());
-            user = new UserPay();
+
             user.setUserId(Integer.valueOf(map.get("userId").toString()));
             String userName=map.get("userOnlySign").toString();
             user.setUserName(userName.substring(userName.length()-11,userName.length()));
-        }
-        return user;
+            return user;
     }
 }
