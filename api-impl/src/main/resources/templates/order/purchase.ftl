@@ -47,7 +47,7 @@
         <#--<button onclick="window.location.href='${router_city('/order/paymentCommodityOrder?orderNo='+commodityOrder['orderNo'])}'">确认</button>-->
         <button id="purchase">确认</button>
     <#else >
-        <button>充值</button>
+        <button onclick="window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney='+balance['balance'])}'">充值</button>
     </#if>
 
     <p class="current-balance">当前余额：${balance['balance']}元</p>
