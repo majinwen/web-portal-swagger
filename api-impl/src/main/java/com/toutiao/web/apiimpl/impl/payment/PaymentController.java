@@ -122,7 +122,7 @@ public class PaymentController {
 
         String order = paymentService.getOrderByOrderNo(paymentOrderQuery,payUserDo);
 
-        String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
+        String paySuccess = paymentService.paymentSuccess(paymentOrderQuery,payUserDo);
         JSONObject paySuccessObject = JSON.parseObject(paySuccess);
         JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 

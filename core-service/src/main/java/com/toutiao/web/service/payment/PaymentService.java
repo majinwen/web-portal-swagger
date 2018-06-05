@@ -31,11 +31,11 @@ public interface PaymentService {
 
     /**
      * 支付成功，返回订单信息
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
-    String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
+    String paymentSuccess(PaymentOrderQuery paymentOrderQuery, PayUserDo payUserDo);
 
 
     /**
