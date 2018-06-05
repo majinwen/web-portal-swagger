@@ -166,9 +166,7 @@ public class PaymentController {
      */
     @RequestMapping(value = "/recharge",method = RequestMethod.GET)
     public String recharge(RechargeRequest rechargeRequest, Model model){
-        RechargeRequest rechargeRequest1 = new RechargeRequest();
-        BeanUtils.copyProperties(rechargeRequest,rechargeRequest1);
-        model.addAttribute("recharge",rechargeRequest1);
+        model.addAttribute("recharge",rechargeRequest);
         return "/order/recharge";
     }
 
