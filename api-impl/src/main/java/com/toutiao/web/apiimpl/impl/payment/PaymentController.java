@@ -162,13 +162,12 @@ public class PaymentController {
      */
     @RequestMapping(value = "/payment", method = RequestMethod.GET)
     @ResponseBody
-    public Object payment(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest, Model model) {
+    public Object payment(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest) {
         PaymentDoQuery paymentDoQuery = new PaymentDoQuery();
         BeanUtils.copyProperties(paymentRequest, paymentDoQuery);
         String form = paymentService.payment(request, paymentDoQuery);
         JSONObject jsonObject = JSON.parseObject(form);
         Object data = jsonObject.get("data");
-        model.addAttribute("form",data);
         return data;
     }
 
@@ -180,7 +179,7 @@ public class PaymentController {
      */
     @RequestMapping(value = "/unPayment",method = RequestMethod.GET)
     @ResponseBody
-    public Object unPayment(HttpServletRequest request, @Validated UnpaymentRequest unpaymentRequest,Model model){
+    public Object unPayment(HttpServletRequest request, @Validated UnpaymentRequest unpaymentRequest){
         UnpaymentDoQuery unpaymentDoQuery = new UnpaymentDoQuery();
         BeanUtils.copyProperties(unpaymentRequest, unpaymentDoQuery);
         String form = paymentService.unPayment(request, unpaymentDoQuery);
@@ -199,6 +198,11 @@ public class PaymentController {
         return "/order/recharge";
     }
 
+    @RequestMapping("/test")
+    public String test(){
+        return "order/pay";
+    }
+
     /**
      * 支付成功
      * @return
@@ -207,16 +211,6 @@ public class PaymentController {
     public String success(){
         return "order/result";
     }
-
-    /**
-     * 支付失败
-     * @return
-     */
-    @RequestMapping("/fails")
-    public String fails(){
-        return "order/recharge";
-    }
-
 
 
 
