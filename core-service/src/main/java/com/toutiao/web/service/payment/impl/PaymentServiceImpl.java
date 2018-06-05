@@ -225,9 +225,9 @@ public class PaymentServiceImpl implements PaymentService {
                 result = HttpUtils.post(payDomain+ServiceStateConstant.PAYMENT_ORDER,header,paramsMap);
                 if(result == null){
                     logger.error("发起生成商品购买订单请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
-                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
-                    result = JSONObject.toJSONString(nashResult);
-                    return result;
+//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
+//                    result = JSONObject.toJSONString(nashResult);
+//                    return result;
                 }
             }
         }else{
@@ -238,6 +238,43 @@ public class PaymentServiceImpl implements PaymentService {
 
         return result;
     }
+
+
+    @Override
+    public String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery) {
+        //获取用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        String result = "";
+        if(StringUtil.isNotNullString(user)){
+            Map map = JSON.parseObject(user);
+
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+            //组合参数
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put("orderNo",paymentOrderQuery.getOrderNo());
+
+            //发起请求
+            result = HttpUtils.get(payDomain+ServiceStateConstant.ORDER_BY_ORDERNO,header,paramsMap);
+            if(result == null){
+                logger.error("发起根据订单编号获取订单详情请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
+//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
+//                    result = JSONObject.toJSONString(nashResult);
+//                    return result;
+            }
+
+        }else{
+            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            result = JSONObject.toJSONString(nashResult);
+        }
+
+        return result;
+    }
+
+
 
     /**
      * 支付成功，返回订单信息

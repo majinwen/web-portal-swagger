@@ -17,8 +17,14 @@ public class CommodityOrderQuery {
     /**
      * 楼盘id
      */
-    @NotNull(message = "楼盘ID不能为空")
     private Integer buildingId;
+
+    /**
+     * 订单编号
+     */
+    private String orderNo;
+
+
 
 //    /**
 //     * 楼盘名称

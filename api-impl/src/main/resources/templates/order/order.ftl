@@ -9,6 +9,7 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
+<#-- 判断是否有订单，没有订单时添加none -->
 <section class="order-wrapper">
 <#if payOrderDos?exists>
     <#list payOrderDos as key>
@@ -36,6 +37,13 @@
     </a>
     </#list>
 </#if>
+</section>
+<#-- 没有订单时显示，去掉none -->
+<section class="empty-order none">
+    <div>
+        <img src="${staticurl}/images/payment/payment-no-dingdan.png" alt="">
+        <p>您暂时没有订单</p>
+    </div>
 </section>
 </body>
 </html>
