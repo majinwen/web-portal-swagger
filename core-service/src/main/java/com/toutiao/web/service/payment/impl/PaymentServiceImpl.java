@@ -22,9 +22,10 @@ import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -354,10 +355,6 @@ public class PaymentServiceImpl implements PaymentService {
             //发起请求
             result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_PAY_ORDER, header, paramsMap);
 
-            JSONObject jsonObject = JSON.parseObject(result);
-            if ("success".equals(jsonObject.get("code"))){
-                result = (String) jsonObject.get("data");
-            }
             if(result == null){
                 logger.error("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
                 NashResult<Object> nashResult = NashResult.Fail("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
@@ -396,11 +393,6 @@ public class PaymentServiceImpl implements PaymentService {
             //发起请求
             result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_REPAY_ORDER, header, paramsMap);
 
-            JSONObject jsonObject = JSON.parseObject(result);
-            if ("success".equals(jsonObject.get("code"))){
-                result = (String) jsonObject.get("data");
-            }
-
             if(result == null){
                 logger.error("支付请求失败,orderNo:"+unpaymentDoQuery.getOrderNo());
                 NashResult<Object> nashResult = NashResult.Fail("支付请求失败,orderNo:"+unpaymentDoQuery.getOrderNo());
@@ -432,27 +424,4 @@ public class PaymentServiceImpl implements PaymentService {
         return map;
     }
 
-    public static String createLinkStr(Map<String, String> params) {
-
-        List<String> keys = new ArrayList<String>(params.keySet());
-        Collections.sort(keys);
-
-        String prestr = "";
-
-        for (int i = 0; i < keys.size(); i++) {
-            String key = keys.get(i);
-            String value = params.get(key);
-            try {
-                value = URLEncoder.encode(value, "utf-8");
-            } catch (UnsupportedEncodingException e) {
-            }
-            if (i == keys.size() - 1) {//拼接时，不包括最后一个&字符
-                prestr = prestr + key + "=" + value;
-            } else {
-                prestr = prestr + key + "=" + value + "&";
-            }
-        }
-
-        return prestr;
-    }
 }
