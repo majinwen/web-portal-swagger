@@ -10,10 +10,10 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<section>
+<section id="putong">
     <p class="remaining-sum">可用余额：<em>${recharge['totalMoney']}</em></p>
     <div class="input-sum">
-        <input type="tel"  class="key-words" placeholder="充值金额(元)">
+        <input type="tel"  class="key-words" placeholder="充值金额(元)" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="5">
     </div>
     <ul class="payment-method">
         <li onclick="alipay()">
@@ -38,7 +38,19 @@
         </li>
     </ul>
 </section>
+<section id="weixin">
+    <p></p>
+</section>
+<script src=”https://open.mobile.qq.com/sdk/qqapi.js?_bid=152″></script>
 <script>
+    $(function () {
+        var WxObj=window.navigator.userAgent.toLowerCase();
+        if(WxObj.match(/microMessenger/i)=='micromessenger'){
+
+        }
+
+    })
+    http://192.168.1.110:8085/bj/order/recharge?type=1&productNo=111&productDetails=222&totalMoney=23424
     var type = ${recharge['type']};  //订单类型
     var productNo = ${recharge['productNo']};  //商品编号
     var productDetails = ${recharge['productDetails']};  //商品详情
@@ -50,7 +62,9 @@
     })
 
     function alipay() {
-        window.location.href =url;
+        if (_keyword>0){
+            window.location.href =url;
+        }
     }
 </script>
 </body>
