@@ -713,7 +713,7 @@
                 </div>
                 <div class="report-bottom-button">
                     <div class="report-button collect-button">
-                        <i class="collect"></i><span>收藏</span>
+                        <span>收藏</span>
                     </div>
                     <div class="report-button share-button">
                         <span>分享</span>
@@ -739,14 +739,15 @@
     $(function () {
         var status = ${intelligenceFhRes.collectStatus};
         if (status == 1) {
-            $('.collect-button').find('.collect').toggleClass('active');
+            $('.collect-button').toggleClass('active');
         }
 
         $('.collect-button').on('click', function () {
             var reportId = ${reportId};
             var backUrl = "${backUrl}";
-            $(this).find('.collect').toggleClass('active');
-            if ($(this).find('.collect').hasClass('active')) {
+
+            $(this).toggleClass('active');
+            if ($(this).hasClass('active')) {
                 // 收藏
                 zhuge.track('收藏报告_懂房帝');
                 if (reportId != "" && reportId != null) {
