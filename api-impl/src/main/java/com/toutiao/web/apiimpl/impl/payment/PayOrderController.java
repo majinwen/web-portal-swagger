@@ -1,6 +1,9 @@
 package com.toutiao.web.apiimpl.impl.payment;
 
+import com.alibaba.fastjson.JSON;
 import com.toutiao.web.apiimpl.authentication.UserPay;
+import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.domain.payment.PayBuyRecordDo;
 import com.toutiao.web.domain.payment.PayOrderDo;
 import com.toutiao.web.domain.payment.PayOrderQuery;
@@ -10,10 +13,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/{citypath}/payOrder")
@@ -22,25 +28,8 @@ public class PayOrderController {
     private PaymentService paymentService;
     //我的订单类型
     private  final  Integer ORDER_TYPE=2;
-    //我的充值类型
-    private  final  Integer CHARGE_TYPE=1;
-
-
-    /**
-     * 购买记录
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "order/getBuyRecord",method = RequestMethod.GET)
-    public  String getPayOrder(Model model, PayOrderQuery payOrderQuery)
-    {
-         PayUserDo payUserDo=new PayUserDo();
-         BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-         List<PayBuyRecordDo> payOrderDos =paymentService.getBuyRecordByUserId(payOrderQuery,payUserDo);
-         model.addAttribute("payOrderDos",payOrderDos);
-         return "";
-    }
-
+    //訂單狀態
+    private  final  Integer ORDER_STATUS=2;
 
     /**
      *我的订单
@@ -50,26 +39,54 @@ public class PayOrderController {
      */
 
     @RequestMapping(value = "order/getMyOrder",method = RequestMethod.GET)
-    public  String getOrderByUser(Model model, PayOrderQuery payOrderQuery)
+    public  String getOrderByUser(Model model,PayOrderQuery payOrderQuery,HttpServletRequest request)
     {
-        PayUserDo payUserDo=new PayUserDo();
-        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,ORDER_TYPE);
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+        List<PayOrderDo> payOrderDos=getMyOrder(ORDER_TYPE,payOrderQuery,user,null);
         model.addAttribute("payOrderDos",payOrderDos);
-        return "";
+        return "order/order";
     }
 
     /**
-     * 我的充值记录
+     * 我的明細
      */
     @RequestMapping(value = "order/getMyCharge",method = RequestMethod.GET)
-    public String getChargebyUser(Model model, PayOrderQuery payOrderQuery)
+    public String getChargeByUser(Model model, PayOrderQuery payOrderQuery,HttpServletRequest request)
     {
-        PayUserDo payUserDo=new PayUserDo();
-        BeanUtils.copyProperties(UserPay.getCurrent(),payUserDo);
-        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,CHARGE_TYPE);
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+
+        List<PayOrderDo> payOrderDos=getMyOrder(null,payOrderQuery,user,ORDER_STATUS);
         model.addAttribute("payOrderDos",payOrderDos);
-        return "";
+
+        return "order/detailed";
     }
+
+    /**
+     * 订单公共方法
+     * @param type
+     * @param payOrderQuery
+     * @return
+     */
+    private  List<PayOrderDo> getMyOrder(Integer type, PayOrderQuery payOrderQuery,UserPay user,Integer status)
+    {
+
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(user,payUserDo);
+        List<PayOrderDo> payOrderDos=paymentService.getMyOrder(payOrderQuery,payUserDo,type,status);
+        return payOrderDos;
+    }
+
+
+
 
 }

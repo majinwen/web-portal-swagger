@@ -111,6 +111,15 @@ public class ServiceStateConstant {
      */
     public static final String  PAY_ORDER = "/order/getHistoricalOrders";
 
+    /**
+     * 生成支付订单
+     */
+    public static final String SAVE_PAY_ORDER="/paycenter/savePayOrder";
+    /**
+     * 继续未完成支付
+     */
+    public static final String SAVE_REPAY_ORDER="/paycenter/saveRePayOrder";
+
 
 
 

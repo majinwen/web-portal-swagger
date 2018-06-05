@@ -158,6 +158,8 @@ public class RentDetailsDo {
      * 房源图片
      */
     private List<Map<String,String>> rentHouseImg;
+
+    private String[] housePhoto;
     /**
      * 付款方式(1-面议，2-押一付一，3-押一付二，4-押一付三，5-押二付一，6-押二付二，7-押二付三，8-半年付，9-年付)
      */
