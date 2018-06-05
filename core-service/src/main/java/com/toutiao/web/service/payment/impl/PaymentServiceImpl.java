@@ -31,7 +31,7 @@ import java.util.Map;
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
-    @Value("${tt.payment.domain}")
+//    @Value("${tt.payment.domain}")
     private String payDomain;
     @Autowired
     private UserBasicInfoService userBasicInfoService;
