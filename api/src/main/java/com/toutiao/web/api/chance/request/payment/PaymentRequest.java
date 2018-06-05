@@ -35,9 +35,9 @@ public class PaymentRequest {
     /**
      * 成功会跳页面
      */
-    private String returnURL = "http://192.168.1.110:8085/bj/payment/success";
+    private String returnURL = "http://192.168.1.110:8085/bj/order/success";
     /**
      * 支付终端跳转页面
      */
-    private String quitURL="http://192.168.1.110:8085/bj/payment/fails";
+    private String quitURL="http://192.168.1.110:8085/bj/order/fails";
 }

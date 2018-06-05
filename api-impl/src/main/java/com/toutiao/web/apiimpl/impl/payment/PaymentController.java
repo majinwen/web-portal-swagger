@@ -4,6 +4,7 @@ package com.toutiao.web.apiimpl.impl.payment;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.api.chance.request.payment.PaymentRequest;
+import com.toutiao.web.api.chance.request.payment.RechargeRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
@@ -161,20 +162,15 @@ public class PaymentController {
      * @return
      */
     @RequestMapping(value = "/payment", method = RequestMethod.GET)
-    public String payment(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest, Model model) {
+    @ResponseBody
+    public Object payment(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest, Model model) {
         PaymentDoQuery paymentDoQuery = new PaymentDoQuery();
         BeanUtils.copyProperties(paymentRequest, paymentDoQuery);
         String form = paymentService.payment(request, paymentDoQuery);
         JSONObject jsonObject = JSON.parseObject(form);
         Object data = jsonObject.get("data");
         model.addAttribute("form",data);
-        if ("success".equals(jsonObject.getString("code"))){
-            return "order/paymentResult";
-        }
-        if(jsonObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "/user/login";
-        }
-        return "404";
+        return data;
     }
 
     /**
@@ -185,11 +181,23 @@ public class PaymentController {
      */
     @RequestMapping(value = "/unPayment",method = RequestMethod.GET)
     @ResponseBody
-    public String unPayment(HttpServletRequest request, @Validated UnpaymentRequest unpaymentRequest){
+    public Object unPayment(HttpServletRequest request, @Validated UnpaymentRequest unpaymentRequest,Model model){
         UnpaymentDoQuery unpaymentDoQuery = new UnpaymentDoQuery();
         BeanUtils.copyProperties(unpaymentRequest, unpaymentDoQuery);
         String form = paymentService.unPayment(request, unpaymentDoQuery);
-        return form;
+        JSONObject jsonObject = JSON.parseObject(form);
+        Object data = jsonObject.get("data");
+        return data;
+    }
+
+    /**
+     * 支付页面
+     * @return
+     */
+    @RequestMapping(value = "/recharge",method = RequestMethod.GET)
+    public String recharge(RechargeRequest rechargeRequest, Model model){
+        model.addAttribute("recharge",rechargeRequest);
+        return "/order/pay";
     }
 
     /**
@@ -207,7 +215,7 @@ public class PaymentController {
      */
     @RequestMapping("/fails")
     public String fails(){
-        return "404";
+        return "order/recharge";
     }
 
 
