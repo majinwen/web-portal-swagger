@@ -12,14 +12,14 @@ public interface PaymentService {
      * @param commodityOrderQuery
      * @return
      */
-    String saveCommodityOrder(HttpServletRequest request, CommodityOrderQuery commodityOrderQuery);
+    String saveCommodityOrder(CommodityOrderQuery commodityOrderQuery,PayUserDo payUserDo);
 
     /**
      * 获取用户余额信息
-     * @param request
+     * @param payUserDo
      * @return
      */
-    String getBalanceInfoByUserId(HttpServletRequest request);
+    String getBalanceInfoByUserId(PayUserDo payUserDo);
 
     /**
      * 完成商品购买订单
@@ -31,32 +31,25 @@ public interface PaymentService {
 
     /**
      * 支付成功，返回订单信息
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
-    String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
-
-    /**
-     * 获取用户购买记录
-     * @param payUserDo
-     * @return
-     */
-    List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo);
+    String paymentSuccess(PaymentOrderQuery paymentOrderQuery, PayUserDo payUserDo);
 
 
     /**
-     * 我的订单
+     * 我的订单列表
      */
-    List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type);
+    List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type,Integer status);
 
     /**
      * 根据订单编号获取订单详情
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
-    String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
+    String getOrderByOrderNo(PaymentOrderQuery paymentOrderQuery,PayUserDo payUserDo);
 
     /**
      * 支付

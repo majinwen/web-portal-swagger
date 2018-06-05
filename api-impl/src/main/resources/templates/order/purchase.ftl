@@ -6,6 +6,9 @@
     <meta name="description" content="头条房产，帮你发现美好生活">
     <meta name="keyword" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-purchase.css?v=${staticversion}">
+    <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/main.js?v=${staticversion}"></script>
+    <script src="${staticurl}/js/URI.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
@@ -16,7 +19,12 @@
             <#if commodityOrder?size gt 0>
                 <#if commodityOrder['comment']?exists>
                     <#assign json=commodityOrder['comment']?eval />
-                    <img src="${qiniuimage}/${json.buildingTitleImg}-tt400x300" alt="${json.buildingName}">
+                    <#if json.buildingTitleImg?exists>
+                        <img src="${qiniuimage}/${json.buildingTitleImg}-tt400x300" alt="${json.buildingName}">
+                    <#else >
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="${json.buildingName}">
+                    </#if>
+
                 </#if>
             </#if>
         </div>
@@ -41,12 +49,52 @@
     </div>
 
     <#if balance['balance'] gte commodityOrder['payMoney']>
-        <button onclick="window.location.href='${router_city('/order/paymentCommodityOrder?orderNo='+commodityOrder['orderNo'])}'">确认</button>
+        <#--<button onclick="window.location.href='${router_city('/order/paymentCommodityOrder?orderNo='+commodityOrder['orderNo'])}'">确认</button>-->
+        <button id="purchase">确认</button>
     <#else >
-        <button>充值</button>
+        <button onclick="window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney='+balance['balance'])}'">充值</button>
     </#if>
 
     <p class="current-balance">当前余额：${balance['balance']}元</p>
 </section>
 </body>
 </html>
+<script>
+
+    <#--$("#purchase").click(function(){-->
+
+
+        <#--$.ajax({-->
+            <#--type: "get",-->
+            <#--contentType: 'application/json',-->
+            <#--url: router_city('/order/paymentCommodityOrder')+ "?orderNo=" + ${commodityOrder['orderNo']},-->
+            <#--async: true,-->
+            <#--dataType: "json",-->
+            <#--success: function (data) {-->
+                <#--console.log(JSON.stringify(data));-->
+            <#--}-->
+        <#--})-->
+
+
+    <#--});-->
+    $(function () {
+        $("#purchase").click(function () {
+            $.ajax({
+                type:"get",
+                contentType: 'application/json',
+                url: router_city('/order/paymentCommodityOrder')+ "?orderNo=" + ${commodityOrder['orderNo']},
+                async: true,
+                dataType: "json",
+                success: function (data) {
+                    console.log(JSON.stringify(data.data.code));
+                    if(JSON.parse(data.data).code=="success"){
+                        window.location.href='${router_city('/order/orderDetails?orderNo='+commodityOrder['orderNo'])}'
+                    }else if(JSON.parse(data.data).code=="fail"){
+                        window.location.href='${router_city('/payOrder/order/getMyOrder')}'
+                    }
+                }
+            })
+        });
+    });
+
+</script>

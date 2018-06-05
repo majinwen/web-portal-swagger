@@ -6,11 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.api.chance.request.payment.PaymentRequest;
 import com.toutiao.web.api.chance.request.payment.RechargeRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
+import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
-import com.toutiao.web.domain.payment.CommodityOrderQuery;
-import com.toutiao.web.domain.payment.PaymentDoQuery;
-import com.toutiao.web.domain.payment.PaymentOrderQuery;
-import com.toutiao.web.domain.payment.UnpaymentDoQuery;
+import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +31,6 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @RequestMapping("")
-    public String recharge11(Model model) {
-
-        return "order/testorder";
-    }
-
-
-
     /**
      * 生成商品购买订单1
      * @param commodityOrderQuery
@@ -49,26 +40,51 @@ public class PaymentController {
     @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
     public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(user,payUserDo);
         String orderResult = "";
         JSONObject orderObject = null;
         JSONObject orderJson = null;
         if(commodityOrderQuery.getBuildingId()!=null){
-            orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+            orderResult = paymentService.saveCommodityOrder(commodityOrderQuery, payUserDo);
             orderObject = JSON.parseObject(orderResult);
             orderJson = JSON.parseObject(orderObject.getString("data"));
-        }else{
+
+            //再次购买 详情页
+            if(orderJson.getString("status").equals("1")){
+                PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
+                paymentOrderQuery.setOrderNo(orderJson.getString("orderNo"));
+                String order = paymentService.getOrderByOrderNo(paymentOrderQuery,payUserDo);
+
+                String paySuccess = paymentService.paymentSuccess(paymentOrderQuery,payUserDo);
+                JSONObject paySuccessObject = JSON.parseObject(paySuccess);
+                JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
+
+                JSONObject orderDetail = JSON.parseObject(order);
+                JSONObject detailJson = (JSONObject) JSON.parseObject(orderDetail.getString("data")).getJSONArray("data").get(0);
+
+                model.addAttribute("paySuccess",paySuccessJson);
+                model.addAttribute("order",detailJson);
+                return "order/coupon";
+            }
+
+
+        }else {
             PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
             BeanUtils.copyProperties(commodityOrderQuery,paymentOrderQuery);
-            orderResult =paymentService.getOrderByOrderNo(request, paymentOrderQuery);
+            orderResult =paymentService.getOrderByOrderNo(paymentOrderQuery, payUserDo);
             orderObject = JSON.parseObject(orderResult);
             orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
         }
 
-        String balanceResult = paymentService.getBalanceInfoByUserId(request);
+        String balanceResult = paymentService.getBalanceInfoByUserId(payUserDo);
         JSONObject balanceObject = JSON.parseObject(balanceResult);
-        if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "/user/login";
-        }
 
         JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
 
@@ -84,17 +100,26 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
-    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
+//    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+//    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
+//
+//        String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
+//        JSONObject payOrderObject = JSON.parseObject(payOrder);
+//        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
+//        System.out.println(payOrderJson);
+//        model.addAttribute("payOrder",payOrderJson);
+//
+//        return "";
+//    }
 
+
+    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
-        JSONObject payOrderObject = JSON.parseObject(payOrder);
-        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
-        System.out.println(payOrderJson);
-        model.addAttribute("payOrder",payOrderJson);
 
-        return "";
+        return NashResult.build(payOrder);
     }
 
     /**
@@ -107,13 +132,19 @@ public class PaymentController {
     @RequestMapping(value = "/orderDetails", method = RequestMethod.GET)
     public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
-        String order = paymentService.getOrderByOrderNo(request, paymentOrderQuery);
-
-        String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
-        JSONObject paySuccessObject = JSON.parseObject(paySuccess);
-        if(paySuccessObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
             return "/user/login";
         }
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(user,payUserDo);
+
+        String order = paymentService.getOrderByOrderNo(paymentOrderQuery,payUserDo);
+
+        String paySuccess = paymentService.paymentSuccess(paymentOrderQuery,payUserDo);
+        JSONObject paySuccessObject = JSON.parseObject(paySuccess);
         JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 
         JSONObject orderObject = JSON.parseObject(order);
@@ -121,7 +152,6 @@ public class PaymentController {
 
         model.addAttribute("paySuccess",paySuccessJson);
         model.addAttribute("order",orderJson);
-
         return "order/coupon";
     }
 
@@ -261,5 +291,15 @@ public class PaymentController {
     public String center(Model model) {
 
         return "order/center";
+    }
+    /**
+     * 小鹿测试页面(广告页面流程、入口)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/process")
+    public String process(Model model) {
+
+        return "order/process";
     }
 }

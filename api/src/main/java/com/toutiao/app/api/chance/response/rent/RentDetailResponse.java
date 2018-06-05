@@ -120,8 +120,10 @@ public class RentDetailResponse {
     /**
      * 房源图片
      */
-    @ChangeName("buildingImages")
-    private List<Map<String,String>> rentHouseImg;
+//    @ChangeName("buildingImages")
+//    private List<Map<String,String>> rentHouseImg;
+
+    private String[] housePhoto;
 
     /**
      * 付款方式名称
