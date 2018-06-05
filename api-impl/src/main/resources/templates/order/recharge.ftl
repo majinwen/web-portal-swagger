@@ -70,7 +70,7 @@
     var productNo = ${recharge['productNo']};  //商品编号
     var productDetails = ${recharge['productDetails']};  //商品详情
     var _keyword = 0;
-    var url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
+    var url = "";
     $('.key-words').bind('input',function () {
          _keyword = $('.key-words').val()||0;
          if(_keyword>50000){
@@ -103,7 +103,7 @@
     }
 
     function alipay() {
-        if (_keyword>0){
+        if (_keyword>0&&url!=''){
             window.location.href =url;
         }
     }
