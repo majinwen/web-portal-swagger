@@ -46,7 +46,6 @@ public interface PaymentService {
     String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 
 
-
     /**
      * 我的订单列表
      */

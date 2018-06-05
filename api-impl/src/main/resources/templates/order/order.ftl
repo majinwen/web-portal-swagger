@@ -28,15 +28,15 @@
                     <p class="price">¥${key.payMoney}<span>元</span></p>
                 </div>
                 <#if key.status==1>
-                <div class="link-btn"  onclick="window.location.href=">查看</div>
+                <div class="link-btn" onclick="window.location.href='${router_city('/order/orderDetails?orderNo='+key.orderNo)}'">查看</div>
                 <#else>
-                    <div class="link-btn unfinished" onclick="window.location.href=">支付</div>
+                    <div class="link-btn unfinished"  onclick="window.location.href='${router_city('/order/buildCommodityOrder?productNo='+key.productNo+'&orderNo='+key.orderNo)}'">支付</div>
                 </#if>
             </div>
         </div>
     </a>
     </#list>
-</#if>
+<#else>
 </section>
 <#-- 没有订单时显示，去掉none -->
 <section class="empty-order none">
@@ -45,5 +45,6 @@
         <p>您暂时没有订单</p>
     </div>
 </section>
+</#if>
 </body>
 </html>
