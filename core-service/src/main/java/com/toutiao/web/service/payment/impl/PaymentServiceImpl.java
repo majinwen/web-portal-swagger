@@ -22,16 +22,13 @@ import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.*;
 
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-    private final String PAYMENTURL = "http://47.95.10.4:8087/paycenter/savePayOrder";
-    private final String UNPAYMENTURL = "http://47.95.10.4:8087/paycenter/saveRePayOrder";
     private Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
     @Value("${tt.payment.domain}")
     private String payDomain;
@@ -317,7 +314,7 @@ public class PaymentServiceImpl implements PaymentService {
             paramsMap.put("phone",userBasic.getPhone());
 
             //发起请求
-            result = HttpUtils.get(PAYMENTURL, header, paramsMap);
+            result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_PAY_ORDER, header, paramsMap);
 
             JSONObject jsonObject = JSON.parseObject(result);
             if ("success".equals(jsonObject.get("code"))){
@@ -337,17 +334,19 @@ public class PaymentServiceImpl implements PaymentService {
         return result;
     }
 
+    /**
+     * 完成未支付的订单
+     * @param request
+     * @param unpaymentDoQuery
+     * @return
+     */
     @Override
     public String unPayment(HttpServletRequest request, UnpaymentDoQuery unpaymentDoQuery) {
         //获取用户信息
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        user = "test";
         String result = "";
         if(StringUtil.isNotNullString(user)){
-//            Map map = JSON.parseObject(user);
-            Map map = new HashMap();
-            map.put("userId",12);
-            map.put("userName","莹莹");
+
             //组装请求header
             Map<String,String> header = new HashMap<>();
             String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,60000);
@@ -357,7 +356,7 @@ public class PaymentServiceImpl implements PaymentService {
             Map<String, Object> paramsMap = beanToMap(unpaymentDoQuery);
 
             //发起请求
-            result = HttpUtils.get(UNPAYMENTURL, header, paramsMap);
+            result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_REPAY_ORDER, header, paramsMap);
 
             JSONObject jsonObject = JSON.parseObject(result);
             if ("success".equals(jsonObject.get("code"))){
@@ -393,5 +392,29 @@ public class PaymentServiceImpl implements PaymentService {
             }
         }
         return map;
+    }
+
+    public static String createLinkStr(Map<String, String> params) {
+
+        List<String> keys = new ArrayList<String>(params.keySet());
+        Collections.sort(keys);
+
+        String prestr = "";
+
+        for (int i = 0; i < keys.size(); i++) {
+            String key = keys.get(i);
+            String value = params.get(key);
+            try {
+                value = URLEncoder.encode(value, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+            }
+            if (i == keys.size() - 1) {//拼接时，不包括最后一个&字符
+                prestr = prestr + key + "=" + value;
+            } else {
+                prestr = prestr + key + "=" + value + "&";
+            }
+        }
+
+        return prestr;
     }
 }
