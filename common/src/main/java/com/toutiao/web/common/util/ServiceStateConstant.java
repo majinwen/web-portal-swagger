@@ -102,14 +102,10 @@ public class ServiceStateConstant {
 
 
     /**
-     * 购买记录
-     */
-    public static final String  BUY_RECORDER = "/purchaseHistory/getPurchaseHistoryByUserId";
-
-    /**
      * 订单
      */
     public static final String  PAY_ORDER = "/order/getHistoricalOrders";
+
 
     /**
      * 生成支付订单
