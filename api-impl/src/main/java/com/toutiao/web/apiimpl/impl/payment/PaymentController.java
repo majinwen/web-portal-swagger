@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,26 +40,39 @@ public class PaymentController {
 
 
     /**
-     * 生成商品购买订单
+     * 生成商品购买订单1
      * @param commodityOrderQuery
      * @param model
      * @return
      */
-    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.POST)
-    public String buildCommodityOrder(HttpServletRequest request, @RequestBody CommodityOrderQuery commodityOrderQuery, Model model) {
+    @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
+    public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
-        String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
-        String balanceResult = paymentService.getBalanceInfoByUserId(request);
-
-        JSONObject jsonObject = JSON.parseObject(orderResult);
-        if(jsonObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "redirect:/login";
+        String orderResult = "";
+        JSONObject orderObject = null;
+        JSONObject orderJson = null;
+        if(commodityOrderQuery.getBuildingId()!=null){
+            orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+            orderObject = JSON.parseObject(orderResult);
+            orderJson = JSON.parseObject(orderObject.getString("data"));
+        }else{
+            PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
+            BeanUtils.copyProperties(commodityOrderQuery,paymentOrderQuery);
+            orderResult =paymentService.getOrderByOrderNo(request, paymentOrderQuery);
+            orderObject = JSON.parseObject(orderResult);
+            orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
         }
-        System.out.println(orderResult);
 
-        System.out.println(balanceResult);
-        model.addAttribute("commodityOrder",orderResult);
-        model.addAttribute("balance",balanceResult);
+        String balanceResult = paymentService.getBalanceInfoByUserId(request);
+        JSONObject balanceObject = JSON.parseObject(balanceResult);
+        if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
+            return "/user/login";
+        }
+
+        JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
+
+        model.addAttribute("commodityOrder",orderJson);
+        model.addAttribute("balance",balanceJson);
         return "order/purchase";
     }
 
@@ -71,14 +83,15 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.POST)
-    public String paymentCommodityOrder(HttpServletRequest request, @RequestBody PaymentOrderQuery paymentOrderQuery, Model model){
+    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
-
-        System.out.println(payOrder);
-        model.addAttribute("payOrder",payOrder);
+        JSONObject payOrderObject = JSON.parseObject(payOrder);
+        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
+        System.out.println(payOrderJson);
+        model.addAttribute("payOrder",payOrderJson);
 
         return "";
     }
@@ -90,16 +103,25 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentSuccess", method = RequestMethod.GET)
+    @RequestMapping(value = "/orderDetails", method = RequestMethod.GET)
     public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
+        String order = paymentService.getOrderByOrderNo(request, paymentOrderQuery);
 
         String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
+        JSONObject paySuccessObject = JSON.parseObject(paySuccess);
+        if(paySuccessObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
+            return "/user/login";
+        }
+        JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 
-        System.out.println(paySuccess);
-        model.addAttribute("payOrder",paySuccess);
+        JSONObject orderObject = JSON.parseObject(order);
+        JSONObject orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
 
-        return "";
+        model.addAttribute("paySuccess",paySuccessJson);
+        model.addAttribute("order",orderJson);
+
+        return "order/coupon";
     }
 
     /**
@@ -159,7 +181,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/order")
+    @RequestMapping("/order")
     public String order(Model model) {
 
         return "order/order";
@@ -169,7 +191,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/recharge")
+    @RequestMapping("/recharge")
     public String recharge(Model model) {
 
         return "order/recharge";
@@ -179,7 +201,7 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/result")
+    @RequestMapping("/result")
     public String result(Model model) {
 
         return "order/result";
@@ -189,9 +211,39 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping("/order/purchase")
+    @RequestMapping("/purchase")
     public String purchase(Model model) {
 
         return "order/purchase";
+    }
+    /**
+     * 小鹿测试页面(收支明细)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/detailed")
+    public String detailed(Model model) {
+
+        return "order/detailed";
+    }
+    /**
+     * 小鹿测试页面(我的优惠卡)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/coupon")
+    public String coupon(Model model) {
+
+        return "order/coupon";
+    }
+    /**
+     * 小鹿测试页面(我的优惠卡)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/center")
+    public String center(Model model) {
+
+        return "order/center";
     }
 }
