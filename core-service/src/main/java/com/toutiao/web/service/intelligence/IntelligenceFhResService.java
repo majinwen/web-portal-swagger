@@ -11,7 +11,7 @@ public interface IntelligenceFhResService {
     IntelligenceFhRes queryResById(Integer id);
 
 
-    Integer deleteMyReport(String reportId,String phone);
+    Integer deleteMyReport(String reportId);
 
     int updateMyReportCollectStatus(String reportId, String usePhone);
 }

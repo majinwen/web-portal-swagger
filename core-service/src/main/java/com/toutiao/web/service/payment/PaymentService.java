@@ -1,17 +1,9 @@
 package com.toutiao.web.service.payment;
 
-import com.toutiao.web.domain.payment.PayBuyRecordDo;
-
-import com.toutiao.web.domain.payment.PayOrderDo;
-import com.toutiao.web.domain.payment.PayOrderQuery;
-import com.toutiao.web.domain.payment.PayUserDo;
-
-import java.util.List;
-
-import com.toutiao.web.domain.payment.CommodityOrderQuery;
-import com.toutiao.web.domain.payment.PaymentOrderQuery;
+import com.toutiao.web.domain.payment.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 public interface PaymentService {
 
@@ -20,14 +12,14 @@ public interface PaymentService {
      * @param commodityOrderQuery
      * @return
      */
-    String saveCommodityOrder(HttpServletRequest request, CommodityOrderQuery commodityOrderQuery);
+    String saveCommodityOrder(CommodityOrderQuery commodityOrderQuery,PayUserDo payUserDo);
 
     /**
      * 获取用户余额信息
-     * @param request
+     * @param payUserDo
      * @return
      */
-    String getBalanceInfoByUserId(HttpServletRequest request);
+    String getBalanceInfoByUserId(PayUserDo payUserDo);
 
     /**
      * 完成商品购买订单
@@ -39,11 +31,11 @@ public interface PaymentService {
 
     /**
      * 支付成功，返回订单信息
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
-    String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
+    String paymentSuccess(PaymentOrderQuery paymentOrderQuery, PayUserDo payUserDo);
 
 
     /**
@@ -53,14 +45,19 @@ public interface PaymentService {
 
     /**
      * 根据订单编号获取订单详情
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
-    String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
+    String getOrderByOrderNo(PaymentOrderQuery paymentOrderQuery,PayUserDo payUserDo);
 
-
-
-
-
+    /**
+     * 支付
+     * @return
+     */
+    String payment(HttpServletRequest request, PaymentDoQuery paymentDoQuery);
+    /**
+     * 完成未支付
+     */
+    String unPayment(HttpServletRequest request, UnpaymentDoQuery unpaymentDoQuery);
 }
