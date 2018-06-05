@@ -92,9 +92,9 @@
             <#--&lt;#&ndash;<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">&ndash;&gt;-->
             <#--</a>-->
         <#--</#if>-->
-        <a class="process-ad" id='ad-newHouse-activity'>
-        <#--<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">-->
-        </a>
+        <#--<a class="process-ad" id='ad-newHouse-activity'>-->
+        <#--&lt;#&ndash;<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">&ndash;&gt;-->
+        <#--</a>-->
 
         <ul class="primary-item">
             <li>
@@ -553,7 +553,7 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <script type="text/javascript" src="${staticurl}/js/base-map.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
-<script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>
+<#--<script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>-->
 </body>
 </html>
 <script>
@@ -600,10 +600,10 @@
     })
 
 
-    var config = [
-        {"pid": 30, "jqid": "#ad-newHouse-activity"}
-        ];
-    $com.toutiao.ad.json(config);
+//    var config = [
+//        {"pid": 30, "jqid": "#ad-newHouse-activity"}
+//        ];
+//    $com.toutiao.ad.json(config);
 
 //    function zhugebaseinfo(){
 //        zhuge.track('新房-点击基本信息', {
