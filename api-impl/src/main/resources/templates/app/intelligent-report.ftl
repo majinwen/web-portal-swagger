@@ -789,11 +789,11 @@
                     data: reportId,
                     dataType: "json",
                     success: function (data) {
-                        // 字段待确定
-                        if (data.code == "fail") {
+
+                        if (data.code == "success") {
                             $('.collect-button').find('span').text('收藏');
                         }
-                        if (data.code == "cancel") {
+                        if (data.code == "fail") {
                             // 取消收藏失败
                             $('.collect-button').addClass('active');
                             $('.collect-button').find('span').text('已收藏');
