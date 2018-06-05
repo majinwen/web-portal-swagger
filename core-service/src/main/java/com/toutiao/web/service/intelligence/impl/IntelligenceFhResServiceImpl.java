@@ -48,9 +48,9 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
     }
 
     @Override
-    public Integer deleteMyReport(String reportId,String phone) {
+    public Integer deleteMyReport(String reportId) {
 
-       int result= intelligenceFhResMapper.deleteMyReport(Integer.valueOf(reportId),phone);
+       int result= intelligenceFhResMapper.deleteMyReport(Integer.valueOf(reportId));
         return result;
     }
 
