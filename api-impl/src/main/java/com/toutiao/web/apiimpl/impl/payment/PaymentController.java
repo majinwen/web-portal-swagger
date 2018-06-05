@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.api.chance.request.payment.PaymentRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
 import com.toutiao.web.domain.payment.PaymentDoQuery;
 import com.toutiao.web.domain.payment.PaymentOrderQuery;
@@ -83,9 +84,22 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
-    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
+//    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+//    public String paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
+//
+//        String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
+//        JSONObject payOrderObject = JSON.parseObject(payOrder);
+//        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
+//        System.out.println(payOrderJson);
+//        model.addAttribute("payOrder",payOrderJson);
+//
+//        return "";
+//    }
 
+
+    @RequestMapping(value = "/paymentCommodityOrder", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
         JSONObject payOrderObject = JSON.parseObject(payOrder);
@@ -93,7 +107,7 @@ public class PaymentController {
         System.out.println(payOrderJson);
         model.addAttribute("payOrder",payOrderJson);
 
-        return "";
+        return NashResult.build(payOrder);
     }
 
     /**
@@ -120,7 +134,6 @@ public class PaymentController {
 
         model.addAttribute("paySuccess",paySuccessJson);
         model.addAttribute("order",orderJson);
-
         return "order/coupon";
     }
 
