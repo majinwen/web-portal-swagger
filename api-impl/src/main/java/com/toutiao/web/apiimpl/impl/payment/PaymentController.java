@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -131,20 +130,21 @@ public class PaymentController {
      * @param paymentRequest
      * @return
      */
-    @RequestMapping(value = "/payment", method = RequestMethod.POST)
-    @ResponseBody
-    public String payment(HttpServletRequest request, @Validated @RequestBody PaymentRequest paymentRequest) {
+    @RequestMapping(value = "/payment", method = RequestMethod.GET)
+    public String payment(HttpServletRequest request, @Validated /*@RequestBody*/ PaymentRequest paymentRequest, Model model) {
         PaymentDoQuery paymentDoQuery = new PaymentDoQuery();
         BeanUtils.copyProperties(paymentRequest, paymentDoQuery);
         String form = paymentService.payment(request, paymentDoQuery);
         JSONObject jsonObject = JSON.parseObject(form);
+        Object data = jsonObject.get("data");
+        model.addAttribute("form",data);
         if ("success".equals(jsonObject.getString("code"))){
-            return "支付完成页";
+            return "order/paymentResult";
         }
         if(jsonObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
             return "/user/login";
         }
-        return form;
+        return "404";
     }
 
     /**
