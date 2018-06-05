@@ -1,7 +1,6 @@
 package com.toutiao.web.service.payment.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.toutiao.app.domain.user.UserBasicDo;
@@ -147,27 +146,25 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public String getBalanceInfoByUserId(PayUserDo payUserDo) {
 
-        //获取用户信息
-//        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         String result = "";
 
-            if(StringTool.isNotEmpty(payUserDo.getUserId())){
+        if(StringTool.isNotEmpty(payUserDo.getUserId())){
 
-                //组装请求header
-                Map<String,String> header = new HashMap<>();
-                String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),JSON.toJSONString(payUserDo),ServiceStateConstant.TTLMILLIS);
-                header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
-                //组合参数
-                Map<String, Object> paramsMap = new HashMap<>();
-                paramsMap.put("userId",payUserDo.getUserId().toString());
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),JSON.toJSONString(payUserDo),ServiceStateConstant.TTLMILLIS);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+            //组合参数
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put("userId",payUserDo.getUserId().toString());
 
-                //发起请求
-                result = HttpUtils.get(payDomain+ServiceStateConstant.GET_BALANCEINFO_USERID,header,paramsMap);
-                if(result == null){
-                    logger.error("获取用户余额信息请求失败,userId:"+ payUserDo.getUserId());
+            //发起请求
+            result = HttpUtils.get(payDomain+ServiceStateConstant.GET_BALANCEINFO_USERID,header,paramsMap);
+            if(result == null){
+                logger.error("获取用户余额信息请求失败,userId:"+ payUserDo.getUserId());
 
-                }
             }
+        }
 
         return result;
     }
@@ -201,9 +198,6 @@ public class PaymentServiceImpl implements PaymentService {
                 result = HttpUtils.post(payDomain+ServiceStateConstant.PAYMENT_ORDER,header,paramsMap);
                 if(result == null){
                     logger.error("发起生成商品购买订单请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
-//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
-//                    result = JSONObject.toJSONString(nashResult);
-//                    return result;
                 }
             }
         }else{
