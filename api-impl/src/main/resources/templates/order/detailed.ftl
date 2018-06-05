@@ -31,10 +31,12 @@
     </#list>
     </ul>
 <#else>
-<div>
-    <img src="${staticurl}/images/payment/payment-no-dingdan.png" alt="">
-    <p>您暂时没有订单</p>
-</div>
+<section class="empty-order">
+    <div>
+        <img src="${staticurl}/images/payment/payment-no-dingdan.png" alt="">
+        <p>您暂时没有明細</p>
+    </div>
+</section>
 
 </#if>
 

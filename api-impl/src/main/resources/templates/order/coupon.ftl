@@ -60,6 +60,7 @@
             <#--<img src="https://qr.api.cli.im/qr?data=http%253A%252F%252Fcity.toutiaofangchan.com%252F%2523%252FcityManageSystem%252FagentDetail%253FagentId%253D3379%2526userId%253D3401&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=&size=280&kid=cliim&key=fc45f89fb42c4b4ea1d9aa1c149560cc" alt="">-->
         </div>
     </div>
+    <button id="go-newHouse-hp">返回新房首页</button>
 </section>
 </body>
 </html>
