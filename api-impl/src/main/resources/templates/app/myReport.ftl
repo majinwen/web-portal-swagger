@@ -133,7 +133,7 @@
             url: router_city('/findhouse/dongfangdi/cancleMyReport/')+id,
             dataType: "json",
             success: function (data) {
-                // 状态待确定
+
                 if (data.code == "success") {
                     //重定向到登陆页面
                     window.location.href ="${backUrl}";

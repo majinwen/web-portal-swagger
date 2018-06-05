@@ -1,23 +1,16 @@
 package com.toutiao.web.service.payment.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.web.common.httpUtil.HttpUtils;
-import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
-import com.toutiao.web.domain.payment.PayBuyRecordDo;
-import com.toutiao.web.domain.payment.PayOrderDo;
-import com.toutiao.web.domain.payment.PayOrderQuery;
-import com.toutiao.web.domain.payment.PayUserDo;
-
+import com.google.common.collect.Maps;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
-import com.toutiao.web.domain.payment.CommentDo;
-import com.toutiao.web.domain.payment.CommodityOrderQuery;
-import com.toutiao.web.domain.payment.PaymentOrderQuery;
+import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
+import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -25,12 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 
 
 @Service
@@ -109,88 +104,66 @@ public class PaymentServiceImpl implements PaymentService {
      * @return
      */
     @Override
-    public String saveCommodityOrder(HttpServletRequest request, CommodityOrderQuery commodityOrderQuery) {
+    public String saveCommodityOrder(CommodityOrderQuery commodityOrderQuery, PayUserDo payUserDo) {
 
         //获取用户信息
         TransportClient client = esClientTools.init();
-        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        String result = "";
-        if(StringUtil.isNotNullString(user)){
-            Map map = JSON.parseObject(user);
-            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(map.get("userId").toString());
 
-            //组装请求header
-            Map<String,String> header = new HashMap<>();
-            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
-            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+        UserBasicDo userBasic =userBasicInfoService.queryUserBasic(payUserDo.getUserId().toString());
 
-            //组合参数
-            Map<String, Object> paramsMap = new HashMap<>();
-            GetResponse agentBaseResponse = client.prepareGet(newHouseIndex,newHouseType,commodityOrderQuery.getBuildingId().toString()).execute().actionGet();
-            CommentDo commentDo = new CommentDo();
-            commentDo.setBuildingId(commodityOrderQuery.getBuildingId());
-            commentDo.setBuildingName(agentBaseResponse.getSourceAsMap().get("building_name")==null?"":agentBaseResponse.getSourceAsMap().get("building_name").toString());
-            commentDo.setBuildingTitleImg(agentBaseResponse.getSourceAsMap().get("building_title_img")==null?"":agentBaseResponse.getSourceAsMap().get("building_title_img").toString());
-            paramsMap.put("comment",JSON.toJSONString(commentDo));
-            paramsMap.put("productNo",commodityOrderQuery.getProductNo());
-            paramsMap.put("userId",userBasic.getUserId());
-            paramsMap.put("userName",userBasic.getUserName());
-            paramsMap.put("phone",userBasic.getPhone());
-            paramsMap.put("type", ServiceStateConstant.ORDER_TYPR_CONSUNE);
+        //组装请求header
+        Map<String,String> header = new HashMap<>();
+        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),JSON.toJSONString(payUserDo),ServiceStateConstant.TTLMILLIS);
+        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
 
-            //发起请求
-            result = HttpUtils.post(payDomain+ServiceStateConstant.SAVE_ORDER,header,paramsMap);
-            if(result == null){
-                logger.error("发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+"=productNo:"+commodityOrderQuery.getProductNo());
-//                NashResult<Object> nashResult = NashResult.Fail("800001","发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+";productNo:"+commodityOrderQuery.getProductNo());
-//                result = JSONObject.toJSONString(nashResult);
-//                return result;
-            }
+        //组合参数
+        Map<String, Object> paramsMap = new HashMap<>();
+        GetResponse agentBaseResponse = client.prepareGet(newHouseIndex,newHouseType,commodityOrderQuery.getBuildingId().toString()).execute().actionGet();
+        CommentDo commentDo = new CommentDo();
+        commentDo.setBuildingId(commodityOrderQuery.getBuildingId());
+        commentDo.setBuildingName(agentBaseResponse.getSourceAsMap().get("building_name")==null?"":agentBaseResponse.getSourceAsMap().get("building_name").toString());
+        commentDo.setBuildingTitleImg(agentBaseResponse.getSourceAsMap().get("building_title_img")==null?"":agentBaseResponse.getSourceAsMap().get("building_title_img").toString());
+        paramsMap.put("comment",JSON.toJSONString(commentDo));
+        paramsMap.put("productNo",commodityOrderQuery.getProductNo());
+        paramsMap.put("userId",userBasic.getUserId());
+        paramsMap.put("userName",userBasic.getUserName());
+        paramsMap.put("phone",userBasic.getPhone());
+        paramsMap.put("type", ServiceStateConstant.ORDER_TYPR_CONSUNE);
 
-        }else{
-            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
-            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
-            result = JSONObject.toJSONString(nashResult);
+        //发起请求
+        String result = HttpUtils.post(payDomain+ServiceStateConstant.SAVE_ORDER,header,paramsMap);
+        if(result == null){
+            logger.error("发起生成商品购买订单请求失败,userId:"+userBasic.getUserId()+"=productNo:"+commodityOrderQuery.getProductNo());
         }
 
         return result;
     }
     /**
      * 获取用户余额信息
-     * @param request
+     * @param payUserDo
      * @return
      */
     @Override
-    public String getBalanceInfoByUserId(HttpServletRequest request) {
+    public String getBalanceInfoByUserId(PayUserDo payUserDo) {
 
-        //获取用户信息
-        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         String result = "";
-        if(StringUtil.isNotNullString(user)){
-            Map map = JSON.parseObject(user);
-            if(StringTool.isNotEmpty(map.get("userId"))){
 
-                //组装请求header
-                Map<String,String> header = new HashMap<>();
-                String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
-                header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
-                //组合参数
-                Map<String, Object> paramsMap = new HashMap<>();
-                paramsMap.put("userId",map.get("userId").toString());
+        if(StringTool.isNotEmpty(payUserDo.getUserId())){
 
-                //发起请求
-                result = HttpUtils.get(payDomain+ServiceStateConstant.GET_BALANCEINFO_USERID,header,paramsMap);
-                if(result == null){
-                    logger.error("获取用户余额信息请求失败,userId:"+ map.get("userId"));
-                    NashResult<Object> nashResult = NashResult.Fail("800002","获取用户余额信息请求失败,userId:"+map.get("userId"));
-                    result = JSONObject.toJSONString(nashResult);
-                    return result;
-                }
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),JSON.toJSONString(payUserDo),ServiceStateConstant.TTLMILLIS);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+            //组合参数
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put("userId",payUserDo.getUserId().toString());
+
+            //发起请求
+            result = HttpUtils.get(payDomain+ServiceStateConstant.GET_BALANCEINFO_USERID,header,paramsMap);
+            if(result == null){
+                logger.error("获取用户余额信息请求失败,userId:"+ payUserDo.getUserId());
+
             }
-        }else{
-            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
-            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
-            result = JSONObject.toJSONString(nashResult);
         }
 
         return result;
@@ -225,9 +198,6 @@ public class PaymentServiceImpl implements PaymentService {
                 result = HttpUtils.post(payDomain+ServiceStateConstant.PAYMENT_ORDER,header,paramsMap);
                 if(result == null){
                     logger.error("发起生成商品购买订单请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
-//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
-//                    result = JSONObject.toJSONString(nashResult);
-//                    return result;
                 }
             }
         }else{
@@ -241,34 +211,20 @@ public class PaymentServiceImpl implements PaymentService {
 
 
     @Override
-    public String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery) {
-        //获取用户信息
-        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        String result = "";
-        if(StringUtil.isNotNullString(user)){
-            Map map = JSON.parseObject(user);
+    public String getOrderByOrderNo(PaymentOrderQuery paymentOrderQuery, PayUserDo payUserDo) {
 
-            //组装请求header
-            Map<String,String> header = new HashMap<>();
-            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
-            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
-            //组合参数
-            Map<String, Object> paramsMap = new HashMap<>();
-            paramsMap.put("orderNo",paymentOrderQuery.getOrderNo());
+        //组装请求header
+        Map<String,String> header = new HashMap<>();
+        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),JSON.toJSONString(payUserDo),ServiceStateConstant.TTLMILLIS);
+        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+        //组合参数
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("orderNo",paymentOrderQuery.getOrderNo());
 
-            //发起请求
-            result = HttpUtils.get(payDomain+ServiceStateConstant.ORDER_BY_ORDERNO,header,paramsMap);
-            if(result == null){
-                logger.error("发起根据订单编号获取订单详情请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
-//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
-//                    result = JSONObject.toJSONString(nashResult);
-//                    return result;
-            }
-
-        }else{
-            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
-            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
-            result = JSONObject.toJSONString(nashResult);
+        //发起请求
+        String result = HttpUtils.get(payDomain+ServiceStateConstant.ORDER_BY_ORDERNO,header,paramsMap);
+        if(result == null){
+            logger.error("发起根据订单编号获取订单详情请求失败,userId:"+payUserDo.getUserId()+"=orderNo:"+paymentOrderQuery.getOrderNo());
         }
 
         return result;
@@ -278,39 +234,122 @@ public class PaymentServiceImpl implements PaymentService {
 
     /**
      * 支付成功，返回订单信息
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
     @Override
-    public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery) {
+    public String paymentSuccess(PaymentOrderQuery paymentOrderQuery, PayUserDo payUserDo) {
+
+        //组装请求header
+        Map<String,String> header = new HashMap<>();
+        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),JSON.toJSONString(payUserDo),ServiceStateConstant.TTLMILLIS);
+        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+        //组合参数
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("orderNo",paymentOrderQuery.getOrderNo());
+
+        //发起请求
+        String result = HttpUtils.get(payDomain+ServiceStateConstant.PURCHASE_HISTORY_ORDERNO,header,paramsMap);
+        if(result == null){
+            logger.error("发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
+
+        }
+        return result;
+    }
+    /**
+     * 支付
+     * @return
+     */
+    @Override
+    public String payment(HttpServletRequest request, PaymentDoQuery paymentDoQuery) {
         //获取用户信息
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         String result = "";
-        if(StringUtil.isNotNullString(user)){
+//        if(StringUtil.isNotNullString(user)){
+            Map map = JSON.parseObject(user);
+//            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(map.get("userId").toString());
+
             //组装请求header
             Map<String,String> header = new HashMap<>();
-            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,60000);
             header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+
             //组合参数
-            Map<String, Object> paramsMap = new HashMap<>();
-            paramsMap.put("orderNo",paymentOrderQuery.getOrderNo());
+            Map<String, Object> paramsMap = beanToMap(paymentDoQuery);
+//            paramsMap.put("userId",userBasic.getUserId());
+//            paramsMap.put("userName",userBasic.getUserName());
+//            paramsMap.put("phone",userBasic.getPhone());
 
             //发起请求
-            result = HttpUtils.get(payDomain+ServiceStateConstant.PURCHASE_HISTORY_ORDERNO,header,paramsMap);
-            if(result == null){
-                logger.error("发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
-//                NashResult<Object> nashResult = NashResult.Fail("800004","发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
+            result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_PAY_ORDER, header, paramsMap);
+
+//            if(result == null){
+//                logger.error("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
+//                NashResult<Object> nashResult = NashResult.Fail("支付请求失败,productNo:"+paymentDoQuery.getProductNo());
 //                result = JSONObject.toJSONString(nashResult);
 //                return result;
-            }
-
-        }else{
-            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
-            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
-            result = JSONObject.toJSONString(nashResult);
-        }
-
+//            }
+//        }else{
+//            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+//            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+//            result = JSONObject.toJSONString(nashResult);
+//        }
         return result;
     }
+
+    /**
+     * 完成未支付的订单
+     * @param request
+     * @param unpaymentDoQuery
+     * @return
+     */
+    @Override
+    public String unPayment(HttpServletRequest request, UnpaymentDoQuery unpaymentDoQuery) {
+        //获取用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        String result = "";
+//        if(StringUtil.isNotNullString(user)){
+
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,60000);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+
+            //组合参数
+            Map<String, Object> paramsMap = beanToMap(unpaymentDoQuery);
+
+            //发起请求
+            result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_REPAY_ORDER, header, paramsMap);
+
+//            if(result == null){
+//                logger.error("支付请求失败,orderNo:"+unpaymentDoQuery.getOrderNo());
+//                NashResult<Object> nashResult = NashResult.Fail("支付请求失败,orderNo:"+unpaymentDoQuery.getOrderNo());
+//                result = JSONObject.toJSONString(nashResult);
+//                return result;
+//            }
+//        }else{
+//            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+//            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+//            result = JSONObject.toJSONString(nashResult);
+//        }
+        return result;
+    }
+
+    /**
+     * 将对象装换为map
+     * @param bean
+     * @return
+     */
+    public static <T> Map<String, Object> beanToMap(T bean) {
+        Map<String, Object> map = Maps.newHashMap();
+        if (bean != null) {
+            BeanMap beanMap = BeanMap.create(bean);
+            for (Object key : beanMap.keySet()) {
+                map.put(key+"", beanMap.get(key));
+            }
+        }
+        return map;
+    }
+
 }
