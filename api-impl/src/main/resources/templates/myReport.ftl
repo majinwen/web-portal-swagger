@@ -39,8 +39,8 @@
                                     <i></i>
                                 </li>
                                 <li class="cancel-collection" id="report_${myReport.id}">
-                                        <span>取消收藏</span>
-                                        <i></i>
+                                    <span>取消收藏</span>
+                                    <i></i>
                                 </li>
                             </ul>
                         </div>
@@ -123,15 +123,18 @@
     $('.recommond-plot').on('click', function () {
         $(this).toggleClass('current');
         $(this).parents('.module-bottom-fill').next('.module-bottom-fill').toggleClass('none');
-    })
+    });
+
     $(".cancel-collection").on('click', function () {
-        var id=$(".cancel-collection").attr("id").split("_")[1];
+        var id=$(this).attr("id").split("_")[1];
+        console.log(id);
         $.ajax({
             type: "GET",
             async: true,
             url: router_city('/findhouse/cancleMyReport/')+id,
             dataType: "json",
             success: function (data) {
+                // 状态待确定
                 if (data.code == "success") {
                     //重定向到登陆页面
                     window.location.href ="${backUrl}";
@@ -142,7 +145,7 @@
                 }
             }
         });
-    })
+    });
     function router_city(urlparam) {
         urlparam = urlparam || '';
         if (urlparam[0] != '/') {
