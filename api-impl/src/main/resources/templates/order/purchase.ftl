@@ -82,10 +82,10 @@
                 dataType: "json",
                 success: function (data) {
                     console.log(JSON.stringify(data.data.code));
-                    if(data.data.code=="success"){
+                    if(JSON.parse(data.data).code=="success"){
                         window.location.href='${router_city('/order/orderDetails?orderNo='+commodityOrder['orderNo'])}'
-                    }else if(data.data.code=="fail"){
-
+                    }else if(JSON.parse(data.data).code=="fail"){
+                        window.location.href='${router_city('/payOrder/order/getMyOrder')}'
                     }
                 }
             })

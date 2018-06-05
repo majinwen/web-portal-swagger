@@ -12,14 +12,14 @@ public interface PaymentService {
      * @param commodityOrderQuery
      * @return
      */
-    String saveCommodityOrder(HttpServletRequest request, CommodityOrderQuery commodityOrderQuery);
+    String saveCommodityOrder(CommodityOrderQuery commodityOrderQuery,PayUserDo payUserDo);
 
     /**
      * 获取用户余额信息
-     * @param request
+     * @param payUserDo
      * @return
      */
-    String getBalanceInfoByUserId(HttpServletRequest request);
+    String getBalanceInfoByUserId(PayUserDo payUserDo);
 
     /**
      * 完成商品购买订单
@@ -45,11 +45,11 @@ public interface PaymentService {
 
     /**
      * 根据订单编号获取订单详情
-     * @param request
+     * @param payUserDo
      * @param paymentOrderQuery
      * @return
      */
-    String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
+    String getOrderByOrderNo(PaymentOrderQuery paymentOrderQuery,PayUserDo payUserDo);
 
     /**
      * 支付

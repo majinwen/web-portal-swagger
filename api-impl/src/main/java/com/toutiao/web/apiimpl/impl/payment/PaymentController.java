@@ -5,12 +5,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.api.chance.request.payment.PaymentRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
+import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.domain.payment.CommodityOrderQuery;
-import com.toutiao.web.domain.payment.PaymentDoQuery;
-import com.toutiao.web.domain.payment.PaymentOrderQuery;
-import com.toutiao.web.domain.payment.UnpaymentDoQuery;
+import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +30,6 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @RequestMapping("")
-    public String recharge11(Model model) {
-
-        return "order/testorder";
-    }
-
-
-
     /**
      * 生成商品购买订单1
      * @param commodityOrderQuery
@@ -49,26 +39,31 @@ public class PaymentController {
     @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
     public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(user,payUserDo);
         String orderResult = "";
         JSONObject orderObject = null;
         JSONObject orderJson = null;
         if(commodityOrderQuery.getBuildingId()!=null){
-            orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+            orderResult = paymentService.saveCommodityOrder(commodityOrderQuery, payUserDo);
             orderObject = JSON.parseObject(orderResult);
             orderJson = JSON.parseObject(orderObject.getString("data"));
         }else{
             PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
             BeanUtils.copyProperties(commodityOrderQuery,paymentOrderQuery);
-            orderResult =paymentService.getOrderByOrderNo(request, paymentOrderQuery);
+            orderResult =paymentService.getOrderByOrderNo(paymentOrderQuery, payUserDo);
             orderObject = JSON.parseObject(orderResult);
             orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
         }
 
-        String balanceResult = paymentService.getBalanceInfoByUserId(request);
+        String balanceResult = paymentService.getBalanceInfoByUserId(payUserDo);
         JSONObject balanceObject = JSON.parseObject(balanceResult);
-        if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "/user/login";
-        }
 
         JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
 
@@ -102,10 +97,6 @@ public class PaymentController {
     public NashResult paymentCommodityOrder(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
-        JSONObject payOrderObject = JSON.parseObject(payOrder);
-        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
-        System.out.println(payOrderJson);
-        model.addAttribute("payOrder",payOrderJson);
 
         return NashResult.build(payOrder);
     }
@@ -120,13 +111,19 @@ public class PaymentController {
     @RequestMapping(value = "/orderDetails", method = RequestMethod.GET)
     public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
-        String order = paymentService.getOrderByOrderNo(request, paymentOrderQuery);
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(user,payUserDo);
+
+        String order = paymentService.getOrderByOrderNo(paymentOrderQuery,payUserDo);
 
         String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
         JSONObject paySuccessObject = JSON.parseObject(paySuccess);
-        if(paySuccessObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
-            return "/user/login";
-        }
         JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 
         JSONObject orderObject = JSON.parseObject(order);
