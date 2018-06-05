@@ -54,7 +54,27 @@ public class PaymentController {
             orderResult = paymentService.saveCommodityOrder(commodityOrderQuery, payUserDo);
             orderObject = JSON.parseObject(orderResult);
             orderJson = JSON.parseObject(orderObject.getString("data"));
-        }else{
+
+            //再次购买 详情页
+            if(orderJson.getString("status").equals("1")){
+                PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
+                paymentOrderQuery.setOrderNo(orderJson.getString("orderNo"));
+                String order = paymentService.getOrderByOrderNo(paymentOrderQuery,payUserDo);
+
+                String paySuccess = paymentService.paymentSuccess(paymentOrderQuery,payUserDo);
+                JSONObject paySuccessObject = JSON.parseObject(paySuccess);
+                JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
+
+                JSONObject orderDetail = JSON.parseObject(order);
+                JSONObject detailJson = (JSONObject) JSON.parseObject(orderDetail.getString("data")).getJSONArray("data").get(0);
+
+                model.addAttribute("paySuccess",paySuccessJson);
+                model.addAttribute("order",detailJson);
+                return "order/coupon";
+            }
+
+
+        }else {
             PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
             BeanUtils.copyProperties(commodityOrderQuery,paymentOrderQuery);
             orderResult =paymentService.getOrderByOrderNo(paymentOrderQuery, payUserDo);
