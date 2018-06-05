@@ -7,7 +7,6 @@ import com.toutiao.web.api.chance.request.payment.PaymentRequest;
 import com.toutiao.web.api.chance.request.payment.RechargeRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.apiimpl.authentication.UserPay;
-import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
