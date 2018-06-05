@@ -739,14 +739,18 @@
     $(function () {
         var status = ${intelligenceFhRes.collectStatus};
         if (status == 1) {
-            $('.collect-button').toggleClass('active');
+            $('.collect-button').addClass('active');
+            $('.collect-button').find('span').text('已收藏')
+        } else {
+            $('.collect-button').removeClass('active');
+            $('.collect-button').find('span').text('收藏')
         }
 
         $('.collect-button').on('click', function () {
             var reportId = ${reportId};
             var backUrl = "${backUrl}";
-
             $(this).toggleClass('active');
+
             if ($(this).hasClass('active')) {
                 // 收藏
                 zhuge.track('收藏报告_懂房帝');
@@ -758,13 +762,17 @@
                         data: reportId,
                         dataType: "json",
                         success: function (data) {
+                            if (data.code == "success") {
+                                $('.collect-button').find('span').text('已收藏');
+                            }
                             if (data.code == "no-login") {
                                 //重定向到登陆页面
                                 window.location.href = "/user/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败
                             if (data.code == "cancel") {
-                                $(this).find('.collect').removeClass('active');
+                                $('.collect-button').removeClass('active');
+                                $('.collect-button').find('span').text('收藏');
                             }
                         }
                     })
@@ -778,9 +786,14 @@
                     data: reportId,
                     dataType: "json",
                     success: function (data) {
+                        // 字段待确定
+                        if (data.code == "fail") {
+                            $('.collect-button').find('span').text('收藏');
+                        }
                         if (data.code == "cancel") {
                             // 取消收藏失败
-                            $(this).find('.collect').removeClass('active');
+                            $('.collect-button').addClass('active');
+                            $('.collect-button').find('span').text('已收藏');
                         }
                     }
                 })
