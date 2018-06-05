@@ -43,7 +43,7 @@ public class PaymentController {
         UserPay user=UserPay.getCurrent();
         if (null==user.getUserId())
         {
-            model.addAttribute("backUrl",request.getRequestURL());
+            model.addAttribute("backUrl",request.getRequestURL()+"?"+request.getQueryString());
             return "/user/login";
         }
         PayUserDo payUserDo=new PayUserDo();
@@ -135,7 +135,7 @@ public class PaymentController {
         UserPay user=UserPay.getCurrent();
         if (null==user.getUserId())
         {
-            model.addAttribute("backUrl",request.getRequestURL());
+            model.addAttribute("backUrl",request.getRequestURL()+"?"+request.getQueryString());
             return "/user/login";
         }
         PayUserDo payUserDo=new PayUserDo();
