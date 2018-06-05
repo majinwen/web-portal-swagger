@@ -7,7 +7,6 @@ import com.toutiao.web.api.chance.request.payment.PaymentRequest;
 import com.toutiao.web.api.chance.request.payment.RechargeRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.apiimpl.authentication.UserPay;
-import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
@@ -195,7 +194,7 @@ public class PaymentController {
      * @return
      */
     @RequestMapping(value = "/recharge",method = RequestMethod.GET)
-    public String recharge(RechargeRequest rechargeRequest, Model model){
+    public String recharge(@Validated RechargeRequest rechargeRequest, Model model){
         model.addAttribute("recharge",rechargeRequest);
         return "/order/recharge";
     }

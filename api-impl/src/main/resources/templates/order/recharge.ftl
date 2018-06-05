@@ -10,10 +10,10 @@
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<section>
+<section id="putong">
     <p class="remaining-sum">可用余额：<em>${recharge['totalMoney']}</em></p>
     <div class="input-sum">
-        <input type="tel"  class="key-words" placeholder="充值金额(元)" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="5">
+        <input type="tel"  class="key-words" placeholder="充值金额(元)" onkeyup="onlyNumber(this)" >
     </div>
     <ul class="payment-method">
         <li onclick="alipay()">
@@ -38,11 +38,20 @@
         </li>
     </ul>
 </section>
+<section id="weixin" class="none">
+    <div class="J-weixin-tip weixin-tip">
+        <div class="weixin-tip-content">
+            请在菜单中选择在浏览器中打开,<br/>
+            以完成支付
+        </div>
+    </div>
+</section>
 <script>
     $(function () {
         var WxObj=window.navigator.userAgent.toLowerCase();
         if(WxObj.match(/microMessenger/i)=='micromessenger'){
-            alert("weixin")
+            $('#putong').addClass('none')
+            $('#weixin').removeClass('none')
         }
 
     })
@@ -53,8 +62,34 @@
     var url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
     $('.key-words').bind('input',function () {
          _keyword = $('.key-words').val()||0;
+         if(_keyword>50000){
+             _keyword = 50000;
+             $('.key-words').val(50000)
+         }
         url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
     })
+
+    function onlyNumber(obj){
+
+        //得到第一个字符是否为负号
+        var t = obj.value.charAt(0);
+        //先把非数字的都替换掉，除了数字和.
+        obj.value = obj.value.replace(/[^\d\.]/g,'');
+        //必须保证第一个为数字而不是.
+        obj.value = obj.value.replace(/^\./g,'');
+        //保证只有出现一个.而没有多个.
+        obj.value = obj.value.replace(/\.{2,}/g,'.');
+        //保证.只出现一次，而不能出现两次以上
+        obj.value = obj.value.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
+
+        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        //如果第一位是负号，则允许添加
+        if(t == '-'){
+
+            return;
+        }
+
+    }
 
     function alipay() {
         if (_keyword>0){
