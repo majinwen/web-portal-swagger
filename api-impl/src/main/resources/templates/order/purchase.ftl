@@ -16,7 +16,12 @@
             <#if commodityOrder?size gt 0>
                 <#if commodityOrder['comment']?exists>
                     <#assign json=commodityOrder['comment']?eval />
-                    <img src="${qiniuimage}/${json.buildingTitleImg}-tt400x300" alt="${json.buildingName}">
+                    <#if json.buildingTitleImg?exists>
+                        <img src="${qiniuimage}/${json.buildingTitleImg}-tt400x300" alt="${json.buildingName}">
+                    <#else >
+                        <img src="${staticurl}/images/global/tpzw_image.png" alt="${json.buildingName}">
+                    </#if>
+
                 </#if>
             </#if>
         </div>
