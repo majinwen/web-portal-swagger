@@ -41,8 +41,10 @@
 <section id="weixin" class="none">
     <div class="J-weixin-tip weixin-tip">
         <div class="weixin-tip-content">
-            请在菜单中选择在浏览器中打开,<br/>
-            以完成支付
+            <span class="iphone-browser none">iphone</span>
+            <span class="android-browser none">android</span>
+            <p>请在菜单中选择在浏览器中打开,<br/>
+            以完成支付</p>
         </div>
     </div>
 </section>
@@ -52,6 +54,15 @@
         if(WxObj.match(/microMessenger/i)=='micromessenger'){
             $('#putong').addClass('none')
             $('#weixin').removeClass('none')
+            if (WxObj.indexOf('iphone') != -1 || WxObj.indexOf('ipad') != -1 || WxObj.indexOf('ipod') != -1) {
+                // 替换浏览器图标 iphone
+                $('.iphone-browser').removeClass('none')
+                $('.android-browser').addClass('none')
+            } else {
+                // 替换浏览器图标 android
+                $('.android-browser').removeClass('none')
+                $('.iphone-browser').addClass('none')
+            }
         }
 
     })
@@ -59,7 +70,7 @@
     var productNo = ${recharge['productNo']};  //商品编号
     var productDetails = ${recharge['productDetails']};  //商品详情
     var _keyword = 0;
-    var url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
+    var url = "";
     $('.key-words').bind('input',function () {
          _keyword = $('.key-words').val()||0;
          if(_keyword>50000){
@@ -92,7 +103,7 @@
     }
 
     function alipay() {
-        if (_keyword>0){
+        if (_keyword>0&&url!=''){
             window.location.href =url;
         }
     }

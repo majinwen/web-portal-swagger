@@ -14,7 +14,7 @@
     <div class="">
         <img src="/static/images/payment/payment-chengong.png" alt="成功">
         <p>支付完成</p>
-        <button>完成</button>
+        <button onclick="newhouse()">完成</button>
     </div>
     <#-- 支付失败 点击返回到我的订单列表页 -->
     <div class="none">
@@ -35,5 +35,10 @@
         <button>返回</button>
     </div>
 </section>
+<script>
+    function newhouse() {
+        window.location.href = "http://m.toutiaofangchan.com/bj/xinfang";
+    }
+</script>
 </body>
 </html>
