@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${staticurl}/css/payment-detailed.css?v=${staticversion}">
     <#include "../StatisticsHeader.ftl">
 </head>
+<body>
 <#if payOrderDos?exists>
     <ul class="list-wrapper">
 <#list payOrderDos as key >
@@ -29,6 +30,13 @@
        </#if>
     </#list>
     </ul>
+<#else>
+<div>
+    <img src="${staticurl}/images/payment/payment-no-dingdan.png" alt="">
+    <p>您暂时没有订单</p>
+</div>
+
 </#if>
+
 </body>
 </html>

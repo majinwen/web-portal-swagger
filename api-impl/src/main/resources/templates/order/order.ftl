@@ -10,8 +10,9 @@
 </head>
 <body>
 <#-- 判断是否有订单，没有订单时添加none -->
-<section class="order-wrapper">
 <#if payOrderDos?exists>
+<section class="order-wrapper">
+
     <#list payOrderDos as key>
         <a href="#" class="order-item-wrapper">
         <div class="order-item">
@@ -36,10 +37,10 @@
         </div>
     </a>
     </#list>
-<#else>
 </section>
+<#else>
 <#-- 没有订单时显示，去掉none -->
-<section class="empty-order none">
+<section class="empty-order">
     <div>
         <img src="${staticurl}/images/payment/payment-no-dingdan.png" alt="">
         <p>您暂时没有订单</p>
