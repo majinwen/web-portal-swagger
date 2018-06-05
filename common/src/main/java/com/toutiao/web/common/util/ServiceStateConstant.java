@@ -84,6 +84,12 @@ public class ServiceStateConstant {
      */
     public static final String PAYMENT_ORDER = "/order/updateOrderToFinish";
 
+
+    /**
+     * 完成商品购买订单
+     */
+    public static final String ORDER_BY_ORDERNO = "/order/getOrderByOrderNo";
+
     /**
      * 完成商品购买订单
      */
@@ -105,6 +111,10 @@ public class ServiceStateConstant {
      */
     public static final String  PAY_ORDER = "/order/getHistoricalOrders";
 
+    /**
+     * 订单详情
+     */
+    public static  final  String ORDER_DETAILS="/order/getOrderByOrderNo";
 
 
 

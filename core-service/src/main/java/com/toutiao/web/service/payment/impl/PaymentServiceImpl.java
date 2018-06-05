@@ -1,6 +1,7 @@
 package com.toutiao.web.service.payment.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
@@ -46,34 +47,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${tt.newhouse.type}")
     private String newHouseType;//索引类型
 
-    @Override
-    public List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo) {
-        List<PayBuyRecordDo>  payOrderDos= new ArrayList<>();
-        JSONObject jsonObject=new JSONObject();
-        String json=JSON.toJSONString(payUserDo);
-        Map<String,String> header = new HashMap<>();
-        String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
-        header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
-        Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("userIds",payUserDo.getUserId());
-        paramsMap.put("pageNum",payOrderQuery.getPageNum());
-        paramsMap.put("pageSize",payOrderQuery.getPageSize());
-        try {
-            jsonObject= JSONObject.parseObject(HttpUtils.get(payDomain+ServiceStateConstant.BUY_RECORDER,header,paramsMap));
-            JSONObject object=(JSONObject) jsonObject.get("data");
-            if (object.size()==0)
-            {
-                payOrderDos=null;
-                return payOrderDos;
-            }
-            payOrderDos =JSON.parseArray(object.get("data").toString(),PayBuyRecordDo.class);
 
-        }catch (Exception e)
-        {
-            logger.error("获取用户购买记录失败,userId:"+payUserDo.getUserId()+"={}",e.getStackTrace());
-        }
-        return  payOrderDos;
-    }
 
     /**
      * 我的订单
@@ -82,7 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
      * @return
      */
     @Override
-    public List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery, PayUserDo payUserDo, Integer type) {
+    public List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery, PayUserDo payUserDo, Integer type,Integer status) {
 
         List<PayOrderDo> payOrderDos=new ArrayList<>();
         JSONObject jsonObject=new JSONObject();
@@ -91,8 +65,15 @@ public class PaymentServiceImpl implements PaymentService {
         String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),json,ServiceStateConstant.TTLMILLIS);
         header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
         Map<String, Object> paramsMap = new HashMap<>();
-        paramsMap.put("userName",payUserDo.getUserName());
-        paramsMap.put("type",type);
+        paramsMap.put("userId",payUserDo.getUserId());
+        if (null!=type)
+        {
+            paramsMap.put("type",type);
+        }
+        if (null!=status)
+        {
+            paramsMap.put("status",status);
+        }
         paramsMap.put("pageNum",payOrderQuery.getPageNum());
         paramsMap.put("pageSize",payOrderQuery.getPageSize());
         try {
@@ -118,6 +99,7 @@ public class PaymentServiceImpl implements PaymentService {
 
        return payOrderDos;
     }
+
 
 
 
@@ -243,9 +225,9 @@ public class PaymentServiceImpl implements PaymentService {
                 result = HttpUtils.post(payDomain+ServiceStateConstant.PAYMENT_ORDER,header,paramsMap);
                 if(result == null){
                     logger.error("发起生成商品购买订单请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
-                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
-                    result = JSONObject.toJSONString(nashResult);
-                    return result;
+//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
+//                    result = JSONObject.toJSONString(nashResult);
+//                    return result;
                 }
             }
         }else{
@@ -256,6 +238,43 @@ public class PaymentServiceImpl implements PaymentService {
 
         return result;
     }
+
+
+    @Override
+    public String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery) {
+        //获取用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        String result = "";
+        if(StringUtil.isNotNullString(user)){
+            Map map = JSON.parseObject(user);
+
+            //组装请求header
+            Map<String,String> header = new HashMap<>();
+            String jwtToken = JsonWebTokenUtil.createJWT(String.valueOf(System.currentTimeMillis()),user,ServiceStateConstant.TTLMILLIS);
+            header.put(ServiceStateConstant.PAYMENT_HEADER,jwtToken);
+            //组合参数
+            Map<String, Object> paramsMap = new HashMap<>();
+            paramsMap.put("orderNo",paymentOrderQuery.getOrderNo());
+
+            //发起请求
+            result = HttpUtils.get(payDomain+ServiceStateConstant.ORDER_BY_ORDERNO,header,paramsMap);
+            if(result == null){
+                logger.error("发起根据订单编号获取订单详情请求失败,userId:"+map.get("userId")+"=orderNo:"+paymentOrderQuery.getOrderNo());
+//                    NashResult<Object> nashResult = NashResult.Fail("800003","发起生成商品购买订单请求失败,userId:"+map.get("userId")+";orderNo:"+paymentOrderQuery.getOrderNo());
+//                    result = JSONObject.toJSONString(nashResult);
+//                    return result;
+            }
+
+        }else{
+            Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            result = JSONObject.toJSONString(nashResult);
+        }
+
+        return result;
+    }
+
+
 
     /**
      * 支付成功，返回订单信息
@@ -281,9 +300,9 @@ public class PaymentServiceImpl implements PaymentService {
             result = HttpUtils.get(payDomain+ServiceStateConstant.PURCHASE_HISTORY_ORDERNO,header,paramsMap);
             if(result == null){
                 logger.error("发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
-                NashResult<Object> nashResult = NashResult.Fail("800004","发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
-                result = JSONObject.toJSONString(nashResult);
-                return result;
+//                NashResult<Object> nashResult = NashResult.Fail("800004","发起根据订单编号获取购买记录请求失败,orderNo:"+paymentOrderQuery.getOrderNo());
+//                result = JSONObject.toJSONString(nashResult);
+//                return result;
             }
 
         }else{

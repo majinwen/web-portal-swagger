@@ -45,16 +45,22 @@ public interface PaymentService {
      */
     String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 
+
     /**
-     * 获取用户购买记录
-     * @param payUserDo
+     * 我的订单列表
+     */
+    List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type,Integer status);
+
+    /**
+     * 根据订单编号获取订单详情
+     * @param request
+     * @param paymentOrderQuery
      * @return
      */
-    List<PayBuyRecordDo> getBuyRecordByUserId(PayOrderQuery payOrderQuery,PayUserDo payUserDo);
+    String getOrderByOrderNo(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery);
 
 
-    /**
-     * 我的订单
-     */
-    List<PayOrderDo> getMyOrder(PayOrderQuery payOrderQuery,PayUserDo payUserDo,Integer type);
+
+
+
 }

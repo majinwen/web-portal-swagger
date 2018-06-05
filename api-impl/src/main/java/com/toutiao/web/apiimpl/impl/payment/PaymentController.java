@@ -7,15 +7,15 @@ import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.domain.payment.CommodityOrderQuery;
 import com.toutiao.web.domain.payment.PaymentOrderQuery;
 import com.toutiao.web.service.payment.PaymentService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 
 @Controller
@@ -41,29 +41,30 @@ public class PaymentController {
      * @return
      */
     @RequestMapping(value = "/buildCommodityOrder", method = RequestMethod.GET)
-    public String buildCommodityOrder(HttpServletRequest request,CommodityOrderQuery commodityOrderQuery, Model model) {
+    public String buildCommodityOrder(HttpServletRequest request, @Validated CommodityOrderQuery commodityOrderQuery, Model model) {
 
-        String orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+        String orderResult = "";
+        JSONObject orderObject = null;
+        JSONObject orderJson = null;
+        if(commodityOrderQuery.getBuildingId()!=null){
+            orderResult = paymentService.saveCommodityOrder(request,commodityOrderQuery);
+            orderObject = JSON.parseObject(orderResult);
+            orderJson = JSON.parseObject(orderObject.getString("data"));
+        }else{
+            PaymentOrderQuery paymentOrderQuery = new PaymentOrderQuery();
+            BeanUtils.copyProperties(commodityOrderQuery,paymentOrderQuery);
+            orderResult =paymentService.getOrderByOrderNo(request, paymentOrderQuery);
+            orderObject = JSON.parseObject(orderResult);
+            orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
+        }
+
         String balanceResult = paymentService.getBalanceInfoByUserId(request);
-
-        JSONObject orderObject = JSON.parseObject(orderResult);
         JSONObject balanceObject = JSON.parseObject(balanceResult);
         if(orderObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
             return "/user/login";
         }
-        JSONObject orderJson = JSON.parseObject(orderObject.getString("data"));
+
         JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
-
-
-
-
-        System.out.println(orderJson);
-
-        System.out.println(balanceJson);
-        System.out.println(balanceResult);
-
-
-
 
         model.addAttribute("commodityOrder",orderJson);
         model.addAttribute("balance",balanceJson);
@@ -82,9 +83,10 @@ public class PaymentController {
 
 
         String payOrder = paymentService.paymentCommodityOrder(request, paymentOrderQuery);
-
-        System.out.println(payOrder);
-        model.addAttribute("payOrder",payOrder);
+        JSONObject payOrderObject = JSON.parseObject(payOrder);
+        JSONObject payOrderJson = JSON.parseObject(payOrderObject.getString("data"));
+        System.out.println(payOrderJson);
+        model.addAttribute("payOrder",payOrderJson);
 
         return "";
     }
@@ -96,16 +98,25 @@ public class PaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/paymentSuccess", method = RequestMethod.GET)
+    @RequestMapping(value = "/orderDetails", method = RequestMethod.GET)
     public String paymentSuccess(HttpServletRequest request, PaymentOrderQuery paymentOrderQuery, Model model){
 
+        String order = paymentService.getOrderByOrderNo(request, paymentOrderQuery);
 
         String paySuccess = paymentService.paymentSuccess(request, paymentOrderQuery);
+        JSONObject paySuccessObject = JSON.parseObject(paySuccess);
+        if(paySuccessObject.getString("code").equals(String.valueOf(UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue()))){
+            return "/user/login";
+        }
+        JSONObject paySuccessJson = (JSONObject) JSON.parseObject(paySuccessObject.getString("data")).getJSONArray("data").get(0);
 
-        System.out.println(paySuccess);
-        model.addAttribute("payOrder",paySuccess);
+        JSONObject orderObject = JSON.parseObject(order);
+        JSONObject orderJson = (JSONObject) JSON.parseObject(orderObject.getString("data")).getJSONArray("data").get(0);
 
-        return "";
+        model.addAttribute("paySuccess",paySuccessJson);
+        model.addAttribute("order",orderJson);
+
+        return "order/coupon";
     }
 
 
