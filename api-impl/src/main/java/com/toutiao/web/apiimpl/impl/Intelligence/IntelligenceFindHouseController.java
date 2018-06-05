@@ -119,8 +119,10 @@ public class IntelligenceFindHouseController {
     public NashResult cancleMyReport(HttpServletRequest request,@PathVariable("reportId") String reportId){
 
         try {
-            String phone = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-            int count = intelligenceFhResService.deleteMyReport(reportId, phone);
+//            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+//
+//            JSONObject userPhonr = JSONObject.parseObject(user);
+            int count = intelligenceFhResService.deleteMyReport(reportId);
             if(count != 0){
                 return NashResult.build("ok");
             }else{

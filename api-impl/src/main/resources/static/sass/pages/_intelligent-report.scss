@@ -1070,6 +1070,11 @@ body {
                     box-shadow: 0 rem(13) rem(25) 0 rgba(157, 173, 203, 0.17);
                     border-radius: rem(61);
                     @include font-dpr(30);
+
+                    &.active {
+                        color: #fff;
+                        background-color: #EA5956;
+                    }
                 }
             }
 
