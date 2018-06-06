@@ -18,7 +18,7 @@
     <ul class="payment-method">
         <li onclick="alipay()">
             <a href="#" class="method-item">
-                <img src="/static/images/payment/payment-zhifubao.png" alt="支付宝">
+                <img src="${staticurl}/images/payment/payment-zhifubao.png" alt="支付宝">
                 <div>
                     <p>支付宝支付</p>
                     <span>支付宝安全支付</span>
@@ -28,7 +28,7 @@
         </li>
         <li>
             <a href="#" class="method-item">
-                <img src="/static/images/payment/payment-weixin.png" alt="微信">
+                <img src="${staticurl}/images/payment/payment-weixin.png" alt="微信">
                 <div>
                     <p>微信支付</p>
                     <span>微信安全支付</span>
@@ -41,8 +41,8 @@
 <section id="weixin" class="none">
     <div class="J-weixin-tip weixin-tip">
         <div class="weixin-tip-content">
-            <span class="iphone-browser none">iphone</span>
-            <span class="android-browser none">android</span>
+            <img src="${staticurl}/images/payment/iphone-broswer.png" class="iphone-browser none">
+            <img src="${staticurl}/images/payment/android-browser.png" class="android-browser none">
             <p>请在菜单中选择在浏览器中打开,<br/>
             以完成支付</p>
         </div>
