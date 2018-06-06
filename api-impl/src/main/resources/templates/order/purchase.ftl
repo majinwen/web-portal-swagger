@@ -47,15 +47,21 @@
         <strong>待支付</strong>
         <span>实付款：<em>¥${commodityOrder['payMoney']}</em></span>
     </div>
-
-    <#if balance['balance'] gte commodityOrder['payMoney']>
+    <#if balance?exists && balance?size gt 0>
+        <#if balance['balance'] gte commodityOrder['payMoney']>
         <#--<button onclick="window.location.href='${router_city('/order/paymentCommodityOrder?orderNo='+commodityOrder['orderNo'])}'">确认</button>-->
-        <button id="purchase">确认</button>
+            <button id="purchase">确认</button>
+        <#else >
+            <button onclick="window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney='+balance['balance'])}'">充值</button>
+        </#if>
+        <p class="current-balance">当前余额：${balance['balance']}元</p>
     <#else >
-        <button onclick="window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney='+balance['balance'])}'">充值</button>
+            <button onclick="window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney=0')}'">充值</button>
+        <p class="current-balance">当前余额：0元</p>
     </#if>
 
-    <p class="current-balance">当前余额：${balance['balance']}元</p>
+
+
 </section>
 </body>
 </html>
