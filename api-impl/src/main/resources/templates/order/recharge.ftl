@@ -49,23 +49,23 @@
     </div>
 </section>
 <script>
-//    $(function () {
-//        var WxObj=window.navigator.userAgent.toLowerCase();
-//        if(WxObj.match(/microMessenger/i)=='micromessenger'){
-//            $('#putong').addClass('none')
-//            $('#weixin').removeClass('none')
-//            if (WxObj.indexOf('iphone') != -1 || WxObj.indexOf('ipad') != -1 || WxObj.indexOf('ipod') != -1) {
-//                // 替换浏览器图标 iphone
-//                $('.iphone-browser').removeClass('none')
-//                $('.android-browser').addClass('none')
-//            } else {
-//                // 替换浏览器图标 android
-//                $('.android-browser').removeClass('none')
-//                $('.iphone-browser').addClass('none')
-//            }
-//        }
-//
-//    })
+    $(function () {
+        var WxObj=window.navigator.userAgent.toLowerCase();
+        if(WxObj.match(/microMessenger/i)=='micromessenger'){
+            $('#putong').addClass('none')
+            $('#weixin').removeClass('none')
+            if (WxObj.indexOf('iphone') != -1 || WxObj.indexOf('ipad') != -1 || WxObj.indexOf('ipod') != -1) {
+                // 替换浏览器图标 iphone
+                $('.iphone-browser').removeClass('none')
+                $('.android-browser').addClass('none')
+            } else {
+                // 替换浏览器图标 android
+                $('.android-browser').removeClass('none')
+                $('.iphone-browser').addClass('none')
+            }
+        }
+
+    })
     var type = "${recharge['type']}"  //订单类型
     var productNo = "${recharge['productNo']}"  //商品编号
     var productDetails = "${recharge['productDetails']}"  //商品详情
