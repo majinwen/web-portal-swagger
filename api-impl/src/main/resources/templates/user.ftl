@@ -33,7 +33,6 @@
         <#--<li><a href="#"><i class="icon-collect"></i><span>我的收藏</span></a></li>-->
             <li><a href="${router_city('/findhouse/queryMyReport')}" onclick="zhuge.track('个人中心-点击我的报告')"><#--<i class="icon-report"></i>--><span>我的报告</span></a>
             </li>
-            </li>
             <li><a href="${router_city('/payOrder/order/getMyOrder')}"><span>我的订单</span></a>
             </li>
             <#if (getUser()!="请登录")>
