@@ -67,6 +67,6 @@
 
 <script>
 
-    new QRCode(document.getElementById('qrCode'), 'https://www.baidu.com/');
+    new QRCode(document.getElementById('qrCode'), 'http://city.test.toutiaofangchan.com/#/cityManageSystem/customerList');
 
 </script>
