@@ -84,6 +84,7 @@ public class PayOrderController {
 
     /**
      * 个人中心
+     * param request
      */
     @RequestMapping("order/myCenter")
     public  String  myCenter(HttpServletRequest request,Model model)
