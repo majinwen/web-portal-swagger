@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 @Controller
@@ -42,7 +44,13 @@ public class PaymentController {
         UserPay user=UserPay.getCurrent();
         if (null==user.getUserId())
         {
-            model.addAttribute("backUrl",request.getRequestURL()+"?"+request.getQueryString());
+            String params = "";
+            try {
+                params = URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(),"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("backUrl",params);
             return "/user/login";
         }
         PayUserDo payUserDo=new PayUserDo();
