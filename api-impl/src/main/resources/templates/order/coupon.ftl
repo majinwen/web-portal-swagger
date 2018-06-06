@@ -29,7 +29,7 @@
                     <h3>${json.buildingName}</h3>
                 </#if>
                 <#if order['productDetails']?exists>
-                    <p>优惠卡:${order.productDetails}</p>
+                    <p>${order.productDetails}</p>
                 <#else >
                     <p>暂无数据</p>
                 </#if>
