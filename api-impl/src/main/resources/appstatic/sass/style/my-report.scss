@@ -37,7 +37,7 @@
                 top: 0;
                 width: rem(26);
                 height: rem(30);
-                @include bg-image('/static/images/myreport/wdbgl_icon_bg');
+                @include bg-image('/appstatic/images/myreport/wdbgl_icon_bg');
                 -webkit-background-size: contain;
                 background-size: contain;
             }
@@ -65,7 +65,7 @@
             width: rem(44);
             height: rem(44);
             margin-top: rem(-22);
-            @include bg-image('/static/images/myreport/wdbg_icon_more');
+            @include bg-image('/appstatic/images/myreport/wdbg_icon_more');
             background-position: center;
             -webkit-background-size: contain;
             background-size: contain;
@@ -115,7 +115,7 @@
                 background-color: #747788;
 
                 i {
-                    @include bg-image('/static/images/myreport/wdbg_icon_ckbg');
+                    @include bg-image('/appstatic/images/myreport/wdbg_icon_ckbg');
                     -webkit-background-size: contain;
                     background-size: contain;
                 }
@@ -124,7 +124,7 @@
                 background-color: #44495f;
 
                 i {
-                    @include bg-image('/static/images/myreport/wdbg_icon_recommond');
+                    @include bg-image('/appstatic/images/myreport/wdbg_icon_recommond');
                     background-position: left center;
                     -webkit-background-size: auto 100%;
                     background-size: auto 100%;
@@ -140,7 +140,7 @@
                 background-color: #ff4848;
 
                 i {
-                    @include bg-image('/static/images/myreport/wdbg_icon_qxsc');
+                    @include bg-image('/appstatic/images/myreport/wdbg_icon_qxsc');
                     -webkit-background-size: contain;
                     background-size: contain;
                 }
