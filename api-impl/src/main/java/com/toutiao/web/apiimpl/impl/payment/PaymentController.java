@@ -8,6 +8,8 @@ import com.toutiao.web.api.chance.request.payment.RechargeRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.BeanUtils;
@@ -201,7 +203,11 @@ public class PaymentController {
      * @return
      */
     @RequestMapping(value = "/recharge",method = RequestMethod.GET)
-    public String recharge(@Validated RechargeRequest rechargeRequest, Model model){
+    public String recharge(HttpServletRequest request, @Validated RechargeRequest rechargeRequest, Model model){
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        if (StringUtil.isNullString(user)){
+            return "/user/login";
+        }
         model.addAttribute("recharge",rechargeRequest);
         return "/order/recharge";
     }

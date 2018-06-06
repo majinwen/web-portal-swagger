@@ -77,7 +77,7 @@
              _keyword = 50000;
              $('.key-words').val(50000)
          }
-        url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
+        url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo/*+"&productDetails="+productDetails*/;
          console.log(url)
     })
 
