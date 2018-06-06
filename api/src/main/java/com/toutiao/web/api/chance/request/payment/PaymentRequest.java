@@ -31,7 +31,7 @@ public class PaymentRequest {
     /**
      * 商品详情
      */
-    private String productDetails;
+    private String productDetails = "比得屋账户充值";
     /**
      * 成功会跳页面
      */
