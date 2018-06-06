@@ -14,12 +14,10 @@ public class RechargeRequest {
     /**
      * 商品编号
      */
-    @NotNull
     private String productNo;
     /**
      * 商品详情
      */
-    @NotNull
     private String productDetails;
     /**
      * 余额

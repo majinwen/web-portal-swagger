@@ -49,26 +49,26 @@
     </div>
 </section>
 <script>
-    $(function () {
-        var WxObj=window.navigator.userAgent.toLowerCase();
-        if(WxObj.match(/microMessenger/i)=='micromessenger'){
-            $('#putong').addClass('none')
-            $('#weixin').removeClass('none')
-            if (WxObj.indexOf('iphone') != -1 || WxObj.indexOf('ipad') != -1 || WxObj.indexOf('ipod') != -1) {
-                // 替换浏览器图标 iphone
-                $('.iphone-browser').removeClass('none')
-                $('.android-browser').addClass('none')
-            } else {
-                // 替换浏览器图标 android
-                $('.android-browser').removeClass('none')
-                $('.iphone-browser').addClass('none')
-            }
-        }
-
-    })
-    var type = ${recharge['type']};  //订单类型
-    var productNo = ${recharge['productNo']};  //商品编号
-    var productDetails = ${recharge['productDetails']};  //商品详情
+//    $(function () {
+//        var WxObj=window.navigator.userAgent.toLowerCase();
+//        if(WxObj.match(/microMessenger/i)=='micromessenger'){
+//            $('#putong').addClass('none')
+//            $('#weixin').removeClass('none')
+//            if (WxObj.indexOf('iphone') != -1 || WxObj.indexOf('ipad') != -1 || WxObj.indexOf('ipod') != -1) {
+//                // 替换浏览器图标 iphone
+//                $('.iphone-browser').removeClass('none')
+//                $('.android-browser').addClass('none')
+//            } else {
+//                // 替换浏览器图标 android
+//                $('.android-browser').removeClass('none')
+//                $('.iphone-browser').addClass('none')
+//            }
+//        }
+//
+//    })
+    var type = "${recharge['type']}"  //订单类型
+    var productNo = "${recharge['productNo']}"  //商品编号
+    var productDetails = "${recharge['productDetails']}"  //商品详情
     var _keyword = 0;
     var url = "";
     $('.key-words').bind('input',function () {
@@ -78,6 +78,7 @@
              $('.key-words').val(50000)
          }
         url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
+         console.log(url)
     })
 
     function onlyNumber(obj){
