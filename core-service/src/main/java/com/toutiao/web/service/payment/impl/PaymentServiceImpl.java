@@ -268,7 +268,7 @@ public class PaymentServiceImpl implements PaymentService {
         String result = "";
 
         Map map = JSON.parseObject(user);
-//            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(map.get("userId").toString());
+            UserBasicDo userBasic =userBasicInfoService.queryUserBasic(map.get("userId").toString());
 
         //组装请求header
         Map<String,String> header = new HashMap<>();
@@ -277,9 +277,9 @@ public class PaymentServiceImpl implements PaymentService {
 
         //组合参数
         Map<String, Object> paramsMap = beanToMap(paymentDoQuery);
-//            paramsMap.put("userId",userBasic.getUserId());
-//            paramsMap.put("userName",userBasic.getUserName());
-//            paramsMap.put("phone",userBasic.getPhone());
+            paramsMap.put("userId",userBasic.getUserId());
+            paramsMap.put("userName",userBasic.getUserName());
+            paramsMap.put("phone",userBasic.getPhone());
 
         //发起请求
         result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_PAY_ORDER, header, paramsMap);
