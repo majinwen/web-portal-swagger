@@ -282,7 +282,7 @@ public class PaymentServiceImpl implements PaymentService {
             paramsMap.put("phone",userBasic.getPhone());
 
         //发起请求
-        result = HttpUtils.get(payDomain+ServiceStateConstant.SAVE_PAY_ORDER, header, paramsMap);
+        result = HttpUtils.get("http://192.168.1.114:8087"+ServiceStateConstant.SAVE_PAY_ORDER, header, paramsMap);
 
         return result;
     }
