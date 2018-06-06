@@ -67,8 +67,8 @@
 
     })
     var type = "${recharge['type']}"  //订单类型
-    var productNo = "${recharge['productNo']}"||""  //商品编号
-    var productDetails = "${recharge['productDetails']}"  //商品详情
+    <#--var productNo = "${recharge['productNo']}"||""  //商品编号-->
+    <#--var productDetails = "${recharge['productDetails']}"  //商品详情-->
     var _keyword = 0;
     var url = "";
     $('.key-words').bind('input',function () {
@@ -77,7 +77,7 @@
              _keyword = 50000;
              $('.key-words').val(50000)
          }
-        url = "http://m.test.toutiaofangchan.com/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo/*+"&productDetails="+productDetails*/;
+        url = "http://m.test.toutiaofangchan.com/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type/*+"&productNo="+productNo+"&productDetails="+productDetails*/;
     })
 
     function onlyNumber(obj){
