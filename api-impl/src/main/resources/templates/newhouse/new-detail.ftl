@@ -92,9 +92,7 @@
             <#--&lt;#&ndash;<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">&ndash;&gt;-->
             <#--</a>-->
         <#--</#if>-->
-        <a class="process-ad" id='ad-newHouse-activity'>
-        <#--<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">-->
-        </a>
+        <div id="ad-newHouse-activity"></div>
 
         <ul class="primary-item">
             <li>
