@@ -37,7 +37,7 @@
 </section>
 <script>
     function newhouse() {
-        window.location.href = "http://m.toutiaofangchan.com/bj/xinfang";
+        window.location.href = "http://m.test.toutiaofangchan.com/bj/xinfang";
     }
 </script>
 </body>
