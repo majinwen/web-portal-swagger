@@ -1,10 +1,7 @@
 package com.toutiao.web.apiimpl.impl.payment;
-
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.apiimpl.authentication.UserPay;
-import com.toutiao.web.common.assertUtils.First;
-import com.toutiao.web.common.assertUtils.Second;
-import com.toutiao.web.domain.payment.PayBuyRecordDo;
 import com.toutiao.web.domain.payment.PayOrderDo;
 import com.toutiao.web.domain.payment.PayOrderQuery;
 import com.toutiao.web.domain.payment.PayUserDo;
@@ -13,13 +10,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 @RequestMapping("/{citypath}/payOrder")
@@ -87,6 +82,35 @@ public class PayOrderController {
     }
 
 
+    /**
+     * 个人中心
+     */
+    @RequestMapping("order/myCenter")
+    public  String  myCenter(HttpServletRequest request,Model model)
+    {
+        JSONObject jsonObject=new JSONObject();
+        UserPay user=UserPay.getCurrent();
+        PayUserDo payUserDo=new PayUserDo();
+        if(null==user.getUserId())
+        {
+            model.addAttribute("backUrl",request.getRequestURL());
+            return "/user/login";
+        }
+         BeanUtils.copyProperties(user,payUserDo);
+         String a=paymentService. getBalanceInfoByUserId(payUserDo);
+         jsonObject= JSON.parseObject(a);
+         JSONObject j= (JSONObject) jsonObject.get("data");
+         if (j.size()==0)
+         {
+             model.addAttribute("money",0);
+         }
+         else
+         {
+             model.addAttribute("money",j.get("balance"));
+         }
+
+        return "order/center";
+    }
 
 
 }
