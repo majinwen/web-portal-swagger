@@ -123,15 +123,17 @@
     $('.recommond-plot').on('click', function () {
         $(this).toggleClass('current');
         $(this).parents('.module-bottom-fill').next('.module-bottom-fill').toggleClass('none');
-    })
+    });
+
     $(".cancel-collection").on('click', function () {
-        var id=$(".cancel-collection").attr("id").split("_")[1];
+        var id = $(this).attr("id").split("_")[1];
         $.ajax({
             type: "GET",
             async: true,
             url: router_city('/findhouse/dongfangdi/cancleMyReport/')+id,
             dataType: "json",
             success: function (data) {
+
                 if (data.code == "success") {
                     //重定向到登陆页面
                     window.location.href ="${backUrl}";

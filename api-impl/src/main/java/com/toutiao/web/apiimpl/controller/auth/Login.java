@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -194,7 +196,8 @@ public class Login {
                 return "redirect:"+backUrl+"?title="+title;
             }
             if(StringTool.isNotBlank(backUrl)){
-                return "redirect:"+backUrl;
+                String decode = URLDecoder.decode(backUrl,"utf-8");
+                return "redirect:"+decode;
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -75,7 +75,7 @@
 </div>
 <div class="module-bottom-fill">
     <section class="primary-message">
-        <div class="primary-header">
+        <div class="primary-header border-none">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
             <#if build['building_nickname']??&&(build['building_nickname']!='')><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag house-labelling gray middle">
@@ -86,6 +86,16 @@
             </#if>
             </div>
         </div>
+
+        <#--<#if build['activity_desc']??&&(build['activity_desc']!='')>-->
+            <#--<a class="process-ad" id='ad-newHouse-activity'>-->
+            <#--&lt;#&ndash;<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">&ndash;&gt;-->
+            <#--</a>-->
+        <#--</#if>-->
+        <a class="process-ad" id='ad-newHouse-activity'>
+        <#--<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">-->
+        </a>
+
         <ul class="primary-item">
             <li>
              <#if build['average_price']?exists && build['average_price'] gt 0>
@@ -543,6 +553,7 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <script type="text/javascript" src="${staticurl}/js/base-map.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/plot-detail-map-message.js?v=${staticversion}"></script>
+<script src="${staticurl}/js/toutiao.ad-jsonp.js?v=${staticversion}"></script>
 </body>
 </html>
 <script>
@@ -587,6 +598,12 @@
             return false;
         })
     })
+
+
+    var config = [
+        {"pid": 30, "jqid": "#ad-newHouse-activity"}
+        ];
+    $com.toutiao.ad.json(config);
 
 //    function zhugebaseinfo(){
 //        zhuge.track('新房-点击基本信息', {

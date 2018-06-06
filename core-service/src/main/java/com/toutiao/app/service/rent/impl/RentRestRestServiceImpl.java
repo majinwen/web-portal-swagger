@@ -87,10 +87,19 @@ public class RentRestRestServiceImpl implements RentRestService {
         SearchHit[] hits = searchResponse.getHits().getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (hits.length>0){
+            List<String> imgs = new ArrayList<>();
             UserBasic userBasic = UserBasic.getCurrent();
             for (SearchHit searchHit : hits) {
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsDo = JSON.parseObject(sourceAsString, RentDetailsDo.class);
+
+                List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSource().get("rent_house_img");
+                for(int i=0; i<rentHouseImg.size();i++){
+                    imgs.add(rentHouseImg.get(i).get("image_path"));
+
+                }
+                rentDetailsDo.setHousePhoto(imgs.toArray(new String[0]));
+
                 if (rentDetailsDo.getRentHouseType()==1&&StringTool.isNotEmpty(rentDetailsDo.getUserId())){
                     //经纪人信息
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsDo.getUserId().toString());

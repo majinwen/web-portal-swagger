@@ -16,7 +16,7 @@ $com.toutiao.ad.json=function (config) {
     $.each(config,function (index, ele) {
         if(ele) {
             $.ajax({
-                url: '/ad/jsapi/json',
+                url: 'http://m.toutiaofangchan.com/ad/jsapi/json',
                 data: {"positionid": ele["pid"]},
                 cache:false,
                 success: function (data) {

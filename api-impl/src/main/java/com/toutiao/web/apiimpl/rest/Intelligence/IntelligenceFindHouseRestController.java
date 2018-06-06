@@ -161,7 +161,7 @@ public class IntelligenceFindHouseRestController {
             if(null != userLoginResponse){
                 userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
             }
-            int count = intelligenceFhResService.deleteMyReport(reportId, userBasic.getPhone());
+            int count = intelligenceFhResService.deleteMyReport(reportId);
             if(count != 0){
                 return NashResult.build("ok");
             }else{

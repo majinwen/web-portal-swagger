@@ -84,7 +84,7 @@ $textGrayColor: #888;
             .icon {
                 width: rem(20);
                 height: rem(24);
-                @include bg-image('../images/rent/rent_list_icon_wz');
+                @include bg-image('/appstatic/images/rent/rent_list_icon_wz');
                 -webkit-background-size: rem(20) auto;
                 background-size: rem(20) auto;
             }
@@ -100,7 +100,7 @@ $textGrayColor: #888;
             .icon {
                 width: rem(21);
                 height: rem(28);
-                @include bg-image('../images/esf/esf_list_icon_wz');
+                @include bg-image('/appstatic/images/esf/esf_list_icon_wz');
                 -webkit-background-size: rem(21) auto;
                 background-size: rem(21) auto;
             }
@@ -204,7 +204,7 @@ $textGrayColor: #888;
                 width: rem(25);
                 height: rem(30);
                 margin-right: rem(10);
-                @include bg-image('../images/newhouse/xf_list_icon_hd');
+                @include bg-image('/appstatic/images/newhouse/xf_list_icon_hd');
                 -webkit-background-size: rem(25) auto;
                 background-size: rem(25) auto;
             }
@@ -293,7 +293,7 @@ $textGrayColor: #888;
     right: rem(30);
     width: rem(112);
     height: rem(112);
-    @include bg-image('/static/images/global/base_sort_icon');
+    @include bg-image('/appstatic/images/global/base_sort_icon');
     -webkit-background-size: contain;
     background-size: contain;
 }
