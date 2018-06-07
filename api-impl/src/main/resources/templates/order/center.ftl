@@ -13,11 +13,11 @@
     <div class="balance-title">
         <p>余额账户(元)</p>
         <#if money?exists>
-        <strong>${money}</strong>
+        <strong>${money?string("#.##")}</strong>
         </#if>
     </div>
     <ul class="list-box">
-        <li><a href="${router_city('/order/recharge?type=1&totalMoney='+money)}" class="list-item">
+        <li><a href="${router_city('/order/recharge?type=1&totalMoney='+money?string("#.##"))}" class="list-item">
             <p><i class="chongzhi"></i><span>充值</span></p>
             <i class="arrows"></i>
         </a></li>
