@@ -67,6 +67,6 @@
 
 <script>
 
-    new QRCode(document.getElementById('qrCode'), 'http://city.test.toutiaofangchan.com/v1.0.0/paycenter/updateStatusByOrderNo?orderNo=${paySuccess['orderNo']}');
+    new QRCode(document.getElementById('qrCode'), 'http://city.toutiaofangchan.com/v1.0.0/paycenter/updateStatusByOrderNo?orderNo=${paySuccess['orderNo']}');
 
 </script>
