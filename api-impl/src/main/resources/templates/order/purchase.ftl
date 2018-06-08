@@ -87,7 +87,6 @@
             <#if balance?exists && balance?size gt 0>
                 <#if balance['balance'] gte commodityOrder['payMoney']>
                     $('.payment-btn').on('click', function () {
-                        console.log(1);
                         $.ajax({
                             type:"get",
                             contentType: 'application/json',
@@ -106,14 +105,12 @@
                     });
                 <#else >
                     $('.payment-btn').on('click', function () {
-                        console.log(2);
-                        window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney='+balance['balance'])}'
+                        window.location.href='${router_city('/order/recharge?type=1&totalMoney='+balance['balance'])}'
                     });
                 </#if>
             <#else >
                 $('.payment-btn').on('click', function () {
-                    console.log(3);
-                    window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney=0')}'
+                    window.location.href='${router_city('/order/recharge?type=1&totalMoney=0')}'
                 });
             </#if>
         }
