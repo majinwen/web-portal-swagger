@@ -79,7 +79,7 @@
          }
 //        url = "http://m.toutiaofangchan.com/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type/*+"&productNo="+productNo+"&productDetails="+productDetails*/;
 
-        url = '${router_city('/bj/order/payment?payType=1&payMoney='+_keyword+'&type='+type)}';
+        url = "${router_city('/order/payment?')}"+"payType=1&payMoney="+_keyword+"&type="+type;
     })
 
     function onlyNumber(obj){
