@@ -449,7 +449,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">物业费</span>
                         <#if (build['propertyfee']?exists)&&build['propertyfee']?number gt 0>
-                            <span class="expand-price">${build['propertyfee']}元/㎡·月</span>
+                            <span class="expand-price">${build['propertyfee']?string("#.########")}元/㎡·月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
@@ -459,7 +459,7 @@
                         <i class="expand-icon living-cost"></i>
                         <span class="expand-type">停车费</span>
                         <#if (build['car_rent_price']?exists)&&build['car_rent_price']?number gt 0>
-                            <span class="expand-price">${build['car_rent_price']}元/月</span>
+                            <span class="expand-price">${build['car_rent_price']?string("#.########")}元/月</span>
                         <#else>暂无数据
                         </#if>
                     </p>
