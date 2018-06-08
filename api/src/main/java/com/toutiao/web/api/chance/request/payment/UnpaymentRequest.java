@@ -14,9 +14,9 @@ public class UnpaymentRequest {
     /**
      * 成功会跳页面
      */
-    private String returnURL = "http://m.toutiaofangchan.com/bj/order/success";
+    private String returnURL = "http://m.sim.toutiaofangchan.com/bj/order/success";
     /**
      * 支付中断跳转页面
      */
-    private String quitURL="http://m.toutiaofangchan.com/bj/payOrder/order/getMyOrder";
+    private String quitURL="http://m.sim.toutiaofangchan.com/bj/payOrder/order/getMyOrder";
 }
