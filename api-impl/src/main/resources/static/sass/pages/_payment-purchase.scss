@@ -71,6 +71,11 @@ section {
             @include bg-image('/static/images/payment/checkbox_icon');
             -webkit-background-size: auto 100%;
             background-size: auto 100%;
+            background-position: rem(-74) 0;
+
+            &.active {
+                background-position: 0 0;
+            }
         }
     }
     .payment-text {
@@ -101,6 +106,10 @@ section {
         -moz-border-radius: rem(5);
         border-radius: rem(5);
         @include font-dpr(36);
+
+        &.undisable {
+            background-color: #e1e1e1;
+        }
     }
     .current-balance {
         margin-top: rem(30);

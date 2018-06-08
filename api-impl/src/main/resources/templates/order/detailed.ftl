@@ -16,14 +16,14 @@
         <li>
             <a href="#" class="list-item">
                 <div class="clear"><span class="price-type"> 充值到余额
-                </span><span class="time">${key.createTime?string("yyyy-MM-dd")}</span></div>
+                </span><span class="time">${key.createTime?string("yyyy-MM-dd HH:mm:ss")}</span></div>
                 <div class="clear"><span></span><span class="price-sum">+${key.payMoney}</span></div>
             </a>
         </li>
        <#else>
         <li>
             <a href="#" class="list-item">
-                <div class="clear"><span class="price-type">购买优惠卡</span><span class="time">${key.createTime?string("yyyy-MM-dd")}</span></div>
+                <div class="clear"><span class="price-type">购买优惠卡</span><span class="time">${key.createTime?string("yyyy-MM-dd HH:mm:ss")}</span></div>
                 <div class="clear"><span></span><span class="price-sum">-${key.payMoney}</span></div>
             </a>
         </li>

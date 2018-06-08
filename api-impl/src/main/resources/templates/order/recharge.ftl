@@ -18,7 +18,7 @@
     <ul class="payment-method">
         <li onclick="alipay()">
             <a href="#" class="method-item">
-                <img src="/static/images/payment/payment-zhifubao.png" alt="支付宝">
+                <img src="${staticurl}/images/payment/payment-zhifubao.png" alt="支付宝">
                 <div>
                     <p>支付宝支付</p>
                     <span>支付宝安全支付</span>
@@ -28,7 +28,7 @@
         </li>
         <li>
             <a href="#" class="method-item">
-                <img src="/static/images/payment/payment-weixin.png" alt="微信">
+                <img src="${staticurl}/images/payment/payment-weixin.png" alt="微信">
                 <div>
                     <p>微信支付</p>
                     <span>微信安全支付</span>
@@ -41,8 +41,8 @@
 <section id="weixin" class="none">
     <div class="J-weixin-tip weixin-tip">
         <div class="weixin-tip-content">
-            <span class="iphone-browser none">iphone</span>
-            <span class="android-browser none">android</span>
+            <img src="${staticurl}/images/payment/iphone-broswer.png" class="iphone-browser none">
+            <img src="${staticurl}/images/payment/android-browser.png" class="android-browser none">
             <p>请在菜单中选择在浏览器中打开,<br/>
             以完成支付</p>
         </div>
@@ -66,9 +66,9 @@
         }
 
     })
-    var type = ${recharge['type']};  //订单类型
-    var productNo = ${recharge['productNo']};  //商品编号
-    var productDetails = ${recharge['productDetails']};  //商品详情
+    var type = "${recharge['type']}"  //订单类型
+    <#--var productNo = "${recharge['productNo']}"||""  //商品编号-->
+    <#--var productDetails = "${recharge['productDetails']}"  //商品详情-->
     var _keyword = 0;
     var url = "";
     $('.key-words').bind('input',function () {
@@ -77,7 +77,7 @@
              _keyword = 50000;
              $('.key-words').val(50000)
          }
-        url = "http://192.168.1.110:8085/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type+"&productNo="+productNo+"&productDetails="+productDetails;
+        url = "http://m.toutiaofangchan.com/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type/*+"&productNo="+productNo+"&productDetails="+productDetails*/;
     })
 
     function onlyNumber(obj){

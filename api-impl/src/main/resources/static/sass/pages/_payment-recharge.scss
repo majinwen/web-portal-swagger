@@ -92,3 +92,14 @@ html {
         }
     }
 }
+.weixin-tip-content {
+    margin-top: 42%;
+    line-height: 1.5;
+    text-align: center;
+    @include font-dpr(28);
+
+    img {
+        width: rem(100);
+        margin-bottom: rem(20);
+    }
+}
