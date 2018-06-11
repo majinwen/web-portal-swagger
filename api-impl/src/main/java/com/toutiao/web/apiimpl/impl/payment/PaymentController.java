@@ -8,8 +8,6 @@ import com.toutiao.web.api.chance.request.payment.RechargeRequest;
 import com.toutiao.web.api.chance.request.payment.UnpaymentRequest;
 import com.toutiao.web.apiimpl.authentication.UserPay;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.CookieUtils;
-import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
 import org.springframework.beans.BeanUtils;
@@ -204,10 +202,28 @@ public class PaymentController {
      */
     @RequestMapping(value = "/recharge",method = RequestMethod.GET)
     public String recharge(HttpServletRequest request, @Validated RechargeRequest rechargeRequest, Model model){
-        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        if (StringUtil.isNullString(user)){
+//        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+//        if (StringUtil.isNullString(user)){
+//            return "/user/login";
+//        }
+        UserPay user=UserPay.getCurrent();
+        if (null==user.getUserId())
+        {
+            String params = "";
+            try {
+                params = URLEncoder.encode(request.getRequestURL()+"?"+request.getQueryString(),"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("backUrl",params);
             return "/user/login";
         }
+        PayUserDo payUserDo=new PayUserDo();
+        BeanUtils.copyProperties(user,payUserDo);
+        String balanceResult = paymentService.getBalanceInfoByUserId(payUserDo);
+        JSONObject balanceObject = JSON.parseObject(balanceResult);
+        JSONObject balanceJson = JSON.parseObject(balanceObject.getString("data"));
+        model.addAttribute("balance",balanceJson);
         model.addAttribute("recharge",rechargeRequest);
         return "/order/recharge";
     }
