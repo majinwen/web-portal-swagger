@@ -168,7 +168,7 @@
                 <li>
                     <a href="${router_city('/loupan/'+build['building_name_id']+'/huxing.html?tags=0')}">
                         <div class="picture-box">
-                            <#if item['layout_img']?exists>
+                            <#if item['layout_img']?exists && item['layout_img']!=''>
                                 <#assign layoutimgs = item['layout_img']?split(",")>
                                 <img src="${qiniuimage}/${layoutimgs[0]}-tt400x300" alt="${build['building_name']}">
                             <#else><img src="${staticurl}/images/newhouse/huxing_img.png" alt="${build['building_name']}">
