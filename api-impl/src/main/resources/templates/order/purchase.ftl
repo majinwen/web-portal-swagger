@@ -52,7 +52,7 @@
         <#else >
             <button class="payment-btn">充值</button>
         </#if>
-        <p class="current-balance">当前余额：${balance['balance']}元</p>
+        <p class="current-balance">当前余额：${balance['balance']?string("#.#######")}元</p>
     <#else >
         <button class="payment-btn">充值</button>
         <p class="current-balance">当前余额：0元</p>
@@ -105,7 +105,7 @@
                     });
                 <#else >
                     $('.payment-btn').on('click', function () {
-                        window.location.href='${router_city('/order/recharge?type=1&totalMoney='+balance['balance'])}'
+                        window.location.href='${router_city('/order/recharge?type=1&totalMoney='+balance['balance']?string("#.#######"))}'
                     });
                 </#if>
             <#else >
