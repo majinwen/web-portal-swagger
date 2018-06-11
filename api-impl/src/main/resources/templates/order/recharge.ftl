@@ -13,7 +13,7 @@
 <section id="putong">
     <p class="remaining-sum">可用余额：<em>${recharge['totalMoney']?string("#.######")}</em></p>
     <div class="input-sum">
-        <input type="tel"  class="key-words" placeholder="充值金额(元)" onkeyup="onlyNumber(this)" >
+        <input type="number"  class="key-words" placeholder="充值金额(元)" onkeyup="onlyNumber(this)" >
     </div>
     <ul class="payment-method">
         <li onclick="alipay()">
