@@ -50,13 +50,13 @@
         </div>
 
         <div class="house-type-image">
-            <div><#if datail['layout_img']?exists>
+            <div><#if datail['layout_img']?exists >
                 <#assign layoutimgs = datail['layout_img']?split(",")>
                 <#list layoutimgs as layoutimg>
                     <img src="${qiniuimage}/${layoutimg}-ttw800" alt="户型图">
                 </#list>
             <#else>
-                <img src="${staticurl}/images/newhouse/hxxq_image1@3x.png" alt="户型图">
+                <img src="${staticurl}/images/global/tpzw_image.png-ttw800" alt="户型图">
             </#if>
                 <#--<span class="sale-state">${datail['is_sale']!'在售'}</span>-->
                 <span class="sale-state">${sale_status}</span>
