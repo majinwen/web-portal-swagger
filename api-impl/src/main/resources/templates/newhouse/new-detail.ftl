@@ -171,7 +171,7 @@
                             <#if item['layout_img']?exists && item['layout_img']!=''>
                                 <#assign layoutimgs = item['layout_img']?split(",")>
                                 <img src="${qiniuimage}/${layoutimgs[0]}-tt400x300" alt="${build['building_name']}">
-                            <#else><img src="${staticurl}/images/global/tpzw_image.png-tt400x300" alt="${build['building_name']}">
+                            <#else><img src="${staticurl}/images/global/tpzw_image.png" alt="${build['building_name']}">
                             </#if>
                             <span class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></span>
                         </div>
