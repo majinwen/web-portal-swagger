@@ -41,7 +41,7 @@
 </section>
 <section>
     <h3 class="title">付款信息</h3>
-    <div class="readed"><i class="active"></i><span>我已阅读并同意</span></div>
+    <div><div class="readed"><i class="active"></i><span>我已阅读并同意</span></div><a class="protocol" href="http://m.toutiaofangchan.com/ad/ldy/xieyi.html">《比得屋优惠服务说明》</a></div>
     <div class="payment-text">
         <strong>待支付</strong>
         <span>实付款：<em>¥${commodityOrder['payMoney']}</em></span>
