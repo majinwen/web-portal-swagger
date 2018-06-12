@@ -560,9 +560,10 @@
     $(function () {
         var buildId = ${build['building_name_id']}
         if(11121018==buildId){
-            var classVal = document.getElementById("primary-header").getAttribute("class");
-            classVal = classVal.replace("border-none","");
-            document.getElementById("primary-header").setAttribute("class",classVal);
+            $(".primary-header").removeClass('border-none');
+//            var classVal = document.getElementById("primary-header").getAttribute("class");
+//            classVal = classVal.replace("border-none","");
+//            document.getElementById("primary-header").setAttribute("class",classVal);
         }
 
         zhuge.track('进入新房详情页', {
