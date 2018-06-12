@@ -26,16 +26,16 @@
                 <i></i>
             </a>
         </li>
-        <li>
-            <a href="#" class="method-item">
-                <img src="${staticurl}/images/payment/payment-weixin.png" alt="微信">
-                <div>
-                    <p>微信支付</p>
-                    <span>微信安全支付</span>
-                </div>
-                <i></i>
-            </a>
-        </li>
+        <#--<li>-->
+            <#--<a href="#" class="method-item">-->
+                <#--<img src="${staticurl}/images/payment/payment-weixin.png" alt="微信">-->
+                <#--<div>-->
+                    <#--<p>微信支付</p>-->
+                    <#--<span>微信安全支付</span>-->
+                <#--</div>-->
+                <#--<i></i>-->
+            <#--</a>-->
+        <#--</li>-->
     </ul>
 </section>
 <section id="weixin" class="none">
