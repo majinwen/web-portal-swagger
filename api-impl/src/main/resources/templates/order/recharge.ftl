@@ -11,7 +11,7 @@
 </head>
 <body>
 <section id="putong">
-    <p class="remaining-sum">可用余额：<em><#if balance?exists&&balance?size gt 0>${balance['balance']}<#else >0</#if></em></p>
+    <p class="remaining-sum">可用余额：<em><#if balance?exists&&balance?size gt 0>${balance['balance']?string("#.#######")}<#else >0</#if></em></p>
     <div class="input-sum">
         <input type="text"  class="key-words" placeholder="充值金额(元)" >
     </div>
