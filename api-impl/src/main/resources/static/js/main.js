@@ -81,7 +81,8 @@ function carouselSwiper() {
             autoplay: 2000,//可选选项，自动滑动
             loop: bannerloop,
             pagination: '.swiper-pagination',
-            paginationType: 'fraction'
+            paginationType: 'fraction',
+            autoplayDisableOnInteraction:false
         });
 
         // 新房首页
@@ -94,6 +95,7 @@ function carouselSwiper() {
         var newIndexSwiper = new Swiper('#index-swiper', {
             autoplay: 2000,//可选选项，自动滑动
             loop: newIndexloop,
+            autoplayDisableOnInteraction:false,
             pagination: '.swiper-pagination'
         })
     }

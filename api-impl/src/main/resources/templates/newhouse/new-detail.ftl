@@ -75,7 +75,7 @@
 </div>
 <div class="module-bottom-fill">
     <section class="primary-message">
-        <div class="primary-header border-none">
+        <div class="primary-header border-none" id="primary-header">
             <h2>${build['building_name']}<em class="sale-state"><#if build['sale_status_name']?exists>${build['sale_status_name']}</#if></em></h2>
             <#if build['building_nickname']??&&(build['building_nickname']!='')><p>别名：${build['building_nickname']}</p></#if>
             <div class="primary-header-tag house-labelling gray middle">
@@ -88,6 +88,7 @@
         </div>
 
         <#if build['building_name_id']==11121018>
+        <script></script>
             <a id='ad-newHouse-activity'>
             <#--<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">-->
             </a>
@@ -557,6 +558,14 @@
 </html>
 <script>
     $(function () {
+        var buildId = ${build['building_name_id']}
+        if(11121018==buildId){
+            $(".primary-header").removeClass('border-none');
+//            var classVal = document.getElementById("primary-header").getAttribute("class");
+//            classVal = classVal.replace("border-none","");
+//            document.getElementById("primary-header").setAttribute("class",classVal);
+        }
+
         zhuge.track('进入新房详情页', {
             '页面来源' : window.location.href,
             '区域' : '${build['district_name']!''}',
