@@ -260,9 +260,12 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         if(StringTool.isNotEmpty(aggAdLandingDo.getAreaId())){
             redisCatogory = RECOMMEND_AREA+"_"+aggAdLandingDo.getAreaId();
             String[] areaIDs = aggAdLandingDo.getAreaId().split(",");
+
+            String[] ids = new String[areaIDs.length];
             for(int i=0; i<areaIDs.length; i++){
-                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", areaIDs[i]));
+                ids[i] =areaIDs[i];
             }
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId",ids));
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 redisCatogory = redisCatogory+"_"+aggAdLandingDo.getRoom();
@@ -496,9 +499,11 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //商圈
         if(StringTool.isNotEmpty(aggAdLandingDo.getAreaId())){
             String[] areaIDs = aggAdLandingDo.getAreaId().split(",");
+            String[] ids = new String[areaIDs.length];
             for(int i=0; i<areaIDs.length; i++){
-                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", areaIDs[i]));
+                ids[i] =areaIDs[i];
             }
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId",ids));
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 if(Integer.valueOf(aggAdLandingDo.getRoom())>3){
                     booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(4));
@@ -613,9 +618,11 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //商圈
         if(StringTool.isNotEmpty(aggAdLandingDo.getAreaId())){
             String[] areaIDs = aggAdLandingDo.getAreaId().split(",");
+            String[] ids = new String[areaIDs.length];
             for(int i=0; i<areaIDs.length; i++){
-                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", areaIDs[i]));
+                ids[i] =areaIDs[i];
             }
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId",ids));
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 if(Integer.valueOf(aggAdLandingDo.getRoom())>3){
                     booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(4));
