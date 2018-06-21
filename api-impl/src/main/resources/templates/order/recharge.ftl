@@ -13,7 +13,7 @@
 <section id="putong">
     <p class="remaining-sum">可用余额：<em><#if balance?exists&&balance?size gt 0>${balance['balance']}<#else >0</#if></em></p>
     <div class="input-sum">
-        <input type="tel"  class="key-words" placeholder="充值金额(元)" onkeyup="onlyNumber(this)" >
+        <input type="text"  class="key-words" placeholder="充值金额(元)" >
     </div>
     <ul class="payment-method">
         <li onclick="alipay()">
@@ -26,16 +26,16 @@
                 <i></i>
             </a>
         </li>
-        <li>
-            <a href="#" class="method-item">
-                <img src="${staticurl}/images/payment/payment-weixin.png" alt="微信">
-                <div>
-                    <p>微信支付</p>
-                    <span>微信安全支付</span>
-                </div>
-                <i></i>
-            </a>
-        </li>
+        <#--<li>-->
+            <#--<a href="#" class="method-item">-->
+                <#--<img src="${staticurl}/images/payment/payment-weixin.png" alt="微信">-->
+                <#--<div>-->
+                    <#--<p>微信支付</p>-->
+                    <#--<span>微信安全支付</span>-->
+                <#--</div>-->
+                <#--<i></i>-->
+            <#--</a>-->
+        <#--</li>-->
     </ul>
 </section>
 <section id="weixin" class="none">
@@ -73,33 +73,37 @@
     var url = "";
     $('.key-words').bind('input',function () {
          _keyword = $('.key-words').val()||0;
+        $('.key-words').val(onlyNumber(_keyword))
          if(_keyword>50000){
              _keyword = 50000;
              $('.key-words').val(50000)
          }
-        url = "http://m.toutiaofangchan.com/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type/*+"&productNo="+productNo+"&productDetails="+productDetails*/;
+//        url = "http://m.toutiaofangchan.com/bj/order/payment?payType=1&payMoney="+_keyword+"&type="+type/*+"&productNo="+productNo+"&productDetails="+productDetails*/;
+
+        url = "${router_city('/order/payment?')}"+"payType=1&payMoney="+_keyword+"&type="+type;
     })
 
     function onlyNumber(obj){
 
         //得到第一个字符是否为负号
-        var t = obj.value.charAt(0);
+        var t = obj.charAt(0);
         //先把非数字的都替换掉，除了数字和.
-        obj.value = obj.value.replace(/[^\d\.]/g,'');
-        //必须保证第一个为数字而不是.
-        obj.value = obj.value.replace(/^\./g,'');
-        //保证只有出现一个.而没有多个.
-        obj.value = obj.value.replace(/\.{2,}/g,'.');
-        //保证.只出现一次，而不能出现两次以上
-        obj.value = obj.value.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
+        obj = obj.replace(/[^\d\.]/g,'');
 
-        obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+        //必须保证第一个为数字而不是.
+        obj = obj.replace(/^\./g,'');
+        //保证只有出现一个.而没有多个.
+        obj = obj.replace(/\.{2,}/g,'.');
+        //保证.只出现一次，而不能出现两次以上
+        obj = obj.replace('.','$#$').replace(/\./g,'').replace('$#$','.');
+
+        obj = obj.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
         //如果第一位是负号，则允许添加
         if(t == '-'){
 
             return;
         }
-
+        return obj;
     }
 
     function alipay() {

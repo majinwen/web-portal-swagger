@@ -41,7 +41,7 @@
 </section>
 <section>
     <h3 class="title">付款信息</h3>
-    <div class="readed"><i class="active"></i><span>我已阅读并同意</span></div>
+    <div><div class="readed"><i class="active"></i><span>我已阅读并同意</span></div><a class="protocol" href="http://m.toutiaofangchan.com/ad/ldy/xieyi.html">《比得屋优惠服务说明》</a></div>
     <div class="payment-text">
         <strong>待支付</strong>
         <span>实付款：<em>¥${commodityOrder['payMoney']}</em></span>
@@ -52,7 +52,7 @@
         <#else >
             <button class="payment-btn">充值</button>
         </#if>
-        <p class="current-balance">当前余额：${balance['balance']}元</p>
+        <p class="current-balance">当前余额：${balance['balance']?string("#.#######")}元</p>
     <#else >
         <button class="payment-btn">充值</button>
         <p class="current-balance">当前余额：0元</p>
@@ -87,7 +87,6 @@
             <#if balance?exists && balance?size gt 0>
                 <#if balance['balance'] gte commodityOrder['payMoney']>
                     $('.payment-btn').on('click', function () {
-                        console.log(1);
                         $.ajax({
                             type:"get",
                             contentType: 'application/json',
@@ -106,14 +105,12 @@
                     });
                 <#else >
                     $('.payment-btn').on('click', function () {
-                        console.log(2);
-                        window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney='+balance['balance'])}'
+                        window.location.href='${router_city('/order/recharge?type=1&totalMoney='+balance['balance']?string("#.#######"))}'
                     });
                 </#if>
             <#else >
                 $('.payment-btn').on('click', function () {
-                    console.log(3);
-                    window.location.href='${router_city('/order/recharge?type=1&productNo='+commodityOrder['productNo']+'&productDetails='+commodityOrder['productDetails']+'&totalMoney=0')}'
+                    window.location.href='${router_city('/order/recharge?type=1&totalMoney=0')}'
                 });
             </#if>
         }

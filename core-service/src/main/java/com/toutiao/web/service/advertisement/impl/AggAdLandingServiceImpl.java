@@ -81,6 +81,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     private static final String RECOMMEND_LAYOUT = "ad_recommend_sellHouse_queryBit_layout";
     private static final String RECOMMEND_MANSION = "ad_recommend_sellHouse_queryBit_mansion";
     private static final String RECOMMEND_DISTRICT = "ad_recommend_sellHouse_queryBit_district";
+    private static final String RECOMMEND_AREA = "ad_recommend_sellHouse_queryBit_area";
 
 
     private static final String RENT_RECOMMEND_DEFAULT = "ad_recommend_rentHouse_queryBit";
@@ -244,6 +245,24 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         if(StringTool.isNotEmpty(aggAdLandingDo.getDistrict())){
             redisCatogory = RECOMMEND_DISTRICT+"_"+aggAdLandingDo.getDistrict();
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", aggAdLandingDo.getDistrict()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
+            if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
+                redisCatogory = redisCatogory+"_"+aggAdLandingDo.getRoom();
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                }else{
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+                }
+            }
+        }
+
+        //商圈
+        if(StringTool.isNotEmpty(aggAdLandingDo.getAreaId())){
+            redisCatogory = RECOMMEND_AREA+"_"+aggAdLandingDo.getAreaId();
+            String[] areaIDs = aggAdLandingDo.getAreaId().split(",");
+            for(int i=0; i<areaIDs.length; i++){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", areaIDs[i]));
+            }
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 redisCatogory = redisCatogory+"_"+aggAdLandingDo.getRoom();
@@ -474,6 +493,21 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             }
         }
 
+        //商圈
+        if(StringTool.isNotEmpty(aggAdLandingDo.getAreaId())){
+            String[] areaIDs = aggAdLandingDo.getAreaId().split(",");
+            for(int i=0; i<areaIDs.length; i++){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", areaIDs[i]));
+            }
+            if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                }else{
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+                }
+            }
+        }
+
         //面积
         if (StringUtil.isNotNullString(aggAdLandingDo.getHouseArea())) {
             if(StringTool.isEmpty(aggAdLandingDo.getHaSign()) && aggAdLandingDo.getHaSign()==1){//等于
@@ -573,6 +607,21 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                     booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
                 }
                 booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+            }
+        }
+
+        //商圈
+        if(StringTool.isNotEmpty(aggAdLandingDo.getAreaId())){
+            String[] areaIDs = aggAdLandingDo.getAreaId().split(",");
+            for(int i=0; i<areaIDs.length; i++){
+                booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", areaIDs[i]));
+            }
+            if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                }else{
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
+                }
             }
         }
 

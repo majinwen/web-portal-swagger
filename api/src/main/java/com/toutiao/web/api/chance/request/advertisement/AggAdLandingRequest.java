@@ -93,4 +93,9 @@ public class AggAdLandingRequest {
      * 二手房涨价/降价标志
      */
     private Integer priceID;
+
+    /**
+     * 商圈
+     */
+    private String areaId;
 }
