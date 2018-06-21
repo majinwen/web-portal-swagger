@@ -266,8 +266,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));//isRecommend大于0，都是推荐房源
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
                 redisCatogory = redisCatogory+"_"+aggAdLandingDo.getRoom();
-                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
-                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>3){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(4));
                 }else{
                     booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
                 }
@@ -500,8 +500,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", areaIDs[i]));
             }
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
-                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
-                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>3){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(4));
                 }else{
                     booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
                 }
@@ -617,8 +617,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", areaIDs[i]));
             }
             if(StringUtil.isNotNullString(aggAdLandingDo.getRoom())){
-                if(Integer.valueOf(aggAdLandingDo.getRoom())>4){
-                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
+                if(Integer.valueOf(aggAdLandingDo.getRoom())>3){
+                    booleanQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(4));
                 }else{
                     booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
                 }
