@@ -105,4 +105,9 @@ public class AggAdLandingDo {
 
     private Integer priceID;
 
+    /**
+     * 商圈
+     */
+    private String areaId;
+
 }
