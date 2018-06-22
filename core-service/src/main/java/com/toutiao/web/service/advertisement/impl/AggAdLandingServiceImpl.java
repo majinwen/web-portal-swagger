@@ -223,7 +223,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         //查询二手房推优表中的数据
         //首先，填充筛选条件
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//构建筛选器
-
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel","0"));
         String redisCatogory = RECOMMEND_DEFAULT;
 
         // 筛选条件1-默认全部类型的推荐二手房房源
@@ -452,7 +452,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
         Integer pageNum = 1;
         Integer pageSize = aggAdLandingDo.getPs();
-
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel","0"));
         if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
             pageNum = aggAdLandingDo.getPn();
         }
@@ -574,7 +574,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Integer pageNum = 1;
         Integer pageSize = aggAdLandingDo.getPs();
 
-
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel","0"));
         if(aggAdLandingDo.getPn()!=null && aggAdLandingDo.getPn()>1){
             pageNum = aggAdLandingDo.getPn();
         }
