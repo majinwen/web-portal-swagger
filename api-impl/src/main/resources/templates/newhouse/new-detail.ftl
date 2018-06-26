@@ -89,9 +89,9 @@
 
         <#if build['building_name_id']==11121018>
         <script></script>
-            <a id='ad-newHouse-activity'>
+            <div id='ad-newHouse-activity'>
             <#--<img src="${staticurl}/images/payment/process-ad-img.png" width="100%" alt="购房优惠活动">-->
-            </a>
+            </div>
         </#if>
         <#--<div id="ad-newHouse-activity"></div>-->
 
@@ -559,7 +559,7 @@
 <script>
     $(function () {
         var buildId = ${build['building_name_id']}
-        if(11121018==buildId){
+        if(11121018!=buildId){
             $(".primary-header").removeClass('border-none');
 //            var classVal = document.getElementById("primary-header").getAttribute("class");
 //            classVal = classVal.replace("border-none","");
