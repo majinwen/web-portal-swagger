@@ -2,6 +2,7 @@ package com.toutiao.app.dao.homepage;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 
 public interface HomePageEsDao {
 
@@ -15,5 +16,14 @@ public interface HomePageEsDao {
      * @return
      */
     SearchResponse getHomeThemeHouse(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
+
+    /**
+     * 首页获取附近小区
+     * @param boolQueryBuilder
+     * @param size
+     * @param sort
+     * @return
+     */
+    SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
 
 }

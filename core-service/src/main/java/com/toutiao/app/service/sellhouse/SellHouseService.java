@@ -3,9 +3,6 @@ package com.toutiao.app.service.sellhouse;
 
 import com.toutiao.app.domain.sellhouse.*;
 
-import java.util.List;
-import java.util.Map;
-
 
 public interface SellHouseService {
 
@@ -44,4 +41,6 @@ public interface SellHouseService {
      * @return
      */
     SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery);
+
+
 }

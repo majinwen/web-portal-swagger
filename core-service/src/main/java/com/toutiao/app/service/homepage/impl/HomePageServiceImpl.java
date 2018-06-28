@@ -1,20 +1,21 @@
 package com.toutiao.app.service.homepage.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDo;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
-import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -138,6 +139,48 @@ public class HomePageServiceImpl implements HomePageRestService {
             homeThemeHouseListDo.setTotalNum((int) homeThemeHouse.getHits().getTotalHits());
         }
         return homeThemeHouseListDo;
+    }
+
+    /**
+     * 首页根据坐标获取周边小区
+     * @param nearPlotDoQuery
+     * @return
+     */
+    @Override
+    public HomePageNearPlotListDo getHomePageNearPlot(NearPlotDoQuery nearPlotDoQuery) {
+
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearPlotListDo homePageNearPlotListDo = new HomePageNearPlotListDo();
+
+        //过滤附近5km
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
+                .point(nearPlotDoQuery.getLat(), nearPlotDoQuery.getLon())
+                .distance(nearPlotDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+
+        //按距离排序并计算距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearPlotDoQuery.getLat(), nearPlotDoQuery.getLon());
+        sort.unit(DistanceUnit.KILOMETERS);
+        sort.order(SortOrder.ASC);
+
+        //组装条件
+        boolQueryBuilder.must(location);
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+
+        SearchResponse homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearPlotDoQuery.getSize(), sort);
+
+        SearchHit[] hits = homePageNearPlot.getHits().getHits();
+        if (hits!=null&&hits.length>0){
+            List<HomePageNearPlotDo> list = new ArrayList<>();
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
+                list.add(homePageNearPlotDo);
+            }
+        }
+
+        return homePageNearPlotListDo;
     }
 
 
