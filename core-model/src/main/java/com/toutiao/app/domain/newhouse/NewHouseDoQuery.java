@@ -12,4 +12,14 @@ public class NewHouseDoQuery extends QueryDo {
      */
     private  Integer [] saleStatusId;
 
+    /**
+     * 环线
+     */
+    private String ringRoad;
+
+    /**
+     * 楼盘特色
+     */
+    private String buildingFeature;
+
 }
