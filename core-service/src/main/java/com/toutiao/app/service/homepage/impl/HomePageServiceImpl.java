@@ -143,11 +143,11 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     /**
      * 首页根据坐标获取周边小区
-     * @param nearPlotDoQuery
+     * @param nearHouseDoQuery
      * @return
      */
     @Override
-    public HomePageNearPlotListDo getHomePageNearPlot(NearPlotDoQuery nearPlotDoQuery) {
+    public HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery) {
 
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -155,20 +155,21 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         //过滤附近5km
         GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
-                .point(nearPlotDoQuery.getLat(), nearPlotDoQuery.getLon())
-                .distance(nearPlotDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+                .point(nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon())
+                .distance(nearHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
 
         //按距离排序并计算距离
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearPlotDoQuery.getLat(), nearPlotDoQuery.getLon());
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
         sort.unit(DistanceUnit.KILOMETERS);
         sort.order(SortOrder.ASC);
 
         //组装条件
         boolQueryBuilder.must(location);
+        boolQueryBuilder.must(QueryBuilders.termQuery("cityId", nearHouseDoQuery.getCityId()));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
 
-        SearchResponse homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearPlotDoQuery.getSize(), sort);
+        SearchResponse homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
 
         SearchHit[] hits = homePageNearPlot.getHits().getHits();
         if (hits!=null&&hits.length>0){
@@ -176,11 +177,56 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
+                homePageNearPlotDo.setDistance((Double) hit.getSortValues()[0]);
                 list.add(homePageNearPlotDo);
             }
+            homePageNearPlotListDo.setData(list);
+            homePageNearPlotListDo.setTotalNum((int) homePageNearPlot.getHits().getTotalHits());
         }
-
         return homePageNearPlotListDo;
+    }
+
+    /**
+     * 根据坐标获取周边二手房
+     * @param nearHouseDoQuery
+     * @return
+     */
+    @Override
+    public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery) {
+
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
+
+        //过滤附近5km
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
+                .point(nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon())
+                .distance(nearHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+
+        //按距离排序并计算距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
+        sort.unit(DistanceUnit.KILOMETERS);
+        sort.order(SortOrder.ASC);
+
+        //组装条件
+        boolQueryBuilder.must(location);
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+
+        SearchResponse homePageNearEsf = homePageEsDao.getHomePageNearEsf(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+
+        SearchHit[] hits = homePageNearEsf.getHits().getHits();
+        if (hits!=null&&hits.length>0){
+            List<HomePageNearEsfDo> list = new ArrayList<>();
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
+                homePageNearEsfDo.setDistance((Double) hit.getSortValues()[0]);
+                list.add(homePageNearEsfDo);
+            }
+            homePageNearEsfListDo.setData(list);
+            homePageNearEsfListDo.setTotalNum((int) homePageNearEsf.getHits().getTotalHits());
+        }
+        return homePageNearEsfListDo;
     }
 
 

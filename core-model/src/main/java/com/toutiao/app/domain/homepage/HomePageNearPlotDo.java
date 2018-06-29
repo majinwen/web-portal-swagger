@@ -1,38 +1,44 @@
 package com.toutiao.app.domain.homepage;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class HomePageNearPlotDo {
     /**
      * 小区编号
      */
+    @ChangeName("buildingId")
     private Integer id;
     /**
      * 小区名称/楼盘名称
      */
+    @ChangeName("buildingName")
     private String rc;
     /**
      * 别名
      */
+    @ChangeName("buildingNickName")
     private String alias;
     /**
      * 区域编号
      */
+    @ChangeName("districtId")
     private String areaId;
     /**
      * 区域
      */
+    @ChangeName("districtName")
     private String area;
     /**
      * 商圈编号
      */
+    @ChangeName("areaId")
     private String tradingAreaId;
     /**
      * 商圈
      */
+    @ChangeName("areaName")
     private String tradingArea;
     /**
      * 地址
@@ -43,12 +49,9 @@ public class HomePageNearPlotDo {
      */
     private String location;
     /**
-     * 待售房源
-     */
-    private List<String> saleHouse;
-    /**
      * 均价
      */
+    @ChangeName("averagePrice")
     private Double avgPrice;
     /**
      * 距离
@@ -57,13 +60,13 @@ public class HomePageNearPlotDo {
     /**
      * 商圈均价排名
      */
-    private Integer ranking;
+    private Integer rankAvgInBizcircle;
     /**
      * 在售房源套数
      */
-    private Integer esfNum;
+    private Integer houseCount;
     /**
-     * 最低价格
+     * 起始价格
      */
-    private Double StartPrice;
+    private Double lowestPrice;
 }

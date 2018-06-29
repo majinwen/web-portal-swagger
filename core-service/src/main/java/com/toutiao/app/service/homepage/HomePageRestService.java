@@ -27,6 +27,13 @@ public interface HomePageRestService {
     /**
      * 首页附近小区
      */
-    HomePageNearPlotListDo getHomePageNearPlot(NearPlotDoQuery nearPlotDoQuery);
+    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery);
+
+    /**
+     * 首页附近二手房
+     * @param nearHouseDoQuery
+     * @return
+     */
+    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery);
 
 }

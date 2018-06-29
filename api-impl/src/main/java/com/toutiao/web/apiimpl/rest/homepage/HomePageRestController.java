@@ -5,14 +5,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
-import com.toutiao.app.api.chance.request.homepage.NearPlotRequest;
+import com.toutiao.app.api.chance.request.homepage.NearHouseRequest;
 import com.toutiao.app.api.chance.response.homepage.HomePageEsfResponse;
+import com.toutiao.app.api.chance.response.homepage.HomePageNearEsfListResponse;
 import com.toutiao.app.api.chance.response.homepage.HomePageNearPlotListResponse;
 import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageNearEsfListDo;
 import com.toutiao.app.domain.homepage.HomePageNearPlotListDo;
-import com.toutiao.app.domain.homepage.NearPlotDoQuery;
+import com.toutiao.app.domain.homepage.NearHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
@@ -84,13 +86,24 @@ public class HomePageRestController {
      * 首页附近小区
      */
     @RequestMapping(value = "/homePageNearPlot",method = RequestMethod.GET)
-    public NashResult homePageNearPlot(NearPlotRequest nearPlotRequest){
-        NearPlotDoQuery nearPlotDoQuery = new NearPlotDoQuery();
-        BeanUtils.copyProperties(nearPlotRequest,nearPlotDoQuery);
-        HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearPlotDoQuery);
+    public NashResult homePageNearPlot(NearHouseRequest nearHouseRequest){
+        NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
+        BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
+        HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearHouseDoQuery);
         HomePageNearPlotListResponse homePageNearPlotListResponse = JSON.parseObject(JSON.toJSONString(homePageNearPlot), HomePageNearPlotListResponse.class);
         return NashResult.build(homePageNearPlotListResponse);
     }
 
+    /**
+     * 首页附近二手房
+     */
+    @RequestMapping(value = "/homePageNearEsf",method = RequestMethod.GET)
+    public NashResult homePageNearEsf(NearHouseRequest nearHouseRequest){
+        NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
+        BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
+        HomePageNearEsfListDo homePageNearEsf = homePageRestService.getHomePageNearEsf(nearHouseDoQuery);
+        HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(homePageNearEsf), HomePageNearEsfListResponse.class);
+        return NashResult.build(homePageNearEsfListResponse);
+    }
 
 }

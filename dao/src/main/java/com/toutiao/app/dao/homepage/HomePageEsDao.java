@@ -26,4 +26,13 @@ public interface HomePageEsDao {
      */
     SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
 
+    /**
+     * 首页获取附近的二手房
+     * @param boolQueryBuilder
+     * @param size
+     * @param sort
+     * @return
+     */
+    SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
+
 }

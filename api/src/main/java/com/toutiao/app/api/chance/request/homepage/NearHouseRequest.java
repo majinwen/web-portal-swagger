@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NearPlotRequest extends BaseQueryRequest{
+public class NearHouseRequest extends BaseQueryRequest{
     /**
      * y坐标
      */
@@ -17,4 +17,10 @@ public class NearPlotRequest extends BaseQueryRequest{
      */
     @NotNull(message = "缺少坐标x")
     private Double lon;
+
+    /**
+     * 城市id
+     */
+    @NotNull(message = "缺少城市id")
+    private Integer cityId;
 }

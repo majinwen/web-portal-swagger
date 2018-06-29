@@ -3,7 +3,7 @@ package com.toutiao.app.domain.homepage;
 import lombok.Data;
 
 @Data
-public class NearPlotDoQuery {
+public class NearHouseDoQuery {
     /**
      * y坐标
      */
@@ -12,6 +12,10 @@ public class NearPlotDoQuery {
      * x坐标
      */
     private Double lon;
+    /**
+     * 城市id
+     */
+    private Integer cityId;
     /**
      * 默认距离5km
      */
