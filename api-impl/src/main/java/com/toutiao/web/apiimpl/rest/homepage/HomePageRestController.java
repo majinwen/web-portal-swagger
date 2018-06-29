@@ -7,9 +7,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.response.homepage.HomePageEsfResponse;
 import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
+import com.toutiao.app.api.chance.response.homepage.HomePageTop50Response;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageTop50Do;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
@@ -75,4 +77,15 @@ public class HomePageRestController {
 
     }
 
+
+    @RequestMapping(value ="/top50",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult homePageTop50()
+    {
+       List<HomePageTop50Do> homePageTop50Dos= homePageRestService.getHomePageTop50();
+       JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageTop50Dos));
+        List<HomePageTop50Response> homePageTop50ResponseList=JSONObject.parseArray(json.toJSONString(),HomePageTop50Response.class);
+        return NashResult.build(homePageTop50ResponseList);
+
+    }
 }

@@ -3,10 +3,7 @@ package com.toutiao.app.service.homepage.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDo;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
-import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
@@ -15,6 +12,10 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -141,6 +142,8 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
 
+
+
     private List hashPush(List<HomePageEsfDo> result, HomePageEsfDo homePageEsfDos) {
         Boolean flag = false;
         if (result.size() > 0) {
@@ -154,5 +157,32 @@ public class HomePageServiceImpl implements HomePageRestService {
             result.add(homePageEsfDos);
         }
         return result;
+    }
+
+
+    @Override
+    public List<HomePageTop50Do> getHomePageTop50() {
+
+        List<HomePageTop50Do> homePageTop50Dos=new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isTop",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_approve",1));
+        SearchResponse top50 = homePageEsDao.getHomePageTop50(boolQueryBuilder);
+        Terms count = top50.getAggregations().get("count");
+        List list= count.getBuckets();
+        for (Object l:list)
+        {    HomePageTop50Do homePageTop50Do=new HomePageTop50Do();
+
+            homePageTop50Do.setDistrictId(((StringTerms.Bucket) l).getKeyAsNumber().intValue());
+            homePageTop50Do.setCount( Math.toIntExact((((StringTerms.Bucket) l)).getDocCount()));
+            TopHits topHits =((StringTerms.Bucket) l).getAggregations().get("group_hits");
+            for (SearchHit hit : topHits.getHits().getHits())
+            {
+                homePageTop50Do.setDistrictName((String) hit.getSource().get("area"));
+            }
+            homePageTop50Dos.add(homePageTop50Do);
+        }
+        return  homePageTop50Dos;
     }
 }

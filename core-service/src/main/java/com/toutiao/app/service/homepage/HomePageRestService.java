@@ -1,4 +1,5 @@
 package com.toutiao.app.service.homepage;
+import com.toutiao.app.domain.homepage.HomePageTop50Do;
 import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
 import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
@@ -25,4 +26,10 @@ public interface HomePageRestService {
      */
     HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
 
+
+    /**
+     * 获取首页top50
+     */
+
+    List<HomePageTop50Do> getHomePageTop50();
 }
