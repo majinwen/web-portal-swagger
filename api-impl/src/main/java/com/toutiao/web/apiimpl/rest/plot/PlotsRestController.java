@@ -94,4 +94,15 @@ public class PlotsRestController {
     }
 
 
+    /**
+     * 小区top50查询
+     */
+    @RequestMapping(value = "/getTop50List",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult getTop50List()
+    {
+
+        return NashResult.build(0);
     }
+
+}

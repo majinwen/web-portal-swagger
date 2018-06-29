@@ -77,6 +77,10 @@ public class HomePageRestController {
 
     }
 
+    /**
+     * @return
+     * 首页top50
+     */
 
     @RequestMapping(value ="/top50",method = RequestMethod.GET)
     @ResponseBody
