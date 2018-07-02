@@ -7,19 +7,22 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.response.homepage.HomePageEsfResponse;
 import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
+import com.toutiao.app.domain.homepage.HomePageCutPriceDo;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageLowerPriceDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -73,6 +76,26 @@ public class HomePageRestController {
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
 
+    }
+
+    /**
+     * 首页获取降价房8条
+     */
+    @RequestMapping(value = "/getHomePageCutPrice", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHomePageCutPrice() {
+        List<HomePageCutPriceDo> homePageCutPriceDos = homePageRestService.getHomePageCutPrice();
+        return NashResult.build(homePageCutPriceDos);
+    }
+
+    /**
+     * 首页获取价格洼地8条
+     */
+    @RequestMapping(value = "/getHomePageLowerPrice", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHomePageLowerPrice() {
+        List<HomePageLowerPriceDo> homePageLowerPriceDos = homePageRestService.getHomePageLowerPrice();
+        return NashResult.build(homePageLowerPriceDos);
     }
 
 }
