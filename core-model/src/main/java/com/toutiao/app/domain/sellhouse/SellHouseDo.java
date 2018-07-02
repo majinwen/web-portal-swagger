@@ -153,6 +153,11 @@ public class SellHouseDo {
 
     private Integer housePhotoTitleTags = -1;
 
+    /**
+     * 排序规则字段
+     */
+    private String upTimestamp;
+
 
 
 

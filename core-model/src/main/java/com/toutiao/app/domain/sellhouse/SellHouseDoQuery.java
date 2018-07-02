@@ -28,5 +28,19 @@ public class SellHouseDoQuery extends QueryDo {
      */
     private Double lon;
 
+    /**
+     * 排序字段
+     */
+    private String upTimestamp;
+
+    /**
+     * 排序标志
+     */
+    private String sort;
+
+    /**
+     * 小区id
+     */
+    private Integer buildingId;
 
 }
