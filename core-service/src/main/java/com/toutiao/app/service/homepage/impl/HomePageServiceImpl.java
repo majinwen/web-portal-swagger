@@ -173,7 +173,6 @@ public class HomePageServiceImpl implements HomePageRestService {
         List list= count.getBuckets();
         for (Object l:list)
         {    HomePageTop50Do homePageTop50Do=new HomePageTop50Do();
-
             homePageTop50Do.setDistrictId(((StringTerms.Bucket) l).getKeyAsNumber().intValue());
             homePageTop50Do.setCount( Math.toIntExact((((StringTerms.Bucket) l)).getDocCount()));
             TopHits topHits =((StringTerms.Bucket) l).getAggregations().get("group_hits");
