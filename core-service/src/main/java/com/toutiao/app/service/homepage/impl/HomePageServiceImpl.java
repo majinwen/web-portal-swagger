@@ -164,8 +164,9 @@ public class HomePageServiceImpl implements HomePageRestService {
     public List<HomePageTop50Do> getHomePageTop50() {
 
         List<HomePageTop50Do> homePageTop50Dos=new ArrayList<>();
+        int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isTop",1));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("isTop",isTop));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve",1));
         SearchResponse top50 = homePageEsDao.getHomePageTop50(boolQueryBuilder);

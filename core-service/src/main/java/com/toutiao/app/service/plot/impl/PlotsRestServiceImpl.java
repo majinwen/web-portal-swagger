@@ -497,10 +497,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     @Override
     public List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery) {
         List<PlotTop50Do> plotTop50Dos=new ArrayList<>();
+        int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
-        boolQueryBuilder.must(QueryBuilders.termQuery("isTop",1));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("isTop",isTop));
         if (null!=plotTop50ListDoQuery.getDistrictId())
         {
             boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotTop50ListDoQuery.getDistrictId()));
