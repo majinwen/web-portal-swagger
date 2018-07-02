@@ -158,6 +158,112 @@ public class SellHouseDo {
      */
     private String upTimestamp;
 
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isMainLayout;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isDealLayout;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer avgDealCycle;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isLowPrice;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isCutPrice;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isMustRob;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isLowest;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isNew;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    private Integer isCommunityTopHouse;
+
+
+
+    /**
+     * 与商圈平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithCommunity;
+
+    /**
+     * 与商圈平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithBizcircle;
+
+    /**
+     * 与区县平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithDistrict;
+
+    /**
+     * 与小区平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithCommunity;
+
+    /**
+     * 与商圈平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithBizcircle;
+
+    /**
+     * 与区县平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithDistrict;
+
+    /**
+     * 与小区平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithCommunity;
+
+    /**
+     * 与商圈平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithBizcircle;
+
+    /**
+     * 与区县平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithDistrict;
+
+    /**
+     * 与小区平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithCommunity;
+
+    /**
+     * 与商圈平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithBizcircle;
+
+    /**
+     * 与区县平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithDistrict;
 
 
 
