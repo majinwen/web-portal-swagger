@@ -118,4 +118,7 @@ public class NewHouseListDo  {
      */
     private String subwayDistanceInfo;
 
+    @ChangeName("tags")
+    private  String [] buildingTags;
+
 }

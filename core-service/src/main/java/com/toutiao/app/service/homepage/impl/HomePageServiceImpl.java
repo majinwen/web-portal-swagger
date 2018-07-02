@@ -1,12 +1,8 @@
 package com.toutiao.app.service.homepage.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDo;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
-import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
@@ -29,7 +25,6 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private NewHouseRestService newHouseRestService;
-
 
     /**
      * @return 获取二手房5条
@@ -140,7 +135,6 @@ public class HomePageServiceImpl implements HomePageRestService {
         return homeThemeHouseListDo;
     }
 
-
     private List hashPush(List<HomePageEsfDo> result, HomePageEsfDo homePageEsfDos) {
         Boolean flag = false;
         if (result.size() > 0) {
@@ -154,5 +148,49 @@ public class HomePageServiceImpl implements HomePageRestService {
             result.add(homePageEsfDos);
         }
         return result;
+    }
+
+    /**
+     * 首页获取降价房8条
+     */
+    @Override
+    public List<HomePageCutPriceDo> getHomePageCutPrice() {
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //筛选低价房 isCutPrice=1
+        boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
+        SearchResponse cutPriceHouses = homePageEsDao.getHomePageCutPrice(boolQueryBuilder);
+        SearchHit[] hits = cutPriceHouses.getHits().getHits();
+        List<HomePageCutPriceDo> homePageCutPriceDos = new ArrayList<>();
+        if (hits.length > 0) {
+            for (SearchHit hit : hits) {
+                String sourceAsString = hit.getSourceAsString();
+                HomePageCutPriceDo homePageCutPriceDo = JSON.parseObject(sourceAsString, HomePageCutPriceDo.class);
+                homePageCutPriceDos.add(homePageCutPriceDo);
+            }
+        }
+        return homePageCutPriceDos;
+    }
+
+    /**
+     * 首页获取价格洼地房8条
+     */
+    @Override
+    public List<HomePageLowerPriceDo> getHomePageLowerPrice() {
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //价格洼地 isLowPrice=1
+        boolQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
+        SearchResponse lowerPriceHouses = homePageEsDao.getHomePageLowerPrice(boolQueryBuilder);
+        SearchHit[] hits = lowerPriceHouses.getHits().getHits();
+        List<HomePageLowerPriceDo> homePageCutPriceDos = new ArrayList<>();
+        if (hits.length > 0) {
+            for (SearchHit hit : hits) {
+                String sourceAsString = hit.getSourceAsString();
+                HomePageLowerPriceDo homePageLowerPriceDo = JSON.parseObject(sourceAsString, HomePageLowerPriceDo.class);
+                homePageCutPriceDos.add(homePageLowerPriceDo);
+            }
+        }
+        return homePageCutPriceDos;
     }
 }
