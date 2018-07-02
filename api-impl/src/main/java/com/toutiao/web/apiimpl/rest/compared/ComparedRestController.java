@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -150,14 +151,15 @@ public class ComparedRestController {
     @RequestMapping(value = "/listTempCompared", method = RequestMethod.GET)
     public NashResult listTempCompared(HttpServletRequest request, HttpServletResponse response) {
         String currHouseId = CookieUtils.getCookie(request, response, CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED);
+        List<HouseComparedListDo> houseComparedListDoList = new ArrayList<>();
         if (StringUtil.isNotNullString(currHouseId)) {
             String[] currHouseIdArray = currHouseId.split("_");
             List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
-            List<HouseComparedListDo> houseComparedListDoList = comparedService.selectTempComparedByIds(currHouseIdList);
+            houseComparedListDoList = comparedService.selectTempComparedByIds(currHouseIdList);
             return NashResult.build(houseComparedListDoList);
         } else {
             currHouseId = "";
         }
-        return null;
+        return NashResult.build(houseComparedListDoList);
     }
 }
