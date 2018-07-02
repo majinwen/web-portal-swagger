@@ -209,6 +209,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         return plotFavoriteListDo;
     }
 
+
     /**
      * 附近小区
      * @param lat
@@ -485,5 +486,35 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         return plotDetailsFewDoList;
     }
+
+
+    /**
+     *
+     * @param plotTop50ListDoQuery
+     * @return
+     */
+
+    @Override
+    public List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery) {
+        List<PlotTop50Do> plotTop50Dos=new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isTop",1));
+        if (null!=plotTop50ListDoQuery.getDistrictId())
+        {
+            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotTop50ListDoQuery.getDistrictId()));
+        }
+
+        SearchResponse searchResponse= plotEsDao.getPlotTop50List(boolQueryBuilder,plotTop50ListDoQuery.getPageNum(),plotTop50ListDoQuery.getPageSize());
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        for (SearchHit hit:hits){
+            String sourceAsString = hit.getSourceAsString();
+            PlotTop50Do plotTop50Do = JSON.parseObject(sourceAsString, PlotTop50Do.class);
+            plotTop50Dos.add(plotTop50Do);
+        }
+        return plotTop50Dos;
+    }
+
 
 }

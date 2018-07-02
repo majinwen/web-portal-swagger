@@ -1,5 +1,6 @@
 package com.toutiao.app.dao.plot;
 
+import com.toutiao.app.domain.plot.PlotTop50ListDoQuery;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -63,4 +64,9 @@ public interface PlotEsDao {
      */
     SearchResponse queryPlotListByPlotIdList(BoolQueryBuilder boolQueryBuilder,Integer from,Integer size);
 
+
+    /**
+     * 获取小区top50
+     */
+    SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder ,Integer from,Integer size);
 }

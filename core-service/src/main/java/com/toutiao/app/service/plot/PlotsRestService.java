@@ -51,7 +51,11 @@ public interface PlotsRestService {
      */
     PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
 
+    /**
+     * 小区top50查询
+     */
 
+    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery);
 
 
 }
