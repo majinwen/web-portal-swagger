@@ -16,4 +16,13 @@ public interface HomePageEsDao {
      */
     SearchResponse getHomeThemeHouse(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
 
+	/**
+	 * 首页获取降价房8条
+	 */
+	SearchResponse getHomePageCutPrice(BoolQueryBuilder boolQueryBuilder);
+
+	/**
+	 * 首页获取价格洼地8条
+	 */
+	SearchResponse getHomePageLowerPrice(BoolQueryBuilder boolQueryBuilder);
 }

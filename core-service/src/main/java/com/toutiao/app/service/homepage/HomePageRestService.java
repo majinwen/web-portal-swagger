@@ -1,7 +1,6 @@
 package com.toutiao.app.service.homepage;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
-import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
+
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 
 import java.util.List;
@@ -25,4 +24,13 @@ public interface HomePageRestService {
      */
     HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
 
+    /**
+     * 首页获取降价房8条
+     */
+    List<HomePageCutPriceDo> getHomePageCutPrice();
+
+    /**
+     * 首页获取价格洼地房8条
+     */
+    List<HomePageLowerPriceDo> getHomePageLowerPrice();
 }
