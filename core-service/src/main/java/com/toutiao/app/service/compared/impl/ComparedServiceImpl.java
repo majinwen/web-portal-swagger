@@ -1,8 +1,11 @@
 package com.toutiao.app.service.compared.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.service.compared.ComparedService;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.mapper.compared.HouseComparedMapper;
@@ -10,6 +13,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +30,10 @@ public class ComparedServiceImpl implements ComparedService {
     HouseComparedMapper houseComparedMapper;
 
     @Autowired
-    private SellHouseEsDao sellHouseEsDao;
+    SellHouseEsDao sellHouseEsDao;
+
+    @Autowired
+    PlotEsDao plotEsDao;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -118,5 +125,80 @@ public class ComparedServiceImpl implements ComparedService {
     @Override
     public List<HouseCompared> selectByUserId(Integer userId) {
         return houseComparedMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public List<HouseComparedDetailDo> selectComparedDetailByHouseIds(List<String> ids) {
+        List<HouseComparedDetailDo> houseComparedListDoList = new ArrayList<>();
+        Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = getESHouseComparedDetailDo(ids);
+        for (String id : ids) {
+            houseComparedListDoList.add(houseComparedDetailDoDict.get(id));
+        }
+        return houseComparedListDoList;
+    }
+
+    private Hashtable<String, HouseComparedDetailDo> getESHouseComparedDetailDo(List<String> ids) {
+        Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = new Hashtable<>();
+        Hashtable<String, List<String>> newcodeDict = new Hashtable<>();
+        IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
+        for (String id : ids) {
+            idsQueryBuilder.addIds(id);
+        }
+        SearchResponse searchResponse = sellHouseEsDao.getHouseByIds(idsQueryBuilder);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            String details = hit.getSourceAsString();
+            HouseComparedDetailDo houseComparedDetailDo = JSON.parseObject(details, HouseComparedDetailDo.class);
+            houseComparedDetailDo.setHouseId(hit.getId());
+            houseComparedDetailDoDict.put(hit.getId(), houseComparedDetailDo);
+            if (!newcodeDict.containsKey(houseComparedDetailDo.getNewcode())) {
+                List<String> houseIds = new ArrayList<>();
+                houseIds.add(hit.getId());
+                newcodeDict.put(houseComparedDetailDo.getNewcode(), houseIds);
+            } else {
+                newcodeDict.get(houseComparedDetailDo.getNewcode()).add(hit.getId());
+            }
+        }
+        idsQueryBuilder = new IdsQueryBuilder();
+        for (String id : newcodeDict.keySet()) {
+            idsQueryBuilder.addIds(id);
+        }
+        searchResponse = plotEsDao.getPlotByIds(idsQueryBuilder);
+        hits = searchResponse.getHits();
+        searchHists = hits.getHits();
+        for (SearchHit hit : searchHists) {
+            PlotDetailsDo plotDetailsDo = JSON.parseObject(hit.getSourceAsString(), PlotDetailsDo.class);
+            String newcode = hit.getId();
+            if (newcodeDict.containsKey(newcode)) {
+                List<String> houseIds = newcodeDict.get(newcode);
+                for (String houseId : houseIds) {
+                    if (houseComparedDetailDoDict.containsKey(houseId)) {
+                        HouseComparedDetailDo houseComparedDetailDo = houseComparedDetailDoDict.get(houseId);
+                        BeanUtils.copyProperties(plotDetailsDo, houseComparedDetailDo);
+                        if ("商电".equals(plotDetailsDo.getElectricSupply())) {
+                            houseComparedDetailDo.setElectricFee(1.33);
+                        } else {
+                            houseComparedDetailDo.setElectricFee(0.48);
+                        }
+                        if ("商水".equals(plotDetailsDo.getWaterSupply())) {
+                            houseComparedDetailDo.setWaterFee(6.00);
+                        } else {
+                            houseComparedDetailDo.setWaterFee(5.00);
+                        }
+                        if ("0".equals(plotDetailsDo.getHeatingMode())) {
+                            houseComparedDetailDo.setHeatingMode("未知");
+                        }
+                        if ("1".equals(plotDetailsDo.getHeatingMode())) {
+                            houseComparedDetailDo.setHeatingMode("集中供暖");
+                        }
+                        if ("2".equals(plotDetailsDo.getHeatingMode())) {
+                            houseComparedDetailDo.setHeatingMode("自供暖");
+                        }
+                    }
+                }
+            }
+        }
+        return houseComparedDetailDoDict;
     }
 }
