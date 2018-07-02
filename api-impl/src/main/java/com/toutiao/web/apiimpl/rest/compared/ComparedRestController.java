@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.rest.compared;
 
 import com.toutiao.app.api.chance.request.compared.ComparedRequest;
+import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
 import com.toutiao.app.service.compared.ComparedService;
 import com.toutiao.web.apiimpl.authentication.IgnoreLogin;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -161,5 +163,26 @@ public class ComparedRestController {
             currHouseId = "";
         }
         return NashResult.build(houseComparedListDoList);
+    }
+
+    /**
+     * 房源对比页
+     *
+     * @return
+     */
+    @IgnoreLogin
+    @RequestMapping(value = "/listComparedDetail", method = RequestMethod.GET)
+    public NashResult listComparedDetail(@RequestParam(value = "ids") String comparedHouseIds) {
+        List<HouseComparedDetailDo> houseComparedDetailDoList = new ArrayList<>();
+        if (StringUtil.isNotNullString(comparedHouseIds)) {
+            String[] currHouseIdArray = comparedHouseIds.split(",");
+            List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
+            if (currHouseIdList.size() > 5) {
+                currHouseIdList = currHouseIdList.subList(0, 5);
+            }
+            houseComparedDetailDoList = comparedService.selectComparedDetailByHouseIds(currHouseIdList);
+            return NashResult.build(houseComparedDetailDoList);
+        }
+        return NashResult.build(houseComparedDetailDoList);
     }
 }

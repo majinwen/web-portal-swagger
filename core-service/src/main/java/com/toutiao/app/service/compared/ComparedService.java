@@ -1,5 +1,6 @@
 package com.toutiao.app.service.compared;
 
+import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
@@ -28,4 +29,6 @@ public interface ComparedService {
     List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds);
 
     List<HouseCompared> selectByUserId (Integer userId);
+
+    List<HouseComparedDetailDo> selectComparedDetailByHouseIds (List<String> ids);
 }

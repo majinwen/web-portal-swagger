@@ -46,7 +46,7 @@ public interface SellHouseEsDao {
     SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize);
 
     /**
-     * 获取推荐二手房
+     * 获取二手房列表
      * @param idsQueryBuilder 房源ID列表
      * @return
      */

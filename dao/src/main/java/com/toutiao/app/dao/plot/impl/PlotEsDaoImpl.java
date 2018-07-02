@@ -9,6 +9,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -79,6 +80,15 @@ public class PlotEsDaoImpl implements PlotEsDao {
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType).setSearchType(SearchType.QUERY_THEN_FETCH);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchResponse searchresponse = client.prepareSearch(index).setTypes(parentType)
+                .setQuery(idsQueryBuilder)
+                .execute().actionGet();
+        return searchresponse;
     }
 
 }
