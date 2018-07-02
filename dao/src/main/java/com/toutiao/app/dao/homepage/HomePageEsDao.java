@@ -35,4 +35,11 @@ public interface HomePageEsDao {
      */
     SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
 
+    /**
+     * 专题着陆页-附近小区
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder);
+
 }

@@ -71,4 +71,12 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).setSize(size).addSort(sort).execute().actionGet();
         return searchResponse;
     }
+
+    @Override
+    public SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(plotIndex).setTypes(parentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).execute().actionGet();
+        return searchResponse;
+    }
 }

@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.homepage;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 @Data
@@ -44,5 +45,20 @@ public class HomePageNearEsfDo {
      * 距离
      */
     private Double distance;
+    /**
+     * 价格浮动
+     */
+    private double priceFloat;
+    /**
+     * 小区名称
+     */
+    @ChangeName("buildingName")
+    private String plotName;
+    /**
+     * 楼盘ID(楼盘/小区)
+     */
+    @ChangeName("buildingId")
+    private Integer newcode;
+
 
 }

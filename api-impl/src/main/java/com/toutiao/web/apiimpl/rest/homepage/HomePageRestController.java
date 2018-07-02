@@ -6,15 +6,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseRequest;
-import com.toutiao.app.api.chance.response.homepage.HomePageEsfResponse;
-import com.toutiao.app.api.chance.response.homepage.HomePageNearEsfListResponse;
-import com.toutiao.app.api.chance.response.homepage.HomePageNearPlotListResponse;
-import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
+import com.toutiao.app.api.chance.response.homepage.*;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
-import com.toutiao.app.domain.homepage.HomePageNearEsfListDo;
-import com.toutiao.app.domain.homepage.HomePageNearPlotListDo;
-import com.toutiao.app.domain.homepage.NearHouseDoQuery;
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
@@ -23,10 +17,7 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -105,5 +96,20 @@ public class HomePageRestController {
         HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(homePageNearEsf), HomePageNearEsfListResponse.class);
         return NashResult.build(homePageNearEsfListResponse);
     }
+
+    /**
+     * 专题着陆页-附近小区
+     */
+    @RequestMapping(value = "/plotSpecialPage",method = RequestMethod.GET)
+    public NashResult plotSpecialPage(@RequestParam("plotId") Integer plotId){
+        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(plotId);
+        HomePageNearPlotResponse homePageNearPlotResponse = JSON.parseObject(JSON.toJSONString(plotSpecialPage), HomePageNearPlotResponse.class);
+        return NashResult.build(homePageNearPlotResponse);
+    }
+
+    /**
+     * 专题着陆页-附近二手房
+     */
+
 
 }

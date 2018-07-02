@@ -229,6 +229,31 @@ public class HomePageServiceImpl implements HomePageRestService {
         return homePageNearEsfListDo;
     }
 
+    /**
+     * 专题着陆页-附近小区
+     * @param plotId
+     * @return
+     */
+    @Override
+    public HomePageNearPlotDo getPlotSpecialPage(Integer plotId) {
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearPlotDo homePageNearPlotDo = new HomePageNearPlotDo();
+
+        boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+
+        SearchResponse plotSpecialPage = homePageEsDao.getPlotSpecialPage(boolQueryBuilder);
+
+        SearchHit[] hits = plotSpecialPage.getHits().getHits();
+
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
+        }
+        return homePageNearPlotDo;
+    }
+
 
     private List hashPush(List<HomePageEsfDo> result, HomePageEsfDo homePageEsfDos) {
         Boolean flag = false;

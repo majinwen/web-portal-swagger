@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class HomePageNearEsfListResponse {
     /**
-     * 小区
+     * 二手房
      */
     private List<HomePageNearEsfDo> data;
     /**

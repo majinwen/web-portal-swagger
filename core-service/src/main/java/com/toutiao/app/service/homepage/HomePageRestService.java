@@ -36,4 +36,10 @@ public interface HomePageRestService {
      */
     HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery);
 
+    /**
+     * 专题着陆页-附近小区
+     * @param plotId
+     * @return
+     */
+    HomePageNearPlotDo getPlotSpecialPage(Integer plotId);
 }
