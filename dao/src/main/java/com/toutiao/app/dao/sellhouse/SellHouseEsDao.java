@@ -3,6 +3,7 @@ package com.toutiao.app.dao.sellhouse;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 
 
@@ -44,7 +45,10 @@ public interface SellHouseEsDao {
      */
     SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize);
 
-
-
-
+    /**
+     * 获取推荐二手房
+     * @param idsQueryBuilder 房源ID列表
+     * @return
+     */
+    SearchResponse getHouseByIds(IdsQueryBuilder idsQueryBuilder);
 }
