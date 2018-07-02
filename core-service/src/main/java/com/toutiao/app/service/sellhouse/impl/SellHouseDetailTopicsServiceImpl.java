@@ -49,8 +49,11 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
 
         String[] searchAfterIds = new String[2];
-        searchAfterIds[0]=sellHouseDoQuery.getUpTimestamp();
-        searchAfterIds[1]="esf_type#"+sellHouseDoQuery.getUid();
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getUpTimestamp() ) && StringTool.isNotEmpty(sellHouseDoQuery.getUid() ) ){
+            searchAfterIds[0]=sellHouseDoQuery.getUpTimestamp();
+            searchAfterIds[1]="esf_type#"+sellHouseDoQuery.getUid();
+        }
+
 
 
         SearchResponse searchResponse = sellHouseDetailTopicsEsDao.getNearbyTopicsSellHouse(boolQueryBuilder,searchAfterIds,sellHouseDoQuery.getPageSize());
