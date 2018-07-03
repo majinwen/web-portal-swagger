@@ -63,4 +63,15 @@ public class HomeSureToSnatchDo {
      * 是否是认领
      */
     private  Integer isClaim;
+
+    /**
+     * 房源id
+     */
+    private  String houseId;
+
+    /**
+     * 认领房源id
+     */
+     private  String claimHouseId;
+
 }

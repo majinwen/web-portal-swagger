@@ -10,6 +10,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -200,6 +201,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("isCommunityTopHouse",1));
         boolQueryBuilder.must(QueryBuilders.termQuery("isMainLayout",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("status",0));
         SearchResponse beSureToSnatch=homePageEsDao.getHomeBeSureToSnatch(boolQueryBuilder,homeSureToSnatchDoQuery.getPageNum(),homeSureToSnatchDoQuery.getPageSize());
         SearchHit[] hits = beSureToSnatch.getHits().getHits();
         for (SearchHit hit : hits) {
@@ -209,6 +211,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             if(homeSureToSnatchDo.getIsClaim().equals(1))
             {
                 homeSureToSnatchDo.setHousePhotoTitle(homeSureToSnatchDo.getClaimHousePhotoTitle());
+                homeSureToSnatchDo.setHouseId(homeSureToSnatchDo.getClaimHouseId());
             }
             homeSureToSnatchDos.add(homeSureToSnatchDo);
         }

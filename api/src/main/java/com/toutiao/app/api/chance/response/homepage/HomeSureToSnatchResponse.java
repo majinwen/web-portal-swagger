@@ -53,4 +53,8 @@ public class HomeSureToSnatchResponse {
      * 普通房源标题图
      */
     private  String housePhotoTitle;
+    /**
+     * 房源id
+     */
+    private  String houseId;
 }
