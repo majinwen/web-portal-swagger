@@ -167,13 +167,13 @@ public class HouseComparedDetailDo {
     /**
      * 是否降价房(0-否，1-降价房，2-涨价房)
      */
-    @ChangeName("isCutPrice")
+//    @ChangeName("isCutPrice")
     private Integer priceIncreaseDecline;
 
     /**
      * 总价价格浮动
      */
-    @ChangeName("priceFloat")
+//    @ChangeName("priceFloat")
     private Double priceIncreaseDeclineAmount;
 
 
