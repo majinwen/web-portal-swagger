@@ -1,16 +1,13 @@
 package com.toutiao.web.dao.entity.officeweb.user;
 
 import com.alibaba.fastjson.JSON;
-import com.toutiao.web.common.util.CookieUtils;
-import com.unboundid.util.json.JSONObject;
-import io.rong.models.User;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 public class UserBasic {
@@ -90,13 +87,17 @@ public class UserBasic {
 
         String userJson = (String) request.getAttribute("userLogin");
         UserBasic user = new UserBasic();
-        if(userJson.equals("请登录")){
+        if (userJson.equals("请登录")) {
             user = null;
-        }else{
+        } else {
             user = JSON.parseObject(userJson, UserBasic.class);
         }
 
         return user;
+    }
+
+    public static boolean IsLogin() {
+        return Objects.nonNull(UserBasic.getCurrent());
     }
 
 }

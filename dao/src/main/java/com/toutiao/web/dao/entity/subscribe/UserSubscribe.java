@@ -10,7 +10,7 @@ public class UserSubscribe {
 
     private Integer userId;
 
-    private Object userSubscribeMap;
+    private String userSubscribeMap;
 
     private Date createTime;
 
