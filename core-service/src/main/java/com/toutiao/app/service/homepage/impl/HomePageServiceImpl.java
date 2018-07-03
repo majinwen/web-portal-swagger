@@ -158,7 +158,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //筛选低价房 isCutPrice=1
-        boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
+		boolQueryBuilder.must(QueryBuilders.termQuery("price_increase_decline", 2));
         SearchResponse cutPriceHouses = homePageEsDao.getHomePageCutPrice(boolQueryBuilder);
         SearchHit[] hits = cutPriceHouses.getHits().getHits();
         List<HomePageCutPriceDo> homePageCutPriceDos = new ArrayList<>();
