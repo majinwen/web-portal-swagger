@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserSubscribeDetailDo {
     /**
-     * 专题类型
+     * 专题类型 1：降价房 2：价格洼地 3：逢出必抢
      */
     private Integer topicType;
     /**

@@ -96,7 +96,7 @@ public class UserBasic {
         return user;
     }
 
-    public static boolean IsLogin() {
+    public static boolean isLogin() {
         return Objects.nonNull(UserBasic.getCurrent());
     }
 
