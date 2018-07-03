@@ -23,6 +23,7 @@ public class HomePageLowerPriceDo {
 	/**
 	 * 朝向名称
 	 */
+	@ChangeName("forward")
 	private String forwardName;
 
 	/**
@@ -38,13 +39,13 @@ public class HomePageLowerPriceDo {
 	/**
 	 * 小区
 	 */
-	@ChangeName("plotNameAccurate")
-	private String plotName_accurate;
+	@ChangeName("buildingName")
+	private String plotName;
 
 	/**
-	 * 户型
+	 * 室
 	 */
-	private Integer layout;
+	private Integer room;
 
 	/**
 	 * 标签
@@ -57,29 +58,34 @@ public class HomePageLowerPriceDo {
 	private String[] tagsName;
 
 	/**
-	 * 是否主力户型(0-否,1-是)
+	 * 是否主力户型(0-否, 1-是)
 	 */
 	private Integer isMainLayout;
 
 	/**
-	 * 是否成交户型(0-否,1-是)
+	 * 是否成交户型(0-否, 1-是)
 	 */
 	private Integer isDealLayout;
 
 	/**
-	 * 是否价格洼地(0-否,1-是)
+	 * 是否价格洼地(0-否, 1-是)
 	 */
 	private Integer isLowPrice;
 
 	/**
-	 * 是否同户型小区均价最低(0-否,1-是)
+	 * 是否同户型小区均价最低(0-否, 1-是)
 	 */
 	private Integer isLowest;
 
 	/**
-	 * 是否新导入房源(0-否,1-是)
+	 * 是否新导入房源(0-否, 1-是)
 	 */
 	private Integer isNew;
+
+	/**
+	 * 是否是top50小区房源(0-否, 1-是)
+	 */
+	private Integer isCommunityTopHouse;
 
 	/**
 	 * 在同商圈同户型范围内做低价排名

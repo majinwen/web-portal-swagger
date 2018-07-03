@@ -1,15 +1,10 @@
-package com.toutiao.app.domain.homepage;
+package com.toutiao.app.domain.sellhouse;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-/**
- * 首页降价房Do
- *
- * @author : zhaiyanming
- */
 @Data
-public class HomePageCutPriceDo {
+public class CutPriceShellHouseDo {
 	/**
 	 * 房源id
 	 */
@@ -42,6 +37,11 @@ public class HomePageCutPriceDo {
 	private String housePhotoTitle;
 
 	/**
+	 * 商圈Id
+	 */
+	private Integer areaId;
+
+	/**
 	 * 小区
 	 */
 	@ChangeName("buildingName")
@@ -63,12 +63,12 @@ public class HomePageCutPriceDo {
 	private String[] tagsName;
 
 	/**
-	 * 是否主力户型(0-否, 1-是)
+	 * 是否主力户型(0-否,1-是)
 	 */
 	private Integer isMainLayout;
 
 	/**
-	 * 是否成交户型(0-否, 1-是)
+	 * 是否成交户型(0-否,1-是)
 	 */
 	private Integer isDealLayout;
 
@@ -78,12 +78,12 @@ public class HomePageCutPriceDo {
 	private Integer isCutPrice;
 
 	/**
-	 * 是否同户型小区均价最低(0-否, 1-是)
+	 * 是否同户型小区均价最低(0-否,1-是)
 	 */
 	private Integer isLowest;
 
 	/**
-	 * 是否新导入房源(0-否, 1-是)
+	 * 是否新导入房源(0-否,1-是)
 	 */
 	private Integer isNew;
 
@@ -161,4 +161,19 @@ public class HomePageCutPriceDo {
 	 * 与区县平均总价的相对值(百分比)
 	 */
 	private Double totalRelativeWithDistrict;
+
+	/**
+	 * 更新时间
+	 */
+	private String updateTime;
+
+	/**
+	 * 排序属性
+	 */
+	private String sortField;
+
+	/**
+	 * uid
+	 */
+	private String uid;
 }
