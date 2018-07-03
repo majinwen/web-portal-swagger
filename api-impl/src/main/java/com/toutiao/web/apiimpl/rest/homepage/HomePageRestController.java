@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseRequest;
+import com.toutiao.app.api.chance.request.homepage.NearHouseSpecialPageRequest;
 import com.toutiao.app.api.chance.response.homepage.*;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.*;
@@ -110,6 +111,13 @@ public class HomePageRestController {
     /**
      * 专题着陆页-附近二手房
      */
-
+    @RequestMapping(value = "esfSpecialPage",method = RequestMethod.GET)
+    public NashResult esfSpecialPage(NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
+        NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
+        BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
+        HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery);
+        HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(esfSpecialPage), HomePageNearEsfListResponse.class);
+        return NashResult.build(homePageNearEsfListResponse);
+    }
 
 }

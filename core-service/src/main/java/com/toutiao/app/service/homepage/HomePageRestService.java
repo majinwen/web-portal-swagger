@@ -42,4 +42,11 @@ public interface HomePageRestService {
      * @return
      */
     HomePageNearPlotDo getPlotSpecialPage(Integer plotId);
+
+    /**
+     * 专题着陆页-附近二手房
+     * @param nearHouseSpecialPageDoQuery
+     * @return
+     */
+    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
 }

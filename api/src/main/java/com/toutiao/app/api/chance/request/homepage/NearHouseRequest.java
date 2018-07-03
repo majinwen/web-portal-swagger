@@ -21,6 +21,5 @@ public class NearHouseRequest extends BaseQueryRequest{
     /**
      * 城市id
      */
-    @NotNull(message = "缺少城市id")
-    private Integer cityId;
+    private Integer cityId =12;
 }

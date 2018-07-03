@@ -42,4 +42,11 @@ public interface HomePageEsDao {
      */
     SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder);
 
+    /**
+     * 专题着陆页-附近二手房
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
+
 }

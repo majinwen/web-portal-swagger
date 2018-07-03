@@ -254,6 +254,41 @@ public class HomePageServiceImpl implements HomePageRestService {
         return homePageNearPlotDo;
     }
 
+    /**
+     * 专题着陆页-附近二手房
+     * @param nearHouseSpecialPageDoQuery
+     * @return
+     */
+    @Override
+    public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery) {
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
+
+        Integer from = (nearHouseSpecialPageDoQuery.getPageNum()-1)*nearHouseSpecialPageDoQuery.getSize();
+
+        //组装条件
+        boolQueryBuilder.must(QueryBuilders.termQuery("newcode", nearHouseSpecialPageDoQuery.getPlotId()));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+
+        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize());
+
+        SearchHit[] hits = esfSpecialPage.getHits().getHits();
+        if (hits.length>0){
+            List<HomePageNearEsfDo> list = new ArrayList<>();
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
+                homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
+                homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
+                list.add(homePageNearEsfDo);
+            }
+            homePageNearEsfListDo.setData(list);
+            homePageNearEsfListDo.setTotalNum((int) esfSpecialPage.getHits().getTotalHits());
+        }
+        return homePageNearEsfListDo;
+    }
+
 
     private List hashPush(List<HomePageEsfDo> result, HomePageEsfDo homePageEsfDos) {
         Boolean flag = false;

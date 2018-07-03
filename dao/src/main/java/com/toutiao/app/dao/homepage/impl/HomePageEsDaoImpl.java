@@ -79,4 +79,14 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).execute().actionGet();
         return searchResponse;
     }
+
+    @Override
+    public SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("updateTimeSort",SortOrder.DESC)
+                .addSort("_uid",SortOrder.DESC).setFrom(from).setSize(size).execute().actionGet();
+        return searchResponse;
+    }
 }

@@ -38,9 +38,9 @@ public class HomePageNearEsfDo {
      */
     private String isCommunityTopHouse;
     /**
-     * 是否是降价房
+     * 是否是降价房(1涨 2降)
      */
-    private String isCutPrice;
+    private String priceIncreaseDecline;
     /**
      * 距离
      */
@@ -48,7 +48,7 @@ public class HomePageNearEsfDo {
     /**
      * 价格浮动
      */
-    private double priceFloat;
+    private double priceIncreaseDeclineAmount;
     /**
      * 小区名称
      */
@@ -59,6 +59,14 @@ public class HomePageNearEsfDo {
      */
     @ChangeName("buildingId")
     private Integer newcode;
+    /**
+     * 排序规则字段
+     */
+    private String upTimestamp;
+    /**
+     * 推荐广告查询uid
+     */
+    private String uid;
 
 
 }
