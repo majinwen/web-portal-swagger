@@ -31,7 +31,7 @@ public class SellHouseDoQuery extends QueryDo {
     /**
      * 排序字段
      */
-    private String upTimestamp;
+    private String sortFields;
 
     /**
      * 排序标志

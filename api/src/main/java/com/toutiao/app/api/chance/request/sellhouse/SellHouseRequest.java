@@ -34,7 +34,7 @@ public class SellHouseRequest extends BaseQueryRequest {
      * 排序字段
      */
     @NotEmpty(groups = {First.class},message = "房源查询标志为空")
-    private String upTimestamp;
+    private String sortFields;
 
     /**
      * 排序标志

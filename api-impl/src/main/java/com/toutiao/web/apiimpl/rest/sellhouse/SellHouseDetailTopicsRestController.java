@@ -25,7 +25,11 @@ public class SellHouseDetailTopicsRestController {
     private SellHouseDetailTopicsService sellHouseDetailTopicsService;
 
 
-
+    /**
+     * 小区附近专题
+     * @param sellHouseRequest
+     * @return
+     */
     @RequestMapping(value ="/getNearbyTopicsSellHouseDetail", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getNearbyTopicsSellHouseDetail(@Validated(First.class)  SellHouseRequest sellHouseRequest) {
@@ -39,6 +43,57 @@ public class SellHouseDetailTopicsRestController {
     }
 
 
+    /**
+     * 降价专题
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping(value ="/getCutPriceTopicsSellHouseDetail", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getCutPriceTopicsSellHouseDetail(@Validated(First.class)  SellHouseRequest sellHouseRequest) {
 
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getCutPriceTopicsSellHouse(sellHouseDoQuery);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+        return NashResult.build(sellHouseResponse);
+    }
+
+
+    /**
+     * 降价专题
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping(value ="/getLowPriceTopicsSellHouseDetail", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getLowPriceTopicsSellHouseDetail(@Validated(First.class)  SellHouseRequest sellHouseRequest) {
+
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getLowPriceTopicsSellHouse(sellHouseDoQuery);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+        return NashResult.build(sellHouseResponse);
+    }
+
+
+    /**
+     * 逢出毕抢
+     * @param sellHouseRequest
+     * @return
+     */
+    @RequestMapping(value ="/getMustRobTopicsSellHouseDetail", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getMustRobTopicsSellHouseDetail(@Validated(First.class)  SellHouseRequest sellHouseRequest) {
+
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getMustRobTopicsSellHouseDetail(sellHouseDoQuery);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+        return NashResult.build(sellHouseResponse);
+    }
 
 }
