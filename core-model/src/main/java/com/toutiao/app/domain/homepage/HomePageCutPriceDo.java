@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.homepage;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 /**
@@ -30,9 +31,10 @@ public class HomePageCutPriceDo {
 	private Double houseTotalPrices;
 
 	/**
-	 * 价格浮动(单位:万)
+	 * 涨降幅度绝对值(单位:万)
 	 */
-	private Double priceFloat;
+	@ChangeName("priceIncreaseDeclineAmount")
+	private Double price_increase_decline_amount;
 
 	/**
 	 * 房源标题图片
@@ -42,6 +44,7 @@ public class HomePageCutPriceDo {
 	/**
 	 * 小区
 	 */
+	@ChangeName("plotNameAccurate")
 	private String plotName_accurate;
 
 	/**
@@ -70,9 +73,10 @@ public class HomePageCutPriceDo {
 	private Integer isDealLayout;
 
 	/**
-	 * 是否降价房(0-否,1-降价房,2-涨价房)
+	 * 涨价降价房(1-涨价房,2-降价房)
 	 */
-	private Integer isCutPrice;
+	@ChangeName("priceIncreaseDecline")
+	private Integer price_increase_decline;
 
 	/**
 	 * 是否同户型小区均价最低(0-否,1-是)

@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.homepage;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 /**
@@ -37,6 +38,7 @@ public class HomePageLowerPriceDo {
 	/**
 	 * 小区
 	 */
+	@ChangeName("plotNameAccurate")
 	private String plotName_accurate;
 
 	/**
