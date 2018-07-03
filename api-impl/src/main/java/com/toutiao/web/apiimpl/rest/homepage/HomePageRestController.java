@@ -104,7 +104,6 @@ public class HomePageRestController {
     @ResponseBody
     public  NashResult beSureToSnatch(BaseQueryRequest baseQueryRequest)
     {
-
         HomeSureToSnatchDoQuery homeSureToSnatchDoQuery=new HomeSureToSnatchDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,homeSureToSnatchDoQuery);
         List<HomeSureToSnatchDo>  homeSureToSnatchDos =homePageRestService.getHomeBeSureToSnatch(homeSureToSnatchDoQuery);
