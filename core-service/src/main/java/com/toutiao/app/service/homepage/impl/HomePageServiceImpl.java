@@ -9,10 +9,8 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
@@ -165,7 +163,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 		//筛选低价房 price_increase_decline=2
-		boolQueryBuilder.must(QueryBuilders.termQuery("price_increase_decline", 2));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
         SearchResponse cutPriceHouses = homePageEsDao.getHomePageCutPrice(boolQueryBuilder);
         SearchHit[] hits = cutPriceHouses.getHits().getHits();
         List<HomePageCutPriceDo> homePageCutPriceDos = new ArrayList<>();
