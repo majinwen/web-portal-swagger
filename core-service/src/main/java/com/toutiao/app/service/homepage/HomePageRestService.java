@@ -1,8 +1,5 @@
 package com.toutiao.app.service.homepage;
-import com.toutiao.app.domain.homepage.HomePageTop50Do;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
-import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 
 import java.util.List;
@@ -32,4 +29,10 @@ public interface HomePageRestService {
      */
 
     List<HomePageTop50Do> getHomePageTop50();
+
+
+    /**
+     * 首页缝出必抢
+     */
+    List<HomeSureToSnatchDo>  getHomeBeSureToSnatch (HomeSureToSnatchDoQuery homeSureToSnatchDoQuery);
 }

@@ -75,4 +75,22 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
         return  response;
 
     }
+
+    /**
+     *  首页缝出必抢
+     * @param boolQueryBuilder
+     * @param from
+     * @param size
+     * @return
+     */
+    @Override
+    public SearchResponse getHomeBeSureToSnatch(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        srb.addSort("updateTimeSort",SortOrder.DESC);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
+        return searchResponse;
+
+
+    }
 }

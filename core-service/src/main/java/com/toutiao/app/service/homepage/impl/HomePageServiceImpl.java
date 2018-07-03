@@ -185,4 +185,35 @@ public class HomePageServiceImpl implements HomePageRestService {
         }
         return  homePageTop50Dos;
     }
+
+    /**
+     * 首页缝出必抢
+     * @param homeSureToSnatchDoQuery
+     * @return
+     */
+
+
+    @Override
+    public List<HomeSureToSnatchDo> getHomeBeSureToSnatch(HomeSureToSnatchDoQuery homeSureToSnatchDoQuery) {
+
+        List<HomeSureToSnatchDo> homeSureToSnatchDos=new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isCommunityTopHouse",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isMainLayout",1));
+        SearchResponse beSureToSnatch=homePageEsDao.getHomeBeSureToSnatch(boolQueryBuilder,homeSureToSnatchDoQuery.getPageNum(),homeSureToSnatchDoQuery.getPageSize());
+        SearchHit[] hits = beSureToSnatch.getHits().getHits();
+        for (SearchHit hit : hits) {
+            String details = "";
+            details = hit.getSourceAsString();
+            HomeSureToSnatchDo  homeSureToSnatchDo = JSON.parseObject(details, HomeSureToSnatchDo.class);
+            if(homeSureToSnatchDo.getIsClaim().equals(1))
+            {
+                homeSureToSnatchDo.setHousePhotoTitle(homeSureToSnatchDo.getClaimHousePhotoTitle());
+            }
+            homeSureToSnatchDos.add(homeSureToSnatchDo);
+        }
+        return homeSureToSnatchDos;
+
+
+    }
 }

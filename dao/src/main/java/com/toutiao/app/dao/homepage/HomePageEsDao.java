@@ -19,5 +19,8 @@ public interface HomePageEsDao {
 
     SearchResponse getHomePageTop50(BoolQueryBuilder boolQueryBuilder);
 
-
+    /**
+     * 缝出必抢
+     */
+    SearchResponse getHomeBeSureToSnatch(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
 }

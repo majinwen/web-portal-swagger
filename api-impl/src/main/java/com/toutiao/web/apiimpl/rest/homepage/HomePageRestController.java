@@ -8,10 +8,13 @@ import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.response.homepage.HomePageEsfResponse;
 import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
 import com.toutiao.app.api.chance.response.homepage.HomePageTop50Response;
+import com.toutiao.app.api.chance.response.homepage.HomeSureToSnatchResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.HomePageEsfDo;
 import com.toutiao.app.domain.homepage.HomePageTop50Do;
+import com.toutiao.app.domain.homepage.HomeSureToSnatchDo;
+import com.toutiao.app.domain.homepage.HomeSureToSnatchDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
@@ -92,4 +95,22 @@ public class HomePageRestController {
         return NashResult.build(homePageTop50ResponseList);
 
     }
+
+
+    /**
+     * 逢出必抢系列
+     */
+    @RequestMapping(value = "/beSureToSnatch",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult beSureToSnatch(BaseQueryRequest baseQueryRequest)
+    {
+
+        HomeSureToSnatchDoQuery homeSureToSnatchDoQuery=new HomeSureToSnatchDoQuery();
+        BeanUtils.copyProperties(baseQueryRequest,homeSureToSnatchDoQuery);
+        List<HomeSureToSnatchDo>  homeSureToSnatchDos =homePageRestService.getHomeBeSureToSnatch(homeSureToSnatchDoQuery);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homeSureToSnatchDos));
+        List<HomeSureToSnatchResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomeSureToSnatchResponse.class);
+        return  NashResult.build(newHouseListResponses);
+    }
+
 }
