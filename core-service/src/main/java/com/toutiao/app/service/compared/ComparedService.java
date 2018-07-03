@@ -9,7 +9,6 @@ import java.util.Dictionary;
 import java.util.List;
 
 public interface ComparedService {
-
     int deleteByPrimaryKey(Integer id);
 
     int insert(HouseCompared record);
