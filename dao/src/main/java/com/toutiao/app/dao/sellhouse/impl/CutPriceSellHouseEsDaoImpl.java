@@ -32,7 +32,7 @@ public class CutPriceSellHouseEsDaoImpl implements CutPriceSellHouseEsDao {
 	 * 查询降价房列表
 	 */
 	@Override
-	public SearchResponse getCutPriceSellHouse(BoolQueryBuilder query, Integer sort) {
+	public SearchResponse getCutPriceSellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize) {
 		TransportClient client = esClientTools.init();
 		SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
 		//排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
@@ -48,6 +48,6 @@ public class CutPriceSellHouseEsDaoImpl implements CutPriceSellHouseEsDao {
 			srb.addSort("priceFloat", SortOrder.DESC);
 		}
 		srb.addSort("_uid", SortOrder.DESC);
-		return srb.setQuery(query).execute().actionGet();
+		return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
 	}
 }

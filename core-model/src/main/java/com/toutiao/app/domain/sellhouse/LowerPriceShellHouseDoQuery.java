@@ -28,4 +28,14 @@ public class LowerPriceShellHouseDoQuery {
 	 * 新导入房源
 	 */
 	private Integer isNew;
+
+	/**
+	 * 页码
+	 */
+	private Integer pageNum;
+
+	/**
+	 * 每页数量
+	 */
+	private Integer pageSize;
 }

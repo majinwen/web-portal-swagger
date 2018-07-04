@@ -72,8 +72,10 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
 							.lte(highestTotalPrice)));
 		}
 
-		SearchResponse lowerPriceSellHouse = lowerPriceSellHouseEsDao.getLowerPriceSellHouse(booleanQueryBuilder,
-				lowerPriceShellHouseDoQuery.getSort());
+		Integer sort = lowerPriceShellHouseDoQuery.getSort();
+		Integer pageNum = lowerPriceShellHouseDoQuery.getPageNum();
+		Integer pageSize = lowerPriceShellHouseDoQuery.getPageSize();
+		SearchResponse lowerPriceSellHouse = lowerPriceSellHouseEsDao.getLowerPriceSellHouse(booleanQueryBuilder, sort, pageNum, pageSize);
 
 		SearchHits hits = lowerPriceSellHouse.getHits();
 		SearchHit[] searchHists = hits.getHits();

@@ -65,9 +65,10 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 					QueryBuilders.rangeQuery("houseTotalPrices")
 							.lte(highestTotalPrice)));
 		}
-
-		SearchResponse cutPriceSellHouse = cutPriceSellHouseEsDao.getCutPriceSellHouse(booleanQueryBuilder,
-				cutPriceShellHouseDoQuery.getSort());
+		Integer sort = cutPriceShellHouseDoQuery.getSort();
+		Integer pageNum = cutPriceShellHouseDoQuery.getPageNum();
+		Integer pageSize = cutPriceShellHouseDoQuery.getPageSize();
+		SearchResponse cutPriceSellHouse = cutPriceSellHouseEsDao.getCutPriceSellHouse(booleanQueryBuilder, sort, pageNum, pageSize);
 
 		SearchHits hits = cutPriceSellHouse.getHits();
 		SearchHit[] searchHists = hits.getHits();
