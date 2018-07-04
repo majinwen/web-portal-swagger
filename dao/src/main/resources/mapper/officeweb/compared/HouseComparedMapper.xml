@@ -30,7 +30,7 @@
       #{houseStatus,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.compared.HouseCompared" >
+  <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.compared.HouseCompared" useGeneratedKeys="true" keyProperty="id">
     insert into house_compared
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -72,7 +72,7 @@
         #{isDel,jdbcType=SMALLINT},
       </if>
     </trim>
-  </insert>
+  </insert >
   <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.compared.HouseCompared" >
     update house_compared
     <set >
