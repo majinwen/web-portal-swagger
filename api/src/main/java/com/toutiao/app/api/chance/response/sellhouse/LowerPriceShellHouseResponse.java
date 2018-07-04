@@ -13,7 +13,9 @@ public class LowerPriceShellHouseResponse {
 	private List<LowerPriceShellHouseDo> data;
 
 	/**
-	 * 是否被订阅
+	 * 订阅Id(-1代表没有订阅)
 	 */
-	private boolean subscription;
+	private Integer subscribeId;
+
+	private long totalCount;
 }
