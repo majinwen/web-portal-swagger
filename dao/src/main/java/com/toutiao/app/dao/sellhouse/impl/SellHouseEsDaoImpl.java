@@ -11,6 +11,12 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class SellHouseEsDaoImpl implements SellHouseEsDao {
+public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
     @Autowired
     private ESClientTools esClientTools;
@@ -118,6 +124,15 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(idsQueryBuilder)
                 .execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize, FieldSortBuilder sortFile) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).addSort(sortFile).setFrom(pageNum).setSize(pageSize).execute().actionGet();
         return searchresponse;
     }
 

@@ -21,6 +21,7 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.poi.ss.formula.functions.T;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
@@ -31,11 +32,16 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 
 @Service
 public class SellHouseServiceImpl implements SellHouseService{
@@ -516,6 +522,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
 
+
     public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder){
         FunctionScoreQueryBuilder query = null;
         List<String> searchKeyword = new ArrayList<>();
@@ -554,6 +561,60 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         return query;
 
+    }
+
+
+
+    @Override
+    public List<SellHouseBeSureToSnatchDo> getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos=new ArrayList<>();
+        FieldSortBuilder sortFile=null;
+        boolQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
+        if (null!=sellHouseBeSureToSnatchDoQuery.getSortFile() && null!=sellHouseBeSureToSnatchDoQuery.getSort() )
+        {
+            if(sellHouseBeSureToSnatchDoQuery.getSort().equals("DESC"))
+            {
+                sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.DESC);
+            }
+            else
+            {
+                sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.ASC);
+            }
+        }
+        if(null!=sellHouseBeSureToSnatchDoQuery.getDistrictId() && !sellHouseBeSureToSnatchDoQuery.getDistrictId().equals(0))
+        {
+            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",sellHouseBeSureToSnatchDoQuery.getDistrictId()));
+        }
+        if(sellHouseBeSureToSnatchDoQuery.getBeginPrice()!=0  && sellHouseBeSureToSnatchDoQuery.getEndPrice()!=0){
+            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(sellHouseBeSureToSnatchDoQuery.getBeginPrice()).lte(sellHouseBeSureToSnatchDoQuery.getEndPrice())));
+        }else if (sellHouseBeSureToSnatchDoQuery.getBeginPrice()==0 && sellHouseBeSureToSnatchDoQuery.getEndPrice()!=0)
+        {        sellHouseBeSureToSnatchDoQuery.setBeginPrice(0.0);
+            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(sellHouseBeSureToSnatchDoQuery.getBeginPrice()).lte(sellHouseBeSureToSnatchDoQuery.getEndPrice())));
+        }else if (sellHouseBeSureToSnatchDoQuery.getEndPrice()==0 &&  sellHouseBeSureToSnatchDoQuery.getBeginPrice()!=0)
+        {
+            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(sellHouseBeSureToSnatchDoQuery.getBeginPrice())));
+        }
+        SearchResponse searchResponse= sellHouseEsDao.getBeSureToSnatchList(boolQueryBuilder,sellHouseBeSureToSnatchDoQuery.getPageNum(),sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        for (SearchHit searchHit : searchHists)
+        {
+            String details = "";
+            Object [] sort=searchHit.getSortValues();
+            details=searchHit.getSourceAsString();
+            SellHouseBeSureToSnatchDo sellHouseBeSureToSnatchDo=JSON.parseObject(details,SellHouseBeSureToSnatchDo.class);
+            if(sellHouseBeSureToSnatchDo.getIsClaim().equals(1))
+            {
+                sellHouseBeSureToSnatchDo.setHouseId(sellHouseBeSureToSnatchDo.getClaimHouseId());
+                sellHouseBeSureToSnatchDo.setHousePhotoTitle(sellHouseBeSureToSnatchDo.getClaimHousePhotoTitle());
+            }
+
+            sellHouseBeSureToSnatchDo.setSort(sort[0]);
+            sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
+        }
+
+         return sellHouseBeSureToSnatchDos;
     }
 
 }
