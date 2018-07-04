@@ -23,4 +23,14 @@ public class LowerPriceShellHouseRequest {
 	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降)
 	 */
 	private Integer sort;
+
+	/**
+	 * 页码
+	 */
+	private Integer pageNum = 1;
+
+	/**
+	 * 每页数量
+	 */
+	private Integer pageSize = 10;
 }
