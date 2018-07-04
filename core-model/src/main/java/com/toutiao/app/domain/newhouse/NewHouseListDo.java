@@ -121,4 +121,9 @@ public class NewHouseListDo  {
     @ChangeName("tags")
     private  String [] buildingTags;
 
+    /**
+     *  小区所属环线
+     */
+    private  Integer  ringRoad;
+
 }

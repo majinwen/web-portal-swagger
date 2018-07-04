@@ -613,7 +613,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             sellHouseBeSureToSnatchDo.setSort(sort[0]);
             sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
         }
-        sellHouseBeSureToSnatchDomain.setSellHouseBeSureToSnatchDos(sellHouseBeSureToSnatchDos);
+        sellHouseBeSureToSnatchDomain.setData(sellHouseBeSureToSnatchDos);
         UserBasic userBasic = UserBasic.getCurrent();
         if (null!=userBasic)
         {
