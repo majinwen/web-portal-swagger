@@ -44,4 +44,10 @@ public interface SellHouseService {
      * @return
      */
     SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery);
+
+
+    List<SellHouseBeSureToSnatchDo> getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery);
+
+
+
 }

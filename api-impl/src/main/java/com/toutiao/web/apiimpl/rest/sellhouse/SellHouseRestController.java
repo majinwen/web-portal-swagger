@@ -1,9 +1,14 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
+import com.toutiao.app.api.chance.request.sellhouse.SellHouseBeSureToSnatchRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseDerailsRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
@@ -14,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -104,6 +110,23 @@ public class SellHouseRestController {
         SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery);
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
+    }
+
+
+    /**
+     * 缝出必抢专题页
+     */
+    @RequestMapping(value = "/getBeSureToSnatchList",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult getBeSureToSnatchList(SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest)
+    {
+
+        SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery=new SellHouseBeSureToSnatchDoQuery();
+        BeanUtils.copyProperties(sellHouseBeSureToSnatchRequest,sellHouseBeSureToSnatchDoQuery);
+        List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseBeSureToSnatchDos));
+        List<SellHouseBeSureToSnatchResponse> sellHouseBeSureToSnatchResponses= JSONObject.parseArray(json.toJSONString(), SellHouseBeSureToSnatchResponse.class);
+        return  NashResult.build(sellHouseBeSureToSnatchResponses);
     }
 
 }

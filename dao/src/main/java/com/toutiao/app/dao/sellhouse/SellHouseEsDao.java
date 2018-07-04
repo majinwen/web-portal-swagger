@@ -4,6 +4,7 @@ package com.toutiao.app.dao.sellhouse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 
 
 public interface SellHouseEsDao {
@@ -43,6 +44,10 @@ public interface SellHouseEsDao {
      * @return
      */
     SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize);
+
+
+    SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder,Integer pageNum, Integer pageSize,FieldSortBuilder sortFile );
+
 
 
 
