@@ -90,6 +90,7 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
 			}
 		}
 		lowerPriceShellHouseDomain.setData(lowerPriceShellHouseDos);
+		lowerPriceShellHouseDomain.setTotalCount(hits.totalHits);
 		return lowerPriceShellHouseDomain;
 	}
 }

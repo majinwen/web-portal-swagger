@@ -83,6 +83,7 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 			}
 		}
 		cutPriceShellHouseDomain.setData(cutPriceShellHouseDos);
+		cutPriceShellHouseDomain.setTotalCount(hits.totalHits);
 		return cutPriceShellHouseDomain;
 	}
 }
