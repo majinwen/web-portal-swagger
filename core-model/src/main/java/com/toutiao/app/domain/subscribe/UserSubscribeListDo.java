@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.subscribe;
 
+import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDomain;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,5 +17,9 @@ public class UserSubscribeListDo {
 
     private Date updateTime;
 
+    private Long newCount;
+
     private UserSubscribeDetailDo userSubscribeDetail;
+
+    private Object houseList;
 }

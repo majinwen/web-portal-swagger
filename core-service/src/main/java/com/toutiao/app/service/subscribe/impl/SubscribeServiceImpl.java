@@ -1,8 +1,11 @@
 package com.toutiao.app.service.subscribe.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDoQuery;
+import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeListDo;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
@@ -17,6 +20,8 @@ import java.util.List;
 public class SubscribeServiceImpl implements SubscribeService {
     @Autowired
     UserSubscribeMapper userSubscribeMapper;
+    @Autowired
+    private SellHouseService sellHouseService;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -44,16 +49,89 @@ public class SubscribeServiceImpl implements SubscribeService {
     }
 
     @Override
-    public List<UserSubscribeListDo> selectByUserId(Integer userId) {
+    public List<UserSubscribeListDo> getMySubscribeInfo(Integer userId) {
+        return selectByUserId(userId, Boolean.FALSE);
+    }
 
+    @Override
+    public List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId) {
+        return selectByUserId(userId, Boolean.TRUE);
+    }
+
+    /**
+     *
+     * @param userId 用户ID
+     * @param isGetHouseDetail 是否获取符合订阅条件的房源详情
+     * @return
+     */
+    public List<UserSubscribeListDo> selectByUserId(Integer userId, Boolean isGetHouseDetail) {
         List<UserSubscribeListDo> userSubscribeListDoList = new ArrayList<>();
         List<UserSubscribe> userSubscribeList = userSubscribeMapper.selectByUserId(userId);
         for (UserSubscribe userSubscribe : userSubscribeList) {
             UserSubscribeListDo userSubscribeListDo = new UserSubscribeListDo();
             BeanUtils.copyProperties(userSubscribe, userSubscribeListDo);
-            userSubscribeListDo.setUserSubscribeDetail(JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeDetailDo.class));
+            UserSubscribeDetailDo userSubscribeDetailDo = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeDetailDo.class);
+            userSubscribeListDo.setUserSubscribeDetail(userSubscribeDetailDo);
+            //填充新增数量
+            userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo));
+            if(isGetHouseDetail) {
+                //填充房源列表数据
+                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo));
+            }
             userSubscribeListDoList.add(userSubscribeListDo);
         }
         return userSubscribeListDoList;
+    }
+
+    private Long getNewCountBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo)
+    {
+        if(userSubscribeDetailDo.getTopicType() == 3) {
+            SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
+            sellHouseBeSureToSnatchDoQuery.setIsNew(1);
+            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+            return sellHouseBeSureToSnatchDos.getTotalCount();
+        }
+        else if(userSubscribeDetailDo.getTopicType() == 1) {
+//            SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+//            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
+//            sellHouseBeSureToSnatchDoQuery.setIsNew(1);
+//            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+//            return sellHouseBeSureToSnatchDos.getTotalCount();
+        }
+        else if(userSubscribeDetailDo.getTopicType() == 2) {
+//            SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+//            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
+//            sellHouseBeSureToSnatchDoQuery.setIsNew(1);
+//            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+//            return sellHouseBeSureToSnatchDos.getTotalCount();
+        }
+        return 0L;
+    }
+
+    private Object getHouseListBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo)
+    {
+        Integer pageIndex = 1;
+        Integer pageSize = 10;
+        if(userSubscribeDetailDo.getTopicType() == 3) {
+            SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
+            return sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+        }
+        else if(userSubscribeDetailDo.getTopicType() == 1) {
+//            SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+//            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
+//            sellHouseBeSureToSnatchDoQuery.setIsNew(1);
+//            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+//            return sellHouseBeSureToSnatchDos.getTotalCount();
+        }
+        else if(userSubscribeDetailDo.getTopicType() == 2) {
+//            SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+//            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
+//            sellHouseBeSureToSnatchDoQuery.setIsNew(1);
+//            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+//            return sellHouseBeSureToSnatchDos.getTotalCount();
+        }
+        return 0L;
     }
 }
