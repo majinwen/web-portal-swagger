@@ -17,5 +17,17 @@ public interface SubscribeService {
 
     int updateByPrimaryKeySelective(UserSubscribe record);
 
-    List<UserSubscribeListDo> selectByUserId(Integer userId);
+    /**
+     * 获取我的订阅页数据
+     * @param userId
+     * @return
+     */
+    List<UserSubscribeListDo> getMySubscribeInfo(Integer userId);
+
+    /**
+     * 获取首页订阅数据
+     * @param userId
+     * @return
+     */
+    List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId);
 }

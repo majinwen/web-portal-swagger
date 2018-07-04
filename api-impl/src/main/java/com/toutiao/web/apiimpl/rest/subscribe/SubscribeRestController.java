@@ -67,7 +67,7 @@ public class SubscribeRestController {
     @RequestMapping(value = "/listSubscribe", method = RequestMethod.GET)
     public NashResult listSubscribe() {
         UserBasic userBasic = UserBasic.getCurrent();
-        return NashResult.build(subscribeService.selectByUserId(Integer.parseInt(userBasic.getUserId())));
+        return NashResult.build(subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId())));
     }
 
 
