@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class SellHouseBeSureToSnatchDoQuery {
 
-    private  String sortFile;
+    private  String sortFile="updateTimeSort";
 
-    private  Integer  sort;
+    private  Integer  sort=1;
     /**
      * 起始价格
      */
