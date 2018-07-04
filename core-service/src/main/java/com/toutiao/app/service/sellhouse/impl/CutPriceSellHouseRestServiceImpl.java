@@ -5,7 +5,11 @@ import com.toutiao.app.dao.sellhouse.CutPriceSellHouseEsDao;
 import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDo;
 import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDomain;
+import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.sellhouse.CutPriceSellHouseRestService;
+import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -21,6 +25,9 @@ import java.util.List;
 public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestService {
 	@Autowired
 	private CutPriceSellHouseEsDao cutPriceSellHouseEsDao;
+
+	@Autowired
+	private SubscribeService subscribeService;
 
 	/**
 	 * 获取降价房Domain
@@ -65,9 +72,10 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 					QueryBuilders.rangeQuery("houseTotalPrices")
 							.lte(highestTotalPrice)));
 		}
-
-		SearchResponse cutPriceSellHouse = cutPriceSellHouseEsDao.getCutPriceSellHouse(booleanQueryBuilder,
-				cutPriceShellHouseDoQuery.getSort());
+		Integer sort = cutPriceShellHouseDoQuery.getSort();
+		Integer pageNum = cutPriceShellHouseDoQuery.getPageNum();
+		Integer pageSize = cutPriceShellHouseDoQuery.getPageSize();
+		SearchResponse cutPriceSellHouse = cutPriceSellHouseEsDao.getCutPriceSellHouse(booleanQueryBuilder, sort, pageNum, pageSize);
 
 		SearchHits hits = cutPriceSellHouse.getHits();
 		SearchHit[] searchHists = hits.getHits();
@@ -81,7 +89,34 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 				cutPriceShellHouseDos.add(cutPriceShellHouseDo);
 			}
 		}
+
+		//查询订阅Id
+		if (!UserBasic.isLogin()) {
+			cutPriceShellHouseDomain.setSubscriptionId(-1);
+		} else {
+			UserBasic userBasic = UserBasic.getCurrent();
+			UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
+			userSubscribeDetailDo.setTopicType(1);
+			if (areaId != null) {
+				userSubscribeDetailDo.setDistrictId(areaId);
+			}
+			if (lowestTotalPrice != null) {
+				userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
+			}
+			if (highestTotalPrice != null) {
+				userSubscribeDetailDo.setEndPrice(highestTotalPrice);
+			}
+
+			UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
+					.valueOf(userBasic.getUserId()));
+			if (userSubscribe != null) {
+				cutPriceShellHouseDomain.setSubscriptionId(userSubscribe.getId());
+			} else {
+				cutPriceShellHouseDomain.setSubscriptionId(-1);
+			}
+		}
 		cutPriceShellHouseDomain.setData(cutPriceShellHouseDos);
+		cutPriceShellHouseDomain.setTotalCount(hits.totalHits);
 		return cutPriceShellHouseDomain;
 	}
 }
