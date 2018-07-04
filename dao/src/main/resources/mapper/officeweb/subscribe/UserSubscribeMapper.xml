@@ -27,7 +27,7 @@
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userSubscribeMap,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.subscribe.UserSubscribe">
+    <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.subscribe.UserSubscribe" useGeneratedKeys="true" keyProperty="id">
         insert into user_subscribe
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -110,5 +110,12 @@
             and user_subscribe_map->>'endPrice' = cast(#{record.endPrice,jdbcType=INTEGER} as text)
         </if>
         limit 1
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from user_subscribe
+        where user_id = #{userId,jdbcType=INTEGER}
     </select>
 </mapper>

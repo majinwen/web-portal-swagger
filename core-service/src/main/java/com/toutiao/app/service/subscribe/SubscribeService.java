@@ -1,7 +1,10 @@
 package com.toutiao.app.service.subscribe;
 
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.domain.subscribe.UserSubscribeListDo;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
+
+import java.util.List;
 
 public interface SubscribeService {
     int deleteByPrimaryKey(Integer id);
@@ -14,5 +17,5 @@ public interface SubscribeService {
 
     int updateByPrimaryKeySelective(UserSubscribe record);
 
-
+    List<UserSubscribeListDo> selectByUserId(Integer userId);
 }
