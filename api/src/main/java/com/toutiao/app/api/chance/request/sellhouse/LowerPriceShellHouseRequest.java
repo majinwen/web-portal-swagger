@@ -1,9 +1,9 @@
-package com.toutiao.app.domain.sellhouse;
+package com.toutiao.app.api.chance.request.sellhouse;
 
 import lombok.Data;
 
 @Data
-public class CutPriceShellHouseDoQuery {
+public class LowerPriceShellHouseRequest {
 	/**
 	 * 商圈Id
 	 */
@@ -20,12 +20,7 @@ public class CutPriceShellHouseDoQuery {
 	private Integer highestTotalPrice;
 
 	/**
-	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
+	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降)
 	 */
 	private Integer sort;
-
-	/**
-	 * 新导入房源
-	 */
-	private Integer isNew;
 }

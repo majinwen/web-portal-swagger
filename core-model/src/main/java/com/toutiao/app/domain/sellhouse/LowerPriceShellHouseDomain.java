@@ -5,14 +5,14 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CutPriceShellHouseDomain {
+public class LowerPriceShellHouseDomain {
 	/**
-	 * 降价房数据
+	 * 捡漏房数据
 	 */
-	private List<CutPriceShellHouseDo> data;
+	private List<LowerPriceShellHouseDo> data;
 
 	/**
-	 * 订阅Id(-1代表未订阅)
+	 * 订阅Id(-1代表没有订阅)
 	 */
 	private Integer subscriptionId;
 }

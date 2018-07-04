@@ -40,6 +40,13 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 					.must(QueryBuilders.termQuery("areaId", areaId)));
 		}
 
+		//新导入房源
+		Integer isNew = cutPriceShellHouseDoQuery.getIsNew();
+		if (isNew != null) {
+			booleanQueryBuilder.must(QueryBuilders.boolQuery()
+					.must(QueryBuilders.termQuery("isNew", isNew)));
+		}
+
 		//价格区间
 		Integer lowestTotalPrice = cutPriceShellHouseDoQuery.getLowestTotalPrice();
 		Integer highestTotalPrice = cutPriceShellHouseDoQuery.getHighestTotalPrice();

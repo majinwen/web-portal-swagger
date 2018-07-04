@@ -12,12 +12,16 @@ import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 降价房专题页控制器
+ *
+ * @author zym
+ */
 @RestController
 @RequestMapping("/rest/esf/cutPrice")
 public class CutPriceSellHouseRestController {
@@ -32,15 +36,15 @@ public class CutPriceSellHouseRestController {
 	 */
 	@RequestMapping(value = "/getCutPriceShellHouse", method = RequestMethod.GET)
 	@ResponseBody
-	public NashResult getCutPriceShellHouse(@Validated CutPriceShellHouseRequest cutPriceShellHouseRequest) {
+	public NashResult getCutPriceShellHouse(CutPriceShellHouseRequest cutPriceShellHouseRequest) {
 		CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
 		BeanUtils.copyProperties(cutPriceShellHouseRequest, cutPriceShellHouseDoQuery);
 		CutPriceShellHouseDomain cutPriceShellHouses = cutPriceSellHouseRestService
 				.getCutPriceHouse(cutPriceShellHouseDoQuery);
 
-		//查询订阅状态
+		//查询订阅Id
 		if (!UserBasic.isLogin()) {
-			cutPriceShellHouses.setSubscription(false);
+			cutPriceShellHouses.setSubscriptionId(-1);
 		} else {
 			UserBasic userBasic = UserBasic.getCurrent();
 			UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
@@ -61,9 +65,9 @@ public class CutPriceSellHouseRestController {
 			UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
 					.valueOf(userBasic.getUserId()));
 			if (userSubscribe != null) {
-				cutPriceShellHouses.setSubscription(true);
+				cutPriceShellHouses.setSubscriptionId(userSubscribe.getId());
 			} else {
-				cutPriceShellHouses.setSubscription(false);
+				cutPriceShellHouses.setSubscriptionId(-1);
 			}
 		}
 		CutPriceShellHouseResponse cutPriceShellHouseResponse = new CutPriceShellHouseResponse();

@@ -3,7 +3,7 @@ package com.toutiao.app.domain.sellhouse;
 import lombok.Data;
 
 @Data
-public class CutPriceShellHouseDoQuery {
+public class LowerPriceShellHouseDoQuery {
 	/**
 	 * 商圈Id
 	 */
@@ -20,7 +20,7 @@ public class CutPriceShellHouseDoQuery {
 	private Integer highestTotalPrice;
 
 	/**
-	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
+	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降)
 	 */
 	private Integer sort;
 
