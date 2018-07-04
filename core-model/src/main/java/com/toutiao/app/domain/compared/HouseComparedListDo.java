@@ -54,12 +54,12 @@ public class HouseComparedListDo {
     /**
      * 是否降价房(0-否，1-降价房，2-涨价房)
      */
-    private Integer priceIncreaseDecline;
+    private Integer isCutPrice;
 
     /**
      * 总价价格浮动
      */
-    private Double priceIncreaseDeclineAmount;
+    private Double priceFloat;
 
     /**
      * 是否是top50小区房源(0-否，1-是)
