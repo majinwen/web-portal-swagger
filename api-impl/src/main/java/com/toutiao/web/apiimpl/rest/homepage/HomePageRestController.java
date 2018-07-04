@@ -111,7 +111,7 @@ public class HomePageRestController {
     /**
      * 专题着陆页-附近二手房
      */
-    @RequestMapping(value = "esfSpecialPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/esfSpecialPage",method = RequestMethod.GET)
     public NashResult esfSpecialPage(NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
         NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
         BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
