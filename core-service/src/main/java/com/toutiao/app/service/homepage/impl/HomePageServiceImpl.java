@@ -8,9 +8,14 @@ import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
@@ -137,6 +142,154 @@ public class HomePageServiceImpl implements HomePageRestService {
             homeThemeHouseListDo.setTotalNum((int) homeThemeHouse.getHits().getTotalHits());
         }
         return homeThemeHouseListDo;
+    }
+
+    /**
+     * 首页根据坐标获取周边小区
+     * @param nearHouseDoQuery
+     * @return
+     */
+    @Override
+    public HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery) {
+
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearPlotListDo homePageNearPlotListDo = new HomePageNearPlotListDo();
+
+        //过滤附近5km
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
+                .point(nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon())
+                .distance(nearHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+
+        //按距离排序并计算距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
+        sort.unit(DistanceUnit.KILOMETERS);
+        sort.order(SortOrder.ASC);
+
+        //组装条件
+        boolQueryBuilder.must(location);
+        boolQueryBuilder.must(QueryBuilders.termQuery("cityId", nearHouseDoQuery.getCityId()));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+
+        SearchResponse homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+
+        SearchHit[] hits = homePageNearPlot.getHits().getHits();
+        if (hits!=null&&hits.length>0){
+            List<HomePageNearPlotDo> list = new ArrayList<>();
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
+                homePageNearPlotDo.setDistance((Double) hit.getSortValues()[0]);
+                list.add(homePageNearPlotDo);
+            }
+            homePageNearPlotListDo.setData(list);
+            homePageNearPlotListDo.setTotalNum((int) homePageNearPlot.getHits().getTotalHits());
+        }
+        return homePageNearPlotListDo;
+    }
+
+    /**
+     * 根据坐标获取周边二手房
+     * @param nearHouseDoQuery
+     * @return
+     */
+    @Override
+    public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery) {
+
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
+
+        //过滤附近5km
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
+                .point(nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon())
+                .distance(nearHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+
+        //按距离排序并计算距离
+        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
+        sort.unit(DistanceUnit.KILOMETERS);
+        sort.order(SortOrder.ASC);
+
+        //组装条件
+        boolQueryBuilder.must(location);
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+
+        SearchResponse homePageNearEsf = homePageEsDao.getHomePageNearEsf(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+
+        SearchHit[] hits = homePageNearEsf.getHits().getHits();
+        if (hits!=null&&hits.length>0){
+            List<HomePageNearEsfDo> list = new ArrayList<>();
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
+                homePageNearEsfDo.setDistance((Double) hit.getSortValues()[0]);
+                list.add(homePageNearEsfDo);
+            }
+            homePageNearEsfListDo.setData(list);
+            homePageNearEsfListDo.setTotalNum((int) homePageNearEsf.getHits().getTotalHits());
+        }
+        return homePageNearEsfListDo;
+    }
+
+    /**
+     * 专题着陆页-附近小区
+     * @param plotId
+     * @return
+     */
+    @Override
+    public HomePageNearPlotDo getPlotSpecialPage(Integer plotId) {
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearPlotDo homePageNearPlotDo = new HomePageNearPlotDo();
+
+        boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+
+        SearchResponse plotSpecialPage = homePageEsDao.getPlotSpecialPage(boolQueryBuilder);
+
+        SearchHit[] hits = plotSpecialPage.getHits().getHits();
+
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
+        }
+        return homePageNearPlotDo;
+    }
+
+    /**
+     * 专题着陆页-附近二手房
+     * @param nearHouseSpecialPageDoQuery
+     * @return
+     */
+    @Override
+    public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery) {
+        //构建筛选器
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
+
+        Integer from = (nearHouseSpecialPageDoQuery.getPageNum()-1)*nearHouseSpecialPageDoQuery.getSize();
+
+        //组装条件
+        boolQueryBuilder.must(QueryBuilders.termQuery("newcode", nearHouseSpecialPageDoQuery.getPlotId()));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+
+        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize());
+
+        SearchHit[] hits = esfSpecialPage.getHits().getHits();
+        if (hits.length>0){
+            List<HomePageNearEsfDo> list = new ArrayList<>();
+            for (SearchHit hit:hits){
+                String sourceAsString = hit.getSourceAsString();
+                HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
+                homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
+                homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
+                list.add(homePageNearEsfDo);
+            }
+            homePageNearEsfListDo.setData(list);
+            homePageNearEsfListDo.setTotalNum((int) esfSpecialPage.getHits().getTotalHits());
+        }
+        return homePageNearEsfListDo;
     }
 
 
