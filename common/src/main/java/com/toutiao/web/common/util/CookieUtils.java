@@ -13,6 +13,7 @@ public class CookieUtils {
     /** 平台用户登录CookieName */
     public final static String COOKIE_NAME_User_LOGIN = "user_phone";
     public final static String COOKIE_NAME_USER = "user";
+    public final static String COOKIE_NAME_TEMP_HOUSE_COMPARED = "temp_house_compared"; //平台用户房源对比数据CookieName
     /**
      * 获取cookie中的数据
      * @param request

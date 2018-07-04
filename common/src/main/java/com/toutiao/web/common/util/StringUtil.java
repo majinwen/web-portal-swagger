@@ -1,6 +1,8 @@
 package com.toutiao.web.common.util;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -340,7 +342,23 @@ public class StringUtil {
         htmlStr=m_html.replaceAll(""); //过滤html标签 
 
        return htmlStr.trim(); //返回文本字符串 
-    } 
+    }
 
+    public static String join(List<String> stringList){
+		return StringUtils.join(stringList,',');
+	}
 
+	public static String join(List<String> stringList, String separator){
+		return StringUtils.join(stringList,separator);
+	}
+
+	public static List<String> removeAll(final Collection<String> collection, String remove) {
+		final List<String> list = new ArrayList<String>();
+		for (final String obj : collection) {
+			if (!remove.equals(obj)) {
+				list.add(obj);
+			}
+		}
+		return list;
+	}
 }

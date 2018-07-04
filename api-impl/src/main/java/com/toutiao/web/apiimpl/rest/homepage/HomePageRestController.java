@@ -8,8 +8,19 @@ import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseSpecialPageRequest;
 import com.toutiao.app.api.chance.response.homepage.*;
+import com.toutiao.app.api.chance.response.homepage.HomePageEsfResponse;
+import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
+import com.toutiao.app.api.chance.response.homepage.HomePageTop50Response;
+import com.toutiao.app.api.chance.response.homepage.HomeSureToSnatchResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListResponse;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.*;
+import com.toutiao.app.domain.homepage.HomePageCutPriceDo;
+import com.toutiao.app.domain.homepage.HomePageEsfDo;
+import com.toutiao.app.domain.homepage.HomePageLowerPriceDo;
+import com.toutiao.app.domain.homepage.HomePageTop50Do;
+import com.toutiao.app.domain.homepage.HomeSureToSnatchDo;
+import com.toutiao.app.domain.homepage.HomeSureToSnatchDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
@@ -18,7 +29,10 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -118,6 +132,57 @@ public class HomePageRestController {
         HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery);
         HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(esfSpecialPage), HomePageNearEsfListResponse.class);
         return NashResult.build(homePageNearEsfListResponse);
+    }
+    /**
+     * @return
+     * 首页top50
+     */
+
+    @RequestMapping(value ="/top50",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult homePageTop50()
+    {
+        List<HomePageTop50Do> homePageTop50Dos= homePageRestService.getHomePageTop50();
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageTop50Dos));
+        List<HomePageTop50Response> homePageTop50ResponseList=JSONObject.parseArray(json.toJSONString(),HomePageTop50Response.class);
+        return NashResult.build(homePageTop50ResponseList);
+
+    }
+
+
+    /**
+     * 逢出必抢系列
+     */
+    @RequestMapping(value = "/beSureToSnatch",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult beSureToSnatch(BaseQueryRequest baseQueryRequest)
+    {
+        HomeSureToSnatchDoQuery homeSureToSnatchDoQuery=new HomeSureToSnatchDoQuery();
+        BeanUtils.copyProperties(baseQueryRequest,homeSureToSnatchDoQuery);
+        List<HomeSureToSnatchDo>  homeSureToSnatchDos =homePageRestService.getHomeBeSureToSnatch(homeSureToSnatchDoQuery);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homeSureToSnatchDos));
+        List<HomeSureToSnatchResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomeSureToSnatchResponse.class);
+        return  NashResult.build(newHouseListResponses);
+    }
+
+    /**
+     * 首页获取降价房8条
+     */
+    @RequestMapping(value = "/getHomePageCutPrice", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHomePageCutPrice() {
+        List<HomePageCutPriceDo> homePageCutPriceDos = homePageRestService.getHomePageCutPrice();
+        return NashResult.build(homePageCutPriceDos);
+    }
+
+    /**
+     * 首页获取价格洼地8条
+     */
+    @RequestMapping(value = "/getHomePageLowerPrice", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHomePageLowerPrice() {
+        List<HomePageLowerPriceDo> homePageLowerPriceDos = homePageRestService.getHomePageLowerPrice();
+        return NashResult.build(homePageLowerPriceDos);
     }
 
 }
