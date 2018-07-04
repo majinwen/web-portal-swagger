@@ -13,6 +13,8 @@ public class SellHouseBeSureToSnatchResponse {
     List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos ;
 
     private  Integer subscribeId;
+    @ChangeName("totalNum")
+    private long totalCount;
 
 
 }

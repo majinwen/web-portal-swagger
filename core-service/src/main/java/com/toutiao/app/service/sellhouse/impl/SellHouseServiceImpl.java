@@ -620,9 +620,13 @@ public class SellHouseServiceImpl implements SellHouseService{
             UserSubscribeDetailDo userSubscribeDetailDo=new UserSubscribeDetailDo();
             BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,userSubscribeDetailDo);
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
-            subscribeId=userSubscribe.getId();
+            if (null!=userSubscribe.getId())
+            {
+                subscribeId=userSubscribe.getId();
+            }
         }
         sellHouseBeSureToSnatchDomain.setSubscribeId(subscribeId);
+        sellHouseBeSureToSnatchDomain.setTotalCount(hits.totalHits);
          return sellHouseBeSureToSnatchDomain ;
     }
 

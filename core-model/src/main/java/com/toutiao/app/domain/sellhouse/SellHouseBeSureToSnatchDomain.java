@@ -7,5 +7,6 @@ import java.util.List;
 public class SellHouseBeSureToSnatchDomain {
     private List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos;
     private Integer subscribeId;
+    private long totalCount;
 
  }
