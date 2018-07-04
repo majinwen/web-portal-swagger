@@ -16,5 +16,5 @@ public interface LowerPriceSellHouseEsDao {
 	 * @param sort  排序
 	 * @return SearchResponse
 	 */
-	SearchResponse getLowerPriceSellHouse(BoolQueryBuilder query, Integer sort);
+	SearchResponse getLowerPriceSellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize);
 }
