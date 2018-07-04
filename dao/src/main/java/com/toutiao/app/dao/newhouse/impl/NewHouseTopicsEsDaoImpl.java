@@ -30,7 +30,7 @@ public class NewHouseTopicsEsDaoImpl implements NewHouseTopicsEsDao {
                 .setQuery(boolQueryBuilder).addSort("build_level", SortOrder.ASC).addSort("building_sort",SortOrder.DESC)
                 .setFetchSource(new String[]{"building_name_id","building_name","average_price", "district_id","district_name","area_id",
                                 "area_name","building_title_img", "location","house_min_area","house_max_area","nearbysubway","total_price",
-                                "deliver_time","building_tags_id","building_tags"},
+                                "deliver_time","building_tags_id","building_tags","ringRoad"},
                         null)
                 .setFrom((pageNum-1)*pageSize)
                 .setSize(pageSize)
