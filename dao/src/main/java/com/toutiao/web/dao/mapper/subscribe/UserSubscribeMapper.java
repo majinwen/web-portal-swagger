@@ -5,6 +5,8 @@ import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserSubscribeMapper {
     int deleteByPrimaryKey(Integer id);
@@ -20,4 +22,6 @@ public interface UserSubscribeMapper {
     int updateByPrimaryKeySelective(UserSubscribe record);
 
     int updateByPrimaryKey(UserSubscribe record);
+
+    List<UserSubscribe> selectByUserId(@Param("userId")Integer userId);
 }
