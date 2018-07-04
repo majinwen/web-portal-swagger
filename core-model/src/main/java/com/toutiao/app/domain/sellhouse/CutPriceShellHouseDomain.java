@@ -15,4 +15,6 @@ public class CutPriceShellHouseDomain {
 	 * 订阅Id(-1代表未订阅)
 	 */
 	private Integer subscriptionId;
+
+	private long totalCount;
 }

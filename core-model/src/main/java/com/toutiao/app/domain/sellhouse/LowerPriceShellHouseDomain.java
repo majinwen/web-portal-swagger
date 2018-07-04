@@ -15,4 +15,6 @@ public class LowerPriceShellHouseDomain {
 	 * 订阅Id(-1代表没有订阅)
 	 */
 	private Integer subscriptionId;
+
+	private long totalCount;
 }

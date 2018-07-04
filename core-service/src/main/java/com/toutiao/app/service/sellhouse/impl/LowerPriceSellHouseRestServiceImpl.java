@@ -5,7 +5,11 @@ import com.toutiao.app.dao.sellhouse.LowerPriceSellHouseEsDao;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDo;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDomain;
+import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.sellhouse.LowerPriceSellHouseRestService;
+import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -26,6 +30,9 @@ import java.util.List;
 public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRestService {
 	@Autowired
 	private LowerPriceSellHouseEsDao lowerPriceSellHouseEsDao;
+
+	@Autowired
+	private SubscribeService subscribeService;
 
 	/**
 	 * 获取捡漏房List
@@ -89,7 +96,34 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
 				lowerPriceShellHouseDos.add(lowerPriceShellHouseDo);
 			}
 		}
+
+		//查询订阅Id
+		if (!UserBasic.isLogin()) {
+			lowerPriceShellHouseDomain.setSubscriptionId(-1);
+		} else {
+			UserBasic userBasic = UserBasic.getCurrent();
+			UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
+			userSubscribeDetailDo.setTopicType(2);
+			if (areaId != null) {
+				userSubscribeDetailDo.setDistrictId(areaId);
+			}
+			if (lowestTotalPrice != null) {
+				userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
+			}
+			if (highestTotalPrice != null) {
+				userSubscribeDetailDo.setEndPrice(highestTotalPrice);
+			}
+
+			UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
+					.valueOf(userBasic.getUserId()));
+			if (userSubscribe != null) {
+				lowerPriceShellHouseDomain.setSubscriptionId(userSubscribe.getId());
+			} else {
+				lowerPriceShellHouseDomain.setSubscriptionId(-1);
+			}
+		}
 		lowerPriceShellHouseDomain.setData(lowerPriceShellHouseDos);
+		lowerPriceShellHouseDomain.setTotalCount(hits.totalHits);
 		return lowerPriceShellHouseDomain;
 	}
 }
