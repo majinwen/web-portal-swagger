@@ -72,14 +72,26 @@ public class SubscribeRestController {
 
 
     /**
-     * 判断订阅信息是否存在
+     * 用户获取订阅信息列表
      *
      * @return
      */
-    @RequestMapping(value = "/selectByUserSubscribeMap", method = RequestMethod.POST)
-    public NashResult selectByUserSubscribeMap(UserSubscribeDetailDo userSubscribeDetailDo) {
+    @RequestMapping(value = "/listIndexSubscribe", method = RequestMethod.GET)
+    public NashResult listIndexSubscribe() {
         UserBasic userBasic = UserBasic.getCurrent();
-        UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
-        return NashResult.build(userSubscribe);
+        return NashResult.build(subscribeService.getIndexSubscribeInfo(Integer.parseInt(userBasic.getUserId())));
     }
+
+
+//    /**
+//     * 判断订阅信息是否存在
+//     *
+//     * @return
+//     */
+//    @RequestMapping(value = "/selectByUserSubscribeMap", method = RequestMethod.POST)
+//    public NashResult selectByUserSubscribeMap(UserSubscribeDetailDo userSubscribeDetailDo) {
+//        UserBasic userBasic = UserBasic.getCurrent();
+//        UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
+//        return NashResult.build(userSubscribe);
+//    }
 }
