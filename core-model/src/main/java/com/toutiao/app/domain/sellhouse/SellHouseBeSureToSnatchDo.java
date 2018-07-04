@@ -78,4 +78,9 @@ public class SellHouseBeSureToSnatchDo {
 
     private  Integer isClaim;
 
+    /**
+     * 主力户型
+     */
+    private  Integer isMainLayout;
+
 }

@@ -69,5 +69,10 @@ public class SellHouseBeSureToSnatchResponse {
      */
     private  Long sort;
 
+    /**
+     * 主力户型
+     */
+    private  Integer isMainLayout;
+
 
 }
