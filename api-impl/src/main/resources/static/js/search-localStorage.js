@@ -627,7 +627,13 @@ $(function(){
                             var searchType = data.list[i].search_type
                             var locationTypeSings = data.list[i].location_type_sings||-1
                             var searchTypeSings = data.list[i].search_type_sings||0
-                            $('#automatedWord').append('<li id='+data.list[i].search_id+' class="click_work" location_type_sings='+locationTypeSings+' search_type_sings='+ searchTypeSings +'>'+ data.list[i].search_name+' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>');
+                            var listContent = ''
+                            if (null!=data.list[i].search_nickname&&''!=data.list[i].search_nickname) {
+                                listContent = '<li id='+data.list[i].search_id+' class="click_work" location_type_sings='+locationTypeSings+' search_type_sings='+ searchTypeSings +'>'+ data.list[i].search_name+ '<em style="color: #666">(' +data.list[i].search_nickname + ')</em>' +' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>'
+                            } else {
+                                listContent = '<li id='+data.list[i].search_id+' class="click_work" location_type_sings='+locationTypeSings+' search_type_sings='+ searchTypeSings +'>'+ data.list[i].search_name+ ' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>'
+                            }
+                            $('#automatedWord').append(listContent);
                         }
                         $('.click_work').on('click',function(){
                             var word = $(this).text();

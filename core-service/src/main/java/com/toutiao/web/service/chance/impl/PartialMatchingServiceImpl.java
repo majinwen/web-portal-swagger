@@ -5,14 +5,12 @@ import com.toutiao.web.service.chance.PartialMatchingService;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -94,7 +92,9 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
 
         SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
+        BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+//        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
+        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH)).should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
 
@@ -128,11 +128,11 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit :hits) {
                 Map<String, Object> source = hit.getSource();
-                Map<String, HighlightField> highlightFields = hit.getHighlightFields();
-                HighlightField village = highlightFields.get("search_name");
-                Text[] fragments = village.fragments();
-                String name = String.valueOf(fragments[0]);
-                source.put("em_search_name",name);
+//                Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+//                HighlightField village = highlightFields.get("search_name");
+//                Text[] fragments = village.fragments();
+//                String name = String.valueOf(fragments[0]);
+//                source.put("em_search_name",name);
                 list.add(source);
             }
             map.put("total",searchResponse.getHits().getTotalHits());
