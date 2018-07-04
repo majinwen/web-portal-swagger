@@ -92,7 +92,7 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 
 		//查询订阅Id
 		if (!UserBasic.isLogin()) {
-			cutPriceShellHouseDomain.setSubscriptionId(-1);
+			cutPriceShellHouseDomain.setSubscribeId(-1);
 		} else {
 			UserBasic userBasic = UserBasic.getCurrent();
 			UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
@@ -110,9 +110,9 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 			UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
 					.valueOf(userBasic.getUserId()));
 			if (userSubscribe != null) {
-				cutPriceShellHouseDomain.setSubscriptionId(userSubscribe.getId());
+				cutPriceShellHouseDomain.setSubscribeId(userSubscribe.getId());
 			} else {
-				cutPriceShellHouseDomain.setSubscriptionId(-1);
+				cutPriceShellHouseDomain.setSubscribeId(-1);
 			}
 		}
 		cutPriceShellHouseDomain.setData(cutPriceShellHouseDos);
