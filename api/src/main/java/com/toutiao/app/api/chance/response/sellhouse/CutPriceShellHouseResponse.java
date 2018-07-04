@@ -15,5 +15,7 @@ public class CutPriceShellHouseResponse {
 	/**
 	 * 是否被订阅
 	 */
-	private boolean subscription;
+	private Integer subscribeId;
+
+	private long totalCount;
 }
