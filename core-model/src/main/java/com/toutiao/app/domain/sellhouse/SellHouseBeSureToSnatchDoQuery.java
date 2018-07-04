@@ -7,7 +7,7 @@ public class SellHouseBeSureToSnatchDoQuery {
 
     private  String sortFile;
 
-    private  String  sort;
+    private  Integer  sort;
     /**
      * 起始价格
      */
@@ -27,4 +27,6 @@ public class SellHouseBeSureToSnatchDoQuery {
     private  Integer pageNum;
 
     private  Integer pageSize;
+
+    private  Integer isNew;
 }

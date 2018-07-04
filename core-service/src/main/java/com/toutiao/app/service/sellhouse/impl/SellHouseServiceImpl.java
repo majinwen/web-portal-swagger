@@ -8,10 +8,12 @@ import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.sellhouse.*;
+import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -19,6 +21,7 @@ import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.poi.ss.formula.functions.T;
@@ -42,6 +45,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class SellHouseServiceImpl implements SellHouseService{
@@ -59,6 +63,8 @@ public class SellHouseServiceImpl implements SellHouseService{
     @Autowired
     private FavoriteRestService favoriteRestService;
     private  final  Integer FAVORITE_ESF=2;
+    @Autowired
+    private SubscribeService subscribeService;
 
     @Override
     public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
@@ -566,14 +572,22 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
     @Override
-    public List<SellHouseBeSureToSnatchDo> getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery) {
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+    public SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery) {
+        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDomain=new SellHouseBeSureToSnatchDomain();
+        NearBySellHouseQueryDo nearBySellHouseQueryDo=new NearBySellHouseQueryDo();
+        BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,nearBySellHouseQueryDo);
+        BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterChoose(nearBySellHouseQueryDo);
         List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos=new ArrayList<>();
         FieldSortBuilder sortFile=null;
-        boolQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
+        Integer subscribeId=-1;
+        if (null!=sellHouseBeSureToSnatchDoQuery.getIsNew())
+        {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
+        }
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
         if (null!=sellHouseBeSureToSnatchDoQuery.getSortFile() && null!=sellHouseBeSureToSnatchDoQuery.getSort() )
         {
-            if(sellHouseBeSureToSnatchDoQuery.getSort().equals("DESC"))
+            if(sellHouseBeSureToSnatchDoQuery.getSort().equals(1))
             {
                 sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.DESC);
             }
@@ -582,20 +596,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.ASC);
             }
         }
-        if(null!=sellHouseBeSureToSnatchDoQuery.getDistrictId() && !sellHouseBeSureToSnatchDoQuery.getDistrictId().equals(0))
-        {
-            boolQueryBuilder.must(QueryBuilders.termQuery("areaId",sellHouseBeSureToSnatchDoQuery.getDistrictId()));
-        }
-        if(sellHouseBeSureToSnatchDoQuery.getBeginPrice()!=0  && sellHouseBeSureToSnatchDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(sellHouseBeSureToSnatchDoQuery.getBeginPrice()).lte(sellHouseBeSureToSnatchDoQuery.getEndPrice())));
-        }else if (sellHouseBeSureToSnatchDoQuery.getBeginPrice()==0 && sellHouseBeSureToSnatchDoQuery.getEndPrice()!=0)
-        {        sellHouseBeSureToSnatchDoQuery.setBeginPrice(0.0);
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(sellHouseBeSureToSnatchDoQuery.getBeginPrice()).lte(sellHouseBeSureToSnatchDoQuery.getEndPrice())));
-        }else if (sellHouseBeSureToSnatchDoQuery.getEndPrice()==0 &&  sellHouseBeSureToSnatchDoQuery.getBeginPrice()!=0)
-        {
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("houseTotalPrices").gte(sellHouseBeSureToSnatchDoQuery.getBeginPrice())));
-        }
-        SearchResponse searchResponse= sellHouseEsDao.getBeSureToSnatchList(boolQueryBuilder,sellHouseBeSureToSnatchDoQuery.getPageNum(),sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile);
+        SearchResponse searchResponse= sellHouseEsDao.getBeSureToSnatchList(booleanQueryBuilder,sellHouseBeSureToSnatchDoQuery.getPageNum(),sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit searchHit : searchHists)
@@ -609,12 +610,20 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHouseBeSureToSnatchDo.setHouseId(sellHouseBeSureToSnatchDo.getClaimHouseId());
                 sellHouseBeSureToSnatchDo.setHousePhotoTitle(sellHouseBeSureToSnatchDo.getClaimHousePhotoTitle());
             }
-
             sellHouseBeSureToSnatchDo.setSort(sort[0]);
             sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
         }
-
-         return sellHouseBeSureToSnatchDos;
+        sellHouseBeSureToSnatchDomain.setSellHouseBeSureToSnatchDos(sellHouseBeSureToSnatchDos);
+        UserBasic userBasic = UserBasic.getCurrent();
+        if (null!=userBasic)
+        {
+            UserSubscribeDetailDo userSubscribeDetailDo=new UserSubscribeDetailDo();
+            BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,userSubscribeDetailDo);
+            UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
+            subscribeId=userSubscribe.getId();
+        }
+        sellHouseBeSureToSnatchDomain.setSubscribeId(subscribeId);
+         return sellHouseBeSureToSnatchDomain ;
     }
 
 }

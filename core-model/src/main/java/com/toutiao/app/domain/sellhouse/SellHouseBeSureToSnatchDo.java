@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class SellHouseBeSureToSnatchDo {
     /**
      * 大楼名称
      */
+    @ChangeName("buildingName")
     private  String  plotName;
 
     /**

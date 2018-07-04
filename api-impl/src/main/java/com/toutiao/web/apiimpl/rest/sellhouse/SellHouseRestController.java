@@ -120,12 +120,11 @@ public class SellHouseRestController {
     @ResponseBody
     public  NashResult getBeSureToSnatchList(SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest)
     {
-
+        SellHouseBeSureToSnatchResponse sellHouseBeSureToSnatchResponses=new SellHouseBeSureToSnatchResponse();
         SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery=new SellHouseBeSureToSnatchDoQuery();
         BeanUtils.copyProperties(sellHouseBeSureToSnatchRequest,sellHouseBeSureToSnatchDoQuery);
-        List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseBeSureToSnatchDos));
-        List<SellHouseBeSureToSnatchResponse> sellHouseBeSureToSnatchResponses= JSONObject.parseArray(json.toJSONString(), SellHouseBeSureToSnatchResponse.class);
+        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+        BeanUtils.copyProperties(sellHouseBeSureToSnatchDos,sellHouseBeSureToSnatchResponses);
         return  NashResult.build(sellHouseBeSureToSnatchResponses);
     }
 

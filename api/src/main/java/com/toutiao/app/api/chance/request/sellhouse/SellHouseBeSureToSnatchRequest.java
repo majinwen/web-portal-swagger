@@ -8,5 +8,7 @@ public class SellHouseBeSureToSnatchRequest extends BaseQueryRequest {
 
     private  String sortFile="updateTimeSort";
 
-    private  String  sort="DESC";
+    private  Integer  sort=1;
+
+    private  Integer isNew;
 }
