@@ -45,7 +45,7 @@ public class SellHouseDo {
      * 7天新导入标志
      *
      */
-    private Integer newImport;
+//    private Integer newImport;
 
     /**
      * 房源总价
@@ -156,7 +156,7 @@ public class SellHouseDo {
     /**
      * 排序规则字段
      */
-    private String upTimestamp;
+    private String sortFields;
 
     /**
      * 是否主力户型(0-否，1-是)
@@ -164,42 +164,42 @@ public class SellHouseDo {
     private Integer isMainLayout;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 是否成交户型(0-否，1-是)
      */
     private Integer isDealLayout;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 平均成交天数
      */
     private Integer avgDealCycle;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 是否价格洼地(0-否，1-是)
      */
     private Integer isLowPrice;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     *是否降价房(0-否，1-降价房，2-涨价房)
      */
     private Integer isCutPrice;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 是否逢出必抢房(0-否，1-是)
      */
     private Integer isMustRob;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 是否同户型小区均价最低(0-否，1-是)
      */
     private Integer isLowest;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 是否新导入房源(0-否，1-是)
      */
     private Integer isNew;
 
     /**
-     * 是否主力户型(0-否，1-是)
+     * 是否是top50小区房源(0-否，1-是)
      */
     private Integer isCommunityTopHouse;
 

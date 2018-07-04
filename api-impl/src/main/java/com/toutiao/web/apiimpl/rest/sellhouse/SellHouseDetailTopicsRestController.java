@@ -62,7 +62,7 @@ public class SellHouseDetailTopicsRestController {
 
 
     /**
-     * 降价专题
+     * 洼地专题
      * @param sellHouseRequest
      * @return
      */
@@ -83,6 +83,7 @@ public class SellHouseDetailTopicsRestController {
      * 逢出毕抢
      * @param sellHouseRequest
      * @return
+     *
      */
     @RequestMapping(value ="/getMustRobTopicsSellHouseDetail", method = RequestMethod.GET)
     @ResponseBody

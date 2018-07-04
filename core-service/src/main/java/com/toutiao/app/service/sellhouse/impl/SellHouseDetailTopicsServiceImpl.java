@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -64,7 +65,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                 String details = searchHit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
 
-                sellHouseDo.setUpTimestamp(searchHit.getSortValues()[0].toString());
+                sellHouseDo.setSortFields(searchHit.getSortValues()[0].toString());
                 sellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
@@ -76,6 +77,15 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    sellHouseDo.setClaimTagsName(tagsName);
+                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
+
+
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
@@ -100,6 +110,8 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+        //降价房源
+        boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", "1"));
 
         String[] searchAfterIds = new String[2];
 
@@ -116,7 +128,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
             for (SearchHit searchHit : searchHists) {
                 SellHouseDo sellHouseDo = JSON.parseObject(searchHit.getSourceAsString(),SellHouseDo.class);
                 sellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
-                sellHouseDo.setUpTimestamp(searchHit.getSortValues()[0].toString());
+                sellHouseDo.setSortFields(searchHit.getSortValues()[0].toString());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
@@ -124,8 +136,17 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                 }else{
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")!=null?searchHit.getSource().get("houseProxyPhoto").toString():"");
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+
+                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    sellHouseDo.setClaimTagsName(tagsName);
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
@@ -150,7 +171,8 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-
+        //降价房源
+        boolQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", "1"));
         String[] searchAfterIds = new String[2];
 
         if(StringTool.isNotEmpty(sellHouseDoQuery.getSortFields()) && StringTool.isNotEmpty(sellHouseDoQuery.getUid())){
@@ -165,7 +187,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
             for (SearchHit searchHit : searchHists) {
                 SellHouseDo sellHouseDo = JSON.parseObject(searchHit.getSourceAsString(),SellHouseDo.class);
                 sellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
-                sellHouseDo.setUpTimestamp(searchHit.getSortValues()[0].toString());
+                sellHouseDo.setSortFields(searchHit.getSortValues()[0].toString());
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
@@ -175,6 +197,15 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+
+                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    sellHouseDo.setClaimTagsName(tagsName);
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
@@ -200,7 +231,8 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-
+        //逢出毕抢
+        boolQueryBuilder.must(QueryBuilders.termQuery("isMustRob", "1"));
         String[] searchAfterIds = new String[2];
 
         if(StringTool.isNotEmpty(sellHouseDoQuery.getSortFields()) && StringTool.isNotEmpty(sellHouseDoQuery.getUid())){
@@ -216,7 +248,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
             for (SearchHit searchHit : searchHists) {
                 SellHouseDo sellHouseDo = JSON.parseObject(searchHit.getSourceAsString(),SellHouseDo.class);
                 sellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
-                sellHouseDo.setUpTimestamp(searchHit.getSortValues()[0].toString());
+                sellHouseDo.setSortFields(searchHit.getSortValues()[0].toString());
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
@@ -225,9 +257,18 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                 }else{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+
+                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    sellHouseDo.setClaimTagsName(tagsName);
+
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
