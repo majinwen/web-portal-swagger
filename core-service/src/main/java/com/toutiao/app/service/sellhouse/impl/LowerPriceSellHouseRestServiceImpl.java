@@ -44,20 +44,17 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         Integer areaId = lowerPriceShellHouseDoQuery.getAreaId();
         //捡漏房
-        booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("isLowPrice", 1)));
+		booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
 
-        //商圈
+		//区域
         if (areaId != null) {
-            booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                    .must(QueryBuilders.termQuery("areaId", areaId)));
+			booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
         }
 
         //新导入房源
         Integer isNew = lowerPriceShellHouseDoQuery.getIsNew();
         if (isNew != null) {
-            booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                    .must(QueryBuilders.termQuery("isNew", isNew)));
+			booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
 
         //价格区间
@@ -65,18 +62,13 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
         Integer highestTotalPrice = lowerPriceShellHouseDoQuery.getHighestTotalPrice();
         if (lowestTotalPrice != null) {
             if (highestTotalPrice != null) {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery().must(
-                        QueryBuilders.rangeQuery("houseTotalPrices")
-                                .gte(lowestTotalPrice).lte(highestTotalPrice)));
+				booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(lowestTotalPrice)
+						.lte(highestTotalPrice));
             } else {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery().must(
-                        QueryBuilders.rangeQuery("houseTotalPrices")
-                                .gte(lowestTotalPrice)));
+				booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(lowestTotalPrice));
             }
         } else if (highestTotalPrice != null) {
-            booleanQueryBuilder.must(QueryBuilders.boolQuery().must(
-                    QueryBuilders.rangeQuery("houseTotalPrices")
-                            .lte(highestTotalPrice)));
+			booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(highestTotalPrice));
         }
 
         Integer sort = lowerPriceShellHouseDoQuery.getSort();
