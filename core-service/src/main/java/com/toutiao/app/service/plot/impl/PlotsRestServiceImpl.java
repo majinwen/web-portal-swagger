@@ -501,7 +501,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
-        boolQueryBuilder.must(QueryBuilders.termsQuery("isTop",isTop));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",isTop));
         if (null!=plotTop50ListDoQuery.getDistrictId())
         {
             boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotTop50ListDoQuery.getDistrictId()));
