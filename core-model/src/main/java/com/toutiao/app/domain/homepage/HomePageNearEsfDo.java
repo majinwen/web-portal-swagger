@@ -14,6 +14,10 @@ public class HomePageNearEsfDo {
      */
     private String houseTitle;
     /**
+     * 房源标题图
+     */
+    private String housePhotoTitle;
+    /**
      * 室
      */
     private Integer room;
@@ -38,9 +42,9 @@ public class HomePageNearEsfDo {
      */
     private String isCommunityTopHouse;
     /**
-     * 是否是降价房(1涨 2降)
+     * 是否是降价房(0:否 1:降 2:涨)
      */
-    private String priceIncreaseDecline;
+    private String isCutPrice ;
     /**
      * 距离
      */
@@ -48,7 +52,7 @@ public class HomePageNearEsfDo {
     /**
      * 价格浮动
      */
-    private double priceIncreaseDeclineAmount;
+    private double priceFloat;
     /**
      * 小区名称
      */

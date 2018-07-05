@@ -163,7 +163,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         //按距离排序并计算距离
         GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
-        sort.unit(DistanceUnit.KILOMETERS);
+        sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
 
         //组装条件
@@ -180,7 +180,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
-                homePageNearPlotDo.setDistance((Double) hit.getSortValues()[0]);
+                homePageNearPlotDo.setDistance((double) Math.round((Double) hit.getSortValues()[0]));
                 list.add(homePageNearPlotDo);
             }
             homePageNearPlotListDo.setData(list);
@@ -208,7 +208,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         //按距离排序并计算距离
         GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
-        sort.unit(DistanceUnit.KILOMETERS);
+        sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
 
         //组装条件
@@ -223,7 +223,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
-                homePageNearEsfDo.setDistance((Double) hit.getSortValues()[0]);
+                homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[0]));
                 list.add(homePageNearEsfDo);
             }
             homePageNearEsfListDo.setData(list);
