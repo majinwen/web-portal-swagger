@@ -59,4 +59,8 @@ public class PlotTop50Response {
      */
     @ChangeName("districtName")
     private String area;
+
+
+    @ChangeName("buildingName")
+    private String rc;
 }
