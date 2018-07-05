@@ -1,27 +1,18 @@
 package com.toutiao.app.dao.homepage.impl;
 
-import com.thoughtworks.xstream.core.TreeMarshallingStrategy;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class HomePageEsDaoImpl implements HomePageEsDao {
@@ -139,9 +130,8 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     @Override
     public SearchResponse getHomePageCutPrice(BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //根据修改时间排序
-        srb.addSort("updateTimeSort", SortOrder.DESC);
+		SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+				.addSort("updateTimeSort", SortOrder.DESC);
         //限制结果8条
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(8).execute().actionGet();
         return searchResponse;
