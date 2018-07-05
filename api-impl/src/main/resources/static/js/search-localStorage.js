@@ -54,7 +54,11 @@ $(function(){
             getLocalstorageMsg('rent')
         }
     }
-    
+
+    /**
+     * 获取历史记录
+     * @param styleArray
+     */
     function getLocalstorageMsg(styleArray) {
         var indexStorageArray = JSON.parse(localStorage.getItem(styleArray)) || [];
         var start = (indexStorageArray.length-5)>0?(indexStorageArray.length-5):0;
@@ -75,6 +79,8 @@ $(function(){
             } else if (styleArray == 'rent'){
                 urlText = 'zufang';
             }
+
+
             if (history[3]==1){
                 $('.searchpage-history').append('<a href="' + router_city('/'+urlText+'?districtId=' + history[1] ) + '" class="word-break" data-name="'+history[0]+'">' + history[0] + '<em style="float: right">'+ history[2]+'</em></a>')
             }else if(history[3]==2){
@@ -124,6 +130,10 @@ $(function(){
         }
     }
 
+
+    /**
+     * 输入关键字搜索
+     */
     function changeFn() {
 
         if ($(this).val() != null && $.trim($(this).val()) != '') {
@@ -140,6 +150,7 @@ $(function(){
             var newHouseNum = localStorage.getItem('newHouseNum')||'';
             var rentNum = localStorage.getItem('rentNum')||'';
             var apartmentNum = localStorage.getItem('apartmentNum')||'';
+
 
 
             if(_localHref.indexOf('xiaoqu')>0){
@@ -181,6 +192,9 @@ $(function(){
                         $('#indexWord').append('<li id="5" class="click_index" >'+'查看包含"'+_keyword+'"公寓'+/*' <em style="float: right; color: #bcbcbc;">约'+rentNum+'条></em>*/'</li>');
                     }
 
+                    /**
+                     * 点击提示跳转并添加历史记录
+                     */
                     $('.click_index').on('click',function () {
                         var id = $(this).attr('id')
                         var url = window.location.href.split("?")[0];
@@ -629,7 +643,7 @@ $(function(){
                             var searchTypeSings = data.list[i].search_type_sings||0
                             var listContent = ''
                             if (null!=data.list[i].search_nickname&&''!=data.list[i].search_nickname) {
-                                listContent = '<li id='+data.list[i].search_id+' class="click_work" location_type_sings='+locationTypeSings+' search_type_sings='+ searchTypeSings +'>'+ data.list[i].search_name+ '<em style="color: #666">(' +data.list[i].search_nickname + ')</em>' +' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>'
+                                listContent = '<li id='+data.list[i].search_id+' class="click_work" location_type_sings='+locationTypeSings+' search_type_sings='+ searchTypeSings +'>'+ data.list[i].search_name+ '<em style="color: #666">(' +data.list[i].search_nickname[0] + ')</em>' +' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>'
                             } else {
                                 listContent = '<li id='+data.list[i].search_id+' class="click_work" location_type_sings='+locationTypeSings+' search_type_sings='+ searchTypeSings +'>'+ data.list[i].search_name+ ' <em style="float: right; color: #bcbcbc;">'+searchType+'</em></li>'
                             }
