@@ -214,6 +214,11 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                         .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword())));
             }
         }
+        //楼盘id
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getBuildingId())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", sellHouseDoQuery.getBuildingId()));
+        }
+
         //附近
         if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")

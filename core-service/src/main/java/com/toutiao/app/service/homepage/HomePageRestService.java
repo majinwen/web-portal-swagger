@@ -1,7 +1,9 @@
 package com.toutiao.app.service.homepage;
-import com.toutiao.app.domain.homepage.HomeThemeHouseDoQuery;
-import com.toutiao.app.domain.homepage.HomeThemeHouseListDo;
-import com.toutiao.app.domain.homepage.HomePageEsfDo;
+
+import com.toutiao.app.domain.homepage.*;
+import com.toutiao.app.domain.homepage.*;
+
+import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 
 import java.util.List;
@@ -25,4 +27,50 @@ public interface HomePageRestService {
      */
     HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
 
+    /**
+     * 首页附近小区
+     */
+    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery);
+
+    /**
+     * 首页附近二手房
+     * @param nearHouseDoQuery
+     * @return
+     */
+    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery);
+
+    /**
+     * 专题着陆页-附近小区
+     * @param plotId
+     * @return
+     */
+    HomePageNearPlotDo getPlotSpecialPage(Integer plotId);
+
+    /**
+     * 专题着陆页-附近二手房
+     * @param nearHouseSpecialPageDoQuery
+     * @return
+     */
+    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
+    /**
+     * 首页获取降价房8条
+     */
+    List<HomePageCutPriceDo> getHomePageCutPrice();
+
+    /**
+     * 首页获取价格洼地房8条
+     */
+    List<HomePageLowerPriceDo> getHomePageLowerPrice();
+
+    /**
+     * 获取首页top50
+     */
+
+    List<HomePageTop50Do> getHomePageTop50();
+
+
+    /**
+     * 首页缝出必抢
+     */
+    List<HomeSureToSnatchDo>  getHomeBeSureToSnatch (HomeSureToSnatchDoQuery homeSureToSnatchDoQuery);
 }
