@@ -126,4 +126,9 @@ public class NewHouseListDo  {
      */
     private  Integer  ringRoad;
 
+    /**
+     * 推荐理由
+     */
+    private String buildingFeature;
+
 }
