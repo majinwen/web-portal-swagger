@@ -2,6 +2,8 @@ package com.toutiao.app.domain.suggest;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class SearchEnginesDo {
     /**
@@ -12,6 +14,10 @@ public class SearchEnginesDo {
      * 房源名称
      */
     private String searchName;
+    /**
+     * 房源别名
+     */
+    private List searchNickname;
     /**
      * 排序名称
      */

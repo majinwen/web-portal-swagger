@@ -2,31 +2,21 @@ package com.toutiao.app.service.suggest.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.suggest.SuggestEsDao;
-import com.toutiao.app.domain.sellhouse.SellHouseDetailsDo;
 import com.toutiao.app.domain.suggest.SearchEnginesDo;
 import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestDo;
 import com.toutiao.app.service.suggest.SuggestService;
-import com.toutiao.web.common.util.ESClientTools;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
-import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class SuggestServiceImpl implements SuggestService {
@@ -68,7 +58,9 @@ public class SuggestServiceImpl implements SuggestService {
 
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
+        BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+//        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
+        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
 
         if (property!=null){
             String searchType = getSearchType(property);
@@ -98,6 +90,7 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setApartmentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("apartment")).getDocCount());
 
 
+        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
         boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
         SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilder);
