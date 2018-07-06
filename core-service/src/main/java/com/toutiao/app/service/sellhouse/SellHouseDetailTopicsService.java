@@ -36,6 +36,14 @@ public interface SellHouseDetailTopicsService {
     SellHouseDomain getMustRobTopicsSellHouseDetail(SellHouseDoQuery sellHouseQueryDo);
 
 
+    /**
+     * 获取商圈户型专题房源详情
+     * @param sellHouseQueryDo
+     * @return
+     */
+    SellHouseDomain getAreaRoomTopicsSellHouseDetail(SellHouseDoQuery sellHouseQueryDo);
+
+
 
 
 }
