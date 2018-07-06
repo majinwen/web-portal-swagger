@@ -31,9 +31,4 @@ public class PlotsThemeDoQuery {
 	 * 页容量
 	 */
 	private Integer pageSize;
-
-	/**
-	 * 排序
-	 */
-	private Integer sort;
 }

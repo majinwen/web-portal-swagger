@@ -36,15 +36,16 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 		String nearestPark = plotsThemeDoQuery.getNearestPark();
 
-		//距离最近的大型公园
-		if (StringTool.isNotEmpty(nearestPark)) {
-			boolQueryBuilder.must(QueryBuilders.termQuery("nearestPark", nearestPark));
-		}
-
 		//主题标签
 		Integer recommendBuildTagsId = plotsThemeDoQuery.getRecommendBuildTagsId();
 		if (recommendBuildTagsId != null) {
-			boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
+			if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
+				boolQueryBuilder.must(QueryBuilders.boolQuery()
+						.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
+						.must(QueryBuilders.termQuery("nearestPark", nearestPark)));
+			} else {
+				boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
+			}
 		}
 
 		//区域
@@ -52,10 +53,9 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 		if (areaId != null) {
 			boolQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
 		}
-		Integer sort = plotsThemeDoQuery.getSort();
 		Integer pageNum = plotsThemeDoQuery.getPageNum();
 		Integer pageSize = plotsThemeDoQuery.getPageSize();
-		SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, sort, pageNum, pageSize);
+		SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize);
 
 		SearchHits hits = plotsThemeList.getHits();
 		SearchHit[] searchHists = hits.getHits();
