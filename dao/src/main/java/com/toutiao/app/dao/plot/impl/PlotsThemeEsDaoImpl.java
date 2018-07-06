@@ -30,13 +30,12 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
 
 
 	@Override
-	public SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer sort, Integer pageNum, Integer pageSize) {
+	public SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
 		TransportClient client = esClientTools.init();
 		SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-		//TODO 可能有排序逻辑
-		srb.addSort("_uid", SortOrder.DESC);
-		SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
-				.execute().actionGet();
+		srb.addSort("house_count", SortOrder.DESC);
+		SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((pageNum - 1) * pageSize)
+				.setSize(pageSize).execute().actionGet();
 		return searchResponse;
 	}
 }

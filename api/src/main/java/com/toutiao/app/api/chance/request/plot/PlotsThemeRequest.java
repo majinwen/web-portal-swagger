@@ -31,9 +31,4 @@ public class PlotsThemeRequest {
 	 * 页容量
 	 */
 	private Integer pageSize = 10;
-
-	/**
-	 * 排序
-	 */
-	private Integer sort;
 }

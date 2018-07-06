@@ -18,6 +18,12 @@ public class PlotsThemeDo {
 	private String rc;
 
 	/**
+	 * 小区照片
+	 */
+	@ChangeName("buildingImages")
+	private String[] photo;
+
+	/**
 	 * 区域编号
 	 */
 	private String areaId;
@@ -37,6 +43,17 @@ public class PlotsThemeDo {
 	 */
 	@ChangeName("averagePrice")
 	private Double avgPrice;
+
+	/**
+	 * 总价
+	 */
+	@ChangeName("totalPrice")
+	private Double sumPrice;
+
+	/**
+	 * 在售房源套数
+	 */
+	private Integer houseCount;
 
 	/**
 	 * 距离最近的大型公园
