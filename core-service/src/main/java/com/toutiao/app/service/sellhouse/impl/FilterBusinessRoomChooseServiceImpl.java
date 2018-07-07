@@ -41,6 +41,7 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
 		if (room != null){
 			boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
 		}
+		boolQueryBuilder.must(QueryBuilders.termQuery("hall", 1));
 		return boolQueryBuilder;
 	}
 }
