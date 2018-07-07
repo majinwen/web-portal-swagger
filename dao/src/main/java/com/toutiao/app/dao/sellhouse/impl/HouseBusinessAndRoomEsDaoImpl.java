@@ -1,6 +1,6 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
-import com.toutiao.app.dao.sellhouse.LowerPriceSellHouseEsDao;
+import com.toutiao.app.dao.sellhouse.HouseBusinessAndRoomEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * 商圈+户型房源专题页数据层实现类
+ */
 @Service
-public class LowerPriceSellHouseEsDaoImpl implements LowerPriceSellHouseEsDao {
+public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
+
 	@Autowired
 	private ESClientTools esClientTools;
 
@@ -28,26 +32,31 @@ public class LowerPriceSellHouseEsDaoImpl implements LowerPriceSellHouseEsDao {
 	@Value("${tt.projhouse.type}")
 	private String projhouseType;
 
-	/***
-	 * 查询捡漏房列表
+	/**
+	 * 商圈户型均价索引索引名称
 	 */
+	@Value("${tt.areaRoom.index}")
+	private String areaRoomIndex;
+
+	/**
+	 * 商圈户型均价索引索引类
+	 */
+	@Value("${tt.areaRoom.type}")
+	private String areaRoomType;
+
 	@Override
-	public SearchResponse getLowerPriceSellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize) {
+	public SearchResponse getHouseBusinessAndRoomHouses(BoolQueryBuilder query, Integer pageNum, Integer pageSize) {
 		TransportClient client = esClientTools.init();
 		SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-		//排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-面积升, 4-面积降)
-		if (sort == 0) {
-			srb.addSort("updateTimeSort", SortOrder.DESC);
-		} else if (sort == 1) {
-			srb.addSort("houseTotalPrices", SortOrder.ASC);
-		} else if (sort == 2) {
-			srb.addSort("houseTotalPrices", SortOrder.DESC);
-		} else if (sort == 3) {
-			srb.addSort("buildArea", SortOrder.ASC);
-		} else if (sort == 4) {
-			srb.addSort("buildArea", SortOrder.DESC);
-		}
+		srb.addSort("buildArea", SortOrder.DESC);
 		srb.addSort("_uid", SortOrder.DESC);
 		return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+	}
+
+	@Override
+	public SearchResponse getHouseBusinessAndRoomAveragePrice(BoolQueryBuilder query) {
+		TransportClient client = esClientTools.init();
+		SearchRequestBuilder srb = client.prepareSearch(areaRoomIndex).setTypes(areaRoomType);
+		return srb.setQuery(query).execute().actionGet();
 	}
 }

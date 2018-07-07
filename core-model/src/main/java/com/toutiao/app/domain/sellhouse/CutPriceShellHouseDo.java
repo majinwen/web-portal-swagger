@@ -37,7 +37,7 @@ public class CutPriceShellHouseDo {
 	private String housePhotoTitle;
 
 	/**
-	 * 商圈Id
+	 * 区域Id
 	 */
 	private Integer areaId;
 
