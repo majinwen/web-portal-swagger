@@ -44,7 +44,7 @@ public class HomePageNearEsfDo {
     /**
      * 是否是降价房(0:否 1:降 2:涨)
      */
-    private String isCutPrice ;
+    private Integer isCutPrice ;
     /**
      * 距离
      */
@@ -71,6 +71,7 @@ public class HomePageNearEsfDo {
      * 推荐广告查询uid
      */
     private String uid;
+
 
 
 }
