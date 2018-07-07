@@ -13,6 +13,11 @@ public class HouseBusinessAndRoomDoQuery {
 	private String houseBusinessName;
 
 	/**
+	 * 商圈Id
+	 */
+	private Integer houseBusinessId;
+
+	/**
 	 * 户型
 	 */
 	private Integer room;
