@@ -3,7 +3,6 @@ package com.toutiao.app.dao.homepage;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.aggregations.Aggregation;
 
 public interface HomePageEsDao {
 
@@ -61,13 +60,13 @@ public interface HomePageEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort);
 
     /**
      * 专题着陆页-附近二手房
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
+    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, GeoDistanceSortBuilder sort);
 
 }

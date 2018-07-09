@@ -1,9 +1,6 @@
 package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.domain.homepage.*;
-import com.toutiao.app.domain.homepage.*;
-
-import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 
 import java.util.List;
@@ -41,10 +38,10 @@ public interface HomePageRestService {
 
     /**
      * 专题着陆页-附近小区
-     * @param plotId
+     * @param nearHouseSpecialPageDoQuery
      * @return
      */
-    HomePageNearPlotDo getPlotSpecialPage(Integer plotId);
+    HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
 
     /**
      * 专题着陆页-附近二手房

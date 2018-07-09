@@ -23,4 +23,14 @@ public class NearHouseSpecialPageRequest {
      * 城市id
      */
     private Integer cityId =12;
+    /**
+     * y坐标
+     */
+    @NotNull(message = "缺少坐标y")
+    private Double lat;
+    /**
+     * x坐标
+     */
+    @NotNull(message = "缺少坐标x")
+    private Double lon;
 }

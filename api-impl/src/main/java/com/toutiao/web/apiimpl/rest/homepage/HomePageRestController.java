@@ -18,6 +18,7 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,7 +79,7 @@ public class HomePageRestController {
      * 首页附近小区
      */
     @RequestMapping(value = "/homePageNearPlot",method = RequestMethod.GET)
-    public NashResult homePageNearPlot(NearHouseRequest nearHouseRequest){
+    public NashResult homePageNearPlot(@Validated NearHouseRequest nearHouseRequest){
         NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
         BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
         HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearHouseDoQuery);
@@ -90,7 +91,7 @@ public class HomePageRestController {
      * 首页附近二手房
      */
     @RequestMapping(value = "/homePageNearEsf",method = RequestMethod.GET)
-    public NashResult homePageNearEsf(NearHouseRequest nearHouseRequest){
+    public NashResult homePageNearEsf(@Validated NearHouseRequest nearHouseRequest){
         NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
         BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
         HomePageNearEsfListDo homePageNearEsf = homePageRestService.getHomePageNearEsf(nearHouseDoQuery);
@@ -102,8 +103,10 @@ public class HomePageRestController {
      * 专题着陆页-附近小区
      */
     @RequestMapping(value = "/plotSpecialPage",method = RequestMethod.GET)
-    public NashResult plotSpecialPage(@RequestParam("plotId") Integer plotId){
-        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(plotId);
+    public NashResult plotSpecialPage(@Validated NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
+        NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
+        BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
+        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(nearHouseSpecialPageDoQuery);
         HomePageNearPlotResponse homePageNearPlotResponse = JSON.parseObject(JSON.toJSONString(plotSpecialPage), HomePageNearPlotResponse.class);
         return NashResult.build(homePageNearPlotResponse);
     }
@@ -112,7 +115,7 @@ public class HomePageRestController {
      * 专题着陆页-附近二手房
      */
     @RequestMapping(value = "/esfSpecialPage",method = RequestMethod.GET)
-    public NashResult esfSpecialPage(NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
+    public NashResult esfSpecialPage(@Validated NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
         NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
         BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
         HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery);
