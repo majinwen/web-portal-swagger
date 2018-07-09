@@ -89,15 +89,9 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 			UserBasic userBasic = UserBasic.getCurrent();
 			UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
 			userSubscribeDetailDo.setTopicType(1);
-			if (areaId != null) {
-				userSubscribeDetailDo.setDistrictId(areaId);
-			}
-			if (lowestTotalPrice != null) {
-				userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
-			}
-			if (highestTotalPrice != null) {
-				userSubscribeDetailDo.setEndPrice(highestTotalPrice);
-			}
+			userSubscribeDetailDo.setDistrictId(areaId);
+			userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
+			userSubscribeDetailDo.setEndPrice(highestTotalPrice);
 
 			UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
 					.valueOf(userBasic.getUserId()));
