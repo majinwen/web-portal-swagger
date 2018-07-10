@@ -17,6 +17,21 @@ public class HomePageNearEsfDo {
      */
     private String houseTitle;
     /**
+     * 区域
+     */
+    @ChangeName("districtName")
+    private String area;
+    /**
+     * 商圈
+     */
+    @ChangeName("areaName")
+    private String houseBusinessName;
+    /**
+     * 朝向
+     */
+    @ChangeName("forward")
+    private String forwardName;
+    /**
      * 房源标题图
      */
     private String housePhotoTitle;
@@ -28,6 +43,10 @@ public class HomePageNearEsfDo {
      * 厅
      */
     private Integer hall;
+    /**
+     * 房源单价
+     */
+    private Double unitPrice;
     /**
      * 房源总价
      */
