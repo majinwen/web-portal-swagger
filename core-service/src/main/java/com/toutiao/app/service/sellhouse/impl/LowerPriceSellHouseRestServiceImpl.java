@@ -2,12 +2,15 @@ package com.toutiao.app.service.sellhouse.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.LowerPriceSellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDo;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.LowerPriceSellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
@@ -33,6 +36,9 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
 
     @Autowired
     private SubscribeService subscribeService;
+
+    @Autowired
+    private AgentService agentService;
 
     /**
      * 获取捡漏房List
@@ -85,6 +91,17 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
                 LowerPriceShellHouseDo lowerPriceShellHouseDo = JSON.parseObject(details, LowerPriceShellHouseDo.class);
                 lowerPriceShellHouseDo.setSortField(searchHit.getSortValues()[0].toString());
                 lowerPriceShellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                Integer userId = lowerPriceShellHouseDo.getUserId();
+                if (lowerPriceShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(userId)){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(userId.toString());
+                } else {
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                lowerPriceShellHouseDo.setAgentBaseDo(agentBaseDo);
                 lowerPriceShellHouseDos.add(lowerPriceShellHouseDo);
             }
         }
@@ -96,15 +113,9 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
             UserBasic userBasic = UserBasic.getCurrent();
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
             userSubscribeDetailDo.setTopicType(2);
-            if (areaId != null) {
-                userSubscribeDetailDo.setDistrictId(areaId);
-            }
-            if (lowestTotalPrice != null) {
-                userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
-            }
-            if (highestTotalPrice != null) {
-                userSubscribeDetailDo.setEndPrice(highestTotalPrice);
-            }
+            userSubscribeDetailDo.setDistrictId(areaId);
+            userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
+            userSubscribeDetailDo.setEndPrice(highestTotalPrice);
 
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
                     .valueOf(userBasic.getUserId()));

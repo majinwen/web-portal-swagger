@@ -2,12 +2,15 @@ package com.toutiao.app.service.sellhouse.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.HouseBusinessAndRoomEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.BusinessRoomAveragePriceDo;
 import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDo;
 import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDoQuery;
 import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDomain;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.FilterBusinessRoomChooseService;
 import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
+import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -27,6 +30,9 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
 
 	@Autowired
 	private FilterBusinessRoomChooseService filterBusinessRoomChooseService;
+
+	@Autowired
+	private AgentService agentService;
 
 	/**
 	 * 获取商圈+户型
@@ -48,6 +54,18 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
 				HouseBusinessAndRoomDo houseBusinessAndRoomDo = JSON.parseObject(details, HouseBusinessAndRoomDo.class);
 				houseBusinessAndRoomDo.setSortField(searchHit.getSortValues()[0].toString());
 				houseBusinessAndRoomDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
+
+				AgentBaseDo agentBaseDo = new AgentBaseDo();
+				if (houseBusinessAndRoomDo.getIsClaim() == 1 && StringTool.isNotEmpty(houseBusinessAndRoomDo.getUserId())){
+					agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString());
+				} else {
+					agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+					agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+					agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+					agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+				}
+				houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
+
 				if (houseBusinessAndRoomDoQuery.getHouseId().equals(houseBusinessAndRoomDo.getHouseId())){
 					houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);
 				} else {
