@@ -69,4 +69,5 @@ public class HomePageNearPlotDo {
      * 起始价格
      */
     private Double lowestPrice;
+
 }

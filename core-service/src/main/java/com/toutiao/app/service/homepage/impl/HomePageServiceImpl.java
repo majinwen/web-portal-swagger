@@ -2,28 +2,32 @@ package com.toutiao.app.service.homepage.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -34,7 +38,8 @@ public class HomePageServiceImpl implements HomePageRestService {
     @Autowired
     private NewHouseRestService newHouseRestService;
 
-
+    @Autowired
+    private AgentService agentService;
     /**
      * @return 获取二手房5条
      */
@@ -222,8 +227,19 @@ public class HomePageServiceImpl implements HomePageRestService {
             List<HomePageNearEsfDo> list = new ArrayList<>();
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
+                Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
                 homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[0]));
+                //替换认领信息
+                if(StringTool.isNotEmpty(sourceAsMap.get("userId"))&&((int)sourceAsMap.get("is_claim"))==1){
+                    homePageNearEsfDo.setHouseId((String) sourceAsMap.get("claimHouseId"));
+                    homePageNearEsfDo.setHouseTitle((String) sourceAsMap.get("claimHouseTitle"));
+                    homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
+                    homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
+
+                    AgentBaseDo agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+                    homePageNearEsfDo.setAgentBaseDo(agent);
+                }
                 list.add(homePageNearEsfDo);
             }
             homePageNearEsfListDo.setData(list);
@@ -293,10 +309,21 @@ public class HomePageServiceImpl implements HomePageRestService {
             List<HomePageNearEsfDo> list = new ArrayList<>();
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
+                Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
                 homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
                 homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
                 homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[2]));
+                //替换认领信息
+                if(StringTool.isNotEmpty(sourceAsMap.get("userId"))&&((int)sourceAsMap.get("is_claim"))==1){
+                    homePageNearEsfDo.setHouseId((String) sourceAsMap.get("claimHouseId"));
+                    homePageNearEsfDo.setHouseTitle((String) sourceAsMap.get("claimHouseTitle"));
+                    homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
+                    homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
+
+                    AgentBaseDo agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+                    homePageNearEsfDo.setAgentBaseDo(agent);
+                }
                 list.add(homePageNearEsfDo);
             }
             homePageNearEsfListDo.setData(list);

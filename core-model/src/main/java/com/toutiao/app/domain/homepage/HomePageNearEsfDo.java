@@ -1,7 +1,10 @@
 package com.toutiao.app.domain.homepage;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class HomePageNearEsfDo {
@@ -36,7 +39,7 @@ public class HomePageNearEsfDo {
     /**
      * 房源标签
      */
-    private String[] tagsName;
+    private List tagsName;
     /**
      * 是否属于top50小区
      */
@@ -71,7 +74,14 @@ public class HomePageNearEsfDo {
      * 推荐广告查询uid
      */
     private String uid;
-
+    /**
+     * 是否认领
+     */
+    private Integer isClaim;
+    /**
+     * 经纪人信息
+     */
+    private AgentBaseDo agentBaseDo;
 
 
 }
