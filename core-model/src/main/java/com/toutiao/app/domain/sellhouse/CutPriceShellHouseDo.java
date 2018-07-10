@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -42,15 +43,14 @@ public class CutPriceShellHouseDo {
 	private Integer areaId;
 
 	/**
-	 * 小区
-	 */
-	@ChangeName("buildingName")
-	private String plotName;
-
-	/**
 	 * 室
 	 */
 	private Integer room;
+
+	/**
+	 * 厅
+	 */
+	private Integer hall;
 
 	/**
 	 * 标签
@@ -176,4 +176,49 @@ public class CutPriceShellHouseDo {
 	 * uid
 	 */
 	private String uid;
+
+	/**
+	 * 经纪人信息
+	 */
+	@ChangeName("agent")
+	private AgentBaseDo agentBaseDo;
+
+	/**
+	 * 用户Id
+	 */
+	private Integer userId;
+
+	/**
+	 * 是否认领(0-否,1-是)
+	 */
+	private Integer isClaim;
+
+	/**
+	 * 房源均价
+	 */
+	private Double houseUnitCost;
+
+	/**
+	 * 区域名称
+	 */
+	@ChangeName("districtName")
+	private String area;
+
+	/**
+	 * 商圈名称
+	 */
+	@ChangeName("areaName")
+	private String houseBusinessName;
+
+	/**
+	 * 小区名称
+	 */
+	@ChangeName("buildingName")
+	private String plotName;
+
+	/**
+	 * 小区id
+	 */
+	@ChangeName("buildingId")
+	private Integer newcode;
 }

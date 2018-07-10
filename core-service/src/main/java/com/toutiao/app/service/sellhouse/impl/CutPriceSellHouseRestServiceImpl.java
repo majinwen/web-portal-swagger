@@ -2,12 +2,15 @@ package com.toutiao.app.service.sellhouse.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.CutPriceSellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDo;
 import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.CutPriceSellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
@@ -28,6 +31,9 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 
 	@Autowired
 	private SubscribeService subscribeService;
+
+	@Autowired
+	private AgentService agentService;
 
 	/**
 	 * 获取降价房Domain
@@ -78,6 +84,16 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
 				CutPriceShellHouseDo cutPriceShellHouseDo = JSON.parseObject(details, CutPriceShellHouseDo.class);
 				cutPriceShellHouseDo.setSortField(searchHit.getSortValues()[0].toString());
 				cutPriceShellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
+				AgentBaseDo agentBaseDo = new AgentBaseDo();
+				if (cutPriceShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(cutPriceShellHouseDo.getUserId())){
+					agentBaseDo = agentService.queryAgentInfoByUserId(cutPriceShellHouseDo.getUserId().toString());
+				} else {
+					agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+					agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+					agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+					agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+				}
+				cutPriceShellHouseDo.setAgentBaseDo(agentBaseDo);
 				cutPriceShellHouseDos.add(cutPriceShellHouseDo);
 			}
 		}
