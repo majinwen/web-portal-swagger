@@ -95,7 +95,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     public SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from-1).setSize(size).execute().actionGet();
         return  searchResponse;
 
     }
