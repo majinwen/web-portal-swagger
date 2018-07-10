@@ -605,11 +605,23 @@ public class SellHouseServiceImpl implements SellHouseService{
             Object [] sort=searchHit.getSortValues();
             details=searchHit.getSourceAsString();
             SellHouseBeSureToSnatchDo sellHouseBeSureToSnatchDo=JSON.parseObject(details,SellHouseBeSureToSnatchDo.class);
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseBeSureToSnatchDo.getIsClaim().equals(1))
             {
                 sellHouseBeSureToSnatchDo.setHouseId(sellHouseBeSureToSnatchDo.getClaimHouseId());
                 sellHouseBeSureToSnatchDo.setHousePhotoTitle(sellHouseBeSureToSnatchDo.getClaimHousePhotoTitle());
+
+                if (StringTool.isNotEmpty(sellHouseBeSureToSnatchDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getUserId().toString());
+                }
+
+            }else{
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
             }
+            sellHouseBeSureToSnatchDo.setAgentBaseDo(agentBaseDo);
             sellHouseBeSureToSnatchDo.setSort(sort[0]);
             sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
         }
