@@ -240,7 +240,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     AgentBaseDo agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
                     homePageNearEsfDo.setAgentBaseDo(agent);
                 }
-                homePageNearEsfDo.setUnitPrice(homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea());
+                homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
             }
             homePageNearEsfListDo.setData(list);
@@ -325,7 +325,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     AgentBaseDo agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
                     homePageNearEsfDo.setAgentBaseDo(agent);
                 }
-                homePageNearEsfDo.setUnitPrice(homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea());
+                homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
             }
             homePageNearEsfListDo.setData(list);
