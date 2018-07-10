@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 public class SellHouseBeSureToSnatchResponse {
-    @ChangeName("data")
-    List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos;
+//    @ChangeName("data")
+    List<SellHouseBeSureToSnatchDo> data;
 
     private Integer subscribeId;
 
