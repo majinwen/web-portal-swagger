@@ -39,9 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Service
 public class NewHouseRestServiceImpl implements NewHouseRestService {
@@ -242,6 +240,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
+        //5环内
+        if(StringTool.isNotEmpty(newHouseDoQuery.getRingRoad())){
+            booleanQueryBuilder.must(rangeQuery("ringRoad").lte(newHouseDoQuery.getRingRoad()));
+        }
+
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
