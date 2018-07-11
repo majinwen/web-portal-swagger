@@ -22,7 +22,7 @@ public class CutPriceShellHouseRequest {
 	/**
 	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
 	 */
-	private Integer sort;
+	private Integer sort = 0;
 
 	/**
 	 * 页码
