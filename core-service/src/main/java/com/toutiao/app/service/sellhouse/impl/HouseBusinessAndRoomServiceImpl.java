@@ -66,7 +66,8 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
 				}
 				houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
 
-				if (houseBusinessAndRoomDoQuery.getHouseId().equals(houseBusinessAndRoomDo.getHouseId())){
+				Integer houseId = houseBusinessAndRoomDoQuery.getHouseId();
+				if (houseId != null && houseId.equals(houseBusinessAndRoomDo.getHouseId())){
 					houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);
 				} else {
 					houseBusinessAndRoomDos.add(houseBusinessAndRoomDo);
