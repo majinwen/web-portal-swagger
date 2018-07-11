@@ -329,6 +329,20 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             }
         }
 
+        //减价房
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsCutPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", aggAdLandingDo.getIsCutPrice()));
+        }
+
+        //新上房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsNew())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", aggAdLandingDo.getIsNew()));
+        }
+        //洼地房
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsLowPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", aggAdLandingDo.getIsLowPrice()));
+        }
+
         queryBit = getNextIndex(redisCatogory,startBit,queryBit);
         RangeQueryBuilder range = QueryBuilders.rangeQuery("adSort").gt(queryBit);
         if(queryBit<startBit){
@@ -536,6 +550,19 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             }
         }
 
+        //减价房
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsCutPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", aggAdLandingDo.getIsCutPrice()));
+        }
+
+        //新上房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsNew())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", aggAdLandingDo.getIsNew()));
+        }
+        //洼地房
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsLowPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", aggAdLandingDo.getIsLowPrice()));
+        }
 
         SearchResponse searchResponse = getClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
         //计算补充数据的起始位置
@@ -630,6 +657,20 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                     booleanQueryBuilder.must(QueryBuilders.termQuery("room", aggAdLandingDo.getRoom()));
                 }
             }
+        }
+
+        //减价房
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsCutPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", aggAdLandingDo.getIsCutPrice()));
+        }
+
+        //新上房源
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsNew())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", aggAdLandingDo.getIsNew()));
+        }
+        //洼地房
+        if(StringTool.isNotEmpty(aggAdLandingDo.getIsLowPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", aggAdLandingDo.getIsLowPrice()));
         }
 
         SearchResponse searchResponse = getUnClaimSellHouseDetailsAdLanding(booleanQueryBuilder, pageNum, pageSize);
