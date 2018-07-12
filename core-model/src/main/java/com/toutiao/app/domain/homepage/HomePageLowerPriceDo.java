@@ -87,73 +87,73 @@ public class HomePageLowerPriceDo {
      */
     private Integer isCommunityTopHouse;
 
-	/**
-	 * 在同商圈同户型范围内做低价排名
-	 */
-	private Integer rankLowInBizcircleLayout;
+    /**
+     * 在同商圈同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
 
-	/**
-	 * 同小区同户型范围内做低价排名
-	 */
-	private Integer rankInLowCommunityLayout;
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    private Integer rankInLowCommunityLayout;
 
-	/**
-	 * 与小区平均单价的绝对值差
-	 */
-	private Double avgAbsoluteWithCommunity;
+    /**
+     * 与小区平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithCommunity;
 
-	/**
-	 * 与商圈平均单价的绝对值差
-	 */
-	private Double avgAbsoluteWithBizcircle;
+    /**
+     * 与商圈平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithBizcircle;
 
-	/**
-	 * 与区县平均单价的绝对值差
-	 */
-	private Double avgAbsoluteWithDistrict;
+    /**
+     * 与区县平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithDistrict;
 
-	/**
-	 * 与小区平均单价的相对值(百分比)
-	 */
-	private Double avgRelativeWithCommunity;
+    /**
+     * 与小区平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithCommunity;
 
-	/**
-	 * 与商圈平均单价的相对值(百分比)
-	 */
-	private Double avgRelativeWithBizcircle;
+    /**
+     * 与商圈平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithBizcircle;
 
-	/**
-	 * 与区县平均单价的相对值(百分比)
-	 */
-	private Double avgRelativeWithDistrict;
+    /**
+     * 与区县平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithDistrict;
 
-	/**
-	 * 与小区平均总价的绝对值差
-	 */
-	private Double totalAbsoluteWithCommunity;
+    /**
+     * 与小区平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithCommunity;
 
-	/**
-	 * 与商圈平均总价的绝对值差
-	 */
-	private Double totalAbsoluteWithBizcircle;
+    /**
+     * 与商圈平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithBizcircle;
 
-	/**
-	 * 与区县平均总价的绝对值差
-	 */
-	private Double totalAbsoluteWithDistrict;
+    /**
+     * 与区县平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithDistrict;
 
-	/**
-	 * 与小区平均总价的相对值(百分比)
-	 */
-	private Double totalRelativeWithCommunity;
+    /**
+     * 与小区平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithCommunity;
 
-	/**
-	 * 与商圈平均总价的相对值(百分比)
-	 */
-	private Double totalRelativeWithBizcircle;
+    /**
+     * 与商圈平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithBizcircle;
 
-	/**
-	 * 与区县平均总价的相对值(百分比)
-	 */
-	private Double totalRelativeWithDistrict;
+    /**
+     * 与区县平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithDistrict;
 }
