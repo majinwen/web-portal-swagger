@@ -42,7 +42,7 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
     public CutPriceShellHouseDomain getCutPriceHouse(CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery) {
         CutPriceShellHouseDomain cutPriceShellHouseDomain = new CutPriceShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        Integer areaId = cutPriceShellHouseDoQuery.getAreaId();
+        Integer areaId = cutPriceShellHouseDoQuery.getDistrictId();
         //降价房
         booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
 
@@ -57,18 +57,16 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
 
+
         //价格区间
-        Integer lowestTotalPrice = cutPriceShellHouseDoQuery.getLowestTotalPrice();
-        Integer highestTotalPrice = cutPriceShellHouseDoQuery.getHighestTotalPrice();
-        if (lowestTotalPrice != null) {
-            if (highestTotalPrice != null) {
-                booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(lowestTotalPrice)
-                        .lte(highestTotalPrice));
-            } else {
-                booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(lowestTotalPrice));
-            }
-        } else if (highestTotalPrice != null) {
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(highestTotalPrice));
+        double beginPrice = cutPriceShellHouseDoQuery.getBeginPrice();
+        double endPrice = cutPriceShellHouseDoQuery.getEndPrice();
+        if (beginPrice != 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+        } else if (beginPrice == 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
+        } else if (beginPrice != 0 && endPrice == 0) {
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
         Integer sort = cutPriceShellHouseDoQuery.getSort();
         Integer pageNum = cutPriceShellHouseDoQuery.getPageNum();
@@ -106,8 +104,8 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
             userSubscribeDetailDo.setTopicType(1);
             userSubscribeDetailDo.setDistrictId(areaId);
-            userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
-            userSubscribeDetailDo.setEndPrice(highestTotalPrice);
+            userSubscribeDetailDo.setBeginPrice((int) beginPrice);
+            userSubscribeDetailDo.setEndPrice((int) endPrice);
 
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
                     .valueOf(userBasic.getUserId()));
