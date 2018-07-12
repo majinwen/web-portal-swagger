@@ -7,33 +7,33 @@ import lombok.Data;
  */
 @Data
 public class HouseBusinessAndRoomDoQuery {
-	/**
-	 * 商圈
-	 */
-	private String houseBusinessName;
+    /**
+     * 商圈
+     */
+    private String houseBusinessName;
 
-	/**
-	 * 商圈Id
-	 */
-	private Integer houseBusinessId;
+    /**
+     * 商圈Id
+     */
+    private Integer houseBusinessId;
 
-	/**
-	 * 户型
-	 */
-	private Integer room;
+    /**
+     * 户型
+     */
+    private Integer room;
 
-	/**
-	 * 详情页房源编号
-	 */
-	private Integer houseId;
+    /**
+     * 详情页房源编号
+     */
+    private Integer houseId;
 
-	/**
-	 * 页码
-	 */
-	private Integer pageNum;
+    /**
+     * 页码
+     */
+    private Integer pageNum;
 
-	/**
-	 * 每页数量
-	 */
-	private Integer pageSize;
+    /**
+     * 每页数量
+     */
+    private Integer pageSize;
 }

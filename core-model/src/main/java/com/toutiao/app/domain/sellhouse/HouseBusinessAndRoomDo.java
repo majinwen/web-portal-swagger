@@ -6,229 +6,230 @@ import lombok.Data;
 
 @Data
 public class HouseBusinessAndRoomDo {
-	/**
-	 * 房源id
-	 */
-	private Integer houseId;
+    /**
+     * 房源id
+     */
+    private Integer houseId;
 
-	/**
-	 * 房源面积(单位:平方米)
-	 */
-	private Double buildArea;
+    /**
+     * 房源面积(单位:平方米)
+     */
+    private Double buildArea;
 
-	/**
-	 * 朝向名称
-	 */
-	@ChangeName("forward")
-	private String forwardName;
+    /**
+     * 朝向名称
+     */
+    @ChangeName("forward")
+    private String forwardName;
 
-	/**
-	 * 房源价格(单位:万)
-	 */
-	private Double houseTotalPrices;
+    /**
+     * 房源价格(单位:万)
+     */
+    private Double houseTotalPrices;
 
-	/**
-	 * 价格浮动(单位:万)
-	 */
-	private Double priceFloat;
+    /**
+     * 价格浮动(单位:万)
+     */
+    private Double priceFloat;
 
-	/**
-	 * 房源标题图片
-	 */
-	private String housePhotoTitle;
+    /**
+     * 房源标题图片
+     */
+    private String housePhotoTitle;
 
-	/**
-	 * 区域Id
-	 */
-	private Integer areaId;
+    /**
+     * 区域Id
+     */
+    private Integer areaId;
 
-	/**
-	 * 商圈Id
-	 */
-	private Integer houseBusinessNameId;
+    /**
+     * 商圈Id
+     */
+    private Integer houseBusinessNameId;
 
-	/**
-	 * 室
-	 */
-	private Integer room;
+    /**
+     * 室
+     */
+    private Integer room;
 
-	/**
-	 * 厅
-	 */
-	private Integer hall;
+    /**
+     * 厅
+     */
+    private Integer hall;
 
-	/**
-	 * 标签
-	 */
-	private Integer[] tags;
 
-	/**
-	 * 标签名称
-	 */
-	private String[] tagsName;
+    /**
+     * 标签
+     */
+    private Integer[] tags;
 
-	/**
-	 * 是否主力户型(0-否,1-是)
-	 */
-	private Integer isMainLayout;
+    /**
+     * 标签名称
+     */
+    private String[] tagsName;
 
-	/**
-	 * 是否成交户型(0-否,1-是)
-	 */
-	private Integer isDealLayout;
+    /**
+     * 是否主力户型(0-否,1-是)
+     */
+    private Integer isMainLayout;
 
-	/**
-	 * 是否降价房(0-否, 1-降价房, 2-涨价房)
-	 */
-	private Integer isCutPrice;
+    /**
+     * 是否成交户型(0-否,1-是)
+     */
+    private Integer isDealLayout;
 
-	/**
-	 * 是否价格洼地(0-否, 1-是)
-	 */
-	private Integer isLowPrice;
+    /**
+     * 是否降价房(0-否, 1-降价房, 2-涨价房)
+     */
+    private Integer isCutPrice;
 
-	/**
-	 * 是否同户型小区均价最低(0-否,1-是)
-	 */
-	private Integer isLowest;
+    /**
+     * 是否价格洼地(0-否, 1-是)
+     */
+    private Integer isLowPrice;
 
-	/**
-	 * 是否新导入房源(0-否,1-是)
-	 */
-	private Integer isNew;
+    /**
+     * 是否同户型小区均价最低(0-否,1-是)
+     */
+    private Integer isLowest;
 
-	/**
-	 * 是否是top50小区房源(0-否, 1-是)
-	 */
-	private Integer isCommunityTopHouse;
+    /**
+     * 是否新导入房源(0-否,1-是)
+     */
+    private Integer isNew;
 
-	/**
-	 * 在同商圈同户型范围内做低价排名
-	 */
-	private Integer rankLowInBizcircleLayout;
+    /**
+     * 是否是top50小区房源(0-否, 1-是)
+     */
+    private Integer isCommunityTopHouse;
 
-	/**
-	 * 同小区同户型范围内做低价排名
-	 */
-	private Integer rankInLowCommunityLayout;
+    /**
+     * 在同商圈同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
 
-	/**
-	 * 与小区平均单价的绝对值差
-	 */
-	private Double avgAbsoluteWithCommunity;
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    private Integer rankInLowCommunityLayout;
 
-	/**
-	 * 与商圈平均单价的绝对值差
-	 */
-	private Double avgAbsoluteWithBizcircle;
+    /**
+     * 与小区平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithCommunity;
 
-	/**
-	 * 与区县平均单价的绝对值差
-	 */
-	private Double avgAbsoluteWithDistrict;
+    /**
+     * 与商圈平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithBizcircle;
 
-	/**
-	 * 与小区平均单价的相对值(百分比)
-	 */
-	private Double avgRelativeWithCommunity;
+    /**
+     * 与区县平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithDistrict;
 
-	/**
-	 * 与商圈平均单价的相对值(百分比)
-	 */
-	private Double avgRelativeWithBizcircle;
+    /**
+     * 与小区平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithCommunity;
 
-	/**
-	 * 与区县平均单价的相对值(百分比)
-	 */
-	private Double avgRelativeWithDistrict;
+    /**
+     * 与商圈平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithBizcircle;
 
-	/**
-	 * 与小区平均总价的绝对值差
-	 */
-	private Double totalAbsoluteWithCommunity;
+    /**
+     * 与区县平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithDistrict;
 
-	/**
-	 * 与商圈平均总价的绝对值差
-	 */
-	private Double totalAbsoluteWithBizcircle;
+    /**
+     * 与小区平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithCommunity;
 
-	/**
-	 * 与区县平均总价的绝对值差
-	 */
-	private Double totalAbsoluteWithDistrict;
+    /**
+     * 与商圈平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithBizcircle;
 
-	/**
-	 * 与小区平均总价的相对值(百分比)
-	 */
-	private Double totalRelativeWithCommunity;
+    /**
+     * 与区县平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithDistrict;
 
-	/**
-	 * 与商圈平均总价的相对值(百分比)
-	 */
-	private Double totalRelativeWithBizcircle;
+    /**
+     * 与小区平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithCommunity;
 
-	/**
-	 * 与区县平均总价的相对值(百分比)
-	 */
-	private Double totalRelativeWithDistrict;
+    /**
+     * 与商圈平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithBizcircle;
 
-	/**
-	 * 更新时间
-	 */
-	private String updateTime;
+    /**
+     * 与区县平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithDistrict;
 
-	/**
-	 * 排序属性
-	 */
-	private String sortField;
+    /**
+     * 更新时间
+     */
+    private String updateTime;
 
-	/**
-	 * uid
-	 */
-	private String uid;
+    /**
+     * 排序属性
+     */
+    private String sortField;
 
-	/**
-	 * 经纪人信息
-	 */
-	@ChangeName("agent")
-	private AgentBaseDo agentBaseDo;
+    /**
+     * uid
+     */
+    private String uid;
 
-	/**
-	 * 用户Id
-	 */
-	private Integer userId;
+    /**
+     * 经纪人信息
+     */
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
 
-	/**
-	 * 是否认领(0-否,1-是)
-	 */
-	private Integer isClaim;
+    /**
+     * 用户Id
+     */
+    private Integer userId;
 
-	/**
-	 * 房源均价
-	 */
-	private Double houseUnitCost;
+    /**
+     * 是否认领(0-否,1-是)
+    */
+    private Integer isClaim;
 
-	/**
-	 * 区域名称
-	 */
-	@ChangeName("districtName")
-	private String area;
+    /**
+     * 房源均价
+     */
+    private Double houseUnitCost;
 
-	/**
-	 * 商圈名称
-	 */
-	@ChangeName("areaName")
-	private String houseBusinessName;
+    /**
+     * 区域名称
+     */
+    @ChangeName("districtName")
+    private String area;
 
-	/**
-	 * 小区名称
-	 */
-	@ChangeName("buildingName")
-	private String plotName;
+    /**
+     * 商圈名称
+     */
+    @ChangeName("areaName")
+    private String houseBusinessName;
 
-	/**
-	 * 小区id
-	 */
-	@ChangeName("buildingId")
-	private Integer newcode;
+    /**
+     * 小区名称
+     */
+    @ChangeName("buildingName")
+    private String plotName;
+
+    /**
+     * 小区id
+     */
+    @ChangeName("buildingId")
+    private Integer newcode;
 }

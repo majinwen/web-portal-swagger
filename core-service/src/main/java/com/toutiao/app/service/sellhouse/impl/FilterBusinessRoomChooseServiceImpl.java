@@ -12,36 +12,36 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomChooseService{
-	@Override
-	public BoolQueryBuilder filterBusinessRoomChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		//商圈
-		String houseBusinessName = houseBusinessAndRoomDoQuery.getHouseBusinessName();
-		if (StringTool.isNotEmpty(houseBusinessName)){
-			boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", houseBusinessName));
-		}
-		//户型
-		Integer room = houseBusinessAndRoomDoQuery.getRoom();
-		if (room != null){
-			boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
-		}
-		return boolQueryBuilder;
-	}
+    @Override
+    public BoolQueryBuilder filterBusinessRoomChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //商圈
+        String houseBusinessName = houseBusinessAndRoomDoQuery.getHouseBusinessName();
+        if (StringTool.isNotEmpty(houseBusinessName)){
+            boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", houseBusinessName));
+        }
+        //户型
+        Integer room = houseBusinessAndRoomDoQuery.getRoom();
+        if (room != null){
+            boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
+        }
+        return boolQueryBuilder;
+    }
 
-	@Override
-	public BoolQueryBuilder filterBusinessRoomAveragePriceChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
-		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		//商圈Id
-		Integer houseBusinessId = houseBusinessAndRoomDoQuery.getHouseBusinessId();
-		if (houseBusinessId != null){
-			boolQueryBuilder.must(QueryBuilders.termQuery("area_id", houseBusinessId));
-		}
-		//户型
-		Integer room = houseBusinessAndRoomDoQuery.getRoom();
-		if (room != null){
-			boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
-		}
-		boolQueryBuilder.must(QueryBuilders.termQuery("hall", 1));
-		return boolQueryBuilder;
-	}
+    @Override
+    public BoolQueryBuilder filterBusinessRoomAveragePriceChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        //商圈Id
+        Integer houseBusinessId = houseBusinessAndRoomDoQuery.getHouseBusinessId();
+        if (houseBusinessId != null){
+            boolQueryBuilder.must(QueryBuilders.termQuery("area_id", houseBusinessId));
+        }
+        //户型
+        Integer room = houseBusinessAndRoomDoQuery.getRoom();
+        if (room != null){
+            boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
+        }
+        boolQueryBuilder.must(QueryBuilders.termQuery("hall", 1));
+        return boolQueryBuilder;
+    }
 }

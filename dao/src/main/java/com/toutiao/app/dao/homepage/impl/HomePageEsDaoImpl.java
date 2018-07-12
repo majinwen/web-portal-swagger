@@ -130,8 +130,8 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     @Override
     public SearchResponse getHomePageCutPrice(BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
-		SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-				.addSort("updateTimeSort", SortOrder.DESC);
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+                .addSort("updateTimeSort", SortOrder.DESC);
         //限制结果8条
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(8).execute().actionGet();
         return searchResponse;

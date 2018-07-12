@@ -23,52 +23,52 @@ import java.util.List;
  */
 @Service
 public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
-	@Autowired
-	private PlotsThemeEsDao plotsThemeEsDao;
+    @Autowired
+    private PlotsThemeEsDao plotsThemeEsDao;
 
-	/**
-	 * 获取小区主题数据
-	 */
-	@Override
-	public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery) {
-		List<PlotsThemeDo> plotsThemeDos = new ArrayList<>();
-		//小区筛选条件
-		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-		String nearestPark = plotsThemeDoQuery.getNearestPark();
+    /**
+     * 获取小区主题数据
+     */
+    @Override
+    public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery) {
+        List<PlotsThemeDo> plotsThemeDos = new ArrayList<>();
+        //小区筛选条件
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        String nearestPark = plotsThemeDoQuery.getNearestPark();
 
-		//主题标签
-		Integer recommendBuildTagsId = plotsThemeDoQuery.getRecommendBuildTagsId();
-		if (recommendBuildTagsId != null) {
-			if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
-				boolQueryBuilder.must(QueryBuilders.boolQuery()
-						.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
-						.must(QueryBuilders.termQuery("nearestPark", nearestPark)));
-			} else {
-				boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
-			}
-		}
+        //主题标签
+        Integer recommendBuildTagsId = plotsThemeDoQuery.getRecommendBuildTagsId();
+        if (recommendBuildTagsId != null) {
+            if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
+                boolQueryBuilder.must(QueryBuilders.boolQuery()
+                        .must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
+                        .must(QueryBuilders.termQuery("nearestPark", nearestPark)));
+            } else {
+                boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
+            }
+        }
 
-		//区域
-		Integer areaId = plotsThemeDoQuery.getAreaId();
-		if (areaId != null) {
-			boolQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
-		}
-		Integer pageNum = plotsThemeDoQuery.getPageNum();
-		Integer pageSize = plotsThemeDoQuery.getPageSize();
-		SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize);
+        //区域
+        Integer areaId = plotsThemeDoQuery.getAreaId();
+        if (areaId != null) {
+            boolQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
+        }
+        Integer pageNum = plotsThemeDoQuery.getPageNum();
+        Integer pageSize = plotsThemeDoQuery.getPageSize();
+        SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize);
 
-		SearchHits hits = plotsThemeList.getHits();
-		SearchHit[] searchHists = hits.getHits();
-		PlotsThemeDomain plotsThemeDomain = new PlotsThemeDomain();
-		if (searchHists.length > 0) {
-			for (SearchHit searchHit : searchHists) {
-				String details = searchHit.getSourceAsString();
-				PlotsThemeDo plotsThemeDo = JSON.parseObject(details, PlotsThemeDo.class);
-				plotsThemeDos.add(plotsThemeDo);
-			}
-		}
-		plotsThemeDomain.setData(plotsThemeDos);
-		plotsThemeDomain.setTotalCount(hits.totalHits);
-		return plotsThemeDomain;
-	}
+        SearchHits hits = plotsThemeList.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        PlotsThemeDomain plotsThemeDomain = new PlotsThemeDomain();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                PlotsThemeDo plotsThemeDo = JSON.parseObject(details, PlotsThemeDo.class);
+                plotsThemeDos.add(plotsThemeDo);
+            }
+        }
+        plotsThemeDomain.setData(plotsThemeDos);
+        plotsThemeDomain.setTotalCount(hits.totalHits);
+        return plotsThemeDomain;
+    }
 }

@@ -10,82 +10,82 @@ import lombok.Data;
  */
 @Data
 public class HomePageLowerPriceDo {
-	/**
-	 * 房源id
-	 */
-	private Integer houseId;
+    /**
+     * 房源id
+     */
+    private Integer houseId;
 
-	/**
-	 * 房源面积(单位:平方米)
-	 */
-	private Double buildArea;
+    /**
+     * 房源面积(单位:平方米)
+     */
+    private Double buildArea;
 
-	/**
-	 * 朝向名称
-	 */
-	@ChangeName("forward")
-	private String forwardName;
+    /**
+     * 朝向名称
+     */
+    @ChangeName("forward")
+    private String forwardName;
 
-	/**
-	 * 房源价格(单位:万)
-	 */
-	private Double houseTotalPrices;
+    /**
+     * 房源价格(单位:万)
+     */
+    private Double houseTotalPrices;
 
-	/**
-	 * 房源标题图片
-	 */
-	private String housePhotoTitle;
+    /**
+     * 房源标题图片
+     */
+    private String housePhotoTitle;
 
-	/**
-	 * 小区
-	 */
-	@ChangeName("buildingName")
-	private String plotName;
+    /**
+     * 小区
+     */
+    @ChangeName("buildingName")
+    private String plotName;
 
-	/**
-	 * 室
-	 */
-	private Integer room;
+    /**
+     * 室
+     */
+    private Integer room;
 
-	/**
-	 * 标签
-	 */
-	private Integer[] tags;
+    /**
+     * 标签
+     */
+    private Integer[] tags;
 
-	/**
-	 * 标签名称
-	 */
-	private String[] tagsName;
+    /**
+     * 标签名称
+     */
+    private String[] tagsName;
 
-	/**
-	 * 是否主力户型(0-否, 1-是)
-	 */
-	private Integer isMainLayout;
+    /**
+     * 是否主力户型(0-否, 1-是)
+     */
+    private Integer isMainLayout;
 
-	/**
-	 * 是否成交户型(0-否, 1-是)
-	 */
-	private Integer isDealLayout;
+    /**
+     * 是否成交户型(0-否, 1-是)
+     */
+    private Integer isDealLayout;
 
-	/**
-	 * 是否价格洼地(0-否, 1-是)
-	 */
-	private Integer isLowPrice;
+    /**
+     * 是否价格洼地(0-否, 1-是)
+     */
+    private Integer isLowPrice;
 
-	/**
-	 * 是否同户型小区均价最低(0-否, 1-是)
-	 */
-	private Integer isLowest;
+    /**
+     * 是否同户型小区均价最低(0-否, 1-是)
+     */
+    private Integer isLowest;
 
-	/**
-	 * 是否新导入房源(0-否, 1-是)
-	 */
-	private Integer isNew;
+    /**
+     * 是否新导入房源(0-否, 1-是)
+     */
+    private Integer isNew;
 
-	/**
-	 * 是否是top50小区房源(0-否, 1-是)
-	 */
-	private Integer isCommunityTopHouse;
+    /**
+     * 是否是top50小区房源(0-否, 1-是)
+     */
+    private Integer isCommunityTopHouse;
 
 	/**
 	 * 在同商圈同户型范围内做低价排名

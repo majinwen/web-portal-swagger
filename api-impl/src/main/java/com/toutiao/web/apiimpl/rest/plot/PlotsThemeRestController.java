@@ -21,18 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rest/plot/theme")
 public class PlotsThemeRestController {
-	@Autowired
-	private PlotsThemeRestService plotsThemeRestService;
+    @Autowired
+    private PlotsThemeRestService plotsThemeRestService;
 
-	@RequestMapping(value = "/getPlotsTheme", method = RequestMethod.GET)
-	@ResponseBody
-	public NashResult getPlotsTheme(PlotsThemeRequest plotsThemeRequest) {
-		PlotsThemeDoQuery plotsThemeDoQuery = new PlotsThemeDoQuery();
-		BeanUtils.copyProperties(plotsThemeRequest, plotsThemeDoQuery);
-		PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery);
-		PlotsThemeResponse plotsThemeResponse = new PlotsThemeResponse();
-		BeanUtils.copyProperties(plotsThemeDos, plotsThemeResponse);
-		return NashResult.build(plotsThemeResponse);
+    @RequestMapping(value = "/getPlotsTheme", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getPlotsTheme(PlotsThemeRequest plotsThemeRequest) {
+        PlotsThemeDoQuery plotsThemeDoQuery = new PlotsThemeDoQuery();
+        BeanUtils.copyProperties(plotsThemeRequest, plotsThemeDoQuery);
+        PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery);
+        PlotsThemeResponse plotsThemeResponse = new PlotsThemeResponse();
+        BeanUtils.copyProperties(plotsThemeDos, plotsThemeResponse);
+        return NashResult.build(plotsThemeResponse);
 
-	}
+    }
 }

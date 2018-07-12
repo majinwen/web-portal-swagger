@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rest/esf/cutPrice")
 public class CutPriceSellHouseRestController {
-	@Autowired
-	private CutPriceSellHouseRestService cutPriceSellHouseRestService;
+    @Autowired
+    private CutPriceSellHouseRestService cutPriceSellHouseRestService;
 
-	/**
-	 * 专题页获取降价房List
-	 */
-	@RequestMapping(value = "/getCutPriceShellHouse", method = RequestMethod.GET)
-	@ResponseBody
-	public NashResult getCutPriceShellHouse(CutPriceShellHouseRequest cutPriceShellHouseRequest) {
-		CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
-		BeanUtils.copyProperties(cutPriceShellHouseRequest, cutPriceShellHouseDoQuery);
-		CutPriceShellHouseDomain cutPriceShellHouses = cutPriceSellHouseRestService.getCutPriceHouse(cutPriceShellHouseDoQuery);
-		CutPriceShellHouseResponse cutPriceShellHouseResponse = new CutPriceShellHouseResponse();
-		BeanUtils.copyProperties(cutPriceShellHouses, cutPriceShellHouseResponse);
-		return NashResult.build(cutPriceShellHouses);
-	}
+    /**
+     * 专题页获取降价房List
+     */
+    @RequestMapping(value = "/getCutPriceShellHouse", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getCutPriceShellHouse(CutPriceShellHouseRequest cutPriceShellHouseRequest) {
+        CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
+        BeanUtils.copyProperties(cutPriceShellHouseRequest, cutPriceShellHouseDoQuery);
+        CutPriceShellHouseDomain cutPriceShellHouses = cutPriceSellHouseRestService.getCutPriceHouse(cutPriceShellHouseDoQuery);
+        CutPriceShellHouseResponse cutPriceShellHouseResponse = new CutPriceShellHouseResponse();
+        BeanUtils.copyProperties(cutPriceShellHouses, cutPriceShellHouseResponse);
+        return NashResult.build(cutPriceShellHouses);
+    }
 }
