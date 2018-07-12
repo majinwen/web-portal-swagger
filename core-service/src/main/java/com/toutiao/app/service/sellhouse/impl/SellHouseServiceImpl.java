@@ -632,7 +632,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             UserSubscribeDetailDo userSubscribeDetailDo=new UserSubscribeDetailDo();
             BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,userSubscribeDetailDo);
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
-            if (null!=userSubscribe.getId())
+            if (null!=userSubscribe)
             {
                 subscribeId=userSubscribe.getId();
             }
