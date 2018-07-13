@@ -7,13 +7,13 @@ import java.util.List;
 
 @Data
 public class PlotsThemeResponse {
-	/**
-	 * 小区主题List
-	 */
-	private List<PlotsThemeDo> data;
+    /**
+     * 小区主题List
+     */
+    private List<PlotsThemeDo> data;
 
-	/**
-	 * 查询总数
-	 */
-	private long totalCount;
+    /**
+     * 查询总数
+     */
+    private long totalCount;
 }

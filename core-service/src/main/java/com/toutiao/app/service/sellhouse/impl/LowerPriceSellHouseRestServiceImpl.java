@@ -48,33 +48,30 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
         LowerPriceShellHouseDomain lowerPriceShellHouseDomain = new LowerPriceShellHouseDomain();
 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        Integer areaId = lowerPriceShellHouseDoQuery.getAreaId();
+        Integer areaId = lowerPriceShellHouseDoQuery.getDistrictId();
         //捡漏房
-		booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
 
-		//区域
+        //区域
         if (areaId != null) {
-			booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
         }
 
         //新导入房源
         Integer isNew = lowerPriceShellHouseDoQuery.getIsNew();
         if (isNew != null) {
-			booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
 
         //价格区间
-        Integer lowestTotalPrice = lowerPriceShellHouseDoQuery.getLowestTotalPrice();
-        Integer highestTotalPrice = lowerPriceShellHouseDoQuery.getHighestTotalPrice();
-        if (lowestTotalPrice != null) {
-            if (highestTotalPrice != null) {
-				booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(lowestTotalPrice)
-						.lte(highestTotalPrice));
-            } else {
-				booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(lowestTotalPrice));
-            }
-        } else if (highestTotalPrice != null) {
-			booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(highestTotalPrice));
+        double beginPrice = lowerPriceShellHouseDoQuery.getBeginPrice();
+        double endPrice = lowerPriceShellHouseDoQuery.getEndPrice();
+        if (beginPrice != 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+        } else if (beginPrice == 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
+        } else if (beginPrice != 0 && endPrice == 0) {
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
 
         Integer sort = lowerPriceShellHouseDoQuery.getSort();
@@ -114,8 +111,8 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
             userSubscribeDetailDo.setTopicType(2);
             userSubscribeDetailDo.setDistrictId(areaId);
-            userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
-            userSubscribeDetailDo.setEndPrice(highestTotalPrice);
+            userSubscribeDetailDo.setBeginPrice((int) beginPrice);
+            userSubscribeDetailDo.setEndPrice((int) endPrice);
 
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
                     .valueOf(userBasic.getUserId()));

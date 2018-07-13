@@ -20,21 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rest/esf/houseBusinessAndRoom")
 public class HouseBusinessAndRoomRestController {
-	@Autowired
-	private HouseBusinessAndRoomService houseBusinessAndRoomService;
+    @Autowired
+    private HouseBusinessAndRoomService houseBusinessAndRoomService;
 
-	/**
-	 * 获取商圈+户型房源专题列表
-	 */
-	@RequestMapping(value = "getHouseBusinessAndRoomHouses", method = RequestMethod.GET)
-	@ResponseBody
-	public NashResult getHouseBusinessAndRoomHouses(@Validated HouseBusinessAndRoomRequest houseBusinessAndRoomRequest) {
-		HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery = new HouseBusinessAndRoomDoQuery();
-		BeanUtils.copyProperties(houseBusinessAndRoomRequest, houseBusinessAndRoomDoQuery);
-		HouseBusinessAndRoomDomain houseBusinessAndRoomHouses = houseBusinessAndRoomService
-				.getHouseBusinessAndRoomHouses(houseBusinessAndRoomDoQuery);
-		HouseBusinessAndRoomResponse houseBusinessAndRoomResponse = new HouseBusinessAndRoomResponse();
-		BeanUtils.copyProperties(houseBusinessAndRoomHouses, houseBusinessAndRoomResponse);
-		return NashResult.build(houseBusinessAndRoomResponse);
-	}
+    /**
+     * 获取商圈+户型房源专题列表
+     */
+    @RequestMapping(value = "getHouseBusinessAndRoomHouses", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHouseBusinessAndRoomHouses(@Validated HouseBusinessAndRoomRequest houseBusinessAndRoomRequest) {
+        HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery = new HouseBusinessAndRoomDoQuery();
+        BeanUtils.copyProperties(houseBusinessAndRoomRequest, houseBusinessAndRoomDoQuery);
+        HouseBusinessAndRoomDomain houseBusinessAndRoomHouses = houseBusinessAndRoomService
+            .getHouseBusinessAndRoomHouses(houseBusinessAndRoomDoQuery);
+        HouseBusinessAndRoomResponse houseBusinessAndRoomResponse = new HouseBusinessAndRoomResponse();
+        BeanUtils.copyProperties(houseBusinessAndRoomHouses, houseBusinessAndRoomResponse);
+        return NashResult.build(houseBusinessAndRoomResponse);
+    }
 }

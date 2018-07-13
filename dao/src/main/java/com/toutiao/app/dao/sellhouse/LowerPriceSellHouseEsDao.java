@@ -9,12 +9,12 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
  * @author zym
  */
 public interface LowerPriceSellHouseEsDao {
-	/**
-	 * 获取捡漏房
-	 *
-	 * @param query query
-	 * @param sort  排序
-	 * @return SearchResponse
-	 */
-	SearchResponse getLowerPriceSellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize);
+    /**
+     * 获取捡漏房
+     *
+     * @param query query
+     * @param sort  排序
+     * @return SearchResponse
+     */
+    SearchResponse getLowerPriceSellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize);
 }

@@ -17,46 +17,46 @@ import org.springframework.stereotype.Service;
 @Service
 public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
 
-	@Autowired
-	private ESClientTools esClientTools;
+    @Autowired
+    private ESClientTools esClientTools;
 
-	/**
-	 * 索引名称
-	 */
-	@Value("${tt.projhouse.index}")
-	private String projhouseIndex;
+    /**
+     * 索引名称
+     */
+    @Value("${tt.projhouse.index}")
+    private String projhouseIndex;
 
-	/**
-	 * 索引类
-	 */
-	@Value("${tt.projhouse.type}")
-	private String projhouseType;
+    /**
+     * 索引类
+     */
+    @Value("${tt.projhouse.type}")
+    private String projhouseType;
 
-	/**
-	 * 商圈户型均价索引索引名称
-	 */
-	@Value("${tt.areaRoom.index}")
-	private String areaRoomIndex;
+    /**
+     * 商圈户型均价索引索引名称
+     */
+    @Value("${tt.areaRoom.index}")
+    private String areaRoomIndex;
 
-	/**
-	 * 商圈户型均价索引索引类
-	 */
-	@Value("${tt.areaRoom.type}")
-	private String areaRoomType;
+    /**
+     * 商圈户型均价索引索引类
+     */
+    @Value("${tt.areaRoom.type}")
+    private String areaRoomType;
 
-	@Override
-	public SearchResponse getHouseBusinessAndRoomHouses(BoolQueryBuilder query, Integer pageNum, Integer pageSize) {
-		TransportClient client = esClientTools.init();
-		SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-		srb.addSort("buildArea", SortOrder.DESC);
-		srb.addSort("_uid", SortOrder.DESC);
-		return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
-	}
+    @Override
+    public SearchResponse getHouseBusinessAndRoomHouses(BoolQueryBuilder query, Integer pageNum, Integer pageSize) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        srb.addSort("buildArea", SortOrder.DESC);
+        srb.addSort("_uid", SortOrder.DESC);
+        return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+    }
 
-	@Override
-	public SearchResponse getHouseBusinessAndRoomAveragePrice(BoolQueryBuilder query) {
-		TransportClient client = esClientTools.init();
-		SearchRequestBuilder srb = client.prepareSearch(areaRoomIndex).setTypes(areaRoomType);
-		return srb.setQuery(query).execute().actionGet();
-	}
+    @Override
+    public SearchResponse getHouseBusinessAndRoomAveragePrice(BoolQueryBuilder query) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(areaRoomIndex).setTypes(areaRoomType);
+        return srb.setQuery(query).execute().actionGet();
+    }
 }

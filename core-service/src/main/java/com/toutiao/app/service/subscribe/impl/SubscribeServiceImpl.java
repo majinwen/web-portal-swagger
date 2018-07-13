@@ -105,13 +105,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
 //            BeanUtils.copyProperties(userSubscribeDetailDo, cutPriceShellHouseDoQuery);
             if (userSubscribeDetailDo.getDistrictId() != null) {
-                cutPriceShellHouseDoQuery.setAreaId(userSubscribeDetailDo.getDistrictId());
+                cutPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
             if (userSubscribeDetailDo.getBeginPrice() != null) {
-                cutPriceShellHouseDoQuery.setLowestTotalPrice(userSubscribeDetailDo.getBeginPrice());
+                cutPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
             if (userSubscribeDetailDo.getEndPrice() != null) {
-                cutPriceShellHouseDoQuery.setHighestTotalPrice(userSubscribeDetailDo.getEndPrice());
+                cutPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             cutPriceShellHouseDoQuery.setIsNew(1);
             cutPriceShellHouseDoQuery.setSort(0);
@@ -122,13 +122,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
 //            BeanUtils.copyProperties(userSubscribeDetailDo, lowerPriceShellHouseDoQuery);
             if (userSubscribeDetailDo.getDistrictId() != null) {
-                lowerPriceShellHouseDoQuery.setAreaId(userSubscribeDetailDo.getDistrictId());
+                lowerPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
             if (userSubscribeDetailDo.getBeginPrice() != null) {
-                lowerPriceShellHouseDoQuery.setLowestTotalPrice(userSubscribeDetailDo.getBeginPrice());
+                lowerPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
             if (userSubscribeDetailDo.getEndPrice() != null) {
-                lowerPriceShellHouseDoQuery.setHighestTotalPrice(userSubscribeDetailDo.getEndPrice());
+                lowerPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             lowerPriceShellHouseDoQuery.setIsNew(1);
             lowerPriceShellHouseDoQuery.setSort(0);
@@ -151,13 +151,13 @@ public class SubscribeServiceImpl implements SubscribeService {
         } else if (userSubscribeDetailDo.getTopicType() == 1) {
             CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
             if (userSubscribeDetailDo.getDistrictId() != null) {
-                cutPriceShellHouseDoQuery.setAreaId(userSubscribeDetailDo.getDistrictId());
+                cutPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
             if (userSubscribeDetailDo.getBeginPrice() != null) {
-                cutPriceShellHouseDoQuery.setLowestTotalPrice(userSubscribeDetailDo.getBeginPrice());
+                cutPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
             if (userSubscribeDetailDo.getEndPrice() != null) {
-                cutPriceShellHouseDoQuery.setHighestTotalPrice(userSubscribeDetailDo.getEndPrice());
+                cutPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             cutPriceShellHouseDoQuery.setSort(0);
             cutPriceShellHouseDoQuery.setPageSize(pageSize);
@@ -166,13 +166,13 @@ public class SubscribeServiceImpl implements SubscribeService {
         } else if (userSubscribeDetailDo.getTopicType() == 2) {
             LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
             if (userSubscribeDetailDo.getDistrictId() != null) {
-                lowerPriceShellHouseDoQuery.setAreaId(userSubscribeDetailDo.getDistrictId());
+                lowerPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
             if (userSubscribeDetailDo.getBeginPrice() != null) {
-                lowerPriceShellHouseDoQuery.setLowestTotalPrice(userSubscribeDetailDo.getBeginPrice());
+                lowerPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
             if (userSubscribeDetailDo.getEndPrice() != null) {
-                lowerPriceShellHouseDoQuery.setHighestTotalPrice(userSubscribeDetailDo.getEndPrice());
+                lowerPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             lowerPriceShellHouseDoQuery.setSort(0);
             lowerPriceShellHouseDoQuery.setPageSize(pageSize);

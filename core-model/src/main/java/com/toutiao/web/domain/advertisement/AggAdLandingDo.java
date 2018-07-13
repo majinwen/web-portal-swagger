@@ -110,4 +110,19 @@ public class AggAdLandingDo {
      */
     private String areaId;
 
+    /**
+     * 新上房源
+     */
+    private Integer isNew;
+
+    /**
+     * 减价房
+     */
+    private Integer isCutPrice;
+
+    /**
+     * 低价房
+     */
+    private Integer isLowPrice;
+
 }
