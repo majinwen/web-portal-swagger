@@ -53,7 +53,7 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
         booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
 
         //区域
-        if (areaId != null) {
+        if (areaId != null && areaId != 0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
         }
 
