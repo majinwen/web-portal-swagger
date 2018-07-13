@@ -62,13 +62,13 @@ public class HouseComparedDetailDo {
      * 区域
      */
     @ChangeName("districtName")
-    private String area;
+    private  String area;
 
     /**
      * 商圈
      */
     @ChangeName("areaName")
-    private String houseBusinessName;
+    private  String houseBusinessName;
 
     /**
      * 朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
@@ -112,7 +112,7 @@ public class HouseComparedDetailDo {
      * 楼盘名称
      */
     @ChangeName("buildingName")
-    private String plotName;
+    private  String plotName;
 
     /**
      * 户均绿化率
@@ -167,15 +167,12 @@ public class HouseComparedDetailDo {
     /**
      * 是否降价房(0-否，1-降价房，2-涨价房)
      */
-//    @ChangeName("isCutPrice")
-    private Integer priceIncreaseDecline;
+    private Integer isCutPrice;
 
     /**
      * 总价价格浮动
      */
-//    @ChangeName("priceFloat")
-    private Double priceIncreaseDeclineAmount;
-
+    private Double priceFloat;
 
     /**
      * 是否是top50小区房源(0-否，1-是)

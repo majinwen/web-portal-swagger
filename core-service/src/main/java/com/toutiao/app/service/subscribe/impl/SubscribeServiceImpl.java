@@ -48,6 +48,15 @@ public class SubscribeServiceImpl implements SubscribeService {
 
     @Override
     public UserSubscribe selectByUserSubscribeMap(UserSubscribeDetailDo userSubscribeDetailDo, Integer userId) {
+        if (userSubscribeDetailDo.getDistrictId() == null) {
+            userSubscribeDetailDo.setDistrictId(0);
+        }
+        if (userSubscribeDetailDo.getBeginPrice() == null) {
+            userSubscribeDetailDo.setBeginPrice(0);
+        }
+        if (userSubscribeDetailDo.getEndPrice() == null) {
+            userSubscribeDetailDo.setEndPrice(0);
+        }
         return userSubscribeMapper.selectByUserSubscribeMap(userSubscribeDetailDo, userId);
     }
 
@@ -103,14 +112,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             return sellHouseBeSureToSnatchDos.getTotalCount();
         } else if (userSubscribeDetailDo.getTopicType() == 1) {
             CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
-//            BeanUtils.copyProperties(userSubscribeDetailDo, cutPriceShellHouseDoQuery);
-            if (userSubscribeDetailDo.getDistrictId() != null) {
+            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
                 cutPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
-            if (userSubscribeDetailDo.getBeginPrice() != null) {
+            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 cutPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
-            if (userSubscribeDetailDo.getEndPrice() != null) {
+            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 cutPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             cutPriceShellHouseDoQuery.setIsNew(1);
@@ -120,14 +128,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             return cutPriceSellHouseRestService.getCutPriceHouse(cutPriceShellHouseDoQuery).getTotalCount();
         } else if (userSubscribeDetailDo.getTopicType() == 2) {
             LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
-//            BeanUtils.copyProperties(userSubscribeDetailDo, lowerPriceShellHouseDoQuery);
-            if (userSubscribeDetailDo.getDistrictId() != null) {
+            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
                 lowerPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
-            if (userSubscribeDetailDo.getBeginPrice() != null) {
+            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 lowerPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
-            if (userSubscribeDetailDo.getEndPrice() != null) {
+            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 lowerPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             lowerPriceShellHouseDoQuery.setIsNew(1);
@@ -150,13 +157,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             return sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
         } else if (userSubscribeDetailDo.getTopicType() == 1) {
             CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
-            if (userSubscribeDetailDo.getDistrictId() != null) {
+            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
                 cutPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
-            if (userSubscribeDetailDo.getBeginPrice() != null) {
+            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 cutPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
-            if (userSubscribeDetailDo.getEndPrice() != null) {
+            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 cutPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             cutPriceShellHouseDoQuery.setSort(0);
@@ -165,13 +172,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             return cutPriceSellHouseRestService.getCutPriceHouse(cutPriceShellHouseDoQuery);
         } else if (userSubscribeDetailDo.getTopicType() == 2) {
             LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
-            if (userSubscribeDetailDo.getDistrictId() != null) {
+            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
                 lowerPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
-            if (userSubscribeDetailDo.getBeginPrice() != null) {
+            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 lowerPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
-            if (userSubscribeDetailDo.getEndPrice() != null) {
+            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 lowerPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             lowerPriceShellHouseDoQuery.setSort(0);
