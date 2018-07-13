@@ -34,7 +34,7 @@ public class SubscribeRestController {
         userSubscribe.setCreateTime(DateTime.now().toDate());
         userSubscribe.setUpdateTime(DateTime.now().toDate());
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
-        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
+        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         try {
             subscribeService.insertSelective(userSubscribe);
             return NashResult.build(userSubscribe);
