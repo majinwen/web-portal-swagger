@@ -46,6 +46,16 @@ public interface SellHouseDetailTopicsEsDao {
      * @return
      */
     SearchResponse getMustRobTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery, BoolQueryBuilder boolQueryBuilder, String[] searchAfterIds);
+
+
+    /**
+     * 商圈户型
+     * @param sellHouseDoQuery
+     * @param boolQueryBuilder
+     * @param searchAfterIds
+     * @return
+     */
+    SearchResponse getAreaRoomTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery, BoolQueryBuilder boolQueryBuilder, String[] searchAfterIds);
 }
 
 

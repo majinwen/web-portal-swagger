@@ -34,18 +34,18 @@ public class PlotTop50Do {
     /**
      * 在商圈种排名
      */
-    private  Integer rankAvgInBizcircle;
+    private Integer rankAvgInBizcircle;
 
 
     /**
      * 待售二手房数量
      */
-    private  Integer houseCount;
+    private Integer houseCount;
 
     /**
      * 最低价
      */
-    private  Double lowestPrice;
+    private Double lowestPrice;
 
 
     /**
@@ -57,7 +57,12 @@ public class PlotTop50Do {
     /**
      * 区域
      */
-   // @ChangeName("districtName")
+    // @ChangeName("districtName")
     private String area;
 
+
+    /**
+     * 大楼名称
+     */
+    private String rc;
 }

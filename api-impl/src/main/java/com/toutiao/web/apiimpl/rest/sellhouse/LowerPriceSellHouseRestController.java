@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/rest/esf/lowerPrice")
 public class LowerPriceSellHouseRestController {
-	@Autowired
-	private LowerPriceSellHouseRestService lowerPriceSellHouseRestService;
+    @Autowired
+    private LowerPriceSellHouseRestService lowerPriceSellHouseRestService;
 
-	/**
-	 * 获取捡漏房数据
-	 */
-	@RequestMapping(value = "/getLowerPriceShellHouse", method = RequestMethod.GET)
-	@ResponseBody
-	public NashResult getLowerPriceShellHouse(LowerPriceShellHouseRequest lowerPriceShellHouseRequest) {
-		LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
-		BeanUtils.copyProperties(lowerPriceShellHouseRequest, lowerPriceShellHouseDoQuery);
-		LowerPriceShellHouseDomain lowerPriceShellHouses = lowerPriceSellHouseRestService.getLowerPriceHouse(lowerPriceShellHouseDoQuery);
-		LowerPriceShellHouseResponse lowerPriceShellHouseResponse = new LowerPriceShellHouseResponse();
-		BeanUtils.copyProperties(lowerPriceShellHouses, lowerPriceShellHouseResponse);
-		return NashResult.build(lowerPriceShellHouses);
-	}
+    /**
+     * 获取捡漏房数据
+     */
+    @RequestMapping(value = "/getLowerPriceShellHouse", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getLowerPriceShellHouse(LowerPriceShellHouseRequest lowerPriceShellHouseRequest) {
+        LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
+        BeanUtils.copyProperties(lowerPriceShellHouseRequest, lowerPriceShellHouseDoQuery);
+        LowerPriceShellHouseDomain lowerPriceShellHouses = lowerPriceSellHouseRestService.getLowerPriceHouse(lowerPriceShellHouseDoQuery);
+        LowerPriceShellHouseResponse lowerPriceShellHouseResponse = new LowerPriceShellHouseResponse();
+        BeanUtils.copyProperties(lowerPriceShellHouses, lowerPriceShellHouseResponse);
+        return NashResult.build(lowerPriceShellHouses);
+    }
 }

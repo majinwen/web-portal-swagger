@@ -1,41 +1,17 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
-public class CutPriceShellHouseDoQuery {
-	/**
-	 * 商圈Id
-	 */
-	private Integer areaId;
+public class CutPriceShellHouseDoQuery extends QueryDo {
+    /**
+     * 排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
+     */
+    private Integer sort;
 
-	/**
-	 * 最低价
-	 */
-	private Integer lowestTotalPrice;
-
-	/**
-	 * 最高价
-	 */
-	private Integer highestTotalPrice;
-
-	/**
-	 * 排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
-	 */
-	private Integer sort;
-
-	/**
-	 * 新导入房源
-	 */
-	private Integer isNew;
-
-	/**
-	 * 页码
-	 */
-	private Integer pageNum;
-
-	/**
-	 * 每页数量
-	 */
-	private Integer pageSize;
+    /**
+     * 新导入房源
+     */
+    private Integer isNew;
 }

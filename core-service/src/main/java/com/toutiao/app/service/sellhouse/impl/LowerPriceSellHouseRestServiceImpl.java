@@ -2,12 +2,15 @@ package com.toutiao.app.service.sellhouse.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.LowerPriceSellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDo;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.LowerPriceSellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
@@ -34,6 +37,9 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
     @Autowired
     private SubscribeService subscribeService;
 
+    @Autowired
+    private AgentService agentService;
+
     /**
      * 获取捡漏房List
      */
@@ -42,41 +48,30 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
         LowerPriceShellHouseDomain lowerPriceShellHouseDomain = new LowerPriceShellHouseDomain();
 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        Integer areaId = lowerPriceShellHouseDoQuery.getAreaId();
+        Integer areaId = lowerPriceShellHouseDoQuery.getDistrictId();
         //捡漏房
-        booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                .must(QueryBuilders.termQuery("isLowPrice", 1)));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
 
-        //商圈
+        //区域
         if (areaId != null) {
-            booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                    .must(QueryBuilders.termQuery("areaId", areaId)));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
         }
 
         //新导入房源
         Integer isNew = lowerPriceShellHouseDoQuery.getIsNew();
         if (isNew != null) {
-            booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                    .must(QueryBuilders.termQuery("isNew", isNew)));
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
 
         //价格区间
-        Integer lowestTotalPrice = lowerPriceShellHouseDoQuery.getLowestTotalPrice();
-        Integer highestTotalPrice = lowerPriceShellHouseDoQuery.getHighestTotalPrice();
-        if (lowestTotalPrice != null) {
-            if (highestTotalPrice != null) {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery().must(
-                        QueryBuilders.rangeQuery("houseTotalPrices")
-                                .gte(lowestTotalPrice).lte(highestTotalPrice)));
-            } else {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery().must(
-                        QueryBuilders.rangeQuery("houseTotalPrices")
-                                .gte(lowestTotalPrice)));
-            }
-        } else if (highestTotalPrice != null) {
-            booleanQueryBuilder.must(QueryBuilders.boolQuery().must(
-                    QueryBuilders.rangeQuery("houseTotalPrices")
-                            .lte(highestTotalPrice)));
+        double beginPrice = lowerPriceShellHouseDoQuery.getBeginPrice();
+        double endPrice = lowerPriceShellHouseDoQuery.getEndPrice();
+        if (beginPrice != 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+        } else if (beginPrice == 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
+        } else if (beginPrice != 0 && endPrice == 0) {
+            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
 
         Integer sort = lowerPriceShellHouseDoQuery.getSort();
@@ -93,6 +88,17 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
                 LowerPriceShellHouseDo lowerPriceShellHouseDo = JSON.parseObject(details, LowerPriceShellHouseDo.class);
                 lowerPriceShellHouseDo.setSortField(searchHit.getSortValues()[0].toString());
                 lowerPriceShellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                Integer userId = lowerPriceShellHouseDo.getUserId();
+                if (lowerPriceShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(userId)){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(userId.toString());
+                } else {
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                lowerPriceShellHouseDo.setAgentBaseDo(agentBaseDo);
                 lowerPriceShellHouseDos.add(lowerPriceShellHouseDo);
             }
         }
@@ -104,15 +110,9 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
             UserBasic userBasic = UserBasic.getCurrent();
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
             userSubscribeDetailDo.setTopicType(2);
-            if (areaId != null) {
-                userSubscribeDetailDo.setDistrictId(areaId);
-            }
-            if (lowestTotalPrice != null) {
-                userSubscribeDetailDo.setBeginPrice(lowestTotalPrice);
-            }
-            if (highestTotalPrice != null) {
-                userSubscribeDetailDo.setEndPrice(highestTotalPrice);
-            }
+            userSubscribeDetailDo.setDistrictId(areaId);
+            userSubscribeDetailDo.setBeginPrice((int) beginPrice);
+            userSubscribeDetailDo.setEndPrice((int) endPrice);
 
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
                     .valueOf(userBasic.getUserId()));

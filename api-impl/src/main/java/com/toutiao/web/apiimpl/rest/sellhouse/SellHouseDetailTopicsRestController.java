@@ -97,4 +97,22 @@ public class SellHouseDetailTopicsRestController {
         return NashResult.build(sellHouseResponse);
     }
 
+    /**
+     * 商圈户型
+     * @param sellHouseRequest
+     * @return
+     *
+     */
+    @RequestMapping(value ="/getAreaRoomTopicsSellHouseDetail", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getAreaRoomTopicsSellHouseDetail(@Validated(First.class)  SellHouseRequest sellHouseRequest) {
+
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getAreaRoomTopicsSellHouseDetail(sellHouseDoQuery);
+        BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
+        return NashResult.build(sellHouseResponse);
+    }
+
 }

@@ -110,6 +110,10 @@ public class SellHouseDetailTopicsEsDaoImpl implements SellHouseDetailTopicsEsDa
             srb.addSort("houseTotalPrices",SortOrder.ASC).addSort("_uid",SortOrder.DESC);
         }else if("2".equals(sellHouseDoQuery.getSort())){
             srb.addSort("houseTotalPrices",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
+        }else if("5".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("buildArea",SortOrder.ASC).addSort("_uid",SortOrder.DESC);
+        }else if("6".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("buildArea",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
         }
 
         SearchResponse searchresponse = srb.setQuery(boolQueryBuilder).setSize(sellHouseDoQuery.getPageSize()).setFetchSource(
@@ -141,6 +145,10 @@ public class SellHouseDetailTopicsEsDaoImpl implements SellHouseDetailTopicsEsDa
             srb.addSort("houseTotalPrices",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
         }else if("1".equals(sellHouseDoQuery.getSort())){
             srb.addSort("houseTotalPrices",SortOrder.ASC).addSort("_uid",SortOrder.DESC);
+        }else if("5".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("buildArea",SortOrder.ASC).addSort("_uid",SortOrder.DESC);
+        }else if("6".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("buildArea",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
         }
 
         SearchResponse searchresponse = srb.setQuery(boolQueryBuilder).setSize(sellHouseDoQuery.getPageSize()).setFetchSource(
@@ -151,6 +159,41 @@ public class SellHouseDetailTopicsEsDaoImpl implements SellHouseDetailTopicsEsDa
                         "isMainLayout","isDealLayout","avgDealCycle","isLowPrice","isCutPrice","isMustRob","isLowest","isNew","isCommunityTopHouse","avgAbsoluteWithCommunity",
                         "avgAbsoluteWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithCommunity","avgRelativeWithBizcircle","avgRelativeWithDistrict","totalAbsoluteWithCommunity",
                         "totalAbsoluteWithBizcircle","totalAbsoluteWithDistrict","totalRelativeWithCommunity","totalRelativeWithBizcircle","totalRelativeWithDistrict","traffic"} ,null)
+                .execute().actionGet();
+        return searchresponse;
+    }
+
+    /**
+     * 商圈户型
+     * @param sellHouseDoQuery
+     * @param boolQueryBuilder
+     * @param searchAfterIds
+     * @return
+     */
+    @Override
+    public SearchResponse getAreaRoomTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery, BoolQueryBuilder boolQueryBuilder, String[] searchAfterIds) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(proJHouseIndex).setTypes(proJHouseType);
+        if("0".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("updateTimeSort",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
+        }else if("2".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("houseTotalPrices",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
+        }else if("1".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("houseTotalPrices",SortOrder.ASC).addSort("_uid",SortOrder.DESC);
+        }else if("6".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("buildArea",SortOrder.DESC).addSort("_uid",SortOrder.DESC);
+        }else if("5".equals(sellHouseDoQuery.getSort())){
+            srb.addSort("buildArea",SortOrder.ASC).addSort("_uid",SortOrder.DESC);
+        }
+
+        SearchResponse searchresponse = srb.setQuery(boolQueryBuilder).setSize(sellHouseDoQuery.getPageSize()).setFetchSource(
+                new String[] {"houseId","housePhotoTitle","houseTitle","tagsName","claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
+                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
+                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId",
+                        "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto","claim_time","price_increase_decline","import_time","price_increase_decline_amount",
+                        "isMainLayout","isDealLayout","avgDealCycle","isLowPrice","isCutPrice","isMustRob","isLowest","isNew","isCommunityTopHouse","avgAbsoluteWithCommunity",
+                        "avgAbsoluteWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithCommunity","avgRelativeWithBizcircle","avgRelativeWithDistrict","totalAbsoluteWithCommunity",
+                        "totalAbsoluteWithBizcircle","totalAbsoluteWithDistrict","totalRelativeWithCommunity","totalRelativeWithBizcircle","traffic","totalRelativeWithDistrict"} ,null)
                 .execute().actionGet();
         return searchresponse;
     }

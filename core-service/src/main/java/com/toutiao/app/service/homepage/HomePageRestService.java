@@ -1,5 +1,4 @@
 package com.toutiao.app.service.homepage;
-import com.toutiao.app.domain.homepage.*;
 
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
@@ -25,6 +24,31 @@ public interface HomePageRestService {
      */
     HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
 
+    /**
+     * 首页附近小区
+     */
+    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery);
+
+    /**
+     * 首页附近二手房
+     * @param nearHouseDoQuery
+     * @return
+     */
+    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery);
+
+    /**
+     * 专题着陆页-附近小区
+     * @param nearHouseSpecialPageDoQuery
+     * @return
+     */
+    HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
+
+    /**
+     * 专题着陆页-附近二手房
+     * @param nearHouseSpecialPageDoQuery
+     * @return
+     */
+    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
     /**
      * 首页获取降价房8条
      */
