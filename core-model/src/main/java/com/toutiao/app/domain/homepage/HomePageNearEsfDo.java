@@ -100,6 +100,7 @@ public class HomePageNearEsfDo {
     /**
      * 经纪人信息
      */
+    @ChangeName("agent")
     private AgentBaseDo agentBaseDo;
     /**
      * 主力户型
