@@ -3,6 +3,8 @@ package com.toutiao.app.domain.plot;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class PlotsThemeDo {
     /**
@@ -26,17 +28,64 @@ public class PlotsThemeDo {
     /**
      * 区域编号
      */
+    @ChangeName("districtId")
     private String areaId;
 
     /**
      * 区域
      */
+    @ChangeName("districtName")
     private String area;
+
+    /**
+     * 商圈编号
+     */
+    @ChangeName("areaId")
+    private String tradingAreaId;
+
+    /**
+     * 商圈
+     */
+    @ChangeName("areaName")
+    private String tradingArea;
 
     /**
      * 地址
      */
     private String address;
+
+    /**
+     * 坐标
+     */
+    private String location;
+
+    /**
+     * 地铁站编号
+     */
+    @ChangeName("subwayStationId")
+    private String[] metroStationId;
+
+    /**
+     * 地铁站
+     */
+    @ChangeName("subwayStationName")
+    private String[] metroStation;
+
+    /**
+     * 地铁站与小区的距离
+     */
+    @ChangeName("nearbyStationsDistance")
+    private Map metroWithPlotsDistance;
+
+    /**
+     * 建筑面积
+     */
+    private Double buildingAreaSize;
+
+    /**
+     * 开发商
+     */
+    private String developers;
 
     /**
      * 均价
@@ -49,6 +98,16 @@ public class PlotsThemeDo {
      */
     @ChangeName("totalPrice")
     private Double sumPrice;
+
+    /**
+     * 建成年代
+     */
+    private String abbreviatedAge;
+
+    /**
+     * 楼龄
+     */
+    private Integer age;
 
     /**
      * 在售房源套数

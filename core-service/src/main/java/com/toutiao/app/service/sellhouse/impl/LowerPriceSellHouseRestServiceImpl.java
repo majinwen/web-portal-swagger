@@ -114,8 +114,8 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
             userSubscribeDetailDo.setBeginPrice((int) beginPrice);
             userSubscribeDetailDo.setEndPrice((int) endPrice);
 
-            UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
-                    .valueOf(userBasic.getUserId()));
+            UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo,
+                    Integer.valueOf(userBasic.getUserId()));
             if (userSubscribe != null) {
                 lowerPriceShellHouseDomain.setSubscribeId(userSubscribe.getId());
             } else {

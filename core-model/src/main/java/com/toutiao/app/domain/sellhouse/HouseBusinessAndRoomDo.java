@@ -40,11 +40,13 @@ public class HouseBusinessAndRoomDo {
     /**
      * 区域Id
      */
+    @ChangeName("districtId")
     private Integer areaId;
 
     /**
      * 商圈Id
      */
+    @ChangeName("areaId")
     private Integer houseBusinessNameId;
 
     /**
