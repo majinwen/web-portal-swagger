@@ -46,4 +46,19 @@ public class SellHouseRequest extends BaseQueryRequest {
      */
     private Integer buildingId;
 
+    /**
+     * 是否降价房
+     */
+    private Integer isCutPrice;
+
+    /**
+     * 是否价格洼地
+     */
+    private Integer isLowPrice;
+
+    /**
+     * 是否逢出必抢
+     */
+    private Integer isMustRob;
+
 }

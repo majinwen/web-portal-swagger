@@ -326,6 +326,18 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", longs));
             }
         }
+        //降价房
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsCutPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", sellHouseDoQuery.getIsCutPrice()));
+        }
+        //洼地房
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsLowPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", sellHouseDoQuery.getIsLowPrice()));
+        }
+        //逢出毕抢
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsMustRob())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", sellHouseDoQuery.getIsMustRob()));
+        }
 
         return booleanQueryBuilder;
     }
