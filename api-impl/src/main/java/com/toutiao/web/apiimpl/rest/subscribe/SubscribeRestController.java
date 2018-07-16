@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.rest.subscribe;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -33,7 +34,7 @@ public class SubscribeRestController {
         userSubscribe.setCreateTime(DateTime.now().toDate());
         userSubscribe.setUpdateTime(DateTime.now().toDate());
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
-        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo));
+        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         try {
             subscribeService.insertSelective(userSubscribe);
             return NashResult.build(userSubscribe);

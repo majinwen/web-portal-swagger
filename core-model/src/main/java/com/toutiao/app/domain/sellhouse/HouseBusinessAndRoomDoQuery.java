@@ -1,39 +1,20 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 /**
  * 商圈+户型
  */
 @Data
-public class HouseBusinessAndRoomDoQuery {
+public class HouseBusinessAndRoomDoQuery extends QueryDo {
     /**
-     * 商圈
+     * 商圈名称
      */
-    private String houseBusinessName;
-
-    /**
-     * 商圈Id
-     */
-    private Integer houseBusinessId;
-
-    /**
-     * 户型
-     */
-    private Integer room;
+    private String areaName;
 
     /**
      * 详情页房源编号
      */
     private Integer houseId;
-
-    /**
-     * 页码
-     */
-    private Integer pageNum;
-
-    /**
-     * 每页数量
-     */
-    private Integer pageSize;
 }

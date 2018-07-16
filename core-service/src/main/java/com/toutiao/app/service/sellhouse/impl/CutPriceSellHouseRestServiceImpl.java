@@ -47,7 +47,7 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
         booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
 
         //区域
-        if (areaId != null) {
+        if (areaId != null && areaId != 0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
         }
 

@@ -59,6 +59,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        booleanQueryBuilder.mustNot(QueryBuilders.termQuery("is_parent_claim", 1));
         TransportClient client = esClientTools.init();
 
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
@@ -132,7 +133,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).addSort(sortFile).setFrom(pageNum-1).setSize(pageSize).execute().actionGet();
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).addSort(sortFile).setFrom((pageNum-1)*pageSize).setSize(pageSize).execute().actionGet();
         return searchresponse;
     }
 

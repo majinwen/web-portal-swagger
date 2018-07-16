@@ -35,6 +35,7 @@ public class LowerPriceShellHouseDo {
     /**
      * 区域Id
      */
+    @ChangeName("districtId")
     private Integer areaId;
 
     /**

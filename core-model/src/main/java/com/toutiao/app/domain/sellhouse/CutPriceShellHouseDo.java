@@ -40,6 +40,7 @@ public class CutPriceShellHouseDo {
     /**
      * 区域Id
      */
+    @ChangeName("districtId")
     private Integer areaId;
 
     /**

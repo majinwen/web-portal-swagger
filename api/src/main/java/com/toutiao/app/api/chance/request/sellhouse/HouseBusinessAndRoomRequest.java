@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.request.sellhouse;
 
+import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,37 +10,22 @@ import javax.validation.constraints.NotNull;
  * 商圈+户型
  */
 @Data
-public class HouseBusinessAndRoomRequest {
-    /**
-     * 商圈
-     */
-    @NotEmpty(message = "缺少商圈")
-    private String houseBusinessName;
-
+public class HouseBusinessAndRoomRequest extends BaseQueryRequest {
     /**
      * 商圈Id
      */
     @NotNull(message = "缺少商圈Id")
-    private Integer houseBusinessId;
+    private Integer areaId;
 
     /**
-     * 户型
+     * 商圈名称
      */
-    private Integer room;
+    @NotEmpty(message = "缺少商圈名称")
+    private String areaName;
 
     /**
      * 详情页房源编号
      */
     //@NotNull(message = "缺少房源Id")
     private Integer houseId;
-
-    /**
-     * 页码
-     */
-    private Integer pageNum = 1;
-
-    /**
-     * 每页数量
-     */
-    private Integer pageSize = 10;
 }
