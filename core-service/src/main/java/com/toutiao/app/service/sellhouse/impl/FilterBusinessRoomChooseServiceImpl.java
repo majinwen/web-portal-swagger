@@ -16,14 +16,15 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
     public BoolQueryBuilder filterBusinessRoomChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //商圈
-        String houseBusinessName = houseBusinessAndRoomDoQuery.getHouseBusinessName();
-        if (StringTool.isNotEmpty(houseBusinessName)){
-            boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", houseBusinessName));
+        String area = houseBusinessAndRoomDoQuery.getAreaName();
+        if (StringTool.isNotEmpty(area)) {
+            boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", area));
         }
-        //户型
-        Integer room = houseBusinessAndRoomDoQuery.getRoom();
-        if (room != null){
-            boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
+
+        //户型(室)
+        if (StringTool.isNotEmpty(houseBusinessAndRoomDoQuery.getLayoutId())) {
+            Integer[] longs = houseBusinessAndRoomDoQuery.getLayoutId();
+            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", longs)));
         }
         return boolQueryBuilder;
     }
@@ -32,14 +33,14 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
     public BoolQueryBuilder filterBusinessRoomAveragePriceChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //商圈Id
-        Integer houseBusinessId = houseBusinessAndRoomDoQuery.getHouseBusinessId();
+        Integer houseBusinessId = houseBusinessAndRoomDoQuery.getAreaId();
         if (houseBusinessId != null){
             boolQueryBuilder.must(QueryBuilders.termQuery("area_id", houseBusinessId));
         }
-        //户型
-        Integer room = houseBusinessAndRoomDoQuery.getRoom();
-        if (room != null){
-            boolQueryBuilder.must(QueryBuilders.termQuery("room", room));
+        //户型(室)
+        if (StringTool.isNotEmpty(houseBusinessAndRoomDoQuery.getLayoutId())) {
+            Integer[] longs = houseBusinessAndRoomDoQuery.getLayoutId();
+            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", longs)));
         }
         boolQueryBuilder.must(QueryBuilders.termQuery("hall", 1));
         return boolQueryBuilder;

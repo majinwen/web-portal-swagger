@@ -33,13 +33,13 @@ public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
     private String projhouseType;
 
     /**
-     * 商圈户型均价索引索引名称
+     * 商圈户型均价索引名称
      */
     @Value("${tt.areaRoom.index}")
     private String areaRoomIndex;
 
     /**
-     * 商圈户型均价索引索引类
+     * 商圈户型均价索引类
      */
     @Value("${tt.areaRoom.type}")
     private String areaRoomType;

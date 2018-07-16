@@ -14,4 +14,8 @@ public class PlotListDoQuery extends QueryDo {
      * 经度 附近找房
      */
     private double lon;
+    /**
+     * 是否top50小区
+     */
+    private Integer isTop;
 }

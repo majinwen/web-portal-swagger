@@ -361,6 +361,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
         }
 
+        /**
+         * top 50小区
+         */
+        if(StringTool.isNotEmpty(plotListDoQuery.getIsTop())){
+            int [] isTop={plotListDoQuery.getIsTop()};
+            boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", isTop));
+        }
+
         Integer from = 0;
         //分页起始位置
         if (StringTool.isNotEmpty(plotListDoQuery.getPageNum())&& plotListDoQuery.getPageNum()>1&&StringTool.isNotEmpty(plotListDoQuery.getPageSize())&& plotListDoQuery.getPageSize()>0){

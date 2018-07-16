@@ -49,7 +49,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         }
 
         //区域
-        Integer areaId = plotsThemeDoQuery.getAreaId();
+        Integer areaId = plotsThemeDoQuery.getDistrictId();
         if (areaId != null) {
             boolQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
         }
