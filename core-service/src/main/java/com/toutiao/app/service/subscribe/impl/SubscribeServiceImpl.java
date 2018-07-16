@@ -104,10 +104,18 @@ public class SubscribeServiceImpl implements SubscribeService {
         Integer pageSize = 1;
         if (userSubscribeDetailDo.getTopicType() == 3) {
             SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
-            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
             sellHouseBeSureToSnatchDoQuery.setIsNew(1);
             sellHouseBeSureToSnatchDoQuery.setPageSize(pageSize);
             sellHouseBeSureToSnatchDoQuery.setPageNum(pageIndex);
+            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
+                sellHouseBeSureToSnatchDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
+            }
+            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
+                sellHouseBeSureToSnatchDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
+            }
+            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
+                sellHouseBeSureToSnatchDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
+            }
             SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
             return sellHouseBeSureToSnatchDos.getTotalCount();
         } else if (userSubscribeDetailDo.getTopicType() == 1) {
@@ -151,9 +159,17 @@ public class SubscribeServiceImpl implements SubscribeService {
         Integer pageSize = 5;
         if (userSubscribeDetailDo.getTopicType() == 3) {
             SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
-            BeanUtils.copyProperties(userSubscribeDetailDo, sellHouseBeSureToSnatchDoQuery);
             sellHouseBeSureToSnatchDoQuery.setPageSize(pageSize);
             sellHouseBeSureToSnatchDoQuery.setPageNum(pageIndex);
+            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
+                sellHouseBeSureToSnatchDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
+            }
+            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
+                sellHouseBeSureToSnatchDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
+            }
+            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
+                sellHouseBeSureToSnatchDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
+            }
             return sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
         } else if (userSubscribeDetailDo.getTopicType() == 1) {
             CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
