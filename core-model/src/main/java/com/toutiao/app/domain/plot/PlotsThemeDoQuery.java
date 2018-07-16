@@ -14,7 +14,7 @@ public class PlotsThemeDoQuery extends QueryDo {
     private String nearestPark;
 
     /**
-     * 标签Id(2-首次置业，3-改善生活，4-豪宅，5-别墅，6-近公园)
+     * 标签Id(2-首次置业，3-改善生活，4-豪宅，5-别墅，6-公园名称)
      */
     private Integer recommendBuildTagsId;
 
