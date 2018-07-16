@@ -64,7 +64,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", nearBySellHouseQueryDo.getAreaId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
+        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId()) && nearBySellHouseQueryDo.getAreaId()!=0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
 
         }
