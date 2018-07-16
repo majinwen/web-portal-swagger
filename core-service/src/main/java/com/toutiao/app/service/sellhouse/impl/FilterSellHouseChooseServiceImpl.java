@@ -12,6 +12,7 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -196,22 +197,22 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
             if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).analyzer("ik_max_word").boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2)));
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_max_word").boost(2))
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
             } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart")));
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
             } else {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword())));
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND)));
             }
         }
         //楼盘id
