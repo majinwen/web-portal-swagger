@@ -110,5 +110,25 @@ public class HomePageNearEsfDo {
      * 同小区同户型范围内做低价排名
      */
     private Integer rankInLowCommunityLayout;
+    /**
+     * 逢出必抢
+     */
+    private Integer isMustRob;
+    /**
+     * 与商圈平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithBizcircle;
+    /**
+     * 推荐标签id
+     */
+    private List recommendBuildTagsId;
+    /**
+     * 推荐标签名称
+     */
+    private List recommendBuildTagsName;
+    /**
+     * 在同商圈同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
 
 }
