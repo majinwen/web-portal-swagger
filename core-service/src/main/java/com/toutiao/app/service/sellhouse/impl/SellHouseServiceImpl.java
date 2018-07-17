@@ -393,7 +393,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         GaussDecayFunctionBuilder functionBuilder = null;
         FunctionScoreQueryBuilder queryKmBuilder = null;
         if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",json,"0.1km","0.1km" );
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",json,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
             //获取5km内所有的二手房
 
         }
