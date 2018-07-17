@@ -211,5 +211,11 @@ public class SellHouseBeSureToSnatchDo {
      */
     private Double totalRelativeWithDistrict;
 
+    /**
+     * 标签
+     */
+    @ChangeName("tags")
+    private String[] tagsName;
+
 
 }
