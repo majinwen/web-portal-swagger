@@ -1,6 +1,5 @@
 package com.toutiao.app.dao.plot;
 
-import com.toutiao.app.domain.plot.PlotTop50ListDoQuery;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -54,6 +53,24 @@ public interface PlotEsDao {
      * @return
      */
     SearchResponse queryPlotListByRequirementAndKeyword(Integer from, FunctionScoreQueryBuilder functionScoreQueryBuilder,Integer size);
+
+    /**
+     * 查询小区列表
+     * @param from
+     * @param boolQueryBuilder
+     * @param size
+     * @return
+     */
+    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort);
+
+    /**
+     * 普通小区列表(补)
+     * @param from
+     * @param boolQueryBuilder
+     * @param size
+     * @return
+     */
+    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, String keyword);
 
 
     /**

@@ -130,5 +130,9 @@ public class HomePageNearEsfDo {
      * 在同商圈同户型范围内做低价排名
      */
     private Integer rankLowInBizcircleLayout;
+    /**
+     * 成交天数
+     */
+    private Integer avgDealCycle;
 
 }
