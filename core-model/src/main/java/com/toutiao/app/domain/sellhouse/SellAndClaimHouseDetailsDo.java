@@ -394,4 +394,6 @@ public class SellAndClaimHouseDetailsDo {
      * 与区县平均总价的相对值(百分比)
      */
     private Double totalRelativeWithDistrict;
+
+    private Double priceFloat;
 }

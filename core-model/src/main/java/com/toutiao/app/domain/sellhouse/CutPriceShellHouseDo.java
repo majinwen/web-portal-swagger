@@ -222,4 +222,9 @@ public class CutPriceShellHouseDo {
      */
     @ChangeName("buildingId")
     private Integer newcode;
+
+    /**
+     * 平均成交天数
+     */
+    private Integer avgDealCycle;
 }

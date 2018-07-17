@@ -22,9 +22,9 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
         }
 
         //户型(室)
-        if (StringTool.isNotEmpty(houseBusinessAndRoomDoQuery.getLayoutId())) {
-            Integer[] longs = houseBusinessAndRoomDoQuery.getLayoutId();
-            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", longs)));
+        Integer[] layoutId = houseBusinessAndRoomDoQuery.getLayoutId();
+        if (StringTool.isNotEmpty(layoutId)) {
+            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
         }
         return boolQueryBuilder;
     }
@@ -38,9 +38,9 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
             boolQueryBuilder.must(QueryBuilders.termQuery("area_id", houseBusinessId));
         }
         //户型(室)
-        if (StringTool.isNotEmpty(houseBusinessAndRoomDoQuery.getLayoutId())) {
-            Integer[] longs = houseBusinessAndRoomDoQuery.getLayoutId();
-            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", longs)));
+        Integer[] layoutId = houseBusinessAndRoomDoQuery.getLayoutId();
+        if (StringTool.isNotEmpty(layoutId)) {
+            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
         }
         boolQueryBuilder.must(QueryBuilders.termQuery("hall", 1));
         return boolQueryBuilder;
