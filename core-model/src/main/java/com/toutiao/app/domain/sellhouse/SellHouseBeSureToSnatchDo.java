@@ -25,6 +25,16 @@ public class SellHouseBeSureToSnatchDo {
      */
     private String claimHousePhotoTitle;
 
+    /**
+     * 认领房源标题
+     */
+    private String claimHouseTitle;
+
+    /**
+     * 认领房源标题
+     */
+    private String[] claimTagsName;
+
 
     /**
      * 室
@@ -216,6 +226,8 @@ public class SellHouseBeSureToSnatchDo {
      */
     @ChangeName("tags")
     private String[] tagsName;
+
+    private String houseTitle;
 
 
 }
