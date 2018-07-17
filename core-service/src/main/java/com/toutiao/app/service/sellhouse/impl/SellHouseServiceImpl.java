@@ -98,25 +98,25 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
                     sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
                     Date date = new Date();
-                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
-                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
-                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
-                            if(claimDays>=0 && claimDays<30){
-                                sellHouseDetailsDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDetailsDo.getPriceIncreaseDecline()));
-                            }
-                        }else {
-                            int importFlag = -1;
-                            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
-                                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
-                                if(importDays>=0 && importDays<7){
-                                    importFlag = 3;
-                                    sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
-                                }else{
-                                    sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
-                                }
-                            }
-                        }
-                    }
+//                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
+//                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
+//                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
+//                            if(claimDays>=0 && claimDays<30){
+//                                sellHouseDetailsDo.setHousePhotoTitleTags(Integer.valueOf(sellHouseDetailsDo.getPriceIncreaseDecline()));
+//                            }
+//                        }else {
+//                            int importFlag = -1;
+//                            if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
+//                                int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
+//                                if(importDays>=0 && importDays<7){
+//                                    importFlag = 3;
+//                                    sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+//                                }else{
+//                                    sellHouseDetailsDo.setHousePhotoTitleTags(importFlag);
+//                                }
+//                            }
+//                        }
+//                    }
 
 
 
