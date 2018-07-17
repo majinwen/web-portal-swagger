@@ -54,13 +54,9 @@ public class CutPriceShellHouseDo {
     private Integer hall;
 
     /**
-     * 标签
-     */
-    private Integer[] tags;
-
-    /**
      * 标签名称
      */
+    @ChangeName("tags")
     private String[] tagsName;
 
     /**

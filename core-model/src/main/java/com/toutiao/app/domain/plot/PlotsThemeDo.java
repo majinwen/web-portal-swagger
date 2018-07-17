@@ -143,4 +143,14 @@ public class PlotsThemeDo {
      * 是否top50小区
      */
     private Integer isTop;
+
+    /**
+     * 最低价
+     */
+    private Double lowestPrice;
+
+    /**
+     * 在商圈种排名
+     */
+    private Integer rankAvgInBizcircle;
 }
