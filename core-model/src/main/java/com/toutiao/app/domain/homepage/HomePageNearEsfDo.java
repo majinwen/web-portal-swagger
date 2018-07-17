@@ -58,6 +58,7 @@ public class HomePageNearEsfDo {
     /**
      * 房源标签
      */
+    @ChangeName("tags")
     private List tagsName;
     /**
      * 是否属于top50小区
