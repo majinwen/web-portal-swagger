@@ -265,6 +265,11 @@ public class SellHouseDo {
      */
     private Double totalRelativeWithDistrict;
 
+    /**
+     * 涨降金额
+     */
+    private Double priceFloat;
+
 
 
 }
