@@ -80,13 +80,14 @@ public class AddFavorite {
     /**
      * 二手房价格涨降标志
      */
-    private String priceIncreaseDecline;
+//    private String priceIncreaseDecline;
+    private String isCutPrice;
     /**
      * 认领标志
      */
     private Integer isClaim;
 
-    private String housePhotoTitleTags;
+//    private String housePhotoTitleTags;
 
 
 
