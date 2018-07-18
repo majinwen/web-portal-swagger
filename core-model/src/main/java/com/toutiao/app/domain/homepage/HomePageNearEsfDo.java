@@ -136,4 +136,7 @@ public class HomePageNearEsfDo {
      */
     private Integer avgDealCycle;
 
+    @ChangeName("location")
+    private String housePlotLocation;
+
 }
