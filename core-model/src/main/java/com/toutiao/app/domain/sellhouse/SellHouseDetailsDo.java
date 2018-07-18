@@ -415,4 +415,10 @@ public class SellHouseDetailsDo {
      */
     private Double totalRelativeWithDistrict;
 
+    /**
+     * 涨降金额
+     */
+    private Double priceFloat;
+
+
 }

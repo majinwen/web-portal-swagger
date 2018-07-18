@@ -49,9 +49,9 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         }
 
         //区域
-        Integer areaId = plotsThemeDoQuery.getDistrictId();
-        if (areaId != null) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
+        Integer[] districtIds = plotsThemeDoQuery.getDistrictIds();
+        if (districtIds != null) {
+            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("areaId", districtIds)));
         }
         Integer pageNum = plotsThemeDoQuery.getPageNum();
         Integer pageSize = plotsThemeDoQuery.getPageSize();

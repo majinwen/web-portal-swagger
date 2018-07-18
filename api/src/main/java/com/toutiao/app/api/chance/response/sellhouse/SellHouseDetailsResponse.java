@@ -410,5 +410,10 @@ public class SellHouseDetailsResponse {
      * 与区县平均总价的相对值(百分比)
      */
     private Double totalRelativeWithDistrict;
+    /**
+     * 涨降金额
+     */
+    private Double priceFloat;
+
 
 }

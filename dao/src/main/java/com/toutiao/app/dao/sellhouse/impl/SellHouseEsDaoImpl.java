@@ -111,10 +111,18 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
             srb.searchAfter(new String[]{uid});
         }
         SearchResponse searchresponse = srb.setQuery(query).addSort("_uid", SortOrder.DESC).setSize(1).setFetchSource(
-                new String[]{"claimHouseId", "claimHouseTitle", "claimHousePhotoTitle", "price_increase_decline", "houseTotalPrices",
-                        "houseUnitCost", "buildArea", "claimTagsName", "room", "hall", "forwardName", "area", "houseBusinessName",
-                        "plotName", "year", "parkRadio", "subwayDistince", "housePlotLocation", "newcode", "housePhoto", "is_claim", "userId",
-                        "houseProxyName", "ofCompany", "houseProxyPhone", "houseProxyPhoto", "claim_time", "price_increase_decline", "import_time", "price_increase_decline_amount"}, null)
+//                new String[]{"claimHouseId", "claimHouseTitle", "claimHousePhotoTitle", "price_increase_decline", "houseTotalPrices",
+//                        "houseUnitCost", "buildArea", "claimTagsName", "room", "hall", "forwardName", "area", "houseBusinessName",
+//                        "plotName", "year", "parkRadio", "subwayDistince", "housePlotLocation", "newcode", "housePhoto", "is_claim", "userId",
+//                        "houseProxyName", "ofCompany", "houseProxyPhone", "houseProxyPhoto", "claim_time", "price_increase_decline", "import_time", "price_increase_decline_amount"}, null)
+//                .execute().actionGet();
+                new String[] {"houseId","housePhotoTitle","houseTitle","tagsName","claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
+                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
+                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId",
+                        "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto","claim_time","price_increase_decline","import_time","price_increase_decline_amount",
+                        "isMainLayout","isDealLayout","avgDealCycle","isLowPrice","isCutPrice","isMustRob","isLowest","isNew","isCommunityTopHouse","avgAbsoluteWithCommunity",
+                        "avgAbsoluteWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithCommunity","avgRelativeWithBizcircle","avgRelativeWithDistrict","totalAbsoluteWithCommunity",
+                        "totalAbsoluteWithBizcircle","totalAbsoluteWithDistrict","totalRelativeWithCommunity","totalRelativeWithBizcircle","totalRelativeWithDistrict","traffic","priceFloat"} ,null)
                 .execute().actionGet();
         return searchresponse;
     }

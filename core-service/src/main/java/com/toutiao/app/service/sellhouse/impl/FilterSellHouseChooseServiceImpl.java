@@ -64,12 +64,12 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", nearBySellHouseQueryDo.getAreaId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
+        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId()) && nearBySellHouseQueryDo.getAreaId()!=0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
 
         }
         //区域id
-        if (StringTool.isNotEmpty((nearBySellHouseQueryDo.getDistrictId()))) {
+        if (StringTool.isNotEmpty((nearBySellHouseQueryDo.getDistrictId())) && nearBySellHouseQueryDo.getDistrictId()!=0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHouseQueryDo.getDistrictId()));
 
         }
@@ -212,7 +212,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                         .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
                         .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND)));
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
             }
         }
         //楼盘id

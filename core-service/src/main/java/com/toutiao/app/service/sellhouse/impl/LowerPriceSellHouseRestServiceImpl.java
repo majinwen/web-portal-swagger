@@ -86,12 +86,25 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 LowerPriceShellHouseDo lowerPriceShellHouseDo = JSON.parseObject(details, LowerPriceShellHouseDo.class);
-                lowerPriceShellHouseDo.setSortField(searchHit.getSortValues()[0].toString());
-                lowerPriceShellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
+//                lowerPriceShellHouseDo.setSortField(searchHit.getSortValues()[0].toString());
+//                lowerPriceShellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 Integer userId = lowerPriceShellHouseDo.getUserId();
                 if (lowerPriceShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(userId)){
                     agentBaseDo = agentService.queryAgentInfoByUserId(userId.toString());
+
+                    lowerPriceShellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
+                    lowerPriceShellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
+                    List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    lowerPriceShellHouseDo.setTagsName(tagsName);
+
+                    lowerPriceShellHouseDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
+
+
+
+
                 } else {
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());

@@ -262,4 +262,9 @@ public class SellHousesSearchDo {
      * 与区县平均总价的相对值(百分比)
      */
     private Double totalRelativeWithDistrict;
+
+    /**
+     * 涨降金融
+     */
+    private Double priceFloat;
 }

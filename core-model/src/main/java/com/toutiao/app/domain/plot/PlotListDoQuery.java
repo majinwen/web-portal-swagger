@@ -18,4 +18,8 @@ public class PlotListDoQuery extends QueryDo {
      * 是否top50小区
      */
     private Integer isTop;
+    /**
+     * 距离
+     */
+    private Double distance;
 }

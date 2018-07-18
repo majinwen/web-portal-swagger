@@ -78,6 +78,11 @@ public class PlotsThemeDo {
     private Map metroWithPlotsDistance;
 
     /**
+     * 近地铁描述
+     */
+    private String trafficInformation;
+
+    /**
      * 建筑面积
      */
     private Double buildingAreaSize;
@@ -133,4 +138,19 @@ public class PlotsThemeDo {
      * 小区推荐标签名称
      */
     private String[] recommendBuildTagsName;
+
+    /**
+     * 是否top50小区
+     */
+    private Integer isTop;
+
+    /**
+     * 最低价
+     */
+    private Double lowestPrice;
+
+    /**
+     * 在商圈种排名
+     */
+    private Integer rankAvgInBizcircle;
 }

@@ -9,7 +9,7 @@ public class CutPriceShellHouseDo {
     /**
      * 房源id
      */
-    private Integer houseId;
+    private String houseId;
 
     /**
      * 房源面积(单位:平方米)
@@ -54,13 +54,9 @@ public class CutPriceShellHouseDo {
     private Integer hall;
 
     /**
-     * 标签
-     */
-    private Integer[] tags;
-
-    /**
      * 标签名称
      */
+    @ChangeName("tags")
     private String[] tagsName;
 
     /**
@@ -168,15 +164,15 @@ public class CutPriceShellHouseDo {
      */
     private String updateTime;
 
-    /**
-     * 排序属性
-     */
-    private String sortField;
-
-    /**
-     * uid
-     */
-    private String uid;
+//    /**
+//     * 排序属性
+//     */
+//    private String sortField;
+//
+//    /**
+//     * uid
+//     */
+//    private String uid;
 
     /**
      * 经纪人信息
@@ -222,4 +218,14 @@ public class CutPriceShellHouseDo {
      */
     @ChangeName("buildingId")
     private Integer newcode;
+
+    /**
+     * 平均成交天数
+     */
+    private Integer avgDealCycle;
+
+    /**
+     * 房源标题
+     */
+    private String houseTitle;
 }
