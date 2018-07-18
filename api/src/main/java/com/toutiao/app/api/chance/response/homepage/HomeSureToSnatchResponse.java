@@ -57,4 +57,18 @@ public class HomeSureToSnatchResponse {
      * 房源id
      */
     private  String houseId;
+
+
+    private Double avgRelativeWithDistrict;
+    private Double avgRelativeWithCommunity;
+    private Integer avgDealCycle;
+    private Double avgAbsoluteWithDistrict;
+    private Double avgAbsoluteWithCommunity;
+    private Double avgAbsoluteWithBizcircle;
+    private Double totalAbsoluteWithBizcircle;
+    private Double totalAbsoluteWithCommunity;
+    private Double totalAbsoluteWithDistrict;
+    private Double totalRelativeWithBizcircle;
+    private Double totalRelativeWithCommunity;
+    private Double totalRelativeWithDistrict;
 }
