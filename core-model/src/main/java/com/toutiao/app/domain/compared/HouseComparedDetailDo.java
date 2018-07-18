@@ -13,6 +13,10 @@ public class HouseComparedDetailDo {
      */
     private Integer id;
     /**
+     * 状态 0:不存在 1:存在
+     */
+    private Integer status;
+    /**
      * 二手房房源id
      */
     private String houseId;
