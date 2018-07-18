@@ -115,4 +115,34 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         }
         return sellHouseDoList;
     }
+
+    @Override
+    public PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId) {
+        List<PlotsEsfRoomCountDo> plotsEsfRoomCountDoList = new ArrayList<>();
+
+        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = new PlotsEsfRoomCountDomain();
+
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId);
+        Map aggMap =searchResponse.getAggregations().asMap();
+        StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
+
+
+        Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+        while(roomBucketIt.hasNext()) {
+            PlotsEsfRoomCountDo plotsEsfRoomCountDo = new PlotsEsfRoomCountDo();
+            Terms.Bucket roomBucket = (Terms.Bucket) roomBucketIt.next();
+            plotsEsfRoomCountDo.setCount(roomBucket.getDocCount());
+            plotsEsfRoomCountDo.setRoom(roomBucket.getKey());
+            plotsEsfRoomCountDoList.add(plotsEsfRoomCountDo);
+        }
+        plotsEsfRoomCountDomain.setRooms(plotsEsfRoomCountDoList);
+        Long totalCount = 0L;
+        if(null != plotsEsfRoomCountDoList && plotsEsfRoomCountDoList.size() > 0){
+            for(int i=0; i < plotsEsfRoomCountDoList.size(); i++){
+                totalCount = totalCount+ Integer.valueOf(String.valueOf(plotsEsfRoomCountDoList.get(i).getCount()));
+            }
+            plotsEsfRoomCountDomain.setTotalCount(totalCount);
+        }
+        return plotsEsfRoomCountDomain;
+    }
 }

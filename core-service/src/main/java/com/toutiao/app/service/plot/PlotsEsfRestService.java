@@ -26,4 +26,12 @@ public interface PlotsEsfRestService {
      * @return
      */
     List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize);
+
+
+    /**
+     * 根据小区id获取小区房源数量
+     * @param plotsId
+     * @return
+     */
+    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId);
 }

@@ -74,7 +74,7 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     public SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).setSize(size).addSort(sort).execute().actionGet();
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setSize(size).addSort(sort).execute().actionGet();
         return searchResponse;
     }
 
@@ -87,12 +87,11 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     }
 
     @Override
-    public SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size,GeoDistanceSortBuilder sort) {
+    public SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
 
-        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("updateTimeSort",SortOrder.DESC)
-                .addSort("_uid",SortOrder.DESC).setFrom(from).setSize(size).addSort(sort).execute().actionGet();
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 

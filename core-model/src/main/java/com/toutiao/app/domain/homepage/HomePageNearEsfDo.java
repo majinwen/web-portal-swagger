@@ -86,14 +86,14 @@ public class HomePageNearEsfDo {
      */
     @ChangeName("buildingId")
     private Integer newcode;
-    /**
-     * 排序规则字段
-     */
-    private String upTimestamp;
-    /**
-     * 推荐广告查询uid
-     */
-    private String uid;
+//    /**
+//     * 排序规则字段
+//     */
+//    private String upTimestamp;
+//    /**
+//     * 推荐广告查询uid
+//     */
+//    private String uid;
     /**
      * 是否认领
      */
@@ -135,5 +135,8 @@ public class HomePageNearEsfDo {
      * 成交天数
      */
     private Integer avgDealCycle;
+
+    @ChangeName("location")
+    private String housePlotLocation;
 
 }
