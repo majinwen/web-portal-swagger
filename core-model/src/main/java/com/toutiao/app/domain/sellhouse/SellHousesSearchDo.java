@@ -267,4 +267,12 @@ public class SellHousesSearchDo {
      * 涨降金融
      */
     private Double priceFloat;
+    /**
+     * 推荐标签id
+     */
+    private List recommendBuildTagsId;
+    /**
+     * 推荐标签名称
+     */
+    private List recommendBuildTagsName;
 }
