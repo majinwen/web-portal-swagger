@@ -67,6 +67,6 @@ public interface HomePageEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, GeoDistanceSortBuilder sort);
+    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
 
 }

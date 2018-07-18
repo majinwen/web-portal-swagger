@@ -214,7 +214,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         //按距离排序并计算距离
         GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseDoQuery.getLat(), nearHouseDoQuery.getLon());
         sort.unit(DistanceUnit.METERS);
-        sort.order(SortOrder.ASC);
+//        sort.order(SortOrder.ASC);
 
         //组装条件
         boolQueryBuilder.must(location);
@@ -229,7 +229,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                 String sourceAsString = hit.getSourceAsString();
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
-                homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[0]));
+                homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[1]));
 
                 AgentBaseDo agent = new AgentBaseDo();
                 //替换认领信息
@@ -307,11 +307,11 @@ public class HomePageServiceImpl implements HomePageRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
 
         //按距离排序并计算距离
-        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseSpecialPageDoQuery.getLat(), nearHouseSpecialPageDoQuery.getLon());
-        sort.unit(DistanceUnit.METERS);
-        sort.order(SortOrder.ASC);
+//        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseSpecialPageDoQuery.getLat(), nearHouseSpecialPageDoQuery.getLon());
+//        sort.unit(DistanceUnit.METERS);
+//        sort.order(SortOrder.ASC);
 
-        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize(),sort);
+        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize());
 
         SearchHit[] hits = esfSpecialPage.getHits().getHits();
         if (hits.length>0){
@@ -320,9 +320,9 @@ public class HomePageServiceImpl implements HomePageRestService {
                 String sourceAsString = hit.getSourceAsString();
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
-                homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
-                homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
-                homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[2]));
+//                homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
+//                homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
+//                homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[2]));
 
                 AgentBaseDo agent = new AgentBaseDo();
                 //替换认领信息
