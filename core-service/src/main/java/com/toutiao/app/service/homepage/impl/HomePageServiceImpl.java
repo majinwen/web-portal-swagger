@@ -6,9 +6,11 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -40,6 +42,10 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private PlotsEsfRestService plotsEsfRestService;
+
     /**
      * @return 获取二手房5条
      */
@@ -185,6 +191,14 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
+
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId());
+                if(null != plotsEsfRoomCountDomain.getTotalCount()){
+                    homePageNearPlotDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+                }else{
+                    homePageNearPlotDo.setHouseCount(0);
+                }
+
                 homePageNearPlotDo.setDistance((double) Math.round((Double) hit.getSortValues()[0]));
                 list.add(homePageNearPlotDo);
             }
@@ -285,6 +299,13 @@ public class HomePageServiceImpl implements HomePageRestService {
             String sourceAsString = hits[0].getSourceAsString();
             homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
             homePageNearPlotDo.setDistance((double) Math.round((Double) hits[0].getSortValues()[0]));
+
+            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId());
+            if(null != plotsEsfRoomCountDomain.getTotalCount()){
+                homePageNearPlotDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+            }else{
+                homePageNearPlotDo.setHouseCount(0);
+            }
         }
         return homePageNearPlotDo;
     }
@@ -305,6 +326,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         //组装条件
         boolQueryBuilder.must(QueryBuilders.termQuery("newcode", nearHouseSpecialPageDoQuery.getPlotId()));
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
 
         //按距离排序并计算距离
 //        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseSpecialPageDoQuery.getLat(), nearHouseSpecialPageDoQuery.getLon());
