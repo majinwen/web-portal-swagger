@@ -230,6 +230,8 @@ public class HomePageServiceImpl implements HomePageRestService {
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
                 homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[0]));
+
+                AgentBaseDo agent = new AgentBaseDo();
                 //替换认领信息
                 if(StringTool.isNotEmpty(sourceAsMap.get("userId"))&&((int)sourceAsMap.get("is_claim"))==1){
                     homePageNearEsfDo.setHouseId((String) sourceAsMap.get("claimHouseId"));
@@ -237,9 +239,15 @@ public class HomePageServiceImpl implements HomePageRestService {
                     homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
                     homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
 
-                    AgentBaseDo agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
-                    homePageNearEsfDo.setAgentBaseDo(agent);
+                    agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+
+                }else {
+                    agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
+                    agent.setAgentName(hit.getSource().get("houseProxyName").toString());
+                    agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
                 }
+                homePageNearEsfDo.setAgentBaseDo(agent);
                 homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
             }
@@ -315,6 +323,8 @@ public class HomePageServiceImpl implements HomePageRestService {
                 homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
                 homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
                 homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[2]));
+
+                AgentBaseDo agent = new AgentBaseDo();
                 //替换认领信息
                 if(StringTool.isNotEmpty(sourceAsMap.get("userId"))&&((int)sourceAsMap.get("is_claim"))==1){
                     homePageNearEsfDo.setHouseId((String) sourceAsMap.get("claimHouseId"));
@@ -322,9 +332,15 @@ public class HomePageServiceImpl implements HomePageRestService {
                     homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
                     homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
 
-                    AgentBaseDo agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
-                    homePageNearEsfDo.setAgentBaseDo(agent);
+                    agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+
+                }else {
+                    agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
+                    agent.setAgentName(hit.getSource().get("houseProxyName").toString());
+                    agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
                 }
+                homePageNearEsfDo.setAgentBaseDo(agent);
                 homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
             }
