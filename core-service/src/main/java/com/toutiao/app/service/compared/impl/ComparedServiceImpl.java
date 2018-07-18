@@ -132,7 +132,15 @@ public class ComparedServiceImpl implements ComparedService {
         List<HouseComparedDetailDo> houseComparedListDoList = new ArrayList<>();
         Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = getESHouseComparedDetailDo(ids);
         for (String id : ids) {
-            houseComparedListDoList.add(houseComparedDetailDoDict.get(id));
+            HouseComparedDetailDo houseComparedDetailDo = new HouseComparedDetailDo();
+            if (houseComparedDetailDoDict.containsKey(id)) {
+                houseComparedDetailDo = houseComparedDetailDoDict.get(id);
+                houseComparedDetailDo.setStatus(1);
+            } else {
+                houseComparedDetailDo.setHouseId(id);
+                houseComparedDetailDo.setStatus(0);
+            }
+            houseComparedListDoList.add(houseComparedDetailDo);
         }
         return houseComparedListDoList;
     }

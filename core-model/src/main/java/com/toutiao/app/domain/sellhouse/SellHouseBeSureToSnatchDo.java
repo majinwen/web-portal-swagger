@@ -25,6 +25,16 @@ public class SellHouseBeSureToSnatchDo {
      */
     private String claimHousePhotoTitle;
 
+    /**
+     * 认领房源标题
+     */
+    private String claimHouseTitle;
+
+    /**
+     * 认领房源标题
+     */
+    private String[] claimTagsName;
+
 
     /**
      * 室
@@ -210,6 +220,14 @@ public class SellHouseBeSureToSnatchDo {
      * 与区县平均总价的相对值(百分比)
      */
     private Double totalRelativeWithDistrict;
+
+    /**
+     * 标签
+     */
+    @ChangeName("tags")
+    private String[] tagsName;
+
+    private String houseTitle;
 
 
 }
