@@ -30,6 +30,8 @@ public class ComparedRestController {
     @Autowired
     private ComparedService comparedService;
 
+    private Integer maxComparedCount = 5;
+
     /**
      * 登录用户新增房源对比信息
      *
@@ -177,7 +179,7 @@ public class ComparedRestController {
         if (StringUtil.isNotNullString(comparedHouseIds)) {
             String[] currHouseIdArray = comparedHouseIds.split(",");
             List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
-            if (currHouseIdList.size() > 5) {
+            if (currHouseIdList.size() > maxComparedCount) {
                 currHouseIdList = currHouseIdList.subList(0, 5);
             }
             houseComparedDetailDoList = comparedService.selectComparedDetailByHouseIds(currHouseIdList);
