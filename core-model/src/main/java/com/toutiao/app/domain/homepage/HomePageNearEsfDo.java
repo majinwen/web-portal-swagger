@@ -63,7 +63,7 @@ public class HomePageNearEsfDo {
     /**
      * 是否属于top50小区
      */
-    private String isCommunityTopHouse;
+    private Integer isCommunityTopHouse;
     /**
      * 是否是降价房(0:否 1:降 2:涨)
      */
