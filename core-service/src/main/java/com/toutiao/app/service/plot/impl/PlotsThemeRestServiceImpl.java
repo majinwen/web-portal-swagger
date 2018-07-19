@@ -12,11 +12,15 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 小区主题落地页服务层实现类
@@ -64,6 +68,15 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 PlotsThemeDo plotsThemeDo = JSON.parseObject(details, PlotsThemeDo.class);
+
+                //查询小区房源最大最小面积
+                SearchResponse searchResponse= plotsThemeEsDao.getHouseAreaByPlotId(plotsThemeDo.getId());
+                Map aggMap =searchResponse.getAggregations().asMap();
+                InternalMin minHouse = (InternalMin) aggMap.get("minHouse");
+                InternalMax maxHouse = (InternalMax) aggMap.get("maxHouse");
+
+                plotsThemeDo.setHouseMaxArea(maxHouse.getValue());
+                plotsThemeDo.setHouseMinArea(minHouse.getValue());
                 plotsThemeDos.add(plotsThemeDo);
             }
         }

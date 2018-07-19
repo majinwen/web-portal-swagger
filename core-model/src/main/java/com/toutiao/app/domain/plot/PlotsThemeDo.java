@@ -153,4 +153,15 @@ public class PlotsThemeDo {
      * 在商圈种排名
      */
     private Integer rankAvgInBizcircle;
+
+    /**
+     * 最小面积
+     */
+    private Double houseMinArea;
+
+    /**
+     * 最大面积
+     */
+    private  Double houseMaxArea;
+
 }
