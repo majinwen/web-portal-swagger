@@ -84,20 +84,18 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         if (searchHists.length > 0) {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
-                CutPriceShellHouseDo cutPriceShellHouseDo = JSON.parseObject(details, CutPriceShellHouseDo.class);
-//                cutPriceShellHouseDo.setSortField(searchHit.getSortValues()[0].toString());
-//                cutPriceShellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
+                MustBuyShellHouseDo mustBuyShellHouseDo = JSON.parseObject(details, MustBuyShellHouseDo.class);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if (cutPriceShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(cutPriceShellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(cutPriceShellHouseDo.getUserId().toString());
+                if (mustBuyShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(mustBuyShellHouseDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getUserId().toString());
                     //认领状态取认领数据
-                    cutPriceShellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
-                    cutPriceShellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
+                    mustBuyShellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
+                    mustBuyShellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
                     List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
-                    cutPriceShellHouseDo.setTagsName(tagsName);
-                    cutPriceShellHouseDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
+                    mustBuyShellHouseDo.setTagsName(tagsName);
+                    mustBuyShellHouseDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
                 } else {
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
