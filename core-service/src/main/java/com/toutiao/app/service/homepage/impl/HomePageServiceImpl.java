@@ -475,6 +475,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("isMainLayout",1));
         boolQueryBuilder.must(QueryBuilders.termQuery("status",0));
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
         SearchResponse beSureToSnatch=homePageEsDao.getHomeBeSureToSnatch(boolQueryBuilder,homeSureToSnatchDoQuery.getPageNum(),homeSureToSnatchDoQuery.getPageSize());
         SearchHit[] hits = beSureToSnatch.getHits().getHits();
         for (SearchHit hit : hits) {
