@@ -1,6 +1,6 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
-import com.toutiao.app.api.chance.request.sellhouse.LowerPriceShellHouseRequest;
+import com.toutiao.app.api.chance.request.sellhouse.MustBuyShellHouseRequest;
 import com.toutiao.app.api.chance.response.sellhouse.MustBuyShellHouseResponse;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDomain;
@@ -29,9 +29,9 @@ public class LowerPriceSellHouseRestController {
      */
     @RequestMapping(value = "/getLowerPriceShellHouse", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getLowerPriceShellHouse(LowerPriceShellHouseRequest lowerPriceShellHouseRequest) {
+    public NashResult getLowerPriceShellHouse(MustBuyShellHouseRequest mustBuyShellHouseRequest) {
         MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
-        BeanUtils.copyProperties(lowerPriceShellHouseRequest, mustBuyShellHouseDoQuery);
+        BeanUtils.copyProperties(mustBuyShellHouseRequest, mustBuyShellHouseDoQuery);
         MustBuyShellHouseDomain lowerPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 2);
         MustBuyShellHouseResponse lowerPriceShellHouseResponse = new MustBuyShellHouseResponse();
         BeanUtils.copyProperties(lowerPriceShellHouses, lowerPriceShellHouseResponse);

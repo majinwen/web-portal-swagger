@@ -1,6 +1,6 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
-import com.toutiao.app.api.chance.request.sellhouse.CutPriceShellHouseRequest;
+import com.toutiao.app.api.chance.request.sellhouse.MustBuyShellHouseRequest;
 import com.toutiao.app.api.chance.response.sellhouse.MustBuyShellHouseResponse;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDomain;
@@ -29,11 +29,10 @@ public class CutPriceSellHouseRestController {
      */
     @RequestMapping(value = "/getCutPriceShellHouse", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getCutPriceShellHouse(CutPriceShellHouseRequest cutPriceShellHouseRequest) {
+    public NashResult getCutPriceShellHouse(MustBuyShellHouseRequest mustBuyShellHouseRequest) {
         MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
-        BeanUtils.copyProperties(cutPriceShellHouseRequest, mustBuyShellHouseDoQuery);
-        MustBuyShellHouseDomain cutPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse
-                (mustBuyShellHouseDoQuery, 1);
+        BeanUtils.copyProperties(mustBuyShellHouseRequest, mustBuyShellHouseDoQuery);
+        MustBuyShellHouseDomain cutPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 1);
         MustBuyShellHouseResponse mustBuyShellHouseResponse = new MustBuyShellHouseResponse();
         BeanUtils.copyProperties(cutPriceShellHouses, mustBuyShellHouseResponse);
         return NashResult.build(cutPriceShellHouses);
