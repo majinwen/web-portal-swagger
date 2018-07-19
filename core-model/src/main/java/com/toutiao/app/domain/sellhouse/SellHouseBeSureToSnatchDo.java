@@ -233,5 +233,6 @@ public class SellHouseBeSureToSnatchDo {
     @ChangeName("buildingId")
     private  Integer newCode;
 
-
+    @ChangeName("nearBySubwayDesc")
+    private String traffic;
 }
