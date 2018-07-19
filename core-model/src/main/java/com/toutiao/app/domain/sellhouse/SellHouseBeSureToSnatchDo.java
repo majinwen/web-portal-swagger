@@ -224,7 +224,7 @@ public class SellHouseBeSureToSnatchDo {
     /**
      * 标签
      */
-    @ChangeName("tags")
+    @ChangeName("tagsName")
     private String[] tagsName;
 
     private String houseTitle;
