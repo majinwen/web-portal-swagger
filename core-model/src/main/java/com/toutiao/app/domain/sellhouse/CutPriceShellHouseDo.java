@@ -228,4 +228,9 @@ public class CutPriceShellHouseDo {
      * 房源标题
      */
     private String houseTitle;
+
+
+
+    @ChangeName("nearBySubwayDesc")
+    private String traffic;
 }
