@@ -46,15 +46,16 @@ public class HomePageLowerPriceDo {
      * 室
      */
     private Integer room;
-
-    /**
-     * 标签
-     */
-    private Integer[] tags;
+//
+//    /**
+//     * 标签
+//     */
+//    private Integer[] tags;
 
     /**
      * 标签名称
      */
+    @ChangeName("tags")
     private String[] tagsName;
 
     /**

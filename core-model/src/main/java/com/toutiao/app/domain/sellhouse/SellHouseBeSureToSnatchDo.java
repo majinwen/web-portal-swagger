@@ -230,4 +230,9 @@ public class SellHouseBeSureToSnatchDo {
     private String houseTitle;
 
 
+    @ChangeName("buildingId")
+    private  Integer newCode;
+
+    @ChangeName("nearBySubwayDesc")
+    private String traffic;
 }

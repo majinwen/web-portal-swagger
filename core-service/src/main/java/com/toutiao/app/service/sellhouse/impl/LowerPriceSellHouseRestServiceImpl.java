@@ -71,7 +71,7 @@ public class LowerPriceSellHouseRestServiceImpl implements LowerPriceSellHouseRe
         } else if (beginPrice == 0 && endPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
         } else if (beginPrice != 0 && endPrice == 0) {
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
 
         Integer sort = lowerPriceShellHouseDoQuery.getSort();

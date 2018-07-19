@@ -47,7 +47,7 @@ public class LowerPriceSellHouseEsDaoImpl implements LowerPriceSellHouseEsDao {
         } else if (sort == 4) {
             srb.addSort("buildArea", SortOrder.DESC);
         }
-        srb.addSort("_uid", SortOrder.DESC);
+//        srb.addSort("_uid", SortOrder.DESC);
         return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
     }
 }

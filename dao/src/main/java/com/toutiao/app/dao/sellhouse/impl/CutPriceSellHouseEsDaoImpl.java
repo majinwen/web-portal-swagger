@@ -47,7 +47,8 @@ public class CutPriceSellHouseEsDaoImpl implements CutPriceSellHouseEsDao {
         } else if (sort == 4) {
             srb.addSort("priceFloat", SortOrder.DESC);
         }
-        srb.addSort("_uid", SortOrder.DESC);
-        return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+        SearchResponse searchResponse = new SearchResponse();
+        searchResponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+        return searchResponse;
     }
 }
