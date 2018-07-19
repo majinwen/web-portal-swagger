@@ -75,6 +75,11 @@ public class CutPriceShellHouseDo {
     private Integer isCutPrice;
 
     /**
+     * 是否价格洼地(0-否, 1-是)
+     */
+    private Integer isLowPrice;
+
+    /**
      * 是否同户型小区均价最低(0-否,1-是)
      */
     private Integer isLowest;
