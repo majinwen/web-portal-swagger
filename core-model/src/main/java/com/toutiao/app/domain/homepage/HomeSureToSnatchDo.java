@@ -88,4 +88,45 @@ public class HomeSureToSnatchDo {
      private Double totalRelativeWithDistrict;
 
 
+    /**
+     * 是否成交户型(0-否,1-是)
+     */
+    private Integer isDealLayout;
+
+    /**
+     * 是否降价房(0-否, 1-降价房, 2-涨价房)
+     */
+    private Integer isCutPrice;
+
+    /**
+     * 是否价格洼地(0-否, 1-是)
+     */
+    private Integer isLowPrice;
+
+    /**
+     * 是否同户型小区均价最低(0-否,1-是)
+     */
+    private Integer isLowest;
+
+    /**
+     * 是否逢出毕抢(0-否, 1-是)
+     */
+    private Integer isMustRob;
+
+    /**
+     * 是否新导入房源(0-否,1-是)
+     */
+    private Integer isNew;
+
+    /**
+     * 在同商圈同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
+
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    private Integer rankInLowCommunityLayout;
+
+
 }
