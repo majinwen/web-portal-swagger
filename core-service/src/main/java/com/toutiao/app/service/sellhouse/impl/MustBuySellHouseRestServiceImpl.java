@@ -1,14 +1,14 @@
 package com.toutiao.app.service.sellhouse.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.toutiao.app.dao.sellhouse.CutPriceSellHouseEsDao;
+import com.toutiao.app.dao.sellhouse.MustBuySellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDo;
-import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDoQuery;
-import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDomain;
+import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDo;
+import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
+import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
-import com.toutiao.app.service.sellhouse.CutPriceSellHouseRestService;
+import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestService {
+public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestService {
     @Autowired
-    private CutPriceSellHouseEsDao cutPriceSellHouseEsDao;
+    private MustBuySellHouseEsDao mustBuySellHouseEsDao;
 
     @Autowired
     private SubscribeService subscribeService;
@@ -36,15 +36,20 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
     private AgentService agentService;
 
     /**
-     * 获取降价房Domain
+     * 获取不买亏二手房Domain
      */
     @Override
-    public CutPriceShellHouseDomain getCutPriceHouse(CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery) {
-        CutPriceShellHouseDomain cutPriceShellHouseDomain = new CutPriceShellHouseDomain();
+    public MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery, Integer topicType) {
+        MustBuyShellHouseDomain mustBuyShellHouseDomain = new MustBuyShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        Integer areaId = cutPriceShellHouseDoQuery.getDistrictId();
-        //降价房
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
+        Integer areaId = mustBuyShellHouseDoQuery.getDistrictId();
+        if (topicType == 1) {
+            //降价房
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
+        } else if (topicType == 2) {
+            //捡漏房
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
+        }
 
         //区域
         if (areaId != null && areaId != 0) {
@@ -52,15 +57,15 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
         }
 
         //新导入房源
-        Integer isNew = cutPriceShellHouseDoQuery.getIsNew();
+        Integer isNew = mustBuyShellHouseDoQuery.getIsNew();
         if (isNew != null) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
 
 
         //价格区间
-        double beginPrice = cutPriceShellHouseDoQuery.getBeginPrice();
-        double endPrice = cutPriceShellHouseDoQuery.getEndPrice();
+        double beginPrice = mustBuyShellHouseDoQuery.getBeginPrice();
+        double endPrice = mustBuyShellHouseDoQuery.getEndPrice();
         if (beginPrice != 0 && endPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
         } else if (beginPrice == 0 && endPrice != 0) {
@@ -68,14 +73,14 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
         } else if (beginPrice != 0 && endPrice == 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
-        Integer sort = cutPriceShellHouseDoQuery.getSort();
-        Integer pageNum = cutPriceShellHouseDoQuery.getPageNum();
-        Integer pageSize = cutPriceShellHouseDoQuery.getPageSize();
-        SearchResponse cutPriceSellHouse = cutPriceSellHouseEsDao.getCutPriceSellHouse(booleanQueryBuilder, sort, pageNum, pageSize);
+        Integer sort = mustBuyShellHouseDoQuery.getSort();
+        Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
+        Integer pageSize = mustBuyShellHouseDoQuery.getPageSize();
+        SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType);
 
         SearchHits hits = cutPriceSellHouse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        List<CutPriceShellHouseDo> cutPriceShellHouseDos = new ArrayList<>();
+        List<MustBuyShellHouseDo> mustBuyShellHouseDos = new ArrayList<>();
         if (searchHists.length > 0) {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
@@ -99,32 +104,31 @@ public class CutPriceSellHouseRestServiceImpl implements CutPriceSellHouseRestSe
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
-                cutPriceShellHouseDo.setAgentBaseDo(agentBaseDo);
-                cutPriceShellHouseDos.add(cutPriceShellHouseDo);
+                mustBuyShellHouseDo.setAgentBaseDo(agentBaseDo);
+                mustBuyShellHouseDos.add(mustBuyShellHouseDo);
             }
         }
 
         //查询订阅Id
         if (!UserBasic.isLogin()) {
-            cutPriceShellHouseDomain.setSubscribeId(-1);
+            mustBuyShellHouseDomain.setSubscribeId(-1);
         } else {
             UserBasic userBasic = UserBasic.getCurrent();
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
-            userSubscribeDetailDo.setTopicType(1);
+            userSubscribeDetailDo.setTopicType(topicType);
             userSubscribeDetailDo.setDistrictId(areaId);
             userSubscribeDetailDo.setBeginPrice((int) beginPrice);
             userSubscribeDetailDo.setEndPrice((int) endPrice);
 
-            UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer
-                    .valueOf(userBasic.getUserId()));
+            UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.valueOf(userBasic.getUserId()));
             if (userSubscribe != null) {
-                cutPriceShellHouseDomain.setSubscribeId(userSubscribe.getId());
+                mustBuyShellHouseDomain.setSubscribeId(userSubscribe.getId());
             } else {
-                cutPriceShellHouseDomain.setSubscribeId(-1);
+                mustBuyShellHouseDomain.setSubscribeId(-1);
         }
         }
-        cutPriceShellHouseDomain.setData(cutPriceShellHouseDos);
-        cutPriceShellHouseDomain.setTotalCount(hits.totalHits);
-        return cutPriceShellHouseDomain;
+        mustBuyShellHouseDomain.setData(mustBuyShellHouseDos);
+        mustBuyShellHouseDomain.setTotalCount(hits.totalHits);
+        return mustBuyShellHouseDomain;
     }
 }

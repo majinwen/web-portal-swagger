@@ -19,7 +19,10 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -160,8 +163,10 @@ public class HomePageRestController {
     @RequestMapping(value = "/getHomePageCutPrice", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getHomePageCutPrice() {
-        List<HomePageCutPriceDo> homePageCutPriceDos = homePageRestService.getHomePageCutPrice();
-        return NashResult.build(homePageCutPriceDos);
+        List<HomePageMustBuyDo> homePageCutPriceDos = homePageRestService.getHomePageMustBuy(1);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageCutPriceDos));
+        List<HomePageMustBuyResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomePageMustBuyResponse.class);
+        return NashResult.build(newHouseListResponses);
     }
 
     /**
@@ -170,8 +175,10 @@ public class HomePageRestController {
     @RequestMapping(value = "/getHomePageLowerPrice", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getHomePageLowerPrice() {
-        List<HomePageLowerPriceDo> homePageLowerPriceDos = homePageRestService.getHomePageLowerPrice();
-        return NashResult.build(homePageLowerPriceDos);
+        List<HomePageMustBuyDo> homePageLowerPriceDos = homePageRestService.getHomePageMustBuy(2);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageLowerPriceDos));
+        List<HomePageMustBuyResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomePageMustBuyResponse.class);
+        return NashResult.build(newHouseListResponses);
     }
 
 }

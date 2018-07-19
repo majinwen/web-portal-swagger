@@ -1,10 +1,10 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
-import com.toutiao.app.api.chance.request.sellhouse.LowerPriceShellHouseRequest;
-import com.toutiao.app.api.chance.response.sellhouse.LowerPriceShellHouseResponse;
-import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDoQuery;
-import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDomain;
-import com.toutiao.app.service.sellhouse.LowerPriceSellHouseRestService;
+import com.toutiao.app.api.chance.request.sellhouse.MustBuyShellHouseRequest;
+import com.toutiao.app.api.chance.response.sellhouse.MustBuyShellHouseResponse;
+import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
+import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDomain;
+import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +22,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rest/esf/lowerPrice")
 public class LowerPriceSellHouseRestController {
     @Autowired
-    private LowerPriceSellHouseRestService lowerPriceSellHouseRestService;
+    private MustBuySellHouseRestService mustBuySellHouseRestService;
 
     /**
      * 获取捡漏房数据
      */
     @RequestMapping(value = "/getLowerPriceShellHouse", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getLowerPriceShellHouse(LowerPriceShellHouseRequest lowerPriceShellHouseRequest) {
-        LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
-        BeanUtils.copyProperties(lowerPriceShellHouseRequest, lowerPriceShellHouseDoQuery);
-        LowerPriceShellHouseDomain lowerPriceShellHouses = lowerPriceSellHouseRestService.getLowerPriceHouse(lowerPriceShellHouseDoQuery);
-        LowerPriceShellHouseResponse lowerPriceShellHouseResponse = new LowerPriceShellHouseResponse();
+    public NashResult getLowerPriceShellHouse(MustBuyShellHouseRequest mustBuyShellHouseRequest) {
+        MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
+        BeanUtils.copyProperties(mustBuyShellHouseRequest, mustBuyShellHouseDoQuery);
+        MustBuyShellHouseDomain lowerPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 2);
+        MustBuyShellHouseResponse lowerPriceShellHouseResponse = new MustBuyShellHouseResponse();
         BeanUtils.copyProperties(lowerPriceShellHouses, lowerPriceShellHouseResponse);
         return NashResult.build(lowerPriceShellHouses);
     }

@@ -389,49 +389,32 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     /**
-     * 首页获取降价房8条
+     * 首页获取不买亏二手房8条
      */
     @Override
-    public List<HomePageCutPriceDo> getHomePageCutPrice() {
+    public List<HomePageMustBuyDo> getHomePageMustBuy(Integer topicType) {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-		//筛选低价房 isCutPrice=1
-        boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
-        SearchResponse cutPriceHouses = homePageEsDao.getHomePageCutPrice(boolQueryBuilder);
+
+        if (topicType == 1) {
+            //筛选低价房 isCutPrice=1
+            boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
+        } else if (topicType == 2) {
+            //价格洼地 isLowPrice=1
+            boolQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
+        }
+        SearchResponse cutPriceHouses = homePageEsDao.getHomePageMustBuy(boolQueryBuilder);
         SearchHit[] hits = cutPriceHouses.getHits().getHits();
-        List<HomePageCutPriceDo> homePageCutPriceDos = new ArrayList<>();
+        List<HomePageMustBuyDo> homePageMustBuyDos = new ArrayList<>();
         if (hits.length > 0) {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
-                HomePageCutPriceDo homePageCutPriceDo = JSON.parseObject(sourceAsString, HomePageCutPriceDo.class);
-                homePageCutPriceDos.add(homePageCutPriceDo);
+                HomePageMustBuyDo homePageMustBuyDo = JSON.parseObject(sourceAsString, HomePageMustBuyDo.class);
+                homePageMustBuyDos.add(homePageMustBuyDo);
             }
         }
-        return homePageCutPriceDos;
+        return homePageMustBuyDos;
     }
-
-    /**
-     * 首页获取价格洼地房8条
-     */
-    @Override
-    public List<HomePageLowerPriceDo> getHomePageLowerPrice() {
-        //构建筛选器
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        //价格洼地 isLowPrice=1
-        boolQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
-        SearchResponse lowerPriceHouses = homePageEsDao.getHomePageLowerPrice(boolQueryBuilder);
-        SearchHit[] hits = lowerPriceHouses.getHits().getHits();
-        List<HomePageLowerPriceDo> homePageCutPriceDos = new ArrayList<>();
-        if (hits.length > 0) {
-            for (SearchHit hit : hits) {
-                String sourceAsString = hit.getSourceAsString();
-                HomePageLowerPriceDo homePageLowerPriceDo = JSON.parseObject(sourceAsString, HomePageLowerPriceDo.class);
-                homePageCutPriceDos.add(homePageLowerPriceDo);
-            }
-        }
-        return homePageCutPriceDos;
-    }
-
 
     @Override
     public List<HomePageTop50Do> getHomePageTop50() {

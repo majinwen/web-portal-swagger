@@ -1,6 +1,6 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
-import com.toutiao.app.dao.sellhouse.CutPriceSellHouseEsDao;
+import com.toutiao.app.dao.sellhouse.MustBuySellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CutPriceSellHouseEsDaoImpl implements CutPriceSellHouseEsDao {
+public class MustBuySellHouseEsDaoImpl implements MustBuySellHouseEsDao {
     @Autowired
     private ESClientTools esClientTools;
 
@@ -32,7 +32,7 @@ public class CutPriceSellHouseEsDaoImpl implements CutPriceSellHouseEsDao {
      * 查询降价房列表
      */
     @Override
-    public SearchResponse getCutPriceSellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize) {
+    public SearchResponse getMustBuySellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize, Integer topicType) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         //排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
@@ -42,10 +42,14 @@ public class CutPriceSellHouseEsDaoImpl implements CutPriceSellHouseEsDao {
             srb.addSort("houseTotalPrices", SortOrder.ASC);
         } else if (sort == 2) {
             srb.addSort("houseTotalPrices", SortOrder.DESC);
-        } else if (sort == 3) {
+        } else if (topicType == 1 && sort == 3) {
             srb.addSort("priceFloat", SortOrder.ASC);
-        } else if (sort == 4) {
+        } else if (topicType == 1 && sort == 4) {
             srb.addSort("priceFloat", SortOrder.DESC);
+        } else if (topicType == 2 && sort == 3) {
+            srb.addSort("buildArea", SortOrder.ASC);
+        } else if (topicType == 2 && sort == 4) {
+            srb.addSort("buildArea", SortOrder.DESC);
         }
         SearchResponse searchResponse = new SearchResponse();
         searchResponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();

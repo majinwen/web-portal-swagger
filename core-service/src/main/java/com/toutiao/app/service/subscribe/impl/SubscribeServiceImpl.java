@@ -1,14 +1,12 @@
 package com.toutiao.app.service.subscribe.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.domain.sellhouse.CutPriceShellHouseDoQuery;
-import com.toutiao.app.domain.sellhouse.LowerPriceShellHouseDoQuery;
+import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeListDo;
-import com.toutiao.app.service.sellhouse.CutPriceSellHouseRestService;
-import com.toutiao.app.service.sellhouse.LowerPriceSellHouseRestService;
+import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
@@ -27,9 +25,7 @@ public class SubscribeServiceImpl implements SubscribeService {
     @Autowired
     private SellHouseService sellHouseService;
     @Autowired
-    private CutPriceSellHouseRestService cutPriceSellHouseRestService;
-    @Autowired
-    private LowerPriceSellHouseRestService lowerPriceSellHouseRestService;
+    private MustBuySellHouseRestService mustBuySellHouseRestService;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -118,38 +114,22 @@ public class SubscribeServiceImpl implements SubscribeService {
             }
             SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
             return sellHouseBeSureToSnatchDos.getTotalCount();
-        } else if (userSubscribeDetailDo.getTopicType() == 1) {
-            CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
+        } else if (userSubscribeDetailDo.getTopicType() == 1 || userSubscribeDetailDo.getTopicType() == 2) {
+            MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
             if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
-                cutPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
+                mustBuyShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
             if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
-                cutPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
+                mustBuyShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
             if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
-                cutPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
+                mustBuyShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
-            cutPriceShellHouseDoQuery.setIsNew(1);
-            cutPriceShellHouseDoQuery.setSort(0);
-            cutPriceShellHouseDoQuery.setPageSize(pageSize);
-            cutPriceShellHouseDoQuery.setPageNum(pageIndex);
-            return cutPriceSellHouseRestService.getCutPriceHouse(cutPriceShellHouseDoQuery).getTotalCount();
-        } else if (userSubscribeDetailDo.getTopicType() == 2) {
-            LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
-            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
-                lowerPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
-            }
-            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
-                lowerPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
-            }
-            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
-                lowerPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
-            }
-            lowerPriceShellHouseDoQuery.setIsNew(1);
-            lowerPriceShellHouseDoQuery.setSort(0);
-            lowerPriceShellHouseDoQuery.setPageSize(pageSize);
-            lowerPriceShellHouseDoQuery.setPageNum(pageIndex);
-            return lowerPriceSellHouseRestService.getLowerPriceHouse(lowerPriceShellHouseDoQuery).getTotalCount();
+            mustBuyShellHouseDoQuery.setIsNew(1);
+            mustBuyShellHouseDoQuery.setSort(0);
+            mustBuyShellHouseDoQuery.setPageSize(pageSize);
+            mustBuyShellHouseDoQuery.setPageNum(pageIndex);
+            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType()).getTotalCount();
         }
         return 0L;
     }
@@ -171,36 +151,21 @@ public class SubscribeServiceImpl implements SubscribeService {
                 sellHouseBeSureToSnatchDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             return sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
-        } else if (userSubscribeDetailDo.getTopicType() == 1) {
-            CutPriceShellHouseDoQuery cutPriceShellHouseDoQuery = new CutPriceShellHouseDoQuery();
+        } else if (userSubscribeDetailDo.getTopicType() == 1 || userSubscribeDetailDo.getTopicType() == 2) {
+            MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
             if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
-                cutPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
+                mustBuyShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
             }
             if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
-                cutPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
+                mustBuyShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
             if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
-                cutPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
+                mustBuyShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
-            cutPriceShellHouseDoQuery.setSort(0);
-            cutPriceShellHouseDoQuery.setPageSize(pageSize);
-            cutPriceShellHouseDoQuery.setPageNum(pageIndex);
-            return cutPriceSellHouseRestService.getCutPriceHouse(cutPriceShellHouseDoQuery);
-        } else if (userSubscribeDetailDo.getTopicType() == 2) {
-            LowerPriceShellHouseDoQuery lowerPriceShellHouseDoQuery = new LowerPriceShellHouseDoQuery();
-            if (userSubscribeDetailDo.getDistrictId() != null && userSubscribeDetailDo.getDistrictId() != 0) {
-                lowerPriceShellHouseDoQuery.setDistrictId(userSubscribeDetailDo.getDistrictId());
-            }
-            if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
-                lowerPriceShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
-            }
-            if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
-                lowerPriceShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
-            }
-            lowerPriceShellHouseDoQuery.setSort(0);
-            lowerPriceShellHouseDoQuery.setPageSize(pageSize);
-            lowerPriceShellHouseDoQuery.setPageNum(pageIndex);
-            return lowerPriceSellHouseRestService.getLowerPriceHouse(lowerPriceShellHouseDoQuery);
+            mustBuyShellHouseDoQuery.setSort(0);
+            mustBuyShellHouseDoQuery.setPageSize(pageSize);
+            mustBuyShellHouseDoQuery.setPageNum(pageIndex);
+            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType());
         }
         return null;
     }

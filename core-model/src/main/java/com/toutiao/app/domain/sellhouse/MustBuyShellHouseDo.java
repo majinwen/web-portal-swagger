@@ -1,19 +1,15 @@
-package com.toutiao.app.domain.homepage;
+package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-/**
- * 首页降价房Do
- *
- * @author : zhaiyanming
- */
 @Data
-public class HomePageCutPriceDo {
+public class MustBuyShellHouseDo {
     /**
      * 房源id
      */
-    private Integer houseId;
+    private String houseId;
 
     /**
      * 房源面积(单位:平方米)
@@ -42,20 +38,20 @@ public class HomePageCutPriceDo {
     private String housePhotoTitle;
 
     /**
-     * 小区
+     * 区域Id
      */
-    @ChangeName("buildingName")
-    private String plotName;
+    @ChangeName("districtId")
+    private Integer areaId;
 
     /**
      * 室
      */
     private Integer room;
 
-//    /**
-//     * 标签
-//     */
-//    private Integer[] tags;
+    /**
+     * 厅
+     */
+    private Integer hall;
 
     /**
      * 标签名称
@@ -64,12 +60,12 @@ public class HomePageCutPriceDo {
     private String[] tagsName;
 
     /**
-     * 是否主力户型(0-否, 1-是)
+     * 是否主力户型(0-否,1-是)
      */
     private Integer isMainLayout;
 
     /**
-     * 是否成交户型(0-否, 1-是)
+     * 是否成交户型(0-否,1-是)
      */
     private Integer isDealLayout;
 
@@ -79,12 +75,17 @@ public class HomePageCutPriceDo {
     private Integer isCutPrice;
 
     /**
-     * 是否同户型小区均价最低(0-否, 1-是)
+     * 是否价格洼地(0-否, 1-是)
+     */
+    private Integer isLowPrice;
+
+    /**
+     * 是否同户型小区均价最低(0-否,1-是)
      */
     private Integer isLowest;
 
     /**
-     * 是否新导入房源(0-否, 1-是)
+     * 是否新导入房源(0-否,1-是)
      */
     private Integer isNew;
 
@@ -162,4 +163,79 @@ public class HomePageCutPriceDo {
      * 与区县平均总价的相对值(百分比)
      */
     private Double totalRelativeWithDistrict;
+
+    /**
+     * 更新时间
+     */
+    private String updateTime;
+
+//    /**
+//     * 排序属性
+//     */
+//    private String sortField;
+//
+//    /**
+//     * uid
+//     */
+//    private String uid;
+
+    /**
+     * 经纪人信息
+     */
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
+
+    /**
+     * 用户Id
+     */
+    private Integer userId;
+
+    /**
+     * 是否认领(0-否,1-是)
+     */
+    private Integer isClaim;
+
+    /**
+     * 房源均价
+     */
+    private Double houseUnitCost;
+
+    /**
+     * 区域名称
+     */
+    @ChangeName("districtName")
+    private String area;
+
+    /**
+     * 商圈名称
+     */
+    @ChangeName("areaName")
+    private String houseBusinessName;
+
+    /**
+     * 小区名称
+     */
+    @ChangeName("buildingName")
+    private String plotName;
+
+    /**
+     * 小区id
+     */
+    @ChangeName("buildingId")
+    private Integer newcode;
+
+    /**
+     * 平均成交天数
+     */
+    private Integer avgDealCycle;
+
+    /**
+     * 房源标题
+     */
+    private String houseTitle;
+
+
+
+    @ChangeName("nearBySubwayDesc")
+    private String traffic;
 }

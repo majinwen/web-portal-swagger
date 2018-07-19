@@ -49,15 +49,13 @@ public interface HomePageRestService {
      * @return
      */
     HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
-    /**
-     * 首页获取降价房8条
-     */
-    List<HomePageCutPriceDo> getHomePageCutPrice();
 
     /**
-     * 首页获取价格洼地房8条
+     * 首页获取不买亏二手房8条
+     *
+     * @param topicType 主题类型：1-降价房, 2-捡漏房
      */
-    List<HomePageLowerPriceDo> getHomePageLowerPrice();
+    List<HomePageMustBuyDo> getHomePageMustBuy(Integer topicType);
 
     /**
      * 获取首页top50
