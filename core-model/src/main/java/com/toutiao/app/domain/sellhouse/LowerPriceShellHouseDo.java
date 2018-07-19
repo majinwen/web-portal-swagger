@@ -28,6 +28,11 @@ public class LowerPriceShellHouseDo {
     private Double houseTotalPrices;
 
     /**
+     * 价格浮动(单位:万)
+     */
+    private Double priceFloat;
+
+    /**
      * 房源标题图片
      */
     private String housePhotoTitle;
@@ -63,6 +68,11 @@ public class LowerPriceShellHouseDo {
      * 是否成交户型(0-否,1-是)
      */
     private Integer isDealLayout;
+
+    /**
+     * 是否降价房(0-否, 1-降价房, 2-涨价房)
+     */
+    private Integer isCutPrice;
 
     /**
      * 是否价格洼地(0-否, 1-是)
