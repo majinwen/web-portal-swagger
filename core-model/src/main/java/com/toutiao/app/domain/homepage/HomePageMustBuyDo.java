@@ -52,11 +52,6 @@ public class HomePageMustBuyDo {
      */
     private Integer room;
 
-//    /**
-//     * 标签
-//     */
-//    private Integer[] tags;
-
     /**
      * 标签名称
      */
@@ -77,6 +72,11 @@ public class HomePageMustBuyDo {
      * 是否降价房(0-否, 1-降价房, 2-涨价房)
      */
     private Integer isCutPrice;
+
+    /**
+     * 是否价格洼地(0-否, 1-是)
+     */
+    private Integer isLowPrice;
 
     /**
      * 是否同户型小区均价最低(0-否, 1-是)
