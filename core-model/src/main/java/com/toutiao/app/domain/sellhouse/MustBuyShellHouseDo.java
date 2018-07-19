@@ -5,7 +5,7 @@ import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 @Data
-public class CutPriceShellHouseDo {
+public class MustBuyShellHouseDo {
     /**
      * 房源id
      */

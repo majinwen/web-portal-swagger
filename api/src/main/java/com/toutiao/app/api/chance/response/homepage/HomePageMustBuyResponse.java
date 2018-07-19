@@ -1,15 +1,10 @@
-package com.toutiao.app.domain.homepage;
+package com.toutiao.app.api.chance.response.homepage;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-/**
- * 首页价格洼地Do
- *
- * @author : zhaiyanming
- */
 @Data
-public class HomePageLowerPriceDo {
+public class HomePageMustBuyResponse {
     /**
      * 房源id
      */

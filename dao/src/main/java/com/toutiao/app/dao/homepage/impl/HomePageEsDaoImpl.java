@@ -125,27 +125,13 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     }
 
     /**
-     * 首页获取降价房8条
+     * 首页获取不买亏二手房8条
      */
     @Override
-    public SearchResponse getHomePageCutPrice(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getHomePageMustBuy(BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .addSort("updateTimeSort", SortOrder.DESC);
-        //限制结果8条
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(8).execute().actionGet();
-        return searchResponse;
-    }
-
-    /**
-     * 首页获取价格洼地8条
-     */
-    @Override
-    public SearchResponse getHomePageLowerPrice(BoolQueryBuilder boolQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //根据修改时间排序
-        srb.addSort("updateTimeSort", SortOrder.DESC);
         //限制结果8条
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(8).execute().actionGet();
         return searchResponse;
