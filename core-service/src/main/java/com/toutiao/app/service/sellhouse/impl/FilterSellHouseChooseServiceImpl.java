@@ -97,7 +97,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         }else if(nearBySellHouseQueryDo.getEndPrice()==0 && nearBySellHouseQueryDo.getBeginPrice()!=0)
         {
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
         }
 
         //面积

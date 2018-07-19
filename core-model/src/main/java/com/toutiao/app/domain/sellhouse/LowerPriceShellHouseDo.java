@@ -234,8 +234,8 @@ public class LowerPriceShellHouseDo {
      */
     private String houseTitle;
 
-    /**
-     * 是否降价房(0-否, 1-降价房, 2-涨价房)
-     */
-    private Integer isCutPrice;
+//    /**
+//     * 是否降价房(0-否, 1-降价房, 2-涨价房)
+//     */
+//    private Integer isCutPrice;
 }
