@@ -144,4 +144,8 @@ public class HomePageNearEsfDo {
      */
     private Double avgAbsoluteWithCommunity;
 
+    /**
+     * 与小区平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithCommunity;
 }
