@@ -59,7 +59,7 @@ public class SMSUtils {
         request.setPhoneNumbers(phone);
         // 必填:短信签名-可在短信控制台中找到
         if(sendSign==ServiceStateConstant.SEND_MESSAGE_APP){
-            request.setSignName("懂房帝");
+            request.setSignName("比得屋");
         }else if (sendSign==ServiceStateConstant.SEND_MESSAGE_WAP){
             request.setSignName("头条房产");
         }
