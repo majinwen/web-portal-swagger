@@ -230,4 +230,8 @@ public class SellHouseBeSureToSnatchDo {
     private String houseTitle;
 
 
+    @ChangeName("buildingId")
+    private  Integer newCode;
+
+
 }
