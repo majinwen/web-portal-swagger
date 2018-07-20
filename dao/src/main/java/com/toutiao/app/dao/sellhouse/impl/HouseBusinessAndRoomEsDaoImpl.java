@@ -48,7 +48,7 @@ public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
     public SearchResponse getHouseBusinessAndRoomHouses(BoolQueryBuilder query, Integer pageNum, Integer pageSize) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        srb.addSort("buildArea", SortOrder.DESC);
+        srb.addSort("houseTotalPrices", SortOrder.DESC);
         srb.addSort("_uid", SortOrder.DESC);
         return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
     }
