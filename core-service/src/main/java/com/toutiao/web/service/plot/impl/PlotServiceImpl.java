@@ -426,10 +426,10 @@ public class PlotServiceImpl implements PlotService {
             sort.unit(DistanceUnit.KILOMETERS);
 //            sort.order(SortOrder.ASC);
             sort.point(villageRequest.getLat(), villageRequest.getLon());
-            srb.addSort(sort);
+//            srb.addSort(sort);
             BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
             booleanQuery.must(QueryBuilders.termQuery("is_approve", 1));
-            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
+            SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){

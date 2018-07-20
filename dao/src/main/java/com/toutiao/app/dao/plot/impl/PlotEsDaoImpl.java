@@ -79,7 +79,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(sort).addSort(levelSort).addSort(plotScoreSort).setFrom(from).setSize(size).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(levelSort).addSort(plotScoreSort).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 
