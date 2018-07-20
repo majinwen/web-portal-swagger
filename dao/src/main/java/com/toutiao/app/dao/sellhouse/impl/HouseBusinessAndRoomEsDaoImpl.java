@@ -49,7 +49,7 @@ public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         srb.addSort("houseTotalPrices", SortOrder.ASC);
-        srb.addSort("_uid", SortOrder.DESC);
+//        srb.addSort("_uid", SortOrder.DESC);
         return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
     }
 
