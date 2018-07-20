@@ -4,8 +4,6 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 public class SellHouseBeSureToSnatchDo {
 
@@ -99,6 +97,11 @@ public class SellHouseBeSureToSnatchDo {
     @ChangeName("districtName")
     private String area;
 
+    /**
+     * 商圈id
+     */
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
     /**
      * 商圈名称
      */
