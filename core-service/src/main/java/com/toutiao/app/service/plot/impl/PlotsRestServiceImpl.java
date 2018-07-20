@@ -585,7 +585,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             PlotTop50Do plotTop50Do = JSON.parseObject(sourceAsString, PlotTop50Do.class);
 
             PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId());
-            plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+            if(plotsEsfRoomCountDomain.getTotalCount()!= null){
+                plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+            }else{
+                plotTop50Do.setHouseCount(0);
+            }
+
             plotTop50Dos.add(plotTop50Do);
         }
         return plotTop50Dos;

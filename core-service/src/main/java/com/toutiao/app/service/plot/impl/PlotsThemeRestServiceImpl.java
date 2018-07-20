@@ -84,7 +84,12 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setHouseMinArea(minHouse.getValue());
                 //二手房房源数量
                 PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId());
-                plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+
+                if(plotsEsfRoomCountDomain.getTotalCount()!= null){
+                    plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+                }else{
+                    plotsThemeDo.setHouseCount(0);
+                }
                 plotsThemeDos.add(plotsThemeDo);
             }
         }
