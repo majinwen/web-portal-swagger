@@ -424,7 +424,7 @@ public class PlotServiceImpl implements PlotService {
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", villageRequest.getLat(), villageRequest.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
-            sort.order(SortOrder.ASC);
+//            sort.order(SortOrder.ASC);
             sort.point(villageRequest.getLat(), villageRequest.getLon());
             srb.addSort(sort);
             BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();

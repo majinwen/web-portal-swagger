@@ -367,7 +367,9 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             //排序
             sort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
-            sort.order(SortOrder.ASC);
+//            sort.order(SortOrder.ASC);
+            sort.point(plotListDoQuery.getLat(), plotListDoQuery.getLon());
+
         }
 
 
@@ -398,7 +400,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         FieldSortBuilder levelSort = SortBuilders.fieldSort("level").order(SortOrder.ASC);
 
         //小区分数排序
-//        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
+        FieldSortBuilder plotScoreSort = SortBuilders.fieldSort("plotScore").order(SortOrder.DESC);
 
         //坐标
 //        Map<String,Double> map = new HashMap<>();
@@ -414,8 +416,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
         PlotListDo plotListDo = new PlotListDo();
         SearchResponse searchResponse = null;
-        if (/*StringTool.isNotEmpty(plotListDoQuery.getKeyword())||*/(StringTool.isNotEmpty(plotListDoQuery.getLat())&&plotListDoQuery.getLat()>0&&plotListDoQuery.getLon()>0&&StringTool.isNotEmpty(plotListDoQuery.getLon()))){
-            searchResponse = plotEsDao.queryPlotListByRequirementAndKeywordV1(from, boolQueryBuilder, plotListDoQuery.getPageSize(),sort);
+        if ((StringTool.isNotEmpty(plotListDoQuery.getLat())&&plotListDoQuery.getLat()>0&&plotListDoQuery.getLon()>0&&StringTool.isNotEmpty(plotListDoQuery.getLon()))){
+            searchResponse = plotEsDao.queryPlotListByRequirementAndKeywordV1(from, boolQueryBuilder, plotListDoQuery.getPageSize(),sort,levelSort,plotScoreSort);
         }else {
             searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(),plotListDoQuery.getKeyword());
             if (searchResponse!=null){

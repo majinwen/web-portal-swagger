@@ -61,7 +61,7 @@ public interface PlotEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort);
+    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort);
 
     /**
      * 普通小区列表(补)
