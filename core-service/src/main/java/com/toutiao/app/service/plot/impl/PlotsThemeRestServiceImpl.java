@@ -2,9 +2,11 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotsThemeEsDao;
+import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.plot.PlotsThemeDo;
 import com.toutiao.app.domain.plot.PlotsThemeDoQuery;
 import com.toutiao.app.domain.plot.PlotsThemeDomain;
+import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
@@ -27,8 +29,11 @@ import java.util.Map;
  */
 @Service
 public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
+
     @Autowired
     private PlotsThemeEsDao plotsThemeEsDao;
+    @Autowired
+    private PlotsEsfRestService plotsEsfRestService;
 
     /**
      * 获取小区主题数据
@@ -77,6 +82,9 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
                 plotsThemeDo.setHouseMaxArea(maxHouse.getValue());
                 plotsThemeDo.setHouseMinArea(minHouse.getValue());
+                //二手房房源数量
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsThemeDo.getId());
+                plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
                 plotsThemeDos.add(plotsThemeDo);
             }
         }
