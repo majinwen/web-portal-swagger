@@ -1,11 +1,9 @@
 package com.toutiao.app.domain.sellhouse;
 
-import com.toutiao.app.domain.QueryDo;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -112,6 +110,12 @@ public class NearBySellHousesDo {
     @ChangeName("districtName")
     private  String area;
 
+
+    /**
+     * 商圈id
+     */
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
     /**
      * 商圈
      */

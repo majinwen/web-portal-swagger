@@ -207,6 +207,11 @@ public class MustBuyShellHouseDo {
     private String area;
 
     /**
+     * 商圈id
+     */
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
+    /**
      * 商圈名称
      */
     @ChangeName("areaName")
