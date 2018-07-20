@@ -169,16 +169,6 @@ public class MustBuyShellHouseDo {
      */
     private String updateTime;
 
-//    /**
-//     * 排序属性
-//     */
-//    private String sortField;
-//
-//    /**
-//     * uid
-//     */
-//    private String uid;
-
     /**
      * 经纪人信息
      */

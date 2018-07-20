@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 商圈+户型房源专题页服务层实现类
@@ -52,12 +53,17 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 HouseBusinessAndRoomDo houseBusinessAndRoomDo = JSON.parseObject(details, HouseBusinessAndRoomDo.class);
-                houseBusinessAndRoomDo.setSortField(searchHit.getSortValues()[0].toString());
-                houseBusinessAndRoomDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
-
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (houseBusinessAndRoomDo.getIsClaim() == 1 && StringTool.isNotEmpty(houseBusinessAndRoomDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString());
+                    //认领状态取认领数据
+                    houseBusinessAndRoomDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
+                    houseBusinessAndRoomDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
+                    List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    houseBusinessAndRoomDo.setTagsName(tagsName);
+                    houseBusinessAndRoomDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
                 } else {
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
