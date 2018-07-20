@@ -179,6 +179,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         //组装条件
         boolQueryBuilder.must(location);
+        boolQueryBuilder.must(QueryBuilders.rangeQuery("house_count").gt(0));
         boolQueryBuilder.must(QueryBuilders.termQuery("cityId", nearHouseDoQuery.getCityId()));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
