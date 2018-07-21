@@ -17,4 +17,9 @@ public class HouseBusinessAndRoomDoQuery extends QueryDo {
      * 详情页房源编号
      */
     private String houseId;
+
+    /**
+     * 厅
+     */
+    private Integer hall;
 }

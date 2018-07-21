@@ -28,4 +28,10 @@ public class HouseBusinessAndRoomRequest extends BaseQueryRequest {
      */
     //@NotNull(message = "缺少房源Id")
     private String houseId;
+
+    /**
+     * 厅
+     */
+    @NotNull(message = "缺少厅")
+    private Integer hall;
 }
