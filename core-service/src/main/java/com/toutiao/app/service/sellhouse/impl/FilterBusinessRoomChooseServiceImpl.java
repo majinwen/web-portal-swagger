@@ -7,6 +7,10 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * 商圈户型查询条件构造器
  */
@@ -16,15 +20,23 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
     public BoolQueryBuilder filterBusinessRoomChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //商圈
-        String area = houseBusinessAndRoomDoQuery.getAreaName();
-        if (StringTool.isNotEmpty(area)) {
-            boolQueryBuilder.must(QueryBuilders.matchQuery("houseBusinessName", area));
+        Integer areaId = houseBusinessAndRoomDoQuery.getAreaId();
+        if (areaId != null) {
+            boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", areaId));
         }
 
         //户型(室)
         Integer[] layoutId = houseBusinessAndRoomDoQuery.getLayoutId();
         if (StringTool.isNotEmpty(layoutId)) {
-            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+            List<Integer> layouts = Arrays.asList(layoutId);
+            if (Collections.max(layouts) > 4) {
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                bqb.should(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+                bqb.should(QueryBuilders.rangeQuery("room").gt(5));
+                boolQueryBuilder.must(bqb);
+            } else {
+                boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+            }
         }
         return boolQueryBuilder;
     }
