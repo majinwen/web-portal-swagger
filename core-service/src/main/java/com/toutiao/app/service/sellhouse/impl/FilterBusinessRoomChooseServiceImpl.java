@@ -24,11 +24,7 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
         //户型(室)
         Integer[] layoutId = houseBusinessAndRoomDoQuery.getLayoutId();
         if (StringTool.isNotEmpty(layoutId)) {
-            if (layoutId[0] > 4) {
-                boolQueryBuilder.must(QueryBuilders.rangeQuery("room").gte(5));
-            } else {
-                boolQueryBuilder.must(QueryBuilders.termQuery("room", layoutId[0]));
-            }
+            boolQueryBuilder.must(QueryBuilders.termQuery("room", layoutId[0]));
         }
         return boolQueryBuilder;
     }
@@ -41,6 +37,7 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
         if (houseBusinessId != null){
             boolQueryBuilder.must(QueryBuilders.termQuery("area_id", houseBusinessId));
         }
+
         //户型(室)
         Integer[] layoutId = houseBusinessAndRoomDoQuery.getLayoutId();
         if (StringTool.isNotEmpty(layoutId)) {
