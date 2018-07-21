@@ -133,6 +133,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
+                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
             }
 
@@ -595,6 +596,9 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
         }
         booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+
         if (null!=sellHouseBeSureToSnatchDoQuery.getSortFile() && null!=sellHouseBeSureToSnatchDoQuery.getSort() )
         {
             if(sellHouseBeSureToSnatchDoQuery.getSort().equals(1))
