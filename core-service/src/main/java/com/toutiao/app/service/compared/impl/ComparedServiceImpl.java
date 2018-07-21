@@ -6,6 +6,7 @@ import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.compared.ComparedService;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.mapper.compared.HouseComparedMapper;
@@ -34,6 +35,9 @@ public class ComparedServiceImpl implements ComparedService {
 
     @Autowired
     PlotEsDao plotEsDao;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -158,6 +162,7 @@ public class ComparedServiceImpl implements ComparedService {
         for (SearchHit hit : searchHists) {
             String details = hit.getSourceAsString();
             HouseComparedDetailDo houseComparedDetailDo = JSON.parseObject(details, HouseComparedDetailDo.class);
+            houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags());
             houseComparedDetailDo.setHouseId(hit.getId());
             houseComparedDetailDoDict.put(hit.getId(), houseComparedDetailDo);
             if (!newcodeDict.containsKey(houseComparedDetailDo.getNewcode())) {
