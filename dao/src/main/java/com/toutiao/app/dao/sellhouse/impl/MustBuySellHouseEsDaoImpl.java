@@ -35,7 +35,6 @@ public class MustBuySellHouseEsDaoImpl implements MustBuySellHouseEsDao {
     public SearchResponse getMustBuySellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize, Integer topicType) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        //排序方式(0-更新时间降序, 1-总价升, 2-总价降, 3-涨幅升, 4-涨幅降)
         if (sort == 0) {
             srb.addSort("updateTimeSort", SortOrder.DESC);
         } else if (sort == 1) {
