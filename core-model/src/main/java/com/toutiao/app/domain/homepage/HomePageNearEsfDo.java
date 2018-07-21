@@ -5,6 +5,7 @@ import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class HomePageNearEsfDo {
@@ -148,4 +149,7 @@ public class HomePageNearEsfDo {
      * 与小区平均总价的绝对值差
      */
     private Double totalAbsoluteWithCommunity;
+
+
+    private Map<Integer,Map<String,Integer>> typeCounts;
 }

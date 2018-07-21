@@ -95,6 +95,12 @@ public class SellHouseBeSureToSnatchDo {
     private String forwardName;
 
     /**
+     * 区域Id
+     */
+    @ChangeName("districtId")
+    private Integer areaId;
+
+    /**
      * 区域名称
      */
     @ChangeName("districtName")
@@ -248,6 +254,8 @@ public class SellHouseBeSureToSnatchDo {
     private Map<Integer,Map<String,Integer>> typeCounts;
 
     private List recommendBuildTagsName;
+
+    private List recommendBuildTagsId;
 
 
 

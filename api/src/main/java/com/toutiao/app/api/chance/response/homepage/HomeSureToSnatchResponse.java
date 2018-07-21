@@ -124,4 +124,27 @@ public class HomeSureToSnatchResponse {
      * 各个类型数量
      */
     private Map<Integer,Map<String,Integer>> typeCounts;
+
+    /**
+     * 区域名称
+     */
+    @ChangeName("districtId")
+    private String areaId;
+
+    /**
+     * 区域名称
+     */
+    @ChangeName("districtName")
+    private String area;
+
+    /**
+     * 商圈id
+     */
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
+    /**
+     * 商圈名称
+     */
+    @ChangeName("areaName")
+    private String houseBusinessName;
 }
