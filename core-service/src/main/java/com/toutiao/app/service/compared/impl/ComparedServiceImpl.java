@@ -183,6 +183,8 @@ public class ComparedServiceImpl implements ComparedService {
                 for (String houseId : houseIds) {
                     if (houseComparedDetailDoDict.containsKey(houseId)) {
                         HouseComparedDetailDo houseComparedDetailDo = houseComparedDetailDoDict.get(houseId);
+                        houseComparedDetailDo.setRingRoadDistance(plotDetailsDo.getRingRoadDistance());
+                        houseComparedDetailDo.setRingRoadName(plotDetailsDo.getRingRoadName());
                         BeanUtils.copyProperties(plotDetailsDo, houseComparedDetailDo);
                         if ("商电".equals(plotDetailsDo.getElectricSupply())) {
                             houseComparedDetailDo.setElectricFee(1.33);

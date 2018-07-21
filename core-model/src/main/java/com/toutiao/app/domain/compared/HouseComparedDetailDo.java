@@ -103,6 +103,11 @@ public class HouseComparedDetailDo {
     private String floorNo;
 
     /**
+     * 楼层 中高低
+     */
+    private String floor;
+
+    /**
      * 坐标
      */
     private String location;
@@ -187,4 +192,124 @@ public class HouseComparedDetailDo {
      * 是否同户型小区均价最低(0-否，1-是)
      */
     private Integer isLowest;
+
+
+    /**
+     * 是否成交户型(0-否，1-是)
+     */
+    private Integer isDealLayout;
+
+    /**
+     * 平均成交天数
+     */
+    private Integer avgDealCycle;
+
+    /**
+     * 是否价格洼地(0-否，1-是)
+     */
+    private Integer isLowPrice;
+
+
+    /**
+     * 是否逢出必抢房(0-否，1-是)
+     */
+    private Integer isMustRob;
+
+
+    /**
+     * 是否新导入房源(0-否，1-是)
+     */
+    private Integer isNew;
+
+    /**
+     * 均价
+     */
+    @ChangeName("avgPrice")
+    private Double houseUnitCost;
+
+    /**
+     * 小区到环桥距离
+     */
+    private Integer ringRoadDistance;
+
+    /**
+     * 环桥
+     */
+    private String ringRoadName;
+
+    /**
+     * 在同商圈同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
+
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    private Integer rankInLowCommunityLayout;
+
+    /**
+     * 与小区平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithCommunity;
+
+    /**
+     * 与商圈平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithBizcircle;
+
+    /**
+     * 与区县平均单价的绝对值差
+     */
+    private Double avgAbsoluteWithDistrict;
+
+    /**
+     * 与小区平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithCommunity;
+
+    /**
+     * 与商圈平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithBizcircle;
+
+    /**
+     * 与区县平均单价的相对值(百分比)
+     */
+    private Double avgRelativeWithDistrict;
+
+    /**
+     * 与小区平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithCommunity;
+
+    /**
+     * 与商圈平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithBizcircle;
+
+    /**
+     * 与区县平均总价的绝对值差
+     */
+    private Double totalAbsoluteWithDistrict;
+
+    /**
+     * 与小区平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithCommunity;
+
+    /**
+     * 与商圈平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithBizcircle;
+
+    /**
+     * 与区县平均总价的相对值(百分比)
+     */
+    private Double totalRelativeWithDistrict;
+
+    @ChangeName("nearBySubwayDesc")
+    private String traffic;
+
+
+
 }
