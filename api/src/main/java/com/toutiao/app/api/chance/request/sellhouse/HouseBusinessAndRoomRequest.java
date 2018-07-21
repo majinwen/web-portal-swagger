@@ -27,5 +27,5 @@ public class HouseBusinessAndRoomRequest extends BaseQueryRequest {
      * 详情页房源编号
      */
     //@NotNull(message = "缺少房源Id")
-    private Integer houseId;
+    private String houseId;
 }
