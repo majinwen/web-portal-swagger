@@ -275,4 +275,14 @@ public class SellHousesSearchDo {
      * 推荐标签名称
      */
     private List recommendBuildTagsName;
+
+    /**
+     * 近公园
+     */
+    private String nearPark;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
 }

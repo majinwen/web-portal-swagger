@@ -277,6 +277,8 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
+
+                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
 
@@ -355,6 +357,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
                 }
+                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
 

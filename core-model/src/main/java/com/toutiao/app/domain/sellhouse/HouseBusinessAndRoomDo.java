@@ -248,5 +248,10 @@ public class HouseBusinessAndRoomDo {
 
     private List recommendBuildTagsId;
 
+    /**
+     * 近公园
+     */
+    private String nearPark;
+
 
 }

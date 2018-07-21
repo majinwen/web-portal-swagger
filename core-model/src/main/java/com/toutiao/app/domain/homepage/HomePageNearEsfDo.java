@@ -152,4 +152,7 @@ public class HomePageNearEsfDo {
 
 
     private Map<Integer,Map<String,Integer>> typeCounts;
+
+
+    private String nearPark;
 }

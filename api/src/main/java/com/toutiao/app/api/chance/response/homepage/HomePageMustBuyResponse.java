@@ -192,4 +192,9 @@ public class HomePageMustBuyResponse {
      */
     @ChangeName("areaName")
     private String houseBusinessName;
+
+    /**
+     * 近公园
+     */
+    private String nearPark;
 }
