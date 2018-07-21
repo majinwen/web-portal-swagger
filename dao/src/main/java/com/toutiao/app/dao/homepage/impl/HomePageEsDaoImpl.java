@@ -117,7 +117,7 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         srb.addSort("updateTimeSort",SortOrder.DESC);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((from-1)*size).setSize(size).execute().actionGet();
         return searchResponse;
 
 
