@@ -103,13 +103,13 @@ public class CommunityRestServiceImpl implements CommunityRestService{
 
         Map<String, Integer> parkCountMap = new HashMap<>();
         parkCountMap.put("陶然亭公园",6);
-        parkCountMap.put("北海",4);
+        parkCountMap.put("北海公园",4);
         parkCountMap.put("朝阳公园",8);
         parkCountMap.put("颐和园",1);
         parkCountMap.put("南海子公园",7);
         parkCountMap.put("奥林匹克森林公园",12);
         parkCountMap.put("园博园",2);
-        parkCountMap.put("紫竹院",4);
+        parkCountMap.put("紫竹院公园",4);
 
 
 
