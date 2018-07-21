@@ -10,6 +10,7 @@ import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
@@ -65,6 +66,9 @@ public class SellHouseServiceImpl implements SellHouseService{
     private  final  Integer FAVORITE_ESF=2;
     @Autowired
     private SubscribeService subscribeService;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     @Override
     public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
@@ -626,6 +630,9 @@ public class SellHouseServiceImpl implements SellHouseService{
                 agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
             }
             sellHouseBeSureToSnatchDo.setAgentBaseDo(agentBaseDo);
+
+            sellHouseBeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+
             sellHouseBeSureToSnatchDo.setSort(sort[0]);
             sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
         }

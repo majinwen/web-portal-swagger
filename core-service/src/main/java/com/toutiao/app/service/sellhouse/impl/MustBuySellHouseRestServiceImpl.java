@@ -8,6 +8,7 @@ import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDomain;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
@@ -34,6 +35,9 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     /**
      * 获取不买亏二手房Domain
@@ -109,6 +113,9 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
+
+                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
+
                 mustBuyShellHouseDo.setAgentBaseDo(agentBaseDo);
                 mustBuyShellHouseDos.add(mustBuyShellHouseDo);
             }

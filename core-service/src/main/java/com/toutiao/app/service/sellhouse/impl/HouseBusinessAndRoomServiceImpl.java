@@ -8,6 +8,7 @@ import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDo;
 import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDoQuery;
 import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDomain;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterBusinessRoomChooseService;
 import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
 import com.toutiao.web.common.util.StringTool;
@@ -34,6 +35,9 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     /**
      * 获取商圈+户型
@@ -71,13 +75,15 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
-
+                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 Integer houseId = houseBusinessAndRoomDoQuery.getHouseId();
                 if (houseId != null && houseId.equals(houseBusinessAndRoomDo.getHouseId())){
                     houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);
                 } else {
                     houseBusinessAndRoomDos.add(houseBusinessAndRoomDo);
                 }
+
+
             }
         }
         houseBusinessAndRoomDomain.setData(houseBusinessAndRoomDos);

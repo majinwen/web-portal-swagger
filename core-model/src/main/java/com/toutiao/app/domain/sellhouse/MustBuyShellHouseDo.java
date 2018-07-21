@@ -4,6 +4,8 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class MustBuyShellHouseDo {
     /**
@@ -233,4 +235,9 @@ public class MustBuyShellHouseDo {
 
     @ChangeName("nearBySubwayDesc")
     private String traffic;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
 }

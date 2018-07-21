@@ -4,6 +4,8 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class HouseBusinessAndRoomDo {
     /**
@@ -235,4 +237,11 @@ public class HouseBusinessAndRoomDo {
      * 房源标题
      */
     private String houseTitle;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
+
+
 }
