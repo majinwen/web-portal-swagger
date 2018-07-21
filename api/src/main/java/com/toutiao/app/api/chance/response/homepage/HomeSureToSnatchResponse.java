@@ -4,6 +4,7 @@ import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class HomeSureToSnatchResponse {
@@ -116,4 +117,11 @@ public class HomeSureToSnatchResponse {
     private Integer rankInLowCommunityLayout;
 
     private List recommendBuildTagsName;
+
+    private List recommendBuildTagsId;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
 }

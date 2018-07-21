@@ -3,6 +3,9 @@ package com.toutiao.app.api.chance.response.homepage;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class HomePageMustBuyResponse {
     /**
@@ -157,4 +160,13 @@ public class HomePageMustBuyResponse {
      * 与区县平均总价的相对值(百分比)
      */
     private Double totalRelativeWithDistrict;
+
+    private List recommendBuildTagsName;
+
+    private List recommendBuildTagsId;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
 }

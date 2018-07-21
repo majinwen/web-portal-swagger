@@ -8,6 +8,7 @@ import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
@@ -45,6 +46,9 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private PlotsEsfRestService plotsEsfRestService;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     /**
      * @return 获取二手房5条
@@ -411,6 +415,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 HomePageMustBuyDo homePageMustBuyDo = JSON.parseObject(sourceAsString, HomePageMustBuyDo.class);
+                homePageMustBuyDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 homePageMustBuyDos.add(homePageMustBuyDo);
             }
         }
@@ -464,6 +469,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             String details = "";
             details = hit.getSourceAsString();
             HomeSureToSnatchDo  homeSureToSnatchDo = JSON.parseObject(details, HomeSureToSnatchDo.class);
+            homeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
             if(homeSureToSnatchDo.getIsClaim().equals(1))
             {
                 homeSureToSnatchDo.setHousePhotoTitle(homeSureToSnatchDo.getClaimHousePhotoTitle());
