@@ -82,7 +82,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
             if (topicType == 1) {
                 sort = 0;
             } else if (topicType == 2) {
-                sort = 2;
+                sort = 1;
             }
         }
         Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
