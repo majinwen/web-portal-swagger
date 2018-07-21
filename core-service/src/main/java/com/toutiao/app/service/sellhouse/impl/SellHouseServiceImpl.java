@@ -133,6 +133,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
+                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
             }
 

@@ -4,6 +4,7 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -419,6 +420,25 @@ public class SellHouseDetailsDo {
      * 涨降金额
      */
     private Double priceFloat;
+
+    /**
+     * 推荐标签id
+     */
+    private List recommendBuildTagsId;
+    /**
+     * 推荐标签名称
+     */
+    private List recommendBuildTagsName;
+
+    /**
+     * 近公园
+     */
+    private String nearPark;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
 
 
 }
