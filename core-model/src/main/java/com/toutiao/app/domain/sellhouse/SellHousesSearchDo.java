@@ -285,4 +285,16 @@ public class SellHousesSearchDo {
      * 各个类型数量
      */
     private Map<Integer,Map<String,Integer>> typeCounts;
+
+
+    /**
+     * 在同商圈同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
+
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    private Integer rankInLowCommunityLayout;
+
 }
