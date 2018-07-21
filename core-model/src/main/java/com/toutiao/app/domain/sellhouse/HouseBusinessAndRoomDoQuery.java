@@ -16,5 +16,5 @@ public class HouseBusinessAndRoomDoQuery extends QueryDo {
     /**
      * 详情页房源编号
      */
-    private Integer houseId;
+    private String houseId;
 }

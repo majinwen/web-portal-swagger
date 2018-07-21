@@ -57,6 +57,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 HouseBusinessAndRoomDo houseBusinessAndRoomDo = JSON.parseObject(details, HouseBusinessAndRoomDo.class);
+                String oldHouseId = houseBusinessAndRoomDo.getHouseId();
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (houseBusinessAndRoomDo.getIsClaim() == 1 && StringTool.isNotEmpty(houseBusinessAndRoomDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString());
@@ -76,8 +77,8 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                 }
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
                 houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags());
-                Integer houseId = houseBusinessAndRoomDoQuery.getHouseId();
-                if (houseId != null && houseId.equals(houseBusinessAndRoomDo.getHouseId())){
+                String houseId = houseBusinessAndRoomDoQuery.getHouseId();
+                if (StringTool.isNotEmpty(houseId) && houseId.equals(oldHouseId)) {
                     houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);
                 } else {
                     houseBusinessAndRoomDos.add(houseBusinessAndRoomDo);
