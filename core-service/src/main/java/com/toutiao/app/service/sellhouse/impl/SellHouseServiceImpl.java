@@ -505,6 +505,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
