@@ -22,11 +22,20 @@ public class HomePageNearEsfDo {
      */
     @ChangeName("districtName")
     private String area;
+
+    /**
+     * 区域
+     */
+    @ChangeName("districtId")
+    private String areaId;
     /**
      * 商圈
      */
     @ChangeName("areaName")
     private String houseBusinessName;
+
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
     /**
      * 朝向
      */
