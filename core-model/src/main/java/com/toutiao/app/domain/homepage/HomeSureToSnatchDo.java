@@ -3,6 +3,8 @@ package com.toutiao.app.domain.homepage;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class HomeSureToSnatchDo {
     /**
@@ -127,6 +129,8 @@ public class HomeSureToSnatchDo {
      * 同小区同户型范围内做低价排名
      */
     private Integer rankInLowCommunityLayout;
+
+    private List recommendBuildTagsName;
 
 
 }

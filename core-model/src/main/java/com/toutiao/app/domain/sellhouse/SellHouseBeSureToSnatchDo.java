@@ -4,6 +4,7 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -245,6 +246,9 @@ public class SellHouseBeSureToSnatchDo {
      * 各个类型数量
      */
     private Map<Integer,Map<String,Integer>> typeCounts;
+
+    private List recommendBuildTagsName;
+
 
 
 
