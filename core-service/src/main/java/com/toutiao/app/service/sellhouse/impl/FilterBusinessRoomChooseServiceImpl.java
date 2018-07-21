@@ -18,7 +18,7 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
         //商圈
         String area = houseBusinessAndRoomDoQuery.getAreaName();
         if (StringTool.isNotEmpty(area)) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", area));
+            boolQueryBuilder.must(QueryBuilders.matchQuery("houseBusinessName", area));
         }
 
         //户型(室)
