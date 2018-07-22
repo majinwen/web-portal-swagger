@@ -3,14 +3,13 @@ package com.toutiao.web.apiimpl.rest.plot;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.request.plot.PlotAroundInfoRequest;
 import com.toutiao.app.api.chance.request.plot.PlotAroundPlotRequest;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.plot.PlotListRequest;
-import com.toutiao.app.api.chance.response.plot.PlotDetailsFewResponse;
-import com.toutiao.app.api.chance.response.plot.PlotDetailsResponse;
-import com.toutiao.app.api.chance.response.plot.PlotListResponse;
-import com.toutiao.app.api.chance.response.plot.PlotTrafficResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
+import com.toutiao.app.api.chance.response.plot.*;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -94,4 +94,20 @@ public class PlotsRestController {
     }
 
 
+    /**
+     * 小区top50查询
+     */
+    @RequestMapping(value = "/getTop50List",method = RequestMethod.GET)
+    @ResponseBody
+    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest)
+    {
+        List<PlotTop50Response> plotTop50Responses=new ArrayList<>();
+        PlotTop50ListDoQuery plotTop50ListDoQuery=new PlotTop50ListDoQuery();
+        BeanUtils.copyProperties(baseQueryRequest,plotTop50ListDoQuery);
+        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
+        plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
+        return  NashResult.build(plotTop50Responses);
     }
+
+}

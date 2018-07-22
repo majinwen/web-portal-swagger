@@ -95,5 +95,5 @@ parent.iml
 *.iml
 */target
 .logs
-.idea/
 .DS_Store
+generatorConfig.xml

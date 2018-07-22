@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
@@ -39,9 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Service
 public class NewHouseRestServiceImpl implements NewHouseRestService {
@@ -136,10 +135,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                         .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart")).tieBreaker(0.3f);
             } else {
                 queryBuilder = QueryBuilders.disMaxQuery()
-                        .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_max_word"))
-                        .add(QueryBuilders.matchQuery("building_name_accurate", newHouseDoQuery.getKeyword()).boost(2))
-                        .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()))
-                        .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword())).tieBreaker(0.3f);
+                        .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_max_word").operator(Operator.AND))
+                        .add(QueryBuilders.matchQuery("building_name_accurate", newHouseDoQuery.getKeyword()).boost(2).operator(Operator.AND))
+                        .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword()).operator(Operator.AND)).tieBreaker(0.3f);
             }
 
             booleanQueryBuilder.must(queryBuilder);
@@ -242,6 +241,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }else{
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
         }
+        //5环内
+        if(StringTool.isNotEmpty(newHouseDoQuery.getRingRoad())){
+            booleanQueryBuilder.must(rangeQuery("ringRoad").lte(newHouseDoQuery.getRingRoad()));
+        }
+
         //房源已发布
         booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));

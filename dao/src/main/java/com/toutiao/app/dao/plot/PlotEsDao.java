@@ -3,6 +3,7 @@ package com.toutiao.app.dao.plot;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -53,6 +54,24 @@ public interface PlotEsDao {
      */
     SearchResponse queryPlotListByRequirementAndKeyword(Integer from, FunctionScoreQueryBuilder functionScoreQueryBuilder,Integer size);
 
+    /**
+     * 查询小区列表
+     * @param from
+     * @param boolQueryBuilder
+     * @param size
+     * @return
+     */
+    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort);
+
+    /**
+     * 普通小区列表(补)
+     * @param from
+     * @param boolQueryBuilder
+     * @param size
+     * @return
+     */
+    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, String keyword);
+
 
     /**
      * 获取小区收藏列表
@@ -63,4 +82,15 @@ public interface PlotEsDao {
      */
     SearchResponse queryPlotListByPlotIdList(BoolQueryBuilder boolQueryBuilder,Integer from,Integer size);
 
+    /**
+     * 获取小区
+     * @param idsQueryBuilder 小区ID列表
+     * @return
+     */
+    SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder);
+
+    /**
+     * 获取小区top50
+     */
+    SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder ,Integer from,Integer size);
 }

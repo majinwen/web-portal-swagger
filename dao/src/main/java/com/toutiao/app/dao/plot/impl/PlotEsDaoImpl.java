@@ -9,9 +9,11 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -74,11 +76,50 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
+    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(levelSort).addSort(plotScoreSort).setFrom(from).setSize(size).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = null;
+        if (StringTool.isNotEmpty(keyword)){
+            searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort("_score",SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC).execute().actionGet();
+        }else {
+            searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC).execute().actionGet();
+        }
+        return searchResponse;
+    }
+
+    @Override
     public SearchResponse queryPlotListByPlotIdList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType).setSearchType(SearchType.QUERY_THEN_FETCH);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchResponse searchresponse = client.prepareSearch(index).setTypes(parentType)
+                .setQuery(idsQueryBuilder)
+                .execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((from - 1) * size).setSize(size).execute().actionGet();
+        return  searchResponse;
+
     }
 
 }

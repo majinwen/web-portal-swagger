@@ -18,13 +18,11 @@ import com.toutiao.web.service.plot.PlotService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -426,12 +424,12 @@ public class PlotServiceImpl implements PlotService {
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", villageRequest.getLat(), villageRequest.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
-            sort.order(SortOrder.ASC);
+//            sort.order(SortOrder.ASC);
             sort.point(villageRequest.getLat(), villageRequest.getLon());
-            srb.addSort(sort);
+//            srb.addSort(sort);
             BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
             booleanQuery.must(QueryBuilders.termQuery("is_approve", 1));
-            SearchResponse searchResponse = srb.setQuery(booleanQuery).execute().actionGet();
+            SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC).execute().actionGet();
             long oneKM_size = searchResponse.getHits().getTotalHits();
 
             if(searchResponse != null){
@@ -514,9 +512,9 @@ public class PlotServiceImpl implements PlotService {
                     SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);
                     srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
-                            .setFrom((0) * pageSize)
+                            .setFrom(0)
 //                            .setSize(pageSize-hits.getHits().length)
-                            .setSize(villageRequest.getSize())
+                            .setSize(villageRequest.getSize()-reslocationinfo)
                             .execute().actionGet();
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
@@ -554,14 +552,17 @@ public class PlotServiceImpl implements PlotService {
                         houseList.add(instance);
                     }
                 }else if(reslocationinfo == 0){
-                    long es_from = (pageNum-1)*pageSize - oneKM_size;
+                    int es_from = (pageNum-1)*pageSize;
+                    if (oneKM_size>0){
+                        es_from = (int) ((pageNum-1)*pageSize - (oneKM_size/pageSize+1)*pageSize);
+                    }
                     SearchResponse searchresponse = null;
                     BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                     SearchRequestBuilder srb1 = client.prepareSearch(index).setTypes(parentType);
                     booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
                     srb1.addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC);
                     searchresponse = srb1.setQuery(booleanQueryBuilder)
-                            .setFrom(Integer.valueOf((int) es_from))
+                            .setFrom(Integer.valueOf(es_from))
                             .setSize(villageRequest.getSize())
                             .execute().actionGet();
                     SearchHits polthits = searchresponse.getHits();

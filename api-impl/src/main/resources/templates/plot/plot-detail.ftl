@@ -26,9 +26,9 @@
         <ul class="swiper-wrapper" id="house-pic-container">
         <#if village['photo']?exists&&(village['photo']?size gt 0)>
             <#list village['photo'] as vpphoto>
-                <li onclick="initphoto(this,${vpphoto_index},window.location.href)" class="swiper-slide">
-                    <img src="${qiniuimage}/${vpphoto}-ttfc1200x640" data-src="${qiniuimage}/${vpphoto}-ttfc1200x640" alt="">
-                </li>
+                    <li onclick="initphoto(this,${vpphoto_index},window.location.href)" class="swiper-slide">
+                        <img src="${qiniuimage}/${vpphoto}-ttfc1200x640" data-src="${qiniuimage}/${vpphoto}-ttfc1200x640" alt="">
+                    </li>
             </#list>
         <#else>
             <li onclick="initphoto(this,0,window.location.href)" class="swiper-slide">
@@ -903,6 +903,7 @@
         location.href = link.attr('href');
         return false
     }
+    
 
 </script>
 </body>

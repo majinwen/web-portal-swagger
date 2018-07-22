@@ -12,6 +12,7 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,12 +64,12 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", nearBySellHouseQueryDo.getAreaId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
+        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId()) && nearBySellHouseQueryDo.getAreaId()!=0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
 
         }
         //区域id
-        if (StringTool.isNotEmpty((nearBySellHouseQueryDo.getDistrictId()))) {
+        if (StringTool.isNotEmpty((nearBySellHouseQueryDo.getDistrictId())) && nearBySellHouseQueryDo.getDistrictId()!=0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHouseQueryDo.getDistrictId()));
 
         }
@@ -96,7 +97,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         }else if(nearBySellHouseQueryDo.getEndPrice()==0 && nearBySellHouseQueryDo.getBeginPrice()!=0)
         {
-            booleanQueryBuilder.should(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(nearBySellHouseQueryDo.getBeginPrice()));
         }
 
         //面积
@@ -196,24 +197,29 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
             if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).analyzer("ik_max_word").boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2)));
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_max_word").boost(2))
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
             } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).analyzer("ik_smart")));
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2))
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
             } else {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword())));
+                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
             }
         }
+        //楼盘id
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getBuildingId())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", sellHouseDoQuery.getBuildingId()));
+        }
+
         //附近
         if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
@@ -320,6 +326,18 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }else{
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", longs));
             }
+        }
+        //降价房
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsCutPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", sellHouseDoQuery.getIsCutPrice()));
+        }
+        //洼地房
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsLowPrice())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", sellHouseDoQuery.getIsLowPrice()));
+        }
+        //逢出毕抢
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsMustRob())){
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", sellHouseDoQuery.getIsMustRob()));
         }
 
         return booleanQueryBuilder;

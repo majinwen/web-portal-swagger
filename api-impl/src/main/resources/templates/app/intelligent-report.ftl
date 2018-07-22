@@ -222,7 +222,7 @@
                             <#if intelligenceFhRes?exists>
                                 <#assign fhResults =intelligenceFhRes['fhResult']>
                                 <#list fhResults?eval as fhResult>
-                                    <li class="bgtype-${fhResult_index+1}" data-href='${appdomainname}/#/shake/community/details?plotId=${fhResult['newcode']}'>
+                                    <li class="bgtype-${fhResult_index+1}" data-href='${appdomainname}/#/details/community?plotId=${fhResult['newcode']}'>
                                         <div>
                                             <h4>${fhResult['projname']}</h4>
                                             <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
@@ -694,7 +694,7 @@
                         <#list fhResults?eval as fhResult>
                             <li>
                                 <#--<a>-->
-                                <a href='${appdomainname}/#/shake/community/details?plotId=${fhResult['newcode']}'>
+                                <a href='${appdomainname}/#/details/community?plotId=${fhResult['newcode']}'>
                                 <div class="review-img-box">
                                     <#if fhResult['plotImage']?exists && fhResult['plotImage'] != ''>
                                         <img width="100%" src="${qiniuimage}/${fhResult['plotImage']?split(',')[0]}-tt400x300" alt="${fhResult['projname']}">
