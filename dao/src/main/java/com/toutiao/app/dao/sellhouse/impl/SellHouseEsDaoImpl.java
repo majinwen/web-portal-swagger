@@ -123,7 +123,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                         "isMainLayout","isDealLayout","avgDealCycle","isLowPrice","isCutPrice","isMustRob","isLowest","isNew","isCommunityTopHouse","avgAbsoluteWithCommunity",
                         "avgAbsoluteWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithCommunity","avgRelativeWithBizcircle","avgRelativeWithDistrict","totalAbsoluteWithCommunity",
                         "totalAbsoluteWithBizcircle","totalAbsoluteWithDistrict","totalRelativeWithCommunity","totalRelativeWithBizcircle","totalRelativeWithDistrict","traffic","priceFloat",
-                        "recommendBuildTagsId","recommendBuildTagsName","nearPark"} ,null)
+                        "recommendBuildTagsId","recommendBuildTagsName","nearPark","rankLowInBizcircleLayout","rankInLowCommunityLayout"} ,null)
                 .execute().actionGet();
         return searchresponse;
     }
