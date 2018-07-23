@@ -263,4 +263,10 @@ public class SellHouseBeSureToSnatchDo {
     private String nearPark;
 
 
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    private Integer rankLowInBizcircleLayout;
+
+
 }
