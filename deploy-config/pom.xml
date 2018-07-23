@@ -113,7 +113,7 @@
             </properties>
             <activation>
 
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
         </profile>
 
@@ -123,7 +123,7 @@
                 <environment>pro</environment>
             </properties>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
 
