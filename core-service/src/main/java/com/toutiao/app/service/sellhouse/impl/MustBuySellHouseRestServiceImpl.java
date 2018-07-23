@@ -78,13 +78,6 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
         Integer sort = mustBuyShellHouseDoQuery.getSort();
-        if (sort == null) {
-            if (topicType == 1) {
-                sort = 0;
-            } else if (topicType == 2) {
-                sort = 1;
-            }
-        }
         Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
         Integer pageSize = mustBuyShellHouseDoQuery.getPageSize();
         SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType);
