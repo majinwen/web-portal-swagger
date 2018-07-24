@@ -289,16 +289,19 @@ public class RentRestRestServiceImpl implements RentRestService {
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = getRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
-        Date date = new Date();
-        String nowDate = DateUtil.format(date);
-        nowDate = nowDate+" 00:00:00";
-
-        String pastDate = DateUtil.getPastDate(7);
-        pastDate = pastDate+" 00:00:00";
+//        Date date = new Date();
+//        String nowDate = DateUtil.format(date);
+//        nowDate = nowDate+" 00:00:00";
 //
-        boolQueryBuilder.must(QueryBuilders.rangeQuery("update_time").gt(pastDate).lte(nowDate));
-        boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gte(0));
-        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
+//        String pastDate = DateUtil.getPastDate(7);
+//        pastDate = pastDate+" 00:00:00";
+//
+//        boolQueryBuilder.must(QueryBuilders.rangeQuery("update_time").gt(pastDate).lte(nowDate));
+//        boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gte(0));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
+
+        boolQueryBuilder.must(QueryBuilders.termQuery("rent_type","1"));
+        boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(4000).lte(6000));
         Integer size = 10;
         Integer from = (rentHouseDoQuery.getPageNum()-1)*size;
 
