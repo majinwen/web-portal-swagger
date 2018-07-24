@@ -9,6 +9,7 @@ import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.web.common.util.DateUtil;
@@ -44,6 +45,9 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
 
     @Autowired
     private AgentService agentService;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo) {
@@ -160,6 +164,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
             }
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
+            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags());
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys="";
@@ -176,6 +181,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                nearBySellHousesDo.setSubwayDistanceInfo(nearBySellHousesDo.getSubwayDistince().get(keys).toString());
            }
         }
+
         nearBySellHouseDomain.setNearBySellHousesDos(nearBySellHouses);
         nearBySellHouseDomain.setTotalCount(searchResponse.getHits().getTotalHits());
 
