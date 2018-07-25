@@ -4,7 +4,7 @@ package com.toutiao.web.common.util;
  * 获取表名
  * 1)小区信息表含有父子关系的父表有做调整,没有父子关系的表不变
  */
-public class CityUtils {
+public class CityIndexUtils {
 
     /**
      * 城市后缀
