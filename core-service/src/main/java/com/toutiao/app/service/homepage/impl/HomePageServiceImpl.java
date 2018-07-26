@@ -192,7 +192,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             sort.order(SortOrder.ASC);
 
             boolQueryBuilder.must(location);
-
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(0));
             homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
         }else {
             boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",new int[]{1}));
