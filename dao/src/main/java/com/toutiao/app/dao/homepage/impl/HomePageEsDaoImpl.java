@@ -71,10 +71,26 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     }
 
     @Override
+    public SearchResponse getHomePageNearPlotNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(plotIndex).setTypes(parentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).setSize(size).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
     public SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setSize(size).addSort(sort).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setSize(size).execute().actionGet();
         return searchResponse;
     }
 
