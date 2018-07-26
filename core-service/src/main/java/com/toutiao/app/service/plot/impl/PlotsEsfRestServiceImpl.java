@@ -90,7 +90,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         List<SellAndClaimHouseDetailsDo> sellHouseDoList = new ArrayList<>();
         detailsBuilder.must(termQuery("newcode",plotsId));
         detailsBuilder.must(termQuery("isDel",0));
-        detailsBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+        detailsBuilder.mustNot(QueryBuilders.termsQuery("is_claim", "0"));
         if(room != 0){
             detailsBuilder.must(termQuery("room",room));
         }

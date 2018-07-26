@@ -241,6 +241,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         //组装条件
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
 
         SearchResponse homePageNearEsf = null;
         //是否存在坐标
@@ -356,7 +357,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         //组装条件
         boolQueryBuilder.must(QueryBuilders.termQuery("newcode", nearHouseSpecialPageDoQuery.getPlotId()));
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
-        boolQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
 
         //按距离排序并计算距离
 //        GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", nearHouseSpecialPageDoQuery.getLat(), nearHouseSpecialPageDoQuery.getLon());
@@ -426,7 +427,7 @@ public class HomePageServiceImpl implements HomePageRestService {
     public List<HomePageMustBuyDo> getHomePageMustBuy(Integer topicType) {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         if (topicType == 1) {
             //筛选低价房 isCutPrice=1
             boolQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
@@ -489,6 +490,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("status",0));
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
         boolQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         SearchResponse beSureToSnatch=homePageEsDao.getHomeBeSureToSnatch(boolQueryBuilder,homeSureToSnatchDoQuery.getPageNum(),homeSureToSnatchDoQuery.getPageSize());
         SearchHit[] hits = beSureToSnatch.getHits().getHits();
         for (SearchHit hit : hits) {

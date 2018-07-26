@@ -196,26 +196,25 @@ public class SellHouseServiceImpl implements SellHouseService{
         //默认列表暂时不做搜索，暂注掉
         //boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseQueryDo);
         //设置搜索规则
-        Date date = new Date();
-        String pastDateOfMonth = DateUtil.getPastDate(29)+" 00:00:00";
-        String pastDateOfWeek = DateUtil.getPastDate(6)+" 00:00:00";
-        String nowDate = DateUtil.format(date)+" 23:59:59";
-        BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
+//        Date date = new Date();
+//        String pastDateOfMonth = DateUtil.getPastDate(29)+" 00:00:00";
+//        String pastDateOfWeek = DateUtil.getPastDate(6)+" 00:00:00";
+//        String nowDate = DateUtil.format(date)+" 23:59:59";
+//        BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
 
 
-        queryBuilderOfMonth.must(QueryBuilders.termQuery("is_claim",1));
-        queryBuilderOfMonth.must(QueryBuilders.termQuery("isRecommend",0));
-        queryBuilderOfMonth.must(QueryBuilders.termsQuery("isDel", "0"));
-        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("isCutPrice").gt(0)));
+//        queryBuilderOfMonth.must(QueryBuilders.termQuery("is_claim",1));
+//        queryBuilderOfMonth.must(QueryBuilders.termQuery("isRecommend",0));
+//        queryBuilderOfMonth.must(QueryBuilders.termsQuery("isDel", "0"));
+//        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("isCutPrice").gt(0)));
 //        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("claim_time").gt(pastDateOfMonth).lte(nowDate)));
 //        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("price_increase_decline").gt(0)));
 
-        boolQueryBuilder.should(queryBuilderOfMonth);
+//        boolQueryBuilder.should(queryBuilderOfMonth);
 
         BoolQueryBuilder queryBuilderOfWeek = QueryBuilders.boolQuery();
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim",1));
+        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim",0));
         queryBuilderOfWeek.must(QueryBuilders.termQuery("isNew",1));
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("isRecommend",0));
         queryBuilderOfWeek.must(QueryBuilders.termsQuery("isDel", "0"));
 //        queryBuilderOfWeek.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate)));
         boolQueryBuilder.should(queryBuilderOfWeek);
@@ -386,7 +385,8 @@ public class SellHouseServiceImpl implements SellHouseService{
 
         //过滤为删除
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+//        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
 
         FunctionScoreQueryBuilder query = null;
         //条件is_claim标志设置权重
