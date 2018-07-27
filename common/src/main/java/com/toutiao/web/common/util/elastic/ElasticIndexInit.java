@@ -14,7 +14,7 @@ import java.util.Map;
  * Author: Jiang Weilong
  * Date:   2018-07-27
  * Time:   12:34
- * Theme:
+ * Theme: 初始化elastic索引
  */
 
 @Component
@@ -103,14 +103,13 @@ public class ElasticIndexInit implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        System.out.println("初始化ElasticSearch城市分站索引"+cityIds);
+        System.out.println("初始化ElasticSearch城市分站索引！+++++++++++++++++++++++++++++");
 
 
         String[] city = cityIds.split("\\.");
         int cityCount = city.length;
         for(int i=0; i < cityCount; i++){
             Map<String ,String> esMap = new HashMap<>();
-            System.out.println(city[i]);
             if(!CITY_BJ.equals(city[i]) && !"".equals(city[i])){
                 plotType_t1 = "plot";
                 esMap.put(ESIndexConstant.NEW_HOUSE_INDEX,newHouseIndex+"_"+city[i]);
