@@ -63,6 +63,16 @@ public class UserFavoriteNewHouse {
      */
     private Short status;
 
+    /**
+     * 总价
+     */
     private BigDecimal totalPrice;
+
+    /**
+     * 城市
+     */
+    private Integer cityId;
+
+
 
 }

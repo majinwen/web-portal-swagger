@@ -103,7 +103,7 @@ public class ElasticIndexInit implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        System.out.println("初始化ElasticSearch城市分站索引！+++++++++++++++++++++++++++++");
+        System.out.println("初始化ElasticSearch城市分站索引！＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋");
 
 
         String[] city = cityIds.split("\\.");

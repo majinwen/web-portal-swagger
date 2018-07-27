@@ -17,9 +17,10 @@
     <result column="house_photo_title" property="housePhotoTitle" jdbcType="VARCHAR" />
     <result column="house_title" property="houseTitle" jdbcType="VARCHAR" />
     <result column="rent_type_name" property="rentTypeName"  jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, house_id, create_time, is_del
+    id, user_id, house_id, create_time, is_del, city_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -92,6 +93,9 @@
       <if test="rentTypeName!= null" >
         rent_type_name,
       </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -138,6 +142,9 @@
       </if>
       <if test="rentTypeName != null" >
         #{rentTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

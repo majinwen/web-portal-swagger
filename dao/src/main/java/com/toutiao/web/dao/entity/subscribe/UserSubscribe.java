@@ -15,4 +15,6 @@ public class UserSubscribe {
     private Date createTime;
 
     private Date updateTime;
+
+    private Integer cityId;
 }
