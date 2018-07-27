@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest;
 
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -20,19 +21,23 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/rest/city")
 public class CityRestController {
 
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private HttpServletResponse response;
 
     /**
      * 城市
      * @param cityId
-     * @param request
-     * @param response
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/{cityId}",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@PathVariable String cityId, HttpServletRequest request, HttpServletResponse response)
+    public NashResult getNewHouseDetailByNewCode(@PathVariable String cityId,@RequestHeader ("User-Agent") String userAgent,@CookieValue("select_city")String city)
     {
 
+        System.out.println(city);
         Cookie cookie = CookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_CITY, cityId);
 
 //        esIndexUtils.getESByCity1(request, response, cookie.getValue());

@@ -73,7 +73,7 @@ public interface PlotEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response);
+    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword);
 
 
     /**

@@ -256,7 +256,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @return
      */
     @Override
-    public PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, HttpServletRequest request, HttpServletResponse response) {
+    public PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery) {
         String key = "";
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -421,7 +421,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if ((StringTool.isNotEmpty(plotListDoQuery.getLat())&&plotListDoQuery.getLat()>0&&plotListDoQuery.getLon()>0&&StringTool.isNotEmpty(plotListDoQuery.getLon()))){
             searchResponse = plotEsDao.queryPlotListByRequirementAndKeywordV1(from, boolQueryBuilder, plotListDoQuery.getPageSize(),sort,levelSort,plotScoreSort);
         }else {
-            searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(),plotListDoQuery.getKeyword(),request,response);
+            searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(),plotListDoQuery.getKeyword());
             if (searchResponse!=null){
                 SearchHit[] hits = searchResponse.getHits().getHits();
 
@@ -456,7 +456,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 }
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder,  plotListDoQuery.getPageSize() - reslocationinfo,plotListDoQuery.getKeyword(),request,response);
+                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder,  plotListDoQuery.getPageSize() - reslocationinfo,plotListDoQuery.getKeyword());
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit:hits1){
                     commonMethod(hit,key,plotDetailsFewDoList);
@@ -468,7 +468,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if(oneKM_size>0){
                  newFrom = (int) ((plotListDoQuery.getPageNum()-1)*plotListDoQuery.getPageSize() - (oneKM_size/plotListDoQuery.getPageSize()+1)*plotListDoQuery.getPageSize());
                 }
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(),plotListDoQuery.getKeyword(),request,response);
+                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(),plotListDoQuery.getKeyword());
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit:hits1){
                     commonMethod(hit,key,plotDetailsFewDoList);
@@ -551,13 +551,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 }
 
                 plotListDoQuery.setPageSize(10-hits.length);
-//                PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListDoQuery);
-//                plotDetailsFewDoList.addAll(plotListDo.getPlotList());
+                PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListDoQuery);
+                plotDetailsFewDoList.addAll(plotListDo.getPlotList());
             }else if (hits.length==0){
-               // plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
+                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
             }
         }else {
-            //plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
+            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
         }
         return plotDetailsFewDoList;
     }
