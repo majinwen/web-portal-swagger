@@ -1,4 +1,5 @@
 package com.toutiao.web.apiimpl.rest.newhouse;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -6,7 +7,10 @@ import com.toutiao.app.api.chance.request.newhouse.NewHouseDetailsRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseTrafficRequest;
-import com.toutiao.app.api.chance.response.newhouse.*;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -28,9 +32,9 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
+    public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode());
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode(), userAgent, city);
         NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
         return NashResult.build(newHouseDetailResponse);
     }
@@ -41,12 +45,12 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
+    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery=new NewHouseDoQuery();
         BeanUtils.copyProperties(newHouseListRequest,newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, userAgent, city);
         BeanUtils.copyProperties(newHouseListVo,newHouseListDomainResponse);
         return  NashResult.build(newHouseListDomainResponse);
     }
@@ -73,10 +77,10 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
-    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest)
+    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
         NewHouseTrafficResponse newHouseTrafficResponse =new   NewHouseTrafficResponse();
-        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode());
+        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode(),userAgent ,city);
         BeanUtils.copyProperties(newHouseTrafficDo,newHouseTrafficResponse);
         return  NashResult.build(newHouseTrafficResponse);
     }

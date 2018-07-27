@@ -11,7 +11,7 @@ public interface NewHouseEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String userAgent, String city);
 
 
     /**
@@ -21,7 +21,7 @@ public interface NewHouseEsDao {
      * @param pageSize
      * @return
      */
-    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort );
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String userAgent, String city);
 
 
 

@@ -1,9 +1,7 @@
 package com.toutiao.app.service.newhouse;
 
 
-
 import com.toutiao.app.domain.newhouse.*;
-import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ public interface NewHouseRestService {
      * @param newCode
      * @return
      */
-    NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode);
+    NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode, String userAgent, String city);
 
 
     /**
@@ -22,7 +20,7 @@ public interface NewHouseRestService {
      * @param newHouseQueryDo
      * @return
      */
-    NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseQueryDo);
+    NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseQueryDo, String userAgent, String city);
 
     /**
      *  新房动态
@@ -33,7 +31,7 @@ public interface NewHouseRestService {
     /**
      * 新房交通配套
      */
-    NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode);
+    NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String userAgent, String city);
 
 
 
