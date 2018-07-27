@@ -9,6 +9,9 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.context.annotation.Configuration;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 @Configuration
 public interface PlotEsDao {
@@ -70,7 +73,7 @@ public interface PlotEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, String keyword);
+    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response);
 
 
     /**

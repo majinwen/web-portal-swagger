@@ -3,6 +3,8 @@ package com.toutiao.app.service.plot;
 
 import com.toutiao.app.domain.plot.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public interface PlotsRestService {
      * @param plotListDoQuery
      * @return
      */
-    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery);
+    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 获取小区列表含坐标

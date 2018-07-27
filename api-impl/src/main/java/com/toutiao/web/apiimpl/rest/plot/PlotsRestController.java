@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,10 +69,10 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
+    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest,HttpServletRequest request, HttpServletResponse response){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
-        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,request,response);
         PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
         return NashResult.build(plotListResponse);
     }
