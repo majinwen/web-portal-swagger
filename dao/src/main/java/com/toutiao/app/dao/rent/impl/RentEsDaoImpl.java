@@ -2,6 +2,7 @@ package com.toutiao.app.dao.rent.impl;
 
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -37,9 +38,9 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder){
+    public SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchResponse;
     }
